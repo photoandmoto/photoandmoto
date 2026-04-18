@@ -10,12 +10,13 @@ interface Props {
 }
 
 const { images, gallerySlug } = Astro.props;
+const basePath = "/galleries/" + gallerySlug + "/";
 ---
 
 <div class="gallery-grid" id="gallery">
   {images.map((img, index) => (
     
-      href={`/galleries/${gallerySlug}/${img.filename}`}
+      href={basePath + img.filename}
       class="gallery-item"
       data-pswp-width={img.width}
       data-pswp-height={img.height}
@@ -23,8 +24,8 @@ const { images, gallerySlug } = Astro.props;
       target="_blank"
     >
       <img
-        src={`/galleries/${gallerySlug}/${img.filename}`}
-        alt={img.caption || `Photo ${index + 1}`}
+        src={basePath + img.filename}
+        alt={img.caption || 'Photo ' + (index + 1)}
         loading="lazy"
         class="gallery-thumb"
       />
