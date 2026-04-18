@@ -50,7 +50,7 @@ const currentYear = new Date().getFullYear();
   
   .footer-content {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr auto;
     gap: var(--space-6);
     margin-bottom: var(--space-6);
   }
@@ -74,12 +74,14 @@ const currentYear = new Date().getFullYear();
     letter-spacing: 1px;
     margin-bottom: var(--space-2);
     color: white;
+    text-align: right;
   }
   
   .footer-links ul {
     list-style: none;
     padding: 0;
     margin: 0;
+    text-align: right;
   }
   
   .footer-links li {

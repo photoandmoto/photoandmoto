@@ -21,6 +21,7 @@ const navItems = [
 <header class="site-header">
   <div class="container header-container">
     <a href={`/${lang}`} class="logo">
+      <img src="/images/logo.png" alt="Photo & Moto" class="logo-icon" />
       <span class="logo-text">Photo & Moto</span>
     </a>
     
@@ -48,8 +49,8 @@ const navItems = [
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: var(--bg-primary);
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    background: #000000;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
     backdrop-filter: blur(10px);
   }
   
@@ -63,11 +64,20 @@ const navItems = [
   
   .logo {
     text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .logo-icon {
+    height: 40px;
+    width: auto;
   }
   
   .logo-text {
     font-family: var(--font-headline);
     font-size: 1.5rem;
+    font-weight: 800;
     color: var(--brand-primary);
     letter-spacing: 1px;
   }
@@ -82,10 +92,11 @@ const navItems = [
   
   .nav-link {
     font-family: var(--font-headline);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: var(--text-primary);
+    color: white;
     padding: var(--space-1) var(--space-2);
     border-radius: var(--radius-sm);
     transition: all var(--transition-fast);
@@ -93,12 +104,12 @@ const navItems = [
   
   .nav-link:hover {
     background: var(--brand-primary);
-    color: white;
+    color: black;
   }
   
   .nav-link.active {
-    background: var(--brand-secondary);
-    color: white;
+    background: var(--brand-primary);
+    color: black;
   }
   
   @media (max-width: 768px) {
@@ -107,8 +118,16 @@ const navItems = [
     }
     
     .nav-link {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       padding: var(--space-1);
+    }
+    
+    .logo-icon {
+      height: 30px;
+    }
+    
+    .logo-text {
+      font-size: 1.1rem;
     }
   }
   
