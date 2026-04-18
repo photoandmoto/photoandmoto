@@ -22,17 +22,14 @@ const featuredGalleries = galleries.slice(0, 4);
   lang={lang}
   description="Moottoriurheilun historian kuvia ja tarinoita - Photo & Moto"
 >
-  <!-- Hero Section (no button) -->
-  <section class="hero">
+  <!-- Hero + Intro Section -->
+  <section class="hero-intro">
     <div class="container">
-      <h1 class="hero-title">{t['hero.tagline']}</h1>
-      <p class="hero-subtitle">{t['hero.subtitle']}</p>
-    </div>
-  </section>
-  
-  <!-- Intro Section - Two Columns -->
-  <section class="section intro-section">
-    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">{t['hero.tagline']}</h1>
+        <p class="hero-subtitle">{t['hero.subtitle']}</p>
+      </div>
+      
       <div class="intro-grid">
         <div class="intro-col">
           <div class="intro-image-wrap">
@@ -151,12 +148,17 @@ const featuredGalleries = galleries.slice(0, 4);
 </BaseLayout>
 
 <style>
-  .hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)),
+  /* Hero + Intro combined section */
+  .hero-intro {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.75)),
                 url('/images/hero-bg.jpg') center/cover;
     color: white;
+    padding: var(--space-8) 0 var(--space-8);
+  }
+  
+  .hero-content {
     text-align: center;
-    padding: var(--space-12) 0;
+    padding-bottom: var(--space-8);
   }
   
   .hero-title {
@@ -175,12 +177,7 @@ const featuredGalleries = galleries.slice(0, 4);
     margin-bottom: 0;
   }
   
-  /* Intro Section */
-  .intro-section {
-    padding: var(--space-8) 0;
-    background: white;
-  }
-  
+  /* Intro columns */
   .intro-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -205,14 +202,14 @@ const featuredGalleries = galleries.slice(0, 4);
     font-size: 1.75rem;
     font-weight: 900;
     font-style: italic;
-    color: var(--text-primary);
+    color: white;
     margin-bottom: var(--space-2);
   }
   
   .intro-text {
     font-size: 1rem;
     line-height: 1.7;
-    color: var(--text-secondary);
+    color: rgba(255, 255, 255, 0.85);
     font-weight: 600;
   }
   
