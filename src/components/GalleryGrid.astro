@@ -1,31 +1,40 @@
 ---
+interface ImageData {
+  filename: string;
+  caption?: string;
+  width: number;
+  height: number;
+}
+
 interface Props {
-  images: Array<{
-    filename: string;
-    caption?: string;
-    width: number;
-    height: number;
-  }>;
+  images: ImageData[];
   gallerySlug: string;
 }
 
 const { images, gallerySlug } = Astro.props;
-const basePath = "/galleries/" + gallerySlug + "/";
+
+const processedImages = images.map((img, index) => ({
+  href: `/galleries/${gallerySlug}/${img.filename}`,
+  alt: img.caption || `Photo ${index + 1}`,
+  caption: img.caption || '',
+  width: img.width,
+  height: img.height,
+}));
 ---
 
 <div class="gallery-grid" id="gallery">
-  {images.map((img, index) => (
-    
-      href={basePath + img.filename}
+  {processedImages.map((img) => (
+    <a
+      href={img.href}
       class="gallery-item"
       data-pswp-width={img.width}
       data-pswp-height={img.height}
-      data-pswp-caption={img.caption || ''}
+      data-pswp-caption={img.caption}
       target="_blank"
     >
       <img
-        src={basePath + img.filename}
-        alt={img.caption || 'Photo ' + (index + 1)}
+        src={img.href}
+        alt={img.alt}
         loading="lazy"
         class="gallery-thumb"
       />

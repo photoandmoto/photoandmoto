@@ -44,7 +44,7 @@ const featuredGalleries = galleries.slice(0, 4);
         <div class="grid grid--3">
           {latestArticles.map(article => (
             <article class="card">
-              <a href={`/fi/aikakone/${article.slug}`}>
+              <a href={`/fi/aikakone/${article.slug.replace(/^fi\//, '')}`}>
                 <img 
                   src={article.data.featured_image} 
                   alt={article.data.title}
@@ -79,7 +79,7 @@ const featuredGalleries = galleries.slice(0, 4);
             <article class="card">
               <a href={`/fi/galleria/${gallery.data.slug}`}>
                 <img 
-                  src={`/src/assets/galleries/${gallery.data.slug}/${gallery.data.cover_image}`}
+                  src={`/galleries/${gallery.data.slug}/${gallery.data.cover_image}`}
                   alt={gallery.data.title}
                   class="card__image"
                 />

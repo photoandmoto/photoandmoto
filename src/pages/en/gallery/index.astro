@@ -26,7 +26,7 @@ const galleries = await getCollection('galleries');
           <article class="card">
             <a href={`/en/gallery/${gallery.data.slug}`}>
               <img 
-                src={`/src/assets/galleries/${gallery.data.slug}/${gallery.data.cover_image}`}
+                src={`/galleries/${gallery.data.slug}/${gallery.data.cover_image}`}
                 alt={gallery.data.title}
                 class="card__image"
                 loading="lazy"
