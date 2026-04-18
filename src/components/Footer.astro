@@ -1,0 +1,117 @@
+---
+import { ui } from '../i18n/ui';
+
+interface Props {
+  lang: 'fi' | 'en';
+}
+
+const { lang } = Astro.props;
+const t = ui[lang];
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-container">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <h3 class="footer-logo">Photo & Moto</h3>
+        <p class="footer-tagline">
+          {lang === 'fi' ? 'Moottoriurheilun historian kuvia ja tarinoita' : 'Motorsport history photos and stories'}
+        </p>
+      </div>
+      
+      <div class="footer-links">
+        <h4>{lang === 'fi' ? 'Linkit' : 'Links'}</h4>
+        <ul>
+          <li><a href={`/${lang}/galleria`}>{t['nav.gallery']}</a></li>
+          <li><a href={`/${lang}/aikakone`}>{t['nav.articles']}</a></li>
+          <li><a href={`/${lang}/yhteystiedot`}>{t['nav.contact']}</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>{t['footer.copyright'].replace('2026', currentYear.toString())}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--brand-secondary);
+    color: white;
+    margin-top: var(--space-12);
+    padding: var(--space-8) 0 var(--space-4);
+  }
+  
+  .footer-container {
+    max-width: var(--wide-width);
+  }
+  
+  .footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-6);
+    margin-bottom: var(--space-6);
+  }
+  
+  .footer-logo {
+    font-family: var(--font-headline);
+    font-size: 1.75rem;
+    color: var(--brand-primary);
+    margin-bottom: var(--space-2);
+  }
+  
+  .footer-tagline {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+  }
+  
+  .footer-links h4 {
+    font-family: var(--font-headline);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: var(--space-2);
+    color: white;
+  }
+  
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .footer-links li {
+    margin-bottom: var(--space-1);
+  }
+  
+  .footer-links a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+  
+  .footer-links a:hover {
+    color: var(--brand-primary);
+  }
+  
+  .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: var(--space-3);
+    text-align: center;
+  }
+  
+  .footer-bottom p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+    margin: 0;
+  }
+  
+  @media (max-width: 768px) {
+    .footer-content {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+  }
+</style>

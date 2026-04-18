@@ -1,0 +1,68 @@
+---
+import { languages } from '../i18n/ui';
+import { getAlternateLangPath } from '../i18n/utils';
+
+interface Props {
+  lang: 'fi' | 'en';
+  currentPath: string;
+}
+
+const { lang, currentPath } = Astro.props;
+const alternateLang = lang === 'fi' ? 'en' : 'fi';
+const alternatePath = getAlternateLangPath(currentPath, alternateLang);
+---
+
+<div class="language-switcher">
+  <a 
+    href={alternatePath}
+    class="lang-link"
+    aria-label={`Switch to ${languages[alternateLang]}`}
+  >
+    <span class="lang-current">{lang.toUpperCase()}</span>
+    <span class="lang-separator">/</span>
+    <span class="lang-alternate">{alternateLang.toUpperCase()}</span>
+  </a>
+</div>
+
+<style>
+  .language-switcher {
+    display: flex;
+    align-items: center;
+  }
+  
+  .lang-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--font-headline);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    color: var(--text-primary);
+    text-decoration: none;
+    padding: var(--space-1) var(--space-2);
+    border: 2px solid var(--brand-primary);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+  }
+  
+  .lang-link:hover {
+    background: var(--brand-primary);
+    color: white;
+  }
+  
+  .lang-current {
+    font-weight: bold;
+  }
+  
+  .lang-separator {
+    opacity: 0.5;
+  }
+  
+  .lang-alternate {
+    opacity: 0.7;
+  }
+  
+  .lang-link:hover .lang-alternate {
+    opacity: 1;
+  }
+</style>

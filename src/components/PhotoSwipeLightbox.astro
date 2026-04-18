@@ -1,0 +1,86 @@
+---
+// This component initializes PhotoSwipe for the gallery
+---
+
+<!-- PhotoSwipe CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.3/dist/photoswipe.css">
+
+<script>
+  import PhotoSwipeLightbox from 'photoswipe/lightbox';
+  import PhotoSwipe from 'photoswipe';
+  
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: '#gallery',
+    children: 'a',
+    pswpModule: PhotoSwipe,
+    
+    // Options
+    bgOpacity: 0.95,
+    loop: true,
+    zoom: true,
+    preload: [1, 2],
+    
+    // UI
+    showHideAnimationType: 'fade',
+    
+    // Styling
+    padding: { top: 50, bottom: 50, left: 50, right: 50 },
+    
+    // Caption
+    imageClickAction: 'zoom',
+    tapAction: 'close',
+  });
+  
+  // Add caption display
+  lightbox.on('uiRegister', function() {
+    lightbox.pswp.ui.registerElement({
+      name: 'custom-caption',
+      order: 9,
+      isButton: false,
+      appendTo: 'root',
+      html: '',
+      onInit: (el, pswp) => {
+        pswp.on('change', () => {
+          const currSlideElement = pswp.currSlide.data.element;
+          let captionHTML = '';
+          
+          if (currSlideElement) {
+            const caption = currSlideElement.getAttribute('data-pswp-caption');
+            if (caption) {
+              captionHTML = caption;
+            }
+          }
+          
+          el.innerHTML = captionHTML || '';
+        });
+      }
+    });
+  });
+  
+  lightbox.init();
+</script>
+
+<style is:global>
+  .pswp__custom-caption {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    max-width: 80%;
+    text-align: center;
+    font-family: var(--font-body);
+  }
+  
+  .pswp__button {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+  }
+  
+  .pswp__button:hover {
+    background-color: var(--brand-primary) !important;
+  }
+</style>

@@ -1,0 +1,130 @@
+---
+import { ui } from '../i18n/ui';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+
+interface Props {
+  lang: 'fi' | 'en';
+  currentPath: string;
+}
+
+const { lang, currentPath } = Astro.props;
+const t = ui[lang];
+
+const navItems = [
+  { href: `/${lang}`, label: t['nav.home'] },
+  { href: `/${lang}/galleria`, label: t['nav.gallery'] },
+  { href: `/${lang}/aikakone`, label: t['nav.articles'] },
+  { href: `/${lang}/yhteystiedot`, label: t['nav.contact'] },
+];
+---
+
+<header class="site-header">
+  <div class="container header-container">
+    <a href={`/${lang}`} class="logo">
+      <span class="logo-text">Photo & Moto</span>
+    </a>
+    
+    <nav class="main-nav">
+      <ul>
+        {navItems.map(item => (
+          <li>
+            <a 
+              href={item.href}
+              class:list={['nav-link', { active: currentPath === item.href || (item.href !== `/${lang}` && currentPath.startsWith(item.href)) }]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    
+    <LanguageSwitcher lang={lang} currentPath={currentPath} />
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: var(--bg-primary);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+  }
+  
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-2);
+  }
+  
+  .logo {
+    text-decoration: none;
+  }
+  
+  .logo-text {
+    font-family: var(--font-headline);
+    font-size: 1.5rem;
+    color: var(--brand-primary);
+    letter-spacing: 1px;
+  }
+  
+  .main-nav ul {
+    display: flex;
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav-link {
+    font-family: var(--font-headline);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-primary);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+  }
+  
+  .nav-link:hover {
+    background: var(--brand-primary);
+    color: white;
+  }
+  
+  .nav-link.active {
+    background: var(--brand-secondary);
+    color: white;
+  }
+  
+  @media (max-width: 768px) {
+    .main-nav ul {
+      gap: var(--space-2);
+    }
+    
+    .nav-link {
+      font-size: 0.85rem;
+      padding: var(--space-1);
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .header-container {
+      flex-wrap: wrap;
+    }
+    
+    .main-nav {
+      order: 3;
+      width: 100%;
+      margin-top: var(--space-2);
+    }
+    
+    .main-nav ul {
+      justify-content: space-between;
+    }
+  }
+</style>

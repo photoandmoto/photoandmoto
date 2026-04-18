@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import GalleryGrid from '../../../components/GalleryGrid.astro';
+import PhotoSwipeLightbox from '../../../components/PhotoSwipeLightbox.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { ui } from '../../../i18n/ui';
+
+const lang = 'fi';
+const t = ui[lang];
+
+export async function getStaticPaths() {
+  const galleries = await getCollection('galleries');
+  return galleries.map((gallery) => ({
+    params: { slug: gallery.data.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const gallery = await getEntry('galleries', slug);
+
+if (!gallery) {
+  return Astro.redirect('/404');
+}
+---
+
+<BaseLayout 
+  title={gallery.data.title}
+  lang={lang}
+  description={gallery.data.description}
+  image={`/src/assets/galleries/${gallery.data.slug}/${gallery.data.cover_image}`}
+>
+  <section class="section gallery-detail">
+    <div class="container">
+      <div class="gallery-header">
+        <a href="/fi/galleria" class="back-link">← Takaisin galleriaan</a>
+        <h1>{gallery.data.title}</h1>
+        <p class="gallery-description">{gallery.data.description}</p>
+        <p class="gallery-meta">
+          {t['gallery.photoCount'].replace('{count}', gallery.data.images.length.toString())}
+        </p>
+      </div>
+      
+      <GalleryGrid images={gallery.data.images} gallerySlug={gallery.data.slug} />
+      <PhotoSwipeLightbox />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .gallery-detail {
+    padding-top: var(--space-6);
+  }
+  
+  .gallery-header {
+    text-align: center;
+    margin-bottom: var(--space-6);
+  }
+  
+  .back-link {
+    display: inline-block;
+    font-family: var(--font-headline);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--brand-primary);
+    margin-bottom: var(--space-3);
+    transition: color var(--transition-fast);
+  }
+  
+  .back-link:hover {
+    color: var(--brand-secondary);
+  }
+  
+  .gallery-description {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto var(--space-2);
+  }
+  
+  .gallery-meta {
+    font-size: 0.95rem;
+    color: var(--brand-primary);
+    font-weight: 600;
+  }
+</style>

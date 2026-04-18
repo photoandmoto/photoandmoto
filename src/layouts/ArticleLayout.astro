@@ -1,0 +1,201 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { ui } from '../i18n/ui';
+
+interface Props {
+  frontmatter: {
+    title: string;
+    subtitle?: string;
+    author: string;
+    date: Date;
+    category: string;
+    tags: string[];
+    featured_image: string;
+    image_caption?: string;
+    language: 'fi' | 'en';
+    seo_description?: string;
+  };
+}
+
+const { frontmatter } = Astro.props;
+const t = ui[frontmatter.language];
+
+const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'fi-FI' : 'en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+}).format(frontmatter.date);
+---
+
+<BaseLayout
+  title={frontmatter.title}
+  description={frontmatter.seo_description || frontmatter.subtitle || frontmatter.title}
+  image={frontmatter.featured_image}
+  lang={frontmatter.language}
+>
+  <article class="article">
+    <div class="container container--narrow">
+      <header class="article-header">
+        <a href={`/${frontmatter.language}/aikakone`} class="back-link">
+          ← {frontmatter.language === 'fi' ? 'Takaisin artikkeleihin' : 'Back to articles'}
+        </a>
+        
+        <span class="badge">{frontmatter.category}</span>
+        
+        <h1 class="article-title">{frontmatter.title}</h1>
+        
+        {frontmatter.subtitle && (
+          <p class="article-subtitle">{frontmatter.subtitle}</p>
+        )}
+        
+        <div class="article-meta">
+          <span class="meta-item">
+            <strong>{t['article.author']}:</strong> {frontmatter.author}
+          </span>
+          <span class="meta-separator">•</span>
+          <span class="meta-item">
+            <strong>{t['article.published']}:</strong> {formattedDate}
+          </span>
+        </div>
+        
+        {frontmatter.tags.length > 0 && (
+          <div class="article-tags">
+            {frontmatter.tags.map(tag => (
+              <span class="tag">#{tag}</span>
+            ))}
+          </div>
+        )}
+      </header>
+      
+      <div class="article-featured-image">
+        <img 
+          src={frontmatter.featured_image} 
+          alt={frontmatter.image_caption || frontmatter.title}
+        />
+        {frontmatter.image_caption && (
+          <figcaption>{frontmatter.image_caption}</figcaption>
+        )}
+      </div>
+      
+      <div class="article-content">
+        <slot />
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .article {
+    padding: var(--space-6) 0;
+  }
+  
+  .article-header {
+    text-align: center;
+    margin-bottom: var(--space-6);
+  }
+  
+  .back-link {
+    display: inline-block;
+    font-family: var(--font-headline);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--brand-primary);
+    margin-bottom: var(--space-3);
+  }
+  
+  .article-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin: var(--space-3) 0;
+    color: var(--brand-secondary);
+  }
+  
+  .article-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-3);
+  }
+  
+  .article-meta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-2);
+  }
+  
+  .meta-separator {
+    opacity: 0.5;
+  }
+  
+  .article-tags {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-1);
+    flex-wrap: wrap;
+  }
+  
+  .tag {
+    font-size: 0.875rem;
+    color: var(--brand-primary);
+    font-weight: 600;
+  }
+  
+  .article-featured-image {
+    margin-bottom: var(--space-6);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  
+  .article-featured-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  
+  .article-featured-image figcaption {
+    padding: var(--space-2);
+    background: var(--bg-secondary);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    text-align: center;
+    font-style: italic;
+  }
+  
+  .article-content {
+    font-size: 1.125rem;
+    line-height: 1.8;
+  }
+  
+  .article-content :global(h2) {
+    margin-top: var(--space-6);
+    margin-bottom: var(--space-3);
+  }
+  
+  .article-content :global(h3) {
+    margin-top: var(--space-5);
+    margin-bottom: var(--space-2);
+  }
+  
+  .article-content :global(p) {
+    margin-bottom: var(--space-4);
+  }
+  
+  .article-content :global(img) {
+    margin: var(--space-5) 0;
+    border-radius: var(--radius-md);
+  }
+  
+  @media (max-width: 768px) {
+    .article-meta {
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+    
+    .meta-separator {
+      display: none;
+    }
+  }
+</style>

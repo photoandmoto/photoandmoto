@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { ui } from '../../../i18n/ui';
+
+const lang = 'fi';
+const t = ui[lang];
+
+const galleries = await getCollection('galleries');
+---
+
+<BaseLayout 
+  title="Galleria" 
+  lang={lang}
+  description="Moottoriurheilukuvien galleria - Photo & Moto"
+>
+  <section class="section">
+    <div class="container">
+      <div class="section__header">
+        <h1 class="section__title">Galleria</h1>
+        <p class="section__subtitle">Tutustu kuvagallerioihin eri lajien ja aikakausien parista</p>
+      </div>
+      
+      <div class="grid grid--3">
+        {galleries.map(gallery => (
+          <article class="card">
+            <a href={`/fi/galleria/${gallery.data.slug}`}>
+              <img 
+                src={`/src/assets/galleries/${gallery.data.slug}/${gallery.data.cover_image}`}
+                alt={gallery.data.title}
+                class="card__image"
+                loading="lazy"
+              />
+              <div class="card__content">
+                <h2 class="card__title">{gallery.data.title}</h2>
+                <p class="card__text">{gallery.data.description}</p>
+                <p class="gallery-count">
+                  {t['gallery.photoCount'].replace('{count}', gallery.data.images.length.toString())}
+                </p>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .gallery-count {
+    font-size: 0.875rem;
+    color: var(--brand-primary);
+    font-weight: 600;
+    margin-top: var(--space-1);
+  }
+</style>

@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const lang = 'fi';
+---
+
+<BaseLayout 
+  title="Yhteystiedot" 
+  lang={lang}
+  description="Ota yhteyttä - Photo & Moto"
+>
+  <section class="section contact">
+    <div class="container container--narrow">
+      <div class="section__header">
+        <h1 class="section__title">Yhteystiedot</h1>
+        <p class="section__subtitle">Haluatko kysyä jotain tai jakaa omia muistojasi?</p>
+      </div>
+      
+      <div class="contact-content">
+        <p>
+          <strong>Photo & Moto</strong> on Matti Tarkkosen ylläpitämä moottoriurheilun historiaarkisto.
+        </p>
+        
+        <div class="contact-info">
+          <h2>Ota yhteyttä</h2>
+          <p>
+            <strong>Sähköposti:</strong> <a href="mailto:info@photoandmoto.fi">info@photoandmoto.fi</a>
+          </p>
+        </div>
+        
+        <div class="contact-social">
+          <h2>Seuraa somessa</h2>
+          <p>Tulossa pian...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact {
+    padding: var(--space-8) 0;
+  }
+  
+  .contact-content {
+    line-height: 1.8;
+  }
+  
+  .contact-content h2 {
+    margin-top: var(--space-5);
+    margin-bottom: var(--space-2);
+    font-size: 1.5rem;
+  }
+  
+  .contact-info,
+  .contact-social {
+    margin-top: var(--space-4);
+    padding: var(--space-4);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+  }
+</style>

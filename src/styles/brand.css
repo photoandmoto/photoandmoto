@@ -1,0 +1,47 @@
+:root {
+  /* Colors - Brand palette */
+  --brand-primary: #E63946;
+  --brand-secondary: #1D3557;
+  --brand-accent: #F1FAEE;
+  --text-primary: #1D1D1F;
+  --text-secondary: #6E6E73;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F9F9F9;
+  
+  /* Typography */
+  --font-headline: 'Bebas Neue', 'Arial Black', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  
+  /* Spacing scale (8px base) */
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  --space-8: 64px;
+  --space-12: 96px;
+  
+  /* Layout widths */
+  --content-width: 720px;
+  --wide-width: 1200px;
+  --full-width: 1440px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px rgba(0,0,0,0.15);
+  --shadow-xl: 0 20px 25px rgba(0,0,0,0.2);
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 350ms ease;
+  
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+}

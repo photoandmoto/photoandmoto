@@ -1,0 +1,90 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { ui } from '../../../i18n/ui';
+
+const lang = 'fi';
+const t = ui[lang];
+
+const articles = (await getCollection('articles', ({ data }) => 
+  data.language === 'fi' && !data.draft
+)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout 
+  title="Aikakone" 
+  lang={lang}
+  description="Moottoriurheilun historian tarinoita - Photo & Moto"
+>
+  <section class="section">
+    <div class="container">
+      <div class="section__header">
+        <h1 class="section__title">Aikakone</h1>
+        <p class="section__subtitle">Matka moottoriurheilun historian havinaa</p>
+      </div>
+      
+      {articles.length > 0 ? (
+        <div class="grid grid--2">
+          {articles.map(article => {
+            const formattedDate = new Intl.DateTimeFormat('fi-FI', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            }).format(article.data.date);
+            
+            return (
+              <article class="card">
+                <a href={`/fi/aikakone/${article.slug}`}>
+                  <img 
+                    src={article.data.featured_image} 
+                    alt={article.data.title}
+                    class="card__image"
+                    loading="lazy"
+                  />
+                  <div class="card__content">
+                    <span class="badge">{article.data.category}</span>
+                    <h2 class="card__title">{article.data.title}</h2>
+                    {article.data.subtitle && (
+                      <p class="card__text">{article.data.subtitle}</p>
+                    )}
+                    <div class="article-meta">
+                      <span>{article.data.author}</span>
+                      <span class="separator">•</span>
+                      <span>{formattedDate}</span>
+                    </div>
+                  </div>
+                </a>
+              </article>
+            );
+          })}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <p>Ei vielä artikkeleita. Palaa pian!</p>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .article-meta {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-top: var(--space-2);
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+  
+  .separator {
+    opacity: 0.5;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: var(--space-8) 0;
+    color: var(--text-secondary);
+    font-size: 1.125rem;
+  }
+</style>

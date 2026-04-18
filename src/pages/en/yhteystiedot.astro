@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const lang = 'en';
+---
+
+<BaseLayout 
+  title="Contact" 
+  lang={lang}
+  description="Get in touch - Photo & Moto"
+>
+  <section class="section contact">
+    <div class="container container--narrow">
+      <div class="section__header">
+        <h1 class="section__title">Contact</h1>
+        <p class="section__subtitle">Want to ask something or share your own memories?</p>
+      </div>
+      
+      <div class="contact-content">
+        <p>
+          <strong>Photo & Moto</strong> is a motorsport history archive maintained by Matti Tarkkonen.
+        </p>
+        
+        <div class="contact-info">
+          <h2>Get in Touch</h2>
+          <p>
+            <strong>Email:</strong> <a href="mailto:info@photoandmoto.fi">info@photoandmoto.fi</a>
+          </p>
+        </div>
+        
+        <div class="contact-social">
+          <h2>Follow on Social Media</h2>
+          <p>Coming soon...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact {
+    padding: var(--space-8) 0;
+  }
+  
+  .contact-content {
+    line-height: 1.8;
+  }
+  
+  .contact-content h2 {
+    margin-top: var(--space-5);
+    margin-bottom: var(--space-2);
+    font-size: 1.5rem;
+  }
+  
+  .contact-info,
+  .contact-social {
+    margin-top: var(--space-4);
+    padding: var(--space-4);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+  }
+</style>

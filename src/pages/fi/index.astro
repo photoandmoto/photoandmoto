@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { ui } from '../../i18n/ui';
+
+const lang = 'fi';
+const t = ui[lang];
+
+// Get latest articles
+const articles = await getCollection('articles', ({ data }) => 
+  data.language === 'fi' && !data.draft
+);
+const latestArticles = articles
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+
+// Get galleries
+const galleries = await getCollection('galleries');
+const featuredGalleries = galleries.slice(0, 4);
+---
+
+<BaseLayout 
+  title="Etusivu" 
+  lang={lang}
+  description="Moottoriurheilun historian kuvia ja tarinoita - Photo & Moto"
+>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1 class="hero-title">{t['hero.tagline']}</h1>
+      <p class="hero-subtitle">{t['hero.subtitle']}</p>
+      <a href="/fi/galleria" class="btn">{t['hero.cta']}</a>
+    </div>
+  </section>
+  
+  <!-- Latest Articles -->
+  {latestArticles.length > 0 && (
+    <section class="section latest-articles">
+      <div class="container">
+        <div class="section__header">
+          <h2 class="section__title">{t['latest.title']}</h2>
+        </div>
+        
+        <div class="grid grid--3">
+          {latestArticles.map(article => (
+            <article class="card">
+              <a href={`/fi/aikakone/${article.slug}`}>
+                <img 
+                  src={article.data.featured_image} 
+                  alt={article.data.title}
+                  class="card__image"
+                />
+                <div class="card__content">
+                  <span class="badge">{article.data.category}</span>
+                  <h3 class="card__title">{article.data.title}</h3>
+                  {article.data.subtitle && (
+                    <p class="card__text">{article.data.subtitle}</p>
+                  )}
+                </div>
+              </a>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+  
+  <!-- Featured Galleries -->
+  {featuredGalleries.length > 0 && (
+    <section class="section featured-galleries">
+      <div class="container">
+        <div class="section__header">
+          <h2 class="section__title">Galleria</h2>
+          <p class="section__subtitle">Tutustu kuvagallerioihin</p>
+        </div>
+        
+        <div class="grid grid--4">
+          {featuredGalleries.map(gallery => (
+            <article class="card">
+              <a href={`/fi/galleria/${gallery.data.slug}`}>
+                <img 
+                  src={`/src/assets/galleries/${gallery.data.slug}/${gallery.data.cover_image}`}
+                  alt={gallery.data.title}
+                  class="card__image"
+                />
+                <div class="card__content">
+                  <h3 class="card__title">{gallery.data.title}</h3>
+                  <p class="card__text">
+                    {t['gallery.photoCount'].replace('{count}', gallery.data.images.length.toString())}
+                  </p>
+                </div>
+              </a>
+            </article>
+          ))}
+        </div>
+        
+        <div style="text-align: center; margin-top: var(--space-6);">
+          <a href="/fi/galleria" class="btn btn--secondary">Katso kaikki galleriat</a>
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .hero {
+    background: linear-gradient(rgba(29, 53, 87, 0.8), rgba(29, 53, 87, 0.9)),
+                url('/images/hero-bg.jpg') center/cover;
+    color: white;
+    text-align: center;
+    padding: var(--space-12) 0;
+    margin-bottom: var(--space-8);
+  }
+  
+  .hero-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    margin-bottom: var(--space-3);
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+  }
+  
+  .hero-subtitle {
+    font-size: clamp(1.125rem, 2vw, 1.5rem);
+    margin-bottom: var(--space-5);
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  .latest-articles {
+    background: var(--bg-secondary);
+  }
+  
+  .featured-galleries {
+    background: white;
+  }
+</style>
