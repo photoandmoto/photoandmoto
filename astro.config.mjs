@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://photoandmoto.fi',
+  site: 'https://photoandmoto.pages.dev',
   i18n: {
     defaultLocale: 'fi',
     locales: ['fi', 'en'],
