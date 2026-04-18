@@ -34,30 +34,44 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
   lang={frontmatter.language}
 >
   <article class="article">
-    <div class="container container--narrow">
+    <div class="container">
       <header class="article-header">
         <a href={`/${frontmatter.language}/aikakone`} class="back-link">
-          ← {frontmatter.language === 'fi' ? 'Takaisin artikkeleihin' : 'Back to articles'}
+          {frontmatter.language === 'fi' ? '← Takaisin artikkeleihin' : '← Back to articles'}
         </a>
         
-        <span class="badge">{frontmatter.category}</span>
+        <div class="article-meta-top">
+          <span class="badge">{frontmatter.category}</span>
+          <span class="meta-date">{formattedDate}</span>
+        </div>
         
         <h1 class="article-title">{frontmatter.title}</h1>
         
         {frontmatter.subtitle && (
           <p class="article-subtitle">{frontmatter.subtitle}</p>
         )}
-        
-        <div class="article-meta">
-          <span class="meta-item">
-            <strong>{t['article.author']}:</strong> {frontmatter.author}
-          </span>
-          <span class="meta-separator">•</span>
-          <span class="meta-item">
-            <strong>{t['article.published']}:</strong> {formattedDate}
-          </span>
+      </header>
+      
+      {frontmatter.featured_image && (
+        <div class="article-hero">
+          <img 
+            src={frontmatter.featured_image} 
+            alt={frontmatter.image_caption || frontmatter.title}
+          />
+          {frontmatter.image_caption && (
+            <figcaption>{frontmatter.image_caption}</figcaption>
+          )}
         </div>
-        
+      )}
+      
+      <div class="article-body">
+        <slot />
+      </div>
+      
+      <footer class="article-footer">
+        <div class="author-info">
+          <strong>{t['article.author']}:</strong> {frontmatter.author}
+        </div>
         {frontmatter.tags.length > 0 && (
           <div class="article-tags">
             {frontmatter.tags.map(tag => (
@@ -65,21 +79,7 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
             ))}
           </div>
         )}
-      </header>
-      
-      <div class="article-featured-image">
-        <img 
-          src={frontmatter.featured_image} 
-          alt={frontmatter.image_caption || frontmatter.title}
-        />
-        {frontmatter.image_caption && (
-          <figcaption>{frontmatter.image_caption}</figcaption>
-        )}
-      </div>
-      
-      <div class="article-content">
-        <slot />
-      </div>
+      </footer>
     </div>
   </article>
 </BaseLayout>
@@ -89,113 +89,188 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
     padding: var(--space-6) 0;
   }
   
+  .article .container {
+    max-width: 1000px;
+  }
+  
   .article-header {
-    text-align: center;
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-5);
   }
   
   .back-link {
     display: inline-block;
     font-family: var(--font-headline);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: var(--brand-primary);
     margin-bottom: var(--space-3);
   }
   
+  .article-meta-top {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+  }
+  
+  .meta-date {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+  
   .article-title {
     font-size: clamp(2rem, 5vw, 3rem);
-    margin: var(--space-3) 0;
-    color: var(--brand-secondary);
+    color: var(--text-primary);
+    margin-bottom: var(--space-2);
+    line-height: 1.1;
   }
   
   .article-subtitle {
     font-size: 1.25rem;
-    color: var(--text-secondary);
-    margin-bottom: var(--space-3);
-  }
-  
-  .article-meta {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: var(--space-2);
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-    margin-bottom: var(--space-2);
-  }
-  
-  .meta-separator {
-    opacity: 0.5;
-  }
-  
-  .article-tags {
-    display: flex;
-    justify-content: center;
-    gap: var(--space-1);
-    flex-wrap: wrap;
-  }
-  
-  .tag {
-    font-size: 0.875rem;
-    color: var(--brand-primary);
+    color: #C87D1A;
+    font-style: italic;
     font-weight: 600;
+    margin-bottom: 0;
   }
   
-  .article-featured-image {
+  .article-hero {
     margin-bottom: var(--space-6);
     border-radius: var(--radius-md);
     overflow: hidden;
   }
   
-  .article-featured-image img {
+  .article-hero img {
     width: 100%;
     height: auto;
     display: block;
   }
   
-  .article-featured-image figcaption {
+  .article-hero figcaption {
     padding: var(--space-2);
     background: var(--bg-secondary);
-    font-size: 0.875rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
     text-align: center;
     font-style: italic;
   }
   
-  .article-content {
-    font-size: 1.125rem;
-    line-height: 1.8;
+  .article-body {
+    columns: 2;
+    column-gap: var(--space-6);
+    font-size: 1.05rem;
+    line-height: 1.75;
   }
   
-  .article-content :global(h2) {
-    margin-top: var(--space-6);
+  .article-body :global(p:first-of-type::first-letter) {
+    float: left;
+    font-family: var(--font-headline);
+    font-size: 4.5rem;
+    line-height: 0.8;
+    padding-right: 8px;
+    padding-top: 6px;
+    color: var(--text-primary);
+    font-weight: bold;
+  }
+  
+  .article-body :global(p) {
     margin-bottom: var(--space-3);
+    break-inside: avoid;
   }
   
-  .article-content :global(h3) {
+  .article-body :global(h2) {
+    font-family: var(--font-headline);
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-primary);
+    border-left: 4px solid #C87D1A;
+    padding-left: var(--space-2);
     margin-top: var(--space-5);
+    margin-bottom: var(--space-3);
+    break-after: avoid;
+    break-inside: avoid;
+  }
+  
+  .article-body :global(h3) {
+    font-size: 1.2rem;
+    color: var(--brand-secondary);
+    margin-top: var(--space-4);
     margin-bottom: var(--space-2);
+    break-after: avoid;
+    break-inside: avoid;
   }
   
-  .article-content :global(p) {
-    margin-bottom: var(--space-4);
+  .article-body :global(blockquote) {
+    break-inside: avoid;
+    margin: var(--space-4) 0;
+    padding: var(--space-3);
+    background: var(--bg-secondary);
+    border-left: 4px solid var(--brand-primary);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--text-primary);
   }
   
-  .article-content :global(img) {
-    margin: var(--space-5) 0;
+  .article-body :global(blockquote p) {
+    margin-bottom: 0;
+  }
+  
+  .article-body :global(strong) {
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  
+  .article-body :global(em) {
+    font-style: italic;
+    color: var(--text-secondary);
+  }
+  
+  .article-body :global(img) {
+    width: 100%;
+    height: auto;
     border-radius: var(--radius-md);
+    margin: var(--space-4) 0;
+    break-inside: avoid;
+    column-span: all;
+  }
+  
+  .article-footer {
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
+    border-top: 2px solid var(--bg-secondary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+  
+  .author-info {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+  }
+  
+  .article-tags {
+    display: flex;
+    gap: var(--space-1);
+    flex-wrap: wrap;
+  }
+  
+  .tag {
+    font-size: 0.85rem;
+    color: var(--brand-primary);
+    font-weight: 600;
   }
   
   @media (max-width: 768px) {
-    .article-meta {
-      flex-direction: column;
-      gap: var(--space-1);
+    .article-body {
+      columns: 1;
     }
     
-    .meta-separator {
-      display: none;
+    .article-footer {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 </style>
