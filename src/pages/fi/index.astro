@@ -22,14 +22,17 @@ const featuredGalleries = galleries.slice(0, 4);
   lang={lang}
   description="Moottoriurheilun historian kuvia ja tarinoita - Photo & Moto"
 >
-  <!-- Hero + Intro Section -->
-  <section class="hero-intro">
+  <!-- Hero Section -->
+  <section class="hero">
     <div class="container">
-      <div class="hero-content">
-        <h1 class="hero-title">{t['hero.tagline']}</h1>
-        <p class="hero-subtitle">{t['hero.subtitle']}</p>
-      </div>
-      
+      <h1 class="hero-title">{t['hero.tagline']}</h1>
+      <p class="hero-subtitle">{t['hero.subtitle']}</p>
+    </div>
+  </section>
+  
+  <!-- Intro Section - Dark background matching hero -->
+  <section class="intro-section">
+    <div class="container">
       <div class="intro-grid">
         <div class="intro-col">
           <div class="intro-image-wrap">
@@ -148,17 +151,14 @@ const featuredGalleries = galleries.slice(0, 4);
 </BaseLayout>
 
 <style>
-  /* Hero + Intro combined section */
-  .hero-intro {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.75)),
+  /* Hero section */
+  .hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)),
                 url('/images/hero-bg.jpg') center/cover;
     color: white;
-    padding: var(--space-8) 0 var(--space-8);
-  }
-  
-  .hero-content {
     text-align: center;
-    padding-bottom: var(--space-8);
+    padding: var(--space-12) 0;
+    margin-bottom: 0;
   }
   
   .hero-title {
@@ -177,7 +177,13 @@ const featuredGalleries = galleries.slice(0, 4);
     margin-bottom: 0;
   }
   
-  /* Intro columns */
+  /* Intro section - continuous dark look */
+  .intro-section {
+    background: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: var(--space-8) 0;
+  }
+  
   .intro-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -185,9 +191,21 @@ const featuredGalleries = galleries.slice(0, 4);
   }
   
   .intro-image-wrap {
+    position: relative;
     overflow: hidden;
     border-radius: var(--radius-md);
     margin-bottom: var(--space-3);
+  }
+  
+  .intro-image-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.35);
+    pointer-events: none;
   }
   
   .intro-image {
