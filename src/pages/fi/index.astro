@@ -22,12 +22,33 @@ const featuredGalleries = galleries.slice(0, 4);
   lang={lang}
   description="Moottoriurheilun historian kuvia ja tarinoita - Photo & Moto"
 >
-  <!-- Hero Section -->
+  <!-- Hero Section (no button) -->
   <section class="hero">
     <div class="container">
       <h1 class="hero-title">{t['hero.tagline']}</h1>
       <p class="hero-subtitle">{t['hero.subtitle']}</p>
-      <a href="/fi/galleria" class="btn">{t['hero.cta']}</a>
+    </div>
+  </section>
+  
+  <!-- Intro Section - Two Columns -->
+  <section class="section intro-section">
+    <div class="container">
+      <div class="intro-grid">
+        <div class="intro-col">
+          <div class="intro-image-wrap">
+            <img src="/images/intro-gallery.jpg" alt="Tervetuloa fiilistelemään" class="intro-image" />
+          </div>
+          <h2 class="intro-title">Tervetuloa fiilistelemään</h2>
+          <p class="intro-text">Sukella moottoriurheilun historian havinaa. Jokainen jakamamme kuva kätkee sisäänsä tarinan, ja olemme innoissamme, että saamme tuoda nämä klassikkohetket tähän päivään teidän nähtäväksenne. Uusia kuvia ja juttuja lisätään jatkuvasti. Palaa usein takasin!</p>
+        </div>
+        <div class="intro-col">
+          <div class="intro-image-wrap">
+            <img src="/images/intro-articles.jpg" alt="Palaa ajassa taaksepäin" class="intro-image" />
+          </div>
+          <h2 class="intro-title">Palaa ajassa taaksepäin</h2>
+          <p class="intro-text">Tämä portaali tuo moottoriurheilun historian sykähdyttävät hetket ja kuvien takaiset tarinat luoksesi syventyen tekniikkaan, kohtaloihin ja käännekohtiin. Jokainen artikkeli vie sinut takaisin aikaan, jolloin kaikki alkoi.</p>
+        </div>
+      </div>
     </div>
   </section>
   
@@ -39,7 +60,6 @@ const featuredGalleries = galleries.slice(0, 4);
           <h2 class="section__title">{t['latest.title']}</h2>
         </div>
         
-        <!-- Featured article (big card) -->
         <article class="featured-card">
           <a href={`/fi/aikakone/${featuredArticle.slug.replace(/^fi\//, '')}`}>
             <div class="featured-card__image-wrap">
@@ -60,7 +80,6 @@ const featuredGalleries = galleries.slice(0, 4);
           </a>
         </article>
         
-        <!-- Older articles (smaller cards) -->
         {recentArticles.length > 0 && (
           <div class="recent-grid">
             {recentArticles.map(article => (
@@ -100,6 +119,8 @@ const featuredGalleries = galleries.slice(0, 4);
           <p class="section__subtitle">Tutustu kuvagallerioihin</p>
         </div>
         
+        <p class="gallery-intro">Kokoelma on intuitiivinen, jotta löydät suosikkihetkesi vaivatta. Jokainen otos välittää moottoriurheilun historian ja tunnelman kertoen visuaalisesti oman tarinansa. Tämä kokonaisuus tarjoaa suoran matkan lajin merkittävimpiin hetkiin juuri sellaisena kuin ne tapahtuivat.</p>
+        
         <div class="grid grid--4">
           {featuredGalleries.map(gallery => (
             <article class="card">
@@ -136,27 +157,69 @@ const featuredGalleries = galleries.slice(0, 4);
     color: white;
     text-align: center;
     padding: var(--space-12) 0;
-    margin-bottom: var(--space-8);
   }
   
   .hero-title {
     font-size: clamp(2.5rem, 6vw, 4rem);
     margin-bottom: var(--space-3);
     color: white;
+    font-style: italic;
+    font-weight: 900;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
   }
   
   .hero-subtitle {
     font-size: clamp(1.125rem, 2vw, 1.5rem);
-    margin-bottom: var(--space-5);
     color: rgba(255, 255, 255, 0.9);
+    font-style: italic;
+    margin-bottom: 0;
   }
   
+  /* Intro Section */
+  .intro-section {
+    padding: var(--space-8) 0;
+    background: white;
+  }
+  
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+  }
+  
+  .intro-image-wrap {
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-3);
+  }
+  
+  .intro-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+  
+  .intro-title {
+    font-size: 1.75rem;
+    font-weight: 900;
+    font-style: italic;
+    color: var(--text-primary);
+    margin-bottom: var(--space-2);
+  }
+  
+  .intro-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+  
+  /* Latest Articles */
   .latest-articles {
     background: var(--bg-secondary);
   }
   
-  /* Featured article - big card */
   .featured-card {
     background: white;
     border-radius: var(--radius-md);
@@ -178,9 +241,7 @@ const featuredGalleries = galleries.slice(0, 4);
     color: inherit;
   }
   
-  .featured-card__image-wrap {
-    overflow: hidden;
-  }
+  .featured-card__image-wrap { overflow: hidden; }
   
   .featured-card__image {
     width: 100%;
@@ -217,30 +278,33 @@ const featuredGalleries = galleries.slice(0, 4);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     font-size: 0.9rem;
+    font-weight: 700;
   }
   
-  /* Recent articles grid */
   .recent-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-4);
   }
   
+  /* Gallery section */
   .featured-galleries {
     background: white;
   }
   
+  .gallery-intro {
+    max-width: 800px;
+    margin: 0 auto var(--space-6);
+    text-align: center;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+  
   @media (max-width: 768px) {
-    .featured-card a {
-      grid-template-columns: 1fr;
-    }
-    
-    .featured-card__image {
-      min-height: 200px;
-    }
-    
-    .recent-grid {
-      grid-template-columns: 1fr;
-    }
+    .featured-card a { grid-template-columns: 1fr; }
+    .featured-card__image { min-height: 200px; }
+    .recent-grid { grid-template-columns: 1fr; }
+    .intro-grid { grid-template-columns: 1fr; }
   }
 </style>
