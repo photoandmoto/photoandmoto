@@ -1,8 +1,7 @@
 ---
-// This component initializes PhotoSwipe for the gallery
+// PhotoSwipe lightbox initialization
 ---
 
-<!-- PhotoSwipe CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.3/dist/photoswipe.css">
 
 <script>
@@ -14,24 +13,19 @@
     children: 'a',
     pswpModule: PhotoSwipe,
     
-    // Options
     bgOpacity: 0.95,
     loop: true,
     zoom: true,
     preload: [1, 2],
     
-    // UI
     showHideAnimationType: 'fade',
     
-    // Styling
-    padding: { top: 50, bottom: 50, left: 50, right: 50 },
+    padding: { top: 20, bottom: 60, left: 20, right: 20 },
     
-    // Caption
     imageClickAction: 'zoom',
     tapAction: 'close',
   });
   
-  // Add caption display
   lightbox.on('uiRegister', function() {
     lightbox.pswp.ui.registerElement({
       name: 'custom-caption',
@@ -40,18 +34,17 @@
       appendTo: 'root',
       html: '',
       onInit: (el, pswp) => {
+        el.style.cssText = 'position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.8);color:white;padding:8px 20px;border-radius:8px;font-size:14px;max-width:80%;text-align:center;pointer-events:none;';
+        
         pswp.on('change', () => {
           const currSlideElement = pswp.currSlide.data.element;
           let captionHTML = '';
-          
           if (currSlideElement) {
             const caption = currSlideElement.getAttribute('data-pswp-caption');
-            if (caption) {
-              captionHTML = caption;
-            }
+            if (caption) captionHTML = caption;
           }
-          
           el.innerHTML = captionHTML || '';
+          el.style.display = captionHTML ? 'block' : 'none';
         });
       }
     });
@@ -59,28 +52,3 @@
   
   lightbox.init();
 </script>
-
-<style is:global>
-  .pswp__custom-caption {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 14px;
-    max-width: 80%;
-    text-align: center;
-    font-family: var(--font-body);
-  }
-  
-  .pswp__button {
-    background-color: rgba(0, 0, 0, 0.5) !important;
-  }
-  
-  .pswp__button:hover {
-    background-color: var(--brand-primary) !important;
-  }
-</style>
