@@ -23,10 +23,10 @@ const processedImages = images.map((img, index) => ({
 ---
 
 <div class="gallery-grid" id="gallery">
-  {processedImages.map((img) => (
+  {processedImages.map((img, index) => (
     <a
       href={img.href}
-      class="gallery-item"
+      class:list={['gallery-item', { 'gallery-hidden': index >= 9 }]}
       data-pswp-width={img.width}
       data-pswp-height={img.height}
       data-pswp-caption={img.caption}
@@ -45,6 +45,25 @@ const processedImages = images.map((img, index) => ({
   ))}
 </div>
 
+{processedImages.length > 9 && (
+  <div class="load-more-wrapper">
+    <button id="load-more-btn" class="btn" type="button">
+      {`Näytä lisää (${processedImages.length - 9} kuvaa)`}
+    </button>
+  </div>
+)}
+
+<script>
+  const btn = document.getElementById('load-more-btn');
+  if (btn) {
+    btn.addEventListener('click', () => {
+      const hidden = document.querySelectorAll('.gallery-hidden');
+      hidden.forEach(el => el.classList.remove('gallery-hidden'));
+      btn.remove();
+    });
+  }
+</script>
+
 <style>
   .gallery-grid {
     display: grid;
@@ -62,6 +81,10 @@ const processedImages = images.map((img, index) => ({
     transition: transform var(--transition-base), box-shadow var(--transition-base);
     background: var(--bg-secondary);
     aspect-ratio: 4 / 3;
+  }
+
+  .gallery-hidden {
+    display: none;
   }
 
   .gallery-item:hover {
@@ -91,6 +114,11 @@ const processedImages = images.map((img, index) => ({
 
   .gallery-item:hover .gallery-caption {
     opacity: 1;
+  }
+
+  .load-more-wrapper {
+    text-align: center;
+    padding: var(--space-6) 0;
   }
 
   @media (max-width: 768px) {

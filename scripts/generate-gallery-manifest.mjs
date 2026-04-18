@@ -6,13 +6,12 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 async function generateManifest(gallerySlug) {
-  const galleryDir = path.join(__dirname, `../src/assets/galleries/${gallerySlug}`);
+  const galleryDir = path.join(__dirname, `../public/galleries/${gallerySlug}`);
   const outputPath = path.join(__dirname, `../src/content/galleries/${gallerySlug}.json`);
   
   console.log(`\n📂 Scanning ${galleryDir}...`);
   
   try {
-    // Read all image files
     const files = (await fs.readdir(galleryDir))
       .filter(f => /\.(jpg|jpeg|png|webp)$/i.test(f))
       .sort();
@@ -26,7 +25,6 @@ async function generateManifest(gallerySlug) {
     console.log(`✓ Found ${files.length} images`);
     console.log(`📊 Getting image dimensions...`);
     
-    // Get metadata for each image
     const images = await Promise.all(
       files.map(async (filename, index) => {
         const filepath = path.join(galleryDir, filename);
@@ -34,9 +32,14 @@ async function generateManifest(gallerySlug) {
         
         process.stdout.write(`\r   Processing ${index + 1}/${files.length}...`);
         
+        // Create caption from filename: remove extension, clean up
+        const caption = filename
+          .replace(/\.(jpg|jpeg|png|webp)$/i, '')
+          .replace(/_/g, ' ');
+        
         return {
           filename,
-          caption: '',
+          caption,
           photographer: 'Matti Tarkkonen',
           date: '',
           width: metadata.width,
@@ -47,7 +50,6 @@ async function generateManifest(gallerySlug) {
     
     console.log(`\r   ✓ Processed ${images.length} images           `);
     
-    // Create manifest
     const manifest = {
       title: formatTitle(gallerySlug),
       slug: gallerySlug,
@@ -57,7 +59,6 @@ async function generateManifest(gallerySlug) {
       category: determineCategory(gallerySlug),
     };
     
-    // Write to file
     await fs.writeFile(outputPath, JSON.stringify(manifest, null, 2));
     console.log(`\n✅ Generated ${outputPath}`);
     console.log(`   ${images.length} images indexed`);
@@ -86,7 +87,6 @@ function determineCategory(slug) {
   return 'international';
 }
 
-// CLI
 const gallerySlug = process.argv[2];
 
 if (!gallerySlug) {
@@ -94,11 +94,7 @@ if (!gallerySlug) {
   console.error('\nUsage:');
   console.error('  npm run generate-gallery <gallery-slug>');
   console.error('\nExample:');
-  console.error('  npm run generate-gallery international-i');
-  console.error('\nAvailable galleries:');
-  console.error('  - international-i, international-ii, international-iii');
-  console.error('  - suomi-i, suomi-ii');
-  console.error('  - enduro, scramble, black-white\n');
+  console.error('  npm run generate-gallery international-i\n');
   process.exit(1);
 }
 
