@@ -1,16 +1,16 @@
 :root {
   /* Colors - Brand palette */
-  --brand-primary: #E63946;
-  --brand-secondary: #1D3557;
-  --brand-accent: #F1FAEE;
+  --brand-primary: #ff9900;
+  --brand-secondary: #000000;
+  --brand-accent: #ffffff;
   --text-primary: #1D1D1F;
   --text-secondary: #6E6E73;
   --bg-primary: #FFFFFF;
   --bg-secondary: #F9F9F9;
   
   /* Typography */
-  --font-headline: 'Bebas Neue', 'Arial Black', sans-serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-headline: 'Montserrat', sans-serif;
+  --font-body: 'Montserrat', sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   
   /* Spacing scale (8px base) */
