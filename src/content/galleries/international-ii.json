@@ -1,0 +1,369 @@
+{
+  "title": "International Ii",
+  "slug": "international-ii",
+  "description": "Photo gallery: International Ii",
+  "cover_image": "thumbs/Andre Malherbe valmiina treeniin_thumb.jpg",
+  "images": [
+    {
+      "filename": "Andre Malherbe valmiina treeniin.JPG",
+      "thumb": "thumbs/Andre Malherbe valmiina treeniin_thumb.jpg",
+      "display": "display/Andre Malherbe valmiina treeniin_display.jpg",
+      "caption": "Andre Malherbe valmiina treeniin",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2104
+    },
+    {
+      "filename": "Carla Carlqvistin raisua menoa.JPG",
+      "thumb": "thumbs/Carla Carlqvistin raisua menoa_thumb.jpg",
+      "display": "display/Carla Carlqvistin raisua menoa_display.jpg",
+      "caption": "Carla Carlqvistin raisua menoa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 896
+    },
+    {
+      "filename": "Carla on iskeytynyt Wolsinkin kantaan.JPG",
+      "thumb": "thumbs/Carla on iskeytynyt Wolsinkin kantaan_thumb.jpg",
+      "display": "display/Carla on iskeytynyt Wolsinkin kantaan_display.jpg",
+      "caption": "Carla on iskeytynyt Wolsinkin kantaan",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 801
+    },
+    {
+      "filename": "De Coster.JPG",
+      "thumb": "thumbs/De Coster_thumb.jpg",
+      "display": "display/De Coster_display.jpg",
+      "caption": "De Coster",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1022
+    },
+    {
+      "filename": "De Costerin tyyliä.JPG",
+      "thumb": "thumbs/De Costerin tyyliä_thumb.jpg",
+      "display": "display/De Costerin tyyliä_display.jpg",
+      "caption": "De Costerin tyyliä",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1961
+    },
+    {
+      "filename": "Englanti vas. Vaughan Semmens, Neil Hudson, Rob Hooper ja Graham Noyce.JPG",
+      "thumb": "thumbs/Englanti vas. Vaughan Semmens, Neil Hudson, Rob Hooper ja Graham Noyce_thumb.jpg",
+      "display": "display/Englanti vas. Vaughan Semmens, Neil Hudson, Rob Hooper ja Graham Noyce_display.jpg",
+      "caption": "Englanti vas. Vaughan Semmens, Neil Hudson, Rob Hooper ja Graham Noyce",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1025
+    },
+    {
+      "filename": "Erkki Sundström.JPG",
+      "thumb": "thumbs/Erkki Sundström_thumb.jpg",
+      "display": "display/Erkki Sundström_display.jpg",
+      "caption": "Erkki Sundström",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 875
+    },
+    {
+      "filename": "Friz Kobele (2).JPG",
+      "thumb": "thumbs/Friz Kobele (2)_thumb.jpg",
+      "display": "display/Friz Kobele (2)_display.jpg",
+      "caption": "Friz Kobele (2)",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 859
+    },
+    {
+      "filename": "Friz Kobele.JPG",
+      "thumb": "thumbs/Friz Kobele_thumb.jpg",
+      "display": "display/Friz Kobele_display.jpg",
+      "caption": "Friz Kobele",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1790
+    },
+    {
+      "filename": "G.Rond.JPG",
+      "thumb": "thumbs/G.Rond_thumb.jpg",
+      "display": "display/G.Rond_display.jpg",
+      "caption": "G.Rond",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 861
+    },
+    {
+      "filename": "G.Wolsink.JPG",
+      "thumb": "thumbs/G.Wolsink_thumb.jpg",
+      "display": "display/G.Wolsink_display.jpg",
+      "caption": "G.Wolsink",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 895
+    },
+    {
+      "filename": "Gerard Rond.JPG",
+      "thumb": "thumbs/Gerard Rond_thumb.jpg",
+      "display": "display/Gerard Rond_display.jpg",
+      "caption": "Gerard Rond",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 914
+    },
+    {
+      "filename": "Gerrit Wolsink.JPG",
+      "thumb": "thumbs/Gerrit Wolsink_thumb.jpg",
+      "display": "display/Gerrit Wolsink_display.jpg",
+      "caption": "Gerrit Wolsink",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "H.Everts edellä ja Hans Maisch perässä.JPG",
+      "thumb": "thumbs/H.Everts edellä ja Hans Maisch perässä_thumb.jpg",
+      "display": "display/H.Everts edellä ja Hans Maisch perässä_display.jpg",
+      "caption": "H.Everts edellä ja Hans Maisch perässä",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 961
+    },
+    {
+      "filename": "Hans Maisch vauhdissa.JPG",
+      "thumb": "thumbs/Hans Maisch vauhdissa_thumb.jpg",
+      "display": "display/Hans Maisch vauhdissa_display.jpg",
+      "caption": "Hans Maisch vauhdissa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1845
+    },
+    {
+      "filename": "Harry Everts B.JPG",
+      "thumb": "thumbs/Harry Everts B_thumb.jpg",
+      "display": "display/Harry Everts B_display.jpg",
+      "caption": "Harry Everts B",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Harry Everts.JPG",
+      "thumb": "thumbs/Harry Everts_thumb.jpg",
+      "display": "display/Harry Everts_display.jpg",
+      "caption": "Harry Everts",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1807
+    },
+    {
+      "filename": "Håkan Carla Carlqvist.JPG",
+      "thumb": "thumbs/Håkan Carla Carlqvist_thumb.jpg",
+      "display": "display/Håkan Carla Carlqvist_display.jpg",
+      "caption": "Håkan Carla Carlqvist",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Håkan Carlqvist vauhdissa.JPG",
+      "thumb": "thumbs/Håkan Carlqvist vauhdissa_thumb.jpg",
+      "display": "display/Håkan Carlqvist vauhdissa_display.jpg",
+      "caption": "Håkan Carlqvist vauhdissa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 883
+    },
+    {
+      "filename": "J-J Bruno.JPG",
+      "thumb": "thumbs/J-J Bruno_thumb.jpg",
+      "display": "display/J-J Bruno_display.jpg",
+      "caption": "J-J Bruno",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1080
+    },
+    {
+      "filename": "Kovaa kisaa Wolsink kärjessä, Hudson toisena ja Carla kolmantena.JPG",
+      "thumb": "thumbs/Kovaa kisaa Wolsink kärjessä, Hudson toisena ja Carla kolmantena_thumb.jpg",
+      "display": "display/Kovaa kisaa Wolsink kärjessä, Hudson toisena ja Carla kolmantena_display.jpg",
+      "caption": "Kovaa kisaa Wolsink kärjessä, Hudson toisena ja Carla kolmantena",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 898
+    },
+    {
+      "filename": "Lippumies seuraa tarkkana Graham Noycen menoa.JPG",
+      "thumb": "thumbs/Lippumies seuraa tarkkana Graham Noycen menoa_thumb.jpg",
+      "display": "display/Lippumies seuraa tarkkana Graham Noycen menoa_display.jpg",
+      "caption": "Lippumies seuraa tarkkana Graham Noycen menoa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 862
+    },
+    {
+      "filename": "Maico saa kyytiä saksalaiskuskilta.JPG",
+      "thumb": "thumbs/Maico saa kyytiä saksalaiskuskilta_thumb.jpg",
+      "display": "display/Maico saa kyytiä saksalaiskuskilta_display.jpg",
+      "caption": "Maico saa kyytiä saksalaiskuskilta",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 918
+    },
+    {
+      "filename": "Malherben tehdas Honda vm 1979.JPG",
+      "thumb": "thumbs/Malherben tehdas Honda vm 1979_thumb.jpg",
+      "display": "display/Malherben tehdas Honda vm 1979_display.jpg",
+      "caption": "Malherben tehdas Honda vm 1979",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "N. Hudson.JPG",
+      "thumb": "thumbs/N. Hudson_thumb.jpg",
+      "display": "display/N. Hudson_display.jpg",
+      "caption": "N. Hudson",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 845
+    },
+    {
+      "filename": "Neil Hudson.JPG",
+      "thumb": "thumbs/Neil Hudson_thumb.jpg",
+      "display": "display/Neil Hudson_display.jpg",
+      "caption": "Neil Hudson",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 889
+    },
+    {
+      "filename": "R. De Coster, H.Everts ja A. Malherbe. Motocross Des Nations 500 Ruskeasanta 1979.JPG",
+      "thumb": "thumbs/R. De Coster, H.Everts ja A. Malherbe. Motocross Des Nations 500 Ruskeasanta 1979_thumb.jpg",
+      "display": "display/R. De Coster, H.Everts ja A. Malherbe. Motocross Des Nations 500 Ruskeasanta 1979_display.jpg",
+      "caption": "R. De Coster, H.Everts ja A. Malherbe. Motocross Des Nations 500 Ruskeasanta 1979",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Roger De Coster.JPG",
+      "thumb": "thumbs/Roger De Coster_thumb.jpg",
+      "display": "display/Roger De Coster_display.jpg",
+      "caption": "Roger De Coster",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1960
+    },
+    {
+      "filename": "Team Finland. Matti Autio, Lars Öhberg, Erkki Sundström ja Tapani Pikkarainen..JPG",
+      "thumb": "thumbs/Team Finland. Matti Autio, Lars Öhberg, Erkki Sundström ja Tapani Pikkarainen._thumb.jpg",
+      "display": "display/Team Finland. Matti Autio, Lars Öhberg, Erkki Sundström ja Tapani Pikkarainen._display.jpg",
+      "caption": "Team Finland. Matti Autio, Lars Öhberg, Erkki Sundström ja Tapani Pikkarainen.",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Team Sweden vas. H.Carlqvist, T.Hansen ja A.Lindford.JPG",
+      "thumb": "thumbs/Team Sweden vas. H.Carlqvist, T.Hansen ja A.Lindford_thumb.jpg",
+      "display": "display/Team Sweden vas. H.Carlqvist, T.Hansen ja A.Lindford_display.jpg",
+      "caption": "Team Sweden vas. H.Carlqvist, T.Hansen ja A.Lindford",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Tiukkaa kisaa.JPG",
+      "thumb": "thumbs/Tiukkaa kisaa_thumb.jpg",
+      "display": "display/Tiukkaa kisaa_display.jpg",
+      "caption": "Tiukkaa kisaa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 868
+    },
+    {
+      "filename": "Vas. Jean-Jacques Bruno ja Jean-Michel Baron.JPG",
+      "thumb": "thumbs/Vas. Jean-Jacques Bruno ja Jean-Michel Baron_thumb.jpg",
+      "display": "display/Vas. Jean-Jacques Bruno ja Jean-Michel Baron_display.jpg",
+      "caption": "Vas. Jean-Jacques Bruno ja Jean-Michel Baron",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 929
+    },
+    {
+      "filename": "Vaughan Semmens GB.JPG",
+      "thumb": "thumbs/Vaughan Semmens GB_thumb.jpg",
+      "display": "display/Vaughan Semmens GB_display.jpg",
+      "caption": "Vaughan Semmens GB",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1821
+    },
+    {
+      "filename": "Venäjä vas. Vladimir Kavinov, Gennady Moiseev ja Valeri Korneev.JPG",
+      "thumb": "thumbs/Venäjä vas. Vladimir Kavinov, Gennady Moiseev ja Valeri Korneev_thumb.jpg",
+      "display": "display/Venäjä vas. Vladimir Kavinov, Gennady Moiseev ja Valeri Korneev_display.jpg",
+      "caption": "Venäjä vas. Vladimir Kavinov, Gennady Moiseev ja Valeri Korneev",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Wolsink.JPG",
+      "thumb": "thumbs/Wolsink_thumb.jpg",
+      "display": "display/Wolsink_display.jpg",
+      "caption": "Wolsink",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 902
+    },
+    {
+      "filename": "multi maailmanmestari Harry Everts.JPG",
+      "thumb": "thumbs/multi maailmanmestari Harry Everts_thumb.jpg",
+      "display": "display/multi maailmanmestari Harry Everts_display.jpg",
+      "caption": "multi maailmanmestari Harry Everts",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 906
+    }
+  ],
+  "category": "international"
+}
