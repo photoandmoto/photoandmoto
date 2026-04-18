@@ -15,40 +15,6 @@ Frauenfeldissä satoi. Tietenkin satoi. Sveitsissä tuntuu satavan aina silloin,
 
 Samaan aikaan MX2-luokassa Simon Längenfelder jatkoi hiljaista, saksalaista tehokkuuttaan, jota kukaan ei tunnu osaavan pysäyttää, vaikka huomio kiinnittyykin usein näyttävämpiin suorituksiin. Mutta palataanpa matematiikkaan myöhemmin.
 
-## Pistepörssi (3/20) — MXGP
-
-| Sija | # | Kuljettaja | Pyörä | Maa | Pist. |
-|------|---|-----------|-------|-----|-------|
-| 1. | 5 | Lucas Coenen | KTM | BEL | 136 |
-| 2. | 16 | Tom Vialle | Honda | FRA | 129 |
-| 3. | 84 | Jeffrey Herlings | Honda | NED | 124 |
-| 4. | 959 | Maxime Renaux | Yamaha | FRA | 117 |
-| 5. | 243 | Tim Gajser | Yamaha | SLO | 116 |
-| 6. | 1 | Romain Febvre | Kawasaki | FRA | 113 |
-| 7. | 80 | Andrea Adamo | KTM | ITA | 84 |
-| 8. | 70 | Ruben Fernandez | Honda | ESP | 83 |
-| 9. | 10 | Calvin Vlaanderen | Ducati | NED | 73 |
-| 10. | 74 | Kay de Wolf | Husqvarna | NED | 63 |
-
-*Punainen kilpi: Lucas Coenen — Ero toiseen: 7 pistettä.*
-
-## Pistepörssi (3/20) — MX2
-
-| Sija | # | Kuljettaja | Pyörä | Maa | Pist. |
-|------|---|-----------|-------|-----|-------|
-| 1. | 1 | Simon Längenfelder | KTM | GER | 149 |
-| 2. | 99 | Guillem Farres | Triumph | ESP | 127 |
-| 3. | 19 | Sacha Coenen | KTM | BEL | 124 |
-| 4. | 8 | Camden McLellan | Triumph | RSA | 121 |
-| 5. | 26 | Liam Everts | Husqvarna | BEL | 121 |
-| 6. | 772 | Janis Martins Reisulis | Yamaha | LAT | 105 |
-| 7. | 317 | Mathis Valin | Kawasaki | FRA | 98 |
-| 8. | 18 | Valerio Lata | Honda | ITA | 90 |
-| 9. | 47 | Karlis Alberts Reisulis | Yamaha | LAT | 88 |
-| 10. | 48 | Jens Walvoort | KTM | NED | 60 |
-
-*Punainen kilpi: Simon Längenfelder — Ero toiseen: 22 pistettä.*
-
 ## 1. kierros: Argentiina — Uudet värit, vanhat kujeet
 
 Argentiina on se kilpailu, jota motocross-maailma odottaa kuin joulua. Se tarjoaa teknisen radan ja tilaisuuden toimittajille lopettaa "talviharjoitukset sujuivat hyvin" -tyhjänpäiväisyyksien kirjoittaminen.
@@ -104,5 +70,41 @@ Mestaruustaistoa voi katsoa useasta eri vinkkelistä.
 Seuraavana vuorossa on Sardinia. Syvä hiekka on perinteisesti ollut Herlingsin valtakuntaa, mutta nuorempi polvi on osoittanut, etteivät he pelkää nielaista hieman hiekkaa voiton eteen.
 
 *Kausi on vasta alussa. Hiekka odottaa.*
+
+---
+
+## Pistepörssi (3/20) — MXGP
+
+| Sija | # | Kuljettaja | Pyörä | Maa | Pist. |
+|------|---|-----------|-------|-----|-------|
+| 1. | 5 | Lucas Coenen | KTM | BEL | 136 |
+| 2. | 16 | Tom Vialle | Honda | FRA | 129 |
+| 3. | 84 | Jeffrey Herlings | Honda | NED | 124 |
+| 4. | 959 | Maxime Renaux | Yamaha | FRA | 117 |
+| 5. | 243 | Tim Gajser | Yamaha | SLO | 116 |
+| 6. | 1 | Romain Febvre | Kawasaki | FRA | 113 |
+| 7. | 80 | Andrea Adamo | KTM | ITA | 84 |
+| 8. | 70 | Ruben Fernandez | Honda | ESP | 83 |
+| 9. | 10 | Calvin Vlaanderen | Ducati | NED | 73 |
+| 10. | 74 | Kay de Wolf | Husqvarna | NED | 63 |
+
+*Punainen kilpi: Lucas Coenen — Ero toiseen: 7 pistettä.*
+
+## Pistepörssi (3/20) — MX2
+
+| Sija | # | Kuljettaja | Pyörä | Maa | Pist. |
+|------|---|-----------|-------|-----|-------|
+| 1. | 1 | Simon Längenfelder | KTM | GER | 149 |
+| 2. | 99 | Guillem Farres | Triumph | ESP | 127 |
+| 3. | 19 | Sacha Coenen | KTM | BEL | 124 |
+| 4. | 8 | Camden McLellan | Triumph | RSA | 121 |
+| 5. | 26 | Liam Everts | Husqvarna | BEL | 121 |
+| 6. | 772 | Janis Martins Reisulis | Yamaha | LAT | 105 |
+| 7. | 317 | Mathis Valin | Kawasaki | FRA | 98 |
+| 8. | 18 | Valerio Lata | Honda | ITA | 90 |
+| 9. | 47 | Karlis Alberts Reisulis | Yamaha | LAT | 88 |
+| 10. | 48 | Jens Walvoort | KTM | NED | 60 |
+
+*Punainen kilpi: Simon Längenfelder — Ero toiseen: 22 pistettä.*
 
 *Teksti: Photo & Moto*

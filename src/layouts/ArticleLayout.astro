@@ -159,8 +159,8 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
   
   /* Two-column article body */
   .article-body {
-    columns: 2;
-    column-gap: var(--space-6);
+    max-width: 760px;
+    margin: 0 auto;
     font-size: 1.05rem;
     line-height: 1.75;
   }
@@ -179,7 +179,7 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
   
   .article-body :global(p) {
     margin-bottom: var(--space-3);
-    break-inside: avoid;
+
   }
   
   /* Headings as callout style */
@@ -193,8 +193,8 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
     padding-left: var(--space-2);
     margin-top: var(--space-5);
     margin-bottom: var(--space-3);
-    break-after: avoid;
-    break-inside: avoid;
+
+
   }
   
   .article-body :global(h3) {
@@ -202,13 +202,13 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
     color: var(--brand-secondary);
     margin-top: var(--space-4);
     margin-bottom: var(--space-2);
-    break-after: avoid;
-    break-inside: avoid;
+
+
   }
   
   /* Blockquotes as callout boxes */
   .article-body :global(blockquote) {
-    break-inside: avoid;
+
     margin: var(--space-4) 0;
     padding: var(--space-3);
     background: var(--bg-secondary);
@@ -237,12 +237,10 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
   /* Images in article */
   /* Tables */
   .article-body :global(table) {
-    column-span: all;
     width: 100%;
     border-collapse: collapse;
     margin: var(--space-4) 0;
     font-size: 0.9rem;
-    break-inside: avoid;
   }
   
   .article-body :global(thead) {
@@ -279,8 +277,8 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
     height: auto;
     border-radius: var(--radius-md);
     margin: var(--space-4) 0;
-    break-inside: avoid;
-    column-span: all;
+
+
   }
   
   /* Footer */
@@ -314,10 +312,6 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
   
   /* Mobile: single column */
   @media (max-width: 768px) {
-    .article-body {
-      columns: 1;
-    }
-    
     .article-footer {
       flex-direction: column;
       align-items: flex-start;
