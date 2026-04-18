@@ -93,6 +93,7 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
     max-width: 1000px;
   }
   
+  /* Header */
   .article-header {
     margin-bottom: var(--space-5);
   }
@@ -134,6 +135,7 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
     margin-bottom: 0;
   }
   
+  /* Hero image */
   .article-hero {
     margin-bottom: var(--space-6);
     border-radius: var(--radius-md);
@@ -155,6 +157,7 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
     font-style: italic;
   }
   
+  /* Two-column article body */
   .article-body {
     columns: 2;
     column-gap: var(--space-6);
@@ -162,6 +165,7 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
     line-height: 1.75;
   }
   
+  /* Drop cap on first paragraph */
   .article-body :global(p:first-of-type::first-letter) {
     float: left;
     font-family: var(--font-headline);
@@ -178,6 +182,7 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
     break-inside: avoid;
   }
   
+  /* Headings as callout style */
   .article-body :global(h2) {
     font-family: var(--font-headline);
     font-size: 1.4rem;
@@ -201,6 +206,7 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
     break-inside: avoid;
   }
   
+  /* Blockquotes as callout boxes */
   .article-body :global(blockquote) {
     break-inside: avoid;
     margin: var(--space-4) 0;
@@ -216,16 +222,58 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
     margin-bottom: 0;
   }
   
+  /* Bold text */
   .article-body :global(strong) {
     font-weight: 700;
     color: var(--text-primary);
   }
   
+  /* Emphasis / italic */
   .article-body :global(em) {
     font-style: italic;
     color: var(--text-secondary);
   }
   
+  /* Images in article */
+  /* Tables */
+  .article-body :global(table) {
+    column-span: all;
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-4) 0;
+    font-size: 0.9rem;
+    break-inside: avoid;
+  }
+  
+  .article-body :global(thead) {
+    background: var(--brand-secondary);
+    color: white;
+  }
+  
+  .article-body :global(th) {
+    font-family: var(--font-headline);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 700;
+  }
+  
+  .article-body :global(td) {
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .article-body :global(tr:nth-child(even)) {
+    background: var(--bg-secondary);
+  }
+  
+  .article-body :global(tr:first-child td) {
+    font-weight: 700;
+    color: var(--brand-primary);
+  }
+
   .article-body :global(img) {
     width: 100%;
     height: auto;
@@ -235,6 +283,7 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
     column-span: all;
   }
   
+  /* Footer */
   .article-footer {
     margin-top: var(--space-6);
     padding-top: var(--space-4);
@@ -263,6 +312,7 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
     font-weight: 600;
   }
   
+  /* Mobile: single column */
   @media (max-width: 768px) {
     .article-body {
       columns: 1;
