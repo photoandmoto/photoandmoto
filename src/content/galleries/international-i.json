@@ -2,87 +2,107 @@
   "title": "International I",
   "slug": "international-i",
   "description": "Photo gallery: International I",
-  "cover_image": "Ruskeasanta MM-500 1981  Malherbe starttaamassa erään.JPG",
+  "cover_image": "thumbs/Ruskeasanta MM-500 1981  Malherbe starttaamassa erään_thumb.jpg",
   "images": [
     {
       "filename": "Ruskeasanta MM-500 1981  Malherbe starttaamassa erään.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981  Malherbe starttaamassa erään_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981  Malherbe starttaamassa erään_display.jpg",
       "caption": "Ruskeasanta MM-500 1981  Malherbe starttaamassa erään",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 2332,
-      "height": 3102
+      "width": 1400,
+      "height": 1862
     },
     {
       "filename": "Ruskeasanta MM-500 1981 Andre Malherbe (2).JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Andre Malherbe (2)_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Andre Malherbe (2)_display.jpg",
       "caption": "Ruskeasanta MM-500 1981 Andre Malherbe (2)",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 3391,
-      "height": 2332
+      "width": 1400,
+      "height": 963
     },
     {
       "filename": "Ruskeasanta MM-500 1981 Andre Vroman Team Yamaha.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Andre Vroman Team Yamaha_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Andre Vroman Team Yamaha_display.jpg",
       "caption": "Ruskeasanta MM-500 1981 Andre Vroman Team Yamaha",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 2332,
-      "height": 3504
+      "width": 1400,
+      "height": 2104
     },
     {
       "filename": "Ruskeasanta MM-500 1981 Andre Vromans.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Andre Vromans_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Andre Vromans_display.jpg",
       "caption": "Ruskeasanta MM-500 1981 Andre Vromans",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 2863,
-      "height": 1975
+      "width": 1400,
+      "height": 966
     },
     {
       "filename": "Ruskeasanta MM-500 1981 Brad Lackey.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Brad Lackey_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Brad Lackey_display.jpg",
       "caption": "Ruskeasanta MM-500 1981 Brad Lackey",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 2920,
-      "height": 1723
+      "width": 1400,
+      "height": 826
     },
     {
       "filename": "Ruskeasanta MM-500 1981 Gerard Rond.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Gerard Rond_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Gerard Rond_display.jpg",
       "caption": "Ruskeasanta MM-500 1981 Gerard Rond",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 2728,
-      "height": 1799
+      "width": 1400,
+      "height": 923
     },
     {
       "filename": "Ruskeasanta MM-500 1981 Håkan Carlqvist.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Håkan Carlqvist_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Håkan Carlqvist_display.jpg",
       "caption": "Ruskeasanta MM-500 1981 Håkan Carlqvist",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 2848,
-      "height": 1912
+      "width": 1400,
+      "height": 940
     },
     {
       "filename": "Ruskeasanta MM-500 1981 Ivan Van den Broeck.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Ivan Van den Broeck_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Ivan Van den Broeck_display.jpg",
       "caption": "Ruskeasanta MM-500 1981 Ivan Van den Broeck",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 3229,
-      "height": 2123
+      "width": 1400,
+      "height": 920
     },
     {
       "filename": "Ruskeasanta MM-500 1981 Malherben mekaanikko Heikki Penttilä.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Malherben mekaanikko Heikki Penttilä_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Malherben mekaanikko Heikki Penttilä_display.jpg",
       "caption": "Ruskeasanta MM-500 1981 Malherben mekaanikko Heikki Penttilä",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 2332,
-      "height": 3061
+      "width": 1400,
+      "height": 1838
     },
     {
       "filename": "Ruskeasanta MM-500 1981 T. Pikkarainen ja Maico.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 T. Pikkarainen ja Maico_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 T. Pikkarainen ja Maico_display.jpg",
       "caption": "Ruskeasanta MM-500 1981 T. Pikkarainen ja Maico",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1992,
-      "height": 2849
+      "width": 1400,
+      "height": 2002
     }
   ],
   "category": "international"

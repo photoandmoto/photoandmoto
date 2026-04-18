@@ -1,5 +1,5 @@
 ---
-// PhotoSwipe lightbox initialization
+// PhotoSwipe lightbox with download prevention
 ---
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.3/dist/photoswipe.css">
@@ -19,13 +19,13 @@
     preload: [1, 2],
     
     showHideAnimationType: 'fade',
-    
     padding: { top: 20, bottom: 60, left: 20, right: 20 },
     
     imageClickAction: 'zoom',
     tapAction: 'close',
   });
   
+  // Add caption
   lightbox.on('uiRegister', function() {
     lightbox.pswp.ui.registerElement({
       name: 'custom-caption',
@@ -48,6 +48,29 @@
         });
       }
     });
+  });
+  
+  // Prevent download in lightbox
+  lightbox.on('afterInit', () => {
+    const pswpEl = document.querySelector('.pswp');
+    if (pswpEl) {
+      pswpEl.addEventListener('contextmenu', (e) => e.preventDefault());
+      pswpEl.querySelectorAll('img').forEach(img => {
+        img.setAttribute('draggable', 'false');
+      });
+    }
+  });
+  
+  // Prevent drag on dynamically loaded images
+  lightbox.on('change', () => {
+    const pswpEl = document.querySelector('.pswp');
+    if (pswpEl) {
+      pswpEl.querySelectorAll('img').forEach(img => {
+        img.setAttribute('draggable', 'false');
+        img.style.userSelect = 'none';
+        img.style.webkitUserDrag = 'none';
+      });
+    }
   });
   
   lightbox.init();

@@ -1,6 +1,8 @@
 ---
 interface ImageData {
   filename: string;
+  thumb?: string;
+  display?: string;
   caption?: string;
   width: number;
   height: number;
@@ -12,9 +14,11 @@ interface Props {
 }
 
 const { images, gallerySlug } = Astro.props;
+const base = `/galleries/${gallerySlug}/`;
 
 const processedImages = images.map((img, index) => ({
-  href: `/galleries/${gallerySlug}/${img.filename}`,
+  href: img.display ? base + img.display : base + img.filename,
+  thumbSrc: img.thumb ? base + img.thumb : base + img.filename,
   alt: img.caption || `Photo ${index + 1}`,
   caption: img.caption || '',
   width: img.width,
@@ -32,12 +36,17 @@ const processedImages = images.map((img, index) => ({
       data-pswp-caption={img.caption}
       target="_blank"
     >
-      <img
-        src={img.href}
-        alt={img.alt}
-        loading="lazy"
-        class="gallery-thumb"
-      />
+      <div class="image-protect">
+        <img
+          src={img.thumbSrc}
+          alt={img.alt}
+          loading="lazy"
+          class="gallery-thumb"
+          draggable="false"
+          oncontextmenu="return false"
+        />
+        <div class="protect-overlay"></div>
+      </div>
       {img.caption && (
         <span class="gallery-caption">{img.caption}</span>
       )}
@@ -57,11 +66,17 @@ const processedImages = images.map((img, index) => ({
   const btn = document.getElementById('load-more-btn');
   if (btn) {
     btn.addEventListener('click', () => {
-      const hidden = document.querySelectorAll('.gallery-hidden');
-      hidden.forEach(el => el.classList.remove('gallery-hidden'));
+      document.querySelectorAll('.gallery-hidden').forEach(el => el.classList.remove('gallery-hidden'));
       btn.remove();
     });
   }
+
+  // Prevent right-click on all gallery images
+  document.addEventListener('contextmenu', (e) => {
+    if (e.target.closest('.gallery-grid') || e.target.closest('.pswp')) {
+      e.preventDefault();
+    }
+  });
 </script>
 
 <style>
@@ -92,11 +107,29 @@ const processedImages = images.map((img, index) => ({
     box-shadow: var(--shadow-lg);
   }
 
+  .image-protect {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .protect-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    z-index: 1;
+  }
+
   .gallery-thumb {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    -webkit-user-drag: none;
+    user-select: none;
   }
 
   .gallery-caption {
@@ -110,6 +143,7 @@ const processedImages = images.map((img, index) => ({
     font-size: 0.9rem;
     opacity: 0;
     transition: opacity var(--transition-base);
+    z-index: 2;
   }
 
   .gallery-item:hover .gallery-caption {

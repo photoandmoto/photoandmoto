@@ -27,6 +27,8 @@ const galleriesCollection = defineCollection({
     images: z.array(
       z.object({
         filename: z.string(),
+        thumb: z.string().optional(),
+        display: z.string().optional(),
         caption: z.string().optional(),
         photographer: z.string().default('Matti Tarkkonen'),
         date: z.string().optional(),
