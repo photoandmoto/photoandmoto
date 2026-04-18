@@ -6,15 +6,13 @@ import { ui } from '../../i18n/ui';
 const lang = 'en';
 const t = ui[lang];
 
-// Get latest articles
-const articles = await getCollection('articles', ({ data }) => 
+const articles = (await getCollection('articles', ({ data }) => 
   data.language === 'en' && !data.draft
-);
-const latestArticles = articles
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 3);
+)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-// Get galleries
+const featuredArticle = articles[0];
+const recentArticles = articles.slice(1, 4);
+
 const galleries = await getCollection('galleries');
 const featuredGalleries = galleries.slice(0, 4);
 ---
@@ -24,7 +22,6 @@ const featuredGalleries = galleries.slice(0, 4);
   lang={lang}
   description="Motorsport history photos and stories - Photo & Moto"
 >
-  <!-- Hero Section -->
   <section class="hero">
     <div class="container">
       <h1 class="hero-title">{t['hero.tagline']}</h1>
@@ -33,39 +30,55 @@ const featuredGalleries = galleries.slice(0, 4);
     </div>
   </section>
   
-  <!-- Latest Articles -->
-  {latestArticles.length > 0 && (
+  {featuredArticle && (
     <section class="section latest-articles">
       <div class="container">
         <div class="section__header">
           <h2 class="section__title">{t['latest.title']}</h2>
         </div>
         
-        <div class="grid grid--3">
-          {latestArticles.map(article => (
-            <article class="card">
-              <a href={`/en/time-machine/${article.slug.replace(/^en\//, '')}`}>
-                <img 
-                  src={article.data.featured_image} 
-                  alt={article.data.title}
-                  class="card__image"
-                />
-                <div class="card__content">
-                  <span class="badge">{article.data.category}</span>
-                  <h3 class="card__title">{article.data.title}</h3>
-                  {article.data.subtitle && (
-                    <p class="card__text">{article.data.subtitle}</p>
-                  )}
-                </div>
-              </a>
-            </article>
-          ))}
+        <article class="featured-card">
+          <a href={`/en/time-machine/${featuredArticle.slug.replace(/^en\//, '')}`}>
+            <div class="featured-card__image-wrap">
+              <img src={featuredArticle.data.featured_image} alt={featuredArticle.data.title} class="featured-card__image" />
+            </div>
+            <div class="featured-card__content">
+              <span class="badge">{featuredArticle.data.category}</span>
+              <h3 class="featured-card__title">{featuredArticle.data.title}</h3>
+              {featuredArticle.data.subtitle && (
+                <p class="featured-card__text">{featuredArticle.data.subtitle}</p>
+              )}
+              <span class="featured-card__read">{t['article.readMore']} →</span>
+            </div>
+          </a>
+        </article>
+        
+        {recentArticles.length > 0 && (
+          <div class="recent-grid">
+            {recentArticles.map(article => (
+              <article class="card">
+                <a href={`/en/time-machine/${article.slug.replace(/^en\//, '')}`}>
+                  <img src={article.data.featured_image} alt={article.data.title} class="card__image" />
+                  <div class="card__content">
+                    <span class="badge">{article.data.category}</span>
+                    <h3 class="card__title">{article.data.title}</h3>
+                    {article.data.subtitle && (
+                      <p class="card__text">{article.data.subtitle}</p>
+                    )}
+                  </div>
+                </a>
+              </article>
+            ))}
+          </div>
+        )}
+        
+        <div style="text-align: center; margin-top: var(--space-5);">
+          <a href="/en/time-machine" class="btn btn--secondary">All articles</a>
         </div>
       </div>
     </section>
   )}
   
-  <!-- Featured Galleries -->
   {featuredGalleries.length > 0 && (
     <section class="section featured-galleries">
       <div class="container">
@@ -78,16 +91,10 @@ const featuredGalleries = galleries.slice(0, 4);
           {featuredGalleries.map(gallery => (
             <article class="card">
               <a href={`/en/gallery/${gallery.data.slug}`}>
-                <img 
-                  src={`/galleries/${gallery.data.slug}/${gallery.data.cover_image}`}
-                  alt={gallery.data.title}
-                  class="card__image"
-                />
+                <img src={`/galleries/${gallery.data.slug}/${gallery.data.cover_image}`} alt={gallery.data.title} class="card__image" loading="lazy" />
                 <div class="card__content">
                   <h3 class="card__title">{gallery.data.title}</h3>
-                  <p class="card__text">
-                    {t['gallery.photoCount'].replace('{count}', gallery.data.images.length.toString())}
-                  </p>
+                  <p class="card__text">{t['gallery.photoCount'].replace('{count}', gallery.data.images.length.toString())}</p>
                 </div>
               </a>
             </article>
@@ -116,7 +123,6 @@ const featuredGalleries = galleries.slice(0, 4);
     font-size: clamp(2.5rem, 6vw, 4rem);
     margin-bottom: var(--space-3);
     color: white;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
   }
   
   .hero-subtitle {
@@ -125,11 +131,79 @@ const featuredGalleries = galleries.slice(0, 4);
     color: rgba(255, 255, 255, 0.9);
   }
   
-  .latest-articles {
-    background: var(--bg-secondary);
+  .latest-articles { background: var(--bg-secondary); }
+  
+  .featured-card {
+    background: white;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    margin-bottom: var(--space-4);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
   }
   
-  .featured-galleries {
-    background: white;
+  .featured-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .featured-card a {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    text-decoration: none;
+    color: inherit;
+  }
+  
+  .featured-card__image-wrap { overflow: hidden; }
+  
+  .featured-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    min-height: 300px;
+  }
+  
+  .featured-card__content {
+    padding: var(--space-5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .featured-card__title {
+    font-size: 1.75rem;
+    color: var(--brand-secondary);
+    margin: var(--space-2) 0;
+    line-height: 1.2;
+  }
+  
+  .featured-card__text {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-bottom: var(--space-3);
+  }
+  
+  .featured-card__read {
+    font-family: var(--font-headline);
+    color: var(--brand-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+  }
+  
+  .recent-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+  }
+  
+  .featured-galleries { background: white; }
+  
+  @media (max-width: 768px) {
+    .featured-card a { grid-template-columns: 1fr; }
+    .featured-card__image { min-height: 200px; }
+    .recent-grid { grid-template-columns: 1fr; }
   }
 </style>

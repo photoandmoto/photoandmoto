@@ -24,34 +24,34 @@ const articles = (await getCollection('articles', ({ data }) =>
       </div>
       
       {articles.length > 0 ? (
-        <div class="grid grid--2">
+        <div class="articles-grid">
           {articles.map(article => {
             const formattedDate = new Intl.DateTimeFormat('fi-FI', {
               year: 'numeric',
-              month: 'long',
+              month: 'short',
               day: 'numeric'
             }).format(article.data.date);
             
             return (
-              <article class="card">
-                <a href={`/fi/aikakone/${article.slug}`}>
-                  <img 
-                    src={article.data.featured_image} 
-                    alt={article.data.title}
-                    class="card__image"
-                    loading="lazy"
-                  />
-                  <div class="card__content">
-                    <span class="badge">{article.data.category}</span>
-                    <h2 class="card__title">{article.data.title}</h2>
-                    {article.data.subtitle && (
-                      <p class="card__text">{article.data.subtitle}</p>
-                    )}
-                    <div class="article-meta">
-                      <span>{article.data.author}</span>
-                      <span class="separator">•</span>
-                      <span>{formattedDate}</span>
+              <article class="article-card">
+                <a href={`/fi/aikakone/${article.slug.replace(/^fi\//, '')}`}>
+                  <div class="article-card__image-wrap">
+                    <img 
+                      src={article.data.featured_image} 
+                      alt={article.data.title}
+                      class="article-card__image"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="article-card__content">
+                    <div class="article-card__meta">
+                      <span class="badge badge--small">{article.data.category}</span>
+                      <span class="article-card__date">{formattedDate}</span>
                     </div>
+                    <h2 class="article-card__title">{article.data.title}</h2>
+                    {article.data.subtitle && (
+                      <p class="article-card__text">{article.data.subtitle}</p>
+                    )}
                   </div>
                 </a>
               </article>
@@ -68,23 +68,107 @@ const articles = (await getCollection('articles', ({ data }) =>
 </BaseLayout>
 
 <style>
-  .article-meta {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    margin-top: var(--space-2);
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
+  }
+  
+  .article-card {
+    background: white;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+  }
+  
+  .article-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+  
+  .article-card a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+  
+  .article-card__image-wrap {
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+  }
+  
+  .article-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform var(--transition-base);
+  }
+  
+  .article-card:hover .article-card__image {
+    transform: scale(1.05);
+  }
+  
+  .article-card__content {
+    padding: var(--space-2);
+  }
+  
+  .article-card__meta {
     display: flex;
     align-items: center;
     gap: var(--space-1);
+    margin-bottom: var(--space-1);
   }
   
-  .separator {
-    opacity: 0.5;
+  .badge--small {
+    font-size: 0.65rem;
+    padding: 2px 8px;
+  }
+  
+  .article-card__date {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+  
+  .article-card__title {
+    font-size: 0.95rem;
+    color: var(--brand-secondary);
+    margin-bottom: var(--space-1);
+    line-height: 1.3;
+  }
+  
+  .article-card__text {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   
   .empty-state {
     text-align: center;
     padding: var(--space-8) 0;
     color: var(--text-secondary);
-    font-size: 1.125rem;
+  }
+  
+  @media (max-width: 1024px) {
+    .articles-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .articles-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .articles-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
