@@ -1,6 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-
 interface Props {
   images: Array<{
     filename: string;
@@ -15,33 +13,26 @@ const { images, gallerySlug } = Astro.props;
 ---
 
 <div class="gallery-grid" id="gallery">
-  {images.map((img, index) => {
-    // Dynamically import the image
-    const imagePath = `/src/assets/galleries/${gallerySlug}/${img.filename}`;
+  {images.map((img, index) => (
     
-    return (
-      <a
-        href={imagePath}
-        class="gallery-item"
-        data-pswp-width={img.width}
-        data-pswp-height={img.height}
-        data-pswp-caption={img.caption || ''}
-        target="_blank"
-      >
-        <img
-          src={imagePath}
-          alt={img.caption || `Photo ${index + 1}`}
-          width={400}
-          height={Math.round((400 * img.height) / img.width)}
-          loading="lazy"
-          class="gallery-thumb"
-        />
-        {img.caption && (
-          <span class="gallery-caption">{img.caption}</span>
-        )}
-      </a>
-    );
-  })}
+      href={`/galleries/${gallerySlug}/${img.filename}`}
+      class="gallery-item"
+      data-pswp-width={img.width}
+      data-pswp-height={img.height}
+      data-pswp-caption={img.caption || ''}
+      target="_blank"
+    >
+      <img
+        src={`/galleries/${gallerySlug}/${img.filename}`}
+        alt={img.caption || `Photo ${index + 1}`}
+        loading="lazy"
+        class="gallery-thumb"
+      />
+      {img.caption && (
+        <span class="gallery-caption">{img.caption}</span>
+      )}
+    </a>
+  ))}
 </div>
 
 <style>
@@ -51,7 +42,7 @@ const { images, gallerySlug } = Astro.props;
     gap: var(--space-3);
     padding: var(--space-4) 0;
   }
-  
+
   .gallery-item {
     position: relative;
     display: block;
@@ -62,19 +53,19 @@ const { images, gallerySlug } = Astro.props;
     background: var(--bg-secondary);
     aspect-ratio: 4 / 3;
   }
-  
+
   .gallery-item:hover {
     transform: scale(1.02);
     box-shadow: var(--shadow-lg);
   }
-  
+
   .gallery-thumb {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
-  
+
   .gallery-caption {
     position: absolute;
     bottom: 0;
@@ -87,11 +78,11 @@ const { images, gallerySlug } = Astro.props;
     opacity: 0;
     transition: opacity var(--transition-base);
   }
-  
+
   .gallery-item:hover .gallery-caption {
     opacity: 1;
   }
-  
+
   @media (max-width: 768px) {
     .gallery-grid {
       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
