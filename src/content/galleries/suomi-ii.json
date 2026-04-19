@@ -1,0 +1,179 @@
+{
+  "title": "Suomi II",
+  "slug": "suomi-ii",
+  "description": "Photo gallery: Suomi II",
+  "cover_image": "thumbs/Antti Pyrhönen 125cc 1994_thumb.jpg",
+  "images": [
+    {
+      "filename": "Antti Pyrhönen 125cc 1994.jpg",
+      "thumb": "thumbs/Antti Pyrhönen 125cc 1994_thumb.jpg",
+      "display": "display/Antti Pyrhönen 125cc 1994_display.jpg",
+      "caption": "Antti Pyrhönen 125cc 1994",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 959
+    },
+    {
+      "filename": "Antti Pyrhönen ja look mallia 1995.JPG",
+      "thumb": "thumbs/Antti Pyrhönen ja look mallia 1995_thumb.jpg",
+      "display": "display/Antti Pyrhönen ja look mallia 1995_display.jpg",
+      "caption": "Antti Pyrhönen ja look mallia 1995",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2104
+    },
+    {
+      "filename": "Antti Pyrhönen ja musta Yamaha 125cc. Karkkila 1995.JPG",
+      "thumb": "thumbs/Antti Pyrhönen ja musta Yamaha 125cc. Karkkila 1995_thumb.jpg",
+      "display": "display/Antti Pyrhönen ja musta Yamaha 125cc. Karkkila 1995_display.jpg",
+      "caption": "Antti Pyrhönen ja musta Yamaha 125cc. Karkkila 1995",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 934
+    },
+    {
+      "filename": "J-P Konttinen Mikkeli SM 125cc 1995.JPG",
+      "thumb": "thumbs/J-P Konttinen Mikkeli SM 125cc 1995_thumb.jpg",
+      "display": "display/J-P Konttinen Mikkeli SM 125cc 1995_display.jpg",
+      "caption": "J-P Konttinen Mikkeli SM 125cc 1995",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1928
+    },
+    {
+      "filename": "Juha Ukkonen Mikkeli SM 125cc 1995 molempien erien 2..jpg",
+      "thumb": "thumbs/Juha Ukkonen Mikkeli SM 125cc 1995 molempien erien 2._thumb.jpg",
+      "display": "display/Juha Ukkonen Mikkeli SM 125cc 1995 molempien erien 2._display.jpg",
+      "caption": "Juha Ukkonen Mikkeli SM 125cc 1995 molempien erien 2.",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 871
+    },
+    {
+      "filename": "Juha Ukkonen Mikkeli SM 125cc 1995.jpg",
+      "thumb": "thumbs/Juha Ukkonen Mikkeli SM 125cc 1995_thumb.jpg",
+      "display": "display/Juha Ukkonen Mikkeli SM 125cc 1995_display.jpg",
+      "caption": "Juha Ukkonen Mikkeli SM 125cc 1995",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1290,
+      "height": 803
+    },
+    {
+      "filename": "Juha-Pekka Konttinen Mikkeli SM 125cc 1995.JPG",
+      "thumb": "thumbs/Juha-Pekka Konttinen Mikkeli SM 125cc 1995_thumb.jpg",
+      "display": "display/Juha-Pekka Konttinen Mikkeli SM 125cc 1995_display.jpg",
+      "caption": "Juha-Pekka Konttinen Mikkeli SM 125cc 1995",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 865
+    },
+    {
+      "filename": "Jussi-Pekka Vehviläinen 250cc Honda 1995.jpg",
+      "thumb": "thumbs/Jussi-Pekka Vehviläinen 250cc Honda 1995_thumb.jpg",
+      "display": "display/Jussi-Pekka Vehviläinen 250cc Honda 1995_display.jpg",
+      "caption": "Jussi-Pekka Vehviläinen 250cc Honda 1995",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 920
+    },
+    {
+      "filename": "Mikkeli SM 125cc 1995 I-erän startti.jpg",
+      "thumb": "thumbs/Mikkeli SM 125cc 1995 I-erän startti_thumb.jpg",
+      "display": "display/Mikkeli SM 125cc 1995 I-erän startti_display.jpg",
+      "caption": "Mikkeli SM 125cc 1995 I-erän startti",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 802
+    },
+    {
+      "filename": "Mikkeli SM 125cc 1995 torikokous.jpg",
+      "thumb": "thumbs/Mikkeli SM 125cc 1995 torikokous_thumb.jpg",
+      "display": "display/Mikkeli SM 125cc 1995 torikokous_display.jpg",
+      "caption": "Mikkeli SM 125cc 1995 torikokous",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 792
+    },
+    {
+      "filename": "Mikkeli SM 125cc podium vas. Ukkonen, Konttinen ja Seppälä 1995.JPG",
+      "thumb": "thumbs/Mikkeli SM 125cc podium vas. Ukkonen, Konttinen ja Seppälä 1995_thumb.jpg",
+      "display": "display/Mikkeli SM 125cc podium vas. Ukkonen, Konttinen ja Seppälä 1995_display.jpg",
+      "caption": "Mikkeli SM 125cc podium vas. Ukkonen, Konttinen ja Seppälä 1995",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Mikko Nykänen Mikkeli SM 125cc 1995.jpg",
+      "thumb": "thumbs/Mikko Nykänen Mikkeli SM 125cc 1995_thumb.jpg",
+      "display": "display/Mikko Nykänen Mikkeli SM 125cc 1995_display.jpg",
+      "caption": "Mikko Nykänen Mikkeli SM 125cc 1995",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 873
+    },
+    {
+      "filename": "Miska Aaltonen Heinola 1992.jpg",
+      "thumb": "thumbs/Miska Aaltonen Heinola 1992_thumb.jpg",
+      "display": "display/Miska Aaltonen Heinola 1992_display.jpg",
+      "caption": "Miska Aaltonen Heinola 1992",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 864,
+      "height": 1177
+    },
+    {
+      "filename": "Super Trading Team 1993 vas. J-P Konttinen ja A.Panttila.jpg",
+      "thumb": "thumbs/Super Trading Team 1993 vas. J-P Konttinen ja A.Panttila_thumb.jpg",
+      "display": "display/Super Trading Team 1993 vas. J-P Konttinen ja A.Panttila_display.jpg",
+      "caption": "Super Trading Team 1993 vas. J-P Konttinen ja A.Panttila",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1168,
+      "height": 1664
+    },
+    {
+      "filename": "Veli-Petteri Seppälä 125cc Suomen mestari 1991.jpg",
+      "thumb": "thumbs/Veli-Petteri Seppälä 125cc Suomen mestari 1991_thumb.jpg",
+      "display": "display/Veli-Petteri Seppälä 125cc Suomen mestari 1991_display.jpg",
+      "caption": "Veli-Petteri Seppälä 125cc Suomen mestari 1991",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 925
+    },
+    {
+      "filename": "Veli-Petteri Seppälä Mikkeli SM 125cc 1995.jpg",
+      "thumb": "thumbs/Veli-Petteri Seppälä Mikkeli SM 125cc 1995_thumb.jpg",
+      "display": "display/Veli-Petteri Seppälä Mikkeli SM 125cc 1995_display.jpg",
+      "caption": "Veli-Petteri Seppälä Mikkeli SM 125cc 1995",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 907
+    },
+    {
+      "filename": "Veli-Petteri Seppälä SM 250cc Salo 1991.jpg",
+      "thumb": "thumbs/Veli-Petteri Seppälä SM 250cc Salo 1991_thumb.jpg",
+      "display": "display/Veli-Petteri Seppälä SM 250cc Salo 1991_display.jpg",
+      "caption": "Veli-Petteri Seppälä SM 250cc Salo 1991",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 852
+    }
+  ],
+  "category": "finland"
+}
