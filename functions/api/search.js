@@ -19,14 +19,17 @@ export async function onRequestPost(context) {
       return new Response(JSON.stringify({ error: 'GEMINI_API_KEY not found in environment' }), { status: 500, headers: corsHeaders });
     }
 
+    // Trim data to stay within token limits
+    const trimmedData = siteData ? siteData.substring(0, 15000) : '[]';
+    
     const prompt = `You are the AI search assistant for Photo & Moto, a Finnish motorsport photography and history website. Answer questions based ONLY on the site data provided below. Answer in the same language the question is asked in (Finnish or English). Be concise and helpful. If the data doesn't contain the answer, say so politely.
 
 SITE DATA:
-${siteData}
+${trimmedData}
 
 USER QUESTION: ${query}`;
 
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
     
     const geminiResp = await fetch(geminiUrl, {
       method: 'POST',
