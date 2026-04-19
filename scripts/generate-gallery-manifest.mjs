@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const THUMB_WIDTH = 600;
 const DISPLAY_WIDTH = 1400;
-const WATERMARK_TEXT = '© Photo & Moto';
+const WATERMARK_TEXT = '© Photo &amp; Moto';
 
 async function generateManifest(gallerySlug) {
   const galleryDir = path.join(__dirname, `../public/galleries/${gallerySlug}`);
@@ -59,13 +59,23 @@ async function generateManifest(gallerySlug) {
       
       // Generate display version (1400px, with watermark)
       const displayName = filename.replace(/\.(jpg|jpeg|png|webp)$/i, '_display.jpg');
-      const displayWidth = Math.min(DISPLAY_WIDTH, width);
-      const displayHeight = Math.round((displayWidth / width) * height);
       
-      // Create watermark SVG
-      const wmFontSize = Math.round(displayWidth * 0.025);
+      // First resize to get actual dimensions
+      const resized = sharp(filepath)
+        .rotate()
+        .resize(DISPLAY_WIDTH, null, { withoutEnlargement: true });
+      
+      const resizedMeta = await resized.clone().metadata();
+      // After rotate+resize, get real dimensions
+      const resizedBuffer = await resized.clone().toBuffer();
+      const actualMeta = await sharp(resizedBuffer).metadata();
+      const actualW = actualMeta.width;
+      const actualH = actualMeta.height;
+      
+      // Create watermark SVG matching actual dimensions
+      const wmFontSize = Math.round(actualW * 0.025);
       const wmPadding = Math.round(wmFontSize * 0.8);
-      const wmSvg = Buffer.from(`<svg width="${displayWidth}" height="${displayHeight}">
+      const wmSvg = Buffer.from(`<svg width="${actualW}" height="${actualH}">
         <style>
           .wm { 
             fill: rgba(255,255,255,0.5); 
@@ -74,12 +84,10 @@ async function generateManifest(gallerySlug) {
             font-weight: bold;
           }
         </style>
-        <text x="${displayWidth - wmPadding}" y="${displayHeight - wmPadding}" text-anchor="end" class="wm">${WATERMARK_TEXT}</text>
+        <text x="${actualW - wmPadding}" y="${actualH - wmPadding}" text-anchor="end" class="wm">${WATERMARK_TEXT}</text>
       </svg>`);
       
-      await sharp(filepath)
-        .rotate()
-        .resize(displayWidth, null, { withoutEnlargement: true })
+      await sharp(resizedBuffer)
         .composite([{ input: wmSvg, gravity: 'southeast' }])
         .jpeg({ quality: 85 })
         .toFile(path.join(displayDir, displayName));
@@ -95,8 +103,8 @@ async function generateManifest(gallerySlug) {
         caption,
         photographer: 'Matti Tarkkonen',
         date: '',
-        width: displayWidth,
-        height: displayHeight,
+        width: actualW,
+        height: actualH,
       });
       
       process.stdout.write(`\r   ${i + 1}/${files.length} processed...`);
