@@ -62,13 +62,20 @@ const lang = 'fi';
             <p>Olemme vastaanottaneet viestisi ja palaamme asiaan mahdollisimman pian.</p>
           </div>
         </div>
-         
+        
+        <div class="contact-info">
+          <div class="info-card">
+            <h3>Photo & Moto</h3>
+            <p>Moottoriurheilun historian kuvia ja tarinoita.</p>
+            <p><em>Every frame tells a story</em></p>
+          </div>
+          
           <div class="info-card">
             <h3>Sähköposti</h3>
             <p><a href="mailto:photoandmoto@gmail.com">photoandmoto@gmail.com</a></p>
           </div>
           
-<div class="info-card">
+          <div class="info-card">
             <h3>Kuvien käyttö</h3>
             <p>Haluatko käyttää kuviamme? Käsittelemme pyynnöt tapauskohtaisesti.</p>
           </div>
@@ -147,4 +154,69 @@ const lang = 'fi';
   
   .form-group input:focus,
   .form-group select:focus,
-  .form-gro
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--brand-primary);
+  }
+  
+  .form-group textarea {
+    resize: vertical;
+  }
+  
+  .submit-btn {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  
+  .success-message {
+    background: var(--bg-secondary);
+    padding: var(--space-6);
+    border-radius: var(--radius-md);
+    text-align: center;
+  }
+  
+  .success-message h3 {
+    color: var(--brand-primary);
+    font-size: 1.5rem;
+    margin-bottom: var(--space-2);
+  }
+  
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  
+  .info-card {
+    background: var(--bg-secondary);
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+  }
+  
+  .info-card h3 {
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: var(--space-1);
+    color: var(--text-primary);
+  }
+  
+  .info-card p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-1);
+  }
+  
+  .info-card a {
+    color: var(--brand-primary);
+    font-weight: 600;
+  }
+  
+  @media (max-width: 768px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
