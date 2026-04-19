@@ -9,7 +9,7 @@ export async function onRequestPost(context) {
   };
 
   try {
-    const { query } = await request.json();
+    const { query, siteData } = await request.json();
     if (!query || query.length < 2) {
       return new Response(JSON.stringify({ error: 'Query too short' }), { status: 400, headers: corsHeaders });
     }
@@ -18,12 +18,6 @@ export async function onRequestPost(context) {
     if (!apiKey) {
       return new Response(JSON.stringify({ error: 'API key not configured' }), { status: 500, headers: corsHeaders });
     }
-
-    // Fetch site index
-    const siteUrl = new URL(request.url);
-    const indexUrl = `${siteUrl.protocol}//${siteUrl.host}/data/site-index.json`;
-    const indexResp = await fetch(indexUrl);
-    const siteData = await indexResp.text();
 
     const prompt = `You are the AI search assistant for Photo & Moto, a Finnish motorsport photography and history website. Answer questions based ONLY on the site data provided below. Answer in the same language the question is asked in (Finnish or English). Be concise and helpful. If the data doesn't contain the answer, say so politely.
 
@@ -49,7 +43,7 @@ USER QUESTION: ${query}`;
 
     return new Response(JSON.stringify({ answer }), { headers: corsHeaders });
   } catch (err) {
-    return new Response(JSON.stringify({ error: 'Search failed' }), { status: 500, headers: corsHeaders });
+    return new Response(JSON.stringify({ error: 'Search failed: ' + err.message }), { status: 500, headers: corsHeaders });
   }
 }
 

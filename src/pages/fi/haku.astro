@@ -32,6 +32,13 @@ const lang = 'fi';
   const input = document.getElementById('aiQuery');
   const btn = document.getElementById('aiSearchBtn');
   const result = document.getElementById('aiResult');
+  let siteData = null;
+  
+  // Load site index on page load
+  fetch('/data/site-index.json')
+    .then(r => r.json())
+    .then(d => { siteData = JSON.stringify(d); })
+    .catch(() => { siteData = '[]'; });
   
   async function doSearch() {
     const q = input.value.trim();
@@ -44,12 +51,12 @@ const lang = 'fi';
       const resp = await fetch('/api/search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: q })
+        body: JSON.stringify({ query: q, siteData: siteData })
       });
       const data = await resp.json();
       
       if (data.error) {
-        result.innerHTML = '<div class="ai-error">Haku epäonnistui. Yritä uudelleen.</div>';
+        result.innerHTML = '<div class="ai-error">Haku epäonnistui: ' + data.error + '</div>';
       } else {
         result.innerHTML = '<div class="ai-answer"><div class="ai-answer-label">Vastaus</div><div class="ai-answer-text">' + data.answer.replace(/\n/g, '<br>') + '</div></div>';
       }
