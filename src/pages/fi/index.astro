@@ -30,22 +30,22 @@ const featuredGalleries = galleries.slice(0, 4);
     </div>
   </section>
   
-  <!-- Intro Section - Dark background matching hero -->
+  <!-- Intro Section -->
   <section class="intro-section">
     <div class="container">
       <div class="intro-grid">
         <div class="intro-col">
+          <h2 class="intro-title">Tervetuloa fiilistelemään</h2>
           <div class="intro-image-wrap">
             <img src="/images/intro-gallery.jpg" alt="Tervetuloa fiilistelemään" class="intro-image" />
           </div>
-          <h2 class="intro-title">Tervetuloa fiilistelemään</h2>
           <p class="intro-text">Sukella moottoriurheilun historian havinaa. Jokainen jakamamme kuva kätkee sisäänsä tarinan, ja olemme innoissamme, että saamme tuoda nämä klassikkohetket tähän päivään teidän nähtäväksenne. Uusia kuvia ja juttuja lisätään jatkuvasti. Palaa usein takasin!</p>
         </div>
         <div class="intro-col">
+          <h2 class="intro-title">Palaa ajassa taaksepäin</h2>
           <div class="intro-image-wrap">
             <img src="/images/intro-articles.jpg" alt="Palaa ajassa taaksepäin" class="intro-image" />
           </div>
-          <h2 class="intro-title">Palaa ajassa taaksepäin</h2>
           <p class="intro-text">Tämä portaali tuo moottoriurheilun historian sykähdyttävät hetket ja kuvien takaiset tarinat luoksesi syventyen tekniikkaan, kohtaloihin ja käännekohtiin. Jokainen artikkeli vie sinut takaisin aikaan, jolloin kaikki alkoi.</p>
         </div>
       </div>
@@ -177,10 +177,10 @@ const featuredGalleries = galleries.slice(0, 4);
     margin-bottom: 0;
   }
   
-  /* Intro section - continuous dark look */
+  /* Intro section - white background */
   .intro-section {
-    background: rgba(0, 0, 0, 0.85);
-    color: white;
+    background: white;
+    color: var(--text-primary);
     padding: var(--space-8) 0;
   }
   
@@ -197,17 +197,6 @@ const featuredGalleries = galleries.slice(0, 4);
     margin-bottom: var(--space-3);
   }
   
-  .intro-image-wrap::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.35);
-    pointer-events: none;
-  }
-  
   .intro-image {
     width: 100%;
     height: auto;
@@ -219,15 +208,14 @@ const featuredGalleries = galleries.slice(0, 4);
   .intro-title {
     font-size: 1.75rem;
     font-weight: 900;
-    font-style: italic;
-    color: white;
-    margin-bottom: var(--space-2);
+    color: var(--text-primary);
+    margin-bottom: var(--space-3);
   }
   
   .intro-text {
     font-size: 1rem;
     line-height: 1.7;
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--text-secondary);
     font-weight: 600;
   }
   
