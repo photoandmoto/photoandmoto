@@ -16,7 +16,7 @@ export async function onRequestPost(context) {
 
     const apiKey = env.GEMINI_API_KEY;
     if (!apiKey) {
-      return new Response(JSON.stringify({ error: 'API key not configured' }), { status: 500, headers: corsHeaders });
+      return new Response(JSON.stringify({ error: 'GEMINI_API_KEY not found in environment' }), { status: 500, headers: corsHeaders });
     }
 
     const prompt = `You are the AI search assistant for Photo & Moto, a Finnish motorsport photography and history website. Answer questions based ONLY on the site data provided below. Answer in the same language the question is asked in (Finnish or English). Be concise and helpful. If the data doesn't contain the answer, say so politely.
@@ -26,24 +26,33 @@ ${siteData}
 
 USER QUESTION: ${query}`;
 
-    const geminiResp = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { maxOutputTokens: 500, temperature: 0.3 }
-        })
-      }
-    );
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+    
+    const geminiResp = await fetch(geminiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { maxOutputTokens: 500, temperature: 0.3 }
+      })
+    });
 
-    const geminiData = await geminiResp.json();
-    const answer = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || 'Valitettavasti en löytänyt vastausta.';
+    const geminiText = await geminiResp.text();
+    
+    if (!geminiResp.ok) {
+      return new Response(JSON.stringify({ error: 'Gemini API error: ' + geminiResp.status + ' - ' + geminiText.substring(0, 200) }), { headers: corsHeaders });
+    }
+
+    const geminiData = JSON.parse(geminiText);
+    const answer = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text;
+    
+    if (!answer) {
+      return new Response(JSON.stringify({ error: 'No answer from Gemini. Raw: ' + geminiText.substring(0, 200) }), { headers: corsHeaders });
+    }
 
     return new Response(JSON.stringify({ answer }), { headers: corsHeaders });
   } catch (err) {
-    return new Response(JSON.stringify({ error: 'Search failed: ' + err.message }), { status: 500, headers: corsHeaders });
+    return new Response(JSON.stringify({ error: 'Function error: ' + err.message }), { status: 500, headers: corsHeaders });
   }
 }
 
