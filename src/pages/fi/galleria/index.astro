@@ -21,6 +21,8 @@ const galleries = await getCollection('galleries');
         <p class="section__subtitle">Tutustu kuvagallerioihin eri lajien ja aikakausien parista</p>
       </div>
       
+      <p class="gallery-intro">Astu maailmaan missä jokainen kuva kertoo tarinan. Maailma, jossa jokainen kuva sykkii tarinaa ja moottoriurheilun huumaava menneisyys ja jännitys heräävät eloon, on vain klikkauksen päässä sinusta.</p>
+      
       <div class="grid grid--3">
         {galleries.map(gallery => (
           <article class="card">
@@ -47,6 +49,16 @@ const galleries = await getCollection('galleries');
 </BaseLayout>
 
 <style>
+  .gallery-intro {
+    max-width: 100%;
+    margin: 0 auto var(--space-6);
+    text-align: center;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
   .gallery-count {
     font-size: 0.875rem;
     color: var(--brand-primary);
