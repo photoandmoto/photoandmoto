@@ -273,12 +273,12 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
   }
 
   .article-body :global(img) {
-    width: 100%;
+    width: 60%;
+    max-width: 500px;
     height: auto;
     border-radius: var(--radius-md);
-    margin: var(--space-4) 0;
-
-
+    margin: var(--space-4) auto;
+    display: block;
   }
   
   /* Footer */
