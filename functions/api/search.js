@@ -20,9 +20,9 @@ export async function onRequestPost(context) {
     }
 
     // Trim data to stay within token limits
-    const trimmedData = siteData ? siteData.substring(0, 15000) : '[]';
+    const trimmedData = siteData ? siteData.substring(0, 50000) : '[]';
     
-    const prompt = `You are the AI search assistant for Photo & Moto, a Finnish motorsport photography and history website. Answer questions based ONLY on the site data provided below. Answer in the same language the question is asked in (Finnish or English). Be concise and helpful. If the data doesn't contain the answer, say so politely.
+    const prompt = `You are the AI search assistant for Photo & Moto, a Finnish motorsport photography and history website. Answer questions based ONLY on the site data provided below. Answer in the same language the question is asked in (Finnish or English). Be concise but complete. If the data doesn't contain the answer, say so politely.
 
 SITE DATA:
 ${trimmedData}
@@ -36,7 +36,7 @@ USER QUESTION: ${query}`;
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { maxOutputTokens: 500, temperature: 0.3 }
+        generationConfig: { maxOutputTokens: 1500, temperature: 0.3 }
       })
     });
 
