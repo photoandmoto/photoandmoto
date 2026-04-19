@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-
 const lang = 'fi';
 ---
 
@@ -9,54 +8,140 @@ const lang = 'fi';
   lang={lang}
   description="Ota yhteyttä - Photo & Moto"
 >
-  <section class="section contact">
-    <div class="container container--narrow">
+  <section class="contact">
+    <div class="container contact-container">
       <div class="section__header">
-        <h1 class="section__title">Yhteystiedot</h1>
-        <p class="section__subtitle">Haluatko kysyä jotain tai jakaa omia muistojasi?</p>
+        <h1 class="section__title">Ota yhteyttä</h1>
+        <p class="section__subtitle">Haluatko kysyä jotain, jakaa muistojasi tai antaa palautetta?</p>
       </div>
       
-      <div class="contact-content">
-        <p>
-          <strong>Photo & Moto</strong> on Matti Tarkkosen ylläpitämä moottoriurheilun historiaarkisto.
-        </p>
-        
-        <div class="contact-info">
-          <h2>Ota yhteyttä</h2>
-          <p>
-            <strong>Sähköposti:</strong> <a href="mailto:info@photoandmoto.fi">info@photoandmoto.fi</a>
-          </p>
+      <div class="contact-grid">
+        <div class="contact-form-wrap">
+          <form 
+            action="https://formsubmit.co/photoandmoto@gmail.com" 
+            method="POST"
+            class="contact-form"
+            id="contact-form"
+          >
+            <input type="text" name="_honey" style="display:none">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="https://photoandmoto.pages.dev/fi/yhteystiedot?success=true">
+            <input type="hidden" name="_subject" value="Uusi viesti - Photo & Moto">
+            
+            <div class="form-group">
+              <label for="name">Nimi *</label>
+              <input type="text" id="name" name="name" required placeholder="Nimesi">
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Sähköposti *</label>
+              <input type="email" id="email" name="email" required placeholder="sahkoposti@esimerkki.fi">
+            </div>
+            
+            <div class="form-group">
+              <label for="subject">Aihe</label>
+              <select id="subject" name="subject">
+                <option value="Yleinen kysymys">Yleinen kysymys</option>
+                <option value="Kuvien käyttölupa">Kuvien käyttölupa</option>
+                <option value="Yhteistyöehdotus">Yhteistyöehdotus</option>
+                <option value="Palaute">Palaute</option>
+                <option value="Muu">Muu</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="message">Viesti *</label>
+              <textarea id="message" name="message" required rows="6" placeholder="Kirjoita viestisi tähän..."></textarea>
+            </div>
+            
+            <button type="submit" class="btn submit-btn">Lähetä viesti</button>
+          </form>
+          
+          <div id="success-message" class="success-message" style="display:none;">
+            <h3>Kiitos viestistäsi!</h3>
+            <p>Olemme vastaanottaneet viestisi ja palaamme asiaan mahdollisimman pian.</p>
+          </div>
         </div>
         
-        <div class="contact-social">
-          <h2>Seuraa somessa</h2>
-          <p>Tulossa pian...</p>
+        <div class="contact-info">
+          <div class="info-card">
+            <h3>Photo & Moto</h3>
+            <p>Moottoriurheilun historian kuvia ja tarinoita.</p>
+            <p><em>Every frame tells a story</em></p>
+          </div>
+          
+          <div class="info-card">
+            <h3>Sähköposti</h3>
+            <p><a href="mailto:photoandmoto@gmail.com">photoandmoto@gmail.com</a></p>
+          </div>
+          
+          <div class="info-card">
+            <h3>Kuvien käyttö</h3>
+            <p>Haluatko käyttää kuviamme? Lähetä meille pyyntö sähköpostitse. Käsittelemme pyynnöt tapauskohtaisesti.</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 </BaseLayout>
 
+<script>
+  if (window.location.search.includes('success=true')) {
+    const form = document.getElementById('contact-form');
+    const msg = document.getElementById('success-message');
+    if (form && msg) {
+      form.style.display = 'none';
+      msg.style.display = 'block';
+    }
+  }
+</script>
+
 <style>
   .contact {
     padding: var(--space-8) 0;
   }
   
-  .contact-content {
-    line-height: 1.8;
+  .contact-container {
+    max-width: 1000px;
   }
   
-  .contact-content h2 {
-    margin-top: var(--space-5);
-    margin-bottom: var(--space-2);
-    font-size: 1.5rem;
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: var(--space-6);
   }
   
-  .contact-info,
-  .contact-social {
-    margin-top: var(--space-4);
-    padding: var(--space-4);
+  .contact-form {
     background: var(--bg-secondary);
+    padding: var(--space-5);
     border-radius: var(--radius-md);
   }
-</style>
+  
+  .form-group {
+    margin-bottom: var(--space-3);
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: var(--space-1);
+    color: var(--text-primary);
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #ddd;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: border-color var(--transition-fast);
+    background: white;
+  }
+  
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-gro
