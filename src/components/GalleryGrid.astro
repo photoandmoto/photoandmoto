@@ -66,8 +66,16 @@ const processedImages = images.map((img, index) => ({
   const btn = document.getElementById('load-more-btn');
   if (btn) {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.gallery-hidden').forEach(el => el.classList.remove('gallery-hidden'));
-      btn.remove();
+      const hidden = document.querySelectorAll('.gallery-hidden');
+      const toShow = Array.from(hidden).slice(0, 9);
+      toShow.forEach(el => el.classList.remove('gallery-hidden'));
+      
+      const remaining = document.querySelectorAll('.gallery-hidden');
+      if (remaining.length === 0) {
+        btn.remove();
+      } else {
+        btn.textContent = 'Näytä lisää (' + remaining.length + ' kuvaa)';
+      }
     });
   }
 

@@ -20,8 +20,10 @@ const articles = (await getCollection('articles', ({ data }) =>
     <div class="container">
       <div class="section__header">
         <h1 class="section__title">Aikakone</h1>
-        <p class="section__subtitle">Matka moottoriurheilun historian havinaa</p>
+        <p class="section__subtitle">Matka moottoriurheilun historian havinaan</p>
       </div>
+      
+      <p class="aikakone-intro">Aikakoneessa matkustat ajassa taaksepäin. Historia on täynnä hetkiä, jotka muuttivat kaiken. Aikakoneessa katsomme vanhoja urotekoja ja ilmiöitä uudesta kulmasta, ilman turhaa hienostelua. Lue lyhyitä paloja menneestä, jotka resonoivat tässä päivässä.</p>
       
       {articles.length > 0 ? (
         <div class="articles-grid">
@@ -68,6 +70,16 @@ const articles = (await getCollection('articles', ({ data }) =>
 </BaseLayout>
 
 <style>
+  .aikakone-intro {
+    max-width: 800px;
+    margin: 0 auto var(--space-6);
+    text-align: center;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
   .articles-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);

@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const THUMB_WIDTH = 600;
 const DISPLAY_WIDTH = 1400;
-const WATERMARK_TEXT = '© Photo &amp; Moto';
+const WATERMARK_TEXT = '© Photo & Moto';
 
 async function generateManifest(gallerySlug) {
   const galleryDir = path.join(__dirname, `../public/galleries/${gallerySlug}`);
@@ -130,7 +130,11 @@ async function generateManifest(gallerySlug) {
 }
 
 function formatTitle(slug) {
-  return slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+  const romanNumerals = ['i', 'ii', 'iii', 'iv', 'v', 'vi', 'vii', 'viii', 'ix', 'x'];
+  return slug.split('-').map(w => {
+    if (romanNumerals.includes(w.toLowerCase())) return w.toUpperCase();
+    return w.charAt(0).toUpperCase() + w.slice(1);
+  }).join(' ');
 }
 
 function determineCategory(slug) {
