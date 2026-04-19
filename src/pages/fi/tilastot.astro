@@ -1,14 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 const lang = 'fi';
-
-// Read data at build time
 import fs from 'fs';
 const rawData = fs.readFileSync('public/data/champions.json', 'utf-8');
 ---
 
 <BaseLayout 
-  title="Tilastot" 
+  title="Tilastot – Mestarit kautta aikain" 
   lang={lang}
   description="Motocrossin mestarit kautta aikain - tilastot ja statistiikat"
 >
@@ -19,25 +17,43 @@ const rawData = fs.readFileSync('public/data/champions.json', 'utf-8');
         <p class="section__subtitle">Motocrossin mestaruustilastot vuodesta 1947</p>
       </div>
       
+      <!-- Animated Counters -->
+      <div class="counters">
+        <div class="counter-item">
+          <span class="counter-number" data-target="292">0</span>
+          <span class="counter-label">Mestaruutta</span>
+        </div>
+        <div class="counter-item">
+          <span class="counter-number" data-target="78">0</span>
+          <span class="counter-label">Vuotta historiaa</span>
+        </div>
+        <div class="counter-item">
+          <span class="counter-number" data-target="257">0</span>
+          <span class="counter-label">Kuljettajaa</span>
+        </div>
+        <div class="counter-item">
+          <span class="counter-number" data-target="5">0</span>
+          <span class="counter-label">Sarjaa</span>
+        </div>
+      </div>
+      
+      <!-- Global Search -->
+      <div class="search-container">
+        <input type="text" id="globalSearch" placeholder="Hae kuljettajaa, vuotta tai maata..." class="search-input" />
+        <div id="searchResults" class="search-results" style="display:none;"></div>
+      </div>
+      
+      <!-- Tabs -->
       <div class="tabs">
-        <button class="tab active" data-tab="fim">FIM MM-mestarit</button>
+        <button class="tab active" data-tab="fim">FIM MM</button>
         <button class="tab" data-tab="sml">SM-mestarit</button>
         <button class="tab" data-tab="mxdn">MX des Nations</button>
-        <button class="tab" data-tab="ama">AMA-mestarit</button>
+        <button class="tab" data-tab="ama">AMA</button>
         <button class="tab" data-tab="xama">Trans-AMA</button>
       </div>
       
-      <div class="stats-content">
-        <div class="chart-container">
-          <canvas id="champChart" height="300"></canvas>
-        </div>
-        <div class="table-container">
-          <table id="statsTable">
-            <thead id="tableHead"></thead>
-            <tbody id="tableBody"></tbody>
-          </table>
-        </div>
-      </div>
+      <!-- Tab Content -->
+      <div id="tabContent" class="tab-content"></div>
     </div>
   </section>
 </BaseLayout>
@@ -47,164 +63,579 @@ const rawData = fs.readFileSync('public/data/champions.json', 'utf-8');
 <script define:vars={{ rawData }}>
   const DATA = JSON.parse(rawData);
   let currentChart = null;
+  let currentChart2 = null;
   
-  const tabConfig = {
-    fim: {
-      title: 'FIM MM-mestarit',
-      columns: ['Vuosi', '500cc', '250cc', '125cc', 'MX1', 'MX2', 'MX3', 'MXGP', 'WMX'],
-      keys: ['year', '500cc', '250cc', '125cc', 'MX1', 'MX2', 'MX3', 'MXGP', 'WMX'],
-      chartLabel: 'Eniten MM-titteleitä'
-    },
-    sml: {
-      title: 'SM-mestarit',
-      columns: ['Vuosi', 'Alle 500', 'Alle 250', 'Alle 125', 'Yli 125', 'MX2', 'MX1'],
-      keys: ['year', 'Alle 500', 'Alle 250', 'Alle 125', 'Yli 125', 'Alle 125 / MX2', 'A-Avoin / MX1'],
-      chartLabel: 'Eniten SM-titteleitä'
-    },
-    mxdn: {
-      title: 'Motocross des Nations',
-      columns: ['Vuosi', 'Maa', 'Kuljettajat'],
-      keys: ['year', 'country', 'riders'],
-      chartLabel: 'Eniten MXdN-voittoja (maa)'
-    },
-    ama: {
-      title: 'AMA-mestarit',
-      columns: ['Vuosi', '500 MX', '450 MX', '450 SX', '250 MX', '250 SX West', '250 SX East'],
-      keys: ['year', '500 MX', '450 MX', '450 SX', '250 MX', '250 SX West', '250 SX East'],
-      chartLabel: 'Eniten AMA-titteleitä'
-    },
-    xama: {
-      title: 'Trans-AMA',
-      columns: ['Vuosi', 'Sarja', 'Kuljettaja', 'Maa', 'Pyörä'],
-      keys: ['year', 'series', 'rider', 'country', 'bike'],
-      chartLabel: 'Trans-AMA voitot'
-    }
-  };
-  
-  function renderTable(tabId) {
-    const config = tabConfig[tabId];
-    const items = DATA[tabId];
-    
-    // Build header
-    const thead = document.getElementById('tableHead');
-    thead.innerHTML = '<tr>' + config.columns.map(c => '<th>' + c + '</th>').join('') + '</tr>';
-    
-    // Build body
-    const tbody = document.getElementById('tableBody');
-    tbody.innerHTML = items.map((item, i) => {
-      const cls = i % 2 === 0 ? '' : ' class="alt"';
-      return '<tr' + cls + '>' + config.keys.map(k => '<td>' + (item[k] || '') + '</td>').join('') + '</tr>';
-    }).join('');
+  // ========== ANIMATED COUNTERS ==========
+  function animateCounters() {
+    document.querySelectorAll('.counter-number').forEach(counter => {
+      const target = parseInt(counter.dataset.target);
+      const duration = 2000;
+      const step = target / (duration / 16);
+      let current = 0;
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+          counter.textContent = target;
+          clearInterval(timer);
+        } else {
+          counter.textContent = Math.floor(current);
+        }
+      }, 16);
+    });
   }
   
-  function renderChart(tabId) {
-    const config = tabConfig[tabId];
-    const items = DATA[tabId];
+  // ========== GLOBAL SEARCH ==========
+  function setupSearch() {
+    const input = document.getElementById('globalSearch');
+    const results = document.getElementById('searchResults');
     
-    // Count titles per person/country
-    const counts = {};
-    
-    if (tabId === 'mxdn') {
-      items.forEach(item => {
-        const key = item.country;
-        if (key) counts[key] = (counts[key] || 0) + 1;
+    input.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+      if (q.length < 2) {
+        results.style.display = 'none';
+        return;
+      }
+      
+      const matches = [];
+      
+      // Search FIM
+      DATA.fim.forEach(e => {
+        Object.entries(e).forEach(([k, v]) => {
+          if (k !== 'year' && v && String(v).toLowerCase().includes(q)) {
+            matches.push({ series: 'FIM MM', year: e.year, cls: k, name: v });
+          }
+        });
+        if (String(e.year).includes(q)) {
+          Object.entries(e).forEach(([k, v]) => {
+            if (k !== 'year' && v) matches.push({ series: 'FIM MM', year: e.year, cls: k, name: v });
+          });
+        }
       });
-    } else if (tabId === 'xama') {
-      items.forEach(item => {
-        const key = item.rider;
-        if (key) counts[key] = (counts[key] || 0) + 1;
+      
+      // Search SM (full podium)
+      DATA.sml_full.forEach(e => {
+        [1, 2, 3].forEach(pos => {
+          const p = e['pos' + pos];
+          if (p) {
+            Object.entries(p).forEach(([k, v]) => {
+              if (v && String(v).toLowerCase().includes(q)) {
+                const medal = pos === 1 ? '🥇' : pos === 2 ? '🥈' : '🥉';
+                matches.push({ series: 'SM ' + medal, year: e.year, cls: k, name: v });
+              }
+            });
+          }
+        });
+        if (String(e.year).includes(q)) {
+          [1, 2, 3].forEach(pos => {
+            const p = e['pos' + pos];
+            if (p) {
+              Object.entries(p).forEach(([k, v]) => {
+                if (v) {
+                  const medal = pos === 1 ? '🥇' : pos === 2 ? '🥈' : '🥉';
+                  matches.push({ series: 'SM ' + medal, year: e.year, cls: k, name: v });
+                }
+              });
+            }
+          });
+        }
       });
-    } else {
-      items.forEach(item => {
-        const keys = config.keys.slice(1);
-        keys.forEach(k => {
-          const name = item[k];
-          if (name && name.trim()) {
-            counts[name] = (counts[name] || 0) + 1;
+      
+      // Search MXdN
+      DATA.mxdn.forEach(e => {
+        if (e.country.toLowerCase().includes(q) || e.riders.toLowerCase().includes(q) || String(e.year).includes(q)) {
+          matches.push({ series: 'MXdN', year: e.year, cls: e.country, name: e.riders });
+        }
+      });
+      
+      // Search AMA
+      DATA.ama.forEach(e => {
+        Object.entries(e).forEach(([k, v]) => {
+          if (k !== 'year' && v && String(v).toLowerCase().includes(q)) {
+            matches.push({ series: 'AMA', year: e.year, cls: k, name: v });
           }
         });
       });
-    }
+      
+      // Search Trans-AMA
+      DATA.xama.forEach(e => {
+        if (e.rider.toLowerCase().includes(q) || e.country.toLowerCase().includes(q) || e.bike.toLowerCase().includes(q) || String(e.year).includes(q)) {
+          matches.push({ series: 'Trans-AMA', year: e.year, cls: e.series, name: e.rider + ' (' + e.country + ', ' + e.bike + ')' });
+        }
+      });
+      
+      // Remove duplicates and limit
+      const unique = [];
+      const seen = new Set();
+      matches.forEach(m => {
+        const key = m.series + m.year + m.cls + m.name;
+        if (!seen.has(key)) {
+          seen.add(key);
+          unique.push(m);
+        }
+      });
+      
+      const limited = unique.slice(0, 30);
+      
+      if (limited.length === 0) {
+        results.innerHTML = '<div class="search-empty">Ei tuloksia haulle "' + q + '"</div>';
+      } else {
+        results.innerHTML = limited.map(m => 
+          '<div class="search-item">' +
+            '<span class="search-series">' + m.series + '</span>' +
+            '<span class="search-year">' + m.year + '</span>' +
+            '<span class="search-class">' + m.cls + '</span>' +
+            '<span class="search-name">' + m.name + '</span>' +
+          '</div>'
+        ).join('');
+      }
+      results.style.display = 'block';
+    });
     
-    // Sort and take top 15
-    const sorted = Object.entries(counts)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 15);
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.search-container')) results.style.display = 'none';
+    });
+  }
+  
+  // ========== TAB: FIM ==========
+  function renderFIM() {
+    const counts = {};
+    DATA.fim.forEach(e => {
+      Object.entries(e).forEach(([k, v]) => {
+        if (k !== 'year' && v) counts[v] = (counts[v] || 0) + 1;
+      });
+    });
     
-    const ctx = document.getElementById('champChart').getContext('2d');
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    const legends = sorted.filter(s => s[1] >= 3);
+    const top15 = sorted.slice(0, 15);
     
+    let html = '<div class="chart-container"><canvas id="fimChart" height="300"></canvas></div>';
+    
+    // Legend cards
+    html += '<h3 class="section-subtitle">Legendat (3+ titteliä)</h3>';
+    html += '<div class="legend-grid">';
+    legends.forEach(([name, count]) => {
+      const titles = [];
+      DATA.fim.forEach(e => {
+        Object.entries(e).forEach(([k, v]) => {
+          if (v === name && k !== 'year') titles.push(e.year + ' ' + k);
+        });
+      });
+      html += '<div class="legend-card">' +
+        '<div class="legend-count">' + count + '</div>' +
+        '<div class="legend-info">' +
+          '<div class="legend-name">' + name + '</div>' +
+          '<div class="legend-titles">' + titles.join(', ') + '</div>' +
+        '</div></div>';
+    });
+    html += '</div>';
+    
+    // Decade table
+    html += '<h3 class="section-subtitle">Kaikki mestarit vuosittain</h3>';
+    html += '<div class="decade-buttons">';
+    const decades = [1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020];
+    decades.forEach(d => {
+      html += '<button class="decade-btn" data-decade="' + d + '">' + d + '-luku</button>';
+    });
+    html += '</div>';
+    html += '<div class="table-scroll"><table class="data-table" id="fimTable">';
+    html += '<thead><tr><th>Vuosi</th><th>500cc</th><th>250cc</th><th>125cc</th><th>MX1</th><th>MX2</th><th>MX3</th><th>MXGP</th><th>WMX</th></tr></thead>';
+    html += '<tbody>';
+    DATA.fim.slice().reverse().forEach((e, i) => {
+      html += '<tr data-decade="' + (Math.floor(e.year / 10) * 10) + '" class="' + (i % 2 ? 'alt' : '') + '">';
+      html += '<td class="year-cell">' + e.year + '</td>';
+      ['500cc', '250cc', '125cc', 'MX1', 'MX2', 'MX3', 'MXGP', 'WMX'].forEach(k => {
+        html += '<td>' + (e[k] || '') + '</td>';
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    
+    document.getElementById('tabContent').innerHTML = html;
+    
+    // Render chart
+    const ctx = document.getElementById('fimChart').getContext('2d');
     if (currentChart) currentChart.destroy();
-    
     currentChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: sorted.map(s => s[0]),
-        datasets: [{
-          label: config.chartLabel,
-          data: sorted.map(s => s[1]),
-          backgroundColor: '#ff9900',
-          borderColor: '#cc7a00',
-          borderWidth: 1,
-          borderRadius: 4
-        }]
+        labels: top15.map(s => s[0]),
+        datasets: [{ label: 'Titteleitä', data: top15.map(s => s[1]), backgroundColor: '#ff9900', borderRadius: 4 }]
       },
       options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        indexAxis: 'y',
-        plugins: {
-          legend: { display: false },
-          title: {
-            display: true,
-            text: config.chartLabel,
-            font: { size: 16, weight: 'bold', family: 'Montserrat' },
-            color: '#1D1D1F'
-          }
-        },
-        scales: {
-          x: {
-            ticks: { stepSize: 1, font: { family: 'Montserrat' } },
-            grid: { color: '#eee' }
-          },
-          y: {
-            ticks: { font: { family: 'Montserrat', size: 12 } },
-            grid: { display: false }
-          }
-        }
+        responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+        plugins: { legend: { display: false }, title: { display: true, text: 'Eniten FIM MM-titteleitä', font: { size: 16, weight: 'bold', family: 'Montserrat' } } },
+        scales: { x: { ticks: { stepSize: 1 } }, y: { ticks: { font: { family: 'Montserrat', size: 11 } } } }
+      }
+    });
+    
+    setupDecadeButtons();
+  }
+  
+  // ========== TAB: SM ==========
+  function renderSML() {
+    // Count SM titles
+    const counts = {};
+    DATA.sml_full.forEach(e => {
+      const p1 = e.pos1;
+      if (p1) {
+        Object.values(p1).forEach(name => {
+          if (name) counts[name] = (counts[name] || 0) + 1;
+        });
+      }
+    });
+    const top15 = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 15);
+    
+    let html = '<div class="chart-container"><canvas id="smlChart" height="300"></canvas></div>';
+    
+    // Decade buttons
+    html += '<h3 class="section-subtitle">SM-podiumit vuosittain</h3>';
+    html += '<div class="decade-buttons">';
+    [1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020].forEach(d => {
+      html += '<button class="decade-btn" data-decade="' + d + '">' + d + '-luku</button>';
+    });
+    html += '<button class="decade-btn active" data-decade="all">Kaikki</button>';
+    html += '</div>';
+    
+    // Podium cards
+    html += '<div class="podium-container" id="podiumContainer">';
+    DATA.sml_full.slice().reverse().forEach(e => {
+      const classes = e.pos1 ? Object.keys(e.pos1) : [];
+      if (classes.length === 0) return;
+      
+      html += '<div class="podium-year" data-decade="' + (Math.floor(e.year / 10) * 10) + '">';
+      html += '<div class="podium-year-label">' + e.year + '</div>';
+      html += '<div class="podium-classes">';
+      
+      classes.forEach(cls => {
+        const shortClass = cls.replace('Alle 125 / ', '').replace('A-Avoin / ', '');
+        html += '<div class="podium-class">';
+        html += '<div class="podium-class-name">' + shortClass + '</div>';
+        [1, 2, 3].forEach(pos => {
+          const p = e['pos' + pos];
+          const name = p ? (p[cls] || '') : '';
+          const medal = pos === 1 ? 'gold' : pos === 2 ? 'silver' : 'bronze';
+          html += '<div class="podium-entry podium-' + medal + '">';
+          html += '<span class="podium-pos">' + pos + '.</span>';
+          html += '<span class="podium-name">' + name + '</span>';
+          html += '</div>';
+        });
+        html += '</div>';
+      });
+      
+      html += '</div></div>';
+    });
+    html += '</div>';
+    
+    document.getElementById('tabContent').innerHTML = html;
+    
+    // Chart
+    const ctx = document.getElementById('smlChart').getContext('2d');
+    if (currentChart) currentChart.destroy();
+    currentChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: top15.map(s => s[0]),
+        datasets: [{ label: 'SM-titteleitä', data: top15.map(s => s[1]), backgroundColor: '#ff9900', borderRadius: 4 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+        plugins: { legend: { display: false }, title: { display: true, text: 'Eniten SM-titteleitä', font: { size: 16, weight: 'bold', family: 'Montserrat' } } },
+        scales: { x: { ticks: { stepSize: 1 } }, y: { ticks: { font: { family: 'Montserrat', size: 11 } } } }
+      }
+    });
+    
+    setupDecadeButtons();
+    setupPodiumDecadeFilter();
+  }
+  
+  // ========== TAB: MXdN ==========
+  function renderMXDN() {
+    const counts = {};
+    DATA.mxdn.forEach(e => { counts[e.country] = (counts[e.country] || 0) + 1; });
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    
+    let html = '<div class="chart-row">';
+    html += '<div class="chart-container chart-half"><canvas id="mxdnDonut" height="300"></canvas></div>';
+    html += '<div class="chart-container chart-half"><canvas id="mxdnBar" height="300"></canvas></div>';
+    html += '</div>';
+    
+    // Country cards
+    html += '<h3 class="section-subtitle">Voitot maittain</h3>';
+    html += '<div class="country-grid">';
+    sorted.forEach(([country, count]) => {
+      const years = DATA.mxdn.filter(e => e.country === country).map(e => e.year);
+      const firstWin = Math.min(...years);
+      const lastWin = Math.max(...years);
+      html += '<div class="country-card">' +
+        '<div class="country-count">' + count + '</div>' +
+        '<div class="country-info">' +
+          '<div class="country-name">' + country + '</div>' +
+          '<div class="country-years">' + firstWin + ' – ' + lastWin + '</div>' +
+        '</div></div>';
+    });
+    html += '</div>';
+    
+    // Timeline
+    html += '<h3 class="section-subtitle">Voittajat vuosittain</h3>';
+    html += '<div class="table-scroll"><table class="data-table">';
+    html += '<thead><tr><th>Vuosi</th><th>Maa</th><th>Kuljettajat</th></tr></thead><tbody>';
+    DATA.mxdn.slice().reverse().forEach((e, i) => {
+      html += '<tr class="' + (i % 2 ? 'alt' : '') + '"><td class="year-cell">' + e.year + '</td><td>' + e.country + '</td><td class="riders-cell">' + e.riders + '</td></tr>';
+    });
+    html += '</tbody></table></div>';
+    
+    document.getElementById('tabContent').innerHTML = html;
+    
+    // Donut chart
+    const ctx1 = document.getElementById('mxdnDonut').getContext('2d');
+    if (currentChart) currentChart.destroy();
+    const colors = ['#ff9900', '#1D1D1F', '#666', '#999', '#cc7a00', '#444', '#bbb', '#ff6600', '#333', '#ddd', '#aa5500', '#555'];
+    currentChart = new Chart(ctx1, {
+      type: 'doughnut',
+      data: {
+        labels: sorted.map(s => s[0]),
+        datasets: [{ data: sorted.map(s => s[1]), backgroundColor: colors.slice(0, sorted.length), borderWidth: 2, borderColor: '#fff' }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { title: { display: true, text: 'MXdN voitot maittain', font: { size: 16, weight: 'bold', family: 'Montserrat' } },
+          legend: { position: 'right', labels: { font: { family: 'Montserrat', size: 11 } } } }
+      }
+    });
+    
+    // Bar chart
+    const ctx2 = document.getElementById('mxdnBar').getContext('2d');
+    if (currentChart2) currentChart2.destroy();
+    currentChart2 = new Chart(ctx2, {
+      type: 'bar',
+      data: {
+        labels: sorted.map(s => s[0]),
+        datasets: [{ label: 'Voittoja', data: sorted.map(s => s[1]), backgroundColor: '#ff9900', borderRadius: 4 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+        plugins: { legend: { display: false }, title: { display: true, text: 'Voitot maittain', font: { size: 16, weight: 'bold', family: 'Montserrat' } } },
+        scales: { x: { ticks: { stepSize: 1 } }, y: { ticks: { font: { family: 'Montserrat', size: 11 } } } }
       }
     });
   }
   
+  // ========== TAB: AMA ==========
+  function renderAMA() {
+    const counts = {};
+    DATA.ama.forEach(e => {
+      Object.entries(e).forEach(([k, v]) => {
+        if (k !== 'year' && v) counts[v] = (counts[v] || 0) + 1;
+      });
+    });
+    const top15 = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 15);
+    
+    let html = '<div class="chart-container"><canvas id="amaChart" height="300"></canvas></div>';
+    
+    html += '<h3 class="section-subtitle">AMA-mestarit vuosittain</h3>';
+    html += '<div class="table-scroll"><table class="data-table">';
+    html += '<thead><tr><th>Vuosi</th><th>500 MX</th><th>450 MX</th><th>450 SX</th><th>250 MX</th><th>250 SX W</th><th>250 SX E</th></tr></thead><tbody>';
+    DATA.ama.slice().reverse().forEach((e, i) => {
+      html += '<tr class="' + (i % 2 ? 'alt' : '') + '"><td class="year-cell">' + e.year + '</td>';
+      ['500 MX', '450 MX', '450 SX', '250 MX', '250 SX West', '250 SX East'].forEach(k => {
+        html += '<td>' + (e[k] || '') + '</td>';
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table></div>';
+    
+    document.getElementById('tabContent').innerHTML = html;
+    
+    const ctx = document.getElementById('amaChart').getContext('2d');
+    if (currentChart) currentChart.destroy();
+    currentChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: top15.map(s => s[0]),
+        datasets: [{ label: 'Titteleitä', data: top15.map(s => s[1]), backgroundColor: '#ff9900', borderRadius: 4 }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, indexAxis: 'y',
+        plugins: { legend: { display: false }, title: { display: true, text: 'Eniten AMA-titteleitä', font: { size: 16, weight: 'bold', family: 'Montserrat' } } },
+        scales: { x: { ticks: { stepSize: 1 } }, y: { ticks: { font: { family: 'Montserrat', size: 11 } } } }
+      }
+    });
+  }
+  
+  // ========== TAB: TRANS-AMA ==========
+  function renderXAMA() {
+    let html = '<div class="xama-grid">';
+    DATA.xama.forEach(e => {
+      html += '<div class="xama-card">' +
+        '<div class="xama-year">' + e.year + '</div>' +
+        '<div class="xama-series">' + e.series + '</div>' +
+        '<div class="xama-rider">' + e.rider + '</div>' +
+        '<div class="xama-details">' + e.country + ' • ' + e.bike + '</div>' +
+      '</div>';
+    });
+    html += '</div>';
+    
+    document.getElementById('tabContent').innerHTML = html;
+    if (currentChart) { currentChart.destroy(); currentChart = null; }
+  }
+  
+  // ========== DECADE FILTER ==========
+  function setupDecadeButtons() {
+    document.querySelectorAll('.decade-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const decade = btn.dataset.decade;
+        document.querySelectorAll('.decade-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        document.querySelectorAll('.data-table tbody tr').forEach(row => {
+          if (decade === 'all' || row.dataset.decade === decade) {
+            row.style.display = '';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+      });
+    });
+  }
+  
+  function setupPodiumDecadeFilter() {
+    document.querySelectorAll('.decade-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const decade = btn.dataset.decade;
+        document.querySelectorAll('.podium-year').forEach(card => {
+          if (decade === 'all' || card.dataset.decade === decade) {
+            card.style.display = '';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  }
+  
+  // ========== TAB SWITCHING ==========
   function switchTab(tabId) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelector('[data-tab="' + tabId + '"]').classList.add('active');
-    renderTable(tabId);
-    renderChart(tabId);
+    if (currentChart2) { currentChart2.destroy(); currentChart2 = null; }
+    
+    const content = document.getElementById('tabContent');
+    content.style.opacity = '0';
+    setTimeout(() => {
+      if (tabId === 'fim') renderFIM();
+      else if (tabId === 'sml') renderSML();
+      else if (tabId === 'mxdn') renderMXDN();
+      else if (tabId === 'ama') renderAMA();
+      else if (tabId === 'xama') renderXAMA();
+      content.style.opacity = '1';
+    }, 200);
   }
   
-  // Tab click handlers
+  // ========== INIT ==========
   document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => switchTab(tab.dataset.tab));
   });
   
-  // Initial render
+  animateCounters();
+  setupSearch();
   switchTab('fim');
 </script>
 
 <style>
-  .stats-page {
-    padding: var(--space-6) 0;
+  .stats-page { padding: var(--space-6) 0; }
+  
+  /* Counters */
+  .counters {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+  }
+  .counter-item {
+    text-align: center;
+    padding: var(--space-4);
+    background: #000;
+    border-radius: var(--radius-md);
+    color: white;
+  }
+  .counter-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--brand-primary);
+    font-family: var(--font-headline);
+  }
+  .counter-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
   }
   
+  /* Search */
+  .search-container {
+    position: relative;
+    margin-bottom: var(--space-5);
+  }
+  .search-input {
+    width: 100%;
+    padding: 16px 20px;
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    border: 2px solid #ddd;
+    border-radius: var(--radius-md);
+    background: white;
+    transition: border-color var(--transition-fast);
+  }
+  .search-input:focus {
+    outline: none;
+    border-color: var(--brand-primary);
+  }
+  .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid var(--brand-primary);
+    border-top: none;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 100;
+    box-shadow: var(--shadow-lg);
+  }
+  .search-item {
+    display: grid;
+    grid-template-columns: 100px 60px 120px 1fr;
+    gap: 8px;
+    padding: 10px 16px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+    align-items: center;
+  }
+  .search-item:hover { background: rgba(255, 153, 0, 0.1); }
+  .search-series {
+    font-weight: 700;
+    color: var(--brand-primary);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+  }
+  .search-year { font-weight: 700; color: #000; }
+  .search-class { color: var(--text-secondary); font-size: 0.85rem; }
+  .search-name { font-weight: 600; }
+  .search-empty { padding: 20px; text-align: center; color: var(--text-secondary); }
+  
+  /* Tabs */
   .tabs {
     display: flex;
     gap: 4px;
     margin-bottom: var(--space-5);
-    flex-wrap: wrap;
     border-bottom: 2px solid #eee;
-    padding-bottom: 0;
   }
-  
   .tab {
     padding: 12px 20px;
     background: none;
@@ -220,16 +651,13 @@ const rawData = fs.readFileSync('public/data/champions.json', 'utf-8');
     margin-bottom: -2px;
     transition: all var(--transition-fast);
   }
+  .tab:hover { color: var(--brand-primary); }
+  .tab.active { color: var(--brand-primary); border-bottom-color: var(--brand-primary); }
   
-  .tab:hover {
-    color: var(--brand-primary);
-  }
+  /* Tab content transition */
+  .tab-content { transition: opacity 0.2s ease; }
   
-  .tab.active {
-    color: var(--brand-primary);
-    border-bottom-color: var(--brand-primary);
-  }
-  
+  /* Charts */
   .chart-container {
     background: var(--bg-secondary);
     border-radius: var(--radius-md);
@@ -237,57 +665,196 @@ const rawData = fs.readFileSync('public/data/champions.json', 'utf-8');
     margin-bottom: var(--space-5);
     height: 450px;
   }
+  .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+  .chart-half { height: 350px; }
   
-  .table-container {
-    overflow-x: auto;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
+  /* Section subtitle */
+  .section-subtitle {
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-bottom: var(--space-3);
+    color: var(--text-primary);
   }
   
-  #statsTable {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9rem;
+  /* Decade buttons */
+  .decade-buttons {
+    display: flex;
+    gap: 8px;
+    margin-bottom: var(--space-4);
+    flex-wrap: wrap;
   }
-  
-  #statsTable th {
-    background: #000;
-    color: white;
+  .decade-btn {
+    padding: 8px 16px;
+    background: var(--bg-secondary);
+    border: 2px solid #ddd;
+    border-radius: var(--radius-full);
     font-family: var(--font-headline);
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+  .decade-btn:hover, .decade-btn.active {
+    background: var(--brand-primary);
+    border-color: var(--brand-primary);
+    color: white;
+  }
+  
+  /* Legend cards (FIM) */
+  .legend-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+  }
+  .legend-card {
+    display: flex;
+    gap: var(--space-3);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    align-items: center;
+    transition: transform var(--transition-fast);
+  }
+  .legend-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .legend-count {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--brand-primary);
+    min-width: 50px;
+    text-align: center;
+    font-family: var(--font-headline);
+  }
+  .legend-name { font-weight: 800; font-size: 1rem; margin-bottom: 4px; }
+  .legend-titles { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.4; }
+  
+  /* Podium (SM) */
+  .podium-container { display: flex; flex-direction: column; gap: var(--space-3); }
+  .podium-year {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: var(--space-3);
+    align-items: start;
+  }
+  .podium-year-label {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--brand-primary);
+    font-family: var(--font-headline);
+  }
+  .podium-classes { display: flex; gap: var(--space-4); flex-wrap: wrap; }
+  .podium-class { min-width: 160px; }
+  .podium-class-name {
+    font-weight: 800;
     font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    padding: 12px 14px;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+  }
+  .podium-entry {
+    display: flex;
+    gap: 8px;
+    padding: 3px 0;
+    font-size: 0.85rem;
+  }
+  .podium-pos { font-weight: 700; min-width: 20px; }
+  .podium-gold .podium-pos { color: #D4A017; }
+  .podium-gold .podium-name { font-weight: 700; }
+  .podium-silver .podium-pos { color: #888; }
+  .podium-silver .podium-name { color: var(--text-secondary); }
+  .podium-bronze .podium-pos { color: #A0522D; }
+  .podium-bronze .podium-name { color: var(--text-secondary); font-size: 0.8rem; }
+  
+  /* Country cards (MXdN) */
+  .country-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+  }
+  .country-card {
+    display: flex;
+    gap: var(--space-2);
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    align-items: center;
+  }
+  .country-card:hover { box-shadow: var(--shadow-md); }
+  .country-count {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--brand-primary);
+    min-width: 45px;
+    text-align: center;
+  }
+  .country-name { font-weight: 800; font-size: 0.95rem; }
+  .country-years { font-size: 0.8rem; color: var(--text-secondary); }
+  
+  /* Trans-AMA cards */
+  .xama-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--space-3);
+  }
+  .xama-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    transition: transform var(--transition-fast);
+  }
+  .xama-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .xama-year { font-size: 1.5rem; font-weight: 900; color: var(--brand-primary); }
+  .xama-series { font-size: 0.8rem; text-transform: uppercase; font-weight: 700; color: var(--text-secondary); margin-bottom: 4px; }
+  .xama-rider { font-weight: 800; font-size: 1rem; }
+  .xama-details { font-size: 0.85rem; color: var(--text-secondary); }
+  
+  /* Data tables */
+  .table-scroll {
+    max-height: 500px;
+    overflow-y: auto;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  .data-table th {
+    background: #000;
+    color: white;
+    font-family: var(--font-headline);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 10px 12px;
     text-align: left;
     position: sticky;
     top: 0;
+    z-index: 1;
   }
-  
-  #statsTable td {
-    padding: 10px 14px;
-    border-bottom: 1px solid #eee;
-  }
-  
-  #statsTable tr.alt {
-    background: var(--bg-secondary);
-  }
-  
-  #statsTable tr:hover {
-    background: rgba(255, 153, 0, 0.1);
-  }
+  .data-table td { padding: 8px 12px; border-bottom: 1px solid #eee; }
+  .data-table tr.alt { background: var(--bg-secondary); }
+  .data-table tr:hover { background: rgba(255, 153, 0, 0.1); }
+  .year-cell { font-weight: 800; color: var(--brand-primary); }
+  .riders-cell { font-size: 0.8rem; }
   
   @media (max-width: 768px) {
-    .tabs {
-      gap: 2px;
-    }
-    
-    .tab {
-      padding: 8px 12px;
-      font-size: 0.75rem;
-    }
-    
-    .chart-container {
-      height: 350px;
-    }
+    .counters { grid-template-columns: repeat(2, 1fr); }
+    .counter-number { font-size: 2rem; }
+    .tabs { overflow-x: auto; flex-wrap: nowrap; }
+    .tab { font-size: 0.75rem; padding: 10px 14px; white-space: nowrap; }
+    .chart-row { grid-template-columns: 1fr; }
+    .chart-half { height: 300px; }
+    .search-item { grid-template-columns: 80px 50px 1fr; }
+    .search-class { display: none; }
+    .legend-grid { grid-template-columns: 1fr; }
+    .podium-year { grid-template-columns: 1fr; }
+    .podium-year-label { font-size: 1.2rem; }
   }
 </style>

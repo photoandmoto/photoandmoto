@@ -1730,5 +1730,1111 @@
       "country": "Yhdysvallat",
       "bike": "Suzuki"
     }
+  ],
+  "sml_full": [
+    {
+      "year": 1954,
+      "pos1": {
+        "Alle 500": "Rein Raimo"
+      },
+      "pos3": {
+        "Alle 500": "Räsänen Martti"
+      }
+    },
+    {
+      "year": 1955,
+      "pos1": {
+        "Alle 500": "Rein Raimo"
+      }
+    },
+    {
+      "year": 1957,
+      "pos1": {
+        "Alle 500": "Rein Raimo",
+        "Alle 250": "Kiukkonen Osmo"
+      },
+      "pos2": {
+        "Alle 500": "Honkala Tarkko",
+        "Alle 250": "Tiitola Antti-Jussi"
+      },
+      "pos3": {
+        "Alle 500": "Salonen Atte",
+        "Alle 250": "Rein Raimo"
+      }
+    },
+    {
+      "year": 1958,
+      "pos1": {
+        "Alle 500": "Rein Raimo",
+        "Alle 250": "Rein Raimo"
+      },
+      "pos2": {
+        "Alle 500": "Nyman Frank",
+        "Alle 250": "Grönqvist Vidar"
+      },
+      "pos3": {
+        "Alle 500": "Honkala Tarkko",
+        "Alle 250": "Hjelt Matti / K. Benjaminsson"
+      }
+    },
+    {
+      "year": 1959,
+      "pos1": {
+        "Alle 500": "Rein Raimo",
+        "Alle 250": "Rein Raimo"
+      },
+      "pos2": {
+        "Alle 500": "Erola Aarno",
+        "Alle 250": "Nyman Frank"
+      },
+      "pos3": {
+        "Alle 500": "Benjaminsson Keijo",
+        "Alle 250": "Luotonen Rainer"
+      }
+    },
+    {
+      "year": 1960,
+      "pos1": {
+        "Alle 500": "Rein Raimo",
+        "Alle 250": "Erola Aarno"
+      },
+      "pos2": {
+        "Alle 500": "Luotonen Rainer",
+        "Alle 250": "Kiukkonen Osmo"
+      },
+      "pos3": {
+        "Alle 500": "Hokkanen Olavi",
+        "Alle 250": "Benjaminsson Keijo"
+      }
+    },
+    {
+      "year": 1961,
+      "pos1": {
+        "Alle 500": "Luotonen Rainer",
+        "Alle 250": "Kalteva Pentti"
+      },
+      "pos2": {
+        "Alle 500": "Rein Raimo",
+        "Alle 250": "Honkala Tarkko"
+      },
+      "pos3": {
+        "Alle 500": "Nyman Frank",
+        "Alle 250": "Kiukkonen Osmo"
+      }
+    },
+    {
+      "year": 1962,
+      "pos1": {
+        "Alle 500": "Nyman Frank",
+        "Alle 250": "Erola Aarno"
+      },
+      "pos2": {
+        "Alle 500": "Dufvelin Lars",
+        "Alle 250": "Kalteva Pentti"
+      },
+      "pos3": {
+        "Alle 500": "Luotonen Rainer",
+        "Alle 250": "Kiukkonen Osmo"
+      }
+    },
+    {
+      "year": 1963,
+      "pos1": {
+        "Alle 500": "Erola Aarno",
+        "Alle 250": "Kalteva Pentti"
+      },
+      "pos2": {
+        "Alle 500": "Nyman Frank",
+        "Alle 250": "Rein Raimo"
+      },
+      "pos3": {
+        "Alle 500": "Hokkanen Olavi",
+        "Alle 250": "Kiukkonen Osmo"
+      }
+    },
+    {
+      "year": 1964,
+      "pos1": {
+        "Alle 500": "Wickström Arne",
+        "Alle 250": "Rein Raimo"
+      },
+      "pos2": {
+        "Alle 500": "Hämäläinen Juhani",
+        "Alle 250": "Kalteva Pentti"
+      },
+      "pos3": {
+        "Alle 500": "Dufvelin Lars",
+        "Alle 250": "Lehmuskoski Jaakko"
+      }
+    },
+    {
+      "year": 1965,
+      "pos1": {
+        "Alle 500": "Dufvelin Lars",
+        "Alle 250": "Rein Raimo"
+      },
+      "pos2": {
+        "Alle 500": "Nyman Frank",
+        "Alle 250": "Storm Jyrki"
+      },
+      "pos3": {
+        "Alle 500": "Wickström Arne",
+        "Alle 250": "Lehmuskoski Jaakko"
+      }
+    },
+    {
+      "year": 1966,
+      "pos1": {
+        "Alle 500": "Rein Raimo",
+        "Alle 250": "Järvinen Jorma"
+      },
+      "pos2": {
+        "Alle 500": "Nyman Frank",
+        "Alle 250": "Storm Jyrki"
+      },
+      "pos3": {
+        "Alle 500": "Wickström Arne",
+        "Alle 250": "Vehkonen Kalevi"
+      }
+    },
+    {
+      "year": 1967,
+      "pos1": {
+        "Alle 500": "Lehmuskoski Jaakko",
+        "Alle 250": "Järvinen Jorma"
+      },
+      "pos2": {
+        "Alle 500": "Dufvelin Lars",
+        "Alle 250": "Lehtinen Aimo"
+      },
+      "pos3": {
+        "Alle 500": "Rein Raimo",
+        "Alle 250": "Mikkola Heikki"
+      }
+    },
+    {
+      "year": 1968,
+      "pos1": {
+        "Alle 500": "Rasilainen Risto",
+        "Alle 250": "Vehkonen Kalevi"
+      },
+      "pos2": {
+        "Alle 500": "Lehmuskoski Jaakko",
+        "Alle 250": "Mikkola Heikki"
+      },
+      "pos3": {
+        "Alle 500": "Rein Raimo",
+        "Alle 250": "Lehtinen Aimo"
+      }
+    },
+    {
+      "year": 1969,
+      "pos1": {
+        "Alle 500": "Rasilainen Risto",
+        "Alle 250": "Öhberg Lars"
+      },
+      "pos2": {
+        "Alle 500": "Fredriksson Krister",
+        "Alle 250": "Järvinen Jorma"
+      },
+      "pos3": {
+        "Alle 500": "Rein Raimo",
+        "Alle 250": "Tirinen Juha"
+      }
+    },
+    {
+      "year": 1970,
+      "pos1": {
+        "Alle 500": "Lehmuskoski Jaakko",
+        "Alle 250": "Tirinen Juha"
+      },
+      "pos2": {
+        "Alle 500": "Rasilainen Risto",
+        "Alle 250": "Johansson Jack"
+      },
+      "pos3": {
+        "Alle 500": "Piippola Pauli",
+        "Alle 250": "Järvinen Jorma"
+      }
+    },
+    {
+      "year": 1971,
+      "pos1": {
+        "Alle 500": "Rasilainen Risto",
+        "Alle 250": "Johansson Jack"
+      },
+      "pos2": {
+        "Alle 500": "Nissinen Kari",
+        "Alle 250": "Öhberg Lars"
+      },
+      "pos3": {
+        "Alle 500": "Nurmi Timo",
+        "Alle 250": "Tirinen Juha"
+      }
+    },
+    {
+      "year": 1972,
+      "pos1": {
+        "Alle 500": "Tirinen Juha",
+        "Alle 250": "Öhberg Lars"
+      },
+      "pos2": {
+        "Alle 500": "Lehtinen Aimo",
+        "Alle 250": "Järvinen Jorma"
+      },
+      "pos3": {
+        "Alle 500": "Rasilainen Risto",
+        "Alle 250": "Tirinen Juha"
+      }
+    },
+    {
+      "year": 1973,
+      "pos1": {
+        "Alle 500": "Piippola Pauli",
+        "Alle 250": "Järvinen Jorma"
+      },
+      "pos2": {
+        "Alle 500": "Mikkola Heikki",
+        "Alle 250": "Öhberg Lars"
+      },
+      "pos3": {
+        "Alle 500": "Lehtinen Aimo",
+        "Alle 250": "Vehkonen Kalevi"
+      }
+    },
+    {
+      "year": 1974,
+      "pos1": {
+        "Alle 500": "Mikkola Heikki",
+        "Alle 250": "Vehkonen Kalevi"
+      },
+      "pos2": {
+        "Alle 500": "Piippola Pauli",
+        "Alle 250": "Järvinen Jorma"
+      },
+      "pos3": {
+        "Alle 500": "Pikkarainen Tapani",
+        "Alle 250": "Sundström Erkki"
+      }
+    },
+    {
+      "year": 1975,
+      "pos1": {
+        "Alle 500": "Mikkola Heikki",
+        "Alle 250": "Mikkola Heikki",
+        "Alle 125": "Remes Timo"
+      },
+      "pos2": {
+        "Alle 500": "Pietola Erkki",
+        "Alle 250": "Sundström Erkki",
+        "Alle 125": "Tirinen Juha"
+      },
+      "pos3": {
+        "Alle 500": "Liljegren Göte",
+        "Alle 250": "Vehkonen Kalevi",
+        "Alle 125": "Salovaara Kari"
+      }
+    },
+    {
+      "year": 1976,
+      "pos1": {
+        "Alle 500": "Mikkola Heikki",
+        "Alle 250": "Mikkola Heikki",
+        "Alle 125": "Autio Matti"
+      },
+      "pos2": {
+        "Alle 500": "Piippola Pauli",
+        "Alle 250": "Sundström Erkki",
+        "Alle 125": "Isomäki Seppo"
+      },
+      "pos3": {
+        "Alle 500": "Pietola Erkki",
+        "Alle 250": "Pikkarainen Tapani",
+        "Alle 125": "Remes Timo"
+      }
+    },
+    {
+      "year": 1977,
+      "pos1": {
+        "Alle 500": "Mikkola Heikki",
+        "Alle 250": "Pikkarainen Tapani",
+        "Alle 125": "Autio Matti"
+      },
+      "pos2": {
+        "Alle 500": "Hahl Reino",
+        "Alle 250": "Sundström Erkki",
+        "Alle 125": "Isomäki Seppo"
+      },
+      "pos3": {
+        "Alle 500": "Öhberg Lars",
+        "Alle 250": "Tarkkonen Matti",
+        "Alle 125": "Liljegren Göte"
+      }
+    },
+    {
+      "year": 1978,
+      "pos1": {
+        "Alle 500": "Mikkola Heikki",
+        "Alle 250": "Sundström Erkki",
+        "Alle 125": "Autio Matti"
+      },
+      "pos2": {
+        "Alle 500": "Pietola Erkki",
+        "Alle 250": "Tarkkonen Matti",
+        "Alle 125": "Liljegren Göte"
+      },
+      "pos3": {
+        "Alle 500": "Oksanen Anssi",
+        "Alle 250": "Pikkarainen Tapani",
+        "Alle 125": "Isomäki Seppo"
+      }
+    },
+    {
+      "year": 1979,
+      "pos1": {
+        "Alle 500": "Mikkola Heikki",
+        "Alle 250": "Sundström Erkki",
+        "Alle 125": "Autio Matti"
+      },
+      "pos2": {
+        "Alle 500": "Pikkarainen Tapani",
+        "Alle 250": "Sintonen Jukka",
+        "Alle 125": "Isomäki Seppo"
+      },
+      "pos3": {
+        "Alle 500": "Öhberg Lars",
+        "Alle 250": "Tarkkonen Matti",
+        "Alle 125": "Liljegren Göte"
+      }
+    },
+    {
+      "year": 1980,
+      "pos1": {
+        "Alle 500": "Pikkarainen Tapani",
+        "Alle 250": "Sundström Erkki",
+        "Alle 125": "Autio Matti"
+      },
+      "pos2": {
+        "Alle 500": "Öhberg Lars",
+        "Alle 250": "Tarkkonen Matti",
+        "Alle 125": "Isomäki Seppo"
+      },
+      "pos3": {
+        "Alle 500": "Oksanen Anssi",
+        "Alle 250": "Taimi Simo",
+        "Alle 125": "Liljegren Göte"
+      }
+    },
+    {
+      "year": 1981,
+      "pos1": {
+        "Alle 500": "Pikkarainen Tapani",
+        "Alle 250": "Tarkkonen Matti",
+        "Alle 125": "Autio Matti"
+      },
+      "pos2": {
+        "Alle 500": "Sintonen Jukka",
+        "Alle 250": "Sundström Erkki",
+        "Alle 125": "Isomäki Seppo"
+      },
+      "pos3": {
+        "Alle 500": "Flink Tom",
+        "Alle 250": "Autio Matti",
+        "Alle 125": "Viiri Ari"
+      }
+    },
+    {
+      "year": 1982,
+      "pos1": {
+        "Alle 500": "Sintonen Jukka",
+        "Alle 250": "Sundström Erkki",
+        "Alle 125": "Vehkonen Pekka"
+      },
+      "pos2": {
+        "Alle 500": "Pikkarainen Tapani",
+        "Alle 250": "Taimi Simo",
+        "Alle 125": "Ljunqvist Kurt"
+      },
+      "pos3": {
+        "Alle 500": "Flink Tom",
+        "Alle 250": "Tarkkonen Matti",
+        "Alle 125": "Pikkarainen Tapani"
+      }
+    },
+    {
+      "year": 1983,
+      "pos1": {
+        "Alle 500": "Sintonen Jukka",
+        "Alle 250": "Tarkkonen Matti",
+        "Alle 125": "Vehkonen Pekka"
+      },
+      "pos2": {
+        "Alle 500": "Tarkkonen Matti",
+        "Alle 250": "Taimi Simo",
+        "Alle 125": "Panttila Arto"
+      },
+      "pos3": {
+        "Alle 500": "Pikkarainen Tapani",
+        "Alle 250": "Vehkonen Pekka",
+        "Alle 125": "Ljunqvist Kurt"
+      }
+    },
+    {
+      "year": 1984,
+      "pos1": {
+        "Alle 500": "Ljunqvist Kurt",
+        "Alle 250": "Taimi Simo",
+        "Alle 125": "Panttila Arto"
+      },
+      "pos2": {
+        "Alle 500": "Kokkonen Tapio",
+        "Alle 250": "Tarkkonen Matti",
+        "Alle 125": "Kokkonen Tapio"
+      },
+      "pos3": {
+        "Alle 500": "Backman Sami",
+        "Alle 250": "Viiri Ari",
+        "Alle 125": "Kouki Mika"
+      }
+    },
+    {
+      "year": 1985,
+      "pos1": {
+        "Alle 500": "Sintonen Jukka",
+        "Alle 250": "Ljunqvist Kurt",
+        "Alle 125": "Panttila Arto"
+      },
+      "pos2": {
+        "Alle 500": "Ljunqvist Kurt",
+        "Alle 250": "Taimi Simo",
+        "Alle 125": "Kouki Mika"
+      },
+      "pos3": {
+        "Alle 500": "Flink Tom",
+        "Alle 250": "Kokkonen Tapio",
+        "Alle 125": "Vehkonen Pekka"
+      }
+    },
+    {
+      "year": 1986,
+      "pos1": {
+        "Alle 500": "Kokkonen Tapio",
+        "Alle 250": "Taimi Simo",
+        "Alle 125": "Kouki Mika"
+      },
+      "pos2": {
+        "Alle 500": "Rantanen Kari",
+        "Alle 250": "Ljunqvist Kurt",
+        "Alle 125": "Vehkonen Pekka"
+      },
+      "pos3": {
+        "Alle 500": "Hakokivi Ari",
+        "Alle 250": "Tiainen Kari",
+        "Alle 125": "Panttila Arto"
+      }
+    },
+    {
+      "year": 1987,
+      "pos1": {
+        "Alle 500": "Ljunqvist Kurt",
+        "Alle 250": "Vehkonen Pekka",
+        "Alle 125": "Hagström Pasi"
+      },
+      "pos2": {
+        "Alle 500": "Rantanen Kari",
+        "Alle 250": "Taimi Simo",
+        "Alle 125": "Pirhonen Petri"
+      },
+      "pos3": {
+        "Alle 500": "Thorman Juhani",
+        "Alle 250": "Tiainen Kari",
+        "Alle 125": "Helin Kari"
+      }
+    },
+    {
+      "year": 1988,
+      "pos1": {
+        "Alle 500": "Vehkonen Ismo",
+        "Alle 250": "Hagström Pasi",
+        "Alle 125": "Kouki Mika"
+      },
+      "pos2": {
+        "Alle 500": "Kokkonen Tapio",
+        "Alle 250": "Vuorinen Jyrki",
+        "Alle 125": "Hagström Pasi"
+      },
+      "pos3": {
+        "Alle 500": "Ljunqvist Kurt",
+        "Alle 250": "Nokelainen Toni",
+        "Alle 125": "Nokelainen Toni"
+      }
+    },
+    {
+      "year": 1989,
+      "pos1": {
+        "Alle 500": "Ljunqvist Kurt",
+        "Alle 250": "Vehkonen Pekka",
+        "Alle 125": "Nevala Ari"
+      },
+      "pos2": {
+        "Alle 500": "Helin Kari",
+        "Alle 250": "Vehkonen Ismo",
+        "Alle 125": "Räikkönen Toni"
+      },
+      "pos3": {
+        "Alle 500": "Eckert Jaakko",
+        "Alle 250": "Kytölä Petteri",
+        "Alle 125": "Kytölä Petteri"
+      }
+    },
+    {
+      "year": 1990,
+      "pos1": {
+        "Alle 500": "Panttila Arto",
+        "Alle 250": "Vehkonen Ismo",
+        "Alle 125": "Koskela Marko"
+      },
+      "pos2": {
+        "Alle 500": "Ljunqvist Kurt",
+        "Alle 250": "Vehkonen Pekka",
+        "Alle 125": "Panttila Arto"
+      },
+      "pos3": {
+        "Alle 500": "Åstedt Ari",
+        "Alle 250": "Kytölä Petteri",
+        "Alle 125": "Räikkönen Toni"
+      }
+    },
+    {
+      "year": 1991,
+      "pos1": {
+        "Alle 500": "Ljunqvist Kurt",
+        "Alle 250": "Aaltonen Miska",
+        "Alle 125": "Seppälä Veli-Petteri"
+      },
+      "pos2": {
+        "Alle 500": "Panttila Arto",
+        "Alle 250": "Vehkonen Pekka",
+        "Alle 125": "Paakkinen Sami"
+      },
+      "pos3": {
+        "Alle 500": "Ketonen Sasu",
+        "Alle 250": "Heljanko Simo",
+        "Alle 125": "Aaltonen Miska"
+      }
+    },
+    {
+      "year": 1992,
+      "pos1": {
+        "Alle 500": "Panttila Arto",
+        "Alle 250": "Kytölä Petteri",
+        "Alle 125": "Panttila Arto"
+      },
+      "pos2": {
+        "Alle 500": "Sten Kimmo",
+        "Alle 250": "Seppälä Veli-Petteri",
+        "Alle 125": "Kytölä Petteri"
+      },
+      "pos3": {
+        "Alle 500": "Eckert Jaakko",
+        "Alle 250": "Heljanko Simo",
+        "Alle 125": "Räikkönen Toni"
+      }
+    },
+    {
+      "year": 1993,
+      "pos1": {
+        "Alle 125": "Aaltonen Miska",
+        "Yli 125": "Aaltonen Miska"
+      },
+      "pos2": {
+        "Alle 125": "Seppälä Veli-Petteri",
+        "Yli 125": "Kovalainen Marko"
+      },
+      "pos3": {
+        "Alle 125": "Aaltonen Jari",
+        "Yli 125": "Broberg Tony"
+      }
+    },
+    {
+      "year": 1994,
+      "pos1": {
+        "Alle 125": "Aaltonen Miska",
+        "Yli 125": "Kovalainen Marko"
+      },
+      "pos2": {
+        "Alle 125": "Nykänen Mikko",
+        "Yli 125": "Räikkönen Toni"
+      },
+      "pos3": {
+        "Alle 125": "Räikkönen Toni",
+        "Yli 125": "Seppälä Veli-Petteri"
+      }
+    },
+    {
+      "year": 1995,
+      "pos1": {
+        "Alle 125": "Konttinen J-P",
+        "Yli 125": "Aaltonen Miska"
+      },
+      "pos2": {
+        "Alle 125": "Gröning Toni",
+        "Yli 125": "Nykänen Mikko"
+      },
+      "pos3": {
+        "Alle 125": "Gustafsson Petteri",
+        "Yli 125": "Kovalainen Marko"
+      }
+    },
+    {
+      "year": 1996,
+      "pos1": {
+        "Alle 125": "Aaltonen Miska",
+        "Yli 125": "Aaltonen Miska"
+      },
+      "pos2": {
+        "Alle 125": "Kovalainen Marko",
+        "Yli 125": "Kovalainen Marko"
+      },
+      "pos3": {
+        "Alle 125": "Saarenkoski Mika",
+        "Yli 125": "Aro Samuli"
+      }
+    },
+    {
+      "year": 1997,
+      "pos1": {
+        "Alle 125": "Saarenkoski Mika",
+        "Yli 125": "Aaltonen Miska"
+      },
+      "pos2": {
+        "Alle 125": "Pyrhönen Antti",
+        "Yli 125": "Asplund Kent"
+      },
+      "pos3": {
+        "Alle 125": "Vehviläinen Jussi",
+        "Yli 125": "Saarenkoski Mika"
+      }
+    },
+    {
+      "year": 1998,
+      "pos1": {
+        "Alle 125": "Gustafsson Petteri",
+        "Yli 125": "Gustafsson Petteri"
+      },
+      "pos2": {
+        "Alle 125": "Pyrhönen Antti",
+        "Yli 125": "Kovalainen Marko"
+      },
+      "pos3": {
+        "Alle 125": "Vehviläinen Jussi",
+        "Yli 125": "Aaltonen Miska"
+      }
+    },
+    {
+      "year": 1999,
+      "pos1": {
+        "Alle 125": "Pyrhönen Antti",
+        "Yli 125": "Aaltonen Miska"
+      },
+      "pos2": {
+        "Alle 125": "Kallonen Antti",
+        "Yli 125": "Kovalainen Marko"
+      },
+      "pos3": {
+        "Alle 125": "Gustafsson Petteri",
+        "Yli 125": "Pyrhönen Antti"
+      }
+    },
+    {
+      "year": 2000,
+      "pos1": {
+        "Alle 125 / MX2": "Pyrhönen Antti",
+        "A-Avoin / MX1": "Kovalainen Marko"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Gustafsson Petteri",
+        "A-Avoin / MX1": "Kallonen Antti"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Kalatie Niko",
+        "A-Avoin / MX1": "Konttinen Tomi"
+      }
+    },
+    {
+      "year": 2001,
+      "pos1": {
+        "Alle 125 / MX2": "Gustafsson Petteri",
+        "A-Avoin / MX1": "Asplund Kent"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Aaltonen Timo",
+        "A-Avoin / MX1": "Kalatie Niko"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Wiik Aleksander",
+        "A-Avoin / MX1": "Lehmusvirta Tommi"
+      }
+    },
+    {
+      "year": 2002,
+      "pos1": {
+        "Alle 125 / MX2": "Kalatie Niko",
+        "A-Avoin / MX1": "Salminen Juha"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Seistola Matti",
+        "A-Avoin / MX1": "Kalatie Niko"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Wiik Alexander",
+        "A-Avoin / MX1": "Kovalainen Marko"
+      }
+    },
+    {
+      "year": 2003,
+      "pos1": {
+        "Alle 125 / MX2": "Kalatie Niko",
+        "A-Avoin / MX1": "Asplund Kent"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Lehmusvirta Tommi",
+        "A-Avoin / MX1": "Pirinen Jukka"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Seistola Matti",
+        "A-Avoin / MX1": "Poikela Hannu"
+      }
+    },
+    {
+      "year": 2004,
+      "pos1": {
+        "Alle 125 / MX2": "Pirinen Jukka",
+        "A-Avoin / MX1": "Asplund Kent"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Seistola Matti",
+        "A-Avoin / MX1": "Pirinen Jukka"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Nikkilä Jussi",
+        "A-Avoin / MX1": "Poikela Hannu"
+      }
+    },
+    {
+      "year": 2005,
+      "pos1": {
+        "Alle 125 / MX2": "Remes Eero",
+        "A-Avoin / MX1": "Pirinen Jukka"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Lehmusvirta Tommi",
+        "A-Avoin / MX1": "Kalatie Niko"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Pirinen Jukka",
+        "A-Avoin / MX1": "Remes Eero"
+      }
+    },
+    {
+      "year": 2006,
+      "pos1": {
+        "Alle 125 / MX2": "Remes Eero",
+        "A-Avoin / MX1": "Remes Eero"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Lehmusvirta Tommi",
+        "A-Avoin / MX1": "Kalatie Niko"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Eriksson Toni",
+        "A-Avoin / MX1": "Jaakola Markus"
+      }
+    },
+    {
+      "year": 2007,
+      "pos1": {
+        "Alle 125 / MX2": "Lehmusvirta Tommi",
+        "A-Avoin / MX1": "Vehviläinen Jussi"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Nikkilä Jussi",
+        "A-Avoin / MX1": "Remes Eero"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Eriksson Toni",
+        "A-Avoin / MX1": "Poikela Hannu"
+      }
+    },
+    {
+      "year": 2008,
+      "pos1": {
+        "Alle 125 / MX2": "Mäkinen Tommi",
+        "A-Avoin / MX1": "Pyrhönen Antti"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Eriksson Toni",
+        "A-Avoin / MX1": "Mäkinen Tommi"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Kullas Harri",
+        "A-Avoin / MX1": "Nikkilä Jussi"
+      }
+    },
+    {
+      "year": 2009,
+      "pos1": {
+        "Alle 125 / MX2": "Remes Eero",
+        "A-Avoin / MX1": "Nikkilä Jussi"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Koskela Niko",
+        "A-Avoin / MX1": "Pirinen Jukka"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Eriksson Toni",
+        "A-Avoin / MX1": "Kullas Harri"
+      }
+    },
+    {
+      "year": 2010,
+      "pos1": {
+        "Alle 125 / MX2": "Söderberg Ludde",
+        "A-Avoin / MX1": "Eriksson Toni"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Jousi Atte",
+        "A-Avoin / MX1": "Nikkilä Jussi"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Oinonen Miika",
+        "A-Avoin / MX1": "Tiainen Santtu"
+      }
+    },
+    {
+      "year": 2011,
+      "pos1": {
+        "Alle 125 / MX2": "Jousi Atte",
+        "A-Avoin / MX1": "Mäkinen Tommi"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Koskela Niko",
+        "A-Avoin / MX1": "Koskela Niko"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Lehtinen Teemu",
+        "A-Avoin / MX1": "Jousi Atte"
+      }
+    },
+    {
+      "year": 2012,
+      "pos1": {
+        "Alle 125 / MX2": "Stigell Henric",
+        "A-Avoin / MX1": "Eriksson Toni"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Matikainen Juuso",
+        "A-Avoin / MX1": "Kalatie Niko"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Manninen Aki",
+        "A-Avoin / MX1": "Rouhiainen Riku"
+      }
+    },
+    {
+      "year": 2013,
+      "pos1": {
+        "Alle 125 / MX2": "Kahro Erki (Viro)",
+        "A-Avoin / MX1": "Eriksson Toni"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Oinonen Miika",
+        "A-Avoin / MX1": "Kahro Erki (Viro)"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Heimonen Joonas",
+        "A-Avoin / MX1": "Rouhiainen Riku"
+      }
+    },
+    {
+      "year": 2014,
+      "pos1": {
+        "Alle 125 / MX2": "Stigell Henric",
+        "A-Avoin / MX1": "Tiainen Santtu"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Manninen Aki",
+        "A-Avoin / MX1": "Söderberg Ludde"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Keljo Teemu",
+        "A-Avoin / MX1": "Eriksson Toni"
+      }
+    },
+    {
+      "year": 2015,
+      "pos1": {
+        "Alle 125 / MX2": "Manninen Aki",
+        "A-Avoin / MX1": "Stigell Henric"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Sihvonen Miro",
+        "A-Avoin / MX1": "Söderberg Ludde"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Haavisto Jere",
+        "A-Avoin / MX1": "Roos Jani"
+      }
+    },
+    {
+      "year": 2016,
+      "pos1": {
+        "Alle 125 / MX2": "Savaste Kim",
+        "A-Avoin / MX1": "Manninen Aki"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Matikainen Juuso",
+        "A-Avoin / MX1": "Keljo Teemu"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Haavisto Jere",
+        "A-Avoin / MX1": "Roos Jani"
+      }
+    },
+    {
+      "year": 2017,
+      "pos1": {
+        "Alle 125 / MX2": "Haavisto Jere",
+        "A-Avoin / MX1": "Tiainen Santtu"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Matikainen Juuso",
+        "A-Avoin / MX1": "Eriksson Toni"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Kytönen Roni",
+        "A-Avoin / MX1": "Kahro Erki (Viro)"
+      }
+    },
+    {
+      "year": 2018,
+      "pos1": {
+        "Alle 125 / MX2": "Santeri Kinnunen",
+        "A-Avoin / MX1": "Erki Kahro"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Roni Kytönen",
+        "A-Avoin / MX1": "Juuso Matikainen"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Aleksi Kurvinen",
+        "A-Avoin / MX1": "Santtu Tiainen"
+      }
+    },
+    {
+      "year": 2019,
+      "pos1": {
+        "Alle 125 / MX2": "Silander Emi",
+        "A-Avoin / MX1": "Matikainen Juuso"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Vesterinen Matias",
+        "A-Avoin / MX1": "Kutsar Karel (Viro)"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Koskinen Kimi",
+        "A-Avoin / MX1": "Mägi Indrek (Viro)"
+      }
+    },
+    {
+      "year": 2020,
+      "pos1": {
+        "Alle 125 / MX2": "Koskinen Kimi",
+        "A-Avoin / MX1": "Savaste Kim Eric"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Vesterinen Matias",
+        "A-Avoin / MX1": "Sihvonen Miro"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Nieminen Maun",
+        "A-Avoin / MX1": "Silander Emil"
+      }
+    },
+    {
+      "year": 2021,
+      "pos1": {
+        "Alle 125 / MX2": "Vesterinen Matias",
+        "A-Avoin / MX1": "Mägi Indrek (Viro)"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Nieminen Mauno",
+        "A-Avoin / MX1": "Kullas Harri"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Kangasniemi Kasper",
+        "A-Avoin / MX1": "Silander Emil"
+      }
+    },
+    {
+      "year": 2022,
+      "pos1": {
+        "Alle 125 / MX2": "Koskinen Kimi",
+        "A-Avoin / MX1": "Haavisto Jere"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Nieminen Mauno",
+        "A-Avoin / MX1": "Matikainen Juuso"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Kangasniemi Kasper",
+        "A-Avoin / MX1": "Lusbo Andero (Viro)"
+      }
+    },
+    {
+      "year": 2023,
+      "pos1": {
+        "Alle 125 / MX2": "Rainio Sampo",
+        "A-Avoin / MX1": "Haavisto Jere"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Vesterinen Matias",
+        "A-Avoin / MX1": "Matikainen Juuso"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Niemienen Mauno",
+        "A-Avoin / MX1": "Silander Emil"
+      }
+    },
+    {
+      "year": 2024,
+      "pos1": {
+        "Alle 125 / MX2": "Varjonen Miro",
+        "A-Avoin / MX1": "Sihvonen Arttu"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Rainio Sampo",
+        "A-Avoin / MX1": "Vesterinen Matias"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Malin Wiljam",
+        "A-Avoin / MX1": "Haavisto Jere"
+      }
+    },
+    {
+      "year": 2025,
+      "pos1": {
+        "Alle 125 / MX2": "Jaakonsaari Onni",
+        "A-Avoin / MX1": "Koskinen Hermanni"
+      },
+      "pos2": {
+        "Alle 125 / MX2": "Hindersson Kasimir",
+        "A-Avoin / MX1": "Varjonen Miro"
+      },
+      "pos3": {
+        "Alle 125 / MX2": "Stenberg Nico",
+        "A-Avoin / MX1": "Vesterinen Matias"
+      }
+    }
   ]
 }
