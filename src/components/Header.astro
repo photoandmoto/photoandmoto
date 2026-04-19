@@ -16,6 +16,14 @@ const navItems = [
   { href: `/${lang}/aikakone`, label: t['nav.articles'] },
   { href: `/${lang}/yhteystiedot`, label: t['nav.contact'] },
 ];
+
+const moreItems = [
+  { href: lang === 'fi' ? '/fi/tilastot' : '/en/statistics', label: lang === 'fi' ? 'Tilastot' : 'Statistics' },
+  { href: lang === 'fi' ? '/fi/kalenteri' : '/en/calendar', label: lang === 'fi' ? 'Kalenteri' : 'Calendar' },
+];
+
+const moreLabel = lang === 'fi' ? 'Muuta' : 'More';
+const isMoreActive = moreItems.some(item => currentPath.startsWith(item.href));
 ---
 
 <header class="site-header">
@@ -37,12 +45,41 @@ const navItems = [
             </a>
           </li>
         ))}
+        <li class="nav-dropdown">
+          <button class:list={['nav-link', 'nav-drop-btn', { active: isMoreActive }]}>
+            {moreLabel} <span class="drop-arrow">▾</span>
+          </button>
+          <div class="nav-drop-menu">
+            {moreItems.map(item => (
+              <a href={item.href} class:list={['nav-drop-item', { active: currentPath.startsWith(item.href) }]}>
+                {item.label}
+              </a>
+            ))}
+          </div>
+        </li>
       </ul>
     </nav>
     
     <LanguageSwitcher lang={lang} currentPath={currentPath} />
   </div>
 </header>
+
+<script>
+  const dropdown = document.querySelector('.nav-dropdown');
+  if (dropdown) {
+    const btn = dropdown.querySelector('.nav-drop-btn');
+    const menu = dropdown.querySelector('.nav-drop-menu');
+    
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menu.classList.toggle('nav-drop-open');
+    });
+    
+    document.addEventListener('click', () => {
+      menu.classList.remove('nav-drop-open');
+    });
+  }
+</script>
 
 <style>
   .site-header {
@@ -88,6 +125,7 @@ const navItems = [
     list-style: none;
     margin: 0;
     padding: 0;
+    align-items: center;
   }
   
   .nav-link {
@@ -100,6 +138,7 @@ const navItems = [
     padding: var(--space-1) var(--space-2);
     border-radius: var(--radius-sm);
     transition: all var(--transition-fast);
+    text-decoration: none;
   }
   
   .nav-link:hover {
@@ -110,6 +149,65 @@ const navItems = [
   .nav-link.active {
     background: var(--brand-primary);
     color: black;
+  }
+  
+  /* Dropdown */
+  .nav-dropdown {
+    position: relative;
+  }
+  
+  .nav-drop-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  
+  .drop-arrow {
+    font-size: 0.7rem;
+  }
+  
+  .nav-drop-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    background: #1a1a1a;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius-md);
+    min-width: 180px;
+    padding: 6px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  
+  .nav-drop-open {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .nav-drop-item {
+    font-family: var(--font-headline);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: white;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+  
+  .nav-drop-item:hover {
+    background: var(--brand-primary);
+    color: black;
+  }
+  
+  .nav-drop-item.active {
+    color: var(--brand-primary);
   }
   
   @media (max-width: 768px) {

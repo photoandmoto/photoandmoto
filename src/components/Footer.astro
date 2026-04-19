@@ -85,10 +85,13 @@ const currentYear = new Date().getFullYear();
     padding: 0;
     margin: 0;
     text-align: left;
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 8px 24px;
   }
   
   .footer-links li {
-    margin-bottom: var(--space-1);
+    margin-bottom: 0;
   }
   
   .footer-links a {
