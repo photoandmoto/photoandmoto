@@ -11,6 +11,7 @@ interface Props {
     category: string;
     tags: string[];
     featured_image: string;
+    show_hero?: boolean;
     image_caption?: string;
     language: 'fi' | 'en';
     seo_description?: string;
@@ -52,7 +53,7 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
         )}
       </header>
       
-      {frontmatter.featured_image && (
+      {frontmatter.featured_image && frontmatter.show_hero !== false && (
         <div class="article-hero">
           <img 
             src={frontmatter.featured_image} 

@@ -6,6 +6,7 @@ date: 2025-09-10
 category: "Historical"
 tags: ["motocross", "vintage", "Orp-Le-Grand", "Jukka Sintonen", "Simo Taimi", "Belgia"]
 featured_image: "/images/orp-le-grand.jpg"
+show_hero: false
 image_caption: "Orp-Le-Grand Vintage 2025"
 language: "fi"
 seo_description: "Jukka Sintonen ja Simo Taimi kutsuvieraina Orp-Le-Grandin vintage-motocrosstapahtumassa Belgiassa 2025."
