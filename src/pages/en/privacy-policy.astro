@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const lang = 'en';
+---
+
+<BaseLayout title="Privacy Policy" lang={lang} description="Photo & Moto Privacy Policy">
+  <section class="privacy">
+    <div class="container privacy-container">
+      <h1>Photo & Moto Privacy Policy</h1>
+      
+      <div class="privacy-meta">
+        <p><strong>Website:</strong> www.photoandmoto.fi</p>
+        <p><strong>Email:</strong> photoandmoto@gmail.com</p>
+        <p><strong>Last updated:</strong> July 17, 2025</p>
+      </div>
+      
+      <p>This privacy policy explains how Photo & Moto ("we" or "our"), a hobby publication operating from Finland, handles data, particularly relating to public figures and visitors to our website. We are committed to transparency and respect for privacy, and we operate in full compliance with the General Data Protection Regulation (GDPR) and Finnish data protection legislation.</p>
+      
+      <h2>What we do</h2>
+      <p>Photo & Moto is a hobby publication born from passion, sharing news, analysis and commentary about sports figures and related topics, especially motorsport. Our goal is to provide our readers with interesting and informative content while always adhering to ethical journalistic practices.</p>
+      
+      <h2>Contact</h2>
+      <p>If you have questions about this privacy policy or our data handling, or if you wish to exercise your rights, please contact us:</p>
+      <p><strong>photoandmoto@gmail.com</strong></p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .privacy {
+    padding: var(--space-6) 0;
+  }
+  
+  .privacy-container {
+    max-width: 800px;
+  }
+  
+  .privacy h1 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: var(--space-4);
+    color: var(--text-primary);
+  }
+  
+  .privacy-meta {
+    background: var(--bg-secondary);
+    padding: var(--space-3);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-5);
+  }
+  
+  .privacy-meta p {
+    margin-bottom: var(--space-1);
+    font-size: 0.95rem;
+  }
+  
+  .privacy h2 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-top: var(--space-6);
+    margin-bottom: var(--space-3);
+    color: var(--text-primary);
+    border-left: 4px solid var(--brand-primary);
+    padding-left: var(--space-2);
+  }
+  
+  .privacy p {
+    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: var(--space-2);
+  }
+</style>
