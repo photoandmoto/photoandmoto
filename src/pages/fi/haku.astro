@@ -40,6 +40,51 @@ const lang = 'fi';
     .then(d => { siteData = JSON.stringify(d); })
     .catch(() => { siteData = '[]'; });
   
+  function renderMarkdown(text) {
+    let lines = text.split('\n');
+    let html = '';
+    let inList = false;
+    
+    lines.forEach(line => {
+      line = line.trim();
+      if (!line) { 
+        if (inList) { html += '</ul>'; inList = false; }
+        html += '<br>'; 
+        return; 
+      }
+      
+      // Bold
+      line = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      // Italic
+      line = line.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+      
+      // List items (*, -, •)
+      if (/^[\*\-•]\s/.test(line)) {
+        if (!inList) { html += '<ul class="ai-list">'; inList = true; }
+        html += '<li>' + line.replace(/^[\*\-•]\s+/, '') + '</li>';
+        return;
+      }
+      
+      // Numbered list
+      if (/^\d+[\.\)]\s/.test(line)) {
+        if (!inList) { html += '<ol class="ai-list">'; inList = true; }
+        html += '<li>' + line.replace(/^\d+[\.\)]\s+/, '') + '</li>';
+        return;
+      }
+      
+      if (inList) { html += '</ul>'; inList = false; }
+      
+      // Headings
+      if (line.startsWith('### ')) { html += '<h4 class="ai-h">' + line.slice(4) + '</h4>'; return; }
+      if (line.startsWith('## ')) { html += '<h3 class="ai-h">' + line.slice(3) + '</h3>'; return; }
+      
+      html += '<p>' + line + '</p>';
+    });
+    
+    if (inList) html += '</ul>';
+    return html;
+  }
+  
   async function doSearch() {
     const q = input.value.trim();
     if (q.length < 2) return;
@@ -58,7 +103,8 @@ const lang = 'fi';
       if (data.error) {
         result.innerHTML = '<div class="ai-error">Haku epäonnistui: ' + data.error + '</div>';
       } else {
-        result.innerHTML = '<div class="ai-answer"><div class="ai-answer-label">Vastaus</div><div class="ai-answer-text">' + data.answer.replace(/\n/g, '<br>') + '</div></div>';
+        const html = renderMarkdown(data.answer);
+        result.innerHTML = '<div class="ai-answer"><div class="ai-answer-label">Vastaus</div><div class="ai-answer-text">' + html + '</div></div>';
       }
     } catch (err) {
       result.innerHTML = '<div class="ai-error">Yhteysvirhe. Yritä uudelleen.</div>';
@@ -97,5 +143,11 @@ const lang = 'fi';
   .ai-answer { background: #F9F9F9; border-radius: var(--radius-md); padding: var(--space-4); border-left: 4px solid #ff9900; }
   .ai-answer-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #ff9900; margin-bottom: var(--space-2); font-family: var(--font-headline); }
   .ai-answer-text { font-size: 0.95rem; line-height: 1.7; color: #1D1D1F; }
+  .ai-answer-text p { margin-bottom: 8px; }
+  .ai-answer-text strong { font-weight: 800; color: #ff9900; }
+  .ai-answer-text .ai-list { margin: 12px 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+  .ai-answer-text .ai-list li { background: #fff; border: 1px solid #eee; border-left: 3px solid #ff9900; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; padding: 8px 14px; font-size: 0.9rem; }
+  .ai-answer-text .ai-list li strong { color: #1D1D1F; }
+  .ai-answer-text .ai-h { font-size: 1rem; font-weight: 800; color: #ff9900; margin: 16px 0 8px; font-family: var(--font-headline); }
   .ai-error { background: #FCEBEB; border-radius: var(--radius-md); padding: var(--space-4); color: #A32D2D; border-left: 4px solid #E24B4A; }
 </style>
