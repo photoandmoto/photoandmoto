@@ -1,0 +1,1734 @@
+{
+  "fim": [
+    {
+      "year": 1957,
+      "500cc": "Bill Nilsson"
+    },
+    {
+      "year": 1958,
+      "500cc": "René Baeten"
+    },
+    {
+      "year": 1959,
+      "500cc": "Sven Lundin"
+    },
+    {
+      "year": 1960,
+      "500cc": "Bill Nilsson"
+    },
+    {
+      "year": 1961,
+      "500cc": "Sven Lundin"
+    },
+    {
+      "year": 1962,
+      "500cc": "Rolf Tibblin",
+      "250cc": "Torsten Hallman"
+    },
+    {
+      "year": 1963,
+      "500cc": "Rolf Tibblin",
+      "250cc": "Torsten Hallman"
+    },
+    {
+      "year": 1964,
+      "500cc": "Jeff Smith",
+      "250cc": "Joël Robert"
+    },
+    {
+      "year": 1965,
+      "500cc": "Jeff Smith",
+      "250cc": "Viktor Arbekov"
+    },
+    {
+      "year": 1966,
+      "500cc": "Paul Friedrichs",
+      "250cc": "Torsten Hallman"
+    },
+    {
+      "year": 1967,
+      "500cc": "Paul Friedrichs",
+      "250cc": "Torsten Hallman"
+    },
+    {
+      "year": 1968,
+      "500cc": "Paul Friedrichs",
+      "250cc": "Joël Robert"
+    },
+    {
+      "year": 1969,
+      "500cc": "Bengt Aberg",
+      "250cc": "Joël Robert"
+    },
+    {
+      "year": 1970,
+      "500cc": "Bengt Aberg",
+      "250cc": "Joël Robert"
+    },
+    {
+      "year": 1971,
+      "500cc": "Roger De Coster",
+      "250cc": "Joël Robert"
+    },
+    {
+      "year": 1972,
+      "500cc": "Roger De Coster",
+      "250cc": "Joël Robert"
+    },
+    {
+      "year": 1973,
+      "500cc": "Roger De Coster",
+      "250cc": "Håkan Andersson"
+    },
+    {
+      "year": 1974,
+      "500cc": "Heikki Mikkola",
+      "250cc": "Gennadi Moisejev"
+    },
+    {
+      "year": 1975,
+      "500cc": "Roger De Coster",
+      "250cc": "Harry Everts",
+      "125cc": "Gaston Rahier"
+    },
+    {
+      "year": 1976,
+      "500cc": "Roger De Coster",
+      "250cc": "Heikki Mikkola",
+      "125cc": "Gaston Rahier"
+    },
+    {
+      "year": 1977,
+      "500cc": "Heikki Mikkola",
+      "250cc": "Gennadi Moisejev",
+      "125cc": "Gaston Rahier"
+    },
+    {
+      "year": 1978,
+      "500cc": "Heikki Mikkola",
+      "250cc": "Gennadi Moisejev",
+      "125cc": "Akira Watanabe"
+    },
+    {
+      "year": 1979,
+      "500cc": "Graham Noyce",
+      "250cc": "Håkan Carlqvist",
+      "125cc": "Harry Everts"
+    },
+    {
+      "year": 1980,
+      "500cc": "André Malherbe",
+      "250cc": "Georges Jobé",
+      "125cc": "Harry Everts"
+    },
+    {
+      "year": 1981,
+      "500cc": "André Malherbe",
+      "250cc": "Neil Hudson",
+      "125cc": "Harry Everts"
+    },
+    {
+      "year": 1982,
+      "500cc": "Brad Lackey",
+      "250cc": "Danny Laporte",
+      "125cc": "Eric Geboers"
+    },
+    {
+      "year": 1983,
+      "500cc": "Håkan Carlqvist",
+      "250cc": "Georges Jobé",
+      "125cc": "Eric Geboers"
+    },
+    {
+      "year": 1984,
+      "500cc": "André Malherbe",
+      "250cc": "Heinz Kidigadner",
+      "125cc": "Michele Rinaldi"
+    },
+    {
+      "year": 1985,
+      "500cc": "Dave Thorpe",
+      "250cc": "Heinz Kidigadner",
+      "125cc": "Pekka Vehkonen"
+    },
+    {
+      "year": 1986,
+      "500cc": "Dave Thorpe",
+      "250cc": "Jacky Vimond",
+      "125cc": "Dave Strijbos"
+    },
+    {
+      "year": 1987,
+      "500cc": "Georges Jobé",
+      "250cc": "Eric Geboers",
+      "125cc": "John Van Den Berk"
+    },
+    {
+      "year": 1988,
+      "500cc": "Eric Geboers",
+      "250cc": "John Van Den Berk",
+      "125cc": "Jean Michel Bayle"
+    },
+    {
+      "year": 1989,
+      "500cc": "Dave Thorpe",
+      "250cc": "Jean Michel Bayle",
+      "125cc": "Trampas Parker"
+    },
+    {
+      "year": 1990,
+      "500cc": "Eric Geboers",
+      "250cc": "Alessandro Puzar",
+      "125cc": "Donnie Schmitt"
+    },
+    {
+      "year": 1991,
+      "500cc": "Georges Jobé",
+      "250cc": "Trampas Parker",
+      "125cc": "Stefan Everts"
+    },
+    {
+      "year": 1992,
+      "500cc": "Georges Jobé",
+      "250cc": "Donnie Schmitt",
+      "125cc": "Greg Albertyn"
+    },
+    {
+      "year": 1993,
+      "500cc": "Jacky Martens",
+      "250cc": "Greg Albertyn",
+      "125cc": "Pedro Tragter"
+    },
+    {
+      "year": 1994,
+      "500cc": "Markus Hansson",
+      "250cc": "Greg Albertyn",
+      "125cc": "Bob Moore"
+    },
+    {
+      "year": 1995,
+      "500cc": "Joël Smets",
+      "250cc": "Stefan Everts",
+      "125cc": "Alessandro Puzar"
+    },
+    {
+      "year": 1996,
+      "500cc": "Shayne King",
+      "250cc": "Stefan Everts",
+      "125cc": "Sébastien Tortelli"
+    },
+    {
+      "year": 1997,
+      "500cc": "Joël Smets",
+      "250cc": "Stefan Everts",
+      "125cc": "Alessio Chiodi"
+    },
+    {
+      "year": 1998,
+      "500cc": "Joël Smets",
+      "250cc": "Sébastien Tortelli",
+      "125cc": "Alessio Chiodi"
+    },
+    {
+      "year": 1999,
+      "500cc": "Andrea Bartolini",
+      "250cc": "Frédéric Bolley",
+      "125cc": "Alessio Chiodi"
+    },
+    {
+      "year": 2000,
+      "500cc": "Joël Smets",
+      "250cc": "Frédéric Bolley",
+      "125cc": "Grant Langston"
+    },
+    {
+      "year": 2001,
+      "500cc": "Stefan Everts",
+      "250cc": "Mickael Pichon",
+      "125cc": "James Dobb"
+    },
+    {
+      "year": 2002,
+      "500cc": "Stefan Everts",
+      "250cc": "Mickael Pichon",
+      "125cc": "Mickael Maschio"
+    },
+    {
+      "year": 2003,
+      "500cc": "Joël Smets",
+      "250cc": "Stefan Everts",
+      "125cc": "Steve Ramon"
+    },
+    {
+      "year": 2004,
+      "MX1": "Stefan Everts",
+      "MX2": "Ben Townley",
+      "MX3": "Yves Demaria"
+    },
+    {
+      "year": 2005,
+      "MX1": "Stefan Everts",
+      "MX2": "Antonio Cairoli",
+      "MX3": "Sven Breugelmans"
+    },
+    {
+      "year": 2006,
+      "MX1": "Stefan Everts",
+      "MX2": "Christophe Pourcel",
+      "MX3": "Yves Demaria"
+    },
+    {
+      "year": 2007,
+      "MX1": "Steve Ramon",
+      "MX2": "Antonio Cairoli",
+      "MX3": "Yves Demaria"
+    },
+    {
+      "year": 2008,
+      "MX1": "David Philippaerts",
+      "MX2": "Tyla Rattray",
+      "MX3": "Sven Breugelmans",
+      "WMX": "Livia Lancelot"
+    },
+    {
+      "year": 2009,
+      "MX1": "Antonio Cairoli",
+      "MX2": "Marvin Musquin",
+      "MX3": "Pierre Renet",
+      "WMX": "Stephanie Laier"
+    },
+    {
+      "year": 2010,
+      "MX1": "Antonio Cairoli",
+      "MX2": "Marvin Musquin",
+      "MX3": "Carlos Campano",
+      "WMX": "Stephanie Laier"
+    },
+    {
+      "year": 2011,
+      "MX1": "Antonio Cairoli",
+      "MX2": "Ken Roczen",
+      "MX3": "Julien Bill",
+      "WMX": "Stephanie Laier"
+    },
+    {
+      "year": 2012,
+      "MX1": "Antonio Cairoli",
+      "MX2": "Jeffrey Herlings",
+      "MX3": "Matthias Walkner",
+      "WMX": "Chiara Fontanesi"
+    },
+    {
+      "year": 2013,
+      "MX1": "Antonio Cairoli",
+      "MX2": "Jeffrey Herlings",
+      "MX3": "Klemen Gerčar",
+      "WMX": "Chiara Fontanesi"
+    },
+    {
+      "year": 2014,
+      "MX2": "Jordi Tixier",
+      "MXGP": "Antonio Cairoli",
+      "WMX": "Chiara Fontanesi"
+    },
+    {
+      "year": 2015,
+      "MX2": "Tim Gajser",
+      "MXGP": "Romain Febvre",
+      "WMX": "Chiara Fontanesi"
+    },
+    {
+      "year": 2016,
+      "MX2": "Jeffrey Herlings",
+      "MXGP": "Tim Gajser",
+      "WMX": "Livia Lancelot"
+    },
+    {
+      "year": 2017,
+      "MX2": "Pauls Jonass",
+      "MXGP": "Antonio Cairoli",
+      "WMX": "Chiara Fontanesi"
+    },
+    {
+      "year": 2018,
+      "MX2": "Jorge Prado",
+      "MXGP": "Jeffrey Herlings",
+      "WMX": "Chiara Fontanesi"
+    },
+    {
+      "year": 2019,
+      "MX2": "Jorge Prado",
+      "MXGP": "Tim Gajser",
+      "WMX": "Courtney Duncan"
+    },
+    {
+      "year": 2020,
+      "MX2": "Tom Vialle",
+      "MXGP": "Tim Gajser",
+      "WMX": "Courtney Duncan"
+    },
+    {
+      "year": 2021,
+      "MX2": "Maxime Renaux",
+      "MXGP": "Jeffrey Herlings",
+      "WMX": "Courtney Duncan"
+    },
+    {
+      "year": 2022,
+      "MX2": "Tom Vialle",
+      "MXGP": "Tim Gajser",
+      "WMX": "Nancy van de Ven"
+    },
+    {
+      "year": 2023,
+      "MX2": "Andrea Adamo",
+      "MXGP": "Jorge Prado",
+      "WMX": "Courtney Duncan"
+    },
+    {
+      "year": 2024,
+      "MX2": "Kay de Wolf",
+      "MXGP": "Jorge Prado",
+      "WMX": "Lotte van Drunen"
+    },
+    {
+      "year": 2025,
+      "MX2": "Simon Längenfelder",
+      "MXGP": "Romain Febvre",
+      "WMX": "Lotte Van Drunen"
+    }
+  ],
+  "sml": [
+    {
+      "year": 1954,
+      "Alle 500": "Rein Raimo"
+    },
+    {
+      "year": 1955,
+      "Alle 500": "Rein Raimo"
+    },
+    {
+      "year": 1957,
+      "Alle 500": "Rein Raimo",
+      "Alle 250": "Kiukkonen Osmo"
+    },
+    {
+      "year": 1958,
+      "Alle 500": "Rein Raimo",
+      "Alle 250": "Rein Raimo"
+    },
+    {
+      "year": 1959,
+      "Alle 500": "Rein Raimo",
+      "Alle 250": "Rein Raimo"
+    },
+    {
+      "year": 1960,
+      "Alle 500": "Rein Raimo",
+      "Alle 250": "Erola Aarno"
+    },
+    {
+      "year": 1961,
+      "Alle 500": "Luotonen Rainer",
+      "Alle 250": "Kalteva Pentti"
+    },
+    {
+      "year": 1962,
+      "Alle 500": "Nyman Frank",
+      "Alle 250": "Erola Aarno"
+    },
+    {
+      "year": 1963,
+      "Alle 500": "Erola Aarno",
+      "Alle 250": "Kalteva Pentti"
+    },
+    {
+      "year": 1964,
+      "Alle 500": "Wickström Arne",
+      "Alle 250": "Rein Raimo"
+    },
+    {
+      "year": 1965,
+      "Alle 500": "Dufvelin Lars",
+      "Alle 250": "Rein Raimo"
+    },
+    {
+      "year": 1966,
+      "Alle 500": "Rein Raimo",
+      "Alle 250": "Järvinen Jorma"
+    },
+    {
+      "year": 1967,
+      "Alle 500": "Lehmuskoski Jaakko",
+      "Alle 250": "Järvinen Jorma"
+    },
+    {
+      "year": 1968,
+      "Alle 500": "Rasilainen Risto",
+      "Alle 250": "Vehkonen Kalevi"
+    },
+    {
+      "year": 1969,
+      "Alle 500": "Rasilainen Risto",
+      "Alle 250": "Öhberg Lars"
+    },
+    {
+      "year": 1970,
+      "Alle 500": "Lehmuskoski Jaakko",
+      "Alle 250": "Tirinen Juha"
+    },
+    {
+      "year": 1971,
+      "Alle 500": "Rasilainen Risto",
+      "Alle 250": "Johansson Jack"
+    },
+    {
+      "year": 1972,
+      "Alle 500": "Tirinen Juha",
+      "Alle 250": "Öhberg Lars"
+    },
+    {
+      "year": 1973,
+      "Alle 500": "Piippola Pauli",
+      "Alle 250": "Järvinen Jorma"
+    },
+    {
+      "year": 1974,
+      "Alle 500": "Mikkola Heikki",
+      "Alle 250": "Vehkonen Kalevi"
+    },
+    {
+      "year": 1975,
+      "Alle 500": "Mikkola Heikki",
+      "Alle 250": "Mikkola Heikki",
+      "Alle 125": "Remes Timo"
+    },
+    {
+      "year": 1976,
+      "Alle 500": "Mikkola Heikki",
+      "Alle 250": "Mikkola Heikki",
+      "Alle 125": "Autio Matti"
+    },
+    {
+      "year": 1977,
+      "Alle 500": "Mikkola Heikki",
+      "Alle 250": "Pikkarainen Tapani",
+      "Alle 125": "Autio Matti"
+    },
+    {
+      "year": 1978,
+      "Alle 500": "Mikkola Heikki",
+      "Alle 250": "Sundström Erkki",
+      "Alle 125": "Autio Matti"
+    },
+    {
+      "year": 1979,
+      "Alle 500": "Mikkola Heikki",
+      "Alle 250": "Sundström Erkki",
+      "Alle 125": "Autio Matti"
+    },
+    {
+      "year": 1980,
+      "Alle 500": "Pikkarainen Tapani",
+      "Alle 250": "Sundström Erkki",
+      "Alle 125": "Autio Matti"
+    },
+    {
+      "year": 1981,
+      "Alle 500": "Pikkarainen Tapani",
+      "Alle 250": "Tarkkonen Matti",
+      "Alle 125": "Autio Matti"
+    },
+    {
+      "year": 1982,
+      "Alle 500": "Sintonen Jukka",
+      "Alle 250": "Sundström Erkki",
+      "Alle 125": "Vehkonen Pekka"
+    },
+    {
+      "year": 1983,
+      "Alle 500": "Sintonen Jukka",
+      "Alle 250": "Tarkkonen Matti",
+      "Alle 125": "Vehkonen Pekka"
+    },
+    {
+      "year": 1984,
+      "Alle 500": "Ljunqvist Kurt",
+      "Alle 250": "Taimi Simo",
+      "Alle 125": "Panttila Arto"
+    },
+    {
+      "year": 1985,
+      "Alle 500": "Sintonen Jukka",
+      "Alle 250": "Ljunqvist Kurt",
+      "Alle 125": "Panttila Arto"
+    },
+    {
+      "year": 1986,
+      "Alle 500": "Kokkonen Tapio",
+      "Alle 250": "Taimi Simo",
+      "Alle 125": "Kouki Mika"
+    },
+    {
+      "year": 1987,
+      "Alle 500": "Ljunqvist Kurt",
+      "Alle 250": "Vehkonen Pekka",
+      "Alle 125": "Hagström Pasi"
+    },
+    {
+      "year": 1988,
+      "Alle 500": "Vehkonen Ismo",
+      "Alle 250": "Hagström Pasi",
+      "Alle 125": "Kouki Mika"
+    },
+    {
+      "year": 1989,
+      "Alle 500": "Ljunqvist Kurt",
+      "Alle 250": "Vehkonen Pekka",
+      "Alle 125": "Nevala Ari"
+    },
+    {
+      "year": 1990,
+      "Alle 500": "Panttila Arto",
+      "Alle 250": "Vehkonen Ismo",
+      "Alle 125": "Koskela Marko"
+    },
+    {
+      "year": 1991,
+      "Alle 500": "Ljunqvist Kurt",
+      "Alle 250": "Aaltonen Miska",
+      "Alle 125": "Seppälä Veli-Petteri"
+    },
+    {
+      "year": 1992,
+      "Alle 500": "Panttila Arto",
+      "Alle 250": "Kytölä Petteri",
+      "Alle 125": "Panttila Arto"
+    },
+    {
+      "year": 1993,
+      "Alle 125": "Aaltonen Miska",
+      "Yli 125": "Aaltonen Miska"
+    },
+    {
+      "year": 1994,
+      "Alle 125": "Aaltonen Miska",
+      "Yli 125": "Kovalainen Marko"
+    },
+    {
+      "year": 1995,
+      "Alle 125": "Konttinen J-P",
+      "Yli 125": "Aaltonen Miska"
+    },
+    {
+      "year": 1996,
+      "Alle 125": "Aaltonen Miska",
+      "Yli 125": "Aaltonen Miska"
+    },
+    {
+      "year": 1997,
+      "Alle 125": "Saarenkoski Mika",
+      "Yli 125": "Aaltonen Miska"
+    },
+    {
+      "year": 1998,
+      "Alle 125": "Gustafsson Petteri",
+      "Yli 125": "Gustafsson Petteri"
+    },
+    {
+      "year": 1999,
+      "Alle 125": "Pyrhönen Antti",
+      "Yli 125": "Aaltonen Miska"
+    },
+    {
+      "year": 2000,
+      "Alle 125 / MX2": "Pyrhönen Antti",
+      "A-Avoin / MX1": "Kovalainen Marko"
+    },
+    {
+      "year": 2001,
+      "Alle 125 / MX2": "Gustafsson Petteri",
+      "A-Avoin / MX1": "Asplund Kent"
+    },
+    {
+      "year": 2002,
+      "Alle 125 / MX2": "Kalatie Niko",
+      "A-Avoin / MX1": "Salminen Juha"
+    },
+    {
+      "year": 2003,
+      "Alle 125 / MX2": "Kalatie Niko",
+      "A-Avoin / MX1": "Asplund Kent"
+    },
+    {
+      "year": 2004,
+      "Alle 125 / MX2": "Pirinen Jukka",
+      "A-Avoin / MX1": "Asplund Kent"
+    },
+    {
+      "year": 2005,
+      "Alle 125 / MX2": "Remes Eero",
+      "A-Avoin / MX1": "Pirinen Jukka"
+    },
+    {
+      "year": 2006,
+      "Alle 125 / MX2": "Remes Eero",
+      "A-Avoin / MX1": "Remes Eero"
+    },
+    {
+      "year": 2007,
+      "Alle 125 / MX2": "Lehmusvirta Tommi",
+      "A-Avoin / MX1": "Vehviläinen Jussi"
+    },
+    {
+      "year": 2008,
+      "Alle 125 / MX2": "Mäkinen Tommi",
+      "A-Avoin / MX1": "Pyrhönen Antti"
+    },
+    {
+      "year": 2009,
+      "Alle 125 / MX2": "Remes Eero",
+      "A-Avoin / MX1": "Nikkilä Jussi"
+    },
+    {
+      "year": 2010,
+      "Alle 125 / MX2": "Söderberg Ludde",
+      "A-Avoin / MX1": "Eriksson Toni"
+    },
+    {
+      "year": 2011,
+      "Alle 125 / MX2": "Jousi Atte",
+      "A-Avoin / MX1": "Mäkinen Tommi"
+    },
+    {
+      "year": 2012,
+      "Alle 125 / MX2": "Stigell Henric",
+      "A-Avoin / MX1": "Eriksson Toni"
+    },
+    {
+      "year": 2013,
+      "Alle 125 / MX2": "Kahro Erki (Viro)",
+      "A-Avoin / MX1": "Eriksson Toni"
+    },
+    {
+      "year": 2014,
+      "Alle 125 / MX2": "Stigell Henric",
+      "A-Avoin / MX1": "Tiainen Santtu"
+    },
+    {
+      "year": 2015,
+      "Alle 125 / MX2": "Manninen Aki",
+      "A-Avoin / MX1": "Stigell Henric"
+    },
+    {
+      "year": 2016,
+      "Alle 125 / MX2": "Savaste Kim",
+      "A-Avoin / MX1": "Manninen Aki"
+    },
+    {
+      "year": 2017,
+      "Alle 125 / MX2": "Haavisto Jere",
+      "A-Avoin / MX1": "Tiainen Santtu"
+    },
+    {
+      "year": 2018,
+      "Alle 125 / MX2": "Santeri Kinnunen",
+      "A-Avoin / MX1": "Erki Kahro"
+    },
+    {
+      "year": 2019,
+      "Alle 125 / MX2": "Silander Emi",
+      "A-Avoin / MX1": "Matikainen Juuso"
+    },
+    {
+      "year": 2020,
+      "Alle 125 / MX2": "Koskinen Kimi",
+      "A-Avoin / MX1": "Savaste Kim Eric"
+    },
+    {
+      "year": 2021,
+      "Alle 125 / MX2": "Vesterinen Matias",
+      "A-Avoin / MX1": "Mägi Indrek (Viro)"
+    },
+    {
+      "year": 2022,
+      "Alle 125 / MX2": "Koskinen Kimi",
+      "A-Avoin / MX1": "Haavisto Jere"
+    },
+    {
+      "year": 2023,
+      "Alle 125 / MX2": "Rainio Sampo",
+      "A-Avoin / MX1": "Haavisto Jere"
+    },
+    {
+      "year": 2024,
+      "Alle 125 / MX2": "Varjonen Miro",
+      "A-Avoin / MX1": "Sihvonen Arttu"
+    },
+    {
+      "year": 2025,
+      "Alle 125 / MX2": "Jaakonsaari Onni",
+      "A-Avoin / MX1": "Koskinen Hermanni"
+    }
+  ],
+  "mxdn": [
+    {
+      "year": 1947,
+      "country": "Great Britain",
+      "riders": "Bill Nilsson, Bob Ray, Fred Rist"
+    },
+    {
+      "year": 1948,
+      "country": "Belgium",
+      "riders": "Jansen, Cox, Milhoux"
+    },
+    {
+      "year": 1949,
+      "country": "Great Britain",
+      "riders": "Harold Lines, Bob Manns, Ian Sowell"
+    },
+    {
+      "year": 1950,
+      "country": "Great Britain",
+      "riders": "John Draper, Geoff Pym, Harold Lines"
+    },
+    {
+      "year": 1951,
+      "country": "Belgium",
+      "riders": "Jansen, Leloup, Meunier"
+    },
+    {
+      "year": 1952,
+      "country": "Great Britain",
+      "riders": "Geoff Ward, Brian Stonebridge, John Draper"
+    },
+    {
+      "year": 1953,
+      "country": "Great Britain",
+      "riders": "Les Archer Jr, John Draper, Geoff Ward"
+    },
+    {
+      "year": 1954,
+      "country": "Great Britain",
+      "riders": "Curtis, Stonebridge, Geoff Ward"
+    },
+    {
+      "year": 1955,
+      "country": "Sweden",
+      "riders": "Tibblin, Lundin, Gustavsson"
+    },
+    {
+      "year": 1956,
+      "country": "Great Britain",
+      "riders": "John Draper, Jeff Smith, Geoff Ward"
+    },
+    {
+      "year": 1957,
+      "country": "Great Britain",
+      "riders": "Jeff Smith, Geoff Ward, John Draper"
+    },
+    {
+      "year": 1958,
+      "country": "Sweden",
+      "riders": "Lundin, Gustavsson, Bill Nilsson"
+    },
+    {
+      "year": 1959,
+      "country": "Great Britain",
+      "riders": "John Draper, Rickman, Jeff Smith"
+    },
+    {
+      "year": 1960,
+      "country": "Great Britain",
+      "riders": "Rickman, Smith, Draper"
+    },
+    {
+      "year": 1961,
+      "country": "Sweden",
+      "riders": "Ove Lundell, Bill Nilsson, Rolf Tibblin"
+    },
+    {
+      "year": 1962,
+      "country": "Sweden",
+      "riders": "Ove Lundell, Rolf Tibblin, Jeff Nilsson"
+    },
+    {
+      "year": 1963,
+      "country": "Great Britain",
+      "riders": "Don Rickman, Derek Rickman, Arthur Lampkin, Jeff Smith"
+    },
+    {
+      "year": 1964,
+      "country": "Great Britain",
+      "riders": "Don Rickman, Derek Rickman, Jeff Smith"
+    },
+    {
+      "year": 1965,
+      "country": "Great Britain",
+      "riders": "Arthur Lampkin, Vic Eastwood, Jeff Smith"
+    },
+    {
+      "year": 1966,
+      "country": "Great Britain",
+      "riders": "Dave Bickers, Vic Eastwood, Derek Rickman"
+    },
+    {
+      "year": 1967,
+      "country": "Great Britain",
+      "riders": "Dave Bickers, Vic Eastwood, Jeff Smith"
+    },
+    {
+      "year": 1968,
+      "country": "Soviet Union",
+      "riders": "Arnis Angers, Vic Arbekov, Vladimir Pogrebniak, Leonid Shinkarenko"
+    },
+    {
+      "year": 1969,
+      "country": "Belgium",
+      "riders": "Roger De Coster, Sylvain Geboers, Joël Robert"
+    },
+    {
+      "year": 1970,
+      "country": "Belgium",
+      "riders": "Roger De Coster, Joël Robert, Andre Van Velthoven, Bengt Aberg"
+    },
+    {
+      "year": 1971,
+      "country": "Sweden",
+      "riders": "Bengt Aberg, Christer Hammargren, Ake Jonsson, Olle Petersson"
+    },
+    {
+      "year": 1972,
+      "country": "Belgium",
+      "riders": "Roger De Coster, René Van De Vorst, Jaak van Velthoven"
+    },
+    {
+      "year": 1973,
+      "country": "Belgium",
+      "riders": "Roger De Coster, Sylvain Geboers, René Van De Vorst, Jaak van Velthoven"
+    },
+    {
+      "year": 1974,
+      "country": "Sweden",
+      "riders": "Bengt Aberg, Hakan Andersson, Ake Jonsson, Arne Kring"
+    },
+    {
+      "year": 1975,
+      "country": "Czechoslovakia",
+      "riders": "Antonin Baborovski, Jiri Churavy, Miroslav Novacek, Zdenek Velky"
+    },
+    {
+      "year": 1976,
+      "country": "Belgium",
+      "riders": "Roger De Coster, Harry Everts, Gaston Rahier, Jaak van Velthoven"
+    },
+    {
+      "year": 1977,
+      "country": "Belgium",
+      "riders": "Roger De Coster, André Malherbe, Jean-Paul Mingels, Jaak van Velthoven"
+    },
+    {
+      "year": 1978,
+      "country": "Soviet Union",
+      "riders": "Kavinov, Khudiakov, Korneev, Gennadi Moisejev"
+    },
+    {
+      "year": 1979,
+      "country": "Belgium",
+      "riders": "Roger De Coster, Harry Everts, André Malherbe, Ivan Van Den Broek"
+    },
+    {
+      "year": 1980,
+      "country": "Belgium",
+      "riders": "Georges Jobé, André Malherbe, Ivan Van Den Broek, A. Vromans"
+    },
+    {
+      "year": 1981,
+      "country": "United States",
+      "riders": "Donnie Hansen, Danny LaPorte, Johnny O'Mara, Chuck Sun"
+    },
+    {
+      "year": 1982,
+      "country": "United States",
+      "riders": "David Bailey, Danny Chandler, Jim Gibson, Johnny O'Mara"
+    },
+    {
+      "year": 1983,
+      "country": "United States",
+      "riders": "David Bailey, Mark Barnett, Broc Glover, Jeff Ward"
+    },
+    {
+      "year": 1984,
+      "country": "United States",
+      "riders": "David Bailey, Rick Johnson, Johnny O'Mara, Jeff Ward"
+    },
+    {
+      "year": 1985,
+      "country": "United States",
+      "riders": "David Bailey, Ron Lechien, Jeff Ward"
+    },
+    {
+      "year": 1986,
+      "country": "United States",
+      "riders": "David Bailey, Rick Johnson, Johnny O'Mara"
+    },
+    {
+      "year": 1987,
+      "country": "United States",
+      "riders": "Bob Hannah, Rick Johnson, Jeff Ward"
+    },
+    {
+      "year": 1988,
+      "country": "United States",
+      "riders": "Rick Johnson, Ron Lechien, Jeff Ward"
+    },
+    {
+      "year": 1989,
+      "country": "United States",
+      "riders": "Mike Kiedrowski, Jeff Stanton, Jeff Ward"
+    },
+    {
+      "year": 1990,
+      "country": "United States",
+      "riders": "Damon Bradshaw, Jeff Stanton, Jeff Ward"
+    },
+    {
+      "year": 1991,
+      "country": "United States",
+      "riders": "Damon Bradshaw, Mike Kiedrowski, Jeff Stanton"
+    },
+    {
+      "year": 1992,
+      "country": "United States",
+      "riders": "Jeff Emig, Mike LaRocco, Billy Liles"
+    },
+    {
+      "year": 1993,
+      "country": "United States",
+      "riders": "Jeff Emig, Mike Kiedrowski, Jeremy McGrath"
+    },
+    {
+      "year": 1994,
+      "country": "United Kingdom",
+      "riders": "Rob Herring, Paul Malin, Kurt Nicoll"
+    },
+    {
+      "year": 1995,
+      "country": "Belgium",
+      "riders": "Marnicq Bervoets, Stefan Everts, Joël Smets"
+    },
+    {
+      "year": 1996,
+      "country": "United States",
+      "riders": "Jeff Emig, Steve Lamson, Jeremy McGrath"
+    },
+    {
+      "year": 1997,
+      "country": "Belgium",
+      "riders": "Marnicq Bervoets, Stefan Everts, Joël Smets"
+    },
+    {
+      "year": 1998,
+      "country": "Belgium",
+      "riders": "Marnicq Bervoets, Patrick Caps, Stefan Everts"
+    },
+    {
+      "year": 1999,
+      "country": "Italy",
+      "riders": "Andrea Bartolini, Alessio Chiodi, Claudio Federici"
+    },
+    {
+      "year": 2000,
+      "country": "United States",
+      "riders": "Ricky Carmichael, Ryan Hughes, Travis Pastrana"
+    },
+    {
+      "year": 2001,
+      "country": "France",
+      "riders": "Yves Demaria, Luigi Seguy, David Vuillemin"
+    },
+    {
+      "year": 2002,
+      "country": "Italy",
+      "riders": "Andrea Bartolini, Alessio Chiodi, Alessandro Puzar"
+    },
+    {
+      "year": 2003,
+      "country": "Belgium",
+      "riders": "Stefan Everts, Steve Ramon, Joël Smets"
+    },
+    {
+      "year": 2004,
+      "country": "Belgium",
+      "riders": "Stefan Everts, Steve Ramon, Kevin Strijbos"
+    },
+    {
+      "year": 2005,
+      "country": "United States",
+      "riders": "Ricky Carmichael, Kevin Windham, Ivan Tedesco"
+    },
+    {
+      "year": 2006,
+      "country": "United States",
+      "riders": "James Stewart Jr, Ryan Villopoto, Ivan Tedesco"
+    },
+    {
+      "year": 2007,
+      "country": "United States",
+      "riders": "Ricky Carmichael, Ryan Villopoto, Tim Ferry"
+    },
+    {
+      "year": 2008,
+      "country": "United States",
+      "riders": "James Stewart Jr, Ryan Villopoto, Tim Ferry"
+    },
+    {
+      "year": 2009,
+      "country": "United States",
+      "riders": "Ryan Dungey, Jake Weimer, Ivan Tedesco"
+    },
+    {
+      "year": 2010,
+      "country": "United States",
+      "riders": "Ryan Dungey, Trey Canard, Andrew Short"
+    },
+    {
+      "year": 2011,
+      "country": "United States",
+      "riders": "Ryan Dungey, Ryan Villopoto, Blake Baggett"
+    },
+    {
+      "year": 2012,
+      "country": "Germany",
+      "riders": "Maximilian Nagl, Ken Roczen, Marcus Schiffer"
+    },
+    {
+      "year": 2013,
+      "country": "Belgium",
+      "riders": "Ken De Dycker, Jeremy Van Horebeek, Clément Desalle"
+    },
+    {
+      "year": 2014,
+      "country": "France",
+      "riders": "Gautier Paulin, Dylan Ferrandis, Steven Frossard"
+    },
+    {
+      "year": 2015,
+      "country": "France",
+      "riders": "Gautier Paulin, Marvin Musquin, Romain Febvre"
+    },
+    {
+      "year": 2016,
+      "country": "France",
+      "riders": "Gautier Paulin, Benoît Paturel, Romain Febvre"
+    },
+    {
+      "year": 2017,
+      "country": "France",
+      "riders": "Gautier Paulin, Christophe Charlier, Romain Febvre"
+    },
+    {
+      "year": 2018,
+      "country": "France",
+      "riders": "Gautier Paulin, Dylan Ferrandis, Jordi Tixier"
+    },
+    {
+      "year": 2019,
+      "country": "Netherlands",
+      "riders": "Jeffrey Herlings, Calvin Vlaanderen, Glenn Coldenhoff"
+    },
+    {
+      "year": 2021,
+      "country": "Italy",
+      "riders": "Antonio Cairoli, Mattia Guadagnini, Alessandro Lupino"
+    },
+    {
+      "year": 2022,
+      "country": "United States",
+      "riders": "Eli Tomac, Justin Cooper, Chase Sexton"
+    },
+    {
+      "year": 2023,
+      "country": "France",
+      "riders": "Romain Febvre, Tom Vialle, Maxime Renaux"
+    },
+    {
+      "year": 2024,
+      "country": "Australia",
+      "riders": "Jett Lawrence, Hunter Lawrence, Kyle Webster"
+    },
+    {
+      "year": 2024,
+      "country": "Australia",
+      "riders": "Jett Lawrence, Hunter Lawrence, Kyle Webster"
+    }
+  ],
+  "ama": [
+    {
+      "year": 1972,
+      "500 MX": "Brad Lackey",
+      "450 MX": "Gary Jones"
+    },
+    {
+      "year": 1973,
+      "500 MX": "Pierre Karsmakers",
+      "450 MX": "Gary Jones"
+    },
+    {
+      "year": 1974,
+      "500 MX": "Jimmy Weinert",
+      "450 MX": "Gary Jones",
+      "450 SX": "Pierre Karsmakers",
+      "250 MX": "Marty Smith"
+    },
+    {
+      "year": 1975,
+      "500 MX": "Jimmy Weinert",
+      "450 MX": "Tony DiStefano",
+      "450 SX": "Jimmy Ellis",
+      "250 MX": "Marty Smith"
+    },
+    {
+      "year": 1976,
+      "500 MX": "Kent Howerton",
+      "450 MX": "Tony DiStefano",
+      "450 SX": "Jimmy Weinert",
+      "250 MX": "Bob Hannah"
+    },
+    {
+      "year": 1977,
+      "500 MX": "Marty Smith",
+      "450 MX": "Tony DiStefano",
+      "450 SX": "Bob Hannah",
+      "250 MX": "Broc Glover"
+    },
+    {
+      "year": 1978,
+      "500 MX": "Rick Burgett",
+      "450 MX": "Bob Hannah",
+      "450 SX": "Bob Hannah",
+      "250 MX": "Broc Glover"
+    },
+    {
+      "year": 1979,
+      "500 MX": "Danny LaPorte",
+      "450 MX": "Bob Hannah",
+      "450 SX": "Bob Hannah",
+      "250 MX": "Broc Glover"
+    },
+    {
+      "year": 1980,
+      "500 MX": "Chuck Sun",
+      "450 MX": "Kent Howerton",
+      "450 SX": "Mike Bell",
+      "250 MX": "Mark Barnett"
+    },
+    {
+      "year": 1981,
+      "500 MX": "Broc Glover",
+      "450 MX": "Kent Howerton",
+      "450 SX": "Mark Barnett",
+      "250 MX": "Mark Barnett"
+    },
+    {
+      "year": 1982,
+      "500 MX": "Darrell Schultz",
+      "450 MX": "Donnie Hansen",
+      "450 SX": "Donnie Hansen",
+      "250 MX": "Mark Barnett"
+    },
+    {
+      "year": 1983,
+      "500 MX": "Broc Glover",
+      "450 MX": "David Bailey",
+      "450 SX": "David Bailey",
+      "250 MX": "Johnny O'Mara"
+    },
+    {
+      "year": 1984,
+      "500 MX": "David Bailey",
+      "450 MX": "Rick Johnson",
+      "450 SX": "Johnny O'Mara",
+      "250 MX": "Jeff Ward"
+    },
+    {
+      "year": 1985,
+      "500 MX": "Broc Glover",
+      "450 MX": "Jeff Ward",
+      "450 SX": "Jeff Ward",
+      "250 MX": "Ron Lechien",
+      "250 SX West": "Bobby Moore",
+      "250 SX East": "Eddie Warren"
+    },
+    {
+      "year": 1986,
+      "500 MX": "David Bailey",
+      "450 MX": "Rick Johnson",
+      "450 SX": "Rick Johnson",
+      "250 MX": "Micky Dymond",
+      "250 SX West": "Donny Schmit",
+      "250 SX East": "Keith Turpin"
+    },
+    {
+      "year": 1987,
+      "500 MX": "Rick Johnson",
+      "450 MX": "Rick Johnson",
+      "450 SX": "Jeff Ward",
+      "250 MX": "Micky Dymond",
+      "250 SX West": "Willie Surratt",
+      "250 SX East": "Ron Tichenor"
+    },
+    {
+      "year": 1988,
+      "500 MX": "Rick Johnson",
+      "450 MX": "Jeff Ward",
+      "450 SX": "Rick Johnson",
+      "250 MX": "George Holland",
+      "250 SX West": "Jeff Matiasevich",
+      "250 SX East": "Tod DeHoop"
+    },
+    {
+      "year": 1989,
+      "500 MX": "Jeff Ward",
+      "450 MX": "Jeff Stanton",
+      "450 SX": "Jeff Stanton",
+      "250 MX": "Mike Kiedrowski",
+      "250 SX West": "Jeff Matiasevich",
+      "250 SX East": "Damon Bradshaw"
+    },
+    {
+      "year": 1990,
+      "500 MX": "Jeff Ward",
+      "450 MX": "Jeff Stanton",
+      "450 SX": "Jeff Stanton",
+      "250 MX": "Guy Cooper",
+      "250 SX West": "Ty Davis",
+      "250 SX East": "Denny Stephenson"
+    },
+    {
+      "year": 1991,
+      "500 MX": "Jean-Michel Bayle",
+      "450 MX": "Jean-Michel Bayle",
+      "450 SX": "Jean-Michel Bayle",
+      "250 MX": "Mike Kiedrowski",
+      "250 SX West": "Jeremy McGrath",
+      "250 SX East": "Brian Swink"
+    },
+    {
+      "year": 1992,
+      "500 MX": "Mike Kiedrowski",
+      "450 MX": "Jeff Stanton",
+      "450 SX": "Jeff Stanton",
+      "250 MX": "Jeff Emig",
+      "250 SX West": "Jeremy McGrath",
+      "250 SX East": "Brian Swink"
+    },
+    {
+      "year": 1993,
+      "500 MX": "Mike LaRocco",
+      "450 MX": "Mike Kiedrowski",
+      "450 SX": "Jeremy McGrath",
+      "250 MX": "Doug Henry",
+      "250 SX West": "Jimmy Gaddis",
+      "250 SX East": "Doug Henry"
+    },
+    {
+      "year": 1994,
+      "450 MX": "Mike LaRocco",
+      "450 SX": "Jeremy McGrath",
+      "250 MX": "Doug Henry",
+      "250 SX West": "Damon Huffman",
+      "250 SX East": "Ezra Lusk"
+    },
+    {
+      "year": 1995,
+      "450 MX": "Jeremy McGrath",
+      "450 SX": "Jeremy McGrath",
+      "250 MX": "Steve Lamson",
+      "250 SX West": "Damon Huffman",
+      "250 SX East": "Mickael Pichon"
+    },
+    {
+      "year": 1996,
+      "450 MX": "Jeff Emig",
+      "450 SX": "Jeremy McGrath",
+      "250 MX": "Steve Lamson",
+      "250 SX West": "Kevin Windham",
+      "250 SX East": "Mickael Pichon"
+    },
+    {
+      "year": 1997,
+      "450 MX": "Jeff Emig",
+      "450 SX": "Jeff Emig",
+      "250 MX": "Ricky Carmichael",
+      "250 SX West": "Kevin Windham",
+      "250 SX East": "Tim Ferry"
+    },
+    {
+      "year": 1998,
+      "450 MX": "Doug Henry",
+      "450 SX": "Jeremy McGrath",
+      "250 MX": "Ricky Carmichael",
+      "250 SX West": "John Dowd",
+      "250 SX East": "Ricky Carmichael"
+    },
+    {
+      "year": 1999,
+      "450 MX": "Greg Albertyn",
+      "450 SX": "Jeremy McGrath",
+      "250 MX": "Ricky Carmichael",
+      "250 SX West": "Nathan Ramsey",
+      "250 SX East": "Ernesto Fonseca"
+    },
+    {
+      "year": 2000,
+      "450 MX": "Ricky Carmichael",
+      "450 SX": "Jeremy McGrath",
+      "250 MX": "Travis Pastrana",
+      "250 SX West": "Shae Bently",
+      "250 SX East": "Stephane Roncada"
+    },
+    {
+      "year": 2001,
+      "450 MX": "Ricky Carmichael",
+      "450 SX": "Ricky Carmichael",
+      "250 MX": "Mike Brown",
+      "250 SX West": "Ernesto Fonseca",
+      "250 SX East": "Travis Pastrana"
+    },
+    {
+      "year": 2002,
+      "450 MX": "Ricky Carmichael",
+      "450 SX": "Ricky Carmichael",
+      "250 MX": "James Stewart",
+      "250 SX West": "Travis Preston",
+      "250 SX East": "Chad Reed"
+    },
+    {
+      "year": 2003,
+      "450 MX": "Ricky Carmichael",
+      "450 SX": "Ricky Carmichael",
+      "250 MX": "Grant Langston",
+      "250 SX West": "James Stewart",
+      "250 SX East": "Branden Jesseman"
+    },
+    {
+      "year": 2004,
+      "450 MX": "Ricky Carmichael",
+      "450 SX": "Chad Reed",
+      "250 MX": "James Stewart",
+      "250 SX West": "Ivan Tedesco",
+      "250 SX East": "James Stewart"
+    },
+    {
+      "year": 2005,
+      "450 MX": "Ricky Carmichael",
+      "450 SX": "Ricky Carmichael",
+      "250 MX": "Ivan Tedesco",
+      "250 SX West": "Ivan Tedesco",
+      "250 SX East": "Grant Langston"
+    },
+    {
+      "year": 2006,
+      "450 MX": "Ricky Carmichael",
+      "450 SX": "Ricky Carmichael",
+      "250 MX": "Ryan Villopoto",
+      "250 SX West": "Grant Langston",
+      "250 SX East": "Davi Millsaps"
+    },
+    {
+      "year": 2007,
+      "450 MX": "Grant Langston",
+      "450 SX": "James Stewart",
+      "250 MX": "Ryan Villopoto",
+      "250 SX West": "Ryan Villopoto",
+      "250 SX East": "Ben Townley"
+    },
+    {
+      "year": 2008,
+      "450 MX": "James Stewart",
+      "450 SX": "Chad Reed",
+      "250 MX": "Ryan Villopoto",
+      "250 SX West": "Jason Lawrence",
+      "250 SX East": "Trey Canard"
+    },
+    {
+      "year": 2009,
+      "450 MX": "Chad Reed",
+      "450 SX": "James Stewart",
+      "250 MX": "Ryan Dungey",
+      "250 SX West": "Ryan Dungey",
+      "250 SX East": "Christophe Pourcel"
+    },
+    {
+      "year": 2010,
+      "450 MX": "Ryan Dungey",
+      "450 SX": "Ryan Dungey",
+      "250 MX": "Trey Canard",
+      "250 SX West": "Jake Weimer",
+      "250 SX East": "Christophe Pourcel"
+    },
+    {
+      "year": 2011,
+      "450 MX": "Ryan Villopoto",
+      "450 SX": "Ryan Villopoto",
+      "250 MX": "Dean Wilson",
+      "250 SX West": "Broc Tickle",
+      "250 SX East": "Justin Barcia"
+    },
+    {
+      "year": 2012,
+      "450 MX": "Ryan Dungey",
+      "450 SX": "Ryan Villopoto",
+      "250 MX": "Blake Baggett",
+      "250 SX West": "Eli Tomac",
+      "250 SX East": "Justin Barcia"
+    },
+    {
+      "year": 2013,
+      "450 MX": "Ryan Villopoto",
+      "450 SX": "Ryan Villopoto",
+      "250 MX": "Eli Tomac",
+      "250 SX West": "Ken Roczen",
+      "250 SX East": "Will Hahn"
+    },
+    {
+      "year": 2014,
+      "450 MX": "Ken Roczen",
+      "450 SX": "Ryan Villopoto",
+      "250 MX": "Jeremy Martin",
+      "250 SX West": "Jason Anderson",
+      "250 SX East": "Justin Bogle"
+    },
+    {
+      "year": 2015,
+      "450 MX": "Ryan Dungey",
+      "450 SX": "Ryan Dungey",
+      "250 MX": "Jeremy Martin",
+      "250 SX West": "Cooper Webb",
+      "250 SX East": "Marvin Musquin"
+    },
+    {
+      "year": 2016,
+      "450 MX": "Ken Roczen",
+      "450 SX": "Ryan Dungey",
+      "250 MX": "Cooper Webb",
+      "250 SX West": "Cooper Webb",
+      "250 SX East": "Malcolm Stewart"
+    },
+    {
+      "year": 2017,
+      "450 MX": "Eli Tomac",
+      "450 SX": "Ryan Dungey",
+      "250 MX": "Zach Osborne",
+      "250 SX West": "Justin Hill",
+      "250 SX East": "Zach Osborne"
+    },
+    {
+      "year": 2018,
+      "450 MX": "Eli Tomac",
+      "450 SX": "Jason Anderson",
+      "250 MX": "Aaron Plessinger",
+      "250 SX West": "Aaron Plessinger",
+      "250 SX East": "Zach Osborne"
+    },
+    {
+      "year": 2019,
+      "450 MX": "Eli Tomac",
+      "450 SX": "Cooper Webb",
+      "250 MX": "Adam Cianciarulo",
+      "250 SX West": "Dylan Ferrandis",
+      "250 SX East": "Chase Sexton"
+    },
+    {
+      "year": 2020,
+      "450 MX": "Zach Osborne",
+      "450 SX": "Eli Tomac",
+      "250 MX": "Dylan Ferrandis",
+      "250 SX West": "Dylan Ferrandis",
+      "250 SX East": "Chase Sexton"
+    },
+    {
+      "year": 2021,
+      "450 MX": "Dylan Ferrandis",
+      "450 SX": "Cooper Webb",
+      "250 MX": "Jett Lawrence",
+      "250 SX West": "Justin Cooper",
+      "250 SX East": "Colt Nichols"
+    },
+    {
+      "year": 2022,
+      "450 MX": "Eli Tomac",
+      "450 SX": "Eli Tomac",
+      "250 MX": "Jett Lawrence",
+      "250 SX West": "Christian Craig",
+      "250 SX East": "Jett Lawrence"
+    },
+    {
+      "year": 2023,
+      "450 MX": "Jett Lawrence",
+      "450 SX": "Chase Sexton",
+      "250 MX": "Hunter Lawrence",
+      "250 SX West": "Jett Lawrence",
+      "250 SX East": "Hunter Lawrence"
+    },
+    {
+      "year": 2024,
+      "450 MX": "Chase Sexton",
+      "450 SX": "Jett Lawrence",
+      "250 MX": "Haiden Deegan",
+      "250 SX West": "RJ Hampshire",
+      "250 SX East": "Tom Vialle"
+    },
+    {
+      "year": 2025,
+      "450 MX": "Jett Lawrence",
+      "450 SX": "Cooper Webb",
+      "250 MX": "Haiden Deegan",
+      "250 SX West": "Haiden Deegan",
+      "250 SX East": "Tom Vialle"
+    }
+  ],
+  "xama": [
+    {
+      "year": 1970,
+      "series": "Trans-AMA",
+      "rider": "Dave Nicoll",
+      "country": "Iso-Britannia",
+      "bike": "BSA"
+    },
+    {
+      "year": 1971,
+      "series": "Trans-AMA",
+      "rider": "Sylvain Geboers",
+      "country": "Belgia",
+      "bike": "Suzuki"
+    },
+    {
+      "year": 1972,
+      "series": "Trans-AMA",
+      "rider": "Åke Jonsson",
+      "country": "Ruotsi",
+      "bike": "Maico"
+    },
+    {
+      "year": 1973,
+      "series": "Trans-AMA",
+      "rider": "Adolf Weil",
+      "country": "Länsi-Saksa",
+      "bike": "Maico"
+    },
+    {
+      "year": 1974,
+      "series": "Trans-AMA",
+      "rider": "Roger De Coster",
+      "country": "Belgia",
+      "bike": "Suzuki"
+    },
+    {
+      "year": 1975,
+      "series": "Trans-AMA",
+      "rider": "Roger De Coster",
+      "country": "Belgia",
+      "bike": "Suzuki"
+    },
+    {
+      "year": 1976,
+      "series": "Trans-AMA",
+      "rider": "Roger De Coster",
+      "country": "Belgia",
+      "bike": "Suzuki"
+    },
+    {
+      "year": 1977,
+      "series": "Trans-AMA",
+      "rider": "Roger De Coster",
+      "country": "Belgia",
+      "bike": "Suzuki"
+    },
+    {
+      "year": 1978,
+      "series": "Trans-AMA",
+      "rider": "Bob Hannah",
+      "country": "Yhdysvallat",
+      "bike": "Yamaha"
+    },
+    {
+      "year": 1979,
+      "series": "Trans-USA",
+      "rider": "Kent Howerton",
+      "country": "Yhdysvallat",
+      "bike": "Suzuki"
+    },
+    {
+      "year": 1980,
+      "series": "Trans-USA",
+      "rider": "Kent Howerton",
+      "country": "Yhdysvallat",
+      "bike": "Suzuki"
+    },
+    {
+      "year": 1981,
+      "series": "Trans-USA",
+      "rider": "Broc Glover",
+      "country": "Yhdysvallat",
+      "bike": "Yamaha"
+    },
+    {
+      "year": 1982,
+      "series": "Trans-USA",
+      "rider": "Dave Hollis",
+      "country": "Yhdysvallat",
+      "bike": "Suzuki"
+    },
+    {
+      "year": 1969,
+      "series": "Inter-AMA",
+      "rider": "Arne Kring",
+      "country": "Ruotsi",
+      "bike": "Husqvarna"
+    },
+    {
+      "year": 1970,
+      "series": "Inter-AMA",
+      "rider": "Åke Jonsson",
+      "country": "Ruotsi",
+      "bike": "Maico"
+    },
+    {
+      "year": 1971,
+      "series": "Inter-AMA",
+      "rider": "Vlastimil Valek",
+      "country": "Tšekkoslovakia",
+      "bike": "CZ"
+    },
+    {
+      "year": 1972,
+      "series": "Inter-AMA",
+      "rider": "Gary Jones",
+      "country": "Yhdysvallat",
+      "bike": "Yamaha"
+    },
+    {
+      "year": 1973,
+      "series": "Inter-AMA",
+      "rider": "Heikki Mikkola",
+      "country": "Suomi",
+      "bike": "Husqvarna"
+    },
+    {
+      "year": 1974,
+      "series": "Inter-AMA",
+      "rider": "Zdenek Velky",
+      "country": "Tšekkoslovakia",
+      "bike": "CZ"
+    },
+    {
+      "year": 1975,
+      "series": "Inter-AMA",
+      "rider": "Tony DiStefano",
+      "country": "Yhdysvallat",
+      "bike": "Suzuki"
+    }
+  ]
+}
