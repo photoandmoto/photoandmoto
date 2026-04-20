@@ -42,9 +42,7 @@ Kaksi luokkaa: 27 kuljettajaa osallistui kahteen eri luokkaan. Kolme luokkaa: Ka
 
 Tapahtumassa nähtiin monipuolinen kattaus vanhoja koneita. Moottoripyörämerkkien osalta vuoden 2025 tapahtumaa hallitsivat japanilais- ja ruotsalaisvalmistajat. Kolme hallitsevinta merkkiä olivat:
 
-1. Honda: 39
-2. Yamaha: 30
-3. Husqvarna: 23
+Honda (39), Yamaha (30) ja Husqvarna (23).
 
 Muiden suosittujen merkkien joukossa olivat Suzuki (19), Bultaco (13) ja KTM (12).
 
