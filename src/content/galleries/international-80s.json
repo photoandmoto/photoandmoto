@@ -2,668 +2,2198 @@
   "title": "International 80s",
   "slug": "international-80s",
   "description": "Photo gallery: International 80s",
-"category": "international",
   "cover_image": "thumbs/Andre Malherbe_thumb.jpg",
   "images": [
     {
-      "filename": "Andre Malherbe_thumb.jpg",
+      "filename": "Andre Malherbe.jpg",
       "thumb": "thumbs/Andre Malherbe_thumb.jpg",
-      "display": "thumbs/Andre Malherbe_thumb.jpg",
+      "display": "display/Andre Malherbe_display.jpg",
       "caption": "Andre Malherbe",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 707,
+      "height": 524
     },
     {
-      "filename": "Andre Malherben KTM_thumb.jpg",
+      "filename": "Andre Malherben KTM.jpg",
       "thumb": "thumbs/Andre Malherben KTM_thumb.jpg",
-      "display": "thumbs/Andre Malherben KTM_thumb.jpg",
+      "display": "display/Andre Malherben KTM_display.jpg",
       "caption": "Andre Malherben KTM",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 1099,
+      "height": 1648
     },
     {
-      "filename": "Aprilialla MM-pistemetsästyksessä Salo GP-125cc 1980_thumb.jpg",
+      "filename": "Aprilialla MM-pistemetsästyksessä Salo GP-125cc 1980.JPG",
       "thumb": "thumbs/Aprilialla MM-pistemetsästyksessä Salo GP-125cc 1980_thumb.jpg",
-      "display": "thumbs/Aprilialla MM-pistemetsästyksessä Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Aprilialla MM-pistemetsästyksessä Salo GP-125cc 1980_display.jpg",
       "caption": "Aprilialla MM-pistemetsästyksessä Salo GP-125cc 1980",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 936
     },
     {
-      "filename": "Ari Skog, mekaanikkojen aatelia, mm. Joben ja Ljungqvistin mekanikkona._thumb.jpg",
+      "filename": "Ari Skog, mekaanikkojen aatelia, mm. Joben ja Ljungqvistin mekanikkona..jpg",
       "thumb": "thumbs/Ari Skog, mekaanikkojen aatelia, mm. Joben ja Ljungqvistin mekanikkona._thumb.jpg",
-      "display": "thumbs/Ari Skog, mekaanikkojen aatelia, mm. Joben ja Ljungqvistin mekanikkona._thumb.jpg",
+      "display": "display/Ari Skog, mekaanikkojen aatelia, mm. Joben ja Ljungqvistin mekanikkona._display.jpg",
       "caption": "Ari Skog, mekaanikkojen aatelia, mm. Joben ja Ljungqvistin mekanikkona.",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 1990
     },
     {
-      "filename": "Ari Viiri Belgia 125cc GP 1982_thumb.jpg",
+      "filename": "Ari Viiri Belgia 125cc GP 1982.jpg",
       "thumb": "thumbs/Ari Viiri Belgia 125cc GP 1982_thumb.jpg",
-      "display": "thumbs/Ari Viiri Belgia 125cc GP 1982_thumb.jpg",
+      "display": "display/Ari Viiri Belgia 125cc GP 1982_display.jpg",
       "caption": "Ari Viiri Belgia 125cc GP 1982",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 946
     },
     {
-      "filename": "Arto Vilkman Genk treenit 1980_thumb.jpg",
+      "filename": "Arto Vilkman Genk treenit 1980.jpg",
       "thumb": "thumbs/Arto Vilkman Genk treenit 1980_thumb.jpg",
-      "display": "thumbs/Arto Vilkman Genk treenit 1980_thumb.jpg",
+      "display": "display/Arto Vilkman Genk treenit 1980_display.jpg",
       "caption": "Arto Vilkman Genk treenit 1980",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 615,
+      "height": 423
     },
     {
-      "filename": "Belgia 1987 S. Taimi ensimmäisiä kertoja Suzukin satulassa_thumb.jpg",
+      "filename": "Belgia 1987 S. Taimi ensimmäisiä kertoja Suzukin satulassa.jpg",
       "thumb": "thumbs/Belgia 1987 S. Taimi ensimmäisiä kertoja Suzukin satulassa_thumb.jpg",
-      "display": "thumbs/Belgia 1987 S. Taimi ensimmäisiä kertoja Suzukin satulassa_thumb.jpg",
+      "display": "display/Belgia 1987 S. Taimi ensimmäisiä kertoja Suzukin satulassa_display.jpg",
       "caption": "Belgia 1987 S. Taimi ensimmäisiä kertoja Suzukin satulassa",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 957
     },
     {
-      "filename": "Belgia Genk inter. kisa 1980 Andre Malherbe_thumb.jpg",
+      "filename": "Belgia Genk inter. kisa 1980 Andre Malherbe.jpg",
       "thumb": "thumbs/Belgia Genk inter. kisa 1980 Andre Malherbe_thumb.jpg",
-      "display": "thumbs/Belgia Genk inter. kisa 1980 Andre Malherbe_thumb.jpg",
+      "display": "display/Belgia Genk inter. kisa 1980 Andre Malherbe_display.jpg",
       "caption": "Belgia Genk inter. kisa 1980 Andre Malherbe",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 946
     },
     {
-      "filename": "Belgia Genk kv.-kisa 1981 Jukka Silvennoinen Suzuki_thumb.jpg",
+      "filename": "Belgia Genk kv.-kisa 1981 Jukka Silvennoinen Suzuki.jpg",
       "thumb": "thumbs/Belgia Genk kv.-kisa 1981 Jukka Silvennoinen Suzuki_thumb.jpg",
-      "display": "thumbs/Belgia Genk kv.-kisa 1981 Jukka Silvennoinen Suzuki_thumb.jpg",
+      "display": "display/Belgia Genk kv.-kisa 1981 Jukka Silvennoinen Suzuki_display.jpg",
       "caption": "Belgia Genk kv.-kisa 1981 Jukka Silvennoinen Suzuki",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 959
     },
     {
-      "filename": "Belgia treeni 1982 Pekka Vehkonen_thumb.jpg",
+      "filename": "Belgia treeni 1982 Pekka Vehkonen.jpg",
       "thumb": "thumbs/Belgia treeni 1982 Pekka Vehkonen_thumb.jpg",
-      "display": "thumbs/Belgia treeni 1982 Pekka Vehkonen_thumb.jpg",
+      "display": "display/Belgia treeni 1982 Pekka Vehkonen_display.jpg",
       "caption": "Belgia treeni 1982 Pekka Vehkonen",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 1260
     },
     {
-      "filename": "Belgia, Lommel 1986 S. Taimi lennättä Hussea_thumb.jpg",
+      "filename": "Belgia, Lommel 1986 S. Taimi lennättä Hussea.jpg",
       "thumb": "thumbs/Belgia, Lommel 1986 S. Taimi lennättä Hussea_thumb.jpg",
-      "display": "thumbs/Belgia, Lommel 1986 S. Taimi lennättä Hussea_thumb.jpg",
+      "display": "display/Belgia, Lommel 1986 S. Taimi lennättä Hussea_display.jpg",
       "caption": "Belgia, Lommel 1986 S. Taimi lennättä Hussea",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 2070
     },
     {
-      "filename": "Belgian 125cc MM 1982_thumb.jpg",
+      "filename": "Belgian 125cc MM 1982.jpg",
       "thumb": "thumbs/Belgian 125cc MM 1982_thumb.jpg",
-      "display": "thumbs/Belgian 125cc MM 1982_thumb.jpg",
+      "display": "display/Belgian 125cc MM 1982_display.jpg",
       "caption": "Belgian 125cc MM 1982",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 946
     },
     {
-      "filename": "Brad Lackey Ruskeasanta 1980_thumb.jpg",
+      "filename": "Brad Lackey Ruskeasanta 1980.jpg",
       "thumb": "thumbs/Brad Lackey Ruskeasanta 1980_thumb.jpg",
-      "display": "thumbs/Brad Lackey Ruskeasanta 1980_thumb.jpg",
+      "display": "display/Brad Lackey Ruskeasanta 1980_display.jpg",
       "caption": "Brad Lackey Ruskeasanta 1980",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 736,
+      "height": 491
     },
     {
-      "filename": "Bulgarian Dimitri Rangelov oli ajomiehiä 1981_thumb.jpg",
+      "filename": "Bulgarian Dimitri Rangelov oli ajomiehiä 1981.jpg",
       "thumb": "thumbs/Bulgarian Dimitri Rangelov oli ajomiehiä 1981_thumb.jpg",
-      "display": "thumbs/Bulgarian Dimitri Rangelov oli ajomiehiä 1981_thumb.jpg",
+      "display": "display/Bulgarian Dimitri Rangelov oli ajomiehiä 1981_display.jpg",
       "caption": "Bulgarian Dimitri Rangelov oli ajomiehiä 1981",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 876,
+      "height": 1112
     },
     {
-      "filename": "CZ konetarkastuksessa vm.1981_thumb.jpg",
+      "filename": "CZ konetarkastuksessa vm.1981.jpg",
       "thumb": "thumbs/CZ konetarkastuksessa vm.1981_thumb.jpg",
-      "display": "thumbs/CZ konetarkastuksessa vm.1981_thumb.jpg",
+      "display": "display/CZ konetarkastuksessa vm.1981_display.jpg",
       "caption": "CZ konetarkastuksessa vm.1981",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 846
     },
     {
-      "filename": "CZ pauhaa Venäläiskuskin käskemänä 1981_thumb.jpg",
+      "filename": "CZ pauhaa Venäläiskuskin käskemänä 1981.jpg",
       "thumb": "thumbs/CZ pauhaa Venäläiskuskin käskemänä 1981_thumb.jpg",
-      "display": "thumbs/CZ pauhaa Venäläiskuskin käskemänä 1981_thumb.jpg",
+      "display": "display/CZ pauhaa Venäläiskuskin käskemänä 1981_display.jpg",
       "caption": "CZ pauhaa Venäläiskuskin käskemänä 1981",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 1170,
+      "height": 750
     },
     {
-      "filename": "Casnyt kv-kisa Ranskassa. Sintonen neljäs oikealta no5_thumb.jpg",
+      "filename": "Casnyt kv-kisa Ranskassa. Sintonen neljäs oikealta no5.jpg",
       "thumb": "thumbs/Casnyt kv-kisa Ranskassa. Sintonen neljäs oikealta no5_thumb.jpg",
-      "display": "thumbs/Casnyt kv-kisa Ranskassa. Sintonen neljäs oikealta no5_thumb.jpg",
+      "display": "display/Casnyt kv-kisa Ranskassa. Sintonen neljäs oikealta no5_display.jpg",
       "caption": "Casnyt kv-kisa Ranskassa. Sintonen neljäs oikealta no5",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 947
     },
     {
-      "filename": "Crossikuskit futistreeneissä Belgiassa._thumb.jpg",
+      "filename": "Crossikuskit futistreeneissä Belgiassa..jpg",
       "thumb": "thumbs/Crossikuskit futistreeneissä Belgiassa._thumb.jpg",
-      "display": "thumbs/Crossikuskit futistreeneissä Belgiassa._thumb.jpg",
+      "display": "display/Crossikuskit futistreeneissä Belgiassa._display.jpg",
       "caption": "Crossikuskit futistreeneissä Belgiassa.",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 1152,
+      "height": 744
     },
     {
-      "filename": "Crossikuskit ja mekatsut konehommissa_thumb.jpg",
+      "filename": "Crossikuskit ja mekatsut konehommissa.jpg",
       "thumb": "thumbs/Crossikuskit ja mekatsut konehommissa_thumb.jpg",
-      "display": "thumbs/Crossikuskit ja mekatsut konehommissa_thumb.jpg",
+      "display": "display/Crossikuskit ja mekatsut konehommissa_display.jpg",
       "caption": "Crossikuskit ja mekatsut konehommissa",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 1371,
+      "height": 857
     },
     {
-      "filename": "Crossiporukalla ei jää koskaan sormi suuhun. Jos ei ole konekuskia, ajetaan itse_thumb.jpg",
+      "filename": "Crossiporukalla ei jää koskaan sormi suuhun. Jos ei ole konekuskia, ajetaan itse.jpg",
       "thumb": "thumbs/Crossiporukalla ei jää koskaan sormi suuhun. Jos ei ole konekuskia, ajetaan itse_thumb.jpg",
-      "display": "thumbs/Crossiporukalla ei jää koskaan sormi suuhun. Jos ei ole konekuskia, ajetaan itse_thumb.jpg",
+      "display": "display/Crossiporukalla ei jää koskaan sormi suuhun. Jos ei ole konekuskia, ajetaan itse_display.jpg",
       "caption": "Crossiporukalla ei jää koskaan sormi suuhun. Jos ei ole konekuskia, ajetaan itse",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 1371,
+      "height": 857
     },
     {
-      "filename": "Crossiväki rentoutuu. Hyvinkään MM-crossin tiimoilla_thumb.jpg",
+      "filename": "Crossiväki rentoutuu. Hyvinkään MM-crossin tiimoilla.jpg",
       "thumb": "thumbs/Crossiväki rentoutuu. Hyvinkään MM-crossin tiimoilla_thumb.jpg",
-      "display": "thumbs/Crossiväki rentoutuu. Hyvinkään MM-crossin tiimoilla_thumb.jpg",
+      "display": "display/Crossiväki rentoutuu. Hyvinkään MM-crossin tiimoilla_display.jpg",
       "caption": "Crossiväki rentoutuu. Hyvinkään MM-crossin tiimoilla",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 941
     },
     {
-      "filename": "D. Hansen Ruotsin 250cc GP 1982_thumb.jpg",
+      "filename": "D. Hansen Ruotsin 250cc GP 1982.jpg",
       "thumb": "thumbs/D. Hansen Ruotsin 250cc GP 1982_thumb.jpg",
-      "display": "thumbs/D. Hansen Ruotsin 250cc GP 1982_thumb.jpg",
+      "display": "display/D. Hansen Ruotsin 250cc GP 1982_display.jpg",
       "caption": "D. Hansen Ruotsin 250cc GP 1982",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 883,
+      "height": 1078
     },
     {
-      "filename": "Danny LaPorte Englannin GP 250cc 1983_thumb.jpg",
+      "filename": "Danny LaPorte Englannin GP 250cc 1983.jpg",
       "thumb": "thumbs/Danny LaPorte Englannin GP 250cc 1983_thumb.jpg",
-      "display": "thumbs/Danny LaPorte Englannin GP 250cc 1983_thumb.jpg",
+      "display": "display/Danny LaPorte Englannin GP 250cc 1983_display.jpg",
       "caption": "Danny LaPorte Englannin GP 250cc 1983",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 1253,
+      "height": 816
     },
     {
-      "filename": "Eppu Mäkelä, Kantola ja Hagström matkalla Amerikkaan 1987_thumb.jpg",
+      "filename": "Eppu Mäkelä, Kantola ja Hagström matkalla Amerikkaan 1987.jpg",
       "thumb": "thumbs/Eppu Mäkelä, Kantola ja Hagström matkalla Amerikkaan 1987_thumb.jpg",
-      "display": "thumbs/Eppu Mäkelä, Kantola ja Hagström matkalla Amerikkaan 1987_thumb.jpg",
+      "display": "display/Eppu Mäkelä, Kantola ja Hagström matkalla Amerikkaan 1987_display.jpg",
       "caption": "Eppu Mäkelä, Kantola ja Hagström matkalla Amerikkaan 1987",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 941
     },
     {
-      "filename": "Eric Geboers Salo GP-125cc 1980_thumb.jpg",
+      "filename": "Eric Geboers Salo GP-125cc 1980.JPG",
       "thumb": "thumbs/Eric Geboers Salo GP-125cc 1980_thumb.jpg",
-      "display": "thumbs/Eric Geboers Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Eric Geboers Salo GP-125cc 1980_display.jpg",
       "caption": "Eric Geboers Salo GP-125cc 1980",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 947
     },
     {
-      "filename": "Erkki Sundström Russia GP-250 1981_thumb.jpg",
+      "filename": "Erkki Sundström Russia GP-250 1981.jpg",
       "thumb": "thumbs/Erkki Sundström Russia GP-250 1981_thumb.jpg",
-      "display": "thumbs/Erkki Sundström Russia GP-250 1981_thumb.jpg",
+      "display": "display/Erkki Sundström Russia GP-250 1981_display.jpg",
       "caption": "Erkki Sundström Russia GP-250 1981",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 1387,
+      "height": 893
     },
     {
-      "filename": "Erkki Sundström. Russia GP-250 1981_thumb.jpg",
+      "filename": "Erkki Sundström. Russia GP-250 1981.jpg",
       "thumb": "thumbs/Erkki Sundström. Russia GP-250 1981_thumb.jpg",
-      "display": "thumbs/Erkki Sundström. Russia GP-250 1981_thumb.jpg",
+      "display": "display/Erkki Sundström. Russia GP-250 1981_display.jpg",
       "caption": "Erkki Sundström. Russia GP-250 1981",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 993,
+      "height": 1433
     },
     {
-      "filename": "Espamja Sabadell GP-250 1982  Matti Tarkkonen ajamassa 1. erän kakkoseksi._thumb.jpg",
+      "filename": "Espamja Sabadell GP-250 1982  Matti Tarkkonen ajamassa 1. erän kakkoseksi..jpg",
       "thumb": "thumbs/Espamja Sabadell GP-250 1982  Matti Tarkkonen ajamassa 1. erän kakkoseksi._thumb.jpg",
-      "display": "thumbs/Espamja Sabadell GP-250 1982  Matti Tarkkonen ajamassa 1. erän kakkoseksi._thumb.jpg",
+      "display": "display/Espamja Sabadell GP-250 1982  Matti Tarkkonen ajamassa 1. erän kakkoseksi._display.jpg",
       "caption": "Espamja Sabadell GP-250 1982  Matti Tarkkonen ajamassa 1. erän kakkoseksi.",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 794
     },
     {
-      "filename": "Espanja Sabadell 1982 Matti Tarkkonen_thumb.jpg",
+      "filename": "Espanja Sabadell 1982 Matti Tarkkonen.JPG",
       "thumb": "thumbs/Espanja Sabadell 1982 Matti Tarkkonen_thumb.jpg",
-      "display": "thumbs/Espanja Sabadell 1982 Matti Tarkkonen_thumb.jpg",
+      "display": "display/Espanja Sabadell 1982 Matti Tarkkonen_display.jpg",
       "caption": "Espanja Sabadell 1982 Matti Tarkkonen",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 948
     },
     {
-      "filename": "F1 testit Zolderissa. Missä kaikki nappulat ratista_thumb.jpg",
+      "filename": "F1 testit Zolderissa. Missä kaikki nappulat ratista.jpg",
       "thumb": "thumbs/F1 testit Zolderissa. Missä kaikki nappulat ratista_thumb.jpg",
-      "display": "thumbs/F1 testit Zolderissa. Missä kaikki nappulat ratista_thumb.jpg",
+      "display": "display/F1 testit Zolderissa. Missä kaikki nappulat ratista_display.jpg",
       "caption": "F1 testit Zolderissa. Missä kaikki nappulat ratista",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 871
     },
     {
-      "filename": "F1 testit. Ihmettelijöitä riittää Keken ympärillä 1982_thumb.jpg",
+      "filename": "F1 testit. Ihmettelijöitä riittää Keken ympärillä 1982.jpg",
       "thumb": "thumbs/F1 testit. Ihmettelijöitä riittää Keken ympärillä 1982_thumb.jpg",
-      "display": "thumbs/F1 testit. Ihmettelijöitä riittää Keken ympärillä 1982_thumb.jpg",
+      "display": "display/F1 testit. Ihmettelijöitä riittää Keken ympärillä 1982_display.jpg",
       "caption": "F1 testit. Ihmettelijöitä riittää Keken ympärillä 1982",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 946
     },
     {
-      "filename": "F1 testtit Zolderissa. Keke vauhdissa 1982_thumb.jpg",
+      "filename": "F1 testtit Zolderissa. Keke vauhdissa 1982.jpg",
       "thumb": "thumbs/F1 testtit Zolderissa. Keke vauhdissa 1982_thumb.jpg",
-      "display": "thumbs/F1 testtit Zolderissa. Keke vauhdissa 1982_thumb.jpg",
+      "display": "display/F1 testtit Zolderissa. Keke vauhdissa 1982_display.jpg",
       "caption": "F1 testtit Zolderissa. Keke vauhdissa 1982",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 1338,
+      "height": 837
     },
     {
-      "filename": "F1 vuonna 1982, glamour hieman erilaista kuin nyt_thumb.jpg",
+      "filename": "F1 vuonna 1982, glamour hieman erilaista kuin nyt.jpg",
       "thumb": "thumbs/F1 vuonna 1982, glamour hieman erilaista kuin nyt_thumb.jpg",
-      "display": "thumbs/F1 vuonna 1982, glamour hieman erilaista kuin nyt_thumb.jpg",
+      "display": "display/F1 vuonna 1982, glamour hieman erilaista kuin nyt_display.jpg",
       "caption": "F1 vuonna 1982, glamour hieman erilaista kuin nyt",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 937
     },
     {
-      "filename": "Gaillefontaine ja Simo Taimi tehdas Hussella 1986_thumb.jpg",
+      "filename": "Gaillefontaine ja Simo Taimi tehdas Hussella 1986.JPG",
       "thumb": "thumbs/Gaillefontaine ja Simo Taimi tehdas Hussella 1986_thumb.jpg",
-      "display": "thumbs/Gaillefontaine ja Simo Taimi tehdas Hussella 1986_thumb.jpg",
+      "display": "display/Gaillefontaine ja Simo Taimi tehdas Hussella 1986_display.jpg",
       "caption": "Gaillefontaine ja Simo Taimi tehdas Hussella 1986",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 509,
+      "height": 764
     },
     {
-      "filename": "Gaillefontainen testit 1986_thumb.jpg",
+      "filename": "Gaillefontainen testit 1986.jpg",
       "thumb": "thumbs/Gaillefontainen testit 1986_thumb.jpg",
-      "display": "thumbs/Gaillefontainen testit 1986_thumb.jpg",
+      "display": "display/Gaillefontainen testit 1986_display.jpg",
       "caption": "Gaillefontainen testit 1986",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 1340,
+      "height": 968
     },
     {
-      "filename": "Gaston Rahier Salo GP-125cc 1980_thumb.jpg",
+      "filename": "Gaston Rahier Salo GP-125cc 1980.JPG",
       "thumb": "thumbs/Gaston Rahier Salo GP-125cc 1980_thumb.jpg",
-      "display": "thumbs/Gaston Rahier Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Gaston Rahier Salo GP-125cc 1980_display.jpg",
       "caption": "Gaston Rahier Salo GP-125cc 1980",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 2104
     },
     {
-      "filename": "Gaston Rahier ja Gilera Salo GP-125cc 1980_thumb.jpg",
+      "filename": "Gaston Rahier ja Gilera Salo GP-125cc 1980.JPG",
       "thumb": "thumbs/Gaston Rahier ja Gilera Salo GP-125cc 1980_thumb.jpg",
-      "display": "thumbs/Gaston Rahier ja Gilera Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Gaston Rahier ja Gilera Salo GP-125cc 1980_display.jpg",
       "caption": "Gaston Rahier ja Gilera Salo GP-125cc 1980",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 932
     },
     {
-      "filename": "Genk Belgia 1980_thumb.jpg",
+      "filename": "Genk Belgia 1980.jpg",
       "thumb": "thumbs/Genk Belgia 1980_thumb.jpg",
-      "display": "thumbs/Genk Belgia 1980_thumb.jpg",
+      "display": "display/Genk Belgia 1980_display.jpg",
       "caption": "Genk Belgia 1980",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 1283,
+      "height": 772
     },
     {
-      "filename": "Georges Jobe Russia GP-250 1981_thumb.jpg",
+      "filename": "Georges Jobe Russia GP-250 1981.jpg",
       "thumb": "thumbs/Georges Jobe Russia GP-250 1981_thumb.jpg",
-      "display": "thumbs/Georges Jobe Russia GP-250 1981_thumb.jpg",
+      "display": "display/Georges Jobe Russia GP-250 1981_display.jpg",
       "caption": "Georges Jobe Russia GP-250 1981",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 939
     },
     {
-      "filename": "Georges Jobe matkalla MM-hopealle 1982_thumb.jpg",
+      "filename": "Georges Jobe matkalla MM-hopealle 1982.jpg",
       "thumb": "thumbs/Georges Jobe matkalla MM-hopealle 1982_thumb.jpg",
-      "display": "thumbs/Georges Jobe matkalla MM-hopealle 1982_thumb.jpg",
+      "display": "display/Georges Jobe matkalla MM-hopealle 1982_display.jpg",
       "caption": "Georges Jobe matkalla MM-hopealle 1982",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 934,
+      "height": 1153
     },
     {
-      "filename": "Georges Jobe onnittelee tuoretta mestaria Danny Laportea 1982_thumb.jpg",
+      "filename": "Georges Jobe onnittelee tuoretta mestaria Danny Laportea 1982.jpg",
       "thumb": "thumbs/Georges Jobe onnittelee tuoretta mestaria Danny Laportea 1982_thumb.jpg",
-      "display": "thumbs/Georges Jobe onnittelee tuoretta mestaria Danny Laportea 1982_thumb.jpg",
+      "display": "display/Georges Jobe onnittelee tuoretta mestaria Danny Laportea 1982_display.jpg",
       "caption": "Georges Jobe onnittelee tuoretta mestaria Danny Laportea 1982",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 943
     },
     {
-      "filename": "Georges Jobe. Russia GP-250 1981_thumb.jpg",
+      "filename": "Georges Jobe. Russia GP-250 1981.jpg",
       "thumb": "thumbs/Georges Jobe. Russia GP-250 1981_thumb.jpg",
-      "display": "thumbs/Georges Jobe. Russia GP-250 1981_thumb.jpg",
+      "display": "display/Georges Jobe. Russia GP-250 1981_display.jpg",
       "caption": "Georges Jobe. Russia GP-250 1981",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 1015,
+      "height": 1311
     },
     {
-      "filename": "Graham Noyce -80_thumb.jpg",
+      "filename": "Graham Noyce -80.jpg",
       "thumb": "thumbs/Graham Noyce -80_thumb.jpg",
-      "display": "thumbs/Graham Noyce -80_thumb.jpg",
+      "display": "display/Graham Noyce -80_display.jpg",
       "caption": "Graham Noyce -80",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 625,
+      "height": 477
     },
     {
-      "filename": "Graham Noyce Ruskeasanta-80_thumb.jpg",
+      "filename": "Graham Noyce Ruskeasanta-80.jpg",
       "thumb": "thumbs/Graham Noyce Ruskeasanta-80_thumb.jpg",
-      "display": "thumbs/Graham Noyce Ruskeasanta-80_thumb.jpg",
+      "display": "display/Graham Noyce Ruskeasanta-80_display.jpg",
       "caption": "Graham Noyce Ruskeasanta-80",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 616,
+      "height": 440
     },
     {
-      "filename": "Graham Noycen mekaanikko säätöhommissa 1980_thumb.jpg",
+      "filename": "Graham Noycen mekaanikko säätöhommissa 1980.jpg",
       "thumb": "thumbs/Graham Noycen mekaanikko säätöhommissa 1980_thumb.jpg",
-      "display": "thumbs/Graham Noycen mekaanikko säätöhommissa 1980_thumb.jpg",
+      "display": "display/Graham Noycen mekaanikko säätöhommissa 1980_display.jpg",
       "caption": "Graham Noycen mekaanikko säätöhommissa 1980",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 942
     },
     {
-      "filename": "Grahan Noyce laittamassa pyörää Belgia 1980_thumb.jpg",
+      "filename": "Grahan Noyce laittamassa pyörää Belgia 1980.jpg",
       "thumb": "thumbs/Grahan Noyce laittamassa pyörää Belgia 1980_thumb.jpg",
-      "display": "thumbs/Grahan Noyce laittamassa pyörää Belgia 1980_thumb.jpg",
+      "display": "display/Grahan Noyce laittamassa pyörää Belgia 1980_display.jpg",
       "caption": "Grahan Noyce laittamassa pyörää Belgia 1980",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 1103,
+      "height": 1498
     },
     {
-      "filename": "Göte Liljegrenin mekaanikko Kimmo Suvinen sorvin äärellä 1980_thumb.jpg",
+      "filename": "Göte Liljegrenin mekaanikko Kimmo Suvinen sorvin äärellä 1980.jpg",
       "thumb": "thumbs/Göte Liljegrenin mekaanikko Kimmo Suvinen sorvin äärellä 1980_thumb.jpg",
-      "display": "thumbs/Göte Liljegrenin mekaanikko Kimmo Suvinen sorvin äärellä 1980_thumb.jpg",
+      "display": "display/Göte Liljegrenin mekaanikko Kimmo Suvinen sorvin äärellä 1980_display.jpg",
       "caption": "Göte Liljegrenin mekaanikko Kimmo Suvinen sorvin äärellä 1980",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 896,
+      "height": 920
     },
     {
-      "filename": "Göteborg Ullevi supercross 1987_thumb.jpg",
+      "filename": "Göteborg Ullevi supercross 1987.jpg",
       "thumb": "thumbs/Göteborg Ullevi supercross 1987_thumb.jpg",
-      "display": "thumbs/Göteborg Ullevi supercross 1987_thumb.jpg",
+      "display": "display/Göteborg Ullevi supercross 1987_display.jpg",
       "caption": "Göteborg Ullevi supercross 1987",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 881
     },
     {
-      "filename": "Harry Erverts Belian 125xx MM 1982_thumb.jpg",
+      "filename": "Harry Erverts Belian 125xx MM 1982.jpg",
       "thumb": "thumbs/Harry Erverts Belian 125xx MM 1982_thumb.jpg",
-      "display": "thumbs/Harry Erverts Belian 125xx MM 1982_thumb.jpg",
+      "display": "display/Harry Erverts Belian 125xx MM 1982_display.jpg",
       "caption": "Harry Erverts Belian 125xx MM 1982",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 946
     },
     {
-      "filename": "Harry Everts Belgia 125cc GP 1982_thumb.jpg",
+      "filename": "Harry Everts Belgia 125cc GP 1982.jpg",
       "thumb": "thumbs/Harry Everts Belgia 125cc GP 1982_thumb.jpg",
-      "display": "thumbs/Harry Everts Belgia 125cc GP 1982_thumb.jpg",
+      "display": "display/Harry Everts Belgia 125cc GP 1982_display.jpg",
       "caption": "Harry Everts Belgia 125cc GP 1982",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 1395,
+      "height": 918
     },
     {
-      "filename": "Harry Everts Salo GP-125cc 1980 (2)_thumb.jpg",
+      "filename": "Harry Everts Salo GP-125cc 1980 (2).JPG",
       "thumb": "thumbs/Harry Everts Salo GP-125cc 1980 (2)_thumb.jpg",
-      "display": "thumbs/Harry Everts Salo GP-125cc 1980 (2)_thumb.jpg",
+      "display": "display/Harry Everts Salo GP-125cc 1980 (2)_display.jpg",
       "caption": "Harry Everts Salo GP-125cc 1980 (2)",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 987
     },
     {
-      "filename": "Harry Everts Salo GP-125cc 1980_thumb.jpg",
+      "filename": "Harry Everts Salo GP-125cc 1980.JPG",
       "thumb": "thumbs/Harry Everts Salo GP-125cc 1980_thumb.jpg",
-      "display": "thumbs/Harry Everts Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Harry Everts Salo GP-125cc 1980_display.jpg",
       "caption": "Harry Everts Salo GP-125cc 1980",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 982
     },
     {
-      "filename": "Hawkstone GP 1983. Helle kotteli kuskeja._thumb.jpg",
+      "filename": "Hawkstone GP 1983. Helle kotteli kuskeja..jpg",
       "thumb": "thumbs/Hawkstone GP 1983. Helle kotteli kuskeja._thumb.jpg",
-      "display": "thumbs/Hawkstone GP 1983. Helle kotteli kuskeja._thumb.jpg",
+      "display": "display/Hawkstone GP 1983. Helle kotteli kuskeja._display.jpg",
       "caption": "Hawkstone GP 1983. Helle kotteli kuskeja.",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 941
     },
     {
-      "filename": "Heinz Kinigadner. Russia GP-250 1981_thumb.jpg",
+      "filename": "Heinz Kinigadner. Russia GP-250 1981.jpg",
       "thumb": "thumbs/Heinz Kinigadner. Russia GP-250 1981_thumb.jpg",
-      "display": "thumbs/Heinz Kinigadner. Russia GP-250 1981_thumb.jpg",
+      "display": "display/Heinz Kinigadner. Russia GP-250 1981_display.jpg",
       "caption": "Heinz Kinigadner. Russia GP-250 1981",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 937
     },
     {
-      "filename": "Hieno pytinkin Gaillefontainessa._thumb.jpg",
+      "filename": "Hieno pytinkin Gaillefontainessa..jpg",
       "thumb": "thumbs/Hieno pytinkin Gaillefontainessa._thumb.jpg",
-      "display": "thumbs/Hieno pytinkin Gaillefontainessa._thumb.jpg",
+      "display": "display/Hieno pytinkin Gaillefontainessa._display.jpg",
       "caption": "Hieno pytinkin Gaillefontainessa.",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 940
     },
     {
-      "filename": "Hollanti Venray GP-250 1986 Team Taimin mekatsulla riitti pestävää_thumb.jpg",
+      "filename": "Hollanti Venray GP-250 1986 Team Taimin mekatsulla riitti pestävää.jpg",
       "thumb": "thumbs/Hollanti Venray GP-250 1986 Team Taimin mekatsulla riitti pestävää_thumb.jpg",
-      "display": "thumbs/Hollanti Venray GP-250 1986 Team Taimin mekatsulla riitti pestävää_thumb.jpg",
+      "display": "display/Hollanti Venray GP-250 1986 Team Taimin mekatsulla riitti pestävää_display.jpg",
       "caption": "Hollanti Venray GP-250 1986 Team Taimin mekatsulla riitti pestävää",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 922
     },
     {
-      "filename": "Honda Mugen kuski Salon GP-125xx 1980_thumb.jpg",
+      "filename": "Honda Mugen kuski Salon GP-125xx 1980.JPG",
       "thumb": "thumbs/Honda Mugen kuski Salon GP-125xx 1980_thumb.jpg",
-      "display": "thumbs/Honda Mugen kuski Salon GP-125xx 1980_thumb.jpg",
+      "display": "display/Honda Mugen kuski Salon GP-125xx 1980_display.jpg",
       "caption": "Honda Mugen kuski Salon GP-125xx 1980",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 933
     },
     {
-      "filename": "Husqvarnan tehdastiimit Taimi ja Hansson tauolla._thumb.jpg",
+      "filename": "Husqvarnan tehdastiimit Taimi ja Hansson tauolla..JPG",
       "thumb": "thumbs/Husqvarnan tehdastiimit Taimi ja Hansson tauolla._thumb.jpg",
-      "display": "thumbs/Husqvarnan tehdastiimit Taimi ja Hansson tauolla._thumb.jpg",
+      "display": "display/Husqvarnan tehdastiimit Taimi ja Hansson tauolla._display.jpg",
       "caption": "Husqvarnan tehdastiimit Taimi ja Hansson tauolla.",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 933
     },
     {
-      "filename": "Husse-kuski Peter Hansson löysi Cagivan tehtaalta Jawan 1986_thumb.jpg",
+      "filename": "Husse-kuski Peter Hansson löysi Cagivan tehtaalta Jawan 1986.jpg",
       "thumb": "thumbs/Husse-kuski Peter Hansson löysi Cagivan tehtaalta Jawan 1986_thumb.jpg",
-      "display": "thumbs/Husse-kuski Peter Hansson löysi Cagivan tehtaalta Jawan 1986_thumb.jpg",
+      "display": "display/Husse-kuski Peter Hansson löysi Cagivan tehtaalta Jawan 1986_display.jpg",
       "caption": "Husse-kuski Peter Hansson löysi Cagivan tehtaalta Jawan 1986",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 1000
+      "width": 1136,
+      "height": 1712
     },
     {
-      "filename": "Hussessa liikaa tehoa - ei kestä renkaat. Ranska 1986_thumb.jpg",
+      "filename": "Hussessa liikaa tehoa - ei kestä renkaat. Ranska 1986.JPG",
       "thumb": "thumbs/Hussessa liikaa tehoa - ei kestä renkaat. Ranska 1986_thumb.jpg",
-      "display": "thumbs/Hussessa liikaa tehoa - ei kestä renkaat. Ranska 1986_thumb.jpg",
+      "display": "display/Hussessa liikaa tehoa - ei kestä renkaat. Ranska 1986_display.jpg",
       "caption": "Hussessa liikaa tehoa - ei kestä renkaat. Ranska 1986",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 936
     },
     {
-      "filename": "Iloinen suomalaisporukka Belgiassa 1983_thumb.jpg",
+      "filename": "Iloinen suomalaisporukka Belgiassa 1983.jpg",
       "thumb": "thumbs/Iloinen suomalaisporukka Belgiassa 1983_thumb.jpg",
-      "display": "thumbs/Iloinen suomalaisporukka Belgiassa 1983_thumb.jpg",
+      "display": "display/Iloinen suomalaisporukka Belgiassa 1983_display.jpg",
       "caption": "Iloinen suomalaisporukka Belgiassa 1983",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 941
     },
     {
-      "filename": "Italia 1986 Simo Taimin treenipäivä kurassa_thumb.jpg",
+      "filename": "Italia 1986 Simo Taimin treenipäivä kurassa.jpg",
       "thumb": "thumbs/Italia 1986 Simo Taimin treenipäivä kurassa_thumb.jpg",
-      "display": "thumbs/Italia 1986 Simo Taimin treenipäivä kurassa_thumb.jpg",
+      "display": "display/Italia 1986 Simo Taimin treenipäivä kurassa_display.jpg",
       "caption": "Italia 1986 Simo Taimin treenipäivä kurassa",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 937
     },
     {
-      "filename": "Italia Mantova 1987 Suomipojat treeneissä vas Ljungqvist, Kokkonen, I.Vehkonen, Hagström, P.Vehkonen ja Taimi._thumb.jpg",
+      "filename": "Italia Mantova 1987 Suomipojat treeneissä vas Ljungqvist, Kokkonen, I.Vehkonen, Hagström, P.Vehkonen ja Taimi..jpg",
       "thumb": "thumbs/Italia Mantova 1987 Suomipojat treeneissä vas Ljungqvist, Kokkonen, I.Vehkonen, Hagström, P.Vehkonen ja Taimi._thumb.jpg",
-      "display": "thumbs/Italia Mantova 1987 Suomipojat treeneissä vas Ljungqvist, Kokkonen, I.Vehkonen, Hagström, P.Vehkonen ja Taimi._thumb.jpg",
+      "display": "display/Italia Mantova 1987 Suomipojat treeneissä vas Ljungqvist, Kokkonen, I.Vehkonen, Hagström, P.Vehkonen ja Taimi._display.jpg",
       "caption": "Italia Mantova 1987 Suomipojat treeneissä vas Ljungqvist, Kokkonen, I.Vehkonen, Hagström, P.Vehkonen ja Taimi.",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 661
     },
     {
-      "filename": "Italia treeni 1986 Harri Lehtonen Husqvarana_thumb.jpg",
+      "filename": "Italia treeni 1986 Harri Lehtonen Husqvarana.jpg",
       "thumb": "thumbs/Italia treeni 1986 Harri Lehtonen Husqvarana_thumb.jpg",
-      "display": "thumbs/Italia treeni 1986 Harri Lehtonen Husqvarana_thumb.jpg",
+      "display": "display/Italia treeni 1986 Harri Lehtonen Husqvarana_display.jpg",
       "caption": "Italia treeni 1986 Harri Lehtonen Husqvarana",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 977
     },
     {
-      "filename": "Itävalta Schwanenstadt GP-250 1986 Gert-Jan Van Doorn_thumb.jpg",
+      "filename": "Itävalta Schwanenstadt GP-250 1986 Gert-Jan Van Doorn.jpg",
       "thumb": "thumbs/Itävalta Schwanenstadt GP-250 1986 Gert-Jan Van Doorn_thumb.jpg",
-      "display": "thumbs/Itävalta Schwanenstadt GP-250 1986 Gert-Jan Van Doorn_thumb.jpg",
+      "display": "display/Itävalta Schwanenstadt GP-250 1986 Gert-Jan Van Doorn_display.jpg",
       "caption": "Itävalta Schwanenstadt GP-250 1986 Gert-Jan Van Doorn",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 854
     },
     {
-      "filename": "Itävalta Schwanenstadt GP-250 1986 Jacky Vimond taiteilee kurassa_thumb.jpg",
+      "filename": "Itävalta Schwanenstadt GP-250 1986 Jacky Vimond taiteilee kurassa.jpg",
       "thumb": "thumbs/Itävalta Schwanenstadt GP-250 1986 Jacky Vimond taiteilee kurassa_thumb.jpg",
-      "display": "thumbs/Itävalta Schwanenstadt GP-250 1986 Jacky Vimond taiteilee kurassa_thumb.jpg",
+      "display": "display/Itävalta Schwanenstadt GP-250 1986 Jacky Vimond taiteilee kurassa_display.jpg",
       "caption": "Itävalta Schwanenstadt GP-250 1986 Jacky Vimond taiteilee kurassa",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1000
+      "height": 889
+    },
+    {
+      "filename": "Itävalta Schwanenstadt GP-250 1986 Michele Rinaldilla ongelmia harjoituksissa.jpg",
+      "thumb": "thumbs/Itävalta Schwanenstadt GP-250 1986 Michele Rinaldilla ongelmia harjoituksissa_thumb.jpg",
+      "display": "display/Itävalta Schwanenstadt GP-250 1986 Michele Rinaldilla ongelmia harjoituksissa_display.jpg",
+      "caption": "Itävalta Schwanenstadt GP-250 1986 Michele Rinaldilla ongelmia harjoituksissa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 923
+    },
+    {
+      "filename": "Itävalta Schwanenstadt GP-250 1986 Tiivis tunnelma kurakelissä.jpg",
+      "thumb": "thumbs/Itävalta Schwanenstadt GP-250 1986 Tiivis tunnelma kurakelissä_thumb.jpg",
+      "display": "display/Itävalta Schwanenstadt GP-250 1986 Tiivis tunnelma kurakelissä_display.jpg",
+      "caption": "Itävalta Schwanenstadt GP-250 1986 Tiivis tunnelma kurakelissä",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 877
+    },
+    {
+      "filename": "Jacky Vimond Salo GP-125cc 1980.JPG",
+      "thumb": "thumbs/Jacky Vimond Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Jacky Vimond Salo GP-125cc 1980_display.jpg",
+      "caption": "Jacky Vimond Salo GP-125cc 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 911
+    },
+    {
+      "filename": "Jacky Vimond edellä Salo GP-125 1980.JPG",
+      "thumb": "thumbs/Jacky Vimond edellä Salo GP-125 1980_thumb.jpg",
+      "display": "display/Jacky Vimond edellä Salo GP-125 1980_display.jpg",
+      "caption": "Jacky Vimond edellä Salo GP-125 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 785
+    },
+    {
+      "filename": "Jacy Vimond Belgian GP 125cc 1982.jpg",
+      "thumb": "thumbs/Jacy Vimond Belgian GP 125cc 1982_thumb.jpg",
+      "display": "display/Jacy Vimond Belgian GP 125cc 1982_display.jpg",
+      "caption": "Jacy Vimond Belgian GP 125cc 1982",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 798
+    },
+    {
+      "filename": "Jean-Claude Laquaye SWM. Russia GP-250 1981.jpg",
+      "thumb": "thumbs/Jean-Claude Laquaye SWM. Russia GP-250 1981_thumb.jpg",
+      "display": "display/Jean-Claude Laquaye SWM. Russia GP-250 1981_display.jpg",
+      "caption": "Jean-Claude Laquaye SWM. Russia GP-250 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 947
+    },
+    {
+      "filename": "Jukka Jana Penttilä MP-Lehti varusteissa Salo GP-125cc 1980.JPG",
+      "thumb": "thumbs/Jukka Jana Penttilä MP-Lehti varusteissa Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Jukka Jana Penttilä MP-Lehti varusteissa Salo GP-125cc 1980_display.jpg",
+      "caption": "Jukka Jana Penttilä MP-Lehti varusteissa Salo GP-125cc 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2104
+    },
+    {
+      "filename": "Jukka Jana Penttilä Salo GP-125cc 1980.JPG",
+      "thumb": "thumbs/Jukka Jana Penttilä Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Jukka Jana Penttilä Salo GP-125cc 1980_display.jpg",
+      "caption": "Jukka Jana Penttilä Salo GP-125cc 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 970
+    },
+    {
+      "filename": "Jukka Penttilä Salo 125cc GP 1980.JPG",
+      "thumb": "thumbs/Jukka Penttilä Salo 125cc GP 1980_thumb.jpg",
+      "display": "display/Jukka Penttilä Salo 125cc GP 1980_display.jpg",
+      "caption": "Jukka Penttilä Salo 125cc GP 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 942
+    },
+    {
+      "filename": "Jukka Sintonen ja mekaanikko Leksa matkalla kisoihin.jpg",
+      "thumb": "thumbs/Jukka Sintonen ja mekaanikko Leksa matkalla kisoihin_thumb.jpg",
+      "display": "display/Jukka Sintonen ja mekaanikko Leksa matkalla kisoihin_display.jpg",
+      "caption": "Jukka Sintonen ja mekaanikko Leksa matkalla kisoihin",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1111,
+      "height": 1193
+    },
+    {
+      "filename": "Jukka Sintonen loikkaa tehdas Yamahallaan 1983.jpg",
+      "thumb": "thumbs/Jukka Sintonen loikkaa tehdas Yamahallaan 1983_thumb.jpg",
+      "display": "display/Jukka Sintonen loikkaa tehdas Yamahallaan 1983_display.jpg",
+      "caption": "Jukka Sintonen loikkaa tehdas Yamahallaan 1983",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 946
+    },
+    {
+      "filename": "Jukka Sintonen pokkasi kakkossijan Espanjassa ajetussa kv-kisassa 1983.jpg",
+      "thumb": "thumbs/Jukka Sintonen pokkasi kakkossijan Espanjassa ajetussa kv-kisassa 1983_thumb.jpg",
+      "display": "display/Jukka Sintonen pokkasi kakkossijan Espanjassa ajetussa kv-kisassa 1983_display.jpg",
+      "caption": "Jukka Sintonen pokkasi kakkossijan Espanjassa ajetussa kv-kisassa 1983",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1032,
+      "height": 683
+    },
+    {
+      "filename": "Jukka Sintonen tehdas Yamahan puikoissa 1983.jpg",
+      "thumb": "thumbs/Jukka Sintonen tehdas Yamahan puikoissa 1983_thumb.jpg",
+      "display": "display/Jukka Sintonen tehdas Yamahan puikoissa 1983_display.jpg",
+      "caption": "Jukka Sintonen tehdas Yamahan puikoissa 1983",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1089,
+      "height": 1089
+    },
+    {
+      "filename": "Kakkukahvit tulossa. Rene, Angela ja Vivian Liekens, sekä Simo ja Maile Taimi 1986.JPG",
+      "thumb": "thumbs/Kakkukahvit tulossa. Rene, Angela ja Vivian Liekens, sekä Simo ja Maile Taimi 1986_thumb.jpg",
+      "display": "display/Kakkukahvit tulossa. Rene, Angela ja Vivian Liekens, sekä Simo ja Maile Taimi 1986_display.jpg",
+      "caption": "Kakkukahvit tulossa. Rene, Angela ja Vivian Liekens, sekä Simo ja Maile Taimi 1986",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 930
+    },
+    {
+      "filename": "Kees van der Veniä virvotaan ajokuntoon. GP 250cc Hawkstone Park 1983.jpg",
+      "thumb": "thumbs/Kees van der Veniä virvotaan ajokuntoon. GP 250cc Hawkstone Park 1983_thumb.jpg",
+      "display": "display/Kees van der Veniä virvotaan ajokuntoon. GP 250cc Hawkstone Park 1983_display.jpg",
+      "caption": "Kees van der Veniä virvotaan ajokuntoon. GP 250cc Hawkstone Park 1983",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1204
+    },
+    {
+      "filename": "Keke Rosberg Zolderin F1 testeissä mestaruusvuonnaan 1982.jpg",
+      "thumb": "thumbs/Keke Rosberg Zolderin F1 testeissä mestaruusvuonnaan 1982_thumb.jpg",
+      "display": "display/Keke Rosberg Zolderin F1 testeissä mestaruusvuonnaan 1982_display.jpg",
+      "caption": "Keke Rosberg Zolderin F1 testeissä mestaruusvuonnaan 1982",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 941
+    },
+    {
+      "filename": "Kouvola SM 125cc 1989 no.17 K.Immonen, no.15 S.Niemi, no.4 P.Kytölä, no.23. A.Nevala, no.32T.Nurmi, no.7. T.Räikkönen.jpg",
+      "thumb": "thumbs/Kouvola SM 125cc 1989 no.17 K.Immonen, no.15 S.Niemi, no.4 P.Kytölä, no.23. A.Nevala, no.32T.Nurmi, no.7. T.Räikkönen_thumb.jpg",
+      "display": "display/Kouvola SM 125cc 1989 no.17 K.Immonen, no.15 S.Niemi, no.4 P.Kytölä, no.23. A.Nevala, no.32T.Nurmi, no.7. T.Räikkönen_display.jpg",
+      "caption": "Kouvola SM 125cc 1989 no.17 K.Immonen, no.15 S.Niemi, no.4 P.Kytölä, no.23. A.Nevala, no.32T.Nurmi, no.7. T.Räikkönen",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 920
+    },
+    {
+      "filename": "Kovaa ja korkealla. Gaillefontaine 1986.JPG",
+      "thumb": "thumbs/Kovaa ja korkealla. Gaillefontaine 1986_thumb.jpg",
+      "display": "display/Kovaa ja korkealla. Gaillefontaine 1986_display.jpg",
+      "caption": "Kovaa ja korkealla. Gaillefontaine 1986",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 888
+    },
+    {
+      "filename": "LaPorte GB GP250 1983.jpg",
+      "thumb": "thumbs/LaPorte GB GP250 1983_thumb.jpg",
+      "display": "display/LaPorte GB GP250 1983_display.jpg",
+      "caption": "LaPorte GB GP250 1983",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1285,
+      "height": 750
+    },
+    {
+      "filename": "LaPorte matkalla mestaruuteen 1982.jpg",
+      "thumb": "thumbs/LaPorte matkalla mestaruuteen 1982_thumb.jpg",
+      "display": "display/LaPorte matkalla mestaruuteen 1982_display.jpg",
+      "caption": "LaPorte matkalla mestaruuteen 1982",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 969,
+      "height": 1171
+    },
+    {
+      "filename": "Leningrad 1981 GP 250 Erkki Sundström.JPG",
+      "thumb": "thumbs/Leningrad 1981 GP 250 Erkki Sundström_thumb.jpg",
+      "display": "display/Leningrad 1981 GP 250 Erkki Sundström_display.jpg",
+      "caption": "Leningrad 1981 GP 250 Erkki Sundström",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2104
+    },
+    {
+      "filename": "Leningrad GP 250 1981 Dave Watson fasctory Yamaha.JPG",
+      "thumb": "thumbs/Leningrad GP 250 1981 Dave Watson fasctory Yamaha_thumb.jpg",
+      "display": "display/Leningrad GP 250 1981 Dave Watson fasctory Yamaha_display.jpg",
+      "caption": "Leningrad GP 250 1981 Dave Watson fasctory Yamaha",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2104
+    },
+    {
+      "filename": "Leningrad GP 250 1981 E.Sunström.JPG",
+      "thumb": "thumbs/Leningrad GP 250 1981 E.Sunström_thumb.jpg",
+      "display": "display/Leningrad GP 250 1981 E.Sunström_display.jpg",
+      "caption": "Leningrad GP 250 1981 E.Sunström",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 935
+    },
+    {
+      "filename": "Leningrad GP 250 1981 Heinz Kinigadner.JPG",
+      "thumb": "thumbs/Leningrad GP 250 1981 Heinz Kinigadner_thumb.jpg",
+      "display": "display/Leningrad GP 250 1981 Heinz Kinigadner_display.jpg",
+      "caption": "Leningrad GP 250 1981 Heinz Kinigadner",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Leningrad GP 250 1981 Hussekuski syöttää.JPG",
+      "thumb": "thumbs/Leningrad GP 250 1981 Hussekuski syöttää_thumb.jpg",
+      "display": "display/Leningrad GP 250 1981 Hussekuski syöttää_display.jpg",
+      "caption": "Leningrad GP 250 1981 Hussekuski syöttää",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2104
+    },
+    {
+      "filename": "Leningrad GP 250 1981 Matti Tarkkonen Yamaha.JPG",
+      "thumb": "thumbs/Leningrad GP 250 1981 Matti Tarkkonen Yamaha_thumb.jpg",
+      "display": "display/Leningrad GP 250 1981 Matti Tarkkonen Yamaha_display.jpg",
+      "caption": "Leningrad GP 250 1981 Matti Tarkkonen Yamaha",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1064
+    },
+    {
+      "filename": "Leningrad GP 250 1981 Venäjän oma poika ja CZ.JPG",
+      "thumb": "thumbs/Leningrad GP 250 1981 Venäjän oma poika ja CZ_thumb.jpg",
+      "display": "display/Leningrad GP 250 1981 Venäjän oma poika ja CZ_display.jpg",
+      "caption": "Leningrad GP 250 1981 Venäjän oma poika ja CZ",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2104
+    },
+    {
+      "filename": "Leningrad GP 250 1981 ja CZ kuski.JPG",
+      "thumb": "thumbs/Leningrad GP 250 1981 ja CZ kuski_thumb.jpg",
+      "display": "display/Leningrad GP 250 1981 ja CZ kuski_display.jpg",
+      "caption": "Leningrad GP 250 1981 ja CZ kuski",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2104
+    },
+    {
+      "filename": "Leningrad GP 250 1981. Mike Guerra ja nuoret venäläisfanit.JPG",
+      "thumb": "thumbs/Leningrad GP 250 1981. Mike Guerra ja nuoret venäläisfanit_thumb.jpg",
+      "display": "display/Leningrad GP 250 1981. Mike Guerra ja nuoret venäläisfanit_display.jpg",
+      "caption": "Leningrad GP 250 1981. Mike Guerra ja nuoret venäläisfanit",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2104
+    },
+    {
+      "filename": "Leningrad GP 250 1981.JPG",
+      "thumb": "thumbs/Leningrad GP 250 1981_thumb.jpg",
+      "display": "display/Leningrad GP 250 1981_display.jpg",
+      "caption": "Leningrad GP 250 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 983
+    },
+    {
+      "filename": "M. Aution Mugen Honda 125cc_6.jpg",
+      "thumb": "thumbs/M. Aution Mugen Honda 125cc_6_thumb.jpg",
+      "display": "display/M. Aution Mugen Honda 125cc_6_display.jpg",
+      "caption": "M. Aution Mugen Honda 125cc 6",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 933
+    },
+    {
+      "filename": "M. Aution Mugen Honda_5.jpg",
+      "thumb": "thumbs/M. Aution Mugen Honda_5_thumb.jpg",
+      "display": "display/M. Aution Mugen Honda_5_display.jpg",
+      "caption": "M. Aution Mugen Honda 5",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 935
+    },
+    {
+      "filename": "M.Tarkkonen Hyvinkään SM-cross 1981.jpg",
+      "thumb": "thumbs/M.Tarkkonen Hyvinkään SM-cross 1981_thumb.jpg",
+      "display": "display/M.Tarkkonen Hyvinkään SM-cross 1981_display.jpg",
+      "caption": "M.Tarkkonen Hyvinkään SM-cross 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1111,
+      "height": 1623
+    },
+    {
+      "filename": "M.Velkeneers ja H. Everts Belgia 125 GP 1982.jpg",
+      "thumb": "thumbs/M.Velkeneers ja H. Everts Belgia 125 GP 1982_thumb.jpg",
+      "display": "display/M.Velkeneers ja H. Everts Belgia 125 GP 1982_display.jpg",
+      "caption": "M.Velkeneers ja H. Everts Belgia 125 GP 1982",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1319,
+      "height": 834
+    },
+    {
+      "filename": "Marc Velkeneers Belgia  GP 125cc 1982.jpg",
+      "thumb": "thumbs/Marc Velkeneers Belgia  GP 125cc 1982_thumb.jpg",
+      "display": "display/Marc Velkeneers Belgia  GP 125cc 1982_display.jpg",
+      "caption": "Marc Velkeneers Belgia  GP 125cc 1982",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 945
+    },
+    {
+      "filename": "Marc Velkeneers Belgia GP 125cc 1982.jpg",
+      "thumb": "thumbs/Marc Velkeneers Belgia GP 125cc 1982_thumb.jpg",
+      "display": "display/Marc Velkeneers Belgia GP 125cc 1982_display.jpg",
+      "caption": "Marc Velkeneers Belgia GP 125cc 1982",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 937
+    },
+    {
+      "filename": "Matti Autio piiskaa Mugen Hondaa Salo GP-125cc 1980.JPG",
+      "thumb": "thumbs/Matti Autio piiskaa Mugen Hondaa Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Matti Autio piiskaa Mugen Hondaa Salo GP-125cc 1980_display.jpg",
+      "caption": "Matti Autio piiskaa Mugen Hondaa Salo GP-125cc 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 957
+    },
+    {
+      "filename": "Matti Autio, erävoittaja Salo GP-125cc 1980.JPG",
+      "thumb": "thumbs/Matti Autio, erävoittaja Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Matti Autio, erävoittaja Salo GP-125cc 1980_display.jpg",
+      "caption": "Matti Autio, erävoittaja Salo GP-125cc 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 887
+    },
+    {
+      "filename": "Matti Aution Honda Mugen 125cc 1981 Belgian Zolderissa.jpg",
+      "thumb": "thumbs/Matti Aution Honda Mugen 125cc 1981 Belgian Zolderissa_thumb.jpg",
+      "display": "display/Matti Aution Honda Mugen 125cc 1981 Belgian Zolderissa_display.jpg",
+      "caption": "Matti Aution Honda Mugen 125cc 1981 Belgian Zolderissa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2078
+    },
+    {
+      "filename": "Matti Aution Mugen Honda.jpg",
+      "thumb": "thumbs/Matti Aution Mugen Honda_thumb.jpg",
+      "display": "display/Matti Aution Mugen Honda_display.jpg",
+      "caption": "Matti Aution Mugen Honda",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 929
+    },
+    {
+      "filename": "Matti Aution Mugen Honda_4.jpg",
+      "thumb": "thumbs/Matti Aution Mugen Honda_4_thumb.jpg",
+      "display": "display/Matti Aution Mugen Honda_4_display.jpg",
+      "caption": "Matti Aution Mugen Honda 4",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 925
+    },
+    {
+      "filename": "Matti Aution Muhen Honda_2.jpg",
+      "thumb": "thumbs/Matti Aution Muhen Honda_2_thumb.jpg",
+      "display": "display/Matti Aution Muhen Honda_2_display.jpg",
+      "caption": "Matti Aution Muhen Honda 2",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2096
+    },
+    {
+      "filename": "Matti Tarkkonen Hawkstone Park GP 250 1983.jpg",
+      "thumb": "thumbs/Matti Tarkkonen Hawkstone Park GP 250 1983_thumb.jpg",
+      "display": "display/Matti Tarkkonen Hawkstone Park GP 250 1983_display.jpg",
+      "caption": "Matti Tarkkonen Hawkstone Park GP 250 1983",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 826,
+      "height": 1169
+    },
+    {
+      "filename": "Matti Tarkkonen Ruotsin GP 250 1982.jpg",
+      "thumb": "thumbs/Matti Tarkkonen Ruotsin GP 250 1982_thumb.jpg",
+      "display": "display/Matti Tarkkonen Ruotsin GP 250 1982_display.jpg",
+      "caption": "Matti Tarkkonen Ruotsin GP 250 1982",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 859
+    },
+    {
+      "filename": "Matti Tarkkonen Russia GP-250 1981.jpg",
+      "thumb": "thumbs/Matti Tarkkonen Russia GP-250 1981_thumb.jpg",
+      "display": "display/Matti Tarkkonen Russia GP-250 1981_display.jpg",
+      "caption": "Matti Tarkkonen Russia GP-250 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 944
+    },
+    {
+      "filename": "Matti Tarkkonen valmiina Hyvinkään MM-erään. Mekaanikkonaan Seppo Kuorinki..jpg",
+      "thumb": "thumbs/Matti Tarkkonen valmiina Hyvinkään MM-erään. Mekaanikkonaan Seppo Kuorinki._thumb.jpg",
+      "display": "display/Matti Tarkkonen valmiina Hyvinkään MM-erään. Mekaanikkonaan Seppo Kuorinki._display.jpg",
+      "caption": "Matti Tarkkonen valmiina Hyvinkään MM-erään. Mekaanikkonaan Seppo Kuorinki.",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 941
+    },
+    {
+      "filename": "Matti Tarkkonen valmiina MM-kauteen 1981.jpg",
+      "thumb": "thumbs/Matti Tarkkonen valmiina MM-kauteen 1981_thumb.jpg",
+      "display": "display/Matti Tarkkonen valmiina MM-kauteen 1981_display.jpg",
+      "caption": "Matti Tarkkonen valmiina MM-kauteen 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 939
+    },
+    {
+      "filename": "Matti tarkkonen vauhdissa Leningrad GP-250 1981.jpg",
+      "thumb": "thumbs/Matti tarkkonen vauhdissa Leningrad GP-250 1981_thumb.jpg",
+      "display": "display/Matti tarkkonen vauhdissa Leningrad GP-250 1981_display.jpg",
+      "caption": "Matti tarkkonen vauhdissa Leningrad GP-250 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1108,
+      "height": 1577
+    },
+    {
+      "filename": "Mekaanikko Mauri Penttilä ohjeistaa Simo Taimia 1981.jpg",
+      "thumb": "thumbs/Mekaanikko Mauri Penttilä ohjeistaa Simo Taimia 1981_thumb.jpg",
+      "display": "display/Mekaanikko Mauri Penttilä ohjeistaa Simo Taimia 1981_display.jpg",
+      "caption": "Mekaanikko Mauri Penttilä ohjeistaa Simo Taimia 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 941
+    },
+    {
+      "filename": "Mestarit LaPorte - Mikkola -Jobe.jpg",
+      "thumb": "thumbs/Mestarit LaPorte - Mikkola -Jobe_thumb.jpg",
+      "display": "display/Mestarit LaPorte - Mikkola -Jobe_display.jpg",
+      "caption": "Mestarit LaPorte - Mikkola -Jobe",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 946
+    },
+    {
+      "filename": "Mestarit ryhmakuvassa-2.jpg",
+      "thumb": "thumbs/Mestarit ryhmakuvassa-2_thumb.jpg",
+      "display": "display/Mestarit ryhmakuvassa-2_display.jpg",
+      "caption": "Mestarit ryhmakuvassa-2",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1050
+    },
+    {
+      "filename": "Mike Querra Russian GP-250 1981.jpg",
+      "thumb": "thumbs/Mike Querra Russian GP-250 1981_thumb.jpg",
+      "display": "display/Mike Querra Russian GP-250 1981_display.jpg",
+      "caption": "Mike Querra Russian GP-250 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 942
+    },
+    {
+      "filename": "Mike Querra. Russia GP-250 1981.jpg",
+      "thumb": "thumbs/Mike Querra. Russia GP-250 1981_thumb.jpg",
+      "display": "display/Mike Querra. Russia GP-250 1981_display.jpg",
+      "caption": "Mike Querra. Russia GP-250 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1214,
+      "height": 738
+    },
+    {
+      "filename": "Mikkola suihkuttaa shampanjaa LaPortelle mestaruuden merkiksi Ruotsi 1982.jpg",
+      "thumb": "thumbs/Mikkola suihkuttaa shampanjaa LaPortelle mestaruuden merkiksi Ruotsi 1982_thumb.jpg",
+      "display": "display/Mikkola suihkuttaa shampanjaa LaPortelle mestaruuden merkiksi Ruotsi 1982_display.jpg",
+      "caption": "Mikkola suihkuttaa shampanjaa LaPortelle mestaruuden merkiksi Ruotsi 1982",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 887
+    },
+    {
+      "filename": "Miten tämä katto aukeaa....jpg",
+      "thumb": "thumbs/Miten tämä katto aukeaa..._thumb.jpg",
+      "display": "display/Miten tämä katto aukeaa..._display.jpg",
+      "caption": "Miten tämä katto aukeaa...",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1218,
+      "height": 854
+    },
+    {
+      "filename": "Neil Hudson Genkissä treenaamassa 1980.jpg",
+      "thumb": "thumbs/Neil Hudson Genkissä treenaamassa 1980_thumb.jpg",
+      "display": "display/Neil Hudson Genkissä treenaamassa 1980_display.jpg",
+      "caption": "Neil Hudson Genkissä treenaamassa 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1180,
+      "height": 745
+    },
+    {
+      "filename": "Neil Hudson treenit Belgiassa.jpg",
+      "thumb": "thumbs/Neil Hudson treenit Belgiassa_thumb.jpg",
+      "display": "display/Neil Hudson treenit Belgiassa_display.jpg",
+      "caption": "Neil Hudson treenit Belgiassa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1222,
+      "height": 738
+    },
+    {
+      "filename": "Neil Hudsonin tehdas Yamaha 1980.jpg",
+      "thumb": "thumbs/Neil Hudsonin tehdas Yamaha 1980_thumb.jpg",
+      "display": "display/Neil Hudsonin tehdas Yamaha 1980_display.jpg",
+      "caption": "Neil Hudsonin tehdas Yamaha 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 941
+    },
+    {
+      "filename": "Oli kurakisa 1986.JPG",
+      "thumb": "thumbs/Oli kurakisa 1986_thumb.jpg",
+      "display": "display/Oli kurakisa 1986_display.jpg",
+      "caption": "Oli kurakisa 1986",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 940
+    },
+    {
+      "filename": "Ota Jobe iisisti näyttää mekaanikko. GB GP250 1983.jpg",
+      "thumb": "thumbs/Ota Jobe iisisti näyttää mekaanikko. GB GP250 1983_thumb.jpg",
+      "display": "display/Ota Jobe iisisti näyttää mekaanikko. GB GP250 1983_display.jpg",
+      "caption": "Ota Jobe iisisti näyttää mekaanikko. GB GP250 1983",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 849
+    },
+    {
+      "filename": "Paddoc of Unadilla Valley 1986.jpg",
+      "thumb": "thumbs/Paddoc of Unadilla Valley 1986_thumb.jpg",
+      "display": "display/Paddoc of Unadilla Valley 1986_display.jpg",
+      "caption": "Paddoc of Unadilla Valley 1986",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 950
+    },
+    {
+      "filename": "Patric Fura Russia GP-250 1981.jpg",
+      "thumb": "thumbs/Patric Fura Russia GP-250 1981_thumb.jpg",
+      "display": "display/Patric Fura Russia GP-250 1981_display.jpg",
+      "caption": "Patric Fura Russia GP-250 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1391,
+      "height": 987
+    },
+    {
+      "filename": "Pauli Paukku Piippola Salo GP-125cc 1980.JPG",
+      "thumb": "thumbs/Pauli Paukku Piippola Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Pauli Paukku Piippola Salo GP-125cc 1980_display.jpg",
+      "caption": "Pauli Paukku Piippola Salo GP-125cc 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 954
+    },
+    {
+      "filename": "Pauli Piippola Salo GP-125cc 1980.JPG",
+      "thumb": "thumbs/Pauli Piippola Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Pauli Piippola Salo GP-125cc 1980_display.jpg",
+      "caption": "Pauli Piippola Salo GP-125cc 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2060
+    },
+    {
+      "filename": "Pauli Piippola ja Husqvarna Salo GP-125cc 1980.JPG",
+      "thumb": "thumbs/Pauli Piippola ja Husqvarna Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Pauli Piippola ja Husqvarna Salo GP-125cc 1980_display.jpg",
+      "caption": "Pauli Piippola ja Husqvarna Salo GP-125cc 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Pekka Vehkonen Belgia GP 125cc 1982.jpg",
+      "thumb": "thumbs/Pekka Vehkonen Belgia GP 125cc 1982_thumb.jpg",
+      "display": "display/Pekka Vehkonen Belgia GP 125cc 1982_display.jpg",
+      "caption": "Pekka Vehkonen Belgia GP 125cc 1982",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1123,
+      "height": 782
+    },
+    {
+      "filename": "Pekka Vehkonen Casnyn kv-kisassa Ranskassa 1983.jpg",
+      "thumb": "thumbs/Pekka Vehkonen Casnyn kv-kisassa Ranskassa 1983_thumb.jpg",
+      "display": "display/Pekka Vehkonen Casnyn kv-kisassa Ranskassa 1983_display.jpg",
+      "caption": "Pekka Vehkonen Casnyn kv-kisassa Ranskassa 1983",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 943
+    },
+    {
+      "filename": "Pölyn keskeltä tulee Rolf Dieffenbach 1981.jpg",
+      "thumb": "thumbs/Pölyn keskeltä tulee Rolf Dieffenbach 1981_thumb.jpg",
+      "display": "display/Pölyn keskeltä tulee Rolf Dieffenbach 1981_display.jpg",
+      "caption": "Pölyn keskeltä tulee Rolf Dieffenbach 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1170,
+      "height": 703
+    },
+    {
+      "filename": "Pölyn laskeuduttua selvitellään tilannetta..jpg",
+      "thumb": "thumbs/Pölyn laskeuduttua selvitellään tilannetta._thumb.jpg",
+      "display": "display/Pölyn laskeuduttua selvitellään tilannetta._display.jpg",
+      "caption": "Pölyn laskeuduttua selvitellään tilannetta.",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 940
+    },
+    {
+      "filename": "Ranska 1987 Simo Taimi starttaa uuteen kauteen 250cc Suzukilla.jpg",
+      "thumb": "thumbs/Ranska 1987 Simo Taimi starttaa uuteen kauteen 250cc Suzukilla_thumb.jpg",
+      "display": "display/Ranska 1987 Simo Taimi starttaa uuteen kauteen 250cc Suzukilla_display.jpg",
+      "caption": "Ranska 1987 Simo Taimi starttaa uuteen kauteen 250cc Suzukilla",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 800
+    },
+    {
+      "filename": "Rauhallinen yöparkki Sveitsissä 1986.JPG",
+      "thumb": "thumbs/Rauhallinen yöparkki Sveitsissä 1986_thumb.jpg",
+      "display": "display/Rauhallinen yöparkki Sveitsissä 1986_display.jpg",
+      "caption": "Rauhallinen yöparkki Sveitsissä 1986",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1151,
+      "height": 1635
+    },
+    {
+      "filename": "Roger De Coster_1980.jpg",
+      "thumb": "thumbs/Roger De Coster_1980_thumb.jpg",
+      "display": "display/Roger De Coster_1980_display.jpg",
+      "caption": "Roger De Coster 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 403,
+      "height": 566
+    },
+    {
+      "filename": "Ruskeasanta GP-500 1981 Andre Malherbe.jpg",
+      "thumb": "thumbs/Ruskeasanta GP-500 1981 Andre Malherbe_thumb.jpg",
+      "display": "display/Ruskeasanta GP-500 1981 Andre Malherbe_display.jpg",
+      "caption": "Ruskeasanta GP-500 1981 Andre Malherbe",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 940
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981  Malherbe starttaamassa erään.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981  Malherbe starttaamassa erään_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981  Malherbe starttaamassa erään_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981  Malherbe starttaamassa erään",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1862
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 (2).JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 (2)_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 (2)_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 (2)",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 964
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 (3).JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 (3)_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 (3)_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 (3)",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 924
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Andre Malherbe (2).JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Andre Malherbe (2)_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Andre Malherbe (2)_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Andre Malherbe (2)",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 963
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Andre Malherbe.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Andre Malherbe_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Andre Malherbe_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Andre Malherbe",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 800
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Andre Vroman Team Yamaha.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Andre Vroman Team Yamaha_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Andre Vroman Team Yamaha_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Andre Vroman Team Yamaha",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2104
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Andre Vromans.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Andre Vromans_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Andre Vromans_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Andre Vromans",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 966
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Anssi Oksanen (2).JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Anssi Oksanen (2)_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Anssi Oksanen (2)_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Anssi Oksanen (2)",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1988
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Anssi Oksanen Yamaha.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Anssi Oksanen Yamaha_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Anssi Oksanen Yamaha_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Anssi Oksanen Yamaha",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 913
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Anssi Oksanen.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Anssi Oksanen_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Anssi Oksanen_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Anssi Oksanen",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 893
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Brad Lackey Suzuki.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Brad Lackey Suzuki_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Brad Lackey Suzuki_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Brad Lackey Suzuki",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 853
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Brad Lackey.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Brad Lackey_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Brad Lackey_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Brad Lackey",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 826
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Carla ja Heikki Mikkola.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Carla ja Heikki Mikkola_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Carla ja Heikki Mikkola_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Carla ja Heikki Mikkola",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1669
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Carla kurvaa.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Carla kurvaa_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Carla kurvaa_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Carla kurvaa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1118
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Gerard Rond.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Gerard Rond_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Gerard Rond_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Gerard Rond",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 923
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Håkan Carla Carlqvist.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Håkan Carla Carlqvist_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Håkan Carla Carlqvist_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Håkan Carla Carlqvist",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Håkan Carlqvist.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Håkan Carlqvist_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Håkan Carlqvist_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Håkan Carlqvist",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 940
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Ivan Van den Broeck.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Ivan Van den Broeck_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Ivan Van den Broeck_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Ivan Van den Broeck",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 920
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 J-J Bruno (2).JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 J-J Bruno (2)_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 J-J Bruno (2)_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 J-J Bruno (2)",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 862
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 J-J Bruno.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 J-J Bruno_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 J-J Bruno_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 J-J Bruno",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 948
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Jaak Van Velthoven.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Jaak Van Velthoven_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Jaak Van Velthoven_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Jaak Van Velthoven",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 877
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Malherben mekaanikko Heikki Penttilä.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Malherben mekaanikko Heikki Penttilä_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Malherben mekaanikko Heikki Penttilä_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Malherben mekaanikko Heikki Penttilä",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1838
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 T. Pikkarainen ja Maico.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 T. Pikkarainen ja Maico_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 T. Pikkarainen ja Maico_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 T. Pikkarainen ja Maico",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2002
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Tapani Pihka Pikkarainen ja Maico.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Tapani Pihka Pikkarainen ja Maico_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Tapani Pihka Pikkarainen ja Maico_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Tapani Pihka Pikkarainen ja Maico",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1680
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Tapani Pikkarainen ajoi erävoittoon.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Tapani Pikkarainen ajoi erävoittoon_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Tapani Pikkarainen ajoi erävoittoon_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Tapani Pikkarainen ajoi erävoittoon",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Tapani Pikkarainen.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Tapani Pikkarainen_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Tapani Pikkarainen_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Tapani Pikkarainen",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1970
+    },
+    {
+      "filename": "Ruskeasanta MM-500 1981 Van Velthoven polvistuu.JPG",
+      "thumb": "thumbs/Ruskeasanta MM-500 1981 Van Velthoven polvistuu_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1981 Van Velthoven polvistuu_display.jpg",
+      "caption": "Ruskeasanta MM-500 1981 Van Velthoven polvistuu",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 809
+    },
+    {
+      "filename": "Russia GP-250 ja tehdas Yamaha 1981.jpg",
+      "thumb": "thumbs/Russia GP-250 ja tehdas Yamaha 1981_thumb.jpg",
+      "display": "display/Russia GP-250 ja tehdas Yamaha 1981_display.jpg",
+      "caption": "Russia GP-250 ja tehdas Yamaha 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 953
+    },
+    {
+      "filename": "Russia GP-250c 1981.Katsojia riitti radan varressa..jpg",
+      "thumb": "thumbs/Russia GP-250c 1981.Katsojia riitti radan varressa._thumb.jpg",
+      "display": "display/Russia GP-250c 1981.Katsojia riitti radan varressa._display.jpg",
+      "caption": "Russia GP-250c 1981.Katsojia riitti radan varressa.",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1390,
+      "height": 866
+    },
+    {
+      "filename": "Russia GP-250cc 1981.jpg",
+      "thumb": "thumbs/Russia GP-250cc 1981_thumb.jpg",
+      "display": "display/Russia GP-250cc 1981_display.jpg",
+      "caption": "Russia GP-250cc 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 942
+    },
+    {
+      "filename": "S.Taimi Nakkila Suzuki ja Kafi vaunu belgiassa 1987.jpg",
+      "thumb": "thumbs/S.Taimi Nakkila Suzuki ja Kafi vaunu belgiassa 1987_thumb.jpg",
+      "display": "display/S.Taimi Nakkila Suzuki ja Kafi vaunu belgiassa 1987_display.jpg",
+      "caption": "S.Taimi Nakkila Suzuki ja Kafi vaunu belgiassa 1987",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1127,
+      "height": 798
+    },
+    {
+      "filename": "Salo GP-125cc 1980.JPG",
+      "thumb": "thumbs/Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Salo GP-125cc 1980_display.jpg",
+      "caption": "Salo GP-125cc 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "San Marinon GP-250 1987 1-erän startti.JPG",
+      "thumb": "thumbs/San Marinon GP-250 1987 1-erän startti_thumb.jpg",
+      "display": "display/San Marinon GP-250 1987 1-erän startti_display.jpg",
+      "caption": "San Marinon GP-250 1987 1-erän startti",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 727
+    },
+    {
+      "filename": "Seppo Isomäki Salo GP-125cc 1980.JPG",
+      "thumb": "thumbs/Seppo Isomäki Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Seppo Isomäki Salo GP-125cc 1980_display.jpg",
+      "caption": "Seppo Isomäki Salo GP-125cc 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 903
+    },
+    {
+      "filename": "Seppo Isomäki ja Aprilia kuljettaja tiukassa kisassa. Salo GP-125cc 1980.JPG",
+      "thumb": "thumbs/Seppo Isomäki ja Aprilia kuljettaja tiukassa kisassa. Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Seppo Isomäki ja Aprilia kuljettaja tiukassa kisassa. Salo GP-125cc 1980_display.jpg",
+      "caption": "Seppo Isomäki ja Aprilia kuljettaja tiukassa kisassa. Salo GP-125cc 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 944
+    },
+    {
+      "filename": "Seppo Isomäki ja Suzuki RA125. Salo GP-125cc 1980.JPG",
+      "thumb": "thumbs/Seppo Isomäki ja Suzuki RA125. Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Seppo Isomäki ja Suzuki RA125. Salo GP-125cc 1980_display.jpg",
+      "caption": "Seppo Isomäki ja Suzuki RA125. Salo GP-125cc 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 998
+    },
+    {
+      "filename": "Simo Ranskassa-2-86.jpg",
+      "thumb": "thumbs/Simo Ranskassa-2-86_thumb.jpg",
+      "display": "display/Simo Ranskassa-2-86_display.jpg",
+      "caption": "Simo Ranskassa-2-86",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1332,
+      "height": 960
+    },
+    {
+      "filename": "Simo Taimi - Husse ja Meno-kypärä. Russia GP-250 1981.jpg",
+      "thumb": "thumbs/Simo Taimi - Husse ja Meno-kypärä. Russia GP-250 1981_thumb.jpg",
+      "display": "display/Simo Taimi - Husse ja Meno-kypärä. Russia GP-250 1981_display.jpg",
+      "caption": "Simo Taimi - Husse ja Meno-kypärä. Russia GP-250 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 943
+    },
+    {
+      "filename": "Simo Taimi Yyterissä 1983.jpg",
+      "thumb": "thumbs/Simo Taimi Yyterissä 1983_thumb.jpg",
+      "display": "display/Simo Taimi Yyterissä 1983_display.jpg",
+      "caption": "Simo Taimi Yyterissä 1983",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1046,
+      "height": 631
+    },
+    {
+      "filename": "Simo Taimi ja Ari Viiri katsastamassa tontin paikkaa Monacossa 1986.JPG",
+      "thumb": "thumbs/Simo Taimi ja Ari Viiri katsastamassa tontin paikkaa Monacossa 1986_thumb.jpg",
+      "display": "display/Simo Taimi ja Ari Viiri katsastamassa tontin paikkaa Monacossa 1986_display.jpg",
+      "caption": "Simo Taimi ja Ari Viiri katsastamassa tontin paikkaa Monacossa 1986",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1151,
+      "height": 1722
+    },
+    {
+      "filename": "Simo Taimi ja treenit Lommelissa 1986.JPG",
+      "thumb": "thumbs/Simo Taimi ja treenit Lommelissa 1986_thumb.jpg",
+      "display": "display/Simo Taimi ja treenit Lommelissa 1986_display.jpg",
+      "caption": "Simo Taimi ja treenit Lommelissa 1986",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 943
+    },
+    {
+      "filename": "Simo Taimi kurittaa Hussea Laningrad GP-250 1981.jpg",
+      "thumb": "thumbs/Simo Taimi kurittaa Hussea Laningrad GP-250 1981_thumb.jpg",
+      "display": "display/Simo Taimi kurittaa Hussea Laningrad GP-250 1981_display.jpg",
+      "caption": "Simo Taimi kurittaa Hussea Laningrad GP-250 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1355,
+      "height": 927
+    },
+    {
+      "filename": "Simo Taimi team Nakkilan Suzuki 250 Belgian treeneissä.jpg",
+      "thumb": "thumbs/Simo Taimi team Nakkilan Suzuki 250 Belgian treeneissä_thumb.jpg",
+      "display": "display/Simo Taimi team Nakkilan Suzuki 250 Belgian treeneissä_display.jpg",
+      "caption": "Simo Taimi team Nakkilan Suzuki 250 Belgian treeneissä",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 824,
+      "height": 596
+    },
+    {
+      "filename": "Simo Taimi treenaamassa Belgia 1980.jpg",
+      "thumb": "thumbs/Simo Taimi treenaamassa Belgia 1980_thumb.jpg",
+      "display": "display/Simo Taimi treenaamassa Belgia 1980_display.jpg",
+      "caption": "Simo Taimi treenaamassa Belgia 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 991,
+      "height": 769
+    },
+    {
+      "filename": "Simo Taimi treenit Belgiassa kevät 1980.jpg",
+      "thumb": "thumbs/Simo Taimi treenit Belgiassa kevät 1980_thumb.jpg",
+      "display": "display/Simo Taimi treenit Belgiassa kevät 1980_display.jpg",
+      "caption": "Simo Taimi treenit Belgiassa kevät 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1375,
+      "height": 902
+    },
+    {
+      "filename": "Simo Taimi treenit Ranskan Gaillefontainen radalla 1986.JPG",
+      "thumb": "thumbs/Simo Taimi treenit Ranskan Gaillefontainen radalla 1986_thumb.jpg",
+      "display": "display/Simo Taimi treenit Ranskan Gaillefontainen radalla 1986_display.jpg",
+      "caption": "Simo Taimi treenit Ranskan Gaillefontainen radalla 1986",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1072,
+      "height": 755
+    },
+    {
+      "filename": "Simo Taimi, Maukka Penttilä ja Eppu Mäkelä fanien keskellä 1981.jpg",
+      "thumb": "thumbs/Simo Taimi, Maukka Penttilä ja Eppu Mäkelä fanien keskellä 1981_thumb.jpg",
+      "display": "display/Simo Taimi, Maukka Penttilä ja Eppu Mäkelä fanien keskellä 1981_display.jpg",
+      "caption": "Simo Taimi, Maukka Penttilä ja Eppu Mäkelä fanien keskellä 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1358,
+      "height": 916
+    },
+    {
+      "filename": "Simo ja Jeremy Whatley Unadillan varikolla.jpg",
+      "thumb": "thumbs/Simo ja Jeremy Whatley Unadillan varikolla_thumb.jpg",
+      "display": "display/Simo ja Jeremy Whatley Unadillan varikolla_display.jpg",
+      "caption": "Simo ja Jeremy Whatley Unadillan varikolla",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1394,
+      "height": 1007
+    },
+    {
+      "filename": "Suomi-pojat konetarkastuksessa Russia GP-250 1981.jpg",
+      "thumb": "thumbs/Suomi-pojat konetarkastuksessa Russia GP-250 1981_thumb.jpg",
+      "display": "display/Suomi-pojat konetarkastuksessa Russia GP-250 1981_display.jpg",
+      "caption": "Suomi-pojat konetarkastuksessa Russia GP-250 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 846
+    },
+    {
+      "filename": "TGM-kuljettaja Salo GP-125cc 1980.JPG",
+      "thumb": "thumbs/TGM-kuljettaja Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/TGM-kuljettaja Salo GP-125cc 1980_display.jpg",
+      "caption": "TGM-kuljettaja Salo GP-125cc 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Tapani Pikkarainen Ruskeasanta 1980.jpg",
+      "thumb": "thumbs/Tapani Pikkarainen Ruskeasanta 1980_thumb.jpg",
+      "display": "display/Tapani Pikkarainen Ruskeasanta 1980_display.jpg",
+      "caption": "Tapani Pikkarainen Ruskeasanta 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 741,
+      "height": 464
+    },
+    {
+      "filename": "Tapio Rautalammi. Postikortti Ranskasta 1980-luvulta..jpg",
+      "thumb": "thumbs/Tapio Rautalammi. Postikortti Ranskasta 1980-luvulta._thumb.jpg",
+      "display": "display/Tapio Rautalammi. Postikortti Ranskasta 1980-luvulta._display.jpg",
+      "caption": "Tapio Rautalammi. Postikortti Ranskasta 1980-luvulta.",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1220,
+      "height": 1720
+    },
+    {
+      "filename": "Tarkkosen ja Taimin väki kaffeetauolla Ranskassa.jpg",
+      "thumb": "thumbs/Tarkkosen ja Taimin väki kaffeetauolla Ranskassa_thumb.jpg",
+      "display": "display/Tarkkosen ja Taimin väki kaffeetauolla Ranskassa_display.jpg",
+      "caption": "Tarkkosen ja Taimin väki kaffeetauolla Ranskassa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 941
+    },
+    {
+      "filename": "Team Finland Unadilla USA 1987.JPG",
+      "thumb": "thumbs/Team Finland Unadilla USA 1987_thumb.jpg",
+      "display": "display/Team Finland Unadilla USA 1987_display.jpg",
+      "caption": "Team Finland Unadilla USA 1987",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 943
+    },
+    {
+      "filename": "Team Taimi ja Team Tarkkonen tien päällä.jpg",
+      "thumb": "thumbs/Team Taimi ja Team Tarkkonen tien päällä_thumb.jpg",
+      "display": "display/Team Taimi ja Team Tarkkonen tien päällä_display.jpg",
+      "caption": "Team Taimi ja Team Tarkkonen tien päällä",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 909
+    },
+    {
+      "filename": "Team Taimi ja Team Vuorinen Sam Marinon GP 250 1987.JPG",
+      "thumb": "thumbs/Team Taimi ja Team Vuorinen Sam Marinon GP 250 1987_thumb.jpg",
+      "display": "display/Team Taimi ja Team Vuorinen Sam Marinon GP 250 1987_display.jpg",
+      "caption": "Team Taimi ja Team Vuorinen Sam Marinon GP 250 1987",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 936
+    },
+    {
+      "filename": "Team Taimi kulttuuriretkellä Niagaran putouksilla 1987.jpg",
+      "thumb": "thumbs/Team Taimi kulttuuriretkellä Niagaran putouksilla 1987_thumb.jpg",
+      "display": "display/Team Taimi kulttuuriretkellä Niagaran putouksilla 1987_display.jpg",
+      "caption": "Team Taimi kulttuuriretkellä Niagaran putouksilla 1987",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1231,
+      "height": 890
+    },
+    {
+      "filename": "Team Tarkkosen taustatiimi, vaimo Sirpa ja mekaanikko Seppo.jpg",
+      "thumb": "thumbs/Team Tarkkosen taustatiimi, vaimo Sirpa ja mekaanikko Seppo_thumb.jpg",
+      "display": "display/Team Tarkkosen taustatiimi, vaimo Sirpa ja mekaanikko Seppo_display.jpg",
+      "caption": "Team Tarkkosen taustatiimi, vaimo Sirpa ja mekaanikko Seppo",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 944
+    },
+    {
+      "filename": "Tehdas Honda laulaa Englannin GP 250cc 1983.jpg",
+      "thumb": "thumbs/Tehdas Honda laulaa Englannin GP 250cc 1983_thumb.jpg",
+      "display": "display/Tehdas Honda laulaa Englannin GP 250cc 1983_display.jpg",
+      "caption": "Tehdas Honda laulaa Englannin GP 250cc 1983",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 944
+    },
+    {
+      "filename": "Tehdas Yamaha liitää Ranskan kv-kisassa 1983.jpg",
+      "thumb": "thumbs/Tehdas Yamaha liitää Ranskan kv-kisassa 1983_thumb.jpg",
+      "display": "display/Tehdas Yamaha liitää Ranskan kv-kisassa 1983_display.jpg",
+      "caption": "Tehdas Yamaha liitää Ranskan kv-kisassa 1983",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 942
+    },
+    {
+      "filename": "Treenistartti. Lackey vikkelin.jpg",
+      "thumb": "thumbs/Treenistartti. Lackey vikkelin_thumb.jpg",
+      "display": "display/Treenistartti. Lackey vikkelin_display.jpg",
+      "caption": "Treenistartti. Lackey vikkelin",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 933
+    },
+    {
+      "filename": "Tuleva maailmanmestari Jacky Vimond Salo GP-125cc 1980.JPG",
+      "thumb": "thumbs/Tuleva maailmanmestari Jacky Vimond Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Tuleva maailmanmestari Jacky Vimond Salo GP-125cc 1980_display.jpg",
+      "caption": "Tuleva maailmanmestari Jacky Vimond Salo GP-125cc 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1039
+    },
+    {
+      "filename": "Tuttu näky monelle MM-sarjaa kiertäneelle matkalla Italiaan.jpg",
+      "thumb": "thumbs/Tuttu näky monelle MM-sarjaa kiertäneelle matkalla Italiaan_thumb.jpg",
+      "display": "display/Tuttu näky monelle MM-sarjaa kiertäneelle matkalla Italiaan_display.jpg",
+      "caption": "Tuttu näky monelle MM-sarjaa kiertäneelle matkalla Italiaan",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1175,
+      "height": 720
+    },
+    {
+      "filename": "Tyylinsä kullakin, perse irti satulasta kurvissa. Salo GP-125xx 1980.JPG",
+      "thumb": "thumbs/Tyylinsä kullakin, perse irti satulasta kurvissa. Salo GP-125xx 1980_thumb.jpg",
+      "display": "display/Tyylinsä kullakin, perse irti satulasta kurvissa. Salo GP-125xx 1980_display.jpg",
+      "caption": "Tyylinsä kullakin, perse irti satulasta kurvissa. Salo GP-125xx 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1040
+    },
+    {
+      "filename": "USA Unadilla 1987 Joukkue MM ja kurakeli.jpg",
+      "thumb": "thumbs/USA Unadilla 1987 Joukkue MM ja kurakeli_thumb.jpg",
+      "display": "display/USA Unadilla 1987 Joukkue MM ja kurakeli_display.jpg",
+      "caption": "USA Unadilla 1987 Joukkue MM ja kurakeli",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 913
+    },
+    {
+      "filename": "USA Unadilla 1987 Joukkue MM. Aleksander Sorrento Kurre Ljungqvistin juttusilla.jpg",
+      "thumb": "thumbs/USA Unadilla 1987 Joukkue MM. Aleksander Sorrento Kurre Ljungqvistin juttusilla_thumb.jpg",
+      "display": "display/USA Unadilla 1987 Joukkue MM. Aleksander Sorrento Kurre Ljungqvistin juttusilla_display.jpg",
+      "caption": "USA Unadilla 1987 Joukkue MM. Aleksander Sorrento Kurre Ljungqvistin juttusilla",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 948
+    },
+    {
+      "filename": "USA Unadilla 1987 Joukkue MM. Team Finland purkaa kalustoa autosta..jpg",
+      "thumb": "thumbs/USA Unadilla 1987 Joukkue MM. Team Finland purkaa kalustoa autosta._thumb.jpg",
+      "display": "display/USA Unadilla 1987 Joukkue MM. Team Finland purkaa kalustoa autosta._display.jpg",
+      "caption": "USA Unadilla 1987 Joukkue MM. Team Finland purkaa kalustoa autosta.",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 961
+    },
+    {
+      "filename": "USA Unadilla 1987 Joukkue MM. Team Finland treenaamassa harjooitusradalla.jpg",
+      "thumb": "thumbs/USA Unadilla 1987 Joukkue MM. Team Finland treenaamassa harjooitusradalla_thumb.jpg",
+      "display": "display/USA Unadilla 1987 Joukkue MM. Team Finland treenaamassa harjooitusradalla_display.jpg",
+      "caption": "USA Unadilla 1987 Joukkue MM. Team Finland treenaamassa harjooitusradalla",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 897
+    },
+    {
+      "filename": "USA virkavalta ei katsonut hyvässä Team Finlandin menoa..jpg",
+      "thumb": "thumbs/USA virkavalta ei katsonut hyvässä Team Finlandin menoa._thumb.jpg",
+      "display": "display/USA virkavalta ei katsonut hyvässä Team Finlandin menoa._display.jpg",
+      "caption": "USA virkavalta ei katsonut hyvässä Team Finlandin menoa.",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 942
+    },
+    {
+      "filename": "Unadillan varikolla -86.jpg",
+      "thumb": "thumbs/Unadillan varikolla -86_thumb.jpg",
+      "display": "display/Unadillan varikolla -86_display.jpg",
+      "caption": "Unadillan varikolla -86",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1237,
+      "height": 893
+    },
+    {
+      "filename": "Valkenswaard GP-250 1986. Rene Liekens ja Simo Taimi.JPG",
+      "thumb": "thumbs/Valkenswaard GP-250 1986. Rene Liekens ja Simo Taimi_thumb.jpg",
+      "display": "display/Valkenswaard GP-250 1986. Rene Liekens ja Simo Taimi_display.jpg",
+      "caption": "Valkenswaard GP-250 1986. Rene Liekens ja Simo Taimi",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 941
+    },
+    {
+      "filename": "Vas Erkki Sundström ja Matti Tarkkonen vauhdissa Hawkstone GP 250cc 1983.jpg",
+      "thumb": "thumbs/Vas Erkki Sundström ja Matti Tarkkonen vauhdissa Hawkstone GP 250cc 1983_thumb.jpg",
+      "display": "display/Vas Erkki Sundström ja Matti Tarkkonen vauhdissa Hawkstone GP 250cc 1983_display.jpg",
+      "caption": "Vas Erkki Sundström ja Matti Tarkkonen vauhdissa Hawkstone GP 250cc 1983",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1066,
+      "height": 881
+    },
+    {
+      "filename": "Venäjän tiimin kuljetuskalusto 1981.jpg",
+      "thumb": "thumbs/Venäjän tiimin kuljetuskalusto 1981_thumb.jpg",
+      "display": "display/Venäjän tiimin kuljetuskalusto 1981_display.jpg",
+      "caption": "Venäjän tiimin kuljetuskalusto 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 941
+    },
+    {
+      "filename": "Viimeinen Ruotsin Husqvarnan tehdaspeli 1986. Ex Simo Taimin pyörä..JPG",
+      "thumb": "thumbs/Viimeinen Ruotsin Husqvarnan tehdaspeli 1986. Ex Simo Taimin pyörä._thumb.jpg",
+      "display": "display/Viimeinen Ruotsin Husqvarnan tehdaspeli 1986. Ex Simo Taimin pyörä._display.jpg",
+      "caption": "Viimeinen Ruotsin Husqvarnan tehdaspeli 1986. Ex Simo Taimin pyörä.",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 931
+    },
+    {
+      "filename": "Vuoden 1980 kuljetuskalustoa Genkissä.jpg",
+      "thumb": "thumbs/Vuoden 1980 kuljetuskalustoa Genkissä_thumb.jpg",
+      "display": "display/Vuoden 1980 kuljetuskalustoa Genkissä_display.jpg",
+      "caption": "Vuoden 1980 kuljetuskalustoa Genkissä",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1251,
+      "height": 827
+    },
+    {
+      "filename": "Wuustwezel kv-kisa 1980.jpg",
+      "thumb": "thumbs/Wuustwezel kv-kisa 1980_thumb.jpg",
+      "display": "display/Wuustwezel kv-kisa 1980_display.jpg",
+      "caption": "Wuustwezel kv-kisa 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1271,
+      "height": 727
+    },
+    {
+      "filename": "Wuustwezel kv-kisa ja tiukkaa vääntöä.jpg",
+      "thumb": "thumbs/Wuustwezel kv-kisa ja tiukkaa vääntöä_thumb.jpg",
+      "display": "display/Wuustwezel kv-kisa ja tiukkaa vääntöä_display.jpg",
+      "caption": "Wuustwezel kv-kisa ja tiukkaa vääntöä",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 923,
+      "height": 1343
+    },
+    {
+      "filename": "Wuustwezel kv-kisa kevät 1980.jpg",
+      "thumb": "thumbs/Wuustwezel kv-kisa kevät 1980_thumb.jpg",
+      "display": "display/Wuustwezel kv-kisa kevät 1980_display.jpg",
+      "caption": "Wuustwezel kv-kisa kevät 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 800
+    },
+    {
+      "filename": "Yamaha mies Salo GP-125cc 1980.JPG",
+      "thumb": "thumbs/Yamaha mies Salo GP-125cc 1980_thumb.jpg",
+      "display": "display/Yamaha mies Salo GP-125cc 1980_display.jpg",
+      "caption": "Yamaha mies Salo GP-125cc 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Öhlins-velho Pekka Siltanen ja gp-kuski Simo Taimi iskarinsäätöjä etsimässä 198.jpg",
+      "thumb": "thumbs/Öhlins-velho Pekka Siltanen ja gp-kuski Simo Taimi iskarinsäätöjä etsimässä 198_thumb.jpg",
+      "display": "display/Öhlins-velho Pekka Siltanen ja gp-kuski Simo Taimi iskarinsäätöjä etsimässä 198_display.jpg",
+      "caption": "Öhlins-velho Pekka Siltanen ja gp-kuski Simo Taimi iskarinsäätöjä etsimässä 198",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 945
     }
-  ]
+  ],
+  "category": "international"
 }
