@@ -1,0 +1,539 @@
+{
+  "title": "Suomi 80s",
+  "slug": "suomi-80s",
+  "description": "Photo gallery: Suomi 80s",
+  "cover_image": "thumbs/Agraah.. SM Savonlinna 1981_thumb.jpg",
+  "images": [
+    {
+      "filename": "Agraah.. SM Savonlinna 1981.jpg",
+      "thumb": "thumbs/Agraah.. SM Savonlinna 1981_thumb.jpg",
+      "display": "display/Agraah.. SM Savonlinna 1981_display.jpg",
+      "caption": "Agraah.. SM Savonlinna 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 941
+    },
+    {
+      "filename": "Aina ei voi voiottaa. SM 250cc Savonlinna 1981.jpg",
+      "thumb": "thumbs/Aina ei voi voiottaa. SM 250cc Savonlinna 1981_thumb.jpg",
+      "display": "display/Aina ei voi voiottaa. SM 250cc Savonlinna 1981_display.jpg",
+      "caption": "Aina ei voi voiottaa. SM 250cc Savonlinna 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 943
+    },
+    {
+      "filename": "Alavuden SM-crossin voittaja Simo Taimi 1986.jpg",
+      "thumb": "thumbs/Alavuden SM-crossin voittaja Simo Taimi 1986_thumb.jpg",
+      "display": "display/Alavuden SM-crossin voittaja Simo Taimi 1986_display.jpg",
+      "caption": "Alavuden SM-crossin voittaja Simo Taimi 1986",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1213,
+      "height": 876
+    },
+    {
+      "filename": "Antti Kawa Alastarossa.jpg",
+      "thumb": "thumbs/Antti Kawa Alastarossa_thumb.jpg",
+      "display": "display/Antti Kawa Alastarossa_display.jpg",
+      "caption": "Antti Kawa Alastarossa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1095,
+      "height": 679
+    },
+    {
+      "filename": "Antti Pyrhönen Kawa 125.jpg",
+      "thumb": "thumbs/Antti Pyrhönen Kawa 125_thumb.jpg",
+      "display": "display/Antti Pyrhönen Kawa 125_display.jpg",
+      "caption": "Antti Pyrhönen Kawa 125",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 565,
+      "height": 873
+    },
+    {
+      "filename": "Antti ja sora lentää Kawa.jpg",
+      "thumb": "thumbs/Antti ja sora lentää Kawa_thumb.jpg",
+      "display": "display/Antti ja sora lentää Kawa_display.jpg",
+      "caption": "Antti ja sora lentää Kawa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1082,
+      "height": 680
+    },
+    {
+      "filename": "Eckert joukkue SM-cross Ruskeasanta.JPG",
+      "thumb": "thumbs/Eckert joukkue SM-cross Ruskeasanta_thumb.jpg",
+      "display": "display/Eckert joukkue SM-cross Ruskeasanta_display.jpg",
+      "caption": "Eckert joukkue SM-cross Ruskeasanta",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1710
+    },
+    {
+      "filename": "Erkki Anttonen.jpg",
+      "thumb": "thumbs/Erkki Anttonen_thumb.jpg",
+      "display": "display/Erkki Anttonen_display.jpg",
+      "caption": "Erkki Anttonen",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1069,
+      "height": 1104
+    },
+    {
+      "filename": "Erkki Ere Anttonen SM-Savonlinna 1981.jpg",
+      "thumb": "thumbs/Erkki Ere Anttonen SM-Savonlinna 1981_thumb.jpg",
+      "display": "display/Erkki Ere Anttonen SM-Savonlinna 1981_display.jpg",
+      "caption": "Erkki Ere Anttonen SM-Savonlinna 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 944
+    },
+    {
+      "filename": "Hellettä pukkaa. SM-250 Savonlinna 1981.jpg",
+      "thumb": "thumbs/Hellettä pukkaa. SM-250 Savonlinna 1981_thumb.jpg",
+      "display": "display/Hellettä pukkaa. SM-250 Savonlinna 1981_display.jpg",
+      "caption": "Hellettä pukkaa. SM-250 Savonlinna 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 941
+    },
+    {
+      "filename": "Holeshot-Pyrhönen KAWA.jpg",
+      "thumb": "thumbs/Holeshot-Pyrhönen KAWA_thumb.jpg",
+      "display": "display/Holeshot-Pyrhönen KAWA_display.jpg",
+      "caption": "Holeshot-Pyrhönen KAWA",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1096,
+      "height": 728
+    },
+    {
+      "filename": "Hyvinkää Jukka Laaksonen Honda 1980-82.jpg",
+      "thumb": "thumbs/Hyvinkää Jukka Laaksonen Honda 1980-82_thumb.jpg",
+      "display": "display/Hyvinkää Jukka Laaksonen Honda 1980-82_display.jpg",
+      "caption": "Hyvinkää Jukka Laaksonen Honda 1980-82",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 993
+    },
+    {
+      "filename": "Hyvinkää treenit 1984 Tapani Pikkarainen.jpg",
+      "thumb": "thumbs/Hyvinkää treenit 1984 Tapani Pikkarainen_thumb.jpg",
+      "display": "display/Hyvinkää treenit 1984 Tapani Pikkarainen_display.jpg",
+      "caption": "Hyvinkää treenit 1984 Tapani Pikkarainen",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2071
+    },
+    {
+      "filename": "Hyvinkään SM-cross startti 1981.jpg",
+      "thumb": "thumbs/Hyvinkään SM-cross startti 1981_thumb.jpg",
+      "display": "display/Hyvinkään SM-cross startti 1981_display.jpg",
+      "caption": "Hyvinkään SM-cross startti 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1254,
+      "height": 879
+    },
+    {
+      "filename": "Joukkue SM-cross Ruskeasanta 1986 tai 1987.JPG",
+      "thumb": "thumbs/Joukkue SM-cross Ruskeasanta 1986 tai 1987_thumb.jpg",
+      "display": "display/Joukkue SM-cross Ruskeasanta 1986 tai 1987_display.jpg",
+      "caption": "Joukkue SM-cross Ruskeasanta 1986 tai 1987",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 934
+    },
+    {
+      "filename": "Joukkue SM-cross Ruskeasanta.JPG",
+      "thumb": "thumbs/Joukkue SM-cross Ruskeasanta_thumb.jpg",
+      "display": "display/Joukkue SM-cross Ruskeasanta_display.jpg",
+      "caption": "Joukkue SM-cross Ruskeasanta",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1680
+    },
+    {
+      "filename": "Joukkue SM-motocross Ruskeasanta.JPG",
+      "thumb": "thumbs/Joukkue SM-motocross Ruskeasanta_thumb.jpg",
+      "display": "display/Joukkue SM-motocross Ruskeasanta_display.jpg",
+      "caption": "Joukkue SM-motocross Ruskeasanta",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1134
+    },
+    {
+      "filename": "Jukka Jana Penttilä. SM-Savonlinna 1981.jpg",
+      "thumb": "thumbs/Jukka Jana Penttilä. SM-Savonlinna 1981_thumb.jpg",
+      "display": "display/Jukka Jana Penttilä. SM-Savonlinna 1981_display.jpg",
+      "caption": "Jukka Jana Penttilä. SM-Savonlinna 1981",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 944
+    },
+    {
+      "filename": "Kari Tiainen ja team Nakkilan Suzuki.JPG",
+      "thumb": "thumbs/Kari Tiainen ja team Nakkilan Suzuki_thumb.jpg",
+      "display": "display/Kari Tiainen ja team Nakkilan Suzuki_display.jpg",
+      "caption": "Kari Tiainen ja team Nakkilan Suzuki",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1008
+    },
+    {
+      "filename": "Kari Tiainen joukkue SM-cross Ruskeasanta.JPG",
+      "thumb": "thumbs/Kari Tiainen joukkue SM-cross Ruskeasanta_thumb.jpg",
+      "display": "display/Kari Tiainen joukkue SM-cross Ruskeasanta_display.jpg",
+      "caption": "Kari Tiainen joukkue SM-cross Ruskeasanta",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1828
+    },
+    {
+      "filename": "Kari Tiainen joukkue SM-cross.JPG",
+      "thumb": "thumbs/Kari Tiainen joukkue SM-cross_thumb.jpg",
+      "display": "display/Kari Tiainen joukkue SM-cross_display.jpg",
+      "caption": "Kari Tiainen joukkue SM-cross",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1906
+    },
+    {
+      "filename": "Kerhojoukkueiden mestaruusmetsästys on alkanut Ruskeasanta.JPG",
+      "thumb": "thumbs/Kerhojoukkueiden mestaruusmetsästys on alkanut Ruskeasanta_thumb.jpg",
+      "display": "display/Kerhojoukkueiden mestaruusmetsästys on alkanut Ruskeasanta_display.jpg",
+      "caption": "Kerhojoukkueiden mestaruusmetsästys on alkanut Ruskeasanta",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 599
+    },
+    {
+      "filename": "Kohtaamisia radalla. Matti Autio ja Göte Liljegren joukkue SM.jpg",
+      "thumb": "thumbs/Kohtaamisia radalla. Matti Autio ja Göte Liljegren joukkue SM_thumb.jpg",
+      "display": "display/Kohtaamisia radalla. Matti Autio ja Göte Liljegren joukkue SM_display.jpg",
+      "caption": "Kohtaamisia radalla. Matti Autio ja Göte Liljegren joukkue SM",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1244,
+      "height": 759
+    },
+    {
+      "filename": "Kouvola SM 125 1989 Lasse Lähteenmäki.jpg",
+      "thumb": "thumbs/Kouvola SM 125 1989 Lasse Lähteenmäki_thumb.jpg",
+      "display": "display/Kouvola SM 125 1989 Lasse Lähteenmäki_display.jpg",
+      "caption": "Kouvola SM 125 1989 Lasse Lähteenmäki",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2052
+    },
+    {
+      "filename": "Kouvola SM 125 1989 Marko Koskela Porin MK.jpg",
+      "thumb": "thumbs/Kouvola SM 125 1989 Marko Koskela Porin MK_thumb.jpg",
+      "display": "display/Kouvola SM 125 1989 Marko Koskela Porin MK_display.jpg",
+      "caption": "Kouvola SM 125 1989 Marko Koskela Porin MK",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 961
+    },
+    {
+      "filename": "Kouvola SM 125 1989 Marko Koskela.jpg",
+      "thumb": "thumbs/Kouvola SM 125 1989 Marko Koskela_thumb.jpg",
+      "display": "display/Kouvola SM 125 1989 Marko Koskela_display.jpg",
+      "caption": "Kouvola SM 125 1989 Marko Koskela",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 962
+    },
+    {
+      "filename": "Kouvola SM 125cc -89 Ari Nevala ja Matti Tarkkonen.jpg",
+      "thumb": "thumbs/Kouvola SM 125cc -89 Ari Nevala ja Matti Tarkkonen_thumb.jpg",
+      "display": "display/Kouvola SM 125cc -89 Ari Nevala ja Matti Tarkkonen_display.jpg",
+      "caption": "Kouvola SM 125cc -89 Ari Nevala ja Matti Tarkkonen",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 960
+    },
+    {
+      "filename": "Kouvola SM 125cc 1989 Ari Nevala ja hyppy mestaruuteen.jpg",
+      "thumb": "thumbs/Kouvola SM 125cc 1989 Ari Nevala ja hyppy mestaruuteen_thumb.jpg",
+      "display": "display/Kouvola SM 125cc 1989 Ari Nevala ja hyppy mestaruuteen_display.jpg",
+      "caption": "Kouvola SM 125cc 1989 Ari Nevala ja hyppy mestaruuteen",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 907
+    },
+    {
+      "filename": "Kouvola SM 125cc 1989 Ari Nevala.jpg",
+      "thumb": "thumbs/Kouvola SM 125cc 1989 Ari Nevala_thumb.jpg",
+      "display": "display/Kouvola SM 125cc 1989 Ari Nevala_display.jpg",
+      "caption": "Kouvola SM 125cc 1989 Ari Nevala",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 916
+    },
+    {
+      "filename": "Kouvola SM 125cc 1989 tuore Suomen mestari Ari Nevala.jpg",
+      "thumb": "thumbs/Kouvola SM 125cc 1989 tuore Suomen mestari Ari Nevala_thumb.jpg",
+      "display": "display/Kouvola SM 125cc 1989 tuore Suomen mestari Ari Nevala_display.jpg",
+      "caption": "Kouvola SM 125cc 1989 tuore Suomen mestari Ari Nevala",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2102
+    },
+    {
+      "filename": "Marko Koskela PMK joukkue SM-cross.JPG",
+      "thumb": "thumbs/Marko Koskela PMK joukkue SM-cross_thumb.jpg",
+      "display": "display/Marko Koskela PMK joukkue SM-cross_display.jpg",
+      "caption": "Marko Koskela PMK joukkue SM-cross",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1974
+    },
+    {
+      "filename": "Mika Kouki joukkue SM-cross Ruskeasanta.JPG",
+      "thumb": "thumbs/Mika Kouki joukkue SM-cross Ruskeasanta_thumb.jpg",
+      "display": "display/Mika Kouki joukkue SM-cross Ruskeasanta_display.jpg",
+      "caption": "Mika Kouki joukkue SM-cross Ruskeasanta",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 934
+    },
+    {
+      "filename": "Mika Kouki joukkue SM-cross.JPG",
+      "thumb": "thumbs/Mika Kouki joukkue SM-cross_thumb.jpg",
+      "display": "display/Mika Kouki joukkue SM-cross_display.jpg",
+      "caption": "Mika Kouki joukkue SM-cross",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1907
+    },
+    {
+      "filename": "Mika Kouki vauhdissa joukkue SM-cross Ruskeasanta.JPG",
+      "thumb": "thumbs/Mika Kouki vauhdissa joukkue SM-cross Ruskeasanta_thumb.jpg",
+      "display": "display/Mika Kouki vauhdissa joukkue SM-cross Ruskeasanta_display.jpg",
+      "caption": "Mika Kouki vauhdissa joukkue SM-cross Ruskeasanta",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 880
+    },
+    {
+      "filename": "Mika Kouki.JPG",
+      "thumb": "thumbs/Mika Kouki_thumb.jpg",
+      "display": "display/Mika Kouki_display.jpg",
+      "caption": "Mika Kouki",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 934
+    },
+    {
+      "filename": "Mäntyharju 1989 Tuleva enduron maailmanmestari Petteri Silvan oli junnujen SM 1.jpg",
+      "thumb": "thumbs/Mäntyharju 1989 Tuleva enduron maailmanmestari Petteri Silvan oli junnujen SM 1_thumb.jpg",
+      "display": "display/Mäntyharju 1989 Tuleva enduron maailmanmestari Petteri Silvan oli junnujen SM 1_display.jpg",
+      "caption": "Mäntyharju 1989 Tuleva enduron maailmanmestari Petteri Silvan oli junnujen SM 1",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 879
+    },
+    {
+      "filename": "Orimattila 1984 Jukka Sintonen Honda.jpg",
+      "thumb": "thumbs/Orimattila 1984 Jukka Sintonen Honda_thumb.jpg",
+      "display": "display/Orimattila 1984 Jukka Sintonen Honda_display.jpg",
+      "caption": "Orimattila 1984 Jukka Sintonen Honda",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 820
+    },
+    {
+      "filename": "Orimattila SM-500 1984 startti Jukka Sintonen kärkeen.jpg",
+      "thumb": "thumbs/Orimattila SM-500 1984 startti Jukka Sintonen kärkeen_thumb.jpg",
+      "display": "display/Orimattila SM-500 1984 startti Jukka Sintonen kärkeen_display.jpg",
+      "caption": "Orimattila SM-500 1984 startti Jukka Sintonen kärkeen",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 822
+    },
+    {
+      "filename": "Pasi Hagström Ruskeasanta joukkue SM.JPG",
+      "thumb": "thumbs/Pasi Hagström Ruskeasanta joukkue SM_thumb.jpg",
+      "display": "display/Pasi Hagström Ruskeasanta joukkue SM_display.jpg",
+      "caption": "Pasi Hagström Ruskeasanta joukkue SM",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 916
+    },
+    {
+      "filename": "Pasi Hagström joukkue SM-cross.JPG",
+      "thumb": "thumbs/Pasi Hagström joukkue SM-cross_thumb.jpg",
+      "display": "display/Pasi Hagström joukkue SM-cross_display.jpg",
+      "caption": "Pasi Hagström joukkue SM-cross",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 931
+    },
+    {
+      "filename": "Pehu Vehkonen vauhdissa joukkue SM Ruskeasanta.JPG",
+      "thumb": "thumbs/Pehu Vehkonen vauhdissa joukkue SM Ruskeasanta_thumb.jpg",
+      "display": "display/Pehu Vehkonen vauhdissa joukkue SM Ruskeasanta_display.jpg",
+      "caption": "Pehu Vehkonen vauhdissa joukkue SM Ruskeasanta",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 817
+    },
+    {
+      "filename": "Pekka Vehkonen (joukkue SM ehkä 1987).JPG",
+      "thumb": "thumbs/Pekka Vehkonen (joukkue SM ehkä 1987)_thumb.jpg",
+      "display": "display/Pekka Vehkonen (joukkue SM ehkä 1987)_display.jpg",
+      "caption": "Pekka Vehkonen (joukkue SM ehkä 1987)",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 934
+    },
+    {
+      "filename": "Pekka Vehkonen Cagiva.JPG",
+      "thumb": "thumbs/Pekka Vehkonen Cagiva_thumb.jpg",
+      "display": "display/Pekka Vehkonen Cagiva_display.jpg",
+      "caption": "Pekka Vehkonen Cagiva",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1904
+    },
+    {
+      "filename": "Pekka liitää Ruskeasannalla.JPG",
+      "thumb": "thumbs/Pekka liitää Ruskeasannalla_thumb.jpg",
+      "display": "display/Pekka liitää Ruskeasannalla_display.jpg",
+      "caption": "Pekka liitää Ruskeasannalla",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 864
+    },
+    {
+      "filename": "Pekka vauhdissa.JPG",
+      "thumb": "thumbs/Pekka vauhdissa_thumb.jpg",
+      "display": "display/Pekka vauhdissa_display.jpg",
+      "caption": "Pekka vauhdissa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 814
+    },
+    {
+      "filename": "Pori joukkue SM 1989.jpg",
+      "thumb": "thumbs/Pori joukkue SM 1989_thumb.jpg",
+      "display": "display/Pori joukkue SM 1989_display.jpg",
+      "caption": "Pori joukkue SM 1989",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 744
+    },
+    {
+      "filename": "Ruskeasanta joukkue  SM-cross.JPG",
+      "thumb": "thumbs/Ruskeasanta joukkue  SM-cross_thumb.jpg",
+      "display": "display/Ruskeasanta joukkue  SM-cross_display.jpg",
+      "caption": "Ruskeasanta joukkue  SM-cross",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 967
+    },
+    {
+      "filename": "Ruskeasanta joukkue SM-cross _ VMK kuski.JPG",
+      "thumb": "thumbs/Ruskeasanta joukkue SM-cross _ VMK kuski_thumb.jpg",
+      "display": "display/Ruskeasanta joukkue SM-cross _ VMK kuski_display.jpg",
+      "caption": "Ruskeasanta joukkue SM-cross   VMK kuski",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1902
+    },
+    {
+      "filename": "Simo Taimi Yyteri 1983.jpg",
+      "thumb": "thumbs/Simo Taimi Yyteri 1983_thumb.jpg",
+      "display": "display/Simo Taimi Yyteri 1983_display.jpg",
+      "caption": "Simo Taimi Yyteri 1983",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1215,
+      "height": 868
+    },
+    {
+      "filename": "Simo Taimi Yyterin treeneissä 1983.jpg",
+      "thumb": "thumbs/Simo Taimi Yyterin treeneissä 1983_thumb.jpg",
+      "display": "display/Simo Taimi Yyterin treeneissä 1983_display.jpg",
+      "caption": "Simo Taimi Yyterin treeneissä 1983",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 799,
+      "height": 1156
+    },
+    {
+      "filename": "Simo Taimi liitää Yyterissä 1983.jpg",
+      "thumb": "thumbs/Simo Taimi liitää Yyterissä 1983_thumb.jpg",
+      "display": "display/Simo Taimi liitää Yyterissä 1983_display.jpg",
+      "caption": "Simo Taimi liitää Yyterissä 1983",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 938
+    },
+    {
+      "filename": "Simo Taimi pöllyttää Yyterin hiekkaa 1983.jpg",
+      "thumb": "thumbs/Simo Taimi pöllyttää Yyterin hiekkaa 1983_thumb.jpg",
+      "display": "display/Simo Taimi pöllyttää Yyterin hiekkaa 1983_display.jpg",
+      "caption": "Simo Taimi pöllyttää Yyterin hiekkaa 1983",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1046,
+      "height": 631
+    },
+    {
+      "filename": "Tuleva enduromaailmanmestari crossivauhdissa.JPG",
+      "thumb": "thumbs/Tuleva enduromaailmanmestari crossivauhdissa_thumb.jpg",
+      "display": "display/Tuleva enduromaailmanmestari crossivauhdissa_display.jpg",
+      "caption": "Tuleva enduromaailmanmestari crossivauhdissa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 933
+    }
+  ],
+  "category": "finland"
+}
