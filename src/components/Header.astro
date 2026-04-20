@@ -10,19 +10,29 @@ interface Props {
 const { lang, currentPath } = Astro.props;
 const t = ui[lang];
 
-const navItems = [
-  { href: `/${lang}`, label: t['nav.home'] },
-  { href: `/${lang}/galleria`, label: t['nav.gallery'] },
-  { href: `/${lang}/aikakone`, label: t['nav.articles'] },
-  { href: `/${lang}/yhteystiedot`, label: t['nav.contact'] },
-];
+const navItems = lang === 'fi' 
+  ? [
+      { href: '/fi', label: t['nav.home'] },
+      { href: '/fi/galleria', label: t['nav.gallery'] },
+      { href: '/fi/aikakone', label: t['nav.articles'] },
+      { href: '/fi/yhteystiedot', label: t['nav.contact'] },
+    ]
+  : [
+      { href: '/en', label: t['nav.home'] },
+      { href: '/en/gallery', label: t['nav.gallery'] },
+      { href: '/en/yhteystiedot', label: t['nav.contact'] },
+    ];
 
-const moreItems = [
-  { href: lang === 'fi' ? '/fi/tilastot' : '/en/statistics', label: lang === 'fi' ? 'Tilastot' : 'Statistics' },
-  { href: lang === 'fi' ? '/fi/kalenteri' : '/en/calendar', label: lang === 'fi' ? 'Kalenteri' : 'Calendar' },
-  { href: lang === 'fi' ? '/fi/haku' : '/en/search', label: lang === 'fi' ? 'AI-haku' : 'AI Search' },
-  { href: lang === 'fi' ? '/fi/podcast' : '/en/podcast', label: 'Podcast' },
-];
+const moreItems = lang === 'fi' 
+  ? [
+      { href: '/fi/tilastot', label: 'Tilastot' },
+      { href: '/fi/kalenteri', label: 'Kalenteri' },
+      { href: '/fi/haku', label: 'AI-haku' },
+      { href: '/fi/podcast', label: 'Podcast' },
+    ]
+  : [];
+
+const showMore = moreItems.length > 0;
 
 const moreLabel = lang === 'fi' ? 'Muuta' : 'More';
 const isMoreActive = moreItems.some(item => currentPath.startsWith(item.href));
@@ -47,6 +57,7 @@ const isMoreActive = moreItems.some(item => currentPath.startsWith(item.href));
             </a>
           </li>
         ))}
+        {showMore && (
         <li class="nav-dropdown">
           <button class:list={['nav-link', 'nav-drop-btn', { active: isMoreActive }]}>
             {moreLabel} <span class="drop-arrow">▾</span>
@@ -59,6 +70,7 @@ const isMoreActive = moreItems.some(item => currentPath.startsWith(item.href));
             ))}
           </div>
         </li>
+        )}
       </ul>
     </nav>
     
