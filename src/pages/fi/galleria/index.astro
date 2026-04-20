@@ -7,6 +7,16 @@ const lang = 'fi';
 const t = ui[lang];
 
 const galleries = await getCollection('galleries');
+
+const searchIndex = galleries.flatMap(g => 
+  g.data.images.map(img => ({
+    caption: img.caption || '',
+    thumb: `/galleries/${g.data.slug}/${img.thumb}`,
+    gallery: g.data.title,
+    slug: g.data.slug,
+  }))
+);
+const searchData = JSON.stringify(searchIndex);
 ---
 
 <BaseLayout 
@@ -23,7 +33,17 @@ const galleries = await getCollection('galleries');
       
       <p class="gallery-intro">Astu maailmaan missä jokainen kuva kertoo tarinan. Maailma, jossa jokainen kuva sykkii tarinaa ja moottoriurheilun huumaava menneisyys ja jännitys heräävät eloon, on vain klikkauksen päässä sinusta.</p>
       
-      <div class="grid grid--3">
+      <div class="photo-search">
+        <div class="photo-search-input-wrap">
+          <input type="text" id="photoSearch" class="photo-search-input" placeholder="Hae kuvia... esim. Mikkola, Ruskeasanta, 1978" />
+          <button id="photoClear" class="photo-search-clear" style="display:none;">&#10005;</button>
+        </div>
+        <div id="photoCount" class="photo-search-count"></div>
+      </div>
+      
+      <div id="photoResults" class="photo-results" style="display:none;"></div>
+      
+      <div id="galleryCards" class="grid grid--3">
         {galleries.map(gallery => (
           <article class="card">
             <a href={`/fi/galleria/${gallery.data.slug}`}>
@@ -48,10 +68,69 @@ const galleries = await getCollection('galleries');
   </section>
 </BaseLayout>
 
-<style>
+<script define:vars={{ searchData }}>
+  const INDEX = JSON.parse(searchData);
+  const input = document.getElementById('photoSearch');
+  const clearBtn = document.getElementById('photoClear');
+  const resultsDiv = document.getElementById('photoResults');
+  const countDiv = document.getElementById('photoCount');
+  const galleryCards = document.getElementById('galleryCards');
+  
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    
+    if (q.length < 2) {
+      resultsDiv.style.display = 'none';
+      galleryCards.style.display = '';
+      countDiv.textContent = '';
+      clearBtn.style.display = 'none';
+      return;
+    }
+    
+    clearBtn.style.display = 'block';
+    
+    const matches = INDEX.filter(img => 
+      img.caption.toLowerCase().includes(q) || 
+      img.gallery.toLowerCase().includes(q)
+    );
+    
+    galleryCards.style.display = 'none';
+    resultsDiv.style.display = 'grid';
+    countDiv.textContent = matches.length + ' kuvaa löytyi' + (matches.length === 0 ? ' — kokeile toista hakusanaa' : '');
+    
+    if (matches.length === 0) {
+      resultsDiv.innerHTML = '';
+      return;
+    }
+    
+    resultsDiv.innerHTML = matches.slice(0, 60).map(img => 
+      '<a href="/fi/galleria/' + img.slug + '" class="photo-result">' +
+        '<img src="' + img.thumb + '" alt="' + img.caption + '" loading="lazy" />' +
+        '<div class="photo-result-info">' +
+          '<span class="photo-result-caption">' + img.caption + '</span>' +
+          '<span class="photo-result-gallery">' + img.gallery + '</span>' +
+        '</div>' +
+      '</a>'
+    ).join('');
+    
+    if (matches.length > 60) {
+      resultsDiv.innerHTML += '<div class="photo-result-more">+ ' + (matches.length - 60) + ' lisää tulosta</div>';
+    }
+  });
+  
+  clearBtn.addEventListener('click', () => {
+    input.value = '';
+    resultsDiv.style.display = 'none';
+    galleryCards.style.display = '';
+    countDiv.textContent = '';
+    clearBtn.style.display = 'none';
+  });
+</script>
+
+<style is:global>
   .gallery-intro {
     max-width: 100%;
-    margin: 0 auto var(--space-6);
+    margin: 0 auto var(--space-4);
     text-align: center;
     font-size: 1.05rem;
     line-height: 1.7;
@@ -64,5 +143,128 @@ const galleries = await getCollection('galleries');
     color: var(--brand-primary);
     font-weight: 600;
     margin-top: var(--space-1);
+  }
+  
+  .photo-search {
+    margin-bottom: var(--space-5);
+  }
+  
+  .photo-search-input-wrap {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .photo-search-input {
+    width: 100%;
+    padding: 14px 48px 14px 18px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    border: 2px solid #ddd;
+    border-radius: var(--radius-md);
+    background: #fff;
+    transition: border-color 0.15s;
+  }
+  
+  .photo-search-input:focus {
+    outline: none;
+    border-color: #ff9900;
+  }
+  
+  .photo-search-clear {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #888;
+    cursor: pointer;
+    padding: 4px;
+  }
+  
+  .photo-search-clear:hover {
+    color: #ff9900;
+  }
+  
+  .photo-search-count {
+    text-align: center;
+    margin-top: var(--space-2);
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+  
+  .photo-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    margin-bottom: var(--space-6);
+  }
+  
+  .photo-result {
+    display: block;
+    text-decoration: none;
+    background: #F9F9F9;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  
+  .photo-result:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+  }
+  
+  .photo-result img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .photo-result-info {
+    padding: 8px 10px;
+  }
+  
+  .photo-result-caption {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #1D1D1F;
+    line-height: 1.3;
+    margin-bottom: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .photo-result-gallery {
+    display: block;
+    font-size: 0.65rem;
+    color: #ff9900;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .photo-result-more {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: var(--space-3);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  
+  @media (max-width: 768px) {
+    .photo-results {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+    
+    .photo-result img {
+      height: 110px;
+    }
   }
 </style>
