@@ -41,14 +41,14 @@ const featuredGalleries = galleries.slice(0, 4);
           <div class="intro-image-wrap">
             <img src="/images/intro-gallery.jpg" alt="Tervetuloa fiilistelemään" class="intro-image" />
           </div>
-          <p class="intro-text">Sukella moottoriurheilun historian havinaan. Jokainen jakamamme kuva kätkee sisäänsä tarinan, ja olemme innoissamme, että saamme tuoda nämä klassikkohetket tähän päivään teidän nähtäväksenne. Uusia kuvia ja juttuja lisätään jatkuvasti. Palaa usein takasin!</p>
+          <p class="intro-text">Moottoriurheilun historiaa ja huikeita tarinoita. Päivitämme kuvia ja juttuja jatkuvasti, joten pysy vauhdissa mukana!</p>
         </div>
         <div class="intro-col">
           <h2 class="intro-title">Palaa ajassa taaksepäin</h2>
           <div class="intro-image-wrap">
             <img src="/images/intro-articles.jpg" alt="Palaa ajassa taaksepäin" class="intro-image" />
           </div>
-          <p class="intro-text">Tämä portaali tuo moottoriurheilun historian sykähdyttävät hetket ja kuvien takaiset tarinat luoksesi syventyen tekniikkaan, kohtaloihin ja käännekohtiin. Jokainen artikkeli vie sinut takaisin aikaan, jolloin kaikki alkoi.</p>
+          <p class="intro-text">Syvenny moottoriurheilun tarinoihin ja tekniikkaan. Tuomme historian sykähdyttävimmät hetket suoraan luoksesi.</p>
         </div>
       </div>
     </div>
@@ -184,11 +184,16 @@ const featuredGalleries = galleries.slice(0, 4);
     color: var(--text-primary);
     padding: var(--space-8) 0;
   }
+
+  .intro-section .section__header {
+    margin-bottom: var(--space-6);
+  }
   
   .intro-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--space-6);
+    align-items: start;
   }
   
   .intro-image-wrap {
@@ -196,13 +201,13 @@ const featuredGalleries = galleries.slice(0, 4);
     overflow: hidden;
     border-radius: var(--radius-md);
     margin-bottom: var(--space-3);
+    height: 280px;
   }
   
   .intro-image {
     width: 100%;
-    height: auto;
+    height: 100%;
     display: block;
-    aspect-ratio: 4 / 3;
     object-fit: cover;
   }
   
@@ -254,7 +259,7 @@ const featuredGalleries = galleries.slice(0, 4);
     height: 100%;
     object-fit: cover;
     display: block;
-    min-height: 300px;
+    min-height: 210px;
   }
   
   .featured-card__content {
@@ -313,5 +318,6 @@ const featuredGalleries = galleries.slice(0, 4);
     .featured-card__image { min-height: 200px; }
     .recent-grid { grid-template-columns: 1fr; }
     .intro-grid { grid-template-columns: 1fr; }
+    .intro-image-wrap { height: 220px; }
   }
 </style>

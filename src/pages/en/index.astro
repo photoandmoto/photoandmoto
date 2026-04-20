@@ -32,14 +32,14 @@ const featuredGalleries = galleries.slice(0, 4);
           <div class="intro-image-wrap">
             <img src="/images/intro-gallery.jpg" alt="Welcome" class="intro-image" />
           </div>
-          <p class="intro-text">Step into the world of motorsport history. Every photo we share holds a story, and we're thrilled to bring these classic moments to life for you. New photos and stories are added regularly. Come back often!</p>
+          <p class="intro-text">Motorsport history and amazing stories. We add new photos and articles regularly, so stay tuned!</p>
         </div>
         <div class="intro-col">
           <h2 class="intro-title">Travel back in time</h2>
           <div class="intro-image-wrap">
             <img src="/images/intro-articles.jpg" alt="Time Machine" class="intro-image" />
           </div>
-          <p class="intro-text">This portal brings the thrilling moments and stories behind the photos of motorsport history to you, delving into the technology, destinies and turning points. Every article takes you back to the time when it all began.</p>
+          <p class="intro-text">Dive into the stories and technology of motorsport. We bring history's most thrilling moments straight to you.</p>
         </div>
       </div>
     </div>
@@ -89,12 +89,13 @@ const featuredGalleries = galleries.slice(0, 4);
   .hero-title { font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: var(--space-3); color: white; font-weight: 900; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
   .hero-subtitle { font-size: clamp(1.125rem, 2vw, 1.5rem); color: rgba(255, 255, 255, 0.9); font-style: italic; margin-bottom: 0; }
   .intro-section { background: white; color: var(--text-primary); padding: var(--space-8) 0; }
-  .intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); }
-  .intro-image-wrap { position: relative; overflow: hidden; border-radius: var(--radius-md); margin-bottom: var(--space-3); }
-  .intro-image { width: 100%; height: auto; display: block; aspect-ratio: 4 / 3; object-fit: cover; }
+  .intro-section .section__header { margin-bottom: var(--space-6); }
+  .intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: start; }
+  .intro-image-wrap { position: relative; overflow: hidden; border-radius: var(--radius-md); margin-bottom: var(--space-3); height: 280px; }
+  .intro-image { width: 100%; height: 100%; display: block; object-fit: cover; }
   .intro-title { font-size: 1.75rem; font-weight: 900; color: var(--text-primary); margin-bottom: var(--space-3); text-align: center; }
   .intro-text { font-size: 1rem; line-height: 1.7; color: var(--text-secondary); font-weight: 600; }
   .featured-galleries { background: white; }
   .gallery-intro { max-width: 100%; margin: 0 auto var(--space-6); text-align: center; font-size: 1.05rem; line-height: 1.7; color: var(--text-secondary); font-weight: 600; }
-  @media (max-width: 768px) { .intro-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 768px) { .intro-grid { grid-template-columns: 1fr; } .intro-image-wrap { height: 220px; } }
 </style>

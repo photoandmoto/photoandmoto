@@ -22,7 +22,7 @@ export const ui = {
     'footer.copyright': '© 2026 Photo & Moto - Kaikki oikeudet pidätetään',
     'footer.privacy': 'Tietosuojaseloste',
     'hero.tagline': 'Vauhtia ja elämää linssin läpi',
-    'hero.subtitle': 'Sukella moottoriurheilun historian havinaa',
+    'hero.subtitle': 'Sukella moottoriurheilun historian havinaan',
     'hero.cta': 'Tutustu galleriaan',
     'latest.title': 'Uusimmat artikkelit',
   },
