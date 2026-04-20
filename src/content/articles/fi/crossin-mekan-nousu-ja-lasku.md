@@ -3,7 +3,7 @@ title: "Crossin mekan nousu ja lasku"
 subtitle: "Motocrossin keskuksen puoli vuosisataa kestänyt valtakausi horjuu"
 author: "Photo & Moto"
 date: 2026-03-06
-category: "Erikoisraportti"
+category: "Historical"
 tags: ["Belgia", "motocross", "historia", "MXGP", "Mikkola"]
 featured_image: "/images/belgia-mikkola.jpg"
 language: "fi"
