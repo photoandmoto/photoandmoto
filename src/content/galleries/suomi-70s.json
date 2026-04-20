@@ -1,0 +1,589 @@
+{
+  "title": "Suomi 70s",
+  "slug": "suomi-70s",
+  "description": "Photo gallery: Suomi 70s",
+  "cover_image": "thumbs/A.Vilkman tarkkana uudella Hondalla 1979_thumb.jpg",
+  "images": [
+    {
+      "filename": "A.Vilkman tarkkana uudella Hondalla 1979.JPG",
+      "thumb": "thumbs/A.Vilkman tarkkana uudella Hondalla 1979_thumb.jpg",
+      "display": "display/A.Vilkman tarkkana uudella Hondalla 1979_display.jpg",
+      "caption": "A.Vilkman tarkkana uudella Hondalla 1979",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Arto Nyqvist.jpg",
+      "thumb": "thumbs/Arto Nyqvist_thumb.jpg",
+      "display": "display/Arto Nyqvist_display.jpg",
+      "caption": "Arto Nyqvist",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 937
+    },
+    {
+      "filename": "Arto Vilkman Paippinen 1979.JPG",
+      "thumb": "thumbs/Arto Vilkman Paippinen 1979_thumb.jpg",
+      "display": "display/Arto Vilkman Paippinen 1979_display.jpg",
+      "caption": "Arto Vilkman Paippinen 1979",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1574
+    },
+    {
+      "filename": "Arto Vilkman Salo SM-125cc 1978.JPG",
+      "thumb": "thumbs/Arto Vilkman Salo SM-125cc 1978_thumb.jpg",
+      "display": "display/Arto Vilkman Salo SM-125cc 1978_display.jpg",
+      "caption": "Arto Vilkman Salo SM-125cc 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1731
+    },
+    {
+      "filename": "Arto Vilkman ja Honda CR 250 1979.JPG",
+      "thumb": "thumbs/Arto Vilkman ja Honda CR 250 1979_thumb.jpg",
+      "display": "display/Arto Vilkman ja Honda CR 250 1979_display.jpg",
+      "caption": "Arto Vilkman ja Honda CR 250 1979",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Arto Vilkman ja kovaa menoa B-piikeissä Yamahalla 1975.jpg",
+      "thumb": "thumbs/Arto Vilkman ja kovaa menoa B-piikeissä Yamahalla 1975_thumb.jpg",
+      "display": "display/Arto Vilkman ja kovaa menoa B-piikeissä Yamahalla 1975_display.jpg",
+      "caption": "Arto Vilkman ja kovaa menoa B-piikeissä Yamahalla 1975",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 960
+    },
+    {
+      "filename": "Arto Vilkmanin Finnpyörän valmistama minicross 50cc Zundapp 1972.jpg",
+      "thumb": "thumbs/Arto Vilkmanin Finnpyörän valmistama minicross 50cc Zundapp 1972_thumb.jpg",
+      "display": "display/Arto Vilkmanin Finnpyörän valmistama minicross 50cc Zundapp 1972_display.jpg",
+      "caption": "Arto Vilkmanin Finnpyörän valmistama minicross 50cc Zundapp 1972",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1101
+    },
+    {
+      "filename": "Arto Vilman Zundapp 50cc 1972.jpg",
+      "thumb": "thumbs/Arto Vilman Zundapp 50cc 1972_thumb.jpg",
+      "display": "display/Arto Vilman Zundapp 50cc 1972_display.jpg",
+      "caption": "Arto Vilman Zundapp 50cc 1972",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1207
+    },
+    {
+      "filename": "CCM-pilotti 1979.JPG",
+      "thumb": "thumbs/CCM-pilotti 1979_thumb.jpg",
+      "display": "display/CCM-pilotti 1979_display.jpg",
+      "caption": "CCM-pilotti 1979",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 814
+    },
+    {
+      "filename": "Erikoinen iskarinkiinnitys 1979.JPG",
+      "thumb": "thumbs/Erikoinen iskarinkiinnitys 1979_thumb.jpg",
+      "display": "display/Erikoinen iskarinkiinnitys 1979_display.jpg",
+      "caption": "Erikoinen iskarinkiinnitys 1979",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Erkki Sundström.jpg",
+      "thumb": "thumbs/Erkki Sundström_thumb.jpg",
+      "display": "display/Erkki Sundström_display.jpg",
+      "caption": "Erkki Sundström",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 917
+    },
+    {
+      "filename": "Göte Liljegren.jpg",
+      "thumb": "thumbs/Göte Liljegren_thumb.jpg",
+      "display": "display/Göte Liljegren_display.jpg",
+      "caption": "Göte Liljegren",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 935
+    },
+    {
+      "filename": "Hessu Mikkola Westerkulla.jpg",
+      "thumb": "thumbs/Hessu Mikkola Westerkulla_thumb.jpg",
+      "display": "display/Hessu Mikkola Westerkulla_display.jpg",
+      "caption": "Hessu Mikkola Westerkulla",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 934
+    },
+    {
+      "filename": "Hessu Mikkolan 500cc tehdas Husse 1975.jpg",
+      "thumb": "thumbs/Hessu Mikkolan 500cc tehdas Husse 1975_thumb.jpg",
+      "display": "display/Hessu Mikkolan 500cc tehdas Husse 1975_display.jpg",
+      "caption": "Hessu Mikkolan 500cc tehdas Husse 1975",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1450
+    },
+    {
+      "filename": "Hondapilotti A. Vilkman 1979.JPG",
+      "thumb": "thumbs/Hondapilotti A. Vilkman 1979_thumb.jpg",
+      "display": "display/Hondapilotti A. Vilkman 1979_display.jpg",
+      "caption": "Hondapilotti A. Vilkman 1979",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1574
+    },
+    {
+      "filename": "Hyvin hyppää Salo SM-125 1978.JPG",
+      "thumb": "thumbs/Hyvin hyppää Salo SM-125 1978_thumb.jpg",
+      "display": "display/Hyvin hyppää Salo SM-125 1978_display.jpg",
+      "caption": "Hyvin hyppää Salo SM-125 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1697
+    },
+    {
+      "filename": "Hyvinkää 1975 Ari Vajavaara KTM.jpg",
+      "thumb": "thumbs/Hyvinkää 1975 Ari Vajavaara KTM_thumb.jpg",
+      "display": "display/Hyvinkää 1975 Ari Vajavaara KTM_display.jpg",
+      "caption": "Hyvinkää 1975 Ari Vajavaara KTM",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 907
+    },
+    {
+      "filename": "Hyvinkää 1975 Matti Tarkkonen ja CZ.jpg",
+      "thumb": "thumbs/Hyvinkää 1975 Matti Tarkkonen ja CZ_thumb.jpg",
+      "display": "display/Hyvinkää 1975 Matti Tarkkonen ja CZ_display.jpg",
+      "caption": "Hyvinkää 1975 Matti Tarkkonen ja CZ",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 828
+    },
+    {
+      "filename": "Hyvinkää 1975 Matti tarkkosen CZ 250cc huom takaiskarit..jpg",
+      "thumb": "thumbs/Hyvinkää 1975 Matti tarkkosen CZ 250cc huom takaiskarit._thumb.jpg",
+      "display": "display/Hyvinkää 1975 Matti tarkkosen CZ 250cc huom takaiskarit._display.jpg",
+      "caption": "Hyvinkää 1975 Matti tarkkosen CZ 250cc huom takaiskarit.",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1437
+    },
+    {
+      "filename": "Hyvinkään Erkylän Lukot 1976 Anssi Oksanen ja 125cc Yamaha.jpg",
+      "thumb": "thumbs/Hyvinkään Erkylän Lukot 1976 Anssi Oksanen ja 125cc Yamaha_thumb.jpg",
+      "display": "display/Hyvinkään Erkylän Lukot 1976 Anssi Oksanen ja 125cc Yamaha_display.jpg",
+      "caption": "Hyvinkään Erkylän Lukot 1976 Anssi Oksanen ja 125cc Yamaha",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1446
+    },
+    {
+      "filename": "Hyvinkään Husse-heput vas. Kari Lindgren ja Tapio Vuori 1973 tai -74.jpg",
+      "thumb": "thumbs/Hyvinkään Husse-heput vas. Kari Lindgren ja Tapio Vuori 1973 tai -74_thumb.jpg",
+      "display": "display/Hyvinkään Husse-heput vas. Kari Lindgren ja Tapio Vuori 1973 tai -74_display.jpg",
+      "caption": "Hyvinkään Husse-heput vas. Kari Lindgren ja Tapio Vuori 1973 tai -74",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 925
+    },
+    {
+      "filename": "Juha Tirinen Salo SM-125 1978.JPG",
+      "thumb": "thumbs/Juha Tirinen Salo SM-125 1978_thumb.jpg",
+      "display": "display/Juha Tirinen Salo SM-125 1978_display.jpg",
+      "caption": "Juha Tirinen Salo SM-125 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1716
+    },
+    {
+      "filename": "Juha Tirinen edellä ja Seppo Isomäki vanavedessä. Salo SM-125 1978.JPG",
+      "thumb": "thumbs/Juha Tirinen edellä ja Seppo Isomäki vanavedessä. Salo SM-125 1978_thumb.jpg",
+      "display": "display/Juha Tirinen edellä ja Seppo Isomäki vanavedessä. Salo SM-125 1978_display.jpg",
+      "caption": "Juha Tirinen edellä ja Seppo Isomäki vanavedessä. Salo SM-125 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 986
+    },
+    {
+      "filename": "Juha Tirinen ja MP-Lehden Pekka Neste.jpg",
+      "thumb": "thumbs/Juha Tirinen ja MP-Lehden Pekka Neste_thumb.jpg",
+      "display": "display/Juha Tirinen ja MP-Lehden Pekka Neste_display.jpg",
+      "caption": "Juha Tirinen ja MP-Lehden Pekka Neste",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 991,
+      "height": 1529
+    },
+    {
+      "filename": "Jukka Penttilä Salo SM-125 1978 (2).JPG",
+      "thumb": "thumbs/Jukka Penttilä Salo SM-125 1978 (2)_thumb.jpg",
+      "display": "display/Jukka Penttilä Salo SM-125 1978 (2)_display.jpg",
+      "caption": "Jukka Penttilä Salo SM-125 1978 (2)",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 912
+    },
+    {
+      "filename": "Jukka Penttilä Salo SM-125 1978.JPG",
+      "thumb": "thumbs/Jukka Penttilä Salo SM-125 1978_thumb.jpg",
+      "display": "display/Jukka Penttilä Salo SM-125 1978_display.jpg",
+      "caption": "Jukka Penttilä Salo SM-125 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1736
+    },
+    {
+      "filename": "Kuopio Puijo SM-250 1978 Heikki Mikkola.jpg",
+      "thumb": "thumbs/Kuopio Puijo SM-250 1978 Heikki Mikkola_thumb.jpg",
+      "display": "display/Kuopio Puijo SM-250 1978 Heikki Mikkola_display.jpg",
+      "caption": "Kuopio Puijo SM-250 1978 Heikki Mikkola",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 963
+    },
+    {
+      "filename": "Kuopio SM 250 1978 Heikki Mikkola.jpg",
+      "thumb": "thumbs/Kuopio SM 250 1978 Heikki Mikkola_thumb.jpg",
+      "display": "display/Kuopio SM 250 1978 Heikki Mikkola_display.jpg",
+      "caption": "Kuopio SM 250 1978 Heikki Mikkola",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 859
+    },
+    {
+      "filename": "Matti Autio Salo SM-125 1978.JPG",
+      "thumb": "thumbs/Matti Autio Salo SM-125 1978_thumb.jpg",
+      "display": "display/Matti Autio Salo SM-125 1978_display.jpg",
+      "caption": "Matti Autio Salo SM-125 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 815
+    },
+    {
+      "filename": "Matti Autio kyttää ohitusta. Salo SM-125 1978.JPG",
+      "thumb": "thumbs/Matti Autio kyttää ohitusta. Salo SM-125 1978_thumb.jpg",
+      "display": "display/Matti Autio kyttää ohitusta. Salo SM-125 1978_display.jpg",
+      "caption": "Matti Autio kyttää ohitusta. Salo SM-125 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 893
+    },
+    {
+      "filename": "Matti Autio matkalla voittoon Salo SM-125 1978.JPG",
+      "thumb": "thumbs/Matti Autio matkalla voittoon Salo SM-125 1978_thumb.jpg",
+      "display": "display/Matti Autio matkalla voittoon Salo SM-125 1978_display.jpg",
+      "caption": "Matti Autio matkalla voittoon Salo SM-125 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 921
+    },
+    {
+      "filename": "Mestari Mikkolan menoa 1975.jpg",
+      "thumb": "thumbs/Mestari Mikkolan menoa 1975_thumb.jpg",
+      "display": "display/Mestari Mikkolan menoa 1975_display.jpg",
+      "caption": "Mestari Mikkolan menoa 1975",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1030
+    },
+    {
+      "filename": "Minicross 50cc Zundapp.jpg",
+      "thumb": "thumbs/Minicross 50cc Zundapp_thumb.jpg",
+      "display": "display/Minicross 50cc Zundapp_display.jpg",
+      "caption": "Minicross 50cc Zundapp",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1091
+    },
+    {
+      "filename": "PICT005683.JPG",
+      "thumb": "thumbs/PICT005683_thumb.jpg",
+      "display": "display/PICT005683_display.jpg",
+      "caption": "PICT005683",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1798
+    },
+    {
+      "filename": "Paippinen 1979 Arto Vilkman, JHonda CR250.JPG",
+      "thumb": "thumbs/Paippinen 1979 Arto Vilkman, JHonda CR250_thumb.jpg",
+      "display": "display/Paippinen 1979 Arto Vilkman, JHonda CR250_display.jpg",
+      "caption": "Paippinen 1979 Arto Vilkman, JHonda CR250",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1719
+    },
+    {
+      "filename": "Paippinen 1979 CCM liitää.JPG",
+      "thumb": "thumbs/Paippinen 1979 CCM liitää_thumb.jpg",
+      "display": "display/Paippinen 1979 CCM liitää_display.jpg",
+      "caption": "Paippinen 1979 CCM liitää",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1531
+    },
+    {
+      "filename": "Paippinen 1979 ja MP-Lehti Honda.JPG",
+      "thumb": "thumbs/Paippinen 1979 ja MP-Lehti Honda_thumb.jpg",
+      "display": "display/Paippinen 1979 ja MP-Lehti Honda_display.jpg",
+      "caption": "Paippinen 1979 ja MP-Lehti Honda",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 820
+    },
+    {
+      "filename": "Paippinen 1979.JPG",
+      "thumb": "thumbs/Paippinen 1979_thumb.jpg",
+      "display": "display/Paippinen 1979_display.jpg",
+      "caption": "Paippinen 1979",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 814
+    },
+    {
+      "filename": "Portal Master tehdaspeli 1979.JPG",
+      "thumb": "thumbs/Portal Master tehdaspeli 1979_thumb.jpg",
+      "display": "display/Portal Master tehdaspeli 1979_display.jpg",
+      "caption": "Portal Master tehdaspeli 1979",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Pulttikiinnitys. Ei petä hitsaus..JPG",
+      "thumb": "thumbs/Pulttikiinnitys. Ei petä hitsaus._thumb.jpg",
+      "display": "display/Pulttikiinnitys. Ei petä hitsaus._display.jpg",
+      "caption": "Pulttikiinnitys. Ei petä hitsaus.",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2104
+    },
+    {
+      "filename": "Ruskea Santa.jpg",
+      "thumb": "thumbs/Ruskea Santa_thumb.jpg",
+      "display": "display/Ruskea Santa_display.jpg",
+      "caption": "Ruskea Santa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 936
+    },
+    {
+      "filename": "Ruskeasanta 1978 Arzi Nyqvist ja läpi vaikka palavan aidan!.JPG",
+      "thumb": "thumbs/Ruskeasanta 1978 Arzi Nyqvist ja läpi vaikka palavan aidan!_thumb.jpg",
+      "display": "display/Ruskeasanta 1978 Arzi Nyqvist ja läpi vaikka palavan aidan!_display.jpg",
+      "caption": "Ruskeasanta 1978 Arzi Nyqvist ja läpi vaikka palavan aidan!",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 876
+    },
+    {
+      "filename": "Ruskeasanta 1979 Portalin voimanpesä.JPG",
+      "thumb": "thumbs/Ruskeasanta 1979 Portalin voimanpesä_thumb.jpg",
+      "display": "display/Ruskeasanta 1979 Portalin voimanpesä_display.jpg",
+      "caption": "Ruskeasanta 1979 Portalin voimanpesä",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2104
+    },
+    {
+      "filename": "Ruskeasanta 1979 Team Sweden katselee kengänkärkiä.JPG",
+      "thumb": "thumbs/Ruskeasanta 1979 Team Sweden katselee kengänkärkiä_thumb.jpg",
+      "display": "display/Ruskeasanta 1979 Team Sweden katselee kengänkärkiä_display.jpg",
+      "caption": "Ruskeasanta 1979 Team Sweden katselee kengänkärkiä",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Ruskeasanta SM 1978 Erkki Sundström.jpg",
+      "thumb": "thumbs/Ruskeasanta SM 1978 Erkki Sundström_thumb.jpg",
+      "display": "display/Ruskeasanta SM 1978 Erkki Sundström_display.jpg",
+      "caption": "Ruskeasanta SM 1978 Erkki Sundström",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 996
+    },
+    {
+      "filename": "SM-motocross Ruskeasanta 1978.jpg",
+      "thumb": "thumbs/SM-motocross Ruskeasanta 1978_thumb.jpg",
+      "display": "display/SM-motocross Ruskeasanta 1978_display.jpg",
+      "caption": "SM-motocross Ruskeasanta 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 937
+    },
+    {
+      "filename": "Seppo Isomäki Salo Sm-125 1978.JPG",
+      "thumb": "thumbs/Seppo Isomäki Salo Sm-125 1978_thumb.jpg",
+      "display": "display/Seppo Isomäki Salo Sm-125 1978_display.jpg",
+      "caption": "Seppo Isomäki Salo Sm-125 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1661
+    },
+    {
+      "filename": "Seppo Isomäki edellä ja Göte Liljegren perässä. Salo SM-125 1978.JPG",
+      "thumb": "thumbs/Seppo Isomäki edellä ja Göte Liljegren perässä. Salo SM-125 1978_thumb.jpg",
+      "display": "display/Seppo Isomäki edellä ja Göte Liljegren perässä. Salo SM-125 1978_display.jpg",
+      "caption": "Seppo Isomäki edellä ja Göte Liljegren perässä. Salo SM-125 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 913
+    },
+    {
+      "filename": "Seppo Isomäki ja Göte Liljegren Salo SM-125 1978 (2).JPG",
+      "thumb": "thumbs/Seppo Isomäki ja Göte Liljegren Salo SM-125 1978 (2)_thumb.jpg",
+      "display": "display/Seppo Isomäki ja Göte Liljegren Salo SM-125 1978 (2)_display.jpg",
+      "caption": "Seppo Isomäki ja Göte Liljegren Salo SM-125 1978 (2)",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1965
+    },
+    {
+      "filename": "Seppo Isomäki ja Göte Liljegren Salo SM-125 1978.JPG",
+      "thumb": "thumbs/Seppo Isomäki ja Göte Liljegren Salo SM-125 1978_thumb.jpg",
+      "display": "display/Seppo Isomäki ja Göte Liljegren Salo SM-125 1978_display.jpg",
+      "caption": "Seppo Isomäki ja Göte Liljegren Salo SM-125 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 971
+    },
+    {
+      "filename": "Seppo Isomäki ja Göte Liljegren. Tiukkaa taistelua Salo SM-125 1978.JPG",
+      "thumb": "thumbs/Seppo Isomäki ja Göte Liljegren. Tiukkaa taistelua Salo SM-125 1978_thumb.jpg",
+      "display": "display/Seppo Isomäki ja Göte Liljegren. Tiukkaa taistelua Salo SM-125 1978_display.jpg",
+      "caption": "Seppo Isomäki ja Göte Liljegren. Tiukkaa taistelua Salo SM-125 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1037
+    },
+    {
+      "filename": "Sintonen 16, Arto Nyqvist, takana Matti Tarkkonen.jpg",
+      "thumb": "thumbs/Sintonen 16, Arto Nyqvist, takana Matti Tarkkonen_thumb.jpg",
+      "display": "display/Sintonen 16, Arto Nyqvist, takana Matti Tarkkonen_display.jpg",
+      "caption": "Sintonen 16, Arto Nyqvist, takana Matti Tarkkonen",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 935
+    },
+    {
+      "filename": "Sirpa Tarkkonen.jpg",
+      "thumb": "thumbs/Sirpa Tarkkonen_thumb.jpg",
+      "display": "display/Sirpa Tarkkonen_display.jpg",
+      "caption": "Sirpa Tarkkonen",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 946
+    },
+    {
+      "filename": "Sundström and Pikkarainen.jpg",
+      "thumb": "thumbs/Sundström and Pikkarainen_thumb.jpg",
+      "display": "display/Sundström and Pikkarainen_display.jpg",
+      "caption": "Sundström and Pikkarainen",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1010,
+      "height": 1499
+    },
+    {
+      "filename": "Tapani Pikkarainen.jpg",
+      "thumb": "thumbs/Tapani Pikkarainen_thumb.jpg",
+      "display": "display/Tapani Pikkarainen_display.jpg",
+      "caption": "Tapani Pikkarainen",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 944
+    },
+    {
+      "filename": "The heat is on.jpg",
+      "thumb": "thumbs/The heat is on_thumb.jpg",
+      "display": "display/The heat is on_display.jpg",
+      "caption": "The heat is on",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 674
+    },
+    {
+      "filename": "Tiukkaa vääntöä. Salo SM-125 1978.JPG",
+      "thumb": "thumbs/Tiukkaa vääntöä. Salo SM-125 1978_thumb.jpg",
+      "display": "display/Tiukkaa vääntöä. Salo SM-125 1978_display.jpg",
+      "caption": "Tiukkaa vääntöä. Salo SM-125 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Yamaha YZ125 1975.JPG",
+      "thumb": "thumbs/Yamaha YZ125 1975_thumb.jpg",
+      "display": "display/Yamaha YZ125 1975_display.jpg",
+      "caption": "Yamaha YZ125 1975",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 972
+    }
+  ],
+  "category": "finland"
+}
