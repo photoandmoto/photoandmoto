@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const THUMB_WIDTH = 600;
 const DISPLAY_WIDTH = 1400;
-const WATERMARK_TEXT = '© Photo &amp; Moto';
+const WATERMARK_TEXT = '© Photo & Moto';
 
 async function generateManifest(gallerySlug) {
   const galleryDir = path.join(__dirname, `../public/galleries/${gallerySlug}`);
@@ -114,6 +114,19 @@ async function generateManifest(gallerySlug) {
     console.log(`   ✓ Thumbnails (${THUMB_WIDTH}px) → ${thumbDir}`);
     console.log(`   ✓ Display (${DISPLAY_WIDTH}px + watermark) → ${displayDir}`);
     
+    // Sort images: by year ascending, then alphabetical, no-year at end
+    images.sort((a, b) => {
+      const yearA = extractYearFromCaption(a.caption || a.filename);
+      const yearB = extractYearFromCaption(b.caption || b.filename);
+      if (yearA && yearB) {
+        if (yearA !== yearB) return yearA - yearB;
+        return (a.caption || '').localeCompare(b.caption || '', 'fi');
+      }
+      if (yearA && !yearB) return -1;
+      if (!yearA && yearB) return 1;
+      return (a.caption || '').localeCompare(b.caption || '', 'fi');
+    });
+
     const manifest = {
       title: formatTitle(gallerySlug),
       slug: gallerySlug,
@@ -152,6 +165,18 @@ function determineCategory(slug) {
   if (slug.includes('scramble')) return 'scramble';
   if (slug.includes('black')) return 'black-white';
   return 'international';
+}
+
+function extractYearFromCaption(text) {
+  if (!text) return null;
+  const fourDigit = text.match(/\b(19[5-9]\d|20[0-2]\d)\b/);
+  if (fourDigit) return parseInt(fourDigit[1]);
+  const twoDigit = text.match(/[-_\s](5[0-9]|6[0-9]|7[0-9]|8[0-9]|9[0-9])(?:\b|[-_\s\.])/);
+  if (twoDigit) {
+    const num = parseInt(twoDigit[1]);
+    return num >= 50 ? 1900 + num : 2000 + num;
+  }
+  return null;
 }
 
 const gallerySlug = process.argv[2];

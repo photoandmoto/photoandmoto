@@ -2,379 +2,9 @@
   "title": "International 70s",
   "slug": "international-70s",
   "description": "Photo gallery: International 70s",
-"category": "international",
+  "category": "international",
   "cover_image": "thumbs/Andre Malherbe valmiina treeniin_thumb.jpg",
   "images": [
-    {
-      "filename": "Andre Malherbe valmiina treeniin.JPG",
-      "thumb": "thumbs/Andre Malherbe valmiina treeniin_thumb.jpg",
-      "display": "display/Andre Malherbe valmiina treeniin_display.jpg",
-      "caption": "Andre Malherbe valmiina treeniin",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 2104
-    },
-    {
-      "filename": "Andre Vromans Ruskeasanta 1978.jpg",
-      "thumb": "thumbs/Andre Vromans Ruskeasanta 1978_thumb.jpg",
-      "display": "display/Andre Vromans Ruskeasanta 1978_display.jpg",
-      "caption": "Andre Vromans Ruskeasanta 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1256,
-      "height": 740
-    },
-    {
-      "filename": "Bengt Åberg 4-T Yamahallaan 1978.jpg",
-      "thumb": "thumbs/Bengt Åberg 4-T Yamahallaan 1978_thumb.jpg",
-      "display": "display/Bengt Åberg 4-T Yamahallaan 1978_display.jpg",
-      "caption": "Bengt Åberg 4-T Yamahallaan 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 906
-    },
-    {
-      "filename": "Bengt Åbergin nelari Yamaha 1978.jpg",
-      "thumb": "thumbs/Bengt Åbergin nelari Yamaha 1978_thumb.jpg",
-      "display": "display/Bengt Åbergin nelari Yamaha 1978_display.jpg",
-      "caption": "Bengt Åbergin nelari Yamaha 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 937
-    },
-    {
-      "filename": "Brad Lackey  vas ja Andre Malherbe.jpg",
-      "thumb": "thumbs/Brad Lackey  vas ja Andre Malherbe_thumb.jpg",
-      "display": "display/Brad Lackey  vas ja Andre Malherbe_display.jpg",
-      "caption": "Brad Lackey  vas ja Andre Malherbe",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1100,
-      "height": 1560
-    },
-    {
-      "filename": "Brad Lackey Ruskeasanta MM-500 1978.jpg",
-      "thumb": "thumbs/Brad Lackey Ruskeasanta MM-500 1978_thumb.jpg",
-      "display": "display/Brad Lackey Ruskeasanta MM-500 1978_display.jpg",
-      "caption": "Brad Lackey Ruskeasanta MM-500 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 658,
-      "height": 887
-    },
-    {
-      "filename": "Brad Lackey lennättää santaa 1978.jpg",
-      "thumb": "thumbs/Brad Lackey lennättää santaa 1978_thumb.jpg",
-      "display": "display/Brad Lackey lennättää santaa 1978_display.jpg",
-      "caption": "Brad Lackey lennättää santaa 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1339,
-      "height": 891
-    },
-    {
-      "filename": "Carla Carlqvistin raisua menoa.JPG",
-      "thumb": "thumbs/Carla Carlqvistin raisua menoa_thumb.jpg",
-      "display": "display/Carla Carlqvistin raisua menoa_display.jpg",
-      "caption": "Carla Carlqvistin raisua menoa",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 896
-    },
-    {
-      "filename": "Carla on iskeytynyt Wolsinkin kantaan.JPG",
-      "thumb": "thumbs/Carla on iskeytynyt Wolsinkin kantaan_thumb.jpg",
-      "display": "display/Carla on iskeytynyt Wolsinkin kantaan_display.jpg",
-      "caption": "Carla on iskeytynyt Wolsinkin kantaan",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 801
-    },
-    {
-      "filename": "Chuck Sun on kadottanut takalokarinsa. Hyvinkää 250 MM 1978.jpg",
-      "thumb": "thumbs/Chuck Sun on kadottanut takalokarinsa. Hyvinkää 250 MM 1978_thumb.jpg",
-      "display": "display/Chuck Sun on kadottanut takalokarinsa. Hyvinkää 250 MM 1978_display.jpg",
-      "caption": "Chuck Sun on kadottanut takalokarinsa. Hyvinkää 250 MM 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 934
-    },
-    {
-      "filename": "Chuck Sun_USA_Hyvinkään MM_treenit.jpg",
-      "thumb": "thumbs/Chuck Sun_USA_Hyvinkään MM_treenit_thumb.jpg",
-      "display": "display/Chuck Sun_USA_Hyvinkään MM_treenit_display.jpg",
-      "caption": "Chuck Sun USA Hyvinkään MM treenit",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1103,
-      "height": 1421
-    },
-    {
-      "filename": "De Coster.JPG",
-      "thumb": "thumbs/De Coster_thumb.jpg",
-      "display": "display/De Coster_display.jpg",
-      "caption": "De Coster",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1022
-    },
-    {
-      "filename": "De Costerin kuljetuskalusto vm. 1978.jpg",
-      "thumb": "thumbs/De Costerin kuljetuskalusto vm. 1978_thumb.jpg",
-      "display": "display/De Costerin kuljetuskalusto vm. 1978_display.jpg",
-      "caption": "De Costerin kuljetuskalusto vm. 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 909
-    },
-    {
-      "filename": "De Costerin tyyliä.JPG",
-      "thumb": "thumbs/De Costerin tyyliä_thumb.jpg",
-      "display": "display/De Costerin tyyliä_display.jpg",
-      "caption": "De Costerin tyyliä",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1961
-    },
-    {
-      "filename": "Englanti vas. Vaughan Semmens, Neil Hudson, Rob Hooper ja Graham Noyce.JPG",
-      "thumb": "thumbs/Englanti vas. Vaughan Semmens, Neil Hudson, Rob Hooper ja Graham Noyce_thumb.jpg",
-      "display": "display/Englanti vas. Vaughan Semmens, Neil Hudson, Rob Hooper ja Graham Noyce_display.jpg",
-      "caption": "Englanti vas. Vaughan Semmens, Neil Hudson, Rob Hooper ja Graham Noyce",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1025
-    },
-    {
-      "filename": "Erkki Sundström.JPG",
-      "thumb": "thumbs/Erkki Sundström_thumb.jpg",
-      "display": "display/Erkki Sundström_display.jpg",
-      "caption": "Erkki Sundström",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 875
-    },
-    {
-      "filename": "Erkki Sundström_Hyvinkään MM-cross_1978.jpg",
-      "thumb": "thumbs/Erkki Sundström_Hyvinkään MM-cross_1978_thumb.jpg",
-      "display": "display/Erkki Sundström_Hyvinkään MM-cross_1978_display.jpg",
-      "caption": "Erkki Sundström Hyvinkään MM-cross 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 606,
-      "height": 942
-    },
-    {
-      "filename": "Friz Kobele (2).JPG",
-      "thumb": "thumbs/Friz Kobele (2)_thumb.jpg",
-      "display": "display/Friz Kobele (2)_display.jpg",
-      "caption": "Friz Kobele (2)",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 859
-    },
-    {
-      "filename": "Friz Kobele.JPG",
-      "thumb": "thumbs/Friz Kobele_thumb.jpg",
-      "display": "display/Friz Kobele_display.jpg",
-      "caption": "Friz Kobele",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1790
-    },
-    {
-      "filename": "G.Rond.JPG",
-      "thumb": "thumbs/G.Rond_thumb.jpg",
-      "display": "display/G.Rond_display.jpg",
-      "caption": "G.Rond",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 861
-    },
-    {
-      "filename": "G.Wolsink.JPG",
-      "thumb": "thumbs/G.Wolsink_thumb.jpg",
-      "display": "display/G.Wolsink_display.jpg",
-      "caption": "G.Wolsink",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 895
-    },
-    {
-      "filename": "Gennady Moiseev Hyvinkään MM-250 1978.jpg",
-      "thumb": "thumbs/Gennady Moiseev Hyvinkään MM-250 1978_thumb.jpg",
-      "display": "display/Gennady Moiseev Hyvinkään MM-250 1978_display.jpg",
-      "caption": "Gennady Moiseev Hyvinkään MM-250 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1254,
-      "height": 820
-    },
-    {
-      "filename": "Gennady Moiseev laskemassa siilomonttuun. Hyvinkään MM-250 1978.jpg",
-      "thumb": "thumbs/Gennady Moiseev laskemassa siilomonttuun. Hyvinkään MM-250 1978_thumb.jpg",
-      "display": "display/Gennady Moiseev laskemassa siilomonttuun. Hyvinkään MM-250 1978_display.jpg",
-      "caption": "Gennady Moiseev laskemassa siilomonttuun. Hyvinkään MM-250 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 933
-    },
-    {
-      "filename": "Georges Jobe testaa hevosvoimia. Hyvinkään MM-cross..jpg",
-      "thumb": "thumbs/Georges Jobe testaa hevosvoimia. Hyvinkään MM-cross._thumb.jpg",
-      "display": "display/Georges Jobe testaa hevosvoimia. Hyvinkään MM-cross._display.jpg",
-      "caption": "Georges Jobe testaa hevosvoimia. Hyvinkään MM-cross.",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1107,
-      "height": 1242
-    },
-    {
-      "filename": "Gerard Rond.JPG",
-      "thumb": "thumbs/Gerard Rond_thumb.jpg",
-      "display": "display/Gerard Rond_display.jpg",
-      "caption": "Gerard Rond",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 914
-    },
-    {
-      "filename": "Gerrit Wolsink Ruskeasanta 1978.jpg",
-      "thumb": "thumbs/Gerrit Wolsink Ruskeasanta 1978_thumb.jpg",
-      "display": "display/Gerrit Wolsink Ruskeasanta 1978_display.jpg",
-      "caption": "Gerrit Wolsink Ruskeasanta 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 828
-    },
-    {
-      "filename": "Gerrit Wolsink.JPG",
-      "thumb": "thumbs/Gerrit Wolsink_thumb.jpg",
-      "display": "display/Gerrit Wolsink_display.jpg",
-      "caption": "Gerrit Wolsink",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 932
-    },
-    {
-      "filename": "Graham Noyce Ruskeasanta MM-500 1978.jpg",
-      "thumb": "thumbs/Graham Noyce Ruskeasanta MM-500 1978_thumb.jpg",
-      "display": "display/Graham Noyce Ruskeasanta MM-500 1978_display.jpg",
-      "caption": "Graham Noyce Ruskeasanta MM-500 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1165,
-      "height": 772
-    },
-    {
-      "filename": "Göte Liljegren Hyvinkään MM-250 1978.jpg",
-      "thumb": "thumbs/Göte Liljegren Hyvinkään MM-250 1978_thumb.jpg",
-      "display": "display/Göte Liljegren Hyvinkään MM-250 1978_display.jpg",
-      "caption": "Göte Liljegren Hyvinkään MM-250 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1166,
-      "height": 605
-    },
-    {
-      "filename": "Göte Liljegren_Hyvinkää.jpg",
-      "thumb": "thumbs/Göte Liljegren_Hyvinkää_thumb.jpg",
-      "display": "display/Göte Liljegren_Hyvinkää_display.jpg",
-      "caption": "Göte Liljegren Hyvinkää",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 940
-    },
-    {
-      "filename": "H.Everts edellä ja Hans Maisch perässä.JPG",
-      "thumb": "thumbs/H.Everts edellä ja Hans Maisch perässä_thumb.jpg",
-      "display": "display/H.Everts edellä ja Hans Maisch perässä_display.jpg",
-      "caption": "H.Everts edellä ja Hans Maisch perässä",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 961
-    },
-    {
-      "filename": "Hans Maisch vauhdissa.JPG",
-      "thumb": "thumbs/Hans Maisch vauhdissa_thumb.jpg",
-      "display": "display/Hans Maisch vauhdissa_display.jpg",
-      "caption": "Hans Maisch vauhdissa",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1845
-    },
-    {
-      "filename": "Harry Everts - Hyvinkää 1978.jpg",
-      "thumb": "thumbs/Harry Everts - Hyvinkää 1978_thumb.jpg",
-      "display": "display/Harry Everts - Hyvinkää 1978_display.jpg",
-      "caption": "Harry Everts - Hyvinkää 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 937
-    },
-    {
-      "filename": "Harry Everts B.JPG",
-      "thumb": "thumbs/Harry Everts B_thumb.jpg",
-      "display": "display/Harry Everts B_display.jpg",
-      "caption": "Harry Everts B",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 932
-    },
-    {
-      "filename": "Harry Everts.JPG",
-      "thumb": "thumbs/Harry Everts_thumb.jpg",
-      "display": "display/Harry Everts_display.jpg",
-      "caption": "Harry Everts",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1807
-    },
-    {
-      "filename": "Heikki Hessu Mikkola Ruskeasanta MM-500 1978.jpg",
-      "thumb": "thumbs/Heikki Hessu Mikkola Ruskeasanta MM-500 1978_thumb.jpg",
-      "display": "display/Heikki Hessu Mikkola Ruskeasanta MM-500 1978_display.jpg",
-      "caption": "Heikki Hessu Mikkola Ruskeasanta MM-500 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1271,
-      "height": 849
-    },
-    {
-      "filename": "Heikki Mikkola Hyvinkää.jpg",
-      "thumb": "thumbs/Heikki Mikkola Hyvinkää_thumb.jpg",
-      "display": "display/Heikki Mikkola Hyvinkää_display.jpg",
-      "caption": "Heikki Mikkola Hyvinkää",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 937
-    },
     {
       "filename": "Hyvinkää Erkylän Lukot GP-250 1969 kovaa kisaa.jpg",
       "thumb": "thumbs/Hyvinkää Erkylän Lukot GP-250 1969 kovaa kisaa_thumb.jpg",
@@ -404,6 +34,16 @@
       "date": "",
       "width": 1400,
       "height": 914
+    },
+    {
+      "filename": "Italialainen TGM oli kovan luokan menopeli 1970-1980 lukujen taitteessa.JPG",
+      "thumb": "thumbs/Italialainen TGM oli kovan luokan menopeli 1970-1980 lukujen taitteessa_thumb.jpg",
+      "display": "display/Italialainen TGM oli kovan luokan menopeli 1970-1980 lukujen taitteessa_display.jpg",
+      "caption": "Italialainen TGM oli kovan luokan menopeli 1970-1980 lukujen taitteessa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 931
     },
     {
       "filename": "Hyvinkää GP-250 1971 H.Mikkolan ja Uno Palmin Husset.jpg",
@@ -606,6 +246,16 @@
       "height": 1363
     },
     {
+      "filename": "Hyvinkää GP-250 1975 maailmanmestari Harry Everts Puch.jpg",
+      "thumb": "thumbs/Hyvinkää GP-250 1975 maailmanmestari Harry Everts Puch_thumb.jpg",
+      "display": "display/Hyvinkää GP-250 1975 maailmanmestari Harry Everts Puch_display.jpg",
+      "caption": "Hyvinkää GP-250 1975 maailmanmestari Harry Everts Puch",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1384
+    },
+    {
       "filename": "Hyvinkää GP-250 1975 Tarinatuokio. Pomeroy, Everts, Geboers ja Andersson.jpg",
       "thumb": "thumbs/Hyvinkää GP-250 1975 Tarinatuokio. Pomeroy, Everts, Geboers ja Andersson_thumb.jpg",
       "display": "display/Hyvinkää GP-250 1975 Tarinatuokio. Pomeroy, Everts, Geboers ja Andersson_display.jpg",
@@ -646,44 +296,74 @@
       "height": 1056
     },
     {
-      "filename": "Hyvinkää GP-250 1975 maailmanmestari Harry Everts Puch.jpg",
-      "thumb": "thumbs/Hyvinkää GP-250 1975 maailmanmestari Harry Everts Puch_thumb.jpg",
-      "display": "display/Hyvinkää GP-250 1975 maailmanmestari Harry Everts Puch_display.jpg",
-      "caption": "Hyvinkää GP-250 1975 maailmanmestari Harry Everts Puch",
+      "filename": "Ruskeasanta GP-500 1975 Bultacossa erikoinen takaiskari.jpg",
+      "thumb": "thumbs/Ruskeasanta GP-500 1975 Bultacossa erikoinen takaiskari_thumb.jpg",
+      "display": "display/Ruskeasanta GP-500 1975 Bultacossa erikoinen takaiskari_display.jpg",
+      "caption": "Ruskeasanta GP-500 1975 Bultacossa erikoinen takaiskari",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 1384
+      "height": 1249
     },
     {
-      "filename": "Hyvinkää MM-250 1978.jpg",
-      "thumb": "thumbs/Hyvinkää MM-250 1978_thumb.jpg",
-      "display": "display/Hyvinkää MM-250 1978_display.jpg",
-      "caption": "Hyvinkää MM-250 1978",
+      "filename": "Ruskeasanta GP-500 1975 CZ tehdaspyörä. Huom sylinterin rivoitus.jpg",
+      "thumb": "thumbs/Ruskeasanta GP-500 1975 CZ tehdaspyörä. Huom sylinterin rivoitus_thumb.jpg",
+      "display": "display/Ruskeasanta GP-500 1975 CZ tehdaspyörä. Huom sylinterin rivoitus_display.jpg",
+      "caption": "Ruskeasanta GP-500 1975 CZ tehdaspyörä. Huom sylinterin rivoitus",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 934
+      "height": 1465
     },
     {
-      "filename": "Hyvinkään MM-250 1978 suomalaisvauhtia.jpg",
-      "thumb": "thumbs/Hyvinkään MM-250 1978 suomalaisvauhtia_thumb.jpg",
-      "display": "display/Hyvinkään MM-250 1978 suomalaisvauhtia_display.jpg",
-      "caption": "Hyvinkään MM-250 1978 suomalaisvauhtia",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 597,
-      "height": 1084
-    },
-    {
-      "filename": "Hyvinkään MM-250 1978.jpg",
-      "thumb": "thumbs/Hyvinkään MM-250 1978_thumb.jpg",
-      "display": "display/Hyvinkään MM-250 1978_display.jpg",
-      "caption": "Hyvinkään MM-250 1978",
+      "filename": "Ruskeasanta GP-500 1975 De Costerin Suzuki.jpg",
+      "thumb": "thumbs/Ruskeasanta GP-500 1975 De Costerin Suzuki_thumb.jpg",
+      "display": "display/Ruskeasanta GP-500 1975 De Costerin Suzuki_display.jpg",
+      "caption": "Ruskeasanta GP-500 1975 De Costerin Suzuki",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 939
+      "height": 1462
+    },
+    {
+      "filename": "Ruskeasanta GP-500 1975 Göte Liljegren (selin) ja mekaanikko Heikki Penttilä.jpg",
+      "thumb": "thumbs/Ruskeasanta GP-500 1975 Göte Liljegren (selin) ja mekaanikko Heikki Penttilä_thumb.jpg",
+      "display": "display/Ruskeasanta GP-500 1975 Göte Liljegren (selin) ja mekaanikko Heikki Penttilä_display.jpg",
+      "caption": "Ruskeasanta GP-500 1975 Göte Liljegren (selin) ja mekaanikko Heikki Penttilä",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1716
+    },
+    {
+      "filename": "Ruskeasanta GP-500 1975 H. Mikkola ja meklaanikko Pelle-Mas.jpg",
+      "thumb": "thumbs/Ruskeasanta GP-500 1975 H. Mikkola ja meklaanikko Pelle-Mas_thumb.jpg",
+      "display": "display/Ruskeasanta GP-500 1975 H. Mikkola ja meklaanikko Pelle-Mas_display.jpg",
+      "caption": "Ruskeasanta GP-500 1975 H. Mikkola ja meklaanikko Pelle-Mas",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1415
+    },
+    {
+      "filename": "Ruskeasanta GP-500 1975 Husqvarnakuski Brad Lackey.jpg",
+      "thumb": "thumbs/Ruskeasanta GP-500 1975 Husqvarnakuski Brad Lackey_thumb.jpg",
+      "display": "display/Ruskeasanta GP-500 1975 Husqvarnakuski Brad Lackey_display.jpg",
+      "caption": "Ruskeasanta GP-500 1975 Husqvarnakuski Brad Lackey",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1481
+    },
+    {
+      "filename": "Ruskeasanta GP-500 1975 Roger De Coster tarkkailee mekaanikon työskentelyä.jpg",
+      "thumb": "thumbs/Ruskeasanta GP-500 1975 Roger De Coster tarkkailee mekaanikon työskentelyä_thumb.jpg",
+      "display": "display/Ruskeasanta GP-500 1975 Roger De Coster tarkkailee mekaanikon työskentelyä_display.jpg",
+      "caption": "Ruskeasanta GP-500 1975 Roger De Coster tarkkailee mekaanikon työskentelyä",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1456
     },
     {
       "filename": "Hyvinkään Usmissa talvitreenit 1976 vasemmalata Arto Vilkman, Jukka Penttilä, Markku Vilkman ja Pekka Penttilä. Takarivissä Mansikkamäki..jpg",
@@ -696,14 +376,194 @@
       "height": 863
     },
     {
-      "filename": "Håkan Carla Carlqvist.JPG",
-      "thumb": "thumbs/Håkan Carla Carlqvist_thumb.jpg",
-      "display": "display/Håkan Carla Carlqvist_display.jpg",
-      "caption": "Håkan Carla Carlqvist",
+      "filename": "Ruskeasanta GP-500 1976 Nuori Graham Noyce istuu Maiconsa satulassa.jpg",
+      "thumb": "thumbs/Ruskeasanta GP-500 1976 Nuori Graham Noyce istuu Maiconsa satulassa_thumb.jpg",
+      "display": "display/Ruskeasanta GP-500 1976 Nuori Graham Noyce istuu Maiconsa satulassa_display.jpg",
+      "caption": "Ruskeasanta GP-500 1976 Nuori Graham Noyce istuu Maiconsa satulassa",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 932
+      "height": 1471
+    },
+    {
+      "filename": "Andre Vromans Ruskeasanta 1978.jpg",
+      "thumb": "thumbs/Andre Vromans Ruskeasanta 1978_thumb.jpg",
+      "display": "display/Andre Vromans Ruskeasanta 1978_display.jpg",
+      "caption": "Andre Vromans Ruskeasanta 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1256,
+      "height": 740
+    },
+    {
+      "filename": "Bengt Åberg 4-T Yamahallaan 1978.jpg",
+      "thumb": "thumbs/Bengt Åberg 4-T Yamahallaan 1978_thumb.jpg",
+      "display": "display/Bengt Åberg 4-T Yamahallaan 1978_display.jpg",
+      "caption": "Bengt Åberg 4-T Yamahallaan 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 906
+    },
+    {
+      "filename": "Bengt Åbergin nelari Yamaha 1978.jpg",
+      "thumb": "thumbs/Bengt Åbergin nelari Yamaha 1978_thumb.jpg",
+      "display": "display/Bengt Åbergin nelari Yamaha 1978_display.jpg",
+      "caption": "Bengt Åbergin nelari Yamaha 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 937
+    },
+    {
+      "filename": "Brad Lackey lennättää santaa 1978.jpg",
+      "thumb": "thumbs/Brad Lackey lennättää santaa 1978_thumb.jpg",
+      "display": "display/Brad Lackey lennättää santaa 1978_display.jpg",
+      "caption": "Brad Lackey lennättää santaa 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1339,
+      "height": 891
+    },
+    {
+      "filename": "Brad Lackey Ruskeasanta MM-500 1978.jpg",
+      "thumb": "thumbs/Brad Lackey Ruskeasanta MM-500 1978_thumb.jpg",
+      "display": "display/Brad Lackey Ruskeasanta MM-500 1978_display.jpg",
+      "caption": "Brad Lackey Ruskeasanta MM-500 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 658,
+      "height": 887
+    },
+    {
+      "filename": "Chuck Sun on kadottanut takalokarinsa. Hyvinkää 250 MM 1978.jpg",
+      "thumb": "thumbs/Chuck Sun on kadottanut takalokarinsa. Hyvinkää 250 MM 1978_thumb.jpg",
+      "display": "display/Chuck Sun on kadottanut takalokarinsa. Hyvinkää 250 MM 1978_display.jpg",
+      "caption": "Chuck Sun on kadottanut takalokarinsa. Hyvinkää 250 MM 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 934
+    },
+    {
+      "filename": "De Costerin kuljetuskalusto vm. 1978.jpg",
+      "thumb": "thumbs/De Costerin kuljetuskalusto vm. 1978_thumb.jpg",
+      "display": "display/De Costerin kuljetuskalusto vm. 1978_display.jpg",
+      "caption": "De Costerin kuljetuskalusto vm. 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 909
+    },
+    {
+      "filename": "Erkki Sundström_Hyvinkään MM-cross_1978.jpg",
+      "thumb": "thumbs/Erkki Sundström_Hyvinkään MM-cross_1978_thumb.jpg",
+      "display": "display/Erkki Sundström_Hyvinkään MM-cross_1978_display.jpg",
+      "caption": "Erkki Sundström Hyvinkään MM-cross 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 606,
+      "height": 942
+    },
+    {
+      "filename": "Gennady Moiseev Hyvinkään MM-250 1978.jpg",
+      "thumb": "thumbs/Gennady Moiseev Hyvinkään MM-250 1978_thumb.jpg",
+      "display": "display/Gennady Moiseev Hyvinkään MM-250 1978_display.jpg",
+      "caption": "Gennady Moiseev Hyvinkään MM-250 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1254,
+      "height": 820
+    },
+    {
+      "filename": "Gennady Moiseev laskemassa siilomonttuun. Hyvinkään MM-250 1978.jpg",
+      "thumb": "thumbs/Gennady Moiseev laskemassa siilomonttuun. Hyvinkään MM-250 1978_thumb.jpg",
+      "display": "display/Gennady Moiseev laskemassa siilomonttuun. Hyvinkään MM-250 1978_display.jpg",
+      "caption": "Gennady Moiseev laskemassa siilomonttuun. Hyvinkään MM-250 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 933
+    },
+    {
+      "filename": "Gerrit Wolsink Ruskeasanta 1978.jpg",
+      "thumb": "thumbs/Gerrit Wolsink Ruskeasanta 1978_thumb.jpg",
+      "display": "display/Gerrit Wolsink Ruskeasanta 1978_display.jpg",
+      "caption": "Gerrit Wolsink Ruskeasanta 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 828
+    },
+    {
+      "filename": "Graham Noyce Ruskeasanta MM-500 1978.jpg",
+      "thumb": "thumbs/Graham Noyce Ruskeasanta MM-500 1978_thumb.jpg",
+      "display": "display/Graham Noyce Ruskeasanta MM-500 1978_display.jpg",
+      "caption": "Graham Noyce Ruskeasanta MM-500 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1165,
+      "height": 772
+    },
+    {
+      "filename": "Göte Liljegren Hyvinkään MM-250 1978.jpg",
+      "thumb": "thumbs/Göte Liljegren Hyvinkään MM-250 1978_thumb.jpg",
+      "display": "display/Göte Liljegren Hyvinkään MM-250 1978_display.jpg",
+      "caption": "Göte Liljegren Hyvinkään MM-250 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1166,
+      "height": 605
+    },
+    {
+      "filename": "Harry Everts - Hyvinkää 1978.jpg",
+      "thumb": "thumbs/Harry Everts - Hyvinkää 1978_thumb.jpg",
+      "display": "display/Harry Everts - Hyvinkää 1978_display.jpg",
+      "caption": "Harry Everts - Hyvinkää 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 937
+    },
+    {
+      "filename": "Heikki Hessu Mikkola Ruskeasanta MM-500 1978.jpg",
+      "thumb": "thumbs/Heikki Hessu Mikkola Ruskeasanta MM-500 1978_thumb.jpg",
+      "display": "display/Heikki Hessu Mikkola Ruskeasanta MM-500 1978_display.jpg",
+      "caption": "Heikki Hessu Mikkola Ruskeasanta MM-500 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1271,
+      "height": 849
+    },
+    {
+      "filename": "Hyvinkää MM-250 1978.jpg",
+      "thumb": "thumbs/Hyvinkää MM-250 1978_thumb.jpg",
+      "display": "display/Hyvinkää MM-250 1978_display.jpg",
+      "caption": "Hyvinkää MM-250 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 934
+    },
+    {
+      "filename": "Hyvinkään MM-250 1978.jpg",
+      "thumb": "thumbs/Hyvinkään MM-250 1978_thumb.jpg",
+      "display": "display/Hyvinkään MM-250 1978_display.jpg",
+      "caption": "Hyvinkään MM-250 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 939
+    },
+    {
+      "filename": "Hyvinkään MM-250 1978 suomalaisvauhtia.jpg",
+      "thumb": "thumbs/Hyvinkään MM-250 1978 suomalaisvauhtia_thumb.jpg",
+      "display": "display/Hyvinkään MM-250 1978 suomalaisvauhtia_display.jpg",
+      "caption": "Hyvinkään MM-250 1978 suomalaisvauhtia",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 597,
+      "height": 1084
     },
     {
       "filename": "Håkan Carla Carlqvist_Hyvinkää_1978.jpg",
@@ -716,16 +576,6 @@
       "height": 933
     },
     {
-      "filename": "Håkan Carlqvist vauhdissa.JPG",
-      "thumb": "thumbs/Håkan Carlqvist vauhdissa_thumb.jpg",
-      "display": "display/Håkan Carlqvist vauhdissa_display.jpg",
-      "caption": "Håkan Carlqvist vauhdissa",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 883
-    },
-    {
       "filename": "Håkan Carlqvist_Hyvinkään MM-cross_1978.jpg",
       "thumb": "thumbs/Håkan Carlqvist_Hyvinkään MM-cross_1978_thumb.jpg",
       "display": "display/Håkan Carlqvist_Hyvinkään MM-cross_1978_display.jpg",
@@ -734,36 +584,6 @@
       "date": "",
       "width": 1003,
       "height": 1265
-    },
-    {
-      "filename": "Italialainen TGM oli kovan luokan menopeli 1970-1980 lukujen taitteessa.JPG",
-      "thumb": "thumbs/Italialainen TGM oli kovan luokan menopeli 1970-1980 lukujen taitteessa_thumb.jpg",
-      "display": "display/Italialainen TGM oli kovan luokan menopeli 1970-1980 lukujen taitteessa_display.jpg",
-      "caption": "Italialainen TGM oli kovan luokan menopeli 1970-1980 lukujen taitteessa",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 931
-    },
-    {
-      "filename": "J-J Bruno.JPG",
-      "thumb": "thumbs/J-J Bruno_thumb.jpg",
-      "display": "display/J-J Bruno_display.jpg",
-      "caption": "J-J Bruno",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1080
-    },
-    {
-      "filename": "JJ Bruno.jpg",
-      "thumb": "thumbs/JJ Bruno_thumb.jpg",
-      "display": "display/JJ Bruno_display.jpg",
-      "caption": "JJ Bruno",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 809,
-      "height": 602
     },
     {
       "filename": "Jaak van Velthoven Ruskeasanta 1978.jpg",
@@ -786,36 +606,6 @@
       "height": 858
     },
     {
-      "filename": "Jukka Sintonen.jpg",
-      "thumb": "thumbs/Jukka Sintonen_thumb.jpg",
-      "display": "display/Jukka Sintonen_display.jpg",
-      "caption": "Jukka Sintonen",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 954
-    },
-    {
-      "filename": "Kovaa kisaa Wolsink kärjessä, Hudson toisena ja Carla kolmantena.JPG",
-      "thumb": "thumbs/Kovaa kisaa Wolsink kärjessä, Hudson toisena ja Carla kolmantena_thumb.jpg",
-      "display": "display/Kovaa kisaa Wolsink kärjessä, Hudson toisena ja Carla kolmantena_display.jpg",
-      "caption": "Kovaa kisaa Wolsink kärjessä, Hudson toisena ja Carla kolmantena",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 898
-    },
-    {
-      "filename": "Lippumies seuraa tarkkana Graham Noycen menoa.JPG",
-      "thumb": "thumbs/Lippumies seuraa tarkkana Graham Noycen menoa_thumb.jpg",
-      "display": "display/Lippumies seuraa tarkkana Graham Noycen menoa_display.jpg",
-      "caption": "Lippumies seuraa tarkkana Graham Noycen menoa",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 862
-    },
-    {
       "filename": "M.Tarkkonen kotiyleisön edesessä Hyvinkää 250 MM-1978.jpg",
       "thumb": "thumbs/M.Tarkkonen kotiyleisön edesessä Hyvinkää 250 MM-1978_thumb.jpg",
       "display": "display/M.Tarkkonen kotiyleisön edesessä Hyvinkää 250 MM-1978_display.jpg",
@@ -826,26 +616,6 @@
       "height": 788
     },
     {
-      "filename": "Maico saa kyytiä saksalaiskuskilta.JPG",
-      "thumb": "thumbs/Maico saa kyytiä saksalaiskuskilta_thumb.jpg",
-      "display": "display/Maico saa kyytiä saksalaiskuskilta_display.jpg",
-      "caption": "Maico saa kyytiä saksalaiskuskilta",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 918
-    },
-    {
-      "filename": "Malherben tehdas Honda vm 1979.JPG",
-      "thumb": "thumbs/Malherben tehdas Honda vm 1979_thumb.jpg",
-      "display": "display/Malherben tehdas Honda vm 1979_display.jpg",
-      "caption": "Malherben tehdas Honda vm 1979",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 932
-    },
-    {
       "filename": "Masa Tarkkonen hyvässä vauhdissa kotikisassa 1978.jpg",
       "thumb": "thumbs/Masa Tarkkonen hyvässä vauhdissa kotikisassa 1978_thumb.jpg",
       "display": "display/Masa Tarkkonen hyvässä vauhdissa kotikisassa 1978_display.jpg",
@@ -854,26 +624,6 @@
       "date": "",
       "width": 986,
       "height": 1236
-    },
-    {
-      "filename": "Masa Tarkkonen.jpg",
-      "thumb": "thumbs/Masa Tarkkonen_thumb.jpg",
-      "display": "display/Masa Tarkkonen_display.jpg",
-      "caption": "Masa Tarkkonen",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 683,
-      "height": 780
-    },
-    {
-      "filename": "Matti Masa Tarkkonen - Hyvinkää.jpg",
-      "thumb": "thumbs/Matti Masa Tarkkonen - Hyvinkää_thumb.jpg",
-      "display": "display/Matti Masa Tarkkonen - Hyvinkää_display.jpg",
-      "caption": "Matti Masa Tarkkonen - Hyvinkää",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1390,
-      "height": 852
     },
     {
       "filename": "Matti Tarkkonen - Hyvinkää 1978.jpg",
@@ -896,26 +646,6 @@
       "height": 936
     },
     {
-      "filename": "Matti Tarkkonen vauhdissa Hyvinkään MM-250 1978.jpg",
-      "thumb": "thumbs/Matti Tarkkonen vauhdissa Hyvinkään MM-250 1978_thumb.jpg",
-      "display": "display/Matti Tarkkonen vauhdissa Hyvinkään MM-250 1978_display.jpg",
-      "caption": "Matti Tarkkonen vauhdissa Hyvinkään MM-250 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 651,
-      "height": 863
-    },
-    {
-      "filename": "Matti Tarkkonen.jpg",
-      "thumb": "thumbs/Matti Tarkkonen_thumb.jpg",
-      "display": "display/Matti Tarkkonen_display.jpg",
-      "caption": "Matti Tarkkonen",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 933
-    },
-    {
       "filename": "Matti tarkkonen MM-erien tauolla_Hyvinkää MM-cross 1978.jpg",
       "thumb": "thumbs/Matti tarkkonen MM-erien tauolla_Hyvinkää MM-cross 1978_thumb.jpg",
       "display": "display/Matti tarkkonen MM-erien tauolla_Hyvinkää MM-cross 1978_display.jpg",
@@ -926,44 +656,14 @@
       "height": 1307
     },
     {
-      "filename": "Mikkola - Tarkkonen - Oksanen - Liljegren.jpg",
-      "thumb": "thumbs/Mikkola - Tarkkonen - Oksanen - Liljegren_thumb.jpg",
-      "display": "display/Mikkola - Tarkkonen - Oksanen - Liljegren_display.jpg",
-      "caption": "Mikkola - Tarkkonen - Oksanen - Liljegren",
+      "filename": "Matti Tarkkonen vauhdissa Hyvinkään MM-250 1978.jpg",
+      "thumb": "thumbs/Matti Tarkkonen vauhdissa Hyvinkään MM-250 1978_thumb.jpg",
+      "display": "display/Matti Tarkkonen vauhdissa Hyvinkään MM-250 1978_display.jpg",
+      "caption": "Matti Tarkkonen vauhdissa Hyvinkään MM-250 1978",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1400,
-      "height": 868
-    },
-    {
-      "filename": "N. Hudson.JPG",
-      "thumb": "thumbs/N. Hudson_thumb.jpg",
-      "display": "display/N. Hudson_display.jpg",
-      "caption": "N. Hudson",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 845
-    },
-    {
-      "filename": "Neil Hudson.JPG",
-      "thumb": "thumbs/Neil Hudson_thumb.jpg",
-      "display": "display/Neil Hudson_display.jpg",
-      "caption": "Neil Hudson",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 889
-    },
-    {
-      "filename": "R. De Coster, H.Everts ja A. Malherbe. Motocross Des Nations 500 Ruskeasanta 1979.JPG",
-      "thumb": "thumbs/R. De Coster, H.Everts ja A. Malherbe. Motocross Des Nations 500 Ruskeasanta 1979_thumb.jpg",
-      "display": "display/R. De Coster, H.Everts ja A. Malherbe. Motocross Des Nations 500 Ruskeasanta 1979_display.jpg",
-      "caption": "R. De Coster, H.Everts ja A. Malherbe. Motocross Des Nations 500 Ruskeasanta 1979",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 932
+      "width": 651,
+      "height": 863
     },
     {
       "filename": "Roger De Coster vauhdissa. Ruskeasanta MM-500 1978.jpg",
@@ -976,26 +676,6 @@
       "height": 815
     },
     {
-      "filename": "Roger De Coster(1).JPG",
-      "thumb": "thumbs/Roger De Coster(1)_thumb.jpg",
-      "display": "display/Roger De Coster(1)_display.jpg",
-      "caption": "Roger De Coster(1)",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1960
-    },
-    {
-      "filename": "Roger De Coster_Ruskeasanta_1980.jpg",
-      "thumb": "thumbs/Roger De Coster_Ruskeasanta_1980_thumb.jpg",
-      "display": "display/Roger De Coster_Ruskeasanta_1980_display.jpg",
-      "caption": "Roger De Coster Ruskeasanta 1980",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 951,
-      "height": 636
-    },
-    {
       "filename": "Roger De Costerin tehdas Suzuki 1978.jpg",
       "thumb": "thumbs/Roger De Costerin tehdas Suzuki 1978_thumb.jpg",
       "display": "display/Roger De Costerin tehdas Suzuki 1978_display.jpg",
@@ -1006,14 +686,144 @@
       "height": 943
     },
     {
-      "filename": "Roger de Coster.jpg",
-      "thumb": "thumbs/Roger de Coster_thumb.jpg",
-      "display": "display/Roger de Coster_display.jpg",
-      "caption": "Roger de Coster",
+      "filename": "Ruskeasanta MM-500 1978.jpg",
+      "thumb": "thumbs/Ruskeasanta MM-500 1978_thumb.jpg",
+      "display": "display/Ruskeasanta MM-500 1978_display.jpg",
+      "caption": "Ruskeasanta MM-500 1978",
       "photographer": "Matti Tarkkonen",
       "date": "",
-      "width": 1047,
-      "height": 904
+      "width": 1313,
+      "height": 1053
+    },
+    {
+      "filename": "Shuck Sun - Hyvinkää 1978.jpg",
+      "thumb": "thumbs/Shuck Sun - Hyvinkää 1978_thumb.jpg",
+      "display": "display/Shuck Sun - Hyvinkää 1978_display.jpg",
+      "caption": "Shuck Sun - Hyvinkää 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 877
+    },
+    {
+      "filename": "Temppumaestro Artsi Nyqvist 1978.jpg",
+      "thumb": "thumbs/Temppumaestro Artsi Nyqvist 1978_thumb.jpg",
+      "display": "display/Temppumaestro Artsi Nyqvist 1978_display.jpg",
+      "caption": "Temppumaestro Artsi Nyqvist 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1166,
+      "height": 743
+    },
+    {
+      "filename": "Thorleif Hansen Hyvinkää MM-Motocross 1978.jpg",
+      "thumb": "thumbs/Thorleif Hansen Hyvinkää MM-Motocross 1978_thumb.jpg",
+      "display": "display/Thorleif Hansen Hyvinkää MM-Motocross 1978_display.jpg",
+      "caption": "Thorleif Hansen Hyvinkää MM-Motocross 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Thorleif hansen ja Jaroslav Falta Hyvinkää MM250 1978.jpg",
+      "thumb": "thumbs/Thorleif hansen ja Jaroslav Falta Hyvinkää MM250 1978_thumb.jpg",
+      "display": "display/Thorleif hansen ja Jaroslav Falta Hyvinkää MM250 1978_display.jpg",
+      "caption": "Thorleif hansen ja Jaroslav Falta Hyvinkää MM250 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 936
+    },
+    {
+      "filename": "Thorleif Hansen ja Jaroslav Falta. Hyvinkää MM-250  1978.jpg",
+      "thumb": "thumbs/Thorleif Hansen ja Jaroslav Falta. Hyvinkää MM-250  1978_thumb.jpg",
+      "display": "display/Thorleif Hansen ja Jaroslav Falta. Hyvinkää MM-250  1978_display.jpg",
+      "caption": "Thorleif Hansen ja Jaroslav Falta. Hyvinkää MM-250  1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 936
+    },
+    {
+      "filename": "Thorleif Hansen liitää korkealla Hyvinkään MM-motocross 1978.jpg",
+      "thumb": "thumbs/Thorleif Hansen liitää korkealla Hyvinkään MM-motocross 1978_thumb.jpg",
+      "display": "display/Thorleif Hansen liitää korkealla Hyvinkään MM-motocross 1978_display.jpg",
+      "caption": "Thorleif Hansen liitää korkealla Hyvinkään MM-motocross 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 937
+    },
+    {
+      "filename": "Vas. Thorleif Hansen ja Vladimir Kavinov Hyvinkään MM-motocross 1978.jpg",
+      "thumb": "thumbs/Vas. Thorleif Hansen ja Vladimir Kavinov Hyvinkään MM-motocross 1978_thumb.jpg",
+      "display": "display/Vas. Thorleif Hansen ja Vladimir Kavinov Hyvinkään MM-motocross 1978_display.jpg",
+      "caption": "Vas. Thorleif Hansen ja Vladimir Kavinov Hyvinkään MM-motocross 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1370,
+      "height": 921
+    },
+    {
+      "filename": "Vladimir Kavinov edellä ja Gennady Moiseev perässä. Hyvinkään MM-motocross 1978.jpg",
+      "thumb": "thumbs/Vladimir Kavinov edellä ja Gennady Moiseev perässä. Hyvinkään MM-motocross 1978_thumb.jpg",
+      "display": "display/Vladimir Kavinov edellä ja Gennady Moiseev perässä. Hyvinkään MM-motocross 1978_display.jpg",
+      "caption": "Vladimir Kavinov edellä ja Gennady Moiseev perässä. Hyvinkään MM-motocross 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 939
+    },
+    {
+      "filename": "Vladimir Kavinov Hyvinkää MM-250 1978.jpg",
+      "thumb": "thumbs/Vladimir Kavinov Hyvinkää MM-250 1978_thumb.jpg",
+      "display": "display/Vladimir Kavinov Hyvinkää MM-250 1978_display.jpg",
+      "caption": "Vladimir Kavinov Hyvinkää MM-250 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 939
+    },
+    {
+      "filename": "Vladimir Kavinov_Hyvinkään MM-motocross 1978.jpg",
+      "thumb": "thumbs/Vladimir Kavinov_Hyvinkään MM-motocross 1978_thumb.jpg",
+      "display": "display/Vladimir Kavinov_Hyvinkään MM-motocross 1978_display.jpg",
+      "caption": "Vladimir Kavinov Hyvinkään MM-motocross 1978",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 937
+    },
+    {
+      "filename": "Malherben tehdas Honda vm 1979.JPG",
+      "thumb": "thumbs/Malherben tehdas Honda vm 1979_thumb.jpg",
+      "display": "display/Malherben tehdas Honda vm 1979_display.jpg",
+      "caption": "Malherben tehdas Honda vm 1979",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "R. De Coster, H.Everts ja A. Malherbe. Motocross Des Nations 500 Ruskeasanta 1979.JPG",
+      "thumb": "thumbs/R. De Coster, H.Everts ja A. Malherbe. Motocross Des Nations 500 Ruskeasanta 1979_thumb.jpg",
+      "display": "display/R. De Coster, H.Everts ja A. Malherbe. Motocross Des Nations 500 Ruskeasanta 1979_display.jpg",
+      "caption": "R. De Coster, H.Everts ja A. Malherbe. Motocross Des Nations 500 Ruskeasanta 1979",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Ruskeasanta 1979 joukkue MM.JPG",
+      "thumb": "thumbs/Ruskeasanta 1979 joukkue MM_thumb.jpg",
+      "display": "display/Ruskeasanta 1979 joukkue MM_display.jpg",
+      "caption": "Ruskeasanta 1979 joukkue MM",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
     },
     {
       "filename": "Ruskeasanta 1979 joukkue MM G.Wolsink.JPG",
@@ -1026,10 +836,30 @@
       "height": 1069
     },
     {
+      "filename": "Ruskeasanta 1979 joukkue MM-500.JPG",
+      "thumb": "thumbs/Ruskeasanta 1979 joukkue MM-500_thumb.jpg",
+      "display": "display/Ruskeasanta 1979 joukkue MM-500_display.jpg",
+      "caption": "Ruskeasanta 1979 joukkue MM-500",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1557
+    },
+    {
       "filename": "Ruskeasanta 1979 joukkue MM-500 Carla jahtaa Malherbea.JPG",
       "thumb": "thumbs/Ruskeasanta 1979 joukkue MM-500 Carla jahtaa Malherbea_thumb.jpg",
       "display": "display/Ruskeasanta 1979 joukkue MM-500 Carla jahtaa Malherbea_display.jpg",
       "caption": "Ruskeasanta 1979 joukkue MM-500 Carla jahtaa Malherbea",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Ruskeasanta 1979 joukkue MM-500 factory Maico ja Öhlinsit.JPG",
+      "thumb": "thumbs/Ruskeasanta 1979 joukkue MM-500 factory Maico ja Öhlinsit_thumb.jpg",
+      "display": "display/Ruskeasanta 1979 joukkue MM-500 factory Maico ja Öhlinsit_display.jpg",
+      "caption": "Ruskeasanta 1979 joukkue MM-500 factory Maico ja Öhlinsit",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
@@ -1076,14 +906,14 @@
       "height": 982
     },
     {
-      "filename": "Ruskeasanta 1979 joukkue MM-500 factory Maico ja Öhlinsit.JPG",
-      "thumb": "thumbs/Ruskeasanta 1979 joukkue MM-500 factory Maico ja Öhlinsit_thumb.jpg",
-      "display": "display/Ruskeasanta 1979 joukkue MM-500 factory Maico ja Öhlinsit_display.jpg",
-      "caption": "Ruskeasanta 1979 joukkue MM-500 factory Maico ja Öhlinsit",
+      "filename": "Ruskeasanta 1979 joukkue MM-500..JPG",
+      "thumb": "thumbs/Ruskeasanta 1979 joukkue MM-500._thumb.jpg",
+      "display": "display/Ruskeasanta 1979 joukkue MM-500._display.jpg",
+      "caption": "Ruskeasanta 1979 joukkue MM-500.",
       "photographer": "Matti Tarkkonen",
       "date": "",
       "width": 1400,
-      "height": 932
+      "height": 2104
     },
     {
       "filename": "Ruskeasanta 1979 joukkue MM-500. Andre Malherbe.JPG",
@@ -1246,156 +1076,6 @@
       "height": 932
     },
     {
-      "filename": "Ruskeasanta 1979 joukkue MM-500..JPG",
-      "thumb": "thumbs/Ruskeasanta 1979 joukkue MM-500._thumb.jpg",
-      "display": "display/Ruskeasanta 1979 joukkue MM-500._display.jpg",
-      "caption": "Ruskeasanta 1979 joukkue MM-500.",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 2104
-    },
-    {
-      "filename": "Ruskeasanta 1979 joukkue MM-500.JPG",
-      "thumb": "thumbs/Ruskeasanta 1979 joukkue MM-500_thumb.jpg",
-      "display": "display/Ruskeasanta 1979 joukkue MM-500_display.jpg",
-      "caption": "Ruskeasanta 1979 joukkue MM-500",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1557
-    },
-    {
-      "filename": "Ruskeasanta 1979 joukkue MM.JPG",
-      "thumb": "thumbs/Ruskeasanta 1979 joukkue MM_thumb.jpg",
-      "display": "display/Ruskeasanta 1979 joukkue MM_display.jpg",
-      "caption": "Ruskeasanta 1979 joukkue MM",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 932
-    },
-    {
-      "filename": "Ruskeasanta GP-500 1975 Bultacossa erikoinen takaiskari.jpg",
-      "thumb": "thumbs/Ruskeasanta GP-500 1975 Bultacossa erikoinen takaiskari_thumb.jpg",
-      "display": "display/Ruskeasanta GP-500 1975 Bultacossa erikoinen takaiskari_display.jpg",
-      "caption": "Ruskeasanta GP-500 1975 Bultacossa erikoinen takaiskari",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1249
-    },
-    {
-      "filename": "Ruskeasanta GP-500 1975 CZ tehdaspyörä. Huom sylinterin rivoitus.jpg",
-      "thumb": "thumbs/Ruskeasanta GP-500 1975 CZ tehdaspyörä. Huom sylinterin rivoitus_thumb.jpg",
-      "display": "display/Ruskeasanta GP-500 1975 CZ tehdaspyörä. Huom sylinterin rivoitus_display.jpg",
-      "caption": "Ruskeasanta GP-500 1975 CZ tehdaspyörä. Huom sylinterin rivoitus",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1465
-    },
-    {
-      "filename": "Ruskeasanta GP-500 1975 De Costerin Suzuki.jpg",
-      "thumb": "thumbs/Ruskeasanta GP-500 1975 De Costerin Suzuki_thumb.jpg",
-      "display": "display/Ruskeasanta GP-500 1975 De Costerin Suzuki_display.jpg",
-      "caption": "Ruskeasanta GP-500 1975 De Costerin Suzuki",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1462
-    },
-    {
-      "filename": "Ruskeasanta GP-500 1975 Göte Liljegren (selin) ja mekaanikko Heikki Penttilä.jpg",
-      "thumb": "thumbs/Ruskeasanta GP-500 1975 Göte Liljegren (selin) ja mekaanikko Heikki Penttilä_thumb.jpg",
-      "display": "display/Ruskeasanta GP-500 1975 Göte Liljegren (selin) ja mekaanikko Heikki Penttilä_display.jpg",
-      "caption": "Ruskeasanta GP-500 1975 Göte Liljegren (selin) ja mekaanikko Heikki Penttilä",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1716
-    },
-    {
-      "filename": "Ruskeasanta GP-500 1975 H. Mikkola ja meklaanikko Pelle-Mas.jpg",
-      "thumb": "thumbs/Ruskeasanta GP-500 1975 H. Mikkola ja meklaanikko Pelle-Mas_thumb.jpg",
-      "display": "display/Ruskeasanta GP-500 1975 H. Mikkola ja meklaanikko Pelle-Mas_display.jpg",
-      "caption": "Ruskeasanta GP-500 1975 H. Mikkola ja meklaanikko Pelle-Mas",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1415
-    },
-    {
-      "filename": "Ruskeasanta GP-500 1975 Husqvarnakuski Brad Lackey.jpg",
-      "thumb": "thumbs/Ruskeasanta GP-500 1975 Husqvarnakuski Brad Lackey_thumb.jpg",
-      "display": "display/Ruskeasanta GP-500 1975 Husqvarnakuski Brad Lackey_display.jpg",
-      "caption": "Ruskeasanta GP-500 1975 Husqvarnakuski Brad Lackey",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1481
-    },
-    {
-      "filename": "Ruskeasanta GP-500 1975 Roger De Coster tarkkailee mekaanikon työskentelyä.jpg",
-      "thumb": "thumbs/Ruskeasanta GP-500 1975 Roger De Coster tarkkailee mekaanikon työskentelyä_thumb.jpg",
-      "display": "display/Ruskeasanta GP-500 1975 Roger De Coster tarkkailee mekaanikon työskentelyä_display.jpg",
-      "caption": "Ruskeasanta GP-500 1975 Roger De Coster tarkkailee mekaanikon työskentelyä",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1456
-    },
-    {
-      "filename": "Ruskeasanta GP-500 1976 Nuori Graham Noyce istuu Maiconsa satulassa.jpg",
-      "thumb": "thumbs/Ruskeasanta GP-500 1976 Nuori Graham Noyce istuu Maiconsa satulassa_thumb.jpg",
-      "display": "display/Ruskeasanta GP-500 1976 Nuori Graham Noyce istuu Maiconsa satulassa_display.jpg",
-      "caption": "Ruskeasanta GP-500 1976 Nuori Graham Noyce istuu Maiconsa satulassa",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1471
-    },
-    {
-      "filename": "Ruskeasanta GP-500 H.Mikkolan tyylinnäyte.jpg",
-      "thumb": "thumbs/Ruskeasanta GP-500 H.Mikkolan tyylinnäyte_thumb.jpg",
-      "display": "display/Ruskeasanta GP-500 H.Mikkolan tyylinnäyte_display.jpg",
-      "caption": "Ruskeasanta GP-500 H.Mikkolan tyylinnäyte",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 920
-    },
-    {
-      "filename": "Ruskeasanta GP-500 Kawasakin 500cc tehdaspelli.jpg",
-      "thumb": "thumbs/Ruskeasanta GP-500 Kawasakin 500cc tehdaspelli_thumb.jpg",
-      "display": "display/Ruskeasanta GP-500 Kawasakin 500cc tehdaspelli_display.jpg",
-      "caption": "Ruskeasanta GP-500 Kawasakin 500cc tehdaspelli",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 1430
-    },
-    {
-      "filename": "Ruskeasanta MM-500 1978.jpg",
-      "thumb": "thumbs/Ruskeasanta MM-500 1978_thumb.jpg",
-      "display": "display/Ruskeasanta MM-500 1978_display.jpg",
-      "caption": "Ruskeasanta MM-500 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1313,
-      "height": 1053
-    },
-    {
-      "filename": "Shuck Sun - Hyvinkää 1978.jpg",
-      "thumb": "thumbs/Shuck Sun - Hyvinkää 1978_thumb.jpg",
-      "display": "display/Shuck Sun - Hyvinkää 1978_display.jpg",
-      "caption": "Shuck Sun - Hyvinkää 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 877
-    },
-    {
       "filename": "Tampere Horha GP 125 1979 Aprilia.jpg",
       "thumb": "thumbs/Tampere Horha GP 125 1979 Aprilia_thumb.jpg",
       "display": "display/Tampere Horha GP 125 1979 Aprilia_display.jpg",
@@ -1436,6 +1116,426 @@
       "height": 2054
     },
     {
+      "filename": "Roger De Coster_Ruskeasanta_1980.jpg",
+      "thumb": "thumbs/Roger De Coster_Ruskeasanta_1980_thumb.jpg",
+      "display": "display/Roger De Coster_Ruskeasanta_1980_display.jpg",
+      "caption": "Roger De Coster Ruskeasanta 1980",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 951,
+      "height": 636
+    },
+    {
+      "filename": "Andre Malherbe valmiina treeniin.JPG",
+      "thumb": "thumbs/Andre Malherbe valmiina treeniin_thumb.jpg",
+      "display": "display/Andre Malherbe valmiina treeniin_display.jpg",
+      "caption": "Andre Malherbe valmiina treeniin",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 2104
+    },
+    {
+      "filename": "Brad Lackey  vas ja Andre Malherbe.jpg",
+      "thumb": "thumbs/Brad Lackey  vas ja Andre Malherbe_thumb.jpg",
+      "display": "display/Brad Lackey  vas ja Andre Malherbe_display.jpg",
+      "caption": "Brad Lackey  vas ja Andre Malherbe",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1100,
+      "height": 1560
+    },
+    {
+      "filename": "Carla Carlqvistin raisua menoa.JPG",
+      "thumb": "thumbs/Carla Carlqvistin raisua menoa_thumb.jpg",
+      "display": "display/Carla Carlqvistin raisua menoa_display.jpg",
+      "caption": "Carla Carlqvistin raisua menoa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 896
+    },
+    {
+      "filename": "Carla on iskeytynyt Wolsinkin kantaan.JPG",
+      "thumb": "thumbs/Carla on iskeytynyt Wolsinkin kantaan_thumb.jpg",
+      "display": "display/Carla on iskeytynyt Wolsinkin kantaan_display.jpg",
+      "caption": "Carla on iskeytynyt Wolsinkin kantaan",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 801
+    },
+    {
+      "filename": "Chuck Sun_USA_Hyvinkään MM_treenit.jpg",
+      "thumb": "thumbs/Chuck Sun_USA_Hyvinkään MM_treenit_thumb.jpg",
+      "display": "display/Chuck Sun_USA_Hyvinkään MM_treenit_display.jpg",
+      "caption": "Chuck Sun USA Hyvinkään MM treenit",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1103,
+      "height": 1421
+    },
+    {
+      "filename": "De Coster.JPG",
+      "thumb": "thumbs/De Coster_thumb.jpg",
+      "display": "display/De Coster_display.jpg",
+      "caption": "De Coster",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1022
+    },
+    {
+      "filename": "De Costerin tyyliä.JPG",
+      "thumb": "thumbs/De Costerin tyyliä_thumb.jpg",
+      "display": "display/De Costerin tyyliä_display.jpg",
+      "caption": "De Costerin tyyliä",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1961
+    },
+    {
+      "filename": "Englanti vas. Vaughan Semmens, Neil Hudson, Rob Hooper ja Graham Noyce.JPG",
+      "thumb": "thumbs/Englanti vas. Vaughan Semmens, Neil Hudson, Rob Hooper ja Graham Noyce_thumb.jpg",
+      "display": "display/Englanti vas. Vaughan Semmens, Neil Hudson, Rob Hooper ja Graham Noyce_display.jpg",
+      "caption": "Englanti vas. Vaughan Semmens, Neil Hudson, Rob Hooper ja Graham Noyce",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1025
+    },
+    {
+      "filename": "Erkki Sundström.JPG",
+      "thumb": "thumbs/Erkki Sundström_thumb.jpg",
+      "display": "display/Erkki Sundström_display.jpg",
+      "caption": "Erkki Sundström",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 875
+    },
+    {
+      "filename": "Friz Kobele.JPG",
+      "thumb": "thumbs/Friz Kobele_thumb.jpg",
+      "display": "display/Friz Kobele_display.jpg",
+      "caption": "Friz Kobele",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1790
+    },
+    {
+      "filename": "Friz Kobele (2).JPG",
+      "thumb": "thumbs/Friz Kobele (2)_thumb.jpg",
+      "display": "display/Friz Kobele (2)_display.jpg",
+      "caption": "Friz Kobele (2)",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 859
+    },
+    {
+      "filename": "G.Rond.JPG",
+      "thumb": "thumbs/G.Rond_thumb.jpg",
+      "display": "display/G.Rond_display.jpg",
+      "caption": "G.Rond",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 861
+    },
+    {
+      "filename": "G.Wolsink.JPG",
+      "thumb": "thumbs/G.Wolsink_thumb.jpg",
+      "display": "display/G.Wolsink_display.jpg",
+      "caption": "G.Wolsink",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 895
+    },
+    {
+      "filename": "Georges Jobe testaa hevosvoimia. Hyvinkään MM-cross..jpg",
+      "thumb": "thumbs/Georges Jobe testaa hevosvoimia. Hyvinkään MM-cross._thumb.jpg",
+      "display": "display/Georges Jobe testaa hevosvoimia. Hyvinkään MM-cross._display.jpg",
+      "caption": "Georges Jobe testaa hevosvoimia. Hyvinkään MM-cross.",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1107,
+      "height": 1242
+    },
+    {
+      "filename": "Gerard Rond.JPG",
+      "thumb": "thumbs/Gerard Rond_thumb.jpg",
+      "display": "display/Gerard Rond_display.jpg",
+      "caption": "Gerard Rond",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 914
+    },
+    {
+      "filename": "Gerrit Wolsink.JPG",
+      "thumb": "thumbs/Gerrit Wolsink_thumb.jpg",
+      "display": "display/Gerrit Wolsink_display.jpg",
+      "caption": "Gerrit Wolsink",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Göte Liljegren_Hyvinkää.jpg",
+      "thumb": "thumbs/Göte Liljegren_Hyvinkää_thumb.jpg",
+      "display": "display/Göte Liljegren_Hyvinkää_display.jpg",
+      "caption": "Göte Liljegren Hyvinkää",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 940
+    },
+    {
+      "filename": "H.Everts edellä ja Hans Maisch perässä.JPG",
+      "thumb": "thumbs/H.Everts edellä ja Hans Maisch perässä_thumb.jpg",
+      "display": "display/H.Everts edellä ja Hans Maisch perässä_display.jpg",
+      "caption": "H.Everts edellä ja Hans Maisch perässä",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 961
+    },
+    {
+      "filename": "Hans Maisch vauhdissa.JPG",
+      "thumb": "thumbs/Hans Maisch vauhdissa_thumb.jpg",
+      "display": "display/Hans Maisch vauhdissa_display.jpg",
+      "caption": "Hans Maisch vauhdissa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1845
+    },
+    {
+      "filename": "Harry Everts.JPG",
+      "thumb": "thumbs/Harry Everts_thumb.jpg",
+      "display": "display/Harry Everts_display.jpg",
+      "caption": "Harry Everts",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1807
+    },
+    {
+      "filename": "Harry Everts B.JPG",
+      "thumb": "thumbs/Harry Everts B_thumb.jpg",
+      "display": "display/Harry Everts B_display.jpg",
+      "caption": "Harry Everts B",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Heikki Mikkola Hyvinkää.jpg",
+      "thumb": "thumbs/Heikki Mikkola Hyvinkää_thumb.jpg",
+      "display": "display/Heikki Mikkola Hyvinkää_display.jpg",
+      "caption": "Heikki Mikkola Hyvinkää",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 937
+    },
+    {
+      "filename": "Håkan Carla Carlqvist.JPG",
+      "thumb": "thumbs/Håkan Carla Carlqvist_thumb.jpg",
+      "display": "display/Håkan Carla Carlqvist_display.jpg",
+      "caption": "Håkan Carla Carlqvist",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Håkan Carlqvist vauhdissa.JPG",
+      "thumb": "thumbs/Håkan Carlqvist vauhdissa_thumb.jpg",
+      "display": "display/Håkan Carlqvist vauhdissa_display.jpg",
+      "caption": "Håkan Carlqvist vauhdissa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 883
+    },
+    {
+      "filename": "J-J Bruno.JPG",
+      "thumb": "thumbs/J-J Bruno_thumb.jpg",
+      "display": "display/J-J Bruno_display.jpg",
+      "caption": "J-J Bruno",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1080
+    },
+    {
+      "filename": "JJ Bruno.jpg",
+      "thumb": "thumbs/JJ Bruno_thumb.jpg",
+      "display": "display/JJ Bruno_display.jpg",
+      "caption": "JJ Bruno",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 809,
+      "height": 602
+    },
+    {
+      "filename": "Jukka Sintonen.jpg",
+      "thumb": "thumbs/Jukka Sintonen_thumb.jpg",
+      "display": "display/Jukka Sintonen_display.jpg",
+      "caption": "Jukka Sintonen",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 954
+    },
+    {
+      "filename": "Kovaa kisaa Wolsink kärjessä, Hudson toisena ja Carla kolmantena.JPG",
+      "thumb": "thumbs/Kovaa kisaa Wolsink kärjessä, Hudson toisena ja Carla kolmantena_thumb.jpg",
+      "display": "display/Kovaa kisaa Wolsink kärjessä, Hudson toisena ja Carla kolmantena_display.jpg",
+      "caption": "Kovaa kisaa Wolsink kärjessä, Hudson toisena ja Carla kolmantena",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 898
+    },
+    {
+      "filename": "Lippumies seuraa tarkkana Graham Noycen menoa.JPG",
+      "thumb": "thumbs/Lippumies seuraa tarkkana Graham Noycen menoa_thumb.jpg",
+      "display": "display/Lippumies seuraa tarkkana Graham Noycen menoa_display.jpg",
+      "caption": "Lippumies seuraa tarkkana Graham Noycen menoa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 862
+    },
+    {
+      "filename": "Maico saa kyytiä saksalaiskuskilta.JPG",
+      "thumb": "thumbs/Maico saa kyytiä saksalaiskuskilta_thumb.jpg",
+      "display": "display/Maico saa kyytiä saksalaiskuskilta_display.jpg",
+      "caption": "Maico saa kyytiä saksalaiskuskilta",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 918
+    },
+    {
+      "filename": "Masa Tarkkonen.jpg",
+      "thumb": "thumbs/Masa Tarkkonen_thumb.jpg",
+      "display": "display/Masa Tarkkonen_display.jpg",
+      "caption": "Masa Tarkkonen",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 683,
+      "height": 780
+    },
+    {
+      "filename": "Matti Masa Tarkkonen - Hyvinkää.jpg",
+      "thumb": "thumbs/Matti Masa Tarkkonen - Hyvinkää_thumb.jpg",
+      "display": "display/Matti Masa Tarkkonen - Hyvinkää_display.jpg",
+      "caption": "Matti Masa Tarkkonen - Hyvinkää",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1390,
+      "height": 852
+    },
+    {
+      "filename": "Matti Tarkkonen.jpg",
+      "thumb": "thumbs/Matti Tarkkonen_thumb.jpg",
+      "display": "display/Matti Tarkkonen_display.jpg",
+      "caption": "Matti Tarkkonen",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 933
+    },
+    {
+      "filename": "Mikkola - Tarkkonen - Oksanen - Liljegren.jpg",
+      "thumb": "thumbs/Mikkola - Tarkkonen - Oksanen - Liljegren_thumb.jpg",
+      "display": "display/Mikkola - Tarkkonen - Oksanen - Liljegren_display.jpg",
+      "caption": "Mikkola - Tarkkonen - Oksanen - Liljegren",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 868
+    },
+    {
+      "filename": "multi maailmanmestari Harry Everts.JPG",
+      "thumb": "thumbs/multi maailmanmestari Harry Everts_thumb.jpg",
+      "display": "display/multi maailmanmestari Harry Everts_display.jpg",
+      "caption": "multi maailmanmestari Harry Everts",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 906
+    },
+    {
+      "filename": "N. Hudson.JPG",
+      "thumb": "thumbs/N. Hudson_thumb.jpg",
+      "display": "display/N. Hudson_display.jpg",
+      "caption": "N. Hudson",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 845
+    },
+    {
+      "filename": "Neil Hudson.JPG",
+      "thumb": "thumbs/Neil Hudson_thumb.jpg",
+      "display": "display/Neil Hudson_display.jpg",
+      "caption": "Neil Hudson",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 889
+    },
+    {
+      "filename": "Roger de Coster.jpg",
+      "thumb": "thumbs/Roger de Coster_thumb.jpg",
+      "display": "display/Roger de Coster_display.jpg",
+      "caption": "Roger de Coster",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1047,
+      "height": 904
+    },
+    {
+      "filename": "Roger De Coster(1).JPG",
+      "thumb": "thumbs/Roger De Coster(1)_thumb.jpg",
+      "display": "display/Roger De Coster(1)_display.jpg",
+      "caption": "Roger De Coster(1)",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1960
+    },
+    {
+      "filename": "Ruskeasanta GP-500 H.Mikkolan tyylinnäyte.jpg",
+      "thumb": "thumbs/Ruskeasanta GP-500 H.Mikkolan tyylinnäyte_thumb.jpg",
+      "display": "display/Ruskeasanta GP-500 H.Mikkolan tyylinnäyte_display.jpg",
+      "caption": "Ruskeasanta GP-500 H.Mikkolan tyylinnäyte",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 920
+    },
+    {
+      "filename": "Ruskeasanta GP-500 Kawasakin 500cc tehdaspelli.jpg",
+      "thumb": "thumbs/Ruskeasanta GP-500 Kawasakin 500cc tehdaspelli_thumb.jpg",
+      "display": "display/Ruskeasanta GP-500 Kawasakin 500cc tehdaspelli_display.jpg",
+      "caption": "Ruskeasanta GP-500 Kawasakin 500cc tehdaspelli",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 1430
+    },
+    {
       "filename": "Team Finland. Matti Autio, Lars Öhberg, Erkki Sundström ja Tapani Pikkarainen..JPG",
       "thumb": "thumbs/Team Finland. Matti Autio, Lars Öhberg, Erkki Sundström ja Tapani Pikkarainen._thumb.jpg",
       "display": "display/Team Finland. Matti Autio, Lars Öhberg, Erkki Sundström ja Tapani Pikkarainen._display.jpg",
@@ -1454,56 +1554,6 @@
       "date": "",
       "width": 1400,
       "height": 932
-    },
-    {
-      "filename": "Temppumaestro Artsi Nyqvist 1978.jpg",
-      "thumb": "thumbs/Temppumaestro Artsi Nyqvist 1978_thumb.jpg",
-      "display": "display/Temppumaestro Artsi Nyqvist 1978_display.jpg",
-      "caption": "Temppumaestro Artsi Nyqvist 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1166,
-      "height": 743
-    },
-    {
-      "filename": "Thorleif Hansen Hyvinkää MM-Motocross 1978.jpg",
-      "thumb": "thumbs/Thorleif Hansen Hyvinkää MM-Motocross 1978_thumb.jpg",
-      "display": "display/Thorleif Hansen Hyvinkää MM-Motocross 1978_display.jpg",
-      "caption": "Thorleif Hansen Hyvinkää MM-Motocross 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 932
-    },
-    {
-      "filename": "Thorleif Hansen ja Jaroslav Falta. Hyvinkää MM-250  1978.jpg",
-      "thumb": "thumbs/Thorleif Hansen ja Jaroslav Falta. Hyvinkää MM-250  1978_thumb.jpg",
-      "display": "display/Thorleif Hansen ja Jaroslav Falta. Hyvinkää MM-250  1978_display.jpg",
-      "caption": "Thorleif Hansen ja Jaroslav Falta. Hyvinkää MM-250  1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 936
-    },
-    {
-      "filename": "Thorleif Hansen liitää korkealla Hyvinkään MM-motocross 1978.jpg",
-      "thumb": "thumbs/Thorleif Hansen liitää korkealla Hyvinkään MM-motocross 1978_thumb.jpg",
-      "display": "display/Thorleif Hansen liitää korkealla Hyvinkään MM-motocross 1978_display.jpg",
-      "caption": "Thorleif Hansen liitää korkealla Hyvinkään MM-motocross 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 937
-    },
-    {
-      "filename": "Thorleif hansen ja Jaroslav Falta Hyvinkää MM250 1978.jpg",
-      "thumb": "thumbs/Thorleif hansen ja Jaroslav Falta Hyvinkää MM250 1978_thumb.jpg",
-      "display": "display/Thorleif hansen ja Jaroslav Falta Hyvinkää MM250 1978_display.jpg",
-      "caption": "Thorleif hansen ja Jaroslav Falta Hyvinkää MM250 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 936
     },
     {
       "filename": "Tiukkaa kisaa.JPG",
@@ -1526,16 +1576,6 @@
       "height": 929
     },
     {
-      "filename": "Vas. Thorleif Hansen ja Vladimir Kavinov Hyvinkään MM-motocross 1978.jpg",
-      "thumb": "thumbs/Vas. Thorleif Hansen ja Vladimir Kavinov Hyvinkään MM-motocross 1978_thumb.jpg",
-      "display": "display/Vas. Thorleif Hansen ja Vladimir Kavinov Hyvinkään MM-motocross 1978_display.jpg",
-      "caption": "Vas. Thorleif Hansen ja Vladimir Kavinov Hyvinkään MM-motocross 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1370,
-      "height": 921
-    },
-    {
       "filename": "Vaughan Semmens GB.JPG",
       "thumb": "thumbs/Vaughan Semmens GB_thumb.jpg",
       "display": "display/Vaughan Semmens GB_display.jpg",
@@ -1556,36 +1596,6 @@
       "height": 932
     },
     {
-      "filename": "Vladimir Kavinov Hyvinkää MM-250 1978.jpg",
-      "thumb": "thumbs/Vladimir Kavinov Hyvinkää MM-250 1978_thumb.jpg",
-      "display": "display/Vladimir Kavinov Hyvinkää MM-250 1978_display.jpg",
-      "caption": "Vladimir Kavinov Hyvinkää MM-250 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 939
-    },
-    {
-      "filename": "Vladimir Kavinov edellä ja Gennady Moiseev perässä. Hyvinkään MM-motocross 1978.jpg",
-      "thumb": "thumbs/Vladimir Kavinov edellä ja Gennady Moiseev perässä. Hyvinkään MM-motocross 1978_thumb.jpg",
-      "display": "display/Vladimir Kavinov edellä ja Gennady Moiseev perässä. Hyvinkään MM-motocross 1978_display.jpg",
-      "caption": "Vladimir Kavinov edellä ja Gennady Moiseev perässä. Hyvinkään MM-motocross 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 939
-    },
-    {
-      "filename": "Vladimir Kavinov_Hyvinkään MM-motocross 1978.jpg",
-      "thumb": "thumbs/Vladimir Kavinov_Hyvinkään MM-motocross 1978_thumb.jpg",
-      "display": "display/Vladimir Kavinov_Hyvinkään MM-motocross 1978_display.jpg",
-      "caption": "Vladimir Kavinov Hyvinkään MM-motocross 1978",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 937
-    },
-    {
       "filename": "Wolsink.JPG",
       "thumb": "thumbs/Wolsink_thumb.jpg",
       "display": "display/Wolsink_display.jpg",
@@ -1594,17 +1604,6 @@
       "date": "",
       "width": 1400,
       "height": 902
-    },
-    {
-      "filename": "multi maailmanmestari Harry Everts.JPG",
-      "thumb": "thumbs/multi maailmanmestari Harry Everts_thumb.jpg",
-      "display": "display/multi maailmanmestari Harry Everts_display.jpg",
-      "caption": "multi maailmanmestari Harry Everts",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 906
     }
-  ],
-  "category": "international"
+  ]
 }
