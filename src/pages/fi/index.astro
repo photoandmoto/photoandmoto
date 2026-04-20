@@ -26,15 +26,13 @@ const featuredGalleries = galleries.slice(0, 4);
   <section class="hero">
     <div class="container">
       <h1 class="hero-title">{t['hero.tagline']}</h1>
+      <p class="hero-subtitle">{t['hero.subtitle']}</p>
     </div>
   </section>
   
   <!-- Intro Section -->
   <section class="intro-section">
     <div class="container">
-      <div class="section__header">
-        <h2 class="section__title">{t['hero.subtitle']}</h2>
-      </div>
       <div class="intro-grid">
         <div class="intro-col">
           <h2 class="intro-title">Tervetuloa fiilistelemään</h2>
@@ -121,7 +119,7 @@ const featuredGalleries = galleries.slice(0, 4);
           <p class="section__subtitle">Tutustu kuvagallerioihin</p>
         </div>
         
-        <p class="gallery-intro">Kokoelma on intuitiivinen, jotta löydät suosikkihetkesi vaivatta. Jokainen otos välittää moottoriurheilun historian ja tunnelman kertoen visuaalisesti oman tarinansa. Tämä kokonaisuus tarjoaa suoran matkan lajin merkittävimpiin hetkiin juuri sellaisena kuin ne tapahtuivat.</p>
+        <p class="gallery-intro">Löydä suosikkihetkesi helposti. Kuvat välittävät historian tunnelman ja vievät sinut suoraan lajin merkittävimpiin hetkiin aidoimmillaan.</p>
         
         <div class="grid grid--4">
           {featuredGalleries.map(gallery => (
@@ -182,11 +180,7 @@ const featuredGalleries = galleries.slice(0, 4);
   .intro-section {
     background: white;
     color: var(--text-primary);
-    padding: var(--space-8) 0;
-  }
-
-  .intro-section .section__header {
-    margin-bottom: var(--space-6);
+    padding: var(--space-10) 0 var(--space-8);
   }
   
   .intro-grid {
