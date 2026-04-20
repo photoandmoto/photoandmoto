@@ -47,7 +47,8 @@ const ogImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
   <meta property="og:locale" content={lang === 'fi' ? 'fi_FI' : 'en_US'}>
   
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
 </head>
 <body>
   <Header lang={lang} currentPath={Astro.url.pathname} />
