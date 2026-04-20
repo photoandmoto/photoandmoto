@@ -7,30 +7,71 @@ const lang = 'en';
 <BaseLayout 
   title="Contact" 
   lang={lang}
-  description="Get in touch - Photo & Moto"
+  description="Contact Photo & Moto"
 >
-  <section class="section contact">
-    <div class="container container--narrow">
+  <section class="section">
+    <div class="container">
       <div class="section__header">
         <h1 class="section__title">Contact</h1>
-        <p class="section__subtitle">Want to ask something or share your own memories?</p>
+        <p class="section__subtitle">Get in touch with us</p>
       </div>
       
-      <div class="contact-content">
-        <p>
-          <strong>Photo & Moto</strong> is a motorsport history archive maintained by Matti Tarkkonen.
-        </p>
-        
+      <div class="contact-grid">
         <div class="contact-info">
-          <h2>Get in Touch</h2>
-          <p>
-            <strong>Email:</strong> <a href="mailto:info@photoandmoto.fi">info@photoandmoto.fi</a>
-          </p>
+          <div class="info-card">
+            <h3>Photo & Moto</h3>
+            <p>Motorsport history photography archive since 1969</p>
+          </div>
+          
+          <div class="info-card">
+            <h3>Email</h3>
+            <p><a href="mailto:photoandmoto@gmail.com">photoandmoto@gmail.com</a></p>
+          </div>
+          
+          <div class="info-card">
+            <h3>Photo usage</h3>
+            <p>All photos are copyrighted. For usage rights and licensing, please contact us via the form or email.</p>
+          </div>
+          
+          <div class="info-card">
+            <h3>Questions & feedback</h3>
+            <p>Do you have questions about photos, riders or events? We'd love to hear from you!</p>
+          </div>
+          
+          <div class="info-card">
+            <h3>Story tips</h3>
+            <p>Do you have a motorsport story worth telling? Send us your tip!</p>
+          </div>
         </div>
         
-        <div class="contact-social">
-          <h2>Follow on Social Media</h2>
-          <p>Coming soon...</p>
+        <div class="contact-form-wrap">
+          <form action="https://formsubmit.co/photoandmoto@gmail.com" method="POST" class="contact-form">
+            <input type="hidden" name="_subject" value="New message from Photo & Moto (EN)">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="https://photoandmoto.pages.dev/en">
+            
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" required />
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required />
+            </div>
+            
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <input type="text" id="subject" name="subject" required />
+            </div>
+            
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="6" required></textarea>
+            </div>
+            
+            <button type="submit" class="btn">Send message</button>
+          </form>
         </div>
       </div>
     </div>
@@ -38,25 +79,16 @@ const lang = 'en';
 </BaseLayout>
 
 <style>
-  .contact {
-    padding: var(--space-8) 0;
-  }
-  
-  .contact-content {
-    line-height: 1.8;
-  }
-  
-  .contact-content h2 {
-    margin-top: var(--space-5);
-    margin-bottom: var(--space-2);
-    font-size: 1.5rem;
-  }
-  
-  .contact-info,
-  .contact-social {
-    margin-top: var(--space-4);
-    padding: var(--space-4);
-    background: var(--bg-secondary);
-    border-radius: var(--radius-md);
-  }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: var(--space-6); max-width: 900px; margin: 0 auto; }
+  .contact-info { display: flex; flex-direction: column; gap: var(--space-3); }
+  .info-card { background: var(--bg-secondary); padding: var(--space-3); border-radius: var(--radius-md); border-left: 3px solid var(--brand-primary); }
+  .info-card h3 { font-size: 1rem; font-weight: 800; color: var(--brand-primary); margin-bottom: var(--space-1); font-family: var(--font-headline); }
+  .info-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+  .info-card a { color: var(--brand-primary); }
+  .contact-form-wrap { background: var(--bg-secondary); padding: var(--space-5); border-radius: var(--radius-md); }
+  .form-group { margin-bottom: var(--space-3); }
+  .form-group label { display: block; font-weight: 700; font-size: 0.9rem; margin-bottom: var(--space-1); color: var(--text-primary); }
+  .form-group input, .form-group textarea { width: 100%; padding: 10px 14px; border: 2px solid #ddd; border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 0.95rem; transition: border-color 0.15s; }
+  .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--brand-primary); }
+  @media (max-width: 768px) { .contact-grid { grid-template-columns: 1fr; } }
 </style>

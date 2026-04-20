@@ -32,12 +32,20 @@ if (!gallery) {
   <section class="section gallery-detail">
     <div class="container">
       <div class="gallery-header">
-        <a href="/en/gallery" class="back-link">← Back to gallery</a>
+        <a href="/en/gallery" class="back-link">&#8592; Back to galleries</a>
         <h1>{gallery.data.title}</h1>
         <p class="gallery-description">{gallery.data.description}</p>
         <p class="gallery-meta">
           {t['gallery.photoCount'].replace('{count}', gallery.data.images.length.toString())}
         </p>
+        
+        <div class="gallery-filter">
+          <div class="gallery-filter-wrap">
+            <input type="text" id="galleryFilter" class="gallery-filter-input" placeholder="Filter photos... e.g. Mikkola, 1978" />
+            <button id="galleryClear" class="gallery-filter-clear" style="display:none;">&#10005;</button>
+          </div>
+          <div id="galleryFilterCount" class="gallery-filter-count"></div>
+        </div>
       </div>
       
       <GalleryGrid images={gallery.data.images} gallerySlug={gallery.data.slug} />
@@ -47,40 +55,48 @@ if (!gallery) {
 </BaseLayout>
 
 <style>
-  .gallery-detail {
-    padding-top: var(--space-6);
-  }
-  
-  .gallery-header {
-    text-align: center;
-    margin-bottom: var(--space-6);
-  }
-  
-  .back-link {
-    display: inline-block;
-    font-family: var(--font-headline);
-    font-size: 0.95rem;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--brand-primary);
-    margin-bottom: var(--space-3);
-    transition: color var(--transition-fast);
-  }
-  
-  .back-link:hover {
-    color: var(--brand-secondary);
-  }
-  
-  .gallery-description {
-    font-size: 1.125rem;
-    color: var(--text-secondary);
-    max-width: 600px;
-    margin: 0 auto var(--space-2);
-  }
-  
-  .gallery-meta {
-    font-size: 0.95rem;
-    color: var(--brand-primary);
-    font-weight: 600;
-  }
+  .gallery-detail { padding-top: var(--space-6); }
+  .gallery-header { text-align: center; margin-bottom: var(--space-6); }
+  .back-link { display: inline-block; font-family: var(--font-headline); font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--brand-primary); margin-bottom: var(--space-3); transition: color var(--transition-fast); }
+  .back-link:hover { color: var(--brand-secondary); }
+  .gallery-description { font-size: 1.125rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto var(--space-2); }
+  .gallery-meta { font-size: 0.95rem; color: var(--brand-primary); font-weight: 600; }
+  .gallery-filter { margin-top: var(--space-4); }
+  .gallery-filter-wrap { position: relative; max-width: 500px; margin: 0 auto; }
+  .gallery-filter-input { width: 100%; padding: 12px 44px 12px 16px; font-family: var(--font-body); font-size: 0.95rem; border: 2px solid #ddd; border-radius: var(--radius-md); background: #fff; transition: border-color 0.15s; }
+  .gallery-filter-input:focus { outline: none; border-color: #ff9900; }
+  .gallery-filter-clear { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 1.1rem; color: #888; cursor: pointer; padding: 4px; }
+  .gallery-filter-clear:hover { color: #ff9900; }
+  .gallery-filter-count { text-align: center; margin-top: var(--space-1); font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
 </style>
+
+<script>
+  const filterInput = document.getElementById('galleryFilter');
+  const filterClear = document.getElementById('galleryClear');
+  const filterCount = document.getElementById('galleryFilterCount');
+  const loadMoreBtn = document.getElementById('load-more-btn');
+  
+  if (filterInput) {
+    filterInput.addEventListener('input', () => {
+      const q = filterInput.value.trim().toLowerCase();
+      const items = document.querySelectorAll('.gallery-item');
+      if (q.length < 2) {
+        items.forEach((item, i) => { item.style.display = ''; if (i >= 9) item.classList.add('gallery-hidden'); else item.classList.remove('gallery-hidden'); });
+        if (loadMoreBtn) loadMoreBtn.style.display = '';
+        filterCount.textContent = '';
+        filterClear.style.display = 'none';
+        return;
+      }
+      filterClear.style.display = 'block';
+      if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+      let matches = 0;
+      items.forEach(item => {
+        const caption = (item.getAttribute('data-pswp-caption') || '').toLowerCase();
+        if (caption.includes(q)) { item.style.display = ''; item.classList.remove('gallery-hidden'); matches++; }
+        else { item.style.display = 'none'; }
+      });
+      filterCount.textContent = matches + ' photos found' + (matches === 0 ? ' — try a different search' : '');
+    });
+    filterClear.addEventListener('click', () => { filterInput.value = ''; filterInput.dispatchEvent(new Event('input')); });
+  }
+</script>
