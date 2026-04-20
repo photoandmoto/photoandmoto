@@ -7,6 +7,8 @@ category: "Historical"
 tags: ["Belgia", "motocross", "historia", "MXGP", "Mikkola"]
 featured_image: "/images/belgia-mikkola.jpg"
 language: "fi"
+show_hero: false
+
 ---
 
 Belgian ainutlaatuinen asema kansainvälisen motocrossin keskuksena on kestänyt yli puoli vuosisataa. Tässä artikkelissa tutustumme tekijöihin, jotka synnyttivät "motocrossin tukikohdan".

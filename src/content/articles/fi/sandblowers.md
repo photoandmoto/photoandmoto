@@ -12,7 +12,8 @@ show_hero: false
 
 Elettiin vuotta 1986. Motocrossissa iltahuudon kuunnellet kaverukset etsivät uusia jännityksen lähteitä. Syttyi kipinä siirtyä speedwayn pariin ja näin syntyi Sandblowers rohkealla ajatuksella, tuoda eloisaa väriä "harmaaseen" lajiin. Kirjaimellisesti ottaen, heidän Jawansakin maalattiin kirkkailla värisävyillä perinteitä haastaen.
 
-![Sandblowers vasemmalta: Sakke Ojala, Jerry Wathen, Mika Pellinen, Arto Vilkman ja Kai Kujala. Edessä: Jyrki Hinkkuri](/images/sandblowers-ryhma.jpg)
+![Sandblowers](/images/sandblowers-ryhma.jpg)
+*Sandblowers vasemmalta: Sakke Ojala, Jerry Wathen, Mika Pellinen, Arto Vilkman ja Kai Kujala. Edessä: Jyrki Hinkkuri*
 
 Debyytti Seinäjoella aiheutti hämmennystä. Ensinnäkin Englannin kielinen joukkueen nimi oli ennekuulumatonta, saati sitten kun heidän kaleidoskooppiset pyöränsä ilmestyivät varikolla pakettiautosta, järjestäjät tyrmistyivät: "Ette voi ajaa noilla väreillä! Se on sääntöjen vastaista!" Lyhyen väittelyn jälkeen Sandblowers sai tahtonsa läpi. Sen jälkeen he hallitsivat kilpailua voittaen epäilevän yleisön puolelleen ja aloittaen legendaarisen taipaleensa.
 
@@ -20,11 +21,13 @@ Debyytti Seinäjoella aiheutti hämmennystä. Ensinnäkin Englannin kielinen jou
 
 Sandblowersista tuli nopeasti paljon puhuttu joukkue, joka tunnettiin ainutlaatuisesta tyylistään ja kiistattomasta lahjakkuudestaan. Vain kahdessa vuodessa he nousivat vauhdilla Suomen speedwayn pääsarjaan.
 
-![Speedwaypyörä taittuu crossikuskin käsittelyssä treeneissä Lahden Pipon radalla](/images/sandblowers-treeni.jpg)
+![Treenit](/images/sandblowers-treeni.jpg)
+*Speedwaypyörä taittuu crossikuskin käsittelyssä treeneissä Lahden Pipon radalla*
 
 Sandblowersin vaikutus ulottui radan ulkopuolelle. Heidän energiansa sytytti kipinän myös Jorma Virrassa, arvostetussa Hyvinkääläisessä moottorimiehessä, joka tunnettiin lempinimellä Mr. Speedway. Jorista tuli joukkueen mentori, ja hänen ohjauksessaan Hyvinkää saavutti myös tärkeän virstanpylvään, eli kaupunkiin valmistui sen historian ensimmäinen oma speedwaystadion.
 
-![Sandblowers ja tukijoukot teamipalaverissa Jorma Virran ohjauksessa](/images/sandblowers-palaveri.jpg)
+![Palaveri](/images/sandblowers-palaveri.jpg)
+*Sandblowers ja tukijoukot teamipalaverissa Jorma Virran ohjauksessa*
 
 ## Vallankumouksen haalistunut kaiku
 
