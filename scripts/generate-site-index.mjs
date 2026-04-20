@@ -74,14 +74,42 @@ if (fs.existsSync(calFile)) {
   index.push({ type: 'calendar', title: 'Kilpailukalenteri 2026', content: calLines.join('\n') });
 }
 
-// 4. Galleries
+// 4. Galleries - include captions for searching (names, places, years)
 const galDir = path.join(ROOT, 'src/content/galleries');
 if (fs.existsSync(galDir)) {
   fs.readdirSync(galDir).filter(f => f.endsWith('.json')).forEach(f => {
     const g = JSON.parse(fs.readFileSync(path.join(galDir, f), 'utf-8'));
-    index.push({ type: 'gallery', title: g.title || '', content: `Gallery: ${g.title || ''} - ${(g.images || []).length} photos` });
+    const captions = (g.images || []).map(img => img.caption).filter(Boolean);
+    const content = `Gallery: ${g.title || ''} - ${(g.images || []).length} photos.\nKuvien sisältö (henkilöt, paikat, vuodet):\n${captions.join('; ')}`;
+    index.push({ type: 'gallery', title: g.title || '', content });
   });
 }
+
+// 5. Podcasts
+const podcastEpisodes = [
+  {
+    title: 'Heikki Mikkola: Nelinkertainen Motocrossin Maailmanmestari',
+    description: 'Tarina legendaarisesta suomalaiskuljettajasta, joka voitti neljä motocrossin maailmanmestaruutta. Heikki "Hessu" Mikkola MM-mestaruudet: 1974 (250cc Husqvarna), 1977, 1978 (500cc Yamaha), 1976 (joint MXdN).'
+  },
+  {
+    title: 'Honda CR250: Legendan Synty ja Loppu',
+    description: 'Honda CR250:n tarina – motocrossin ikonisimman pyörän nousu ja tuotannon päättyminen.'
+  },
+  {
+    title: 'Suzuki Motocross Racing: From Disastrous Start to Golden Era',
+    description: 'Suzukin tie motocrossin katastrofaalisesta alusta kultaiselle aikakaudelle. Roger De Costerin ja Joel Robertin MM-voitot.'
+  },
+  {
+    title: 'Motocross of Nations: Historia ja Voittajat',
+    description: 'Motocross of Nations -kilpailun historia ja sen merkittävimmät voittajat vuosien varrelta.'
+  },
+  {
+    title: 'Danny "Magoo" Chandlerin perintö motocrossissa',
+    description: 'Muisto Danny "Magoo" Chandlerista – amerikkalaisesta motocross-legendasta ja Yhdysvaltojen MXdN-joukkueen jäsenestä. Danny Magoo Chandler oli tunnettu spektaakkelimaisesta ajotyylistään ja merkittävistä voitoistaan 1980-luvun alussa.'
+  },
+];
+const podcastContent = podcastEpisodes.map(p => `${p.title}: ${p.description}`).join('\n');
+index.push({ type: 'podcast', title: 'Podcast-jaksot', content: podcastContent });
 
 // Save
 const outFile = path.join(ROOT, 'public/data/site-index.json');

@@ -19,10 +19,22 @@ export async function onRequestPost(context) {
       return new Response(JSON.stringify({ error: 'GEMINI_API_KEY not found in environment' }), { status: 500, headers: corsHeaders });
     }
 
-    // Trim data to stay within token limits
-    const trimmedData = siteData ? siteData.substring(0, 50000) : '[]';
+    // Detect language from query
+    const isFinnish = /[äöå]|mitä|kuka|missä|milloin|kerro|kuinka|onko|voiko/i.test(query);
+    const languageInstruction = isFinnish 
+      ? 'CRITICAL: You MUST answer in FINNISH (suomeksi). The user asked in Finnish.'
+      : 'CRITICAL: Answer in ENGLISH. The user asked in English.';
     
-    const prompt = `You are the AI search assistant for Photo & Moto, a Finnish motorsport photography and history website. Answer questions based ONLY on the site data provided below. Answer in the same language the question is asked in (Finnish or English). Be concise but complete. If the data doesn't contain the answer, say so politely.
+    // Trim data to stay within token limits
+    const trimmedData = siteData ? siteData.substring(0, 80000) : '[]';
+    
+    const prompt = `You are the AI search assistant for Photo & Moto, a Finnish motorsport photography and history website.
+
+${languageInstruction}
+
+Answer questions based on the site data provided below. When a person is mentioned, check nicknames and variations (e.g. "Hessu Mikkola" = "Heikki Mikkola", "Magoo" = "Danny Chandler", "Carla" = "Håkan Carlqvist"). Photo gallery captions contain rich information about people, places, and years.
+
+Be concise but complete. If the data doesn't contain the answer, say so politely in the correct language.
 
 SITE DATA:
 ${trimmedData}
