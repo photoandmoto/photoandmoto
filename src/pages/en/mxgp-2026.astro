@@ -1,0 +1,298 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import fs from 'fs';
+
+const lang = 'en';
+const raw = fs.readFileSync('public/data/mxgp-results.json', 'utf-8');
+const data = JSON.parse(raw);
+const race = data.latestRace;
+const standings = data.standings;
+
+function formatDate(dateStr: string) {
+  const d = new Date(dateStr);
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+}
+---
+
+<BaseLayout 
+  title="MXGP 2026 — Results & Standings" 
+  lang={lang}
+  description="Latest MXGP and MX2 race results and championship standings 2026"
+>
+  <section class="mxgp-page">
+    <div class="container">
+      <div class="section__header">
+        <h1 class="section__title">MXGP 2026</h1>
+        <p class="section__subtitle">Results & Championship Standings</p>
+      </div>
+
+      {race ? (
+        <>
+          <div class="race-banner">
+            <div class="race-banner__round">Round {race.round}/{data.totalRounds}</div>
+            <h2 class="race-banner__title">{race.name}</h2>
+            <div class="race-banner__meta">
+              <span>📍 {race.location}</span>
+              <span>📅 {formatDate(race.date)}</span>
+            </div>
+            {data.seasonComplete && (
+              <div class="race-banner__final">🏆 Season complete — final results</div>
+            )}
+          </div>
+
+          <div class="mxgp-tabs" id="classTabs">
+            <button class="mxgp-tab mxgp-tab--active" data-class="mxgp">MXGP</button>
+            <button class="mxgp-tab" data-class="mx2">MX2</button>
+            <button class="mxgp-tab" data-class="standings">Standings</button>
+          </div>
+
+          <!-- MXGP Results -->
+          <div class="mxgp-panel mxgp-panel--active" data-panel="mxgp">
+            <h3 class="result-section-title">GP Overall Classification</h3>
+            <div class="table-wrap">
+              <table class="result-table">
+                <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Nat</th><th>Pts</th></tr></thead>
+                <tbody>
+                  {race.mxgp.overall.map((r: any) => (
+                    <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
+                      <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td>{r.nat}</td><td class="pts">{r.pts}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="race-grid">
+              <div>
+                <h3 class="result-section-title">Race 1</h3>
+                <div class="table-wrap">
+                  <table class="result-table result-table--compact">
+                    <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Pts</th></tr></thead>
+                    <tbody>
+                      {race.mxgp.race1.map((r: any) => (
+                        <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
+                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td class="pts">{r.pts}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div>
+                <h3 class="result-section-title">Race 2</h3>
+                <div class="table-wrap">
+                  <table class="result-table result-table--compact">
+                    <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Pts</th></tr></thead>
+                    <tbody>
+                      {race.mxgp.race2.map((r: any) => (
+                        <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
+                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td class="pts">{r.pts}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            {race.mxgp.qualifying.length > 0 && (
+              <details class="quali-details">
+                <summary class="result-section-title result-section-title--toggle">Qualifying Race (Saturday)</summary>
+                <div class="table-wrap">
+                  <table class="result-table result-table--compact">
+                    <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Nat</th></tr></thead>
+                    <tbody>
+                      {race.mxgp.qualifying.map((r: any) => (
+                        <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
+                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td>{r.nat}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </details>
+            )}
+          </div>
+
+          <!-- MX2 Results -->
+          <div class="mxgp-panel" data-panel="mx2">
+            <h3 class="result-section-title">GP Overall Classification</h3>
+            <div class="table-wrap">
+              <table class="result-table">
+                <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Nat</th><th>Pts</th></tr></thead>
+                <tbody>
+                  {race.mx2.overall.map((r: any) => (
+                    <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
+                      <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td>{r.nat}</td><td class="pts">{r.pts}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div class="race-grid">
+              <div>
+                <h3 class="result-section-title">Race 1</h3>
+                <div class="table-wrap">
+                  <table class="result-table result-table--compact">
+                    <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Pts</th></tr></thead>
+                    <tbody>
+                      {race.mx2.race1.map((r: any) => (
+                        <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
+                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td class="pts">{r.pts}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div>
+                <h3 class="result-section-title">Race 2</h3>
+                <div class="table-wrap">
+                  <table class="result-table result-table--compact">
+                    <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Pts</th></tr></thead>
+                    <tbody>
+                      {race.mx2.race2.map((r: any) => (
+                        <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
+                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td class="pts">{r.pts}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            {race.mx2.qualifying.length > 0 && (
+              <details class="quali-details">
+                <summary class="result-section-title result-section-title--toggle">Qualifying Race (Saturday)</summary>
+                <div class="table-wrap">
+                  <table class="result-table result-table--compact">
+                    <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Nat</th></tr></thead>
+                    <tbody>
+                      {race.mx2.qualifying.map((r: any) => (
+                        <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
+                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td>{r.nat}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </details>
+            )}
+          </div>
+
+          <!-- Standings -->
+          <div class="mxgp-panel" data-panel="standings">
+            <div class="standings-grid">
+              <div>
+                <h3 class="result-section-title">MXGP — Championship Standings</h3>
+                <div class="table-wrap">
+                  <table class="result-table">
+                    <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Nat</th><th>Pts</th></tr></thead>
+                    <tbody>
+                      {standings.mxgp.map((r: any) => (
+                        <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
+                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td>{r.nat}</td><td class="pts">{r.pts}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div>
+                <h3 class="result-section-title">MX2 — Championship Standings</h3>
+                <div class="table-wrap">
+                  <table class="result-table">
+                    <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Nat</th><th>Pts</th></tr></thead>
+                    <tbody>
+                      {standings.mx2.map((r: any) => (
+                        <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
+                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td>{r.nat}</td><td class="pts">{r.pts}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="mxgp-updated">Updated: {data.lastUpdated} · Auto-updates every Monday</p>
+          <p class="mxgp-source">Source: <a href="https://mxgpresults.com" target="_blank" rel="noopener">mxgpresults.com</a></p>
+        </>
+      ) : (
+        <div class="mxgp-offseason">
+          <p>The 2026 MXGP season has not started yet. Results will update automatically after the first round.</p>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const tabs = document.querySelectorAll('.mxgp-tab');
+  const panels = document.querySelectorAll('.mxgp-panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = (tab as HTMLElement).dataset.class;
+      tabs.forEach(t => t.classList.remove('mxgp-tab--active'));
+      panels.forEach(p => p.classList.remove('mxgp-panel--active'));
+      tab.classList.add('mxgp-tab--active');
+      document.querySelector(`[data-panel="${target}"]`)?.classList.add('mxgp-panel--active');
+    });
+  });
+</script>
+
+<style is:global>
+  .mxgp-page { padding: var(--space-6) 0 var(--space-8); }
+  .race-banner { background: linear-gradient(135deg, #000 0%, #1a1a1a 100%); color: white; border-radius: var(--radius-lg); padding: var(--space-4) var(--space-5); margin-bottom: var(--space-5); border-left: 5px solid var(--brand-primary); }
+  .race-banner__round { font-family: var(--font-headline); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--brand-primary); margin-bottom: var(--space-1); }
+  .race-banner__title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 900; margin-bottom: var(--space-2); color: white; }
+  .race-banner__meta { display: flex; gap: var(--space-4); font-size: 0.95rem; color: rgba(255,255,255,0.8); flex-wrap: wrap; }
+  .race-banner__final { margin-top: var(--space-2); font-family: var(--font-headline); font-size: 0.9rem; font-weight: 700; color: var(--brand-primary); }
+  .mxgp-tabs { display: flex; gap: 4px; margin-bottom: var(--space-4); background: #f0f0f0; border-radius: var(--radius-md); padding: 4px; }
+  .mxgp-tab { flex: 1; padding: 10px 16px; font-family: var(--font-headline); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; background: transparent; border: none; border-radius: var(--radius-sm); cursor: pointer; transition: all var(--transition-fast); color: var(--text-secondary); }
+  .mxgp-tab:hover { background: #e0e0e0; }
+  .mxgp-tab--active { background: #000; color: var(--brand-primary); box-shadow: var(--shadow-sm); }
+  .mxgp-panel { display: none; }
+  .mxgp-panel--active { display: block; }
+  .result-section-title { font-family: var(--font-headline); font-size: 1rem; font-weight: 800; color: var(--text-primary); margin-bottom: var(--space-2); text-transform: uppercase; letter-spacing: 0.5px; }
+  .result-section-title--toggle { cursor: pointer; color: var(--brand-primary); user-select: none; }
+  .result-section-title--toggle:hover { opacity: 0.8; }
+  .table-wrap { overflow-x: auto; margin-bottom: var(--space-4); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); }
+  .result-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; background: white; }
+  .result-table thead { background: #1a1a1a; color: white; }
+  .result-table th { padding: 10px 12px; text-align: left; font-family: var(--font-headline); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+  .result-table td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; }
+  .result-table tbody tr:hover { background: #fafafa; }
+  .result-table .pos { font-weight: 800; font-family: var(--font-headline); width: 40px; text-align: center; }
+  .result-table .rider { font-weight: 700; }
+  .result-table .pts { font-weight: 800; font-family: var(--font-headline); color: var(--brand-primary); text-align: right; }
+  .podium--1 { background: rgba(255,215,0,0.08); }
+  .podium--1 .pos { color: #B8860B; }
+  .podium--2 { background: rgba(192,192,192,0.08); }
+  .podium--2 .pos { color: #808080; }
+  .podium--3 { background: rgba(205,127,50,0.08); }
+  .podium--3 .pos { color: #CD7F32; }
+  .race-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  .standings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+  .quali-details { margin-top: var(--space-2); margin-bottom: var(--space-4); }
+  .quali-details summary { list-style: none; display: flex; align-items: center; gap: 8px; }
+  .quali-details summary::before { content: '▶'; font-size: 0.7rem; color: var(--brand-primary); transition: transform var(--transition-fast); }
+  .quali-details[open] summary::before { transform: rotate(90deg); }
+  .result-table--compact th, .result-table--compact td { padding: 8px 10px; font-size: 0.85rem; }
+  .mxgp-updated { text-align: center; font-size: 0.82rem; color: var(--text-secondary); margin-top: var(--space-5); margin-bottom: var(--space-1); }
+  .mxgp-source { text-align: center; font-size: 0.78rem; color: var(--text-secondary); }
+  .mxgp-source a { color: var(--brand-primary); }
+  .mxgp-offseason { text-align: center; padding: var(--space-8) var(--space-4); color: var(--text-secondary); font-size: 1.1rem; }
+  @media (max-width: 768px) {
+    .race-grid { grid-template-columns: 1fr; }
+    .standings-grid { grid-template-columns: 1fr; }
+    .race-banner__meta { flex-direction: column; gap: var(--space-1); }
+    .result-table { font-size: 0.82rem; }
+    .result-table th, .result-table td { padding: 8px; }
+  }
+</style>
