@@ -111,6 +111,29 @@ const podcastEpisodes = [
 const podcastContent = podcastEpisodes.map(p => `${p.title}: ${p.description}`).join('\n');
 index.push({ type: 'podcast', title: 'Podcast-jaksot', content: podcastContent });
 
+// 6. MXGP Results
+const mxgpFile = path.join(ROOT, 'public/data/mxgp-results.json');
+if (fs.existsSync(mxgpFile)) {
+  const mxgp = JSON.parse(fs.readFileSync(mxgpFile, 'utf-8'));
+  if (mxgp.latestRace) {
+    const r = mxgp.latestRace;
+    const lines = [`Viimeisin kilpailu: ${r.name}, ${r.location}, ${r.date} (osakilpailu ${r.round}/${mxgp.totalRounds})`];
+    if (r.mxgp?.overall?.length) {
+      lines.push('MXGP GP-tulos: ' + r.mxgp.overall.map(e => `${e.pos}. ${e.rider} (${e.bike})`).join(', '));
+    }
+    if (r.mx2?.overall?.length) {
+      lines.push('MX2 GP-tulos: ' + r.mx2.overall.map(e => `${e.pos}. ${e.rider} (${e.bike})`).join(', '));
+    }
+    if (mxgp.standings?.mxgp?.length) {
+      lines.push('MXGP MM-pistetilanne: ' + mxgp.standings.mxgp.map(e => `${e.pos}. ${e.rider} ${e.pts}p`).join(', '));
+    }
+    if (mxgp.standings?.mx2?.length) {
+      lines.push('MX2 MM-pistetilanne: ' + mxgp.standings.mx2.map(e => `${e.pos}. ${e.rider} ${e.pts}p`).join(', '));
+    }
+    index.push({ type: 'mxgp', title: `MXGP ${mxgp.season} tulokset ja pistetilanne`, content: lines.join('\n') });
+  }
+}
+
 // Save
 const outFile = path.join(ROOT, 'public/data/site-index.json');
 fs.writeFileSync(outFile, JSON.stringify(index, null, 0), 'utf-8');
