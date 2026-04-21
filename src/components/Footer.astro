@@ -25,6 +25,7 @@ const currentYear = new Date().getFullYear();
         <ul>
           <li><a href={lang === 'fi' ? '/fi/galleria' : '/en/gallery'}>{t['nav.gallery']}</a></li>
           {lang === 'fi' && <li><a href="/fi/aikakone">{t['nav.articles']}</a></li>}
+          <li><a href={lang === 'fi' ? '/fi/mxgp-2026' : '/en/mxgp-2026'}>MXGP 2026</a></li>
           <li><a href={`/${lang}/yhteystiedot`}>{t['nav.contact']}</a></li>
           {lang === 'fi' && <li><a href="/fi/tilastot">Tilastot</a></li>}
           {lang === 'fi' && <li><a href="/fi/kalenteri">Kalenteri</a></li>}
