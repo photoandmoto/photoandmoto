@@ -1,0 +1,50 @@
+name: Update MXGP Results
+
+on:
+  schedule:
+    # Every Monday at 06:00 UTC (08:00 Finnish winter / 09:00 summer)
+    - cron: '0 6 * * 1'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  update-mxgp:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+      
+      - name: Run MXGP scraper
+        run: python scripts/scrape-mxgp.py
+      
+      - name: Check for changes
+        id: changes
+        run: |
+          if git diff --quiet public/data/mxgp-results.json; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "No changes detected"
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "Changes detected, will commit"
+          fi
+      
+      - name: Commit and push
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          git config user.name "MXGP Bot"
+          git config user.email "photoandmoto@gmail.com"
+          git add public/data/mxgp-results.json
+          ROUND=$(python3 -c "import json; d=json.load(open('public/data/mxgp-results.json')); r=d.get('latestRace'); print(f'R{r[\"round\"]} {r[\"name\"]}' if r else 'No race')")
+          git commit -m "Auto-update MXGP results: $ROUND"
+          git push
