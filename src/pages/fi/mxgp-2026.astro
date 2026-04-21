@@ -7,6 +7,7 @@ const raw = fs.readFileSync('public/data/mxgp-results.json', 'utf-8');
 const data = JSON.parse(raw);
 const race = data.latestRace;
 const standings = data.standings;
+const highlights = data.highlights || { fi: [], en: [] };
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
@@ -41,6 +42,21 @@ function formatDate(dateStr: string) {
               <div class="race-banner__final">🏆 Kausi päättynyt — lopulliset tulokset</div>
             )}
           </div>
+
+          <!-- Highlights Card -->
+          {highlights.fi && highlights.fi.length > 0 && (
+            <div class="highlights-card">
+              <div class="highlights-card__header">
+                <span class="highlights-card__icon">🏁</span>
+                <h3 class="highlights-card__title">Viikonlopun kohokohdat</h3>
+              </div>
+              <ul class="highlights-card__list">
+                {highlights.fi.map((h: string) => (
+                  <li>{h}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <!-- Tab Navigation -->
           <div class="mxgp-tabs" id="classTabs">
@@ -452,6 +468,53 @@ function formatDate(dateStr: string) {
     color: var(--text-secondary);
   }
   .mxgp-source a { color: var(--brand-primary); }
+
+  /* Highlights Card */
+  .highlights-card {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4) var(--space-5);
+    margin-bottom: var(--space-4);
+    border-left: 4px solid var(--brand-primary);
+  }
+  .highlights-card__header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: var(--space-3);
+  }
+  .highlights-card__icon { font-size: 1.3rem; }
+  .highlights-card__title {
+    font-family: var(--font-headline);
+    font-size: 1rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--brand-primary);
+    margin: 0;
+  }
+  .highlights-card__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .highlights-card__list li {
+    color: rgba(255,255,255,0.9);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    padding-left: 20px;
+    position: relative;
+  }
+  .highlights-card__list li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--brand-primary);
+    font-weight: bold;
+  }
 
   /* Offseason message */
   .mxgp-offseason {
