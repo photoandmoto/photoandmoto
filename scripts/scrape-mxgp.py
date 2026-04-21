@@ -2,7 +2,7 @@
 """
 MXGP Results Scraper for Photo & Moto
 Scrapes latest race results and standings from mxgpresults.com
-Fully dynamic — no hardcoded calendar, finds latest race automatically.
+Generates AI highlights using Gemini 2.5 Flash.
 Runs via GitHub Actions (Sunday + Monday) during the season.
 """
 
@@ -21,6 +21,9 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
+GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+
 
 def fetch_page(url):
     """Fetch a page with error handling."""
@@ -34,24 +37,14 @@ def fetch_page(url):
 
 
 def find_latest_race():
-    """Dynamically find the latest completed race from mxgpresults.com.
-    
-    Fetches the season results page and finds the last race listed.
-    Returns dict with slug, round, name, or None if no races found.
-    """
+    """Dynamically find the latest completed race from mxgpresults.com."""
     url = f"{BASE_URL}/mxgp/{SEASON}/"
     html = fetch_page(url)
     if not html:
         return None
     
-    # Find all race links: /mxgp/2026/trentino
-    # Pattern: links within the results table that point to individual races
-    race_links = re.findall(
-        rf'/mxgp/{SEASON}/([a-z0-9-]+)',
-        html
-    )
+    race_links = re.findall(rf'/mxgp/{SEASON}/([a-z0-9-]+)', html)
     
-    # Remove duplicates while preserving order, skip 'standings'
     seen = set()
     slugs = []
     skip = {'standings', 'calendar', 'teams', 'entry-list'}
@@ -61,13 +54,11 @@ def find_latest_race():
             slugs.append(slug)
     
     if not slugs:
-        print("No completed races found on results page.")
         return None
     
     latest_slug = slugs[-1]
     latest_round = len(slugs)
     
-    # Get race details from the individual race page
     race_url = f"{BASE_URL}/mxgp/{SEASON}/{latest_slug}"
     race_html = fetch_page(race_url)
     
@@ -76,25 +67,17 @@ def find_latest_race():
     race_date = ""
     
     if race_html:
-        # Extract race name from h1
         h1_match = re.search(r'<h1[^>]*>(.*?)</h1>', race_html, re.DOTALL)
         if h1_match:
             name_text = re.sub(r'<[^>]+>', '', h1_match.group(1)).strip()
             if name_text:
                 race_name = name_text
         
-        # Extract location from meta description or page content
-        # The page typically has "taking place at X in Y"
         loc_match = re.search(r'taking place at\s+(.+?)\s+in\s+(.+?)\s+on', race_html, re.IGNORECASE)
         if loc_match:
             location = f"{loc_match.group(1)}, {loc_match.group(2)}"
         
-        # Extract date from page content
-        # Pattern: "Sunday, April 19th 2026" or similar
-        date_match = re.search(
-            r'(?:Sunday|Saturday),?\s+(\w+)\s+(\d+)\w*\s+(\d{4})',
-            race_html, re.IGNORECASE
-        )
+        date_match = re.search(r'(?:Sunday|Saturday),?\s+(\w+)\s+(\d+)\w*\s+(\d{4})', race_html, re.IGNORECASE)
         if date_match:
             months = {
                 'january': '01', 'february': '02', 'march': '03', 'april': '04',
@@ -106,7 +89,6 @@ def find_latest_race():
             year = date_match.group(3)
             race_date = f"{year}-{month}-{day}"
     
-    # Count total rounds from the standings page info
     total_match = re.search(r'after\s+(\d+)\s+of\s+(\d+)\s+rounds', race_html or '', re.IGNORECASE)
     total_rounds = int(total_match.group(2)) if total_match else 19
     
@@ -127,7 +109,6 @@ def find_latest_race():
 def parse_table_from_html(table_html):
     """Parse a table from raw HTML, handling unclosed <td>/<th> tags."""
     results = []
-    
     row_chunks = re.split(r'<tr[^>]*>', table_html)
     
     for chunk in row_chunks:
@@ -140,7 +121,6 @@ def parse_table_from_html(table_html):
         
         if len(clean) < 4:
             continue
-        
         if clean[0].lower().startswith('pos'):
             continue
         
@@ -224,8 +204,115 @@ def scrape_standings(class_name):
     return parsed
 
 
+def generate_highlights(race_info, mxgp_results, mx2_results, standings):
+    """Use Gemini to generate race highlights in Finnish and English."""
+    api_key = os.environ.get("GEMINI_API_KEY", "")
+    if not api_key:
+        print("  No GEMINI_API_KEY found, skipping highlights")
+        return {"fi": [], "en": []}
+    
+    # Build a data summary for Gemini
+    summary_lines = [
+        f"Race: {race_info['name']} (Round {race_info['round']})",
+        f"Location: {race_info['location']}",
+        f"Date: {race_info['date']}",
+    ]
+    
+    if mxgp_results:
+        if mxgp_results["qualifying"]:
+            summary_lines.append(f"\nMXGP Qualifying top 5:")
+            for r in mxgp_results["qualifying"][:5]:
+                summary_lines.append(f"  {r['pos']}. {r['rider']} ({r['bike']}, {r['nat']})")
+        
+        if mxgp_results["race1"]:
+            summary_lines.append(f"\nMXGP Race 1 top 5:")
+            for r in mxgp_results["race1"][:5]:
+                summary_lines.append(f"  {r['pos']}. {r['rider']} ({r['bike']}) - {r.get('pts', '')} pts")
+        
+        if mxgp_results["race2"]:
+            summary_lines.append(f"\nMXGP Race 2 top 5:")
+            for r in mxgp_results["race2"][:5]:
+                summary_lines.append(f"  {r['pos']}. {r['rider']} ({r['bike']}) - {r.get('pts', '')} pts")
+        
+        if mxgp_results["overall"]:
+            summary_lines.append(f"\nMXGP GP Overall top 5:")
+            for r in mxgp_results["overall"][:5]:
+                summary_lines.append(f"  {r['pos']}. {r['rider']} ({r['bike']}) - {r.get('pts', '')} pts")
+    
+    if mx2_results:
+        if mx2_results["overall"]:
+            summary_lines.append(f"\nMX2 GP Overall top 5:")
+            for r in mx2_results["overall"][:5]:
+                summary_lines.append(f"  {r['pos']}. {r['rider']} ({r['bike']}) - {r.get('pts', '')} pts")
+    
+    if standings.get("mxgp"):
+        top2 = standings["mxgp"][:2]
+        if len(top2) == 2:
+            gap = top2[0].get("pts", 0) - top2[1].get("pts", 0)
+            summary_lines.append(f"\nMXGP Championship: {top2[0]['rider']} leads with {top2[0]['pts']} pts, {gap} pts ahead of {top2[1]['rider']}")
+    
+    if standings.get("mx2"):
+        top2 = standings["mx2"][:2]
+        if len(top2) == 2:
+            gap = top2[0].get("pts", 0) - top2[1].get("pts", 0)
+            summary_lines.append(f"\nMX2 Championship: {top2[0]['rider']} leads with {top2[0]['pts']} pts, {gap} pts ahead of {top2[1]['rider']}")
+    
+    data_summary = "\n".join(summary_lines)
+    
+    prompt = f"""You are a motorsport journalist for a Finnish motocross website. Based on the race results data below, generate highlights for the weekend.
+
+RULES:
+- Generate exactly 4 bullet points in FINNISH and 4 in ENGLISH
+- Each bullet should be 1 short sentence, max 15 words
+- Focus on: GP winners, dominant performances, championship implications, surprises
+- Use exciting motorsport language (hallitsi, dominoi, taisteli, nousi)
+- Only state facts from the data — do NOT invent crashes, injuries, or events not in the data
+- Output as JSON only, no markdown, no backticks
+
+RACE DATA:
+{data_summary}
+
+OUTPUT FORMAT (JSON only):
+{{"fi": ["bullet1", "bullet2", "bullet3", "bullet4"], "en": ["bullet1", "bullet2", "bullet3", "bullet4"]}}"""
+
+    try:
+        url = GEMINI_URL.format(model=GEMINI_MODEL, key=api_key)
+        resp = requests.post(url, json={
+            "contents": [{"parts": [{"text": prompt}]}],
+            "generationConfig": {"maxOutputTokens": 2000, "temperature": 0.4}
+        }, timeout=30)
+        
+        if not resp.ok:
+            print(f"  Gemini error: {resp.status_code} - {resp.text[:200]}")
+            return {"fi": [], "en": []}
+        
+        data = resp.json()
+        answer = data.get("candidates", [{}])[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+        
+        # Extract JSON from response (handles ```json blocks, extra text, etc.)
+        answer = answer.strip()
+        # Find the JSON object between first { and last }
+        json_match = re.search(r'\{.*\}', answer, re.DOTALL)
+        if not json_match:
+            print(f"  No JSON found in response: {answer[:200]}")
+            return {"fi": [], "en": []}
+        
+        json_str = json_match.group()
+        highlights = json.loads(json_str)
+        
+        fi_count = len(highlights.get("fi", []))
+        en_count = len(highlights.get("en", []))
+        print(f"  Highlights generated: {fi_count} FI, {en_count} EN")
+        
+        return highlights
+    
+    except Exception as e:
+        print(f"  Highlights generation failed: {e}")
+        return {"fi": [], "en": []}
+
+
 def build_json():
-    """Main function: find latest round dynamically, scrape everything, output JSON."""
+    """Main function: find latest round, scrape, generate highlights, output JSON."""
     
     print(f"Finding latest completed race for {SEASON}...")
     latest = find_latest_race()
@@ -238,6 +325,7 @@ def build_json():
             "seasonComplete": False,
             "totalRounds": 19,
             "latestRace": None,
+            "highlights": {"fi": [], "en": []},
             "standings": {"mxgp": [], "mx2": []}
         }
         write_json(data)
@@ -255,6 +343,11 @@ def build_json():
     mxgp_standings = scrape_standings("mxgp")
     mx2_standings = scrape_standings("mx2")
     
+    standings = {"mxgp": mxgp_standings, "mx2": mx2_standings}
+    
+    print(f"\nGenerating highlights...")
+    highlights = generate_highlights(latest, mxgp_results, mx2_results, standings)
+    
     data = {
         "season": SEASON,
         "lastUpdated": date.today().isoformat(),
@@ -269,10 +362,8 @@ def build_json():
             "mxgp": mxgp_results or {"qualifying": [], "race1": [], "race2": [], "overall": []},
             "mx2": mx2_results or {"qualifying": [], "race1": [], "race2": [], "overall": []}
         },
-        "standings": {
-            "mxgp": mxgp_standings,
-            "mx2": mx2_standings
-        }
+        "highlights": highlights,
+        "standings": standings
     }
     
     write_json(data)
