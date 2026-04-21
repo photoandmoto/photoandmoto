@@ -33,6 +33,9 @@ const lang = 'fi';
   const btn = document.getElementById('aiSearchBtn');
   const result = document.getElementById('aiResult');
   let siteData = null;
+  let lastSearchTime = 0;
+  const COOLDOWN_MS = 15000;
+  const queryCache = {};
   
   // Load site index on page load
   fetch('/data/site-index.json')
@@ -89,8 +92,24 @@ const lang = 'fi';
     const q = input.value.trim();
     if (q.length < 2) return;
     
+    // Check cooldown
+    const now = Date.now();
+    const remaining = Math.ceil((COOLDOWN_MS - (now - lastSearchTime)) / 1000);
+    if (remaining > 0) {
+      result.innerHTML = '<div class="ai-error">Odota ' + remaining + ' sekuntia ennen seuraavaa hakua.</div>';
+      return;
+    }
+    
+    // Check cache
+    if (queryCache[q]) {
+      const html = renderMarkdown(queryCache[q]);
+      result.innerHTML = '<div class="ai-answer"><div class="ai-answer-label">Vastaus (välimuistista)</div><div class="ai-answer-text">' + html + '</div></div>';
+      return;
+    }
+    
     result.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div><span>Etsitään vastausta...</span></div>';
     btn.disabled = true;
+    lastSearchTime = Date.now();
     
     try {
       const resp = await fetch('/api/search', {
@@ -101,8 +120,13 @@ const lang = 'fi';
       const data = await resp.json();
       
       if (data.error) {
-        result.innerHTML = '<div class="ai-error">Haku epäonnistui: ' + data.error + '</div>';
+        if (data.error.includes('429')) {
+          result.innerHTML = '<div class="ai-error">Liian monta hakua. Odota hetki ja yritä uudelleen.</div>';
+        } else {
+          result.innerHTML = '<div class="ai-error">Haku epäonnistui: ' + data.error + '</div>';
+        }
       } else {
+        queryCache[q] = data.answer;
         const html = renderMarkdown(data.answer);
         result.innerHTML = '<div class="ai-answer"><div class="ai-answer-label">Vastaus</div><div class="ai-answer-text">' + html + '</div></div>';
       }
