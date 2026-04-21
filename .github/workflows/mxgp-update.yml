@@ -28,6 +28,8 @@ jobs:
         run: pip install -r scripts/requirements.txt
       
       - name: Run MXGP scraper
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scripts/scrape-mxgp.py
       
       - name: Check for changes
