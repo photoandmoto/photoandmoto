@@ -671,18 +671,40 @@
     }
   },
   "highlights": {
-    "fi": [
-      "Jeffrey Herlings hallitsi MXGP Trentinoa voitettuaan ensimmäisen erän.",
-      "Tim Gajser dominoi toista erää ja taisteli vahvasti kokonaisvoitosta.",
-      "Sacha Coenen nousi MX2-luokan kärkeen upealla suorituksella.",
-      "Lucas Coenen jatkaa MXGP-sarjan johdossa tiukan taistelun jälkeen."
-    ],
-    "en": [
-      "Jeffrey Herlings dominated MXGP Trentino by winning the first moto.",
-      "Tim Gajser dominated the second moto, fighting hard for the overall win.",
-      "Sacha Coenen rose to the top of MX2 with a superb performance.",
-      "Lucas Coenen maintains the MXGP championship lead after a close battle."
-    ]
+    "fi": {
+      "mxgp": [
+        "Jeffrey Herlings dominoi MXGP kilpailua voittaen ensimmäisen erän.",
+        "Tim Gajser hallitsi toista erää ja taisteli vahvasti GP-voitosta.",
+        "Herlings vei Trentinon GP-kokonaisvoiton vahvalla suorituksella."
+      ],
+      "mx2": [
+        "Sacha Coenen dominoi MX2-luokkaa voittaen molemmat erät.",
+        "Guillem Farres taisteli kovaa ja nousi toiseksi kokonaiskilpailussa.",
+        "Mathis Valin varmisti kolmannen sijan vahvalla suorituksella."
+      ],
+      "standings": [
+        "MXGP-sarjassa Lucas Coenen johtaa, Herlings toisena ja Vialle kolmantena.",
+        "Top 3 -järjestys pysyi samana MXGP-sarjassa edellisestä osakilpailusta.",
+        "MX2-sarjassa Längenfelder jatkaa kärjessä, Coenen ja Farres seuraavat."
+      ]
+    },
+    "en": {
+      "mxgp": [
+        "Jeffrey Herlings dominated MXGP, winning the first moto.",
+        "Tim Gajser controlled the second moto, fighting hard for the GP win.",
+        "Herlings took the Trentino GP overall victory with a strong performance."
+      ],
+      "mx2": [
+        "Sacha Coenen dominated the MX2 class, winning both motos.",
+        "Guillem Farres battled hard, surging to second overall.",
+        "Mathis Valin secured third place with a strong showing."
+      ],
+      "standings": [
+        "In MXGP, Lucas Coenen leads, Herlings is second, Vialle third.",
+        "The top 3 order remained unchanged in MXGP from the previous round.",
+        "Längenfelder continues to lead MX2, with Coenen and Farres following."
+      ]
+    }
   },
   "standings": {
     "mxgp": [
