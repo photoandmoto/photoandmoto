@@ -1,4 +1,4 @@
-name: Update MXGP Results
+name: MXGP Scraper
 
 on:
   schedule:
