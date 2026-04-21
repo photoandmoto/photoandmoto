@@ -2,14 +2,16 @@
 """
 MXGP Results Scraper for Photo & Moto
 Scrapes latest race results and standings from mxgpresults.com
-Generates AI highlights using Gemini 2.5 Flash.
-Runs via GitHub Actions (Sunday + Monday) during the season.
+Generates AI highlights using Gemini.
+Runs via GitHub Actions (Sunday morning + evening) during the season.
 """
 
 import requests
 import json
 import re
 import os
+import sys
+import time
 from datetime import date
 
 BASE_URL = "https://mxgpresults.com"
@@ -21,8 +23,13 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 
-GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_MODELS = ["gemini-2.5-flash-lite", "gemini-2.5-flash"]
 GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={key}"
+
+
+def log(msg):
+    """Print with flush to ensure GitHub Actions shows output."""
+    print(msg, flush=True)
 
 
 def fetch_page(url):
@@ -32,7 +39,7 @@ def fetch_page(url):
         r.raise_for_status()
         return r.text
     except Exception as e:
-        print(f"  Error fetching {url}: {e}")
+        log(f"  Error fetching {url}: {e}")
         return None
 
 
@@ -42,9 +49,9 @@ def find_latest_race():
     html = fetch_page(url)
     if not html:
         return None
-    
+
     race_links = re.findall(rf'/mxgp/{SEASON}/([a-z0-9-]+)', html)
-    
+
     seen = set()
     slugs = []
     skip = {'standings', 'calendar', 'teams', 'entry-list'}
@@ -52,31 +59,31 @@ def find_latest_race():
         if slug not in seen and slug not in skip:
             seen.add(slug)
             slugs.append(slug)
-    
+
     if not slugs:
         return None
-    
+
     latest_slug = slugs[-1]
     latest_round = len(slugs)
-    
+
     race_url = f"{BASE_URL}/mxgp/{SEASON}/{latest_slug}"
     race_html = fetch_page(race_url)
-    
+
     race_name = f"MXGP of {latest_slug.replace('-', ' ').title()}"
     location = ""
     race_date = ""
-    
+
     if race_html:
         h1_match = re.search(r'<h1[^>]*>(.*?)</h1>', race_html, re.DOTALL)
         if h1_match:
             name_text = re.sub(r'<[^>]+>', '', h1_match.group(1)).strip()
             if name_text:
                 race_name = name_text
-        
+
         loc_match = re.search(r'taking place at\s+(.+?)\s+in\s+(.+?)\s+on', race_html, re.IGNORECASE)
         if loc_match:
             location = f"{loc_match.group(1)}, {loc_match.group(2)}"
-        
+
         date_match = re.search(r'(?:Sunday|Saturday),?\s+(\w+)\s+(\d+)\w*\s+(\d{4})', race_html, re.IGNORECASE)
         if date_match:
             months = {
@@ -88,14 +95,14 @@ def find_latest_race():
             day = date_match.group(2).zfill(2)
             year = date_match.group(3)
             race_date = f"{year}-{month}-{day}"
-    
+
     total_match = re.search(r'after\s+(\d+)\s+of\s+(\d+)\s+rounds', race_html or '', re.IGNORECASE)
     total_rounds = int(total_match.group(2)) if total_match else 19
-    
-    print(f"  Latest race: R{latest_round} - {race_name}")
-    print(f"  Location: {location or 'unknown'}")
-    print(f"  Date: {race_date or 'unknown'}")
-    
+
+    log(f"  Latest race: R{latest_round} - {race_name}")
+    log(f"  Location: {location or 'unknown'}")
+    log(f"  Date: {race_date or 'unknown'}")
+
     return {
         "round": latest_round,
         "slug": latest_slug,
@@ -110,7 +117,7 @@ def parse_table_from_html(table_html):
     """Parse a table from raw HTML, handling unclosed <td>/<th> tags."""
     results = []
     row_chunks = re.split(r'<tr[^>]*>', table_html)
-    
+
     for chunk in row_chunks:
         cells = re.split(r'<t[dh][^>]*>', chunk)
         clean = []
@@ -118,18 +125,18 @@ def parse_table_from_html(table_html):
             text = re.sub(r'<[^>]+>', '', cell).strip()
             if text:
                 clean.append(text)
-        
+
         if len(clean) < 4:
             continue
         if clean[0].lower().startswith('pos'):
             continue
-        
+
         entry = {}
         try:
             entry["pos"] = int(clean[0])
         except ValueError:
             continue
-        
+
         if len(clean) >= 6:
             entry["num"] = clean[1].replace("#", "")
             entry["rider"] = clean[2]
@@ -144,10 +151,10 @@ def parse_table_from_html(table_html):
             entry["rider"] = clean[2]
             entry["bike"] = clean[3]
             entry["nat"] = clean[4]
-        
+
         if entry.get("rider"):
             results.append(entry)
-    
+
     return results
 
 
@@ -157,24 +164,24 @@ def scrape_race_results(class_name, slug):
     html = fetch_page(url)
     if not html:
         return None
-    
+
     results = {
         "qualifying": [],
         "race1": [],
         "race2": [],
         "overall": []
     }
-    
+
     pattern = r'<h3[^>]*>(.*?)</h3>.*?(<table.*?</table>)'
     matches = re.findall(pattern, html, re.DOTALL)
-    
+
     for heading_html, table_html in matches:
         heading = re.sub(r'<[^>]+>', '', heading_html).strip().lower()
         parsed = parse_table_from_html(table_html)[:TOP_N]
-        
+
         if not parsed:
             continue
-        
+
         if "gp classification" in heading or "classification" in heading:
             results["overall"] = parsed
         elif "race 2" in heading:
@@ -183,8 +190,8 @@ def scrape_race_results(class_name, slug):
             results["race1"] = parsed
         elif "qualifying" in heading and "time" not in heading:
             results["qualifying"] = parsed
-    
-    print(f"  {class_name.upper()}: overall={len(results['overall'])}, race1={len(results['race1'])}, race2={len(results['race2'])}, quali={len(results['qualifying'])}")
+
+    log(f"  {class_name.upper()}: overall={len(results['overall'])}, race1={len(results['race1'])}, race2={len(results['race2'])}, quali={len(results['qualifying'])}")
     return results
 
 
@@ -194,71 +201,73 @@ def scrape_standings(class_name):
     html = fetch_page(url)
     if not html:
         return []
-    
+
     table_match = re.search(r'<table.*?</table>', html, re.DOTALL)
     if not table_match:
         return []
-    
+
     parsed = parse_table_from_html(table_match.group())[:TOP_N]
-    print(f"  {class_name.upper()} standings: {len(parsed)} entries")
+    log(f"  {class_name.upper()} standings: {len(parsed)} entries")
     return parsed
 
 
 def generate_highlights(race_info, mxgp_results, mx2_results, standings):
     """Use Gemini to generate race highlights in Finnish and English."""
     api_key = os.environ.get("GEMINI_API_KEY", "")
+    log(f"  API key present: {bool(api_key)} (length: {len(api_key)})")
+
     if not api_key:
-        print("  No GEMINI_API_KEY found, skipping highlights")
+        log("  No GEMINI_API_KEY found, skipping highlights")
         return {"fi": [], "en": []}
-    
-    # Build a data summary for Gemini
+
+    # Build data summary
     summary_lines = [
         f"Race: {race_info['name']} (Round {race_info['round']})",
         f"Location: {race_info['location']}",
         f"Date: {race_info['date']}",
     ]
-    
+
     if mxgp_results:
         if mxgp_results["qualifying"]:
-            summary_lines.append(f"\nMXGP Qualifying top 5:")
+            summary_lines.append("\nMXGP Qualifying top 5:")
             for r in mxgp_results["qualifying"][:5]:
                 summary_lines.append(f"  {r['pos']}. {r['rider']} ({r['bike']}, {r['nat']})")
-        
+
         if mxgp_results["race1"]:
-            summary_lines.append(f"\nMXGP Race 1 top 5:")
+            summary_lines.append("\nMXGP Race 1 top 5:")
             for r in mxgp_results["race1"][:5]:
                 summary_lines.append(f"  {r['pos']}. {r['rider']} ({r['bike']}) - {r.get('pts', '')} pts")
-        
+
         if mxgp_results["race2"]:
-            summary_lines.append(f"\nMXGP Race 2 top 5:")
+            summary_lines.append("\nMXGP Race 2 top 5:")
             for r in mxgp_results["race2"][:5]:
                 summary_lines.append(f"  {r['pos']}. {r['rider']} ({r['bike']}) - {r.get('pts', '')} pts")
-        
+
         if mxgp_results["overall"]:
-            summary_lines.append(f"\nMXGP GP Overall top 5:")
+            summary_lines.append("\nMXGP GP Overall top 5:")
             for r in mxgp_results["overall"][:5]:
                 summary_lines.append(f"  {r['pos']}. {r['rider']} ({r['bike']}) - {r.get('pts', '')} pts")
-    
+
     if mx2_results:
         if mx2_results["overall"]:
-            summary_lines.append(f"\nMX2 GP Overall top 5:")
+            summary_lines.append("\nMX2 GP Overall top 5:")
             for r in mx2_results["overall"][:5]:
                 summary_lines.append(f"  {r['pos']}. {r['rider']} ({r['bike']}) - {r.get('pts', '')} pts")
-    
+
     if standings.get("mxgp"):
         top2 = standings["mxgp"][:2]
         if len(top2) == 2:
             gap = top2[0].get("pts", 0) - top2[1].get("pts", 0)
             summary_lines.append(f"\nMXGP Championship: {top2[0]['rider']} leads with {top2[0]['pts']} pts, {gap} pts ahead of {top2[1]['rider']}")
-    
+
     if standings.get("mx2"):
         top2 = standings["mx2"][:2]
         if len(top2) == 2:
             gap = top2[0].get("pts", 0) - top2[1].get("pts", 0)
             summary_lines.append(f"\nMX2 Championship: {top2[0]['rider']} leads with {top2[0]['pts']} pts, {gap} pts ahead of {top2[1]['rider']}")
-    
+
     data_summary = "\n".join(summary_lines)
-    
+
     prompt = f"""You are a motorsport journalist for a Finnish motocross website. Based on the race results data below, generate highlights for the weekend.
 
 RULES:
@@ -275,50 +284,63 @@ RACE DATA:
 OUTPUT FORMAT (JSON only):
 {{"fi": ["bullet1", "bullet2", "bullet3", "bullet4"], "en": ["bullet1", "bullet2", "bullet3", "bullet4"]}}"""
 
-    try:
-        url = GEMINI_URL.format(model=GEMINI_MODEL, key=api_key)
-        resp = requests.post(url, json={
-            "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {"maxOutputTokens": 2000, "temperature": 0.4}
-        }, timeout=30)
-        
-        if not resp.ok:
-            print(f"  Gemini error: {resp.status_code} - {resp.text[:200]}")
-            return {"fi": [], "en": []}
-        
-        data = resp.json()
-        answer = data.get("candidates", [{}])[0].get("content", {}).get("parts", [{}])[0].get("text", "")
-        
-        # Extract JSON from response (handles ```json blocks, extra text, etc.)
-        answer = answer.strip()
-        # Find the JSON object between first { and last }
-        json_match = re.search(r'\{.*\}', answer, re.DOTALL)
-        if not json_match:
-            print(f"  No JSON found in response: {answer[:200]}")
-            return {"fi": [], "en": []}
-        
-        json_str = json_match.group()
-        highlights = json.loads(json_str)
-        
-        fi_count = len(highlights.get("fi", []))
-        en_count = len(highlights.get("en", []))
-        print(f"  Highlights generated: {fi_count} FI, {en_count} EN")
-        
-        return highlights
-    
-    except Exception as e:
-        print(f"  Highlights generation failed: {e}")
-        return {"fi": [], "en": []}
+    # Try each model with retries
+    for model in GEMINI_MODELS:
+        for attempt in range(3):
+            try:
+                log(f"  Trying {model} (attempt {attempt + 1}/3)...")
+                url = GEMINI_URL.format(model=model, key=api_key)
+                resp = requests.post(url, json={
+                    "contents": [{"parts": [{"text": prompt}]}],
+                    "generationConfig": {"maxOutputTokens": 2000, "temperature": 0.4}
+                }, timeout=30)
+
+                if resp.status_code == 503:
+                    wait = 5 * (attempt + 1)
+                    log(f"  {model} unavailable (503), waiting {wait}s...")
+                    time.sleep(wait)
+                    continue
+
+                if not resp.ok:
+                    log(f"  {model} error: {resp.status_code} - {resp.text[:200]}")
+                    break
+
+                data = resp.json()
+                answer = data.get("candidates", [{}])[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+
+                answer = answer.strip()
+                json_match = re.search(r'\{.*\}', answer, re.DOTALL)
+                if not json_match:
+                    log(f"  No JSON found in response: {answer[:200]}")
+                    return {"fi": [], "en": []}
+
+                json_str = json_match.group()
+                highlights = json.loads(json_str)
+
+                fi_count = len(highlights.get("fi", []))
+                en_count = len(highlights.get("en", []))
+                log(f"  Highlights generated ({model}): {fi_count} FI, {en_count} EN")
+
+                return highlights
+
+            except Exception as e:
+                log(f"  {model} attempt {attempt + 1} failed: {e}")
+                continue
+
+        log(f"  {model} failed all attempts, trying next model...")
+
+    log("  All models failed to generate highlights")
+    return {"fi": [], "en": []}
 
 
 def build_json():
     """Main function: find latest round, scrape, generate highlights, output JSON."""
-    
-    print(f"Finding latest completed race for {SEASON}...")
+
+    log(f"Finding latest completed race for {SEASON}...")
     latest = find_latest_race()
-    
+
     if not latest:
-        print("No completed rounds found.")
+        log("No completed rounds found.")
         data = {
             "season": SEASON,
             "lastUpdated": date.today().isoformat(),
@@ -330,24 +352,24 @@ def build_json():
         }
         write_json(data)
         return
-    
+
     slug = latest["slug"]
     total_rounds = latest["totalRounds"]
     is_season_complete = latest["round"] == total_rounds
-    
-    print(f"\nScraping race results for {slug}...")
+
+    log(f"Scraping race results for {slug}...")
     mxgp_results = scrape_race_results("mxgp", slug)
     mx2_results = scrape_race_results("mx2", slug)
-    
-    print(f"\nScraping standings...")
+
+    log(f"Scraping standings...")
     mxgp_standings = scrape_standings("mxgp")
     mx2_standings = scrape_standings("mx2")
-    
+
     standings = {"mxgp": mxgp_standings, "mx2": mx2_standings}
-    
-    print(f"\nGenerating highlights...")
+
+    log("Generating highlights...")
     highlights = generate_highlights(latest, mxgp_results, mx2_results, standings)
-    
+
     data = {
         "season": SEASON,
         "lastUpdated": date.today().isoformat(),
@@ -365,13 +387,13 @@ def build_json():
         "highlights": highlights,
         "standings": standings
     }
-    
+
     write_json(data)
-    
+
     if is_season_complete:
-        print("\nSeason complete! This was the final round.")
-    
-    print("\nDone!")
+        log("Season complete! This was the final round.")
+
+    log("Done!")
 
 
 def write_json(data):
@@ -379,7 +401,7 @@ def write_json(data):
     os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
-    print(f"Wrote {OUTPUT_PATH}")
+    log(f"Wrote {OUTPUT_PATH}")
 
 
 if __name__ == "__main__":
