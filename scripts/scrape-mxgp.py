@@ -211,14 +211,69 @@ def scrape_standings(class_name):
     return parsed
 
 
-def generate_highlights(race_info, mxgp_results, mx2_results, standings):
-    """Use Gemini to generate race highlights in Finnish and English."""
+def read_previous_standings():
+    """Read top 3 standings from existing JSON file before overwrite, for comparison."""
+    if not os.path.exists(OUTPUT_PATH):
+        return {"mxgp": [], "mx2": []}
+    try:
+        with open(OUTPUT_PATH, "r", encoding="utf-8") as f:
+            old = json.load(f)
+        prev = old.get("standings", {}) or {}
+        return {
+            "mxgp": [{"rider": r.get("rider"), "pos": r.get("pos"), "pts": r.get("pts")}
+                     for r in (prev.get("mxgp") or [])[:3]],
+            "mx2":  [{"rider": r.get("rider"), "pos": r.get("pos"), "pts": r.get("pts")}
+                     for r in (prev.get("mx2") or [])[:3]],
+        }
+    except Exception as e:
+        log(f"  Could not read previous standings: {e}")
+        return {"mxgp": [], "mx2": []}
+
+
+def format_standings_diff(class_name, current, previous):
+    """Format current top 3 + any position changes vs previous."""
+    if not current:
+        return ""
+    lines = [f"\n{class_name} Championship - current top 3:"]
+    for r in current[:3]:
+        lines.append(f"  {r.get('pos')}. {r.get('rider')} - {r.get('pts')} pts")
+
+    if previous:
+        prev_map = {p.get("rider"): p.get("pos") for p in previous if p.get("rider")}
+        moves = []
+        for r in current[:3]:
+            rider = r.get("rider")
+            new_pos = r.get("pos")
+            old_pos = prev_map.get(rider)
+            if old_pos is None:
+                moves.append(f"  {rider}: NEW to top 3 (now P{new_pos})")
+            elif old_pos != new_pos:
+                try:
+                    direction = "UP" if int(old_pos) > int(new_pos) else "DOWN"
+                    moves.append(f"  {rider}: {direction} from P{old_pos} to P{new_pos}")
+                except (ValueError, TypeError):
+                    pass
+        if moves:
+            lines.append(f"{class_name} position changes vs previous round:")
+            lines.extend(moves)
+        else:
+            lines.append(f"{class_name}: no changes in top 3 order vs previous round")
+    return "\n".join(lines)
+
+
+def generate_highlights(race_info, mxgp_results, mx2_results, standings, previous_standings):
+    """Use Gemini to generate per-tab race highlights in Finnish and English."""
     api_key = os.environ.get("GEMINI_API_KEY", "")
     log(f"  API key present: {bool(api_key)} (length: {len(api_key)})")
 
+    empty = {
+        "fi": {"mxgp": [], "mx2": [], "standings": []},
+        "en": {"mxgp": [], "mx2": [], "standings": []},
+    }
+
     if not api_key:
         log("  No GEMINI_API_KEY found, skipping highlights")
-        return {"fi": [], "en": []}
+        return empty
 
     # Build data summary
     summary_lines = [
@@ -249,40 +304,48 @@ def generate_highlights(race_info, mxgp_results, mx2_results, standings):
                 summary_lines.append(f"  {r['pos']}. {r['rider']} ({r['bike']}) - {r.get('pts', '')} pts")
 
     if mx2_results:
+        if mx2_results["qualifying"]:
+            summary_lines.append("\nMX2 Qualifying top 5:")
+            for r in mx2_results["qualifying"][:5]:
+                summary_lines.append(f"  {r['pos']}. {r['rider']} ({r['bike']}, {r['nat']})")
+
+        if mx2_results["race1"]:
+            summary_lines.append("\nMX2 Race 1 top 5:")
+            for r in mx2_results["race1"][:5]:
+                summary_lines.append(f"  {r['pos']}. {r['rider']} ({r['bike']}) - {r.get('pts', '')} pts")
+
+        if mx2_results["race2"]:
+            summary_lines.append("\nMX2 Race 2 top 5:")
+            for r in mx2_results["race2"][:5]:
+                summary_lines.append(f"  {r['pos']}. {r['rider']} ({r['bike']}) - {r.get('pts', '')} pts")
+
         if mx2_results["overall"]:
             summary_lines.append("\nMX2 GP Overall top 5:")
             for r in mx2_results["overall"][:5]:
                 summary_lines.append(f"  {r['pos']}. {r['rider']} ({r['bike']}) - {r.get('pts', '')} pts")
 
-    if standings.get("mxgp"):
-        top2 = standings["mxgp"][:2]
-        if len(top2) == 2:
-            gap = top2[0].get("pts", 0) - top2[1].get("pts", 0)
-            summary_lines.append(f"\nMXGP Championship: {top2[0]['rider']} leads with {top2[0]['pts']} pts, {gap} pts ahead of {top2[1]['rider']}")
-
-    if standings.get("mx2"):
-        top2 = standings["mx2"][:2]
-        if len(top2) == 2:
-            gap = top2[0].get("pts", 0) - top2[1].get("pts", 0)
-            summary_lines.append(f"\nMX2 Championship: {top2[0]['rider']} leads with {top2[0]['pts']} pts, {gap} pts ahead of {top2[1]['rider']}")
+    summary_lines.append(format_standings_diff("MXGP", standings.get("mxgp", []), previous_standings.get("mxgp", [])))
+    summary_lines.append(format_standings_diff("MX2",  standings.get("mx2",  []), previous_standings.get("mx2",  [])))
 
     data_summary = "\n".join(summary_lines)
 
-    prompt = f"""You are a motorsport journalist for a Finnish motocross website. Based on the race results data below, generate highlights for the weekend.
+    prompt = f"""You are a motorsport journalist for a Finnish motocross website. Based on the race results data below, generate three SEPARATE sets of highlights — one per tab (MXGP, MX2, championship standings).
 
 RULES:
-- Generate exactly 4 bullet points in FINNISH and 4 in ENGLISH
-- Each bullet should be 1 short sentence, max 15 words
-- Focus on: GP winners, dominant performances, championship implications, surprises
-- Use exciting motorsport language (hallitsi, dominoi, taisteli, nousi)
+- For "mxgp": 3 bullets about the MXGP class race weekend (qualifying, race 1, race 2, GP overall winner, dominant performances)
+- For "mx2": 3 bullets about the MX2 class race weekend
+- For "standings": 3 bullets focused on championship standings — top 3 leaders AND any position changes vs previous round (use "nousi", "putosi", "siirtyi", "moved up", "dropped to" when reporting changes; if "no changes in top 3 order" was reported, mention that the order held firm)
+- Each bullet: 1 short sentence, max 15 words
+- Provide BOTH Finnish (fi) and English (en) versions
+- Use exciting motorsport language (hallitsi, dominoi, taisteli, nousi / dominated, charged, battled, surged)
 - Only state facts from the data — do NOT invent crashes, injuries, or events not in the data
-- Output as JSON only, no markdown, no backticks
+- Output ONLY valid JSON, no markdown, no backticks, no preamble
 
 RACE DATA:
 {data_summary}
 
 OUTPUT FORMAT (JSON only):
-{{"fi": ["bullet1", "bullet2", "bullet3", "bullet4"], "en": ["bullet1", "bullet2", "bullet3", "bullet4"]}}"""
+{{"fi":{{"mxgp":["b1","b2","b3"],"mx2":["b1","b2","b3"],"standings":["b1","b2","b3"]}},"en":{{"mxgp":["b1","b2","b3"],"mx2":["b1","b2","b3"],"standings":["b1","b2","b3"]}}}}"""
 
     # Try each model with retries
     for model in GEMINI_MODELS:
@@ -312,14 +375,25 @@ OUTPUT FORMAT (JSON only):
                 json_match = re.search(r'\{.*\}', answer, re.DOTALL)
                 if not json_match:
                     log(f"  No JSON found in response: {answer[:200]}")
-                    return {"fi": [], "en": []}
+                    return empty
 
                 json_str = json_match.group()
                 highlights = json.loads(json_str)
 
-                fi_count = len(highlights.get("fi", []))
-                en_count = len(highlights.get("en", []))
-                log(f"  Highlights generated ({model}): {fi_count} FI, {en_count} EN")
+                # Validate new structured shape; coerce missing keys
+                for lang in ("fi", "en"):
+                    if not isinstance(highlights.get(lang), dict):
+                        highlights[lang] = {}
+                    for tab in ("mxgp", "mx2", "standings"):
+                        v = highlights[lang].get(tab)
+                        if not isinstance(v, list):
+                            highlights[lang][tab] = []
+
+                fi_total = sum(len(highlights["fi"][t]) for t in ("mxgp","mx2","standings"))
+                en_total = sum(len(highlights["en"][t]) for t in ("mxgp","mx2","standings"))
+                log(f"  Highlights generated ({model}): "
+                    f"FI mxgp={len(highlights['fi']['mxgp'])} mx2={len(highlights['fi']['mx2'])} standings={len(highlights['fi']['standings'])} (total {fi_total}), "
+                    f"EN mxgp={len(highlights['en']['mxgp'])} mx2={len(highlights['en']['mx2'])} standings={len(highlights['en']['standings'])} (total {en_total})")
 
                 return highlights
 
@@ -330,7 +404,7 @@ OUTPUT FORMAT (JSON only):
         log(f"  {model} failed all attempts, trying next model...")
 
     log("  All models failed to generate highlights")
-    return {"fi": [], "en": []}
+    return empty
 
 
 def build_json():
@@ -347,7 +421,10 @@ def build_json():
             "seasonComplete": False,
             "totalRounds": 19,
             "latestRace": None,
-            "highlights": {"fi": [], "en": []},
+            "highlights": {
+                "fi": {"mxgp": [], "mx2": [], "standings": []},
+                "en": {"mxgp": [], "mx2": [], "standings": []},
+            },
             "standings": {"mxgp": [], "mx2": []}
         }
         write_json(data)
@@ -367,8 +444,12 @@ def build_json():
 
     standings = {"mxgp": mxgp_standings, "mx2": mx2_standings}
 
+    # Capture previous top 3 BEFORE we overwrite the JSON, so we can detect order changes
+    previous_standings = read_previous_standings()
+    log(f"  Previous top 3 captured: MXGP={len(previous_standings['mxgp'])} riders, MX2={len(previous_standings['mx2'])} riders")
+
     log("Generating highlights...")
-    highlights = generate_highlights(latest, mxgp_results, mx2_results, standings)
+    highlights = generate_highlights(latest, mxgp_results, mx2_results, standings, previous_standings)
 
     data = {
         "season": SEASON,

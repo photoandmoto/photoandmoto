@@ -7,7 +7,22 @@ const raw = fs.readFileSync('public/data/mxgp-results.json', 'utf-8');
 const data = JSON.parse(raw);
 const race = data.latestRace;
 const standings = data.standings;
-const highlights = data.highlights || { fi: [], en: [] };
+const highlights = data.highlights || {};
+
+// Backward-compat: if old flat shape ({fi:[], en:[]}) is still on disk, treat as empty per-tab
+const rawHL = data.highlights || {};
+const hlEn = (rawHL.en && !Array.isArray(rawHL.en)) ? rawHL.en : { mxgp: [], mx2: [], standings: [] };
+const highlightsByTab: { mxgp: string[]; mx2: string[]; standings: string[] } = {
+  mxgp: hlEn.mxgp || [],
+  mx2: hlEn.mx2 || [],
+  standings: hlEn.standings || [],
+};
+const tabTitles: Record<string, string> = {
+  mxgp: 'MXGP – Weekend Highlights',
+  mx2: 'MX2 – Weekend Highlights',
+  standings: 'Championship Standings',
+};
+const hasAnyHighlights = highlightsByTab.mxgp.length + highlightsByTab.mx2.length + highlightsByTab.standings.length > 0;
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
@@ -42,17 +57,23 @@ function formatDate(dateStr: string) {
             )}
           </div>
 
-          {highlights.en && highlights.en.length > 0 && (
-            <div class="highlights-card">
+          {hasAnyHighlights && (
+            <div class="highlights-card" id="highlightsCard">
               <div class="highlights-card__header">
                 <span class="highlights-card__icon">🏁</span>
-                <h3 class="highlights-card__title">Weekend Highlights</h3>
+                <h3 class="highlights-card__title" id="highlightsTitle">{tabTitles.mxgp}</h3>
               </div>
-              <ul class="highlights-card__list">
-                {highlights.en.map((h: string) => (
-                  <li>{h}</li>
-                ))}
-              </ul>
+              {(['mxgp','mx2','standings'] as const).map((tab) => (
+                <ul
+                  class={`highlights-card__list highlights-list ${tab === 'mxgp' ? 'highlights-list--active' : ''}`}
+                  data-highlights={tab}
+                  data-title={tabTitles[tab]}
+                >
+                  {(highlightsByTab[tab] || []).map((h: string) => (
+                    <li>{h}</li>
+                  ))}
+                </ul>
+              ))}
             </div>
           )}
 
@@ -234,7 +255,7 @@ function formatDate(dateStr: string) {
             </div>
           </div>
 
-          <p class="mxgp-updated">Updated: {data.lastUpdated} · Auto-updates every Monday</p>
+          <p class="mxgp-updated">Updated: {data.lastUpdated} · Auto-updates every Sunday</p>
           <p class="mxgp-source">Source: <a href="https://mxgpresults.com" target="_blank" rel="noopener">mxgpresults.com</a></p>
         </>
       ) : (
@@ -249,6 +270,8 @@ function formatDate(dateStr: string) {
 <script>
   const tabs = document.querySelectorAll('.mxgp-tab');
   const panels = document.querySelectorAll('.mxgp-panel');
+  const hlLists = document.querySelectorAll('.highlights-list');
+  const hlTitle = document.getElementById('highlightsTitle');
 
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
@@ -257,6 +280,14 @@ function formatDate(dateStr: string) {
       panels.forEach(p => p.classList.remove('mxgp-panel--active'));
       tab.classList.add('mxgp-tab--active');
       document.querySelector(`[data-panel="${target}"]`)?.classList.add('mxgp-panel--active');
+
+      hlLists.forEach(l => l.classList.remove('highlights-list--active'));
+      const activeList = document.querySelector(`[data-highlights="${target}"]`);
+      activeList?.classList.add('highlights-list--active');
+      if (hlTitle && activeList) {
+        const t = (activeList as HTMLElement).dataset.title;
+        if (t) hlTitle.textContent = t;
+      }
     });
   });
 </script>
@@ -307,6 +338,8 @@ function formatDate(dateStr: string) {
   .highlights-card__icon { font-size: 1.3rem; }
   .highlights-card__title { font-family: var(--font-headline); font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--brand-primary); margin: 0; }
   .highlights-card__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+  .highlights-list { display: none; }
+  .highlights-list.highlights-list--active { display: flex; }
   .highlights-card__list li { color: rgba(255,255,255,0.9); font-size: 0.92rem; line-height: 1.5; padding-left: 20px; position: relative; }
   .highlights-card__list li::before { content: '▸'; position: absolute; left: 0; color: var(--brand-primary); font-weight: bold; }
   .mxgp-offseason { text-align: center; padding: var(--space-8) var(--space-4); color: var(--text-secondary); font-size: 1.1rem; }
