@@ -1,0 +1,139 @@
+{
+  "season": 2026,
+  "lastUpdated": "2026-04-21",
+  "seasonComplete": false,
+  "totalRounds": 20,
+  "latestRace": {
+    "round": 5,
+    "name": "MXGP of Trentino",
+    "slug": "trentino",
+    "location": "Pietramurata, Italy",
+    "date": "2026-04-19",
+    "mxgp": {
+      "qualifying": [
+        {"pos": 1, "rider": "Jeffrey Herlings", "bike": "Honda", "nat": "NED"},
+        {"pos": 2, "rider": "Romain Febvre", "bike": "Kawasaki", "nat": "FRA"},
+        {"pos": 3, "rider": "Tim Gajser", "bike": "Yamaha", "nat": "SLO"},
+        {"pos": 4, "rider": "Lucas Coenen", "bike": "KTM", "nat": "BEL"},
+        {"pos": 5, "rider": "Tom Vialle", "bike": "Honda", "nat": "FRA"},
+        {"pos": 6, "rider": "Maxime Renaux", "bike": "Yamaha", "nat": "FRA"},
+        {"pos": 7, "rider": "Kay de Wolf", "bike": "Husqvarna", "nat": "NED"},
+        {"pos": 8, "rider": "Andrea Adamo", "bike": "KTM", "nat": "ITA"},
+        {"pos": 9, "rider": "Ruben Fernandez", "bike": "Honda", "nat": "ESP"},
+        {"pos": 10, "rider": "Calvin Vlaanderen", "bike": "Ducati", "nat": "NED"}
+      ],
+      "race1": [
+        {"pos": 1, "rider": "Jeffrey Herlings", "bike": "Honda", "nat": "NED", "pts": 25},
+        {"pos": 2, "rider": "Tim Gajser", "bike": "Yamaha", "nat": "SLO", "pts": 22},
+        {"pos": 3, "rider": "Tom Vialle", "bike": "Honda", "nat": "FRA", "pts": 20},
+        {"pos": 4, "rider": "Lucas Coenen", "bike": "KTM", "nat": "BEL", "pts": 18},
+        {"pos": 5, "rider": "Romain Febvre", "bike": "Kawasaki", "nat": "FRA", "pts": 16},
+        {"pos": 6, "rider": "Maxime Renaux", "bike": "Yamaha", "nat": "FRA", "pts": 15},
+        {"pos": 7, "rider": "Kay de Wolf", "bike": "Husqvarna", "nat": "NED", "pts": 14},
+        {"pos": 8, "rider": "Andrea Adamo", "bike": "KTM", "nat": "ITA", "pts": 13},
+        {"pos": 9, "rider": "Ruben Fernandez", "bike": "Honda", "nat": "ESP", "pts": 12},
+        {"pos": 10, "rider": "Calvin Vlaanderen", "bike": "Ducati", "nat": "NED", "pts": 11}
+      ],
+      "race2": [
+        {"pos": 1, "rider": "Jeffrey Herlings", "bike": "Honda", "nat": "NED", "pts": 25},
+        {"pos": 2, "rider": "Tim Gajser", "bike": "Yamaha", "nat": "SLO", "pts": 22},
+        {"pos": 3, "rider": "Lucas Coenen", "bike": "KTM", "nat": "BEL", "pts": 20},
+        {"pos": 4, "rider": "Tom Vialle", "bike": "Honda", "nat": "FRA", "pts": 18},
+        {"pos": 5, "rider": "Maxime Renaux", "bike": "Yamaha", "nat": "FRA", "pts": 16},
+        {"pos": 6, "rider": "Romain Febvre", "bike": "Kawasaki", "nat": "FRA", "pts": 15},
+        {"pos": 7, "rider": "Ruben Fernandez", "bike": "Honda", "nat": "ESP", "pts": 14},
+        {"pos": 8, "rider": "Kay de Wolf", "bike": "Husqvarna", "nat": "NED", "pts": 13},
+        {"pos": 9, "rider": "Andrea Adamo", "bike": "KTM", "nat": "ITA", "pts": 12},
+        {"pos": 10, "rider": "Alberto Forato", "bike": "Fantic", "nat": "ITA", "pts": 11}
+      ],
+      "overall": [
+        {"pos": 1, "rider": "Jeffrey Herlings", "bike": "Honda", "nat": "NED", "pts": 47},
+        {"pos": 2, "rider": "Tim Gajser", "bike": "Yamaha", "nat": "SLO", "pts": 44},
+        {"pos": 3, "rider": "Tom Vialle", "bike": "Honda", "nat": "FRA", "pts": 38},
+        {"pos": 4, "rider": "Lucas Coenen", "bike": "KTM", "nat": "BEL", "pts": 38},
+        {"pos": 5, "rider": "Maxime Renaux", "bike": "Yamaha", "nat": "FRA", "pts": 31},
+        {"pos": 6, "rider": "Romain Febvre", "bike": "Kawasaki", "nat": "FRA", "pts": 31},
+        {"pos": 7, "rider": "Kay de Wolf", "bike": "Husqvarna", "nat": "NED", "pts": 27},
+        {"pos": 8, "rider": "Ruben Fernandez", "bike": "Honda", "nat": "ESP", "pts": 26},
+        {"pos": 9, "rider": "Andrea Adamo", "bike": "KTM", "nat": "ITA", "pts": 25},
+        {"pos": 10, "rider": "Calvin Vlaanderen", "bike": "Ducati", "nat": "NED", "pts": 18}
+      ]
+    },
+    "mx2": {
+      "qualifying": [
+        {"pos": 1, "rider": "Sacha Coenen", "bike": "KTM", "nat": "BEL"},
+        {"pos": 2, "rider": "Simon Längenfelder", "bike": "GASGAS", "nat": "GER"},
+        {"pos": 3, "rider": "Liam Everts", "bike": "KTM", "nat": "BEL"},
+        {"pos": 4, "rider": "Guillem Farres", "bike": "Honda", "nat": "ESP"},
+        {"pos": 5, "rider": "Mikkel Haarup", "bike": "Triumph", "nat": "DEN"},
+        {"pos": 6, "rider": "Rick Elzinga", "bike": "Yamaha", "nat": "NED"},
+        {"pos": 7, "rider": "Ferruccio Zanchi", "bike": "Honda", "nat": "ITA"},
+        {"pos": 8, "rider": "Karlis Reisulis", "bike": "Yamaha", "nat": "LAT"},
+        {"pos": 9, "rider": "Camden McLellan", "bike": "Husqvarna", "nat": "RSA"},
+        {"pos": 10, "rider": "Quentin Prugnieres", "bike": "Kawasaki", "nat": "FRA"}
+      ],
+      "race1": [
+        {"pos": 1, "rider": "Simon Längenfelder", "bike": "GASGAS", "nat": "GER", "pts": 25},
+        {"pos": 2, "rider": "Sacha Coenen", "bike": "KTM", "nat": "BEL", "pts": 22},
+        {"pos": 3, "rider": "Liam Everts", "bike": "KTM", "nat": "BEL", "pts": 20},
+        {"pos": 4, "rider": "Guillem Farres", "bike": "Honda", "nat": "ESP", "pts": 18},
+        {"pos": 5, "rider": "Mikkel Haarup", "bike": "Triumph", "nat": "DEN", "pts": 16},
+        {"pos": 6, "rider": "Rick Elzinga", "bike": "Yamaha", "nat": "NED", "pts": 15},
+        {"pos": 7, "rider": "Ferruccio Zanchi", "bike": "Honda", "nat": "ITA", "pts": 14},
+        {"pos": 8, "rider": "Karlis Reisulis", "bike": "Yamaha", "nat": "LAT", "pts": 13},
+        {"pos": 9, "rider": "Camden McLellan", "bike": "Husqvarna", "nat": "RSA", "pts": 12},
+        {"pos": 10, "rider": "Quentin Prugnieres", "bike": "Kawasaki", "nat": "FRA", "pts": 11}
+      ],
+      "race2": [
+        {"pos": 1, "rider": "Sacha Coenen", "bike": "KTM", "nat": "BEL", "pts": 25},
+        {"pos": 2, "rider": "Simon Längenfelder", "bike": "GASGAS", "nat": "GER", "pts": 22},
+        {"pos": 3, "rider": "Guillem Farres", "bike": "Honda", "nat": "ESP", "pts": 20},
+        {"pos": 4, "rider": "Liam Everts", "bike": "KTM", "nat": "BEL", "pts": 18},
+        {"pos": 5, "rider": "Mikkel Haarup", "bike": "Triumph", "nat": "DEN", "pts": 16},
+        {"pos": 6, "rider": "Rick Elzinga", "bike": "Yamaha", "nat": "NED", "pts": 15},
+        {"pos": 7, "rider": "Karlis Reisulis", "bike": "Yamaha", "nat": "LAT", "pts": 14},
+        {"pos": 8, "rider": "Camden McLellan", "bike": "Husqvarna", "nat": "RSA", "pts": 13},
+        {"pos": 9, "rider": "Ferruccio Zanchi", "bike": "Honda", "nat": "ITA", "pts": 12},
+        {"pos": 10, "rider": "Quentin Prugnieres", "bike": "Kawasaki", "nat": "FRA", "pts": 11}
+      ],
+      "overall": [
+        {"pos": 1, "rider": "Sacha Coenen", "bike": "KTM", "nat": "BEL", "pts": 47},
+        {"pos": 2, "rider": "Simon Längenfelder", "bike": "GASGAS", "nat": "GER", "pts": 47},
+        {"pos": 3, "rider": "Liam Everts", "bike": "KTM", "nat": "BEL", "pts": 38},
+        {"pos": 4, "rider": "Guillem Farres", "bike": "Honda", "nat": "ESP", "pts": 38},
+        {"pos": 5, "rider": "Mikkel Haarup", "bike": "Triumph", "nat": "DEN", "pts": 32},
+        {"pos": 6, "rider": "Rick Elzinga", "bike": "Yamaha", "nat": "NED", "pts": 30},
+        {"pos": 7, "rider": "Karlis Reisulis", "bike": "Yamaha", "nat": "LAT", "pts": 27},
+        {"pos": 8, "rider": "Ferruccio Zanchi", "bike": "Honda", "nat": "ITA", "pts": 26},
+        {"pos": 9, "rider": "Camden McLellan", "bike": "Husqvarna", "nat": "RSA", "pts": 25},
+        {"pos": 10, "rider": "Quentin Prugnieres", "bike": "Kawasaki", "nat": "FRA", "pts": 22}
+      ]
+    }
+  },
+  "standings": {
+    "mxgp": [
+      {"pos": 1, "rider": "Lucas Coenen", "bike": "KTM", "nat": "BEL", "pts": 231},
+      {"pos": 2, "rider": "Jeffrey Herlings", "bike": "Honda", "nat": "NED", "pts": 227},
+      {"pos": 3, "rider": "Tom Vialle", "bike": "Honda", "nat": "FRA", "pts": 206},
+      {"pos": 4, "rider": "Tim Gajser", "bike": "Yamaha", "nat": "SLO", "pts": 198},
+      {"pos": 5, "rider": "Romain Febvre", "bike": "Kawasaki", "nat": "FRA", "pts": 191},
+      {"pos": 6, "rider": "Maxime Renaux", "bike": "Yamaha", "nat": "FRA", "pts": 178},
+      {"pos": 7, "rider": "Ruben Fernandez", "bike": "Honda", "nat": "ESP", "pts": 146},
+      {"pos": 8, "rider": "Kay de Wolf", "bike": "Husqvarna", "nat": "NED", "pts": 144},
+      {"pos": 9, "rider": "Andrea Adamo", "bike": "KTM", "nat": "ITA", "pts": 138},
+      {"pos": 10, "rider": "Calvin Vlaanderen", "bike": "Ducati", "nat": "NED", "pts": 110}
+    ],
+    "mx2": [
+      {"pos": 1, "rider": "Simon Längenfelder", "bike": "GASGAS", "nat": "GER", "pts": 220},
+      {"pos": 2, "rider": "Sacha Coenen", "bike": "KTM", "nat": "BEL", "pts": 210},
+      {"pos": 3, "rider": "Liam Everts", "bike": "KTM", "nat": "BEL", "pts": 195},
+      {"pos": 4, "rider": "Guillem Farres", "bike": "Honda", "nat": "ESP", "pts": 178},
+      {"pos": 5, "rider": "Mikkel Haarup", "bike": "Triumph", "nat": "DEN", "pts": 165},
+      {"pos": 6, "rider": "Rick Elzinga", "bike": "Yamaha", "nat": "NED", "pts": 148},
+      {"pos": 7, "rider": "Ferruccio Zanchi", "bike": "Honda", "nat": "ITA", "pts": 130},
+      {"pos": 8, "rider": "Karlis Reisulis", "bike": "Yamaha", "nat": "LAT", "pts": 118},
+      {"pos": 9, "rider": "Camden McLellan", "bike": "Husqvarna", "nat": "RSA", "pts": 105},
+      {"pos": 10, "rider": "Quentin Prugnieres", "bike": "Kawasaki", "nat": "FRA", "pts": 92}
+    ]
+  }
+}
