@@ -2,10 +2,10 @@ name: MXGP Scraper
 
 on:
   schedule:
-    # Sunday 06:00 UTC (catches Saturday qualifying)
-    - cron: '0 6 * * 0'
-    # Sunday 20:00 UTC (catches Sunday races, all timezones)
+    # Sunday 20:00 UTC — primary run, after Sunday races (all timezones)
     - cron: '0 20 * * 0'
+    # Monday 06:00 UTC — safety net in case Sunday run failed
+    - cron: '0 6 * * 1'
   workflow_dispatch: # Allow manual trigger
 
 jobs:
