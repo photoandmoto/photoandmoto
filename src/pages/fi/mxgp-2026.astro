@@ -9,6 +9,7 @@ const raw = fs.readFileSync('public/data/mxgp-results.json', 'utf-8');
 const data = JSON.parse(raw);
 const race = data.latestRace;
 const standings = data.standings;
+const nextRace = data.nextRace;
 
 // Backward-compat: if old flat shape ({fi:[], en:[]}) is still on disk, treat as empty per-tab
 const rawHL = data.highlights || {};
@@ -44,6 +45,14 @@ function formatDate(dateStr: string) {
   const months = ['tammikuuta','helmikuuta','maaliskuuta','huhtikuuta','toukokuuta','kesäkuuta','heinäkuuta','elokuuta','syyskuuta','lokakuuta','marraskuuta','joulukuuta'];
   return `${d.getDate()}. ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
+
+function daysUntil(dateStr: string): number | null {
+  if (!dateStr) return null;
+  const target = new Date(dateStr + 'T00:00:00').getTime();
+  const today = new Date(); today.setHours(0,0,0,0);
+  const diff = Math.round((target - today.getTime()) / (1000 * 60 * 60 * 24));
+  return diff >= 0 ? diff : null;
+}
 ---
 
 <BaseLayout 
@@ -57,28 +66,49 @@ function formatDate(dateStr: string) {
 
       {race ? (
         <>
-          <!-- Hero Race Banner: photo background + race info overlay -->
-          <div class="race-hero">
-            <Image
-              src={heroImage}
-              alt="MXGP race photo"
-              class="race-hero__img"
-              widths={[768, 1280, 1920]}
-              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1920px"
-              loading="eager"
-            />
-            <div class="race-hero__overlay"></div>
-            <div class="race-hero__content">
-              <div class="race-hero__round">Osakilpailu {race.round}/{data.totalRounds}</div>
-              <h1 class="race-hero__title">{race.name}</h1>
-              <div class="race-hero__meta">
-                <span>📍 {race.location}</span>
-                <span>📅 {formatDate(race.date)}</span>
+          <!-- Race overview: hero (current race) + next-race card side-by-side on desktop -->
+          <div class={`race-overview ${nextRace ? 'race-overview--has-next' : ''}`}>
+            <!-- Hero Race Banner: photo background + race info overlay -->
+            <div class="race-hero">
+              <Image
+                src={heroImage}
+                alt="MXGP race photo"
+                class="race-hero__img"
+                widths={[768, 1280, 1920]}
+                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1920px"
+                loading="eager"
+              />
+              <div class="race-hero__overlay"></div>
+              <div class="race-hero__content">
+                <div class="race-hero__round">Osakilpailu {race.round}/{data.totalRounds}</div>
+                <h1 class="race-hero__title">{race.name}</h1>
+                <div class="race-hero__meta">
+                  <span>📍 {race.location}</span>
+                  <span>📅 {formatDate(race.date)}</span>
+                </div>
+                {data.seasonComplete && (
+                  <div class="race-hero__final">🏆 Kausi päättynyt — lopulliset tulokset</div>
+                )}
               </div>
-              {data.seasonComplete && (
-                <div class="race-hero__final">🏆 Kausi päättynyt — lopulliset tulokset</div>
-              )}
             </div>
+
+            {nextRace && (
+              <div class="next-race">
+                <div class="next-race__eyebrow">Seuraava osakilpailu</div>
+                <div class="next-race__round">Osakilpailu {nextRace.round}/{data.totalRounds}</div>
+                <h2 class="next-race__title">{nextRace.name}</h2>
+                <div class="next-race__meta">
+                  <div>📍 {nextRace.location}</div>
+                  {nextRace.date && <div>📅 {formatDate(nextRace.date)}</div>}
+                </div>
+                {daysUntil(nextRace.date) !== null && (
+                  <div class="next-race__countdown">
+                    <span class="next-race__countdown-num">{daysUntil(nextRace.date)}</span>
+                    <span class="next-race__countdown-label">{daysUntil(nextRace.date) === 1 ? 'päivä jäljellä' : 'päivää jäljellä'}</span>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           <!-- Highlights Cards (per-tab; MXGP & MX2 each get a small Saturday card + main Weekend card) -->
@@ -377,12 +407,88 @@ function formatDate(dateStr: string) {
     margin: 0 0 var(--space-2);
   }
 
+  /* Race overview grid: hero + next-race side-by-side on desktop */
+  .race-overview {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+  }
+  .race-overview--has-next {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+
+  /* Next-race card */
+  .next-race {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    color: white;
+    border-left: 4px solid rgba(255, 165, 0, 0.55);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 360px;
+  }
+  .next-race__eyebrow {
+    font-family: var(--font-headline);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255, 165, 0, 0.85);
+    margin-bottom: var(--space-2);
+  }
+  .next-race__round {
+    font-family: var(--font-headline);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: var(--space-1);
+  }
+  .next-race__title {
+    font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+    font-weight: 900;
+    margin: 0 0 var(--space-3);
+    color: white;
+    line-height: 1.15;
+  }
+  .next-race__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.92rem;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: var(--space-3);
+  }
+  .next-race__countdown {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: var(--space-3);
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .next-race__countdown-num {
+    font-family: var(--font-headline);
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: var(--brand-primary);
+    line-height: 1;
+  }
+  .next-race__countdown-label {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.7);
+    text-transform: lowercase;
+  }
+
   /* Race Hero (photo background + race info overlay) */
   .race-hero {
     position: relative;
     border-radius: var(--radius-lg);
     overflow: hidden;
-    margin-bottom: var(--space-5);
     height: 360px;
     background: #1a1a1a;
     border-left: 5px solid var(--brand-primary);
@@ -642,8 +748,8 @@ function formatDate(dateStr: string) {
     gap: 8px;
   }
   /* Stack of highlight groups: only the active group's cards are visible */
-  .highlights-stack { display: block; margin-bottom: var(--space-4); }
-  .highlights-group { display: none; flex-direction: column; gap: var(--space-3); }
+  .highlights-stack { display: block; margin-bottom: var(--space-3); }
+  .highlights-group { display: none; flex-direction: column; gap: 10px; }
   .highlights-group.highlights-group--active { display: flex; }
   /* Saturday quali card: smaller and dimmer than the main weekend card */
   .highlights-card--saturday {
@@ -685,9 +791,11 @@ function formatDate(dateStr: string) {
   @media (max-width: 768px) {
     .race-grid { grid-template-columns: 1fr; }
     .standings-grid { grid-template-columns: 1fr; }
+    .race-overview--has-next { grid-template-columns: 1fr; }
     .race-hero { height: 280px; }
     .race-hero__content { padding: var(--space-4); }
     .race-hero__meta { flex-direction: column; gap: var(--space-1); }
+    .next-race { min-height: 0; padding: var(--space-4); }
     .result-table { font-size: 0.82rem; }
     .result-table th, .result-table td { padding: 8px; }
   }

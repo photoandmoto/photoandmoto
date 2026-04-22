@@ -9,6 +9,7 @@ const raw = fs.readFileSync('public/data/mxgp-results.json', 'utf-8');
 const data = JSON.parse(raw);
 const race = data.latestRace;
 const standings = data.standings;
+const nextRace = data.nextRace;
 const highlights = data.highlights || {};
 
 // Backward-compat: if old flat shape ({fi:[], en:[]}) is still on disk, treat as empty per-tab
@@ -45,6 +46,14 @@ function formatDate(dateStr: string) {
   const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
 }
+
+function daysUntil(dateStr: string): number | null {
+  if (!dateStr) return null;
+  const target = new Date(dateStr + 'T00:00:00').getTime();
+  const today = new Date(); today.setHours(0,0,0,0);
+  const diff = Math.round((target - today.getTime()) / (1000 * 60 * 60 * 24));
+  return diff >= 0 ? diff : null;
+}
 ---
 
 <BaseLayout 
@@ -58,28 +67,49 @@ function formatDate(dateStr: string) {
 
       {race ? (
         <>
-          <!-- Hero Race Banner: photo background + race info overlay -->
-          <div class="race-hero">
-            <Image
-              src={heroImage}
-              alt="MXGP race photo"
-              class="race-hero__img"
-              widths={[768, 1280, 1920]}
-              sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1920px"
-              loading="eager"
-            />
-            <div class="race-hero__overlay"></div>
-            <div class="race-hero__content">
-              <div class="race-hero__round">Round {race.round}/{data.totalRounds}</div>
-              <h1 class="race-hero__title">{race.name}</h1>
-              <div class="race-hero__meta">
-                <span>📍 {race.location}</span>
-                <span>📅 {formatDate(race.date)}</span>
+          <!-- Race overview: hero (current race) + next-race card side-by-side on desktop -->
+          <div class={`race-overview ${nextRace ? 'race-overview--has-next' : ''}`}>
+            <!-- Hero Race Banner: photo background + race info overlay -->
+            <div class="race-hero">
+              <Image
+                src={heroImage}
+                alt="MXGP race photo"
+                class="race-hero__img"
+                widths={[768, 1280, 1920]}
+                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1920px"
+                loading="eager"
+              />
+              <div class="race-hero__overlay"></div>
+              <div class="race-hero__content">
+                <div class="race-hero__round">Round {race.round}/{data.totalRounds}</div>
+                <h1 class="race-hero__title">{race.name}</h1>
+                <div class="race-hero__meta">
+                  <span>📍 {race.location}</span>
+                  <span>📅 {formatDate(race.date)}</span>
+                </div>
+                {data.seasonComplete && (
+                  <div class="race-hero__final">🏆 Season complete — final results</div>
+                )}
               </div>
-              {data.seasonComplete && (
-                <div class="race-hero__final">🏆 Season complete — final results</div>
-              )}
             </div>
+
+            {nextRace && (
+              <div class="next-race">
+                <div class="next-race__eyebrow">Next round</div>
+                <div class="next-race__round">Round {nextRace.round}/{data.totalRounds}</div>
+                <h2 class="next-race__title">{nextRace.name}</h2>
+                <div class="next-race__meta">
+                  <div>📍 {nextRace.location}</div>
+                  {nextRace.date && <div>📅 {formatDate(nextRace.date)}</div>}
+                </div>
+                {daysUntil(nextRace.date) !== null && (
+                  <div class="next-race__countdown">
+                    <span class="next-race__countdown-num">{daysUntil(nextRace.date)}</span>
+                    <span class="next-race__countdown-label">{daysUntil(nextRace.date) === 1 ? 'day to go' : 'days to go'}</span>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {hasAnyHighlights && (
@@ -365,7 +395,17 @@ function formatDate(dateStr: string) {
 <style is:global>
   .mxgp-page { padding: var(--space-6) 0 var(--space-8); }
   .page-eyebrow { font-family: var(--font-headline); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-secondary); margin: 0 0 var(--space-2); }
-  .race-hero { position: relative; border-radius: var(--radius-lg); overflow: hidden; margin-bottom: var(--space-5); height: 360px; background: #1a1a1a; border-left: 5px solid var(--brand-primary); }
+  .race-overview { display: grid; grid-template-columns: 1fr; gap: var(--space-4); margin-bottom: var(--space-5); }
+  .race-overview--has-next { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); }
+  .next-race { background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); border-radius: var(--radius-lg); padding: var(--space-5); color: white; border-left: 4px solid rgba(255, 165, 0, 0.55); display: flex; flex-direction: column; justify-content: space-between; min-height: 360px; }
+  .next-race__eyebrow { font-family: var(--font-headline); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255, 165, 0, 0.85); margin-bottom: var(--space-2); }
+  .next-race__round { font-family: var(--font-headline); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.6); margin-bottom: var(--space-1); }
+  .next-race__title { font-size: clamp(1.3rem, 2.4vw, 1.8rem); font-weight: 900; margin: 0 0 var(--space-3); color: white; line-height: 1.15; }
+  .next-race__meta { display: flex; flex-direction: column; gap: 4px; font-size: 0.92rem; color: rgba(255,255,255,0.85); margin-bottom: var(--space-3); }
+  .next-race__countdown { display: flex; align-items: baseline; gap: 10px; margin-top: auto; padding-top: var(--space-3); border-top: 1px solid rgba(255,255,255,0.1); }
+  .next-race__countdown-num { font-family: var(--font-headline); font-size: 2.4rem; font-weight: 900; color: var(--brand-primary); line-height: 1; }
+  .next-race__countdown-label { font-size: 0.85rem; color: rgba(255,255,255,0.7); text-transform: lowercase; }
+  .race-hero { position: relative; border-radius: var(--radius-lg); overflow: hidden; height: 360px; background: #1a1a1a; border-left: 5px solid var(--brand-primary); }
   .race-hero__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
   .race-hero__overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0.25) 100%), linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 60%); }
   .race-hero__content { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: var(--space-5); color: white; }
@@ -412,8 +452,8 @@ function formatDate(dateStr: string) {
   .highlights-card__icon { font-size: 1.3rem; }
   .highlights-card__title { font-family: var(--font-headline); font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--brand-primary); margin: 0; }
   .highlights-card__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
-  .highlights-stack { display: block; margin-bottom: var(--space-4); }
-  .highlights-group { display: none; flex-direction: column; gap: var(--space-3); }
+  .highlights-stack { display: block; margin-bottom: var(--space-3); }
+  .highlights-group { display: none; flex-direction: column; gap: 10px; }
   .highlights-group.highlights-group--active { display: flex; }
   .highlights-card--saturday { padding: calc(var(--space-3) + 2px) var(--space-4); border-left-width: 3px; border-left-color: rgba(255, 165, 0, 0.55); background: linear-gradient(135deg, #181818 0%, #232323 100%); }
   .highlights-card--saturday .highlights-card__title { font-size: 0.85rem; color: rgba(255, 165, 0, 0.85); }
@@ -424,9 +464,11 @@ function formatDate(dateStr: string) {
   @media (max-width: 768px) {
     .race-grid { grid-template-columns: 1fr; }
     .standings-grid { grid-template-columns: 1fr; }
+    .race-overview--has-next { grid-template-columns: 1fr; }
     .race-hero { height: 280px; }
     .race-hero__content { padding: var(--space-4); }
     .race-hero__meta { flex-direction: column; gap: var(--space-1); }
+    .next-race { min-height: 0; padding: var(--space-4); }
     .result-table { font-size: 0.82rem; }
     .result-table th, .result-table td { padding: 8px; }
   }

@@ -113,6 +113,80 @@ def find_latest_race():
     }
 
 
+MONTHS_LOOKUP = {
+    'january': '01', 'february': '02', 'march': '03', 'april': '04',
+    'may': '05', 'june': '06', 'july': '07', 'august': '08',
+    'september': '09', 'october': '10', 'november': '11', 'december': '12'
+}
+
+
+def find_next_race(latest_round):
+    """Find the next upcoming MXGP race from the dedicated calendar page.
+
+    Returns None if no future race (end of season) or parse fails.
+    The calendar page contains a sentence like:
+      "The next MXGP Championship event will be France, held at
+       Lacapelle Marival, France on Saturday 23rd and Sunday 24th of May 2026"
+    """
+    url = f"{BASE_URL}/mxgp/calendar"
+    html = fetch_page(url)
+    if not html:
+        log("  Could not fetch MXGP calendar page")
+        return None
+
+    # Strip HTML to text for sentence-level parsing
+    text = re.sub(r'<[^>]+>', ' ', html)
+    text = re.sub(r'\s+', ' ', text)
+
+    # Match the "next ... event will be NAME, held at VENUE, COUNTRY on ... of MONTH YEAR" sentence
+    pattern = (
+        r'next\s+MXGP\s+Championship\s+event\s+will\s+be\s+(.+?),\s+'
+        r'held\s+at\s+(.+?),\s+(.+?)\s+on\s+'
+        r'(?:Saturday|Friday)\s+\d+\w*\s+and\s+'
+        r'(?:Sunday|Saturday)\s+(\d+)\w*\s+of\s+(\w+)\s+(\d{4})'
+    )
+    m = re.search(pattern, text, re.IGNORECASE)
+
+    if not m:
+        log("  Could not parse next-race sentence from calendar page")
+        return None
+
+    raw_name   = m.group(1).strip()
+    venue      = m.group(2).strip()
+    country    = m.group(3).strip()
+    sunday_day = m.group(4).zfill(2)
+    month_name = m.group(5).lower()
+    year       = m.group(6)
+
+    month = MONTHS_LOOKUP.get(month_name)
+    if not month:
+        log(f"  Unknown month '{month_name}' in next-race date")
+        return None
+
+    next_date = f"{year}-{month}-{sunday_day}"
+
+    # Sanity check: only show if date is genuinely in the future
+    today = date.today().isoformat()
+    if next_date <= today:
+        log(f"  Next-race date {next_date} is not in the future (today {today}); skipping")
+        return None
+
+    next_round = latest_round + 1
+    next_name = f"MXGP of {raw_name}"
+    next_location = f"{venue}, {country}"
+
+    log(f"  Next race: R{next_round} - {next_name}")
+    log(f"  Location: {next_location}")
+    log(f"  Date: {next_date}")
+
+    return {
+        "round": next_round,
+        "name": next_name,
+        "location": next_location,
+        "date": next_date,
+    }
+
+
 def parse_table_from_html(table_html):
     """Parse a table from raw HTML, handling unclosed <td>/<th> tags."""
     results = []
@@ -428,6 +502,7 @@ def build_json():
             "seasonComplete": False,
             "totalRounds": 19,
             "latestRace": None,
+            "nextRace": None,
             "highlights": {
                 "fi": {"mxgp_quali": [], "mxgp_race": [], "mx2_quali": [], "mx2_race": [], "standings": []},
                 "en": {"mxgp_quali": [], "mxgp_race": [], "mx2_quali": [], "mx2_race": [], "standings": []},
@@ -458,6 +533,11 @@ def build_json():
     log("Generating highlights...")
     highlights = generate_highlights(latest, mxgp_results, mx2_results, standings, previous_standings)
 
+    next_race = None
+    if not is_season_complete:
+        log("Finding next upcoming race...")
+        next_race = find_next_race(latest["round"])
+
     data = {
         "season": SEASON,
         "lastUpdated": date.today().isoformat(),
@@ -472,6 +552,7 @@ def build_json():
             "mxgp": mxgp_results or {"qualifying": [], "race1": [], "race2": [], "overall": []},
             "mx2": mx2_results or {"qualifying": [], "race1": [], "race2": [], "overall": []}
         },
+        "nextRace": next_race,
         "highlights": highlights,
         "standings": standings
     }
