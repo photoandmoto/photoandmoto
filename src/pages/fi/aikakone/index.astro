@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import heroImage from '../../../assets/site/hero-aikakone.jpg';
 import { getCollection } from 'astro:content';
 import { ui } from '../../../i18n/ui';
 
@@ -18,10 +20,11 @@ const articles = (await getCollection('articles', ({ data }) =>
 >
   <section class="section">
     <div class="container">
-      <div class="section__header">
-        <h1 class="section__title">Aikakone</h1>
-        <p class="section__subtitle">Matka moottoriurheilun historian havinaan</p>
-      </div>
+      <PageHero
+        image={heroImage}
+        title="Aikakone"
+        subtitle="Matka moottoriurheilun historian havinaan"
+      />
       
       <p class="aikakone-intro">Aikakone kuljettaa sinut läpi historian urotekojen, nykyhetken ilmiöiden ja tulevaisuuden suurten murroskohtien. Tarkastelemme maailmaa muuttavia hetkiä uudesta kulmasta ja ilman turhaa hienostelua, jotta ymmärrämme, miten menneisyys ja huominen kohtaavat tässä päivässä. Lue lyhyitä paloja ajasta, joka resonoi nyt ja ohjaa askeleitamme kohti tuntematonta.</p>
       

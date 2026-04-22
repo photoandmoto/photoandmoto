@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import heroImage from '../../assets/site/hero-podcast.jpg';
 
 const lang = 'fi';
 
@@ -39,10 +41,12 @@ const episodes = [
 >
   <section class="section">
     <div class="container">
-      <div class="section__header">
-        <h1 class="section__title">Podcast</h1>
-        <p class="section__subtitle">Moottoriurheilun tarinoita äänimuodossa</p>
-      </div>
+      <PageHero
+        image={heroImage}
+        title="Podcast"
+        subtitle="Moottoriurheilun tarinoita äänimuodossa"
+        focus="center 30%"
+      />
       
       <p class="podcast-intro">Sukella moottoriurheilun historian sykähdyttäviin tarinoihin podcast-muodossa. Kuuntele legendojen tarinat, ikonisten pyörien historia ja lajin merkittävimmät hetket.</p>
       

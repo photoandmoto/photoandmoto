@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import heroImage from '../../assets/site/hero-etusivu.jpg';
 import { getCollection } from 'astro:content';
 import { ui } from '../../i18n/ui';
 
@@ -15,12 +17,13 @@ const featuredGalleries = galleries.slice(0, 4);
   lang={lang}
   description="Motorsport history photos and stories - Photo & Moto"
 >
-  <section class="hero">
-    <div class="container">
-      <h1 class="hero-title">{t['hero.tagline']}</h1>
-      <p class="hero-subtitle">{t['hero.subtitle']}</p>
-    </div>
-  </section>
+  <div class="container">
+    <PageHero
+      image={heroImage}
+      title={t['hero.tagline']}
+      subtitle={t['hero.subtitle']}
+    />
+  </div>
   
   <section class="intro-section">
     <div class="container">
@@ -76,16 +79,6 @@ const featuredGalleries = galleries.slice(0, 4);
 </BaseLayout>
 
 <style>
-  .hero {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)),
-                url('/images/hero-bg.jpg') center/cover;
-    color: white;
-    text-align: center;
-    padding: var(--space-12) 0;
-    margin-bottom: 0;
-  }
-  .hero-title { font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: var(--space-3); color: white; font-weight: 900; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
-  .hero-subtitle { font-size: clamp(1.125rem, 2vw, 1.5rem); color: rgba(255, 255, 255, 0.9); font-style: italic; margin-bottom: 0; }
   .intro-section { background: white; color: var(--text-primary); padding: var(--space-12) 0 var(--space-8); }
   .intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: start; }
   .intro-image-wrap { position: relative; overflow: hidden; border-radius: var(--radius-md); margin-bottom: var(--space-3); height: 280px; }

@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import heroImage from '../../../assets/site/hero-aikakone.jpg';
 import { getCollection } from 'astro:content';
 import { ui } from '../../../i18n/ui';
 
@@ -18,10 +20,11 @@ const articles = (await getCollection('articles', ({ data }) =>
 >
   <section class="section">
     <div class="container">
-      <div class="section__header">
-        <h1 class="section__title">Time Machine</h1>
-        <p class="section__subtitle">A journey through motorsport history</p>
-      </div>
+      <PageHero
+        image={heroImage}
+        title="Time Machine"
+        subtitle="A journey through motorsport history"
+      />
       
       {articles.length > 0 ? (
         <div class="articles-grid">

@@ -15,13 +15,15 @@ const navItems = lang === 'fi'
       { href: '/fi', label: t['nav.home'] },
       { href: '/fi/galleria', label: t['nav.gallery'] },
       { href: '/fi/aikakone', label: t['nav.articles'] },
-      { href: '/fi/yhteystiedot', label: t['nav.contact'] },
     ]
   : [
       { href: '/en', label: t['nav.home'] },
       { href: '/en/gallery', label: t['nav.gallery'] },
-      { href: '/en/yhteystiedot', label: t['nav.contact'] },
     ];
+
+const contactItem = lang === 'fi'
+  ? { href: '/fi/yhteystiedot', label: t['nav.contact'] }
+  : { href: '/en/yhteystiedot', label: t['nav.contact'] };
 
 const moreItems = lang === 'fi' 
   ? [
@@ -74,6 +76,14 @@ const isMoreActive = moreItems.some(item => currentPath.startsWith(item.href));
           </div>
         </li>
         )}
+        <li>
+          <a 
+            href={contactItem.href}
+            class:list={['nav-link', { active: currentPath === contactItem.href || currentPath.startsWith(contactItem.href) }]}
+          >
+            {contactItem.label}
+          </a>
+        </li>
       </ul>
     </nav>
     

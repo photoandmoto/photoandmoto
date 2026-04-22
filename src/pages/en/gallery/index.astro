@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import heroImage from '../../../assets/site/hero-galleria.jpg';
 import { getCollection } from 'astro:content';
 import { ui } from '../../../i18n/ui';
 
@@ -26,10 +28,11 @@ const searchData = JSON.stringify(searchIndex);
 >
   <section class="section">
     <div class="container">
-      <div class="section__header">
-        <h1 class="section__title">Gallery</h1>
-        <p class="section__subtitle">Explore photo galleries from different eras and disciplines</p>
-      </div>
+      <PageHero
+        image={heroImage}
+        title="Gallery"
+        subtitle="Explore photo galleries from different eras and disciplines"
+      />
       
       <p class="gallery-intro">Step into a world where every photo tells a story. A world where every image pulses with the intoxicating past and excitement of motorsport comes alive, just a click away from you.</p>
       
