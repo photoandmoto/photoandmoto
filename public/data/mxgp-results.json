@@ -670,55 +670,61 @@
       ]
     }
   },
+  "nextRace": {
+    "round": 6,
+    "name": "MXGP of France",
+    "location": "Lacapelle Marival, France",
+    "date": "2026-05-24"
+  },
   "highlights": {
     "fi": {
       "mxgp_quali": [
-        "Lucas Coenen nappasi paalupaikan Trentinon aika-ajossa.",
-        "Vialle ja Adamo osoittivat vahvuutta tiukassa lauantain kisassa."
+        "Lucas Coenen nappasi paalupaikan lauantain MXGP-aika-ajossa.",
+        "Vaikka olosuhteet olivat haastavat, Coenen osoitti vahvuutensa."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominoi ensimmäistä erää täysin.",
-        "Tim Gajser hallitsi toista erää ja nousi kärkeen.",
-        "Jeffrey Herlings vei Trentinon GP-voiton pisteen erolla."
+        "Jeffrey Herlings dominoi ensimmäistä MXGP-erää.",
+        "Tim Gajser hallitsi toista MXGP-erää ylivoimaisesti.",
+        "Jeffrey Herlings vei Trentinon MXGP-osakilpailun voiton."
       ],
       "mx2_quali": [
         "Sacha Coenen oli nopein MX2-luokan aika-ajossa.",
-        "Guillem Farres ja Simon Längenfelder seurasivat tiiviisti perässä."
+        "Guillem Farres varmisti toisen lähtöruudun."
       ],
       "mx2_race": [
-        "Sacha Coenen oli pysäyttämätön voittaen molemmat erät.",
-        "Guillem Farres taisteli vahvasti ja varmisti toisen sijan.",
-        "Sacha Coenen otti Trentinon MX2-GP:n voiton ylivoimaisesti."
+        "Sacha Coenen dominoi molempia MX2-eriä.",
+        "Guillem Farres taisteli vahvasti molemmissa erissä.",
+        "Sacha Coenen vei Trentinon MX2-osakilpailun ylivoimaisesti."
       ],
       "standings": [
-        "Lucas Coenen pitää MXGP-johtopaikkaa vahvana.",
-        "Jeffrey Herlings on toisena, vain neljä pistettä perässä.",
+        "Lucas Coenen pitää MXGP-johtopaikkaa.",
+        "Jeffrey Herlings on toisena MXGP-sarjassa.",
         "Tom Vialle pysyy kolmantena MXGP-sarjassa."
       ]
     },
     "en": {
       "mxgp_quali": [
-        "Lucas Coenen claimed pole position in Trentino qualifying.",
-        "Vialle and Adamo showed strength in the tight Saturday session."
+        "Lucas Coenen claimed pole position in MXGP qualifying.",
+        "Coenen showed strength despite challenging conditions."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominated the first moto convincingly.",
-        "Tim Gajser controlled the second moto to take the lead.",
-        "Jeffrey Herlings claimed the Trentino GP overall victory."
+        "Jeffrey Herlings dominated the first MXGP moto.",
+        "Tim Gajser controlled the second MXGP moto.",
+        "Jeffrey Herlings claimed the overall MXGP victory in Trentino."
       ],
       "mx2_quali": [
-        "Sacha Coenen was the fastest in MX2 qualifying.",
-        "Guillem Farres and Simon Längenfelder followed closely behind."
+        "Sacha Coenen was fastest in MX2 qualifying.",
+        "Guillem Farres secured the second starting spot."
       ],
       "mx2_race": [
-        "Sacha Coenen was unstoppable, winning both motos.",
-        "Guillem Farres battled strongly for second overall.",
-        "Sacha Coenen took a dominant MX2 GP win at Trentino."
+        "Sacha Coenen dominated both MX2 motos.",
+        "Guillem Farres battled strongly in both races.",
+        "Sacha Coenen took a commanding MX2 win in Trentino."
       ],
       "standings": [
-        "Lucas Coenen holds firm at the top of MXGP standings.",
-        "Jeffrey Herlings sits second, just four points behind.",
-        "Tom Vialle remains in third position in the MXGP championship."
+        "Lucas Coenen holds the MXGP championship lead.",
+        "Jeffrey Herlings is second in the MXGP standings.",
+        "Tom Vialle remains third in the MXGP standings."
       ]
     }
   },
