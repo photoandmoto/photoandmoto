@@ -8,6 +8,7 @@ tags: ["Belgia", "motocross", "historia", "MXGP", "Mikkola"]
 featured_image: "/images/belgia-mikkola.jpg"
 language: "fi"
 show_hero: false
+seo_description: "Belgia motocrossin mekkana — 33 maailmanmestaruustitteliä 85:sta. Everts, Robert, De Coster ja miten pienestä maasta tuli lajin tukikohta."
 
 ---
 

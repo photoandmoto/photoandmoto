@@ -8,6 +8,7 @@ tags: ["Scramble", "Hyvinkää", "klassikko", "vintage", "tapahtuma"]
 featured_image: "/images/scramble-2025.jpg"
 language: "fi"
 show_hero: false
+seo_description: "Hyvinkää Scramble, Trial & Enduro 29.–30.8.2026. Klassikko-motoripyörien tapahtuma Erkylässä, vapaa pääsy. Vuoden 2025 menestyksen jälkeen odotukset korkealla."
 ---
 
 Hyvinkään Erkylän lukot valtaavat jälleen klassikko-moottoripyörät, kun suosittu Hyvinkää Scramble, Trial & Enduro -tapahtuma järjestetään 29.–30. elokuuta 2026.

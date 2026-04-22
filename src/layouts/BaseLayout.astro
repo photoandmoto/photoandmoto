@@ -10,18 +10,59 @@ interface Props {
   description?: string;
   image?: string;
   lang: 'fi' | 'en';
+  noindex?: boolean;
 }
 
 const {
   title,
-  description = 'Moottoriurheilun historian kuvia ja tarinoita',
+  description = 'Moottoriurheilun historian kuvia ja tarinoita – Photo & Moto',
   image = '/images/og-default.jpg',
   lang = 'fi',
+  noindex = false,
 } = Astro.props;
 
-const siteUrl = import.meta.env.SITE || 'https://photoandmoto.pages.dev';
+const siteUrl = import.meta.env.SITE || 'https://www.photoandmoto.fi';
 const fullTitle = `${title} | Photo & Moto`;
 const ogImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
+
+// Canonical URL — strip trailing slash for consistency, except root
+const pathname = Astro.url.pathname;
+const canonicalPath = pathname.length > 1 && pathname.endsWith('/')
+  ? pathname.slice(0, -1)
+  : pathname;
+const canonicalUrl = `${siteUrl}${canonicalPath}`;
+
+// Hreflang alternates — compute the other language's equivalent path
+// Simple rule: swap /fi/ <-> /en/ and translate known path segments
+const pathTranslations: Record<string, string> = {
+  galleria: 'gallery',
+  aikakone: 'time-machine',
+  yhteystiedot: 'yhteystiedot', // kept same in EN so far
+  tietosuojaseloste: 'privacy-policy',
+};
+const reverseTranslations: Record<string, string> = Object.fromEntries(
+  Object.entries(pathTranslations).map(([k, v]) => [v, k])
+);
+
+function computeAlternatePath(currentPath: string, currentLang: 'fi' | 'en'): string | null {
+  const otherLang = currentLang === 'fi' ? 'en' : 'fi';
+  const translations = currentLang === 'fi' ? pathTranslations : reverseTranslations;
+
+  // Strip leading /fi/ or /en/
+  const prefix = `/${currentLang}`;
+  if (!currentPath.startsWith(prefix)) return null;
+  const rest = currentPath.slice(prefix.length); // e.g., '/galleria/foo'
+
+  // Translate known segments
+  const segments = rest.split('/').filter(Boolean);
+  const translated = segments.map((seg) => translations[seg] || seg);
+
+  return `/${otherLang}/${translated.join('/')}`;
+}
+
+const alternatePath = computeAlternatePath(canonicalPath, lang);
+const alternateUrl = alternatePath ? `${siteUrl}${alternatePath}` : null;
+const otherLang = lang === 'fi' ? 'en' : 'fi';
 ---
 
 <!DOCTYPE html>
@@ -29,23 +70,44 @@ const ogImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <title>{fullTitle}</title>
   <meta name="description" content={description}>
-  
+
+  <!-- Canonical -->
+  <link rel="canonical" href={canonicalUrl}>
+
+  <!-- Hreflang alternates -->
+  {alternateUrl && (
+    <>
+      <link rel="alternate" hreflang={lang} href={canonicalUrl}>
+      <link rel="alternate" hreflang={otherLang} href={alternateUrl}>
+      <link rel="alternate" hreflang="x-default" href={lang === 'fi' ? canonicalUrl : alternateUrl}>
+    </>
+  )}
+
+  {noindex && <meta name="robots" content="noindex, nofollow">}
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
-  
+
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content={`${siteUrl}${Astro.url.pathname}`}>
+  <meta property="og:url" content={canonicalUrl}>
   <meta property="og:title" content={fullTitle}>
   <meta property="og:description" content={description}>
   <meta property="og:image" content={ogImage}>
   <meta property="og:locale" content={lang === 'fi' ? 'fi_FI' : 'en_US'}>
-  
+  <meta property="og:site_name" content="Photo & Moto">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content={fullTitle}>
+  <meta name="twitter:description" content={description}>
+  <meta name="twitter:image" content={ogImage}>
+
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="apple-touch-icon" href="/favicon.png">
@@ -61,11 +123,11 @@ const ogImage = image.startsWith('http') ? image : `${siteUrl}${image}`;
 </head>
 <body>
   <Header lang={lang} currentPath={Astro.url.pathname} />
-  
+
   <main>
     <slot />
   </main>
-  
+
   <Footer lang={lang} />
 </body>
 </html>
