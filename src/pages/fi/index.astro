@@ -25,13 +25,15 @@ const featuredGalleries = galleries.slice(0, 4);
   description="Moottoriurheilun historian kuvia ja tarinoita - Photo & Moto"
 >
   <!-- Hero Section -->
-  <div class="container">
-    <PageHero
-      image={heroImage}
-      title={t['hero.tagline']}
-      subtitle={t['hero.subtitle']}
-    />
-  </div>
+  <section class="section section--hero">
+    <div class="container">
+      <PageHero
+        image={heroImage}
+        title={t['hero.tagline']}
+        subtitle={t['hero.subtitle']}
+      />
+    </div>
+  </section>
   
   <!-- Intro Section -->
   <section class="intro-section">
@@ -155,10 +157,14 @@ const featuredGalleries = galleries.slice(0, 4);
 
 <style>
   /* Intro section - white background */
+  .section--hero {
+    padding-bottom: 0;
+  }
+  
   .intro-section {
     background: white;
     color: var(--text-primary);
-    padding: var(--space-12) 0 var(--space-8);
+    padding: 0 0 var(--space-8);
   }
   
   .intro-grid {

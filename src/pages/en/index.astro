@@ -17,13 +17,15 @@ const featuredGalleries = galleries.slice(0, 4);
   lang={lang}
   description="Motorsport history photos and stories - Photo & Moto"
 >
-  <div class="container">
-    <PageHero
-      image={heroImage}
-      title={t['hero.tagline']}
-      subtitle={t['hero.subtitle']}
-    />
-  </div>
+  <section class="section section--hero">
+    <div class="container">
+      <PageHero
+        image={heroImage}
+        title={t['hero.tagline']}
+        subtitle={t['hero.subtitle']}
+      />
+    </div>
+  </section>
   
   <section class="intro-section">
     <div class="container">
@@ -79,7 +81,8 @@ const featuredGalleries = galleries.slice(0, 4);
 </BaseLayout>
 
 <style>
-  .intro-section { background: white; color: var(--text-primary); padding: var(--space-12) 0 var(--space-8); }
+  .section--hero { padding-bottom: 0; }
+  .intro-section { background: white; color: var(--text-primary); padding: 0 0 var(--space-8); }
   .intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: start; }
   .intro-image-wrap { position: relative; overflow: hidden; border-radius: var(--radius-md); margin-bottom: var(--space-3); height: 280px; }
   .intro-image { width: 100%; height: 100%; display: block; object-fit: cover; }
