@@ -267,8 +267,8 @@ def generate_highlights(race_info, mxgp_results, mx2_results, standings, previou
     log(f"  API key present: {bool(api_key)} (length: {len(api_key)})")
 
     empty = {
-        "fi": {"mxgp": [], "mx2": [], "standings": []},
-        "en": {"mxgp": [], "mx2": [], "standings": []},
+        "fi": {"mxgp_quali": [], "mxgp_race": [], "mx2_quali": [], "mx2_race": [], "standings": []},
+        "en": {"mxgp_quali": [], "mxgp_race": [], "mx2_quali": [], "mx2_race": [], "standings": []},
     }
 
     if not api_key:
@@ -329,23 +329,27 @@ def generate_highlights(race_info, mxgp_results, mx2_results, standings, previou
 
     data_summary = "\n".join(summary_lines)
 
-    prompt = f"""You are a motorsport journalist for a Finnish motocross website. Based on the race results data below, generate three SEPARATE sets of highlights — one per tab (MXGP, MX2, championship standings).
+    prompt = f"""You are a motorsport journalist for a Finnish motocross website. Based on the race weekend data below, generate FIVE separate sets of highlights for both Finnish (fi) and English (en).
 
-RULES:
-- For "mxgp": 3 bullets about the MXGP class race weekend (qualifying, race 1, race 2, GP overall winner, dominant performances)
-- For "mx2": 3 bullets about the MX2 class race weekend
-- For "standings": 3 bullets focused on championship standings — top 3 leaders AND any position changes vs previous round (use "nousi", "putosi", "siirtyi", "moved up", "dropped to" when reporting changes; if "no changes in top 3 order" was reported, mention that the order held firm)
-- Each bullet: 1 short sentence, max 15 words
-- Provide BOTH Finnish (fi) and English (en) versions
-- Use exciting motorsport language (hallitsi, dominoi, taisteli, nousi / dominated, charged, battled, surged)
-- Only state facts from the data — do NOT invent crashes, injuries, or events not in the data
-- Output ONLY valid JSON, no markdown, no backticks, no preamble
+THE FIVE BUCKETS:
+1. "mxgp_quali" — exactly 2 bullets about MXGP Saturday QUALIFYING ONLY (pole sitter, surprises, fastest in difficult conditions). Do NOT mention Sunday races, do NOT mention overall winner. Saturday only.
+2. "mxgp_race" — exactly 3 bullets about MXGP Sunday races + GP overall (race 1, race 2, GP overall winner, dominant performances, comeback rides). Do NOT repeat qualifying.
+3. "mx2_quali" — exactly 2 bullets about MX2 Saturday QUALIFYING ONLY. Same rules as mxgp_quali.
+4. "mx2_race"  — exactly 3 bullets about MX2 Sunday races + GP overall. Same rules as mxgp_race.
+5. "standings" — exactly 3 bullets focused on championship standings — top 3 leaders AND any position changes vs previous round (use "nousi", "putosi", "siirtyi", "moved up", "dropped to", "held firm" as appropriate). If no order change, say the order held firm.
+
+GLOBAL RULES:
+- Each bullet: 1 short sentence, max 15 words.
+- Use exciting motorsport language (hallitsi, dominoi, taisteli, nousi / dominated, charged, battled, surged, claimed pole).
+- Only state facts from the data — do NOT invent crashes, injuries, weather, or events not in the data.
+- If qualifying data is empty for a class, return an empty array for that class's "_quali" bucket.
+- Output ONLY valid JSON, no markdown, no backticks, no preamble.
 
 RACE DATA:
 {data_summary}
 
-OUTPUT FORMAT (JSON only):
-{{"fi":{{"mxgp":["b1","b2","b3"],"mx2":["b1","b2","b3"],"standings":["b1","b2","b3"]}},"en":{{"mxgp":["b1","b2","b3"],"mx2":["b1","b2","b3"],"standings":["b1","b2","b3"]}}}}"""
+OUTPUT FORMAT (JSON only, exact shape):
+{{"fi":{{"mxgp_quali":["b1","b2"],"mxgp_race":["b1","b2","b3"],"mx2_quali":["b1","b2"],"mx2_race":["b1","b2","b3"],"standings":["b1","b2","b3"]}},"en":{{"mxgp_quali":["b1","b2"],"mxgp_race":["b1","b2","b3"],"mx2_quali":["b1","b2"],"mx2_race":["b1","b2","b3"],"standings":["b1","b2","b3"]}}}}"""
 
     # Try each model with retries
     for model in GEMINI_MODELS:
@@ -381,19 +385,22 @@ OUTPUT FORMAT (JSON only):
                 highlights = json.loads(json_str)
 
                 # Validate new structured shape; coerce missing keys
+                buckets = ("mxgp_quali", "mxgp_race", "mx2_quali", "mx2_race", "standings")
                 for lang in ("fi", "en"):
                     if not isinstance(highlights.get(lang), dict):
                         highlights[lang] = {}
-                    for tab in ("mxgp", "mx2", "standings"):
-                        v = highlights[lang].get(tab)
+                    for b in buckets:
+                        v = highlights[lang].get(b)
                         if not isinstance(v, list):
-                            highlights[lang][tab] = []
+                            highlights[lang][b] = []
 
-                fi_total = sum(len(highlights["fi"][t]) for t in ("mxgp","mx2","standings"))
-                en_total = sum(len(highlights["en"][t]) for t in ("mxgp","mx2","standings"))
+                def fmt(lang):
+                    return " ".join(f"{b}={len(highlights[lang][b])}" for b in buckets)
+                fi_total = sum(len(highlights["fi"][b]) for b in buckets)
+                en_total = sum(len(highlights["en"][b]) for b in buckets)
                 log(f"  Highlights generated ({model}): "
-                    f"FI mxgp={len(highlights['fi']['mxgp'])} mx2={len(highlights['fi']['mx2'])} standings={len(highlights['fi']['standings'])} (total {fi_total}), "
-                    f"EN mxgp={len(highlights['en']['mxgp'])} mx2={len(highlights['en']['mx2'])} standings={len(highlights['en']['standings'])} (total {en_total})")
+                    f"FI {fmt('fi')} (total {fi_total}), "
+                    f"EN {fmt('en')} (total {en_total})")
 
                 return highlights
 
@@ -422,8 +429,8 @@ def build_json():
             "totalRounds": 19,
             "latestRace": None,
             "highlights": {
-                "fi": {"mxgp": [], "mx2": [], "standings": []},
-                "en": {"mxgp": [], "mx2": [], "standings": []},
+                "fi": {"mxgp_quali": [], "mxgp_race": [], "mx2_quali": [], "mx2_race": [], "standings": []},
+                "en": {"mxgp_quali": [], "mxgp_race": [], "mx2_quali": [], "mx2_race": [], "standings": []},
             },
             "standings": {"mxgp": [], "mx2": []}
         }

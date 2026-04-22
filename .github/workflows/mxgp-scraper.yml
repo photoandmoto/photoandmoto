@@ -51,4 +51,14 @@ jobs:
           git add public/data/mxgp-results.json
           ROUND=$(python3 -c "import json; d=json.load(open('public/data/mxgp-results.json')); r=d.get('latestRace'); print(f'R{r[\"round\"]} {r[\"name\"]}' if r else 'No race')")
           git commit -m "Auto-update MXGP results: $ROUND"
-          git push
+          # Retry with rebase if main moved during the run (concurrent push / re-run)
+          for i in 1 2 3; do
+            if git push; then
+              echo "Push succeeded on attempt $i"
+              exit 0
+            fi
+            echo "Push failed on attempt $i, rebasing on origin/main..."
+            git pull --rebase origin main
+          done
+          echo "Push failed after 3 attempts"
+          exit 1

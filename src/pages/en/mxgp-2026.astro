@@ -11,18 +11,32 @@ const highlights = data.highlights || {};
 
 // Backward-compat: if old flat shape ({fi:[], en:[]}) is still on disk, treat as empty per-tab
 const rawHL = data.highlights || {};
-const hlEn = (rawHL.en && !Array.isArray(rawHL.en)) ? rawHL.en : { mxgp: [], mx2: [], standings: [] };
-const highlightsByTab: { mxgp: string[]; mx2: string[]; standings: string[] } = {
-  mxgp: hlEn.mxgp || [],
-  mx2: hlEn.mx2 || [],
-  standings: hlEn.standings || [],
+const hlEn = (rawHL.en && !Array.isArray(rawHL.en)) ? rawHL.en : {};
+// New 5-bucket schema (with backward-compat for older 3-bucket schema)
+const highlightsByTab: {
+  mxgp_quali: string[]; mxgp_race: string[];
+  mx2_quali: string[];  mx2_race: string[];
+  standings: string[];
+} = {
+  mxgp_quali: hlEn.mxgp_quali || [],
+  mxgp_race:  hlEn.mxgp_race  || hlEn.mxgp || [],
+  mx2_quali:  hlEn.mx2_quali  || [],
+  mx2_race:   hlEn.mx2_race   || hlEn.mx2  || [],
+  standings:  hlEn.standings  || [],
 };
 const tabTitles: Record<string, string> = {
   mxgp: 'MXGP – Weekend Highlights',
   mx2: 'MX2 – Weekend Highlights',
   standings: 'Championship Standings',
 };
-const hasAnyHighlights = highlightsByTab.mxgp.length + highlightsByTab.mx2.length + highlightsByTab.standings.length > 0;
+const qualiTitles: Record<string, string> = {
+  mxgp: 'MXGP – Qualifying (Saturday)',
+  mx2: 'MX2 – Qualifying (Saturday)',
+};
+const hasAnyHighlights =
+  highlightsByTab.mxgp_quali.length + highlightsByTab.mxgp_race.length +
+  highlightsByTab.mx2_quali.length  + highlightsByTab.mx2_race.length +
+  highlightsByTab.standings.length > 0;
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
@@ -58,22 +72,73 @@ function formatDate(dateStr: string) {
           </div>
 
           {hasAnyHighlights && (
-            <div class="highlights-card" id="highlightsCard">
-              <div class="highlights-card__header">
-                <span class="highlights-card__icon">🏁</span>
-                <h3 class="highlights-card__title" id="highlightsTitle">{tabTitles.mxgp}</h3>
+            <div class="highlights-stack" id="highlightsStack">
+              <!-- MXGP group -->
+              <div class="highlights-group highlights-group--active" data-highlights-group="mxgp">
+                {highlightsByTab.mxgp_quali.length > 0 && (
+                  <div class="highlights-card highlights-card--saturday">
+                    <div class="highlights-card__header">
+                      <span class="highlights-card__icon">🕒</span>
+                      <h3 class="highlights-card__title">{qualiTitles.mxgp}</h3>
+                    </div>
+                    <ul class="highlights-card__list">
+                      {highlightsByTab.mxgp_quali.map((h: string) => (<li>{h}</li>))}
+                    </ul>
+                  </div>
+                )}
+                {highlightsByTab.mxgp_race.length > 0 && (
+                  <div class="highlights-card">
+                    <div class="highlights-card__header">
+                      <span class="highlights-card__icon">🏁</span>
+                      <h3 class="highlights-card__title">{tabTitles.mxgp}</h3>
+                    </div>
+                    <ul class="highlights-card__list">
+                      {highlightsByTab.mxgp_race.map((h: string) => (<li>{h}</li>))}
+                    </ul>
+                  </div>
+                )}
               </div>
-              {(['mxgp','mx2','standings'] as const).map((tab) => (
-                <ul
-                  class={`highlights-card__list highlights-list ${tab === 'mxgp' ? 'highlights-list--active' : ''}`}
-                  data-highlights={tab}
-                  data-title={tabTitles[tab]}
-                >
-                  {(highlightsByTab[tab] || []).map((h: string) => (
-                    <li>{h}</li>
-                  ))}
-                </ul>
-              ))}
+
+              <!-- MX2 group -->
+              <div class="highlights-group" data-highlights-group="mx2">
+                {highlightsByTab.mx2_quali.length > 0 && (
+                  <div class="highlights-card highlights-card--saturday">
+                    <div class="highlights-card__header">
+                      <span class="highlights-card__icon">🕒</span>
+                      <h3 class="highlights-card__title">{qualiTitles.mx2}</h3>
+                    </div>
+                    <ul class="highlights-card__list">
+                      {highlightsByTab.mx2_quali.map((h: string) => (<li>{h}</li>))}
+                    </ul>
+                  </div>
+                )}
+                {highlightsByTab.mx2_race.length > 0 && (
+                  <div class="highlights-card">
+                    <div class="highlights-card__header">
+                      <span class="highlights-card__icon">🏁</span>
+                      <h3 class="highlights-card__title">{tabTitles.mx2}</h3>
+                    </div>
+                    <ul class="highlights-card__list">
+                      {highlightsByTab.mx2_race.map((h: string) => (<li>{h}</li>))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+
+              <!-- Standings group -->
+              <div class="highlights-group" data-highlights-group="standings">
+                {highlightsByTab.standings.length > 0 && (
+                  <div class="highlights-card">
+                    <div class="highlights-card__header">
+                      <span class="highlights-card__icon">🏆</span>
+                      <h3 class="highlights-card__title">{tabTitles.standings}</h3>
+                    </div>
+                    <ul class="highlights-card__list">
+                      {highlightsByTab.standings.map((h: string) => (<li>{h}</li>))}
+                    </ul>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
@@ -85,23 +150,27 @@ function formatDate(dateStr: string) {
 
           <!-- MXGP Results -->
           <div class="mxgp-panel mxgp-panel--active" data-panel="mxgp">
-            <h3 class="result-section-title">GP Overall Classification</h3>
-            <div class="table-wrap">
-              <table class="result-table">
-                <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Nat</th><th>Pts</th></tr></thead>
-                <tbody>
-                  {race.mxgp.overall.map((r: any) => (
-                    <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
-                      <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td>{r.nat}</td><td class="pts">{r.pts}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            {race.mxgp.qualifying.length > 0 && (
+              <>
+                <h3 class="result-section-title">Qualifying Race (Saturday)</h3>
+                <div class="table-wrap">
+                  <table class="result-table result-table--compact">
+                    <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Nat</th></tr></thead>
+                    <tbody>
+                      {race.mxgp.qualifying.map((r: any) => (
+                        <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
+                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td>{r.nat}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
 
             <div class="race-grid">
               <div>
-                <h3 class="result-section-title">Race 1</h3>
+                <h3 class="result-section-title">Race 1 (Sunday)</h3>
                 <div class="table-wrap">
                   <table class="result-table result-table--compact">
                     <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Pts</th></tr></thead>
@@ -116,7 +185,7 @@ function formatDate(dateStr: string) {
                 </div>
               </div>
               <div>
-                <h3 class="result-section-title">Race 2</h3>
+                <h3 class="result-section-title">Race 2 (Sunday)</h3>
                 <div class="table-wrap">
                   <table class="result-table result-table--compact">
                     <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Pts</th></tr></thead>
@@ -132,33 +201,12 @@ function formatDate(dateStr: string) {
               </div>
             </div>
 
-            {race.mxgp.qualifying.length > 0 && (
-              <details class="quali-details">
-                <summary class="result-section-title result-section-title--toggle">Qualifying Race (Saturday)</summary>
-                <div class="table-wrap">
-                  <table class="result-table result-table--compact">
-                    <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Nat</th></tr></thead>
-                    <tbody>
-                      {race.mxgp.qualifying.map((r: any) => (
-                        <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
-                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td>{r.nat}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </details>
-            )}
-          </div>
-
-          <!-- MX2 Results -->
-          <div class="mxgp-panel" data-panel="mx2">
             <h3 class="result-section-title">GP Overall Classification</h3>
             <div class="table-wrap">
               <table class="result-table">
                 <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Nat</th><th>Pts</th></tr></thead>
                 <tbody>
-                  {race.mx2.overall.map((r: any) => (
+                  {race.mxgp.overall.map((r: any) => (
                     <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
                       <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td>{r.nat}</td><td class="pts">{r.pts}</td>
                     </tr>
@@ -166,10 +214,31 @@ function formatDate(dateStr: string) {
                 </tbody>
               </table>
             </div>
+          </div>
+
+          <!-- MX2 Results -->
+          <div class="mxgp-panel" data-panel="mx2">
+            {race.mx2.qualifying.length > 0 && (
+              <>
+                <h3 class="result-section-title">Qualifying Race (Saturday)</h3>
+                <div class="table-wrap">
+                  <table class="result-table result-table--compact">
+                    <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Nat</th></tr></thead>
+                    <tbody>
+                      {race.mx2.qualifying.map((r: any) => (
+                        <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
+                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td>{r.nat}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </>
+            )}
 
             <div class="race-grid">
               <div>
-                <h3 class="result-section-title">Race 1</h3>
+                <h3 class="result-section-title">Race 1 (Sunday)</h3>
                 <div class="table-wrap">
                   <table class="result-table result-table--compact">
                     <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Pts</th></tr></thead>
@@ -184,7 +253,7 @@ function formatDate(dateStr: string) {
                 </div>
               </div>
               <div>
-                <h3 class="result-section-title">Race 2</h3>
+                <h3 class="result-section-title">Race 2 (Sunday)</h3>
                 <div class="table-wrap">
                   <table class="result-table result-table--compact">
                     <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Pts</th></tr></thead>
@@ -200,23 +269,19 @@ function formatDate(dateStr: string) {
               </div>
             </div>
 
-            {race.mx2.qualifying.length > 0 && (
-              <details class="quali-details">
-                <summary class="result-section-title result-section-title--toggle">Qualifying Race (Saturday)</summary>
-                <div class="table-wrap">
-                  <table class="result-table result-table--compact">
-                    <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Nat</th></tr></thead>
-                    <tbody>
-                      {race.mx2.qualifying.map((r: any) => (
-                        <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
-                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td>{r.nat}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </details>
-            )}
+            <h3 class="result-section-title">GP Overall Classification</h3>
+            <div class="table-wrap">
+              <table class="result-table">
+                <thead><tr><th>Pos</th><th>Rider</th><th>Bike</th><th>Nat</th><th>Pts</th></tr></thead>
+                <tbody>
+                  {race.mx2.overall.map((r: any) => (
+                    <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
+                      <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td>{r.nat}</td><td class="pts">{r.pts}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           <!-- Standings -->
@@ -270,8 +335,7 @@ function formatDate(dateStr: string) {
 <script>
   const tabs = document.querySelectorAll('.mxgp-tab');
   const panels = document.querySelectorAll('.mxgp-panel');
-  const hlLists = document.querySelectorAll('.highlights-list');
-  const hlTitle = document.getElementById('highlightsTitle');
+  const hlGroups = document.querySelectorAll('.highlights-group');
 
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
@@ -281,13 +345,8 @@ function formatDate(dateStr: string) {
       tab.classList.add('mxgp-tab--active');
       document.querySelector(`[data-panel="${target}"]`)?.classList.add('mxgp-panel--active');
 
-      hlLists.forEach(l => l.classList.remove('highlights-list--active'));
-      const activeList = document.querySelector(`[data-highlights="${target}"]`);
-      activeList?.classList.add('highlights-list--active');
-      if (hlTitle && activeList) {
-        const t = (activeList as HTMLElement).dataset.title;
-        if (t) hlTitle.textContent = t;
-      }
+      hlGroups.forEach(g => g.classList.remove('highlights-group--active'));
+      document.querySelector(`[data-highlights-group="${target}"]`)?.classList.add('highlights-group--active');
     });
   });
 </script>
@@ -338,8 +397,12 @@ function formatDate(dateStr: string) {
   .highlights-card__icon { font-size: 1.3rem; }
   .highlights-card__title { font-family: var(--font-headline); font-size: 1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--brand-primary); margin: 0; }
   .highlights-card__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
-  .highlights-list { display: none; }
-  .highlights-list.highlights-list--active { display: flex; }
+  .highlights-stack { display: block; margin-bottom: var(--space-4); }
+  .highlights-group { display: none; flex-direction: column; gap: var(--space-3); }
+  .highlights-group.highlights-group--active { display: flex; }
+  .highlights-card--saturday { padding: calc(var(--space-3) + 2px) var(--space-4); border-left-width: 3px; border-left-color: rgba(255, 165, 0, 0.55); background: linear-gradient(135deg, #181818 0%, #232323 100%); }
+  .highlights-card--saturday .highlights-card__title { font-size: 0.85rem; color: rgba(255, 165, 0, 0.85); }
+  .highlights-card--saturday .highlights-card__list li { font-size: 0.86rem; }
   .highlights-card__list li { color: rgba(255,255,255,0.9); font-size: 0.92rem; line-height: 1.5; padding-left: 20px; position: relative; }
   .highlights-card__list li::before { content: '▸'; position: absolute; left: 0; color: var(--brand-primary); font-weight: bold; }
   .mxgp-offseason { text-align: center; padding: var(--space-8) var(--space-4); color: var(--text-secondary); font-size: 1.1rem; }
