@@ -33,8 +33,8 @@ const tabTitles: Record<string, string> = {
   standings: 'MM-sarjan tilanne',
 };
 const qualiTitles: Record<string, string> = {
-  mxgp: 'MXGP – Aika-ajo (lauantai)',
-  mx2: 'MX2 – Aika-ajo (lauantai)',
+  mxgp: 'MXGP – Karsintaerä (lauantai)',
+  mx2: 'MX2 – Karsintaerä (lauantai)',
 };
 const hasAnyHighlights =
   highlightsByTab.mxgp_quali.length + highlightsByTab.mxgp_race.length +
@@ -206,7 +206,7 @@ function daysUntil(dateStr: string): number | null {
           <div class="mxgp-panel mxgp-panel--active" data-panel="mxgp">
             {race.mxgp.qualifying.length > 0 && (
               <>
-                <h3 class="result-section-title">Aika-ajo (lauantai)</h3>
+                <h3 class="result-section-title">Karsintaerä (lauantai)</h3>
                 <div class="table-wrap">
                   <table class="result-table result-table--compact">
                     <thead><tr><th>Sija</th><th>Kuljettaja</th><th>Merkki</th><th>Maa</th></tr></thead>
@@ -274,7 +274,7 @@ function daysUntil(dateStr: string): number | null {
           <div class="mxgp-panel" data-panel="mx2">
             {race.mx2.qualifying.length > 0 && (
               <>
-                <h3 class="result-section-title">Aika-ajo (lauantai)</h3>
+                <h3 class="result-section-title">Karsintaerä (lauantai)</h3>
                 <div class="table-wrap">
                   <table class="result-table result-table--compact">
                     <thead><tr><th>Sija</th><th>Kuljettaja</th><th>Merkki</th><th>Maa</th></tr></thead>

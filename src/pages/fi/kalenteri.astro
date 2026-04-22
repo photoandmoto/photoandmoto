@@ -26,7 +26,7 @@ const rawEvents = fs.readFileSync('public/data/calendar.json', 'utf-8');
           <div id="dayDetail" class="cal-detail"></div>
         </div>
         <div class="cal-sidebar">
-          <h3 class="cal-side-title">Tulevat kilpailut</h3>
+          <h3 class="cal-side-title" id="upcomingTitle">Tulevat kilpailut</h3>
           <div id="upcomingList" class="cal-upcoming"></div>
         </div>
       </div>
@@ -45,8 +45,8 @@ function init(){
   renderFilters();
   renderMonth();
   renderUpcoming();
-  document.getElementById('prevMonth').addEventListener('click',()=>{curMonth--;if(curMonth<0){curMonth=11;curYear--}renderMonth()});
-  document.getElementById('nextMonth').addEventListener('click',()=>{curMonth++;if(curMonth>11){curMonth=0;curYear++}renderMonth()});
+  document.getElementById('prevMonth').addEventListener('click',()=>{curMonth--;if(curMonth<0){curMonth=11;curYear--}renderMonth();renderUpcoming()});
+  document.getElementById('nextMonth').addEventListener('click',()=>{curMonth++;if(curMonth>11){curMonth=0;curYear++}renderMonth();renderUpcoming()});
 }
 
 function renderFilters(){
@@ -112,10 +112,25 @@ function renderMonth(){
   document.getElementById('dayDetail').style.display='none';
 }
 
+const MONTH_NAMES_GEN=['Tammikuun','Helmikuun','Maaliskuun','Huhtikuun','Toukokuun','Kesäkuun','Heinäkuun','Elokuun','Syyskuun','Lokakuun','Marraskuun','Joulukuun'];
+
 function renderUpcoming(){
   const today=new Date().toISOString().split('T')[0];
-  const upcoming=EVENTS.filter(e=>e.date>=today&&activeFilters.has(e.category)).slice(0,12);
+  const titleEl=document.getElementById('upcomingTitle');
   const el=document.getElementById('upcomingList');
+
+  titleEl.textContent=MONTH_NAMES_GEN[curMonth]+' tulevat kilpailut';
+
+  // Filter to events in currently-viewed month that are still upcoming (date >= today)
+  const monthStr=String(curMonth+1).padStart(2,'0');
+  const yearStr=String(curYear);
+  const upcoming=EVENTS.filter(e=>{
+    if(!activeFilters.has(e.category))return false;
+    if(e.date<today)return false;
+    // event date is YYYY-MM-DD
+    return e.date.startsWith(yearStr+'-'+monthStr);
+  });
+
   if(!upcoming.length){el.innerHTML='<p class="cal-no-events">Ei tulevia kilpailuja</p>';return}
   el.innerHTML=upcoming.map(e=>{
     const d=new Date(e.date);
