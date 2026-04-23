@@ -9,7 +9,7 @@ export async function onRequestPost(context) {
   };
 
   try {
-    const { query, siteData } = await request.json();
+    const { query, siteData, lang } = await request.json();
     if (!query || query.length < 2) {
       return new Response(JSON.stringify({ error: 'Query too short' }), { status: 400, headers: corsHeaders });
     }
@@ -19,11 +19,11 @@ export async function onRequestPost(context) {
       return new Response(JSON.stringify({ error: 'GEMINI_API_KEY not found in environment' }), { status: 500, headers: corsHeaders });
     }
 
-    // Detect language from query
-    const isFinnish = /[äöå]|mitä|kuka|missä|milloin|kerro|kuinka|onko|voiko/i.test(query);
+    // Language: trust frontend lang prop first, fall back to query detection
+    const isFinnish = lang === 'fi' || /[äöå]|mitä|mikä|mik[sä]|kuka|missä|milloin|kerro|kuinka|onko|voiko|paljonko|miten|miksi|montako|kenen|minne/i.test(query);
     const languageInstruction = isFinnish 
-      ? 'CRITICAL: You MUST answer in FINNISH (suomeksi). The user asked in Finnish.'
-      : 'CRITICAL: Answer in ENGLISH. The user asked in English.';
+      ? 'PAKOLLINEN SÄÄNTÖ: Vastaa AINA SUOMEKSI. Käyttäjä kysyy suomeksi ja odottaa vastausta suomeksi. Älä koskaan vaihda englantiin, vaikka lähdeaineisto olisi englanniksi. Käännä kaikki sisältö suomeksi.'
+      : 'MANDATORY RULE: Always answer in ENGLISH. The user is asking in English and expects an English response.';
     
     // Trim data to stay within token limits
     const trimmedData = siteData ? siteData.substring(0, 80000) : '[]';
@@ -35,6 +35,8 @@ ${languageInstruction}
 Answer questions based on the site data provided below. When a person is mentioned, check nicknames and variations (e.g. "Hessu Mikkola" = "Heikki Mikkola", "Magoo" = "Danny Chandler", "Carla" = "Håkan Carlqvist"). Photo gallery captions contain rich information about people, places, and years.
 
 Be concise but complete. If the data doesn't contain the answer, say so politely in the correct language.
+
+REMEMBER: ${isFinnish ? 'Vastaa SUOMEKSI. Kaikki vastaukset suomeksi, ei englantia.' : 'Answer in ENGLISH only.'}
 
 SITE DATA:
 ${trimmedData}

@@ -115,7 +115,7 @@ const lang = 'fi';
       const resp = await fetch('/api/search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: q, siteData: siteData })
+        body: JSON.stringify({ query: q, siteData: siteData, lang: 'fi' })
       });
       const data = await resp.json();
       
