@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 const lang = 'fi';
 ---
-<BaseLayout title="Tunnista kuva" lang={lang} description="Auta tunnistamaan vanhoja moottoriurheilukuvia. Kuka kuvassa on, mistä vuodelta ja missä kuva on otettu?">
+<BaseLayout title="Tunnista kuva" lang={lang} description="Auta tunnistamaan vanhoja moottoriurheilukuvia.">
   <section class="mp">
     <div class="container">
       <div class="mp-header">
@@ -11,7 +11,7 @@ const lang = 'fi';
         <button id="adminToggle" class="mp-btn mp-btn--sec">Ylläpito</button>
       </div>
 
-      <!-- Admin panel (upload + tools) -->
+      <!-- Admin panel -->
       <div id="adminPanel" class="mp-panel" style="display:none;">
         <div id="adminAuth" class="auth-box">
           <input type="password" id="adminPw" class="mp-inp" placeholder="Salasana" />
@@ -41,9 +41,7 @@ const lang = 'fi';
       </div>
 
       <!-- Grid -->
-      <div id="grid" class="grid">
-        <div class="empty">Ladataan kuvia...</div>
-      </div>
+      <div id="grid" class="grid"><div class="empty">Ladataan kuvia...</div></div>
 
       <!-- Modal -->
       <div id="modal" class="modal" style="display:none;">
@@ -52,31 +50,7 @@ const lang = 'fi';
           <button class="modal-x" id="modalX">&#x2715;</button>
           <div class="modal-inner">
             <div class="modal-img-wrap"><img id="modalImg" class="modal-img" src="" alt="" /></div>
-            <div class="modal-side">
-
-              <!-- Admin bar -->
-              <div id="adminBar" class="admin-bar" style="display:none;"></div>
-
-              <!-- Section A: Ehdota tietoja -->
-              <div id="secA" class="sec-a">
-                <h3 class="sec-title">Ehdota tietoja</h3>
-                <div class="name-row">
-                  <input type="text" id="myName" class="mp-inp" placeholder="Nimesi (vapaaehtoinen)" />
-                </div>
-                <div id="fieldInputs"></div>
-              </div>
-
-              <!-- Section B: Keskustelu -->
-              <div id="secB" class="sec-b">
-                <h3 class="sec-title">Keskustelu</h3>
-                <div id="thread"></div>
-                <div class="free-comment">
-                  <textarea id="freeText" class="mp-inp mp-ta" placeholder="Vapaa kommentti..."></textarea>
-                  <button id="freeBtn" class="mp-btn mp-btn--sm">Lähetä kommentti</button>
-                </div>
-              </div>
-
-            </div>
+            <div class="modal-side" id="modalSide"></div>
           </div>
         </div>
       </div>
@@ -85,16 +59,17 @@ const lang = 'fi';
 </BaseLayout>
 
 <script>
-let photos=[], adminPw=null, curFilter='all', curPhoto=null;
-const voted = JSON.parse(localStorage.getItem('pm_v')||'{}');
+let photos=[],adminPw=null,curFilter='all',curPhoto=null;
+const voted=JSON.parse(localStorage.getItem('pm_v')||'{}');
 const grid=document.getElementById('grid');
 const modal=document.getElementById('modal');
+const side=document.getElementById('modalSide');
 
-const FIELDS = [
-  {key:'year_estimate', label:'Vuosiarvio', type:'year', ph:'Esim. 1977'},
-  {key:'people', label:'Henkilöt kuvassa', type:'people', ph:'Kenet tunnistat?'},
-  {key:'location_notes', label:'Paikka / tapahtuma', type:'location', ph:'Missä otettu?'},
-  {key:'notes', label:'Lisätietoja', type:'notes', ph:'Mitä muuta tiedät?'},
+const FIELDS=[
+  {key:'year_estimate',label:'Vuosiarvio',type:'year',ph:'Esim. 1977'},
+  {key:'people',label:'Henkilöt kuvassa',type:'people',ph:'Kenet tunnistat?'},
+  {key:'location_notes',label:'Paikka / tapahtuma',type:'location',ph:'Missä otettu?'},
+  {key:'notes',label:'Lisätietoja',type:'notes',ph:'Mitä muuta tiedät?'},
 ];
 
 fetch('/api/mystery/init',{method:'POST'}).catch(()=>{});
@@ -105,27 +80,25 @@ async function verifyPw(pw){
 }
 
 async function load(){
-  try{const r=await fetch('/api/mystery/photos');const d=await r.json();photos=d.photos||[];renderGrid();}
+  try{const r=await fetch('/api/mystery/photos');photos=(await r.json()).photos||[];renderGrid();}
   catch(e){grid.innerHTML='<div class="empty">Virhe ladattaessa.</div>';}
 }
 
 function renderGrid(){
   const f=curFilter==='all'?photos:photos.filter(p=>p.status===curFilter);
   if(!f.length){grid.innerHTML='<div class="empty">Ei kuvia tässä kategoriassa.</div>';return;}
-  grid.innerHTML=f.map(p=>{
-    const n=p.comments.length;
-    return `<div class="card" data-id="${p.id}">
+  grid.innerHTML=f.map(p=>`
+    <div class="card" data-id="${p.id}">
       <div class="card-img"><img src="${p.image_url}" alt="" loading="lazy"/>
         <span class="card-badge card-badge--${p.status}">${p.status==='new'?'Uusi':'Osittain'}</span>
-        ${n?`<span class="card-count">${n} 💬</span>`:''}
+        ${p.comments.length?`<span class="card-count">${p.comments.length} 💬</span>`:''}
       </div>
       <div class="card-info">
         ${p.people?`<span class="card-who">${esc(p.people)}</span>`:''}
         ${p.year_estimate?`<span class="card-yr">${esc(p.year_estimate)}</span>`:''}
         ${!p.people&&!p.year_estimate?'<span class="card-unk">Tuntematon — auta tunnistamaan!</span>':''}
       </div>
-    </div>`;
-  }).join('');
+    </div>`).join('');
   grid.querySelectorAll('.card').forEach(c=>c.addEventListener('click',()=>openModal(+c.dataset.id)));
 }
 
@@ -134,51 +107,18 @@ function openModal(id){
   curPhoto=p;
   document.getElementById('modalImg').src=p.image_url;
 
-  // Section A — field inputs (only unlocked fields)
-  const fi=document.getElementById('fieldInputs');
-  const openFields=FIELDS.filter(f=>!p[f.key]||!p[f.key].trim());
-  if(openFields.length){
-    fi.innerHTML=openFields.map(f=>`
-      <div class="fi-row">
-        <label class="fi-label">${f.label}</label>
-        <div class="fi-input-row">
-          <input type="text" class="mp-inp fi-inp" placeholder="${f.ph}" data-ft="${f.type}" />
-          <button class="mp-btn mp-btn--sm fi-btn" data-ft="${f.type}">Ehdota</button>
-        </div>
-      </div>`).join('');
-    fi.querySelectorAll('.fi-btn').forEach(btn=>{
-      btn.addEventListener('click',async()=>{
-        const inp=btn.parentElement.querySelector('.fi-inp');
-        const txt=inp.value.trim();if(txt.length<2)return;
-        const name=document.getElementById('myName').value.trim()||'Nimetön';
-        await fetch('/api/mystery/comment',{method:'POST',headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({photo_id:id,author_name:name,content:txt,field_type:btn.dataset.ft})});
-        inp.value='';
-        await load();openModal(id);
-      });
-    });
-    document.getElementById('secA').style.display='block';
-  } else {
-    fi.innerHTML='<p class="all-done">Kaikki tiedot täytetty!</p>';
-    document.getElementById('secA').style.display='block';
-  }
+  if(adminPw){ renderAdminModal(p); }
+  else { renderCommunityModal(p); }
 
-  // Show locked fields as info
-  const locked=FIELDS.filter(f=>p[f.key]&&p[f.key].trim());
-  if(locked.length){
-    const lockedHtml=locked.map(f=>`<div class="locked-field"><span class="lf-label">${f.label}:</span> <strong>${esc(p[f.key])}</strong></div>`).join('');
-    fi.innerHTML=`<div class="locked-fields">${lockedHtml}</div>`+fi.innerHTML;
-  }
+  modal.style.display='flex';
+  document.body.style.overflow='hidden';
+}
 
-  // Section B — thread
-  renderThread(p);
-
-  // Admin bar
-  const ab=document.getElementById('adminBar');
-  if(adminPw){
-    ab.style.display='block';
-    ab.innerHTML=`<div class="ab-inner">
-      <h4 class="ab-title">Ylläpito</h4>
+// ===== ADMIN MODAL =====
+function renderAdminModal(p){
+  side.innerHTML=`
+    <div class="ab">
+      <h3 class="ab-title">Ylläpito</h3>
       <div class="ab-fields">
         ${FIELDS.map(f=>`<div class="ab-f"><label>${f.label}</label><input type="text" class="mp-inp" id="ab_${f.key}" value="${esc(p[f.key]||'')}" /></div>`).join('')}
       </div>
@@ -192,121 +132,162 @@ function openModal(id){
         <button class="mp-btn mp-btn--sm" id="abSetStatus">Päivitä tila</button>
         <button class="mp-btn mp-btn--sm mp-btn--danger" id="abDel">Poista kuva</button>
       </div>
+    </div>
+    <div class="thread-section">
+      <h3 class="sec-title">Keskustelu</h3>
+      <div id="thread"></div>
     </div>`;
-    document.getElementById('abSave').addEventListener('click',async()=>{
-      await fetch('/api/mystery/admin',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({password:adminPw,action:'update_meta',photo_id:id,
-          year_estimate:document.getElementById('ab_year_estimate').value,
-          people:document.getElementById('ab_people').value,
-          location_notes:document.getElementById('ab_location_notes').value,
-          notes:document.getElementById('ab_notes').value})});
-      await load();openModal(id);
-    });
-    document.getElementById('abSetStatus').addEventListener('click',async()=>{
-      await fetch('/api/mystery/admin',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({password:adminPw,action:'set_status',photo_id:id,status:document.getElementById('abStatus').value})});
-      await load();openModal(id);
-    });
-    document.getElementById('abDel').addEventListener('click',async()=>{
-      if(!confirm('Poistetaanko kuva pysyvästi?'))return;
-      await fetch('/api/mystery/admin',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({password:adminPw,action:'delete_photo',photo_id:id})});
-      closeModal();await load();
-    });
-  } else { ab.style.display='none'; }
 
-  modal.style.display='flex';
-  document.body.style.overflow='hidden';
+  document.getElementById('abSave').addEventListener('click',async()=>{
+    await adminAction('update_meta',{photo_id:p.id,
+      year_estimate:document.getElementById('ab_year_estimate').value,
+      people:document.getElementById('ab_people').value,
+      location_notes:document.getElementById('ab_location_notes').value,
+      notes:document.getElementById('ab_notes').value});
+    await load();openModal(p.id);
+  });
+  document.getElementById('abSetStatus').addEventListener('click',async()=>{
+    await adminAction('set_status',{photo_id:p.id,status:document.getElementById('abStatus').value});
+    await load();openModal(p.id);
+  });
+  document.getElementById('abDel').addEventListener('click',async()=>{
+    if(!confirm('Poistetaanko kuva pysyvästi?'))return;
+    await adminAction('delete_photo',{photo_id:p.id});
+    closeModal();await load();
+  });
+
+  renderThread(p);
 }
 
+// ===== COMMUNITY MODAL =====
+function renderCommunityModal(p){
+  const locked=FIELDS.filter(f=>p[f.key]&&p[f.key].trim());
+  const open=FIELDS.filter(f=>!p[f.key]||!p[f.key].trim());
+
+  side.innerHTML=`
+    <div class="suggest-section">
+      <h3 class="sec-title">Ehdota tietoja</h3>
+      ${locked.length?`<div class="locked-fields">${locked.map(f=>`<div class="lf"><span class="lf-label">${f.label}:</span> <strong>${esc(p[f.key])}</strong></div>`).join('')}</div>`:''}
+      ${open.length?`
+        <div class="suggest-form">
+          ${open.map(f=>`<div class="sf-row"><label>${f.label}</label><input type="text" class="mp-inp sf-inp" data-ft="${f.type}" placeholder="${f.ph}" /></div>`).join('')}
+          <div class="sf-row"><label>Vapaa kommentti</label><textarea class="mp-inp mp-ta" id="sfComment" placeholder="Muita havaintoja..."></textarea></div>
+          <div class="sf-row"><label>Nimesi (vapaaehtoinen)</label><input type="text" class="mp-inp" id="sfName" placeholder="Nimetön" /></div>
+          <button class="mp-btn" id="sfSubmit">Lähetä</button>
+        </div>
+      `:`<p class="all-locked">Kaikki tiedot on täytetty. Voit silti kommentoida alla.</p>
+        <div class="suggest-form">
+          <div class="sf-row"><label>Vapaa kommentti</label><textarea class="mp-inp mp-ta" id="sfComment" placeholder="Muita havaintoja..."></textarea></div>
+          <div class="sf-row"><label>Nimesi (vapaaehtoinen)</label><input type="text" class="mp-inp" id="sfName" placeholder="Nimetön" /></div>
+          <button class="mp-btn" id="sfSubmit">Lähetä</button>
+        </div>`}
+    </div>
+    <div class="thread-section">
+      <h3 class="sec-title">Keskustelu</h3>
+      <div id="thread"></div>
+    </div>`;
+
+  document.getElementById('sfSubmit').addEventListener('click',async()=>{
+    const name=(document.getElementById('sfName').value.trim())||'Nimetön';
+    const promises=[];
+
+    // Submit each filled field input
+    document.querySelectorAll('.sf-inp').forEach(inp=>{
+      const val=inp.value.trim();
+      if(val.length>=2){
+        promises.push(fetch('/api/mystery/comment',{method:'POST',headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({photo_id:p.id,author_name:name,content:val,field_type:inp.dataset.ft})}));
+        inp.value='';
+      }
+    });
+
+    // Submit free comment
+    const comment=document.getElementById('sfComment').value.trim();
+    if(comment.length>=2){
+      promises.push(fetch('/api/mystery/comment',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({photo_id:p.id,author_name:name,content:comment,field_type:'general'})}));
+      document.getElementById('sfComment').value='';
+    }
+
+    if(promises.length){
+      await Promise.all(promises);
+      await load();openModal(p.id);
+    }
+  });
+
+  renderThread(p);
+}
+
+// ===== THREAD =====
 function renderThread(p){
   const thread=document.getElementById('thread');
   const topLevel=p.comments.filter(c=>!c.parent_id);
   if(!topLevel.length){thread.innerHTML='<p class="no-msg">Ei vielä keskustelua.</p>';return;}
 
+  const fieldLabels={year:'Vuosiarvio',people:'Henkilöt',location:'Paikka',notes:'Lisätiedot',general:''};
+
   thread.innerHTML=topLevel.map(c=>{
     const replies=p.comments.filter(r=>r.parent_id===c.id);
-    const fieldLabel=c.field_type&&c.field_type!=='general'
-      ? `<span class="msg-field">${{year:'Vuosiarvio',people:'Henkilöt',location:'Paikka',notes:'Lisätiedot'}[c.field_type]||''}</span>`:'';
+    const tag=c.field_type&&c.field_type!=='general'?`<span class="msg-tag">${fieldLabels[c.field_type]||''}</span>`:'';
     return `<div class="msg">
-      <div class="msg-head">
-        ${fieldLabel}
-        <span class="msg-author">${esc(c.author_name)}</span>
-        <span class="msg-date">${new Date(c.created_at).toLocaleDateString('fi-FI')}</span>
-        ${adminPw?`<button class="msg-del" data-cid="${c.id}">🗑</button>`:''}
-      </div>
+      <div class="msg-head">${tag}<span class="msg-author">${esc(c.author_name)}</span><span class="msg-date">${fmtDate(c.created_at)}</span>${adminPw?`<button class="msg-del" data-cid="${c.id}">🗑</button>`:''}</div>
       <p class="msg-text">${esc(c.content)}</p>
-      <div class="msg-actions">
-        ${voteButtons(c)}
-        <button class="reply-toggle" data-cid="${c.id}">Vastaa</button>
-      </div>
-      <div class="reply-form" id="rf-${c.id}" style="display:none;">
-        <input type="text" class="mp-inp reply-inp" placeholder="Vastaa..." />
-        <button class="mp-btn mp-btn--sm reply-btn" data-cid="${c.id}" data-pid="${p.id}">Lähetä</button>
+      <div class="msg-foot">${voteBtns(c)}<button class="msg-reply" data-cid="${c.id}">Kommentoi</button></div>
+      <div class="reply-box" id="rb-${c.id}" style="display:none;">
+        <input type="text" class="mp-inp rb-inp" placeholder="Kommenttisi..." />
+        <button class="mp-btn mp-btn--sm rb-btn" data-cid="${c.id}" data-pid="${p.id}">Lähetä</button>
       </div>
       ${replies.length?`<div class="replies">${replies.map(r=>`
         <div class="msg msg--reply">
-          <div class="msg-head">
-            <span class="msg-author">${esc(r.author_name)}</span>
-            <span class="msg-date">${new Date(r.created_at).toLocaleDateString('fi-FI')}</span>
-            ${adminPw?`<button class="msg-del" data-cid="${r.id}">🗑</button>`:''}
-          </div>
+          <div class="msg-head"><span class="msg-author">${esc(r.author_name)}</span><span class="msg-date">${fmtDate(r.created_at)}</span>${adminPw?`<button class="msg-del" data-cid="${r.id}">🗑</button>`:''}</div>
           <p class="msg-text">${esc(r.content)}</p>
-          <div class="msg-actions">${voteButtons(r)}</div>
+          <div class="msg-foot">${voteBtns(r)}</div>
         </div>`).join('')}</div>`:''}
     </div>`;
   }).join('');
 
-  // Bind vote buttons
-  thread.querySelectorAll('.vote-btn').forEach(btn=>{
-    btn.addEventListener('click',async(e)=>{
-      e.stopPropagation();
-      const cid=+btn.dataset.cid, v=+btn.dataset.v;
-      if(voted[cid])return;
-      const r=await fetch('/api/mystery/vote',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({comment_id:cid,vote:v})});
-      if((await r.json()).success){voted[cid]=v;localStorage.setItem('pm_v',JSON.stringify(voted));await load();openModal(curPhoto.id);}
-    });
-  });
+  // Bind votes
+  thread.querySelectorAll('.vote-btn').forEach(btn=>btn.addEventListener('click',async e=>{
+    e.stopPropagation();
+    const cid=+btn.dataset.cid,v=+btn.dataset.v;
+    if(voted[cid])return;
+    const r=await fetch('/api/mystery/vote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({comment_id:cid,vote:v})});
+    if((await r.json()).success){voted[cid]=v;localStorage.setItem('pm_v',JSON.stringify(voted));await load();openModal(curPhoto.id);}
+  }));
 
-  // Bind reply toggles
-  thread.querySelectorAll('.reply-toggle').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const rf=document.getElementById('rf-'+btn.dataset.cid);
-      rf.style.display=rf.style.display==='none'?'flex':'none';
-    });
-  });
+  // Bind Kommentoi toggles
+  thread.querySelectorAll('.msg-reply').forEach(btn=>btn.addEventListener('click',()=>{
+    const rb=document.getElementById('rb-'+btn.dataset.cid);
+    rb.style.display=rb.style.display==='none'?'flex':'none';
+  }));
 
   // Bind reply submit
-  thread.querySelectorAll('.reply-btn').forEach(btn=>{
-    btn.addEventListener('click',async()=>{
-      const inp=btn.parentElement.querySelector('.reply-inp');
-      const txt=inp.value.trim();if(txt.length<2)return;
-      const name=document.getElementById('myName').value.trim()||'Nimetön';
-      await fetch('/api/mystery/comment',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({photo_id:+btn.dataset.pid,author_name:name,content:txt,field_type:'general',parent_id:+btn.dataset.cid})});
-      await load();openModal(curPhoto.id);
-    });
-  });
+  thread.querySelectorAll('.rb-btn').forEach(btn=>btn.addEventListener('click',async()=>{
+    const inp=btn.parentElement.querySelector('.rb-inp');
+    const txt=inp.value.trim();if(txt.length<2)return;
+    const name=(document.getElementById('sfName')||{}).value||'Nimetön';
+    await fetch('/api/mystery/comment',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({photo_id:+btn.dataset.pid,author_name:name.trim()||'Nimetön',content:txt,field_type:'general',parent_id:+btn.dataset.cid})});
+    await load();openModal(curPhoto.id);
+  }));
 
   // Bind admin delete
-  if(adminPw){
-    thread.querySelectorAll('.msg-del').forEach(btn=>{
-      btn.addEventListener('click',async(e)=>{
-        e.stopPropagation();
-        if(!confirm('Poistetaanko?'))return;
-        await fetch('/api/mystery/admin',{method:'POST',headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({password:adminPw,action:'delete_comment',comment_id:+btn.dataset.cid})});
-        await load();openModal(curPhoto.id);
-      });
-    });
-  }
+  if(adminPw){thread.querySelectorAll('.msg-del').forEach(btn=>btn.addEventListener('click',async e=>{
+    e.stopPropagation();if(!confirm('Poistetaanko?'))return;
+    await adminAction('delete_comment',{comment_id:+btn.dataset.cid});
+    await load();openModal(curPhoto.id);
+  }));}
 }
 
-function voteButtons(c){
+function voteBtns(c){
   const v=voted[c.id];
-  return `<button class="vote-btn ${v===1?'vote-on':''}" data-cid="${c.id}" data-v="1">👍 ${c.upvotes||0}</button>
-          <button class="vote-btn ${v===-1?'vote-on':''}" data-cid="${c.id}" data-v="-1">👎 ${c.downvotes||0}</button>`;
+  return `<button class="vote-btn ${v===1?'v-on':''}" data-cid="${c.id}" data-v="1">👍 ${c.upvotes||0}</button><button class="vote-btn ${v===-1?'v-on':''}" data-cid="${c.id}" data-v="-1">👎 ${c.downvotes||0}</button>`;
+}
+
+function fmtDate(d){return new Date(d).toLocaleDateString('fi-FI');}
+
+async function adminAction(action,data){
+  await fetch('/api/mystery/admin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:adminPw,action,...data})});
 }
 
 function closeModal(){modal.style.display='none';document.body.style.overflow='';curPhoto=null;}
@@ -314,28 +295,14 @@ document.getElementById('modalX').addEventListener('click',closeModal);
 document.querySelector('.modal-bg').addEventListener('click',closeModal);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
-// Free comment
-document.getElementById('freeBtn').addEventListener('click',async()=>{
-  const txt=document.getElementById('freeText').value.trim();if(txt.length<2)return;
-  const name=document.getElementById('myName').value.trim()||'Nimetön';
-  await fetch('/api/mystery/comment',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({photo_id:curPhoto.id,author_name:name,content:txt,field_type:'general'})});
-  document.getElementById('freeText').value='';
-  await load();openModal(curPhoto.id);
-});
-
 // Admin toggle + auth
 document.getElementById('adminToggle').addEventListener('click',()=>{
-  const p=document.getElementById('adminPanel');
-  p.style.display=p.style.display==='none'?'block':'none';
+  const p=document.getElementById('adminPanel');p.style.display=p.style.display==='none'?'block':'none';
 });
 document.getElementById('adminPwBtn').addEventListener('click',async()=>{
   const pw=document.getElementById('adminPw').value;
-  if(await verifyPw(pw)){
-    adminPw=pw;
-    document.getElementById('adminAuth').style.display='none';
-    document.getElementById('adminArea').style.display='block';
-  } else { document.getElementById('adminPwErr').style.display='inline'; }
+  if(await verifyPw(pw)){adminPw=pw;document.getElementById('adminAuth').style.display='none';document.getElementById('adminArea').style.display='block';}
+  else{document.getElementById('adminPwErr').style.display='inline';}
 });
 
 // Upload
@@ -351,31 +318,22 @@ document.getElementById('uploadBtn').addEventListener('click',async()=>{
   msg.innerHTML='<span class="msg-load">Ladataan...</span>';
   document.getElementById('uploadBtn').disabled=true;
   try{
-    const r=await fetch('/api/mystery/upload',{method:'POST',body:fd});
-    const d=await r.json();
-    if(d.success){
-      msg.innerHTML='<span class="msg-ok">✓ Kuva ladattu!</span>';
-      document.getElementById('photoFile').value='';
-      document.getElementById('fYear').value='';
-      document.getElementById('fPeople').value='';
-      document.getElementById('fLocation').value='';
-      document.getElementById('fNotes').value='';
-      await load();
-    } else { msg.innerHTML=`<span class="msg-err">${d.error}</span>`; }
+    const r=await fetch('/api/mystery/upload',{method:'POST',body:fd});const d=await r.json();
+    if(d.success){msg.innerHTML='<span class="msg-ok">✓ Kuva ladattu!</span>';
+      ['photoFile','fYear','fPeople','fLocation','fNotes'].forEach(id=>document.getElementById(id).value='');
+      await load();}
+    else{msg.innerHTML=`<span class="msg-err">${d.error}</span>`;}
   }catch(e){msg.innerHTML='<span class="msg-err">Virhe</span>';}
   document.getElementById('uploadBtn').disabled=false;
 });
 
 // Filters
-document.querySelectorAll('.filt').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('.filt').forEach(x=>x.classList.remove('is-on'));
-    b.classList.add('is-on');curFilter=b.dataset.s;renderGrid();
-  });
-});
+document.querySelectorAll('.filt').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.filt').forEach(x=>x.classList.remove('is-on'));
+  b.classList.add('is-on');curFilter=b.dataset.s;renderGrid();
+}));
 
 function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
-
 load();
 </script>
 
@@ -384,7 +342,6 @@ load();
 .mp-header{margin-bottom:var(--space-5)}
 .mp-title{font-family:var(--font-headline);font-size:2rem;font-weight:900;margin:0 0 var(--space-2)}
 .mp-sub{font-size:1rem;color:var(--text-secondary);margin:0 0 var(--space-3);max-width:550px}
-
 .mp-btn{font-family:var(--font-headline);font-size:.85rem;font-weight:700;padding:10px 20px;border-radius:var(--radius-sm);border:2px solid var(--brand-primary);background:var(--brand-primary);color:#000;cursor:pointer;transition:all .15s}
 .mp-btn:hover{background:#e08800;border-color:#e08800}
 .mp-btn--sec{background:transparent;color:var(--brand-primary)}
@@ -393,11 +350,9 @@ load();
 .mp-btn--danger{background:#E24B4A;border-color:#E24B4A;color:#fff}
 .mp-btn--danger:hover{background:#c33;border-color:#c33}
 .mp-btn:disabled{opacity:.5;cursor:not-allowed}
-
 .mp-inp{font-family:var(--font-body);font-size:.9rem;padding:8px 12px;border:2px solid #ddd;border-radius:var(--radius-sm);background:#fff;color:var(--text-primary);width:100%;box-sizing:border-box}
 .mp-inp:focus{border-color:var(--brand-primary);outline:none}
 .mp-ta{min-height:60px;resize:vertical}
-
 .mp-panel{background:#fff;border-radius:var(--radius-md);padding:var(--space-4);margin-bottom:var(--space-4);border:1px solid #eee}
 .panel-title{font-family:var(--font-headline);font-size:1.1rem;font-weight:800;margin:0 0 var(--space-2)}
 .auth-box{display:flex;gap:var(--space-2);align-items:center;flex-wrap:wrap}
@@ -407,16 +362,13 @@ load();
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-2);margin-bottom:var(--space-3)}
 .fg label{display:block;font-size:.8rem;font-weight:600;color:var(--text-secondary);margin-bottom:3px}
 .fg--full{grid-column:1/-1}
-
 .msg-ok{color:#1D9E75;font-weight:600;font-size:.9rem}
 .msg-err{color:#E24B4A;font-weight:600;font-size:.9rem}
 .msg-load{color:var(--brand-primary);font-weight:600;font-size:.9rem}
-
 .filters{display:flex;gap:var(--space-2);margin-bottom:var(--space-4);flex-wrap:wrap}
 .filt{font-family:var(--font-headline);font-size:.78rem;font-weight:700;padding:6px 14px;border-radius:20px;border:2px solid #ccc;background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .15s}
 .filt.is-on,.filt:hover{border-color:var(--brand-primary);color:var(--brand-primary)}
 .filt.is-on{background:var(--brand-primary);color:#000}
-
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-3)}
 .card{background:#fff;border-radius:var(--radius-md);overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s}
 .card:hover{transform:translateY(-3px);box-shadow:0 4px 20px rgba(0,0,0,.12)}
@@ -432,7 +384,6 @@ load();
 .card-unk{font-size:.8rem;color:#aaa;font-style:italic}
 .empty{text-align:center;color:var(--text-secondary);padding:var(--space-6);grid-column:1/-1}
 
-/* Modal */
 .modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center}
 .modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.85)}
 .modal-box{position:relative;background:#fff;border-radius:var(--radius-md);max-width:1100px;width:95%;max-height:90vh;overflow-y:auto}
@@ -443,51 +394,44 @@ load();
 .modal-side{padding:var(--space-4);overflow-y:auto;max-height:80vh}
 
 /* Admin bar */
-.admin-bar{margin-bottom:var(--space-3)}
-.ab-inner{background:#FFF3E0;border-radius:var(--radius-sm);padding:var(--space-3);border:1px solid #FFE0B2}
-.ab-title{font-family:var(--font-headline);font-size:.85rem;font-weight:800;color:var(--brand-primary);margin:0 0 var(--space-2)}
+.ab{background:#FFF3E0;border-radius:var(--radius-sm);padding:var(--space-3);border:1px solid #FFE0B2;margin-bottom:var(--space-3)}
+.ab-title{font-family:var(--font-headline);font-size:.9rem;font-weight:800;color:var(--brand-primary);margin:0 0 var(--space-2)}
 .ab-fields{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-2);margin-bottom:var(--space-2)}
-.ab-f label{font-size:.7rem;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:2px}
+.ab-f label{font-size:.72rem;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:2px}
 .ab-actions{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center}
 .ab-sel{width:auto;min-width:130px}
 
-/* Section A */
-.sec-a{margin-bottom:var(--space-3);padding-bottom:var(--space-3);border-bottom:1px solid #eee}
+/* Section A — Suggest */
+.suggest-section{padding-bottom:var(--space-3);margin-bottom:var(--space-3);border-bottom:2px solid #eee}
 .sec-title{font-family:var(--font-headline);font-size:1rem;font-weight:800;margin:0 0 var(--space-2)}
-.name-row{margin-bottom:var(--space-2)}
-.name-row .mp-inp{max-width:250px}
-.locked-fields{margin-bottom:var(--space-2)}
-.locked-field{font-size:.9rem;margin-bottom:4px;color:var(--text-primary)}
-.lf-label{color:var(--text-secondary);font-weight:600;font-size:.8rem}
-.fi-row{margin-bottom:var(--space-2)}
-.fi-label{font-size:.8rem;font-weight:700;color:var(--text-secondary);display:block;margin-bottom:3px}
-.fi-input-row{display:flex;gap:6px}
-.fi-inp{flex:1}
-.all-done{color:#1D9E75;font-weight:600;font-size:.9rem;margin:0}
+.locked-fields{margin-bottom:var(--space-3)}
+.lf{font-size:.9rem;margin-bottom:4px}.lf-label{font-size:.8rem;color:var(--text-secondary);font-weight:600}
+.suggest-form{display:flex;flex-direction:column;gap:var(--space-2)}
+.sf-row label{display:block;font-size:.8rem;font-weight:700;color:var(--text-secondary);margin-bottom:3px}
+.all-locked{color:#1D9E75;font-weight:600;font-size:.9rem;margin:0 0 var(--space-2)}
 
 /* Section B — Thread */
-.sec-b{margin-top:var(--space-2)}
+.thread-section{margin-top:var(--space-2)}
 .no-msg{color:#aaa;font-style:italic;font-size:.9rem}
-.msg{background:#f5f5f5;border-radius:var(--radius-sm);padding:12px;margin-bottom:var(--space-2)}
-.msg--reply{background:#fafafa;margin-top:8px;margin-left:16px;border-left:2px solid #ddd;padding:10px 12px}
+.msg{background:#f5f5f5;border-radius:var(--radius-sm);padding:12px;margin-bottom:10px}
+.msg--reply{background:#fafafa;margin-top:8px;margin-left:20px;border-left:3px solid #ddd;padding:10px 12px}
 .msg-head{display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap}
-.msg-field{font-size:.65rem;font-weight:700;color:#fff;background:var(--brand-primary);padding:1px 6px;border-radius:8px;text-transform:uppercase}
+.msg-tag{font-size:.62rem;font-weight:700;color:#fff;background:var(--brand-primary);padding:1px 7px;border-radius:8px;text-transform:uppercase}
 .msg-author{font-size:.85rem;font-weight:700;color:var(--text-primary)}
 .msg-date{font-size:.72rem;color:#aaa}
-.msg-del{background:none;border:none;cursor:pointer;font-size:.85rem;opacity:.4;padding:0}
+.msg-del{background:none;border:none;cursor:pointer;font-size:.85rem;opacity:.35;padding:0}
 .msg-del:hover{opacity:1}
 .msg-text{font-size:.9rem;color:var(--text-primary);margin:0 0 6px;line-height:1.5}
-.msg-actions{display:flex;gap:8px;align-items:center}
+.msg-foot{display:flex;gap:8px;align-items:center}
 .vote-btn{background:none;border:1px solid #ddd;border-radius:14px;padding:2px 10px;font-size:.78rem;cursor:pointer;transition:all .15s}
 .vote-btn:hover{border-color:var(--brand-primary)}
-.vote-on{background:#eee;border-color:var(--brand-primary)}
-.reply-toggle{background:none;border:none;font-size:.78rem;color:var(--brand-primary);cursor:pointer;font-weight:600}
-.reply-toggle:hover{text-decoration:underline}
-.reply-form{display:flex;gap:6px;margin-top:8px}
-.reply-inp{flex:1}
+.v-on{background:#eee;border-color:var(--brand-primary)}
+.msg-reply{background:none;border:none;font-size:.78rem;color:var(--brand-primary);cursor:pointer;font-weight:600}
+.msg-reply:hover{text-decoration:underline}
+.reply-box{display:flex;gap:6px;margin-top:8px}
+.rb-inp{flex:1}
 .replies{margin-top:8px}
-.free-comment{margin-top:var(--space-3);display:flex;flex-direction:column;gap:var(--space-2)}
 
 @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.modal-inner{grid-template-columns:1fr}.modal-img-wrap{min-height:250px}.form-grid,.ab-fields{grid-template-columns:1fr}}
-@media(max-width:540px){.grid{grid-template-columns:1fr}.mp-title{font-size:1.5rem}.fi-input-row{flex-direction:column}}
+@media(max-width:540px){.grid{grid-template-columns:1fr}.mp-title{font-size:1.5rem}}
 </style>
