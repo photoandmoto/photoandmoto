@@ -1,0 +1,411 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import TrendingTicker from '../../components/TrendingTicker.astro';
+import UpcomingRaces from '../../components/UpcomingRaces.astro';
+import RotatingHeroSplit from '../../components/RotatingHeroSplit.astro';
+import { getCollection } from 'astro:content';
+import { ui } from '../../i18n/ui';
+
+const lang = 'fi';
+const t = ui[lang];
+
+const articles = (await getCollection('articles', ({ data }) =>
+  data.language === 'fi' && !data.draft
+)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const slugFor = (a: any) => `/fi/aikakone/${a.slug.replace(/^fi\//, '')}`;
+const imgFor = (a: any) => a.data.card_image || a.data.featured_image;
+
+// Featured grid: 1 big + 2 stacked
+const bigCard = articles[0];
+const stackedCards = articles.slice(1, 3);
+
+// Secondary row: 4 cards
+const secondaryCards = articles.slice(3, 7);
+
+// Ticker: latest 5 article titles
+const tickerItems = articles.slice(0, 5).map(a => ({
+  href: slugFor(a),
+  title: a.data.title,
+}));
+
+const galleries = await getCollection('galleries');
+const featuredGalleries = galleries.slice(0, 4);
+
+// Podcast episodes — using archive photos as cover images
+const podcastEpisodes = [
+  {
+    title: 'Heikki Mikkola: Nelinkertainen Motocrossin Maailmanmestari',
+    subtitle: 'Tarina legendaarisesta suomalaiskuljettajasta',
+    href: '/fi/podcast#ep-0',
+    image: '/galleries/hyvinkaa-scramble/display/Heikki Mikkola ja Jaroslav Falta_display.jpg',
+  },
+  {
+    title: 'Honda CR250: Legendan Synty ja Loppu',
+    subtitle: 'Motocrossin ikonisimman pyörän tarina',
+    href: '/fi/podcast#ep-1',
+    image: '/galleries/suomi-70s/display/Arto Vilkman ja Honda CR 250 1979_display.jpg',
+  },
+  {
+    title: 'Suzuki Motocross Racing: From Disastrous Start to Golden Era',
+    subtitle: 'Suzukin tie motocrossin kultaiselle aikakaudelle',
+    href: '/fi/podcast#ep-2',
+    image: '/galleries/international-70s/display/Hyvinkää GP-250 1971 Joel Robertin, Sylvain Geboersin ja Olle Petterssonin Suzukit_display.jpg',
+  },
+  {
+    title: 'Motocross of Nations: Historia ja Voittajat',
+    subtitle: 'Motocross of Nations -kilpailun legendat',
+    href: '/fi/podcast#ep-3',
+    image: '/galleries/international-70s/display/R. De Coster, H.Everts ja A. Malherbe. Motocross Des Nations 500 Ruskeasanta 1979_display.jpg',
+  },
+];
+
+// Build items array for galleries using the existing structure
+const galleryItems = featuredGalleries.map(g => ({
+  href: `/fi/galleria/${g.data.slug}`,
+  image: `/galleries/${g.data.slug}/${g.data.cover_image}`,
+  title: g.data.title,
+  subtitle: t['gallery.photoCount'].replace('{count}', g.data.images.length.toString()),
+}));
+---
+
+<BaseLayout
+  title="Etusivu"
+  lang={lang}
+  description="Motocrossin ja moottoripyöräurheilun kuvia, tarinoita ja tuloksia 1960-luvulta nykypäivään. MXGP 2026, Aikakone-arkisto ja valokuvagalleria."
+>
+  <TrendingTicker label="Nyt luetuimmat" items={tickerItems} slot="pre-header" />
+
+  {/* ===== Typographic hero band ===== */}
+  <section class="hero-band">
+    <div class="container">
+      <div class="hero-band__row">
+        <h1 class="hero-band__title">Vauhtia ja elämää linssin läpi</h1>
+        <p class="hero-band__subtitle">Every frame tells a story</p>
+      </div>
+    </div>
+  </section>
+
+  {/* ===== Featured grid (articles) ===== */}
+  {bigCard && (
+    <section class="section featured-grid-section">
+      <div class="container">
+        <div class="section-header-row">
+          <h2 class="section-heading">Uusimmat artikkelit</h2>
+          <a href="/fi/aikakone" class="section-all-link">Kaikki artikkelit →</a>
+        </div>
+        <div class="hero-split">
+          <div class="hero-split__big">
+            <ArticleCard
+              href={slugFor(bigCard)}
+              image={imgFor(bigCard)}
+              category={bigCard.data.category}
+              title={bigCard.data.title}
+              subtitle={bigCard.data.subtitle}
+              size="lg"
+            />
+          </div>
+          <div class="hero-split__stack">
+            {stackedCards.map(a => (
+              <ArticleCard
+                href={slugFor(a)}
+                image={imgFor(a)}
+                category={a.data.category}
+                title={a.data.title}
+                size="md"
+              />
+            ))}
+          </div>
+        </div>
+
+        {secondaryCards.length > 0 && (
+          <div class="secondary-row">
+            {secondaryCards.map(a => (
+              <ArticleCard
+                href={slugFor(a)}
+                image={imgFor(a)}
+                category={a.data.category}
+                title={a.data.title}
+                size="sm"
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+
+  {/* ===== Upcoming races band ===== */}
+  <UpcomingRaces />
+
+  {/* ===== Gallery section (rotating 1 big + 3 stacked) ===== */}
+  {featuredGalleries.length > 0 && (
+    <section class="section gallery-section">
+      <div class="container">
+        <div class="section-header-row">
+          <h2 class="section-heading">Galleria</h2>
+          <a href="/fi/galleria" class="section-all-link">Kaikki galleriat →</a>
+        </div>
+        <RotatingHeroSplit items={galleryItems} />
+      </div>
+    </section>
+  )}
+
+  {/* ===== Podcast section (rotating 1 big + 3 stacked) ===== */}
+  <section class="section podcast-section">
+    <div class="container">
+      <div class="section-header-row">
+        <h2 class="section-heading">Podcast</h2>
+        <a href="/fi/podcast" class="section-all-link">Kaikki jaksot →</a>
+      </div>
+      <RotatingHeroSplit items={podcastEpisodes} />
+    </div>
+  </section>
+
+  {/* ===== Ota yhteyttä CTA section ===== */}
+  <section class="section cta-section">
+    <div class="container">
+      <h2 class="cta-section__heading">Ota yhteyttä</h2>
+      <div class="cta-grid">
+        <a href="/fi/yhteystiedot" class="cta-card">
+          <h3 class="cta-card__heading">Kuvien käyttö</h3>
+          <p class="cta-card__body">Haluatko käyttää kuviamme? Käsittelemme pyynnöt tapauskohtaisesti.</p>
+        </a>
+        <a href="/fi/yhteystiedot" class="cta-card">
+          <h3 class="cta-card__heading">Kysymykset</h3>
+          <p class="cta-card__body">Mietityttääkö jokin? Meillä voi olla siihen vastaus.</p>
+        </a>
+        <a href="/fi/yhteystiedot" class="cta-card">
+          <h3 class="cta-card__heading">Jutut</h3>
+          <p class="cta-card__body">Jaa aiheeseen liittyvä juttusi artikkelinamme.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ===== Typographic hero band ===== */
+  .hero-band {
+    background: #0e0e0e;
+    padding: var(--space-3) 0;
+  }
+
+  .hero-band__row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .hero-band__title {
+    font-family: var(--font-headline);
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.75);
+    letter-spacing: 0.5px;
+    line-height: 1;
+    margin: 0;
+  }
+
+  .hero-band__subtitle {
+    font-family: var(--font-headline);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.55);
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+
+  /* Section shared */
+  .section-header-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .section-heading {
+    font-family: var(--font-headline);
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .section-all-link {
+    font-family: var(--font-headline);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--brand-primary);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .section-all-link:hover {
+    text-decoration: underline;
+  }
+
+  /* ===== Shared: 1 big + N stacked layout (hero-split) ===== */
+  .hero-split {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: var(--space-3);
+    align-items: stretch;
+  }
+
+  /* Variant for 1 big + 3 stacked (Galleria, Podcast) — wider right column */
+  .hero-split--1-3 {
+    grid-template-columns: 1.3fr 1fr;
+  }
+
+  .hero-split__big {
+    display: flex;
+    min-height: 400px;
+  }
+  .hero-split__big > article {
+    width: 100%;
+  }
+
+  .hero-split__stack {
+    display: grid;
+    grid-template-rows: repeat(auto-fit, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+  .hero-split__stack > article {
+    min-height: 0;
+  }
+
+  /* Articles section */
+  .featured-grid-section {
+    background: var(--bg-secondary);
+    padding-top: var(--space-5);
+    padding-bottom: var(--space-6);
+  }
+
+  /* Secondary row: 4 cards */
+  .secondary-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+
+  /* Gallery section */
+  .gallery-section {
+    background: white;
+    padding: var(--space-6) 0;
+  }
+
+  /* Podcast section */
+  .podcast-section {
+    background: var(--bg-secondary);
+    padding: var(--space-6) 0;
+  }
+
+  /* ===== CTA section ("Ota yhteyttä") ===== */
+  .cta-section {
+    background: white;
+    padding: var(--space-12) 0;
+  }
+
+  .cta-section__heading {
+    font-family: var(--font-headline);
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin: 0 0 var(--space-4);
+  }
+
+  .cta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+  }
+
+  .cta-card {
+    display: block;
+    background: #0e0e0e;
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    text-decoration: none;
+    transition: transform 0.2s ease, background 0.2s ease;
+    border: 1px solid rgba(255, 153, 0, 0.15);
+  }
+
+  .cta-card:hover {
+    transform: translateY(-2px);
+    background: #1a1a1a;
+    border-color: rgba(255, 153, 0, 0.4);
+  }
+
+  .cta-card__heading {
+    font-family: var(--font-headline);
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--brand-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 var(--space-2);
+    line-height: 1.2;
+  }
+
+  .cta-card__body {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* Responsive breakpoints */
+  @media (max-width: 900px) {
+    .hero-split {
+      grid-template-columns: 1fr;
+    }
+    .hero-split__big {
+      min-height: 320px;
+    }
+    .hero-split__stack {
+      grid-template-rows: auto;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .secondary-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .cta-grid {
+      grid-template-columns: 1fr;
+    }
+    .cta-section {
+      padding: var(--space-8) 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-split__stack {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 540px) {
+    .hero-split__stack {
+      grid-template-columns: 1fr;
+    }
+    .secondary-row {
+      grid-template-columns: 1fr;
+    }
+    .section-heading {
+      font-size: 1.4rem;
+    }
+    .hero-band__title {
+      font-size: 1.1rem;
+    }
+    .hero-band__subtitle {
+      font-size: 0.9rem;
+    }
+  }
+</style>
