@@ -10,6 +10,7 @@ const articlesCollection = defineCollection({
     category: z.enum(['MXGP', 'Enduro', 'Speedway', 'Historical', 'Technical', 'Interview']),
     tags: z.array(z.string()),
     featured_image: z.string(),
+    card_image: z.string().optional(),
     show_hero: z.boolean().default(true),
     image_caption: z.string().optional(),
     language: z.enum(['fi', 'en']),

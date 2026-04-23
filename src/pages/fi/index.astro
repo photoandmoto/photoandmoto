@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import TrendingTicker from '../../components/TrendingTicker.astro';
+import UpcomingRaces from '../../components/UpcomingRaces.astro';
 import { getCollection } from 'astro:content';
 import { ui } from '../../i18n/ui';
 
@@ -13,6 +14,7 @@ const articles = (await getCollection('articles', ({ data }) =>
 )).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 const slugFor = (a: any) => `/fi/aikakone/${a.slug.replace(/^fi\//, '')}`;
+const imgFor = (a: any) => a.data.card_image || a.data.featured_image;
 
 // Featured grid: 1 big + 2 stacked
 const bigCard = articles[0];
@@ -29,6 +31,30 @@ const tickerItems = articles.slice(0, 5).map(a => ({
 
 const galleries = await getCollection('galleries');
 const featuredGalleries = galleries.slice(0, 4);
+
+// Podcast episodes (MVP: placeholder image for all)
+const podcastEpisodes = [
+  {
+    title: 'Heikki Mikkola: Nelinkertainen Motocrossin Maailmanmestari',
+    subtitle: 'Tarina legendaarisesta suomalaiskuljettajasta',
+    href: '/fi/podcast#ep-0',
+  },
+  {
+    title: 'Honda CR250: Legendan Synty ja Loppu',
+    subtitle: 'Motocrossin ikonisimman pyörän tarina',
+    href: '/fi/podcast#ep-1',
+  },
+  {
+    title: 'Suzuki Motocross Racing: From Disastrous Start to Golden Era',
+    subtitle: 'Suzukin tie motocrossin kultaiselle aikakaudelle',
+    href: '/fi/podcast#ep-2',
+  },
+  {
+    title: 'Motocross of Nations: Historia ja Voittajat',
+    subtitle: 'Motocross of Nations -kilpailun legendat',
+    href: '/fi/podcast#ep-3',
+  },
+];
 ---
 
 <BaseLayout
@@ -42,11 +68,15 @@ const featuredGalleries = galleries.slice(0, 4);
   {bigCard && (
     <section class="section featured-grid-section">
       <div class="container">
+        <div class="section-header-row">
+          <h2 class="section-heading">Uusimmat artikkelit</h2>
+          <a href="/fi/aikakone" class="section-all-link">Kaikki artikkelit →</a>
+        </div>
         <div class="featured-grid">
           <div class="featured-grid__big">
             <ArticleCard
               href={slugFor(bigCard)}
-              image={bigCard.data.featured_image}
+              image={imgFor(bigCard)}
               category={bigCard.data.category}
               title={bigCard.data.title}
               subtitle={bigCard.data.subtitle}
@@ -57,7 +87,7 @@ const featuredGalleries = galleries.slice(0, 4);
             {stackedCards.map(a => (
               <ArticleCard
                 href={slugFor(a)}
-                image={a.data.featured_image}
+                image={imgFor(a)}
                 category={a.data.category}
                 title={a.data.title}
                 size="md"
@@ -71,7 +101,7 @@ const featuredGalleries = galleries.slice(0, 4);
             {secondaryCards.map(a => (
               <ArticleCard
                 href={slugFor(a)}
-                image={a.data.featured_image}
+                image={imgFor(a)}
                 category={a.data.category}
                 title={a.data.title}
                 size="sm"
@@ -79,94 +109,122 @@ const featuredGalleries = galleries.slice(0, 4);
             ))}
           </div>
         )}
+      </div>
+    </section>
+  )}
 
-        <div class="all-articles-link">
-          <a href="/fi/aikakone" class="btn btn--secondary">Kaikki artikkelit</a>
+  {/* ===== Upcoming races band ===== */}
+  <UpcomingRaces />
+
+  {/* ===== Gallery section (restyled to match article cards) ===== */}
+  {featuredGalleries.length > 0 && (
+    <section class="section gallery-section">
+      <div class="container">
+        <div class="section-header-row">
+          <h2 class="section-heading">Galleria</h2>
+          <a href="/fi/galleria" class="section-all-link">Kaikki galleriat →</a>
+        </div>
+
+        <div class="gallery-grid">
+          {featuredGalleries.map(gallery => (
+            <ArticleCard
+              href={`/fi/galleria/${gallery.data.slug}`}
+              image={`/galleries/${gallery.data.slug}/${gallery.data.cover_image}`}
+              title={gallery.data.title}
+              subtitle={t['gallery.photoCount'].replace('{count}', gallery.data.images.length.toString())}
+              size="sm"
+            />
+          ))}
         </div>
       </div>
     </section>
   )}
 
-  {/* ===== Intro / welcome section ===== */}
-  <section class="intro-section">
+  {/* ===== Podcast section ===== */}
+  <section class="section podcast-section">
     <div class="container">
-      <div class="intro-grid">
-        <div class="intro-col">
-          <h2 class="intro-title">Tervetuloa fiilistelemään</h2>
-          <div class="intro-image-wrap">
-            <img src="/images/intro-gallery.jpg" alt="Tervetuloa fiilistelemään" class="intro-image" />
-          </div>
-          <p class="intro-text">Moottoriurheilun historiaa ja huikeita tarinoita. Päivitämme kuvia ja juttuja jatkuvasti, joten pysy vauhdissa mukana!</p>
-        </div>
-        <div class="intro-col">
-          <h2 class="intro-title">Palaa ajassa taaksepäin</h2>
-          <div class="intro-image-wrap">
-            <img src="/images/intro-articles.jpg" alt="Palaa ajassa taaksepäin" class="intro-image" />
-          </div>
-          <p class="intro-text">Syvenny moottoriurheilun tarinoihin ja tekniikkaan. Tuomme historian sykähdyttävimmät hetket suoraan luoksesi.</p>
-        </div>
+      <div class="section-header-row">
+        <h2 class="section-heading">Podcast</h2>
+        <a href="/fi/podcast" class="section-all-link">Kaikki jaksot →</a>
+      </div>
+
+      <div class="podcast-grid">
+        {podcastEpisodes.map(ep => (
+          <ArticleCard
+            href={ep.href}
+            image="/images/hero-podcast.jpg"
+            title={ep.title}
+            subtitle={ep.subtitle}
+            size="sm"
+          />
+        ))}
       </div>
     </div>
   </section>
-
-  {/* ===== Gallery section ===== */}
-  {featuredGalleries.length > 0 && (
-    <section class="section featured-galleries">
-      <div class="container">
-        <div class="section__header">
-          <h2 class="section__title">Galleria</h2>
-          <p class="section__subtitle">Tutustu kuvagallerioihin</p>
-        </div>
-
-        <p class="gallery-intro">Löydä suosikkihetkesi helposti. Kuvat välittävät historian tunnelman ja vievät sinut suoraan lajin merkittävimpiin hetkiin aidoimmillaan.</p>
-
-        <div class="grid grid--4">
-          {featuredGalleries.map(gallery => (
-            <article class="card">
-              <a href={`/fi/galleria/${gallery.data.slug}`}>
-                <img
-                  src={`/galleries/${gallery.data.slug}/${gallery.data.cover_image}`}
-                  alt={gallery.data.title}
-                  class="card__image"
-                  loading="lazy"
-                />
-                <div class="card__content">
-                  <h3 class="card__title">{gallery.data.title}</h3>
-                  <p class="card__text">
-                    {t['gallery.photoCount'].replace('{count}', gallery.data.images.length.toString())}
-                  </p>
-                </div>
-              </a>
-            </article>
-          ))}
-        </div>
-
-        <div style="text-align: center; margin-top: var(--space-6);">
-          <a href="/fi/galleria" class="btn btn--secondary">Katso kaikki galleriat</a>
-        </div>
-      </div>
-    </section>
-  )}
 </BaseLayout>
 
 <style>
+  /* Section shared */
+  .section-header-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .section-heading {
+    font-family: var(--font-headline);
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .section-all-link {
+    font-family: var(--font-headline);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--brand-primary);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .section-all-link:hover {
+    text-decoration: underline;
+  }
+
+  /* Articles section */
   .featured-grid-section {
     background: var(--bg-secondary);
     padding-top: var(--space-5);
     padding-bottom: var(--space-6);
   }
 
-  /* 1 big + 2 stacked */
+  /* 1 big + 2 stacked — columns sync height */
   .featured-grid {
     display: grid;
     grid-template-columns: 1.6fr 1fr;
     gap: var(--space-3);
+    align-items: stretch;
+  }
+
+  .featured-grid__big {
+    display: flex;
+    min-height: 500px;
+  }
+  .featured-grid__big > article {
+    width: 100%;
   }
 
   .featured-grid__stack {
     display: grid;
     grid-template-rows: 1fr 1fr;
     gap: var(--space-3);
+  }
+  .featured-grid__stack > article {
+    min-height: 0;
   }
 
   /* Secondary row: 4 cards */
@@ -177,80 +235,45 @@ const featuredGalleries = galleries.slice(0, 4);
     margin-top: var(--space-3);
   }
 
-  .all-articles-link {
-    text-align: center;
-    margin-top: var(--space-5);
-  }
-
-  /* Intro section */
-  .intro-section {
-    background: white;
-    color: var(--text-primary);
-    padding: var(--space-8) 0;
-  }
-
-  .intro-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-6);
-    align-items: start;
-  }
-
-  .intro-image-wrap {
-    position: relative;
-    overflow: hidden;
-    border-radius: var(--radius-md);
-    margin-bottom: var(--space-3);
-    height: 280px;
-  }
-
-  .intro-image {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-  }
-
-  .intro-title {
-    font-size: 1.75rem;
-    font-weight: 900;
-    color: var(--text-primary);
-    margin-bottom: var(--space-3);
-    text-align: center;
-  }
-
-  .intro-text {
-    font-size: 1.15rem;
-    line-height: 1.7;
-    color: var(--text-primary);
-    font-weight: 600;
-  }
-
   /* Gallery section */
-  .featured-galleries {
+  .gallery-section {
     background: white;
+    padding: var(--space-6) 0;
   }
 
-  .gallery-intro {
-    max-width: 100%;
-    margin: 0 auto var(--space-6);
-    text-align: center;
-    font-size: 1.15rem;
-    line-height: 1.7;
-    color: var(--text-primary);
-    font-weight: 600;
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
   }
 
-  /* Mobile */
+  /* Podcast section */
+  .podcast-section {
+    background: var(--bg-secondary);
+    padding: var(--space-6) 0;
+  }
+
+  .podcast-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
+  }
+
+  /* Responsive breakpoints */
   @media (max-width: 900px) {
     .featured-grid {
       grid-template-columns: 1fr;
+    }
+    .featured-grid__big {
+      min-height: 320px;
     }
     .featured-grid__stack {
       grid-template-rows: auto auto;
       grid-template-columns: 1fr 1fr;
     }
-    .secondary-row {
+    .secondary-row,
+    .gallery-grid,
+    .podcast-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
@@ -259,10 +282,13 @@ const featuredGalleries = galleries.slice(0, 4);
     .featured-grid__stack {
       grid-template-columns: 1fr;
     }
-    .secondary-row {
+    .secondary-row,
+    .gallery-grid,
+    .podcast-grid {
       grid-template-columns: 1fr;
     }
-    .intro-grid { grid-template-columns: 1fr; }
-    .intro-image-wrap { height: 220px; }
+    .section-heading {
+      font-size: 1.4rem;
+    }
   }
 </style>

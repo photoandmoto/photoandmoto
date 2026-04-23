@@ -1,0 +1,215 @@
+---
+import fs from 'fs';
+
+interface CalendarEvent {
+  date: string;
+  title: string;
+  location: string;
+  description?: string;
+  category: string;
+}
+
+const raw = fs.readFileSync('public/data/calendar.json', 'utf-8');
+const allEvents: CalendarEvent[] = JSON.parse(raw);
+
+const todayStr = new Date().toISOString().split('T')[0];
+
+// Rolling next 5 upcoming races, sorted ascending
+const upcoming = allEvents
+  .filter(e => e.date >= todayStr)
+  .sort((a, b) => a.date.localeCompare(b.date))
+  .slice(0, 5);
+
+const MONTHS_SHORT = ['TAM', 'HEL', 'MAA', 'HUH', 'TOU', 'KES', 'HEI', 'ELO', 'SYY', 'LOK', 'MAR', 'JOU'];
+
+function formatDate(dateStr: string) {
+  const d = new Date(dateStr);
+  return {
+    day: d.getDate(),
+    mon: MONTHS_SHORT[d.getMonth()],
+  };
+}
+
+// Category color map — matches chip colors elsewhere
+const CAT_COLORS: Record<string, string> = {
+  MXGP: '#FF9900',
+  AMA: '#E24B4A',
+  SM: '#1D9E75',
+  SML: '#378ADD',
+  Motocross: '#D4537E',
+  Enduro: '#7F77DD',
+  Trial: '#639922',
+  Muu: '#888',
+};
+---
+
+{upcoming.length > 0 && (
+  <section class="upcoming-section">
+    <div class="container">
+      <div class="upcoming-header">
+        <h2 class="upcoming-title">Tulevat kilpailut</h2>
+        <a href="/fi/kalenteri" class="upcoming-all">Koko kalenteri →</a>
+      </div>
+      <div class="upcoming-grid">
+        {upcoming.map(e => {
+          const d = formatDate(e.date);
+          const catColor = CAT_COLORS[e.category] || CAT_COLORS.Muu;
+          return (
+            <a href="/fi/kalenteri" class="upcoming-card">
+              <div class="upcoming-date">
+                <span class="upcoming-day">{d.day}</span>
+                <span class="upcoming-mon">{d.mon}</span>
+              </div>
+              <div class="upcoming-info">
+                <span class="upcoming-cat" style={`background:${catColor}`}>{e.category}</span>
+                <div class="upcoming-race-title">{e.title}</div>
+                {e.location && <div class="upcoming-loc">{e.location}</div>}
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .upcoming-section {
+    background: white;
+    padding: var(--space-6) 0;
+  }
+
+  .upcoming-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .upcoming-title {
+    font-family: var(--font-headline);
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .upcoming-all {
+    font-family: var(--font-headline);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--brand-primary);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .upcoming-all:hover {
+    text-decoration: underline;
+  }
+
+  .upcoming-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-3);
+  }
+
+  .upcoming-card {
+    display: flex;
+    gap: 12px;
+    background: #F9F9F9;
+    border-radius: var(--radius-md);
+    padding: 12px;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.15s, transform 0.15s;
+    align-items: flex-start;
+  }
+
+  .upcoming-card:hover {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+  }
+
+  .upcoming-date {
+    min-width: 48px;
+    text-align: center;
+    background: #000;
+    border-radius: var(--radius-sm);
+    padding: 8px 4px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .upcoming-day {
+    display: block;
+    font-family: var(--font-headline);
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--brand-primary);
+    line-height: 1;
+  }
+
+  .upcoming-mon {
+    display: block;
+    font-family: var(--font-headline);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.85;
+    margin-top: 3px;
+  }
+
+  .upcoming-info {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .upcoming-cat {
+    display: inline-block;
+    font-family: var(--font-headline);
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #fff;
+    padding: 2px 7px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .upcoming-race-title {
+    font-weight: 700;
+    font-size: 0.88rem;
+    line-height: 1.3;
+    color: var(--text-primary);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .upcoming-loc {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 1000px) {
+    .upcoming-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 540px) {
+    .upcoming-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

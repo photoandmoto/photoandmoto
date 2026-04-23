@@ -3,7 +3,7 @@ interface Props {
   href: string;
   image: string;
   imageAlt?: string;
-  category: string;
+  category?: string;
   title: string;
   subtitle?: string;
   size?: 'lg' | 'md' | 'sm';
@@ -20,7 +20,7 @@ const {
 } = Astro.props;
 
 // Category → CSS class for chip coloring (matches .chip--<key> in styles)
-const categoryKey = category.toLowerCase().replace(/[^a-z0-9]/g, '');
+const categoryKey = category ? category.toLowerCase().replace(/[^a-z0-9]/g, '') : '';
 ---
 
 <article class={`acard acard--${size}`}>
@@ -33,10 +33,10 @@ const categoryKey = category.toLowerCase().replace(/[^a-z0-9]/g, '');
         loading={size === 'lg' ? 'eager' : 'lazy'}
       />
       <div class="acard__overlay"></div>
-      <span class={`chip chip--${categoryKey}`}>{category}</span>
+      {category && <span class={`chip chip--${categoryKey}`}>{category}</span>}
       <div class="acard__text-wrap">
         <h3 class="acard__title">{title}</h3>
-        {size === 'lg' && subtitle && (
+        {subtitle && (
           <p class="acard__subtitle">{subtitle}</p>
         )}
       </div>
@@ -51,6 +51,7 @@ const categoryKey = category.toLowerCase().replace(/[^a-z0-9]/g, '');
     overflow: hidden;
     background: #1a1a1a;
     transition: transform 0.2s ease;
+    height: 100%;
   }
 
   .acard:hover {
@@ -61,18 +62,26 @@ const categoryKey = category.toLowerCase().replace(/[^a-z0-9]/g, '');
     display: block;
     text-decoration: none;
     color: inherit;
+    height: 100%;
   }
 
   .acard__image-wrap {
     position: relative;
     width: 100%;
+    height: 100%;
     overflow: hidden;
   }
 
-  /* Aspect ratios per size */
+  /* Aspect ratios per size — only apply when card can't fill parent */
   .acard--lg .acard__image-wrap { aspect-ratio: 4/3; }
-  .acard--md .acard__image-wrap { aspect-ratio: 1/1; }
+  .acard--md .acard__image-wrap { aspect-ratio: 16/9; }
   .acard--sm .acard__image-wrap { aspect-ratio: 4/3; }
+
+  /* When parent provides height (e.g. grid with fixed rows), fill it */
+  .acard--fill .acard__image-wrap {
+    aspect-ratio: auto;
+    min-height: 100%;
+  }
 
   .acard__image {
     width: 100%;
@@ -156,13 +165,18 @@ const categoryKey = category.toLowerCase().replace(/[^a-z0-9]/g, '');
     margin: 0;
     line-height: 1.15;
     text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .acard--lg .acard__title {
     font-size: clamp(1.4rem, 2.4vw, 2rem);
+    -webkit-line-clamp: 3;
   }
   .acard--md .acard__title {
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 1.2;
   }
   .acard--sm .acard__title {
