@@ -6,56 +6,60 @@ const lang = 'fi';
   <section class="mp">
     <div class="container">
       <div class="mp-header">
-        <h1 class="mp-title">Tunnista kuva</h1>
-        <p class="mp-sub">Auta meitä tunnistamaan vanhoja moottoriurheilukuvia. Kuka on kuvassa? Mistä vuodelta? Missä otettu?</p>
-        <button id="adminToggle" class="mp-btn mp-btn--sec">Ylläpito</button>
+        <div class="mp-header__left">
+          <h1 class="mp-title">Tunnista kuva</h1>
+          <p class="mp-sub">Auta meitä tunnistamaan vanhoja moottoriurheilukuvia.<br/>Kuka on kuvassa? Mistä vuodelta? Missä otettu?</p>
+        </div>
+        <button id="adminToggle" class="btn btn--ghost">Ylläpito</button>
       </div>
 
       <!-- Admin panel -->
-      <div id="adminPanel" class="mp-panel" style="display:none;">
-        <div id="adminAuth" class="auth-box">
-          <input type="password" id="adminPw" class="mp-inp" placeholder="Salasana" />
-          <button id="adminPwBtn" class="mp-btn">Kirjaudu</button>
-          <span id="adminPwErr" class="auth-err" style="display:none;">Väärä salasana</span>
+      <div id="adminPanel" class="admin-panel" style="display:none;">
+        <div id="adminAuth" class="admin-auth">
+          <input type="password" id="adminPw" class="inp" placeholder="Salasana" />
+          <button id="adminPwBtn" class="btn">Kirjaudu</button>
+          <span id="adminPwErr" class="err-msg" style="display:none;">Väärä salasana</span>
         </div>
         <div id="adminArea" style="display:none;">
-          <h3 class="panel-title">Lähetä kuva tunnistettavaksi</h3>
-          <p class="form-hint">Täytä kentät joita tiedät. Tyhjät kentät avautuvat yhteisölle.</p>
-          <div class="form-grid">
-            <div class="fg fg--full"><label>Kuva *</label><input type="file" id="photoFile" accept="image/jpeg,image/png,image/webp" class="mp-inp" /></div>
-            <div class="fg"><label>Vuosiarvio</label><input type="text" id="fYear" class="mp-inp" placeholder="Esim. 1977" /></div>
-            <div class="fg"><label>Henkilöt kuvassa</label><input type="text" id="fPeople" class="mp-inp" placeholder="Keitä tunnistat?" /></div>
-            <div class="fg"><label>Paikka / tapahtuma</label><input type="text" id="fLocation" class="mp-inp" placeholder="Missä otettu?" /></div>
-            <div class="fg"><label>Lisätietoja</label><input type="text" id="fNotes" class="mp-inp" placeholder="Muuta tietoa?" /></div>
+          <div class="upload-section">
+            <h3 class="upload-title">Lähetä kuva tunnistettavaksi</h3>
+            <p class="upload-hint">Täytä kentät joita tiedät. Tyhjät kentät avautuvat yhteisölle.</p>
+            <div class="upload-grid">
+              <div class="uf uf--full"><label>Kuva *</label><input type="file" id="photoFile" accept="image/jpeg,image/png,image/webp" class="inp" /></div>
+              <div class="uf"><label>Vuosiarvio</label><input type="text" id="fYear" class="inp" placeholder="Esim. 1977" /></div>
+              <div class="uf"><label>Henkilöt kuvassa</label><input type="text" id="fPeople" class="inp" placeholder="Keitä tunnistat?" /></div>
+              <div class="uf"><label>Paikka / tapahtuma</label><input type="text" id="fLocation" class="inp" placeholder="Missä otettu?" /></div>
+              <div class="uf"><label>Lisätietoja</label><input type="text" id="fNotes" class="inp" placeholder="Muuta tietoa?" /></div>
+            </div>
+            <button id="uploadBtn" class="btn btn--wide">Lataa kuva</button>
+            <div id="uploadMsg" class="upload-msg"></div>
           </div>
-          <button id="uploadBtn" class="mp-btn">Lataa kuva</button>
-          <div id="uploadMsg"></div>
         </div>
       </div>
 
       <!-- Filters -->
       <div class="filters">
-        <button class="filt is-on" data-s="all">Kaikki</button>
-        <button class="filt" data-s="new">Uudet</button>
-        <button class="filt" data-s="partial">Osittain tunnistettu</button>
+        <button class="pill pill--on" data-s="all">Kaikki</button>
+        <button class="pill" data-s="new">Uudet</button>
+        <button class="pill" data-s="partial">Osittain tunnistettu</button>
       </div>
 
       <!-- Grid -->
-      <div id="grid" class="grid"><div class="empty">Ladataan kuvia...</div></div>
+      <div id="grid" class="photo-grid"><div class="grid-empty">Ladataan kuvia...</div></div>
 
-      <!-- Modal -->
-      <div id="modal" class="modal" style="display:none;">
-        <div class="modal-bg"></div>
-        <div class="modal-box">
-          <button class="modal-x" id="modalX">&#x2715;</button>
-          <div class="modal-layout">
-            <div class="modal-left">
-              <div class="modal-img-wrap"><img id="modalImg" class="modal-img" src="" alt="" /></div>
-              <div id="modalForm" class="modal-form-card"></div>
+      <!-- Modal overlay -->
+      <div id="modal" class="overlay" style="display:none;">
+        <div class="overlay-bg"></div>
+        <div class="lightbox">
+          <button class="lightbox-close" id="modalX">&#x2715;</button>
+          <div class="lightbox-layout">
+            <!-- Left: photo + form -->
+            <div class="lightbox-left">
+              <div class="lb-photo"><img id="modalImg" class="lb-img" src="" alt="" /></div>
+              <div class="lb-form" id="modalForm"></div>
             </div>
-            <div class="modal-right">
-              <div class="modal-thread-card" id="modalThread"></div>
-            </div>
+            <!-- Right: thread -->
+            <div class="lightbox-right" id="modalThread"></div>
           </div>
         </div>
       </div>
@@ -68,123 +72,103 @@ let photos=[],adminPw=null,curFilter='all',curPhoto=null;
 const voted=JSON.parse(localStorage.getItem('pm_v')||'{}');
 const grid=document.getElementById('grid');
 const modal=document.getElementById('modal');
-
 const FIELDS=[
   {key:'year_estimate',label:'Vuosiarvio',type:'year',ph:'Esim. 1977'},
   {key:'people',label:'Henkilöt kuvassa',type:'people',ph:'Kenet tunnistat?'},
   {key:'location_notes',label:'Paikka / tapahtuma',type:'location',ph:'Missä otettu?'},
   {key:'notes',label:'Lisätietoja',type:'notes',ph:'Mitä muuta tiedät?'},
 ];
-const FIELD_LABELS={year:'Vuosiarvio',people:'Henkilöt',location:'Paikka',notes:'Lisätiedot',general:''};
+const FL={year:'Vuosiarvio',people:'Henkilöt',location:'Paikka',notes:'Lisätiedot'};
 
 fetch('/api/mystery/init',{method:'POST'}).catch(()=>{});
-
-async function verifyPw(pw){
-  const r=await fetch('/api/mystery/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});
-  return (await r.json()).valid===true;
-}
+async function verifyPw(pw){const r=await fetch('/api/mystery/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});return(await r.json()).valid===true;}
 
 async function load(){
   try{const r=await fetch('/api/mystery/photos');photos=(await r.json()).photos||[];renderGrid();}
-  catch(e){grid.innerHTML='<div class="empty">Virhe ladattaessa.</div>';}
+  catch(e){grid.innerHTML='<div class="grid-empty">Virhe ladattaessa.</div>';}
 }
 
 function renderGrid(){
   const f=curFilter==='all'?photos:photos.filter(p=>p.status===curFilter);
-  if(!f.length){grid.innerHTML='<div class="empty">Ei kuvia tässä kategoriassa.</div>';return;}
+  if(!f.length){grid.innerHTML='<div class="grid-empty">Ei kuvia tässä kategoriassa.</div>';return;}
   grid.innerHTML=f.map(p=>`
-    <div class="card" data-id="${p.id}">
-      <div class="card-img"><img src="${p.image_url}" alt="" loading="lazy"/>
-        <span class="card-badge card-badge--${p.status}">${p.status==='new'?'Uusi':'Osittain'}</span>
-        ${p.comments.length?`<span class="card-count">${p.comments.length} 💬</span>`:''}
+    <article class="pcard" data-id="${p.id}">
+      <div class="pcard-visual">
+        <img src="${p.image_url}" alt="" loading="lazy"/>
+        <div class="pcard-badge pcard-badge--${p.status}">${p.status==='new'?'Uusi':'Osittain tunnistettu'}</div>
+        ${p.comments.length?`<div class="pcard-comments">💬 ${p.comments.length}</div>`:''}
       </div>
-      <div class="card-info">
-        ${p.people?`<span class="card-who">${esc(p.people)}</span>`:''}
-        ${p.year_estimate?`<span class="card-yr">${esc(p.year_estimate)}</span>`:''}
-        ${!p.people&&!p.year_estimate?'<span class="card-unk">Tuntematon — auta tunnistamaan!</span>':''}
+      <div class="pcard-meta">
+        ${p.people?`<span class="pcard-who">${esc(p.people)}</span>`:''}
+        ${p.year_estimate?`<span class="pcard-yr">${esc(p.year_estimate)}</span>`:''}
+        ${!p.people&&!p.year_estimate?'<span class="pcard-unk">Tuntematon — auta tunnistamaan!</span>':''}
       </div>
-    </div>`).join('');
-  grid.querySelectorAll('.card').forEach(c=>c.addEventListener('click',()=>openModal(+c.dataset.id)));
+    </article>`).join('');
+  grid.querySelectorAll('.pcard').forEach(c=>c.addEventListener('click',()=>openModal(+c.dataset.id)));
 }
 
 function openModal(id){
-  const p=photos.find(x=>x.id===id);if(!p)return;
-  curPhoto=p;
+  const p=photos.find(x=>x.id===id);if(!p)return;curPhoto=p;
   document.getElementById('modalImg').src=p.image_url;
-
-  // Left: form card
-  const formEl=document.getElementById('modalForm');
-  if(adminPw){ renderAdminForm(p,formEl); }
-  else { renderCommunityForm(p,formEl); }
-
-  // Right: thread
+  if(adminPw){renderAdminForm(p);}else{renderCommunityForm(p);}
   renderThread(p);
-
-  modal.style.display='flex';
-  document.body.style.overflow='hidden';
+  modal.style.display='flex';document.body.style.overflow='hidden';
 }
 
-// ===== COMMUNITY FORM =====
-function renderCommunityForm(p,el){
+function renderCommunityForm(p){
+  const el=document.getElementById('modalForm');
   const locked=FIELDS.filter(f=>p[f.key]&&p[f.key].trim());
   const open=FIELDS.filter(f=>!p[f.key]||!p[f.key].trim());
-
   el.innerHTML=`
-    <h3 class="fc-title">Kommentoi tiedoilla</h3>
-    <p class="fc-hint">Yksi tai kaikki</p>
-    ${locked.length?`<div class="fc-locked">${locked.map(f=>`<div class="fc-lf"><span class="fc-lf-label">${f.label}:</span> <strong>${esc(p[f.key])}</strong></div>`).join('')}</div>`:''}
-    <div class="fc-fields">
-      <div class="fc-row"><label>Nimesi (vapaaehtoinen)</label><input type="text" class="fc-inp" id="sfName" placeholder="Nimetön" /></div>
-      ${open.map(f=>`<div class="fc-row"><label>${f.label}</label><input type="text" class="fc-inp sf-inp" data-ft="${f.type}" placeholder="${f.ph}" /></div>`).join('')}
-      <div class="fc-row"><label>Vapaa kommentti</label><textarea class="fc-inp fc-ta" id="sfComment" placeholder="Muita havaintoja..."></textarea></div>
-      <button class="fc-btn" id="sfSubmit">Lähetä</button>
+    <div class="form-card">
+      <div class="form-card__header">
+        <h3>Kommentoi tiedoilla</h3>
+        <span class="form-card__sub">Yksi tai kaikki</span>
+      </div>
+      ${locked.length?`<div class="form-locked">${locked.map(f=>`<div class="form-locked__row"><span class="form-locked__label">${f.label}</span><span class="form-locked__value">${esc(p[f.key])}</span></div>`).join('')}</div>`:''}
+      <div class="form-fields">
+        <div class="ff"><label>Nimesi <span class="ff-opt">(vapaaehtoinen)</span></label><input type="text" class="inp" id="sfName" placeholder="Nimetön" /></div>
+        ${open.map(f=>`<div class="ff"><label>${f.label}</label><input type="text" class="inp sf-inp" data-ft="${f.type}" placeholder="${f.ph}" /></div>`).join('')}
+        <div class="ff"><label>Vapaa kommentti</label><textarea class="inp inp--ta" id="sfComment" placeholder="Muita havaintoja kuvasta..."></textarea></div>
+        <button class="btn btn--wide" id="sfSubmit">Lähetä</button>
+      </div>
     </div>`;
-
   el.querySelector('#sfSubmit').addEventListener('click',async()=>{
     const name=(el.querySelector('#sfName').value.trim())||'Nimetön';
     const promises=[];
     el.querySelectorAll('.sf-inp').forEach(inp=>{
       const val=inp.value.trim();
-      if(val.length>=2){
-        promises.push(fetch('/api/mystery/comment',{method:'POST',headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({photo_id:p.id,author_name:name,content:val,field_type:inp.dataset.ft})}));
-        inp.value='';
-      }
+      if(val.length>=2){promises.push(postComment(p.id,name,val,inp.dataset.ft));inp.value='';}
     });
     const comment=el.querySelector('#sfComment').value.trim();
-    if(comment.length>=2){
-      promises.push(fetch('/api/mystery/comment',{method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({photo_id:p.id,author_name:name,content:comment,field_type:'general'})}));
-      el.querySelector('#sfComment').value='';
-    }
+    if(comment.length>=2){promises.push(postComment(p.id,name,comment,'general'));el.querySelector('#sfComment').value='';}
     if(promises.length){await Promise.all(promises);await load();openModal(p.id);}
   });
 }
 
-// ===== ADMIN FORM =====
-function renderAdminForm(p,el){
+function renderAdminForm(p){
+  const el=document.getElementById('modalForm');
   el.innerHTML=`
-    <h3 class="fc-title ab-color">Ylläpito</h3>
-    <div class="fc-fields">
-      ${FIELDS.map(f=>`<div class="fc-row"><label>${f.label}</label><input type="text" class="fc-inp" id="ab_${f.key}" value="${esc(p[f.key]||'')}" /></div>`).join('')}
-      <div class="ab-bar">
-        <button class="fc-btn" id="abSave">Tallenna</button>
-        <select class="fc-inp ab-sel" id="abStatus">
-          <option value="new" ${p.status==='new'?'selected':''}>Uusi</option>
-          <option value="partial" ${p.status==='partial'?'selected':''}>Osittain</option>
-          <option value="identified" ${p.status==='identified'?'selected':''}>Tunnistettu</option>
-        </select>
-        <button class="fc-btn ab-status-btn" id="abSetStatus">Päivitä tila</button>
+    <div class="form-card form-card--admin">
+      <div class="form-card__header form-card__header--admin">
+        <h3>Ylläpito</h3>
       </div>
-      <button class="fc-btn fc-btn--danger" id="abDel">Poista kuva</button>
+      <div class="form-fields">
+        ${FIELDS.map(f=>`<div class="ff"><label>${f.label}</label><input type="text" class="inp" id="ab_${f.key}" value="${esc(p[f.key]||'')}" /></div>`).join('')}
+        <button class="btn btn--wide" id="abSave">Tallenna tiedot</button>
+        <div class="admin-controls">
+          <select class="inp inp--sel" id="abStatus">
+            <option value="new" ${p.status==='new'?'selected':''}>Uusi</option>
+            <option value="partial" ${p.status==='partial'?'selected':''}>Osittain tunnistettu</option>
+            <option value="identified" ${p.status==='identified'?'selected':''}>Tunnistettu</option>
+          </select>
+          <button class="btn btn--sm" id="abSetStatus">Päivitä</button>
+          <button class="btn btn--sm btn--danger" id="abDel">Poista</button>
+        </div>
+      </div>
     </div>`;
-
   el.querySelector('#abSave').addEventListener('click',async()=>{
-    await adminAction('update_meta',{photo_id:p.id,
-      year_estimate:el.querySelector('#ab_year_estimate').value,
-      people:el.querySelector('#ab_people').value,
-      location_notes:el.querySelector('#ab_location_notes').value,
-      notes:el.querySelector('#ab_notes').value});
+    await adminAction('update_meta',{photo_id:p.id,year_estimate:el.querySelector('#ab_year_estimate').value,people:el.querySelector('#ab_people').value,location_notes:el.querySelector('#ab_location_notes').value,notes:el.querySelector('#ab_notes').value});
     await load();openModal(p.id);
   });
   el.querySelector('#abSetStatus').addEventListener('click',async()=>{
@@ -193,270 +177,251 @@ function renderAdminForm(p,el){
   });
   el.querySelector('#abDel').addEventListener('click',async()=>{
     if(!confirm('Poistetaanko kuva pysyvästi?'))return;
-    await adminAction('delete_photo',{photo_id:p.id});
-    closeModal();await load();
+    await adminAction('delete_photo',{photo_id:p.id});closeModal();await load();
   });
 }
 
-// ===== THREAD =====
 function renderThread(p){
-  const threadEl=document.getElementById('modalThread');
-  const topLevel=p.comments.filter(c=>!c.parent_id);
-
-  let html=`<h3 class="th-title">Kommentoi keskustelua</h3>`;
-  if(!topLevel.length){
-    html+=`<p class="th-empty">Ei vielä keskustelua.</p>`;
-  } else {
-    html+=`<div class="th-list">`;
-    html+=topLevel.map(c=>{
+  const el=document.getElementById('modalThread');
+  const top=p.comments.filter(c=>!c.parent_id);
+  let h=`<div class="thread-card"><div class="thread-card__header"><h3>Kommentoi keskustelua</h3></div>`;
+  if(!top.length){h+=`<p class="thread-empty">Ei vielä keskustelua. Ole ensimmäinen!</p>`;}
+  else{
+    h+=`<div class="thread-list">`;
+    top.forEach(c=>{
       const replies=p.comments.filter(r=>r.parent_id===c.id);
-      const tag=c.field_type&&c.field_type!=='general'?`<span class="th-tag">${FIELD_LABELS[c.field_type]||''}</span>`:'';
-      return `<div class="th-post">
-        <div class="th-head">${tag}<span class="th-author">${esc(c.author_name)}</span><span class="th-date">${fmtDate(c.created_at)}</span>${adminPw?`<button class="th-del" data-cid="${c.id}">🗑</button>`:''}</div>
-        ${c.field_type&&c.field_type!=='general'?`<div class="th-field-label">${FIELD_LABELS[c.field_type]}:</div>`:''}
-        <p class="th-text">${esc(c.content)}</p>
-        <div class="th-foot">${voteBtns(c)}<button class="th-reply-btn" data-cid="${c.id}">Kommentoi</button></div>
-        <div class="th-reply-box" id="rb-${c.id}" style="display:none;">
-          <input type="text" class="fc-inp th-reply-inp" placeholder="Kommenttisi..." />
-          <button class="fc-btn fc-btn--sm th-reply-send" data-cid="${c.id}" data-pid="${p.id}">Lähetä</button>
-        </div>
-        ${replies.length?`<div class="th-replies">${replies.map(r=>`
-          <div class="th-post th-post--reply">
-            <div class="th-head"><span class="th-author">${esc(r.author_name)}</span><span class="th-date">${fmtDate(r.created_at)}</span>${adminPw?`<button class="th-del" data-cid="${r.id}">🗑</button>`:''}</div>
-            <p class="th-text">${esc(r.content)}</p>
-            <div class="th-foot">${voteBtns(r)}</div>
-          </div>`).join('')}</div>`:''}
-      </div>`;
-    }).join('');
-    html+=`</div>`;
+      const tag=c.field_type&&c.field_type!=='general'?`<span class="post-tag">${FL[c.field_type]||''}</span>`:'';
+      h+=`<div class="post">
+        <div class="post-header">${tag}<span class="post-author">${esc(c.author_name)}</span><time class="post-date">${fmtDate(c.created_at)}</time>${adminPw?`<button class="post-del" data-cid="${c.id}">🗑</button>`:''}</div>
+        <p class="post-body">${esc(c.content)}</p>
+        <div class="post-actions">${voteBtns(c)}<button class="post-reply-btn" data-cid="${c.id}">Kommentoi</button></div>
+        <div class="post-reply-box" id="rb-${c.id}" style="display:none;"><input type="text" class="inp post-reply-inp" placeholder="Kirjoita kommentti..." /><button class="btn btn--sm post-reply-send" data-cid="${c.id}" data-pid="${p.id}">Lähetä</button></div>`;
+      if(replies.length){
+        h+=`<div class="post-replies">`;
+        replies.forEach(r=>{
+          h+=`<div class="post post--child">
+            <div class="post-header"><span class="post-author">${esc(r.author_name)}</span><time class="post-date">${fmtDate(r.created_at)}</time>${adminPw?`<button class="post-del" data-cid="${r.id}">🗑</button>`:''}</div>
+            <p class="post-body">${esc(r.content)}</p>
+            <div class="post-actions">${voteBtns(r)}</div>
+          </div>`;
+        });
+        h+=`</div>`;
+      }
+      h+=`</div>`;
+    });
+    h+=`</div>`;
   }
-  threadEl.innerHTML=html;
+  h+=`</div>`;
+  el.innerHTML=h;
 
-  // Bind votes
-  threadEl.querySelectorAll('.th-vote').forEach(btn=>btn.addEventListener('click',async e=>{
-    e.stopPropagation();
-    const cid=+btn.dataset.cid,v=+btn.dataset.v;
-    if(voted[cid])return;
+  el.querySelectorAll('.th-vote').forEach(btn=>btn.addEventListener('click',async e=>{
+    e.stopPropagation();const cid=+btn.dataset.cid,v=+btn.dataset.v;if(voted[cid])return;
     const r=await fetch('/api/mystery/vote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({comment_id:cid,vote:v})});
     if((await r.json()).success){voted[cid]=v;localStorage.setItem('pm_v',JSON.stringify(voted));await load();openModal(curPhoto.id);}
   }));
-
-  // Bind Kommentoi toggles
-  threadEl.querySelectorAll('.th-reply-btn').forEach(btn=>btn.addEventListener('click',()=>{
-    const rb=document.getElementById('rb-'+btn.dataset.cid);
-    rb.style.display=rb.style.display==='none'?'flex':'none';
+  el.querySelectorAll('.post-reply-btn').forEach(btn=>btn.addEventListener('click',()=>{
+    const rb=document.getElementById('rb-'+btn.dataset.cid);rb.style.display=rb.style.display==='none'?'flex':'none';
   }));
-
-  // Bind reply submit
-  threadEl.querySelectorAll('.th-reply-send').forEach(btn=>btn.addEventListener('click',async()=>{
-    const inp=btn.parentElement.querySelector('.th-reply-inp');
-    const txt=inp.value.trim();if(txt.length<2)return;
-    const nameEl=document.getElementById('sfName');
-    const name=nameEl?nameEl.value.trim()||'Nimetön':'Nimetön';
-    await fetch('/api/mystery/comment',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({photo_id:+btn.dataset.pid,author_name:name,content:txt,field_type:'general',parent_id:+btn.dataset.cid})});
+  el.querySelectorAll('.post-reply-send').forEach(btn=>btn.addEventListener('click',async()=>{
+    const inp=btn.parentElement.querySelector('.post-reply-inp');const txt=inp.value.trim();if(txt.length<2)return;
+    const nameEl=document.getElementById('sfName');const name=nameEl?nameEl.value.trim()||'Nimetön':'Nimetön';
+    await postComment(+btn.dataset.pid,name,txt,'general',+btn.dataset.cid);
     await load();openModal(curPhoto.id);
   }));
-
-  // Admin delete
-  if(adminPw){threadEl.querySelectorAll('.th-del').forEach(btn=>btn.addEventListener('click',async e=>{
+  if(adminPw){el.querySelectorAll('.post-del').forEach(btn=>btn.addEventListener('click',async e=>{
     e.stopPropagation();if(!confirm('Poistetaanko?'))return;
-    await adminAction('delete_comment',{comment_id:+btn.dataset.cid});
-    await load();openModal(curPhoto.id);
+    await adminAction('delete_comment',{comment_id:+btn.dataset.cid});await load();openModal(curPhoto.id);
   }));}
 }
 
 function voteBtns(c){
   const v=voted[c.id];
-  return `<button class="th-vote ${v===1?'th-vote--on':''}" data-cid="${c.id}" data-v="1">👍 ${c.upvotes||0}</button><button class="th-vote ${v===-1?'th-vote--on':''}" data-cid="${c.id}" data-v="-1">👎 ${c.downvotes||0}</button>`;
+  return `<button class="th-vote ${v===1?'th-vote--on':''}" data-cid="${c.id}" data-v="1">👍 <span>${c.upvotes||0}</span></button><button class="th-vote ${v===-1?'th-vote--on':''}" data-cid="${c.id}" data-v="-1">👎 <span>${c.downvotes||0}</span></button>`;
 }
 
+async function postComment(pid,name,text,ft,parentId){
+  return fetch('/api/mystery/comment',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({photo_id:pid,author_name:name,content:text,field_type:ft,parent_id:parentId||null})});
+}
 function fmtDate(d){return new Date(d).toLocaleDateString('fi-FI');}
-async function adminAction(action,data){
-  await fetch('/api/mystery/admin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:adminPw,action,...data})});
-}
-
+async function adminAction(a,d){await fetch('/api/mystery/admin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:adminPw,action:a,...d})});}
 function closeModal(){modal.style.display='none';document.body.style.overflow='';curPhoto=null;}
 document.getElementById('modalX').addEventListener('click',closeModal);
-document.querySelector('.modal-bg').addEventListener('click',closeModal);
+document.querySelector('.overlay-bg').addEventListener('click',closeModal);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
-// Admin toggle + auth
-document.getElementById('adminToggle').addEventListener('click',()=>{
-  const p=document.getElementById('adminPanel');p.style.display=p.style.display==='none'?'block':'none';
-});
+document.getElementById('adminToggle').addEventListener('click',()=>{const p=document.getElementById('adminPanel');p.style.display=p.style.display==='none'?'block':'none';});
 document.getElementById('adminPwBtn').addEventListener('click',async()=>{
   const pw=document.getElementById('adminPw').value;
   if(await verifyPw(pw)){adminPw=pw;document.getElementById('adminAuth').style.display='none';document.getElementById('adminArea').style.display='block';}
   else{document.getElementById('adminPwErr').style.display='inline';}
 });
-
-// Upload
 document.getElementById('uploadBtn').addEventListener('click',async()=>{
   const file=document.getElementById('photoFile').files[0];if(!file)return;
-  const fd=new FormData();
-  fd.append('photo',file);fd.append('password',adminPw);
-  fd.append('year_estimate',document.getElementById('fYear').value);
-  fd.append('people',document.getElementById('fPeople').value);
-  fd.append('location_notes',document.getElementById('fLocation').value);
-  fd.append('notes',document.getElementById('fNotes').value);
-  const msg=document.getElementById('uploadMsg');
-  msg.innerHTML='<span class="msg-load">Ladataan...</span>';
-  document.getElementById('uploadBtn').disabled=true;
-  try{
-    const r=await fetch('/api/mystery/upload',{method:'POST',body:fd});const d=await r.json();
-    if(d.success){msg.innerHTML='<span class="msg-ok">✓ Kuva ladattu!</span>';
-      ['photoFile','fYear','fPeople','fLocation','fNotes'].forEach(id=>document.getElementById(id).value='');
-      await load();}
-    else{msg.innerHTML=`<span class="msg-err">${d.error}</span>`;}
-  }catch(e){msg.innerHTML='<span class="msg-err">Virhe</span>';}
-  document.getElementById('uploadBtn').disabled=false;
+  const fd=new FormData();fd.append('photo',file);fd.append('password',adminPw);
+  fd.append('year_estimate',document.getElementById('fYear').value);fd.append('people',document.getElementById('fPeople').value);
+  fd.append('location_notes',document.getElementById('fLocation').value);fd.append('notes',document.getElementById('fNotes').value);
+  const msg=document.getElementById('uploadMsg');msg.innerHTML='<span class="u-load">Ladataan...</span>';document.getElementById('uploadBtn').disabled=true;
+  try{const r=await fetch('/api/mystery/upload',{method:'POST',body:fd});const d=await r.json();
+    if(d.success){msg.innerHTML='<span class="u-ok">✓ Kuva ladattu!</span>';['photoFile','fYear','fPeople','fLocation','fNotes'].forEach(id=>document.getElementById(id).value='');await load();}
+    else{msg.innerHTML=`<span class="u-err">${d.error}</span>`;}}
+  catch(e){msg.innerHTML='<span class="u-err">Virhe</span>';}document.getElementById('uploadBtn').disabled=false;
 });
-
-// Filters
-document.querySelectorAll('.filt').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('.filt').forEach(x=>x.classList.remove('is-on'));
-  b.classList.add('is-on');curFilter=b.dataset.s;renderGrid();
-}));
-
+document.querySelectorAll('.pill').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.pill').forEach(x=>x.classList.remove('pill--on'));b.classList.add('pill--on');curFilter=b.dataset.s;renderGrid();}));
 function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
 load();
 </script>
 
 <style is:global>
-/* ===== Page ===== */
-.mp{background:var(--bg-secondary);padding:var(--space-6) 0 var(--space-12);min-height:80vh}
-.mp-header{margin-bottom:var(--space-5)}
-.mp-title{font-family:var(--font-headline);font-size:2rem;font-weight:900;margin:0 0 var(--space-2)}
-.mp-sub{font-size:1rem;color:var(--text-secondary);margin:0 0 var(--space-3);max-width:550px}
-.mp-btn{font-family:var(--font-headline);font-size:.85rem;font-weight:700;padding:10px 20px;border-radius:8px;border:2px solid var(--brand-primary);background:var(--brand-primary);color:#000;cursor:pointer;transition:all .15s}
-.mp-btn:hover{background:#e08800;border-color:#e08800}
-.mp-btn--sec{background:transparent;color:var(--brand-primary)}
-.mp-btn--sec:hover{background:var(--brand-primary);color:#000}
-.mp-btn:disabled{opacity:.5;cursor:not-allowed}
-.mp-inp{font-family:var(--font-body);font-size:.9rem;padding:8px 12px;border:2px solid #ddd;border-radius:6px;background:#fff;color:var(--text-primary);width:100%;box-sizing:border-box}
-.mp-inp:focus{border-color:var(--brand-primary);outline:none}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap');
 
-/* Admin top panel */
-.mp-panel{background:#fff;border-radius:12px;padding:24px;margin-bottom:20px;border:1px solid #eee}
-.panel-title{font-family:var(--font-headline);font-size:1.1rem;font-weight:800;margin:0 0 8px}
-.auth-box{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.auth-box .mp-inp{flex:1;min-width:150px;max-width:280px}
-.auth-err{color:#E24B4A;font-size:.85rem;font-weight:600}
-.form-hint{font-size:.85rem;color:var(--text-secondary);margin:0 0 16px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.fg label{display:block;font-size:.8rem;font-weight:600;color:var(--text-secondary);margin-bottom:3px}
-.fg--full{grid-column:1/-1}
-.msg-ok{color:#1D9E75;font-weight:600;font-size:.9rem}
-.msg-err{color:#E24B4A;font-weight:600;font-size:.9rem}
-.msg-load{color:var(--brand-primary);font-weight:600;font-size:.9rem}
+/* ===== PAGE ===== */
+.mp{background:#f4f3f1;padding:48px 0 80px;min-height:80vh;font-family:'DM Sans',var(--font-body),sans-serif}
+.mp-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:32px;gap:20px;flex-wrap:wrap}
+.mp-title{font-family:var(--font-headline);font-size:2.2rem;font-weight:900;margin:0 0 6px;color:#111;letter-spacing:-.5px}
+.mp-sub{font-size:.95rem;color:#666;margin:0;line-height:1.6}
 
-/* Filters */
-.filters{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
-.filt{font-family:var(--font-headline);font-size:.78rem;font-weight:700;padding:6px 14px;border-radius:20px;border:2px solid #ccc;background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .15s}
-.filt.is-on,.filt:hover{border-color:var(--brand-primary);color:var(--brand-primary)}
-.filt.is-on{background:var(--brand-primary);color:#000}
+/* ===== BUTTONS ===== */
+.btn{font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:700;padding:11px 24px;border-radius:10px;border:none;background:#ff9900;color:#000;cursor:pointer;transition:all .2s ease;letter-spacing:.2px}
+.btn:hover{background:#e88a00;transform:translateY(-1px);box-shadow:0 4px 12px rgba(255,153,0,.3)}
+.btn:active{transform:translateY(0)}
+.btn--ghost{background:transparent;border:2px solid #ccc;color:#555}
+.btn--ghost:hover{border-color:#ff9900;color:#ff9900;background:transparent;box-shadow:none}
+.btn--wide{width:100%;text-align:center;padding:13px}
+.btn--sm{padding:8px 16px;font-size:.78rem}
+.btn--danger{background:#dc3545;color:#fff}.btn--danger:hover{background:#b02a37;box-shadow:0 4px 12px rgba(220,53,69,.3)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
 
-/* Grid */
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.card{background:#fff;border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s}
-.card:hover{transform:translateY(-3px);box-shadow:0 4px 20px rgba(0,0,0,.12)}
-.card-img{position:relative;aspect-ratio:4/3;overflow:hidden}
-.card-img img{width:100%;height:100%;object-fit:cover;display:block}
-.card-badge{position:absolute;top:8px;left:8px;font-family:var(--font-headline);font-size:.6rem;font-weight:700;color:#fff;padding:2px 8px;border-radius:10px;text-transform:uppercase}
-.card-badge--new{background:var(--brand-primary)}
-.card-badge--partial{background:#378ADD}
-.card-count{position:absolute;bottom:8px;right:8px;font-size:.75rem;font-weight:700;color:#fff;background:rgba(0,0,0,.6);padding:2px 8px;border-radius:10px}
-.card-info{padding:10px 12px}
-.card-who{font-size:.8rem;font-weight:600;color:var(--text-primary)}
-.card-yr{font-size:.8rem;font-weight:700;color:var(--brand-primary);margin-left:6px}
-.card-unk{font-size:.8rem;color:#aaa;font-style:italic}
-.empty{text-align:center;color:var(--text-secondary);padding:40px;grid-column:1/-1}
+/* ===== INPUTS ===== */
+.inp{font-family:'DM Sans',sans-serif;font-size:.88rem;padding:10px 14px;border:2px solid #e0e0e0;border-radius:10px;background:#fff;color:#222;width:100%;box-sizing:border-box;transition:border-color .2s}
+.inp:focus{border-color:#ff9900;outline:none;box-shadow:0 0 0 3px rgba(255,153,0,.1)}
+.inp--ta{min-height:60px;resize:vertical}
+.inp--sel{width:auto;min-width:140px;cursor:pointer}
 
-/* ===== MODAL ===== */
-.modal{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px}
-.modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.85)}
-.modal-box{position:relative;background:#f0f0f0;border-radius:16px;max-width:1200px;width:100%;max-height:90vh;overflow:hidden}
-.modal-x{position:absolute;top:12px;right:16px;font-size:1.5rem;background:none;border:none;cursor:pointer;color:#666;z-index:10}
+/* ===== ADMIN PANEL ===== */
+.admin-panel{background:#fff;border-radius:16px;padding:28px;margin-bottom:24px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.admin-auth{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.admin-auth .inp{flex:1;min-width:150px;max-width:300px}
+.err-msg{color:#dc3545;font-size:.85rem;font-weight:600}
+.upload-section{margin-top:4px}
+.upload-title{font-family:var(--font-headline);font-size:1.1rem;font-weight:800;margin:0 0 6px;color:#111}
+.upload-hint{font-size:.85rem;color:#888;margin:0 0 16px}
+.upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.uf label{display:block;font-size:.78rem;font-weight:700;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.uf--full{grid-column:1/-1}
+.upload-msg{margin-top:8px}
+.u-ok{color:#1a8a5c;font-weight:700;font-size:.88rem}.u-err{color:#dc3545;font-weight:700;font-size:.88rem}.u-load{color:#ff9900;font-weight:700;font-size:.88rem}
 
-/* Three-area layout */
-.modal-layout{display:grid;grid-template-columns:1fr 1fr;max-height:90vh}
-.modal-left{display:flex;flex-direction:column;overflow:hidden}
-.modal-img-wrap{background:#000;display:flex;align-items:center;justify-content:center;flex:0 0 auto;max-height:50vh}
-.modal-img{width:100%;height:100%;max-height:50vh;object-fit:contain}
+/* ===== FILTERS ===== */
+.filters{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.pill{font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:700;padding:8px 18px;border-radius:24px;border:2px solid #ddd;background:#fff;color:#777;cursor:pointer;transition:all .2s}
+.pill:hover{border-color:#ff9900;color:#ff9900}
+.pill--on{background:#ff9900;border-color:#ff9900;color:#000;box-shadow:0 2px 8px rgba(255,153,0,.25)}
 
-/* Form card (below photo on left) */
-.modal-form-card{background:#fff;border-radius:12px;margin:12px;padding:20px;flex:1;overflow-y:auto}
+/* ===== PHOTO GRID ===== */
+.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.pcard{background:#fff;border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .25s ease,box-shadow .25s ease;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.pcard:hover{transform:translateY(-5px);box-shadow:0 12px 32px rgba(0,0,0,.12)}
+.pcard-visual{position:relative;aspect-ratio:4/3;overflow:hidden}
+.pcard-visual img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
+.pcard:hover .pcard-visual img{transform:scale(1.04)}
+.pcard-badge{position:absolute;top:10px;left:10px;font-family:'DM Sans',sans-serif;font-size:.62rem;font-weight:700;color:#fff;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;backdrop-filter:blur(4px)}
+.pcard-badge--new{background:rgba(255,153,0,.9)}
+.pcard-badge--partial{background:rgba(55,138,221,.9)}
+.pcard-comments{position:absolute;bottom:10px;right:10px;font-size:.78rem;font-weight:700;color:#fff;background:rgba(0,0,0,.55);padding:4px 10px;border-radius:20px;backdrop-filter:blur(4px)}
+.pcard-meta{padding:12px 14px}
+.pcard-who{font-size:.85rem;font-weight:600;color:#222}
+.pcard-yr{font-size:.82rem;font-weight:700;color:#ff9900;margin-left:6px}
+.pcard-unk{font-size:.82rem;color:#aaa;font-style:italic}
+.grid-empty{text-align:center;color:#999;padding:48px;grid-column:1/-1;font-size:.95rem}
 
-/* Thread card (right side, full height) */
-.modal-right{overflow-y:auto;max-height:90vh;padding:12px 12px 12px 0}
-.modal-thread-card{background:#fff;border-radius:12px;padding:20px;min-height:100%}
+/* ===== MODAL OVERLAY ===== */
+.overlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px}
+.overlay-bg{position:absolute;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(8px)}
 
-/* ===== FORM CARD CONTENT ===== */
-.fc-title{font-family:var(--font-headline);font-size:1rem;font-weight:800;margin:0 0 4px;color:var(--text-primary)}
-.ab-color{color:var(--brand-primary)}
-.fc-hint{font-size:.82rem;color:var(--text-secondary);margin:0 0 12px}
-.fc-locked{margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #eee}
-.fc-lf{font-size:.88rem;margin-bottom:4px}
-.fc-lf-label{font-size:.78rem;color:var(--text-secondary);font-weight:600}
-.fc-fields{display:flex;flex-direction:column;gap:10px}
-.fc-row label{display:block;font-size:.78rem;font-weight:700;color:var(--text-secondary);margin-bottom:3px}
-.fc-inp{font-family:var(--font-body);font-size:.88rem;padding:8px 12px;border:2px solid #ddd;border-radius:6px;background:#fff;color:var(--text-primary);width:100%;box-sizing:border-box}
-.fc-inp:focus{border-color:var(--brand-primary);outline:none}
-.fc-ta{min-height:50px;resize:vertical}
-.fc-btn{font-family:var(--font-headline);font-size:.82rem;font-weight:700;padding:10px 20px;border-radius:8px;border:2px solid var(--brand-primary);background:var(--brand-primary);color:#000;cursor:pointer;transition:all .15s;width:100%;text-align:center}
-.fc-btn:hover{background:#e08800;border-color:#e08800}
-.fc-btn--sm{padding:6px 14px;font-size:.78rem;width:auto}
-.fc-btn--danger{background:#E24B4A;border-color:#E24B4A;color:#fff;margin-top:8px}
-.fc-btn--danger:hover{background:#c33;border-color:#c33}
+/* ===== LIGHTBOX ===== */
+.lightbox{position:relative;background:#f4f3f1;border-radius:20px;max-width:1200px;width:100%;height:88vh;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.4)}
+.lightbox-close{position:absolute;top:16px;right:20px;font-size:1.3rem;background:rgba(0,0,0,.5);border:none;cursor:pointer;color:#fff;z-index:10;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.lightbox-close:hover{background:rgba(0,0,0,.8)}
 
-/* Admin bar inside form card */
-.ab-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.ab-sel{width:auto;min-width:120px;flex:0}
-.ab-status-btn{width:auto}
+.lightbox-layout{display:grid;grid-template-columns:1fr 1fr;height:100%}
 
-/* ===== THREAD CARD CONTENT ===== */
-.th-title{font-family:var(--font-headline);font-size:1rem;font-weight:800;margin:0 0 16px;color:var(--text-primary)}
-.th-empty{color:#aaa;font-style:italic;font-size:.9rem}
+/* Left column: photo + form, scrollable */
+.lightbox-left{display:flex;flex-direction:column;height:100%;overflow-y:auto;background:#eae9e6}
+.lb-photo{background:#111;display:flex;align-items:center;justify-content:center;flex-shrink:0;min-height:280px;max-height:50%}
+.lb-img{width:100%;height:100%;object-fit:contain;max-height:100%}
+.lb-form{padding:16px;flex-shrink:0}
 
-.th-list{display:flex;flex-direction:column;gap:12px}
+/* Right column: thread, scrollable */
+.lightbox-right{height:100%;overflow-y:auto;padding:16px}
 
-.th-post{background:#f7f7f7;border-radius:10px;padding:14px;border:1px solid #eee}
-.th-post--reply{background:#fafafa;margin-top:10px;margin-left:20px;border-left:3px solid #ddd;border-radius:6px}
+/* ===== FORM CARD ===== */
+.form-card{background:#fff;border-radius:14px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.form-card--admin{border:2px solid #ffe0a0}
+.form-card__header{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f0f0f0}
+.form-card__header h3{font-family:var(--font-headline);font-size:1.05rem;font-weight:800;margin:0;color:#222}
+.form-card__header--admin h3{color:#ff9900}
+.form-card__sub{font-size:.82rem;color:#999;margin-top:2px;display:block}
 
-.th-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
-.th-tag{font-size:.6rem;font-weight:700;color:#fff;background:var(--brand-primary);padding:2px 8px;border-radius:8px;text-transform:uppercase;letter-spacing:.5px}
-.th-author{font-size:.85rem;font-weight:700;color:var(--text-primary)}
-.th-date{font-size:.72rem;color:#aaa}
-.th-del{background:none;border:none;cursor:pointer;font-size:.82rem;opacity:.35;padding:0;margin-left:auto}
-.th-del:hover{opacity:1}
+.form-locked{margin-bottom:16px;padding:14px;background:#fafaf8;border-radius:10px;border:1px solid #eee}
+.form-locked__row{display:flex;justify-content:space-between;align-items:center;padding:4px 0}
+.form-locked__row+.form-locked__row{border-top:1px solid #f0f0f0;margin-top:4px;padding-top:8px}
+.form-locked__label{font-size:.78rem;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.5px}
+.form-locked__value{font-size:.9rem;font-weight:700;color:#222}
 
-.th-field-label{font-size:.75rem;font-weight:700;color:var(--text-secondary);text-transform:uppercase;margin-bottom:2px}
-.th-text{font-size:.9rem;color:var(--text-primary);margin:0 0 8px;line-height:1.5}
+.form-fields{display:flex;flex-direction:column;gap:12px}
+.ff label{display:block;font-size:.78rem;font-weight:700;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.ff-opt{text-transform:none;font-weight:400;color:#bbb;letter-spacing:0}
 
-.th-foot{display:flex;gap:8px;align-items:center}
-.th-vote{background:#fff;border:1px solid #ddd;border-radius:14px;padding:3px 12px;font-size:.78rem;cursor:pointer;transition:all .15s}
-.th-vote:hover{border-color:var(--brand-primary)}
-.th-vote--on{background:#f0f0f0;border-color:var(--brand-primary);font-weight:700}
-.th-reply-btn{background:none;border:none;font-size:.78rem;color:var(--brand-primary);cursor:pointer;font-weight:700}
-.th-reply-btn:hover{text-decoration:underline}
+.admin-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding-top:8px;border-top:1px solid #f0f0f0}
 
-.th-reply-box{display:flex;gap:6px;margin-top:10px}
-.th-reply-inp{flex:1}
-.th-replies{margin-top:10px}
+/* ===== THREAD CARD ===== */
+.thread-card{background:#fff;border-radius:14px;padding:24px;min-height:100%;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.thread-card__header{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f0f0f0}
+.thread-card__header h3{font-family:var(--font-headline);font-size:1.05rem;font-weight:800;margin:0;color:#222}
+.thread-empty{color:#bbb;font-style:italic;font-size:.9rem;text-align:center;padding:32px 0}
+.thread-list{display:flex;flex-direction:column;gap:14px}
+
+/* ===== POST (thread item) ===== */
+.post{background:#fafaf8;border-radius:12px;padding:16px;border:1px solid #eee;transition:border-color .2s}
+.post:hover{border-color:#ddd}
+.post--child{background:#f5f4f2;margin-top:10px;margin-left:24px;border-left:3px solid #ff9900;border-radius:8px;padding:12px 14px}
+.post-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.post-tag{font-size:.6rem;font-weight:700;color:#fff;background:#ff9900;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.8px}
+.post-author{font-size:.88rem;font-weight:700;color:#333}
+.post-date{font-size:.72rem;color:#bbb;margin-left:auto}
+.post-del{background:none;border:none;cursor:pointer;font-size:.82rem;opacity:.3;padding:0;transition:opacity .2s}
+.post-del:hover{opacity:1}
+.post-body{font-size:.92rem;color:#333;margin:0 0 10px;line-height:1.6}
+.post-actions{display:flex;gap:8px;align-items:center}
+
+/* ===== VOTE BUTTONS ===== */
+.th-vote{background:#fff;border:1.5px solid #e0e0e0;border-radius:20px;padding:4px 14px;font-size:.8rem;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:4px}
+.th-vote:hover{border-color:#ff9900;background:#fff8ee}
+.th-vote--on{background:#fff3e0;border-color:#ff9900;font-weight:700}
+.th-vote span{font-weight:600;font-size:.78rem}
+
+/* ===== REPLY ===== */
+.post-reply-btn{background:none;border:none;font-size:.8rem;color:#ff9900;cursor:pointer;font-weight:700;transition:color .2s}
+.post-reply-btn:hover{color:#cc7a00;text-decoration:underline}
+.post-reply-box{display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #eee}
+.post-reply-inp{flex:1}
+.post-replies{margin-top:12px}
 
 /* ===== RESPONSIVE ===== */
+@media(max-width:1024px){.photo-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:900px){
-  .grid{grid-template-columns:repeat(2,1fr)}
-  .modal-layout{grid-template-columns:1fr;max-height:none}
-  .modal-box{max-height:95vh;overflow-y:auto}
-  .modal-left{flex:0 0 auto}
-  .modal-right{max-height:none;padding:0 12px 12px}
-  .modal-img-wrap{max-height:40vh}
-  .form-grid{grid-template-columns:1fr}
+  .photo-grid{grid-template-columns:repeat(2,1fr)}
+  .lightbox-layout{grid-template-columns:1fr;height:auto}
+  .lightbox{height:auto;max-height:95vh;overflow-y:auto}
+  .lightbox-left{overflow:visible;height:auto}
+  .lightbox-right{overflow:visible;height:auto;max-height:none}
+  .lb-photo{min-height:200px;max-height:300px}
+  .upload-grid{grid-template-columns:1fr}
 }
 @media(max-width:540px){
-  .grid{grid-template-columns:1fr}
-  .mp-title{font-size:1.5rem}
+  .photo-grid{grid-template-columns:1fr}
+  .mp-title{font-size:1.6rem}
+  .mp-header{flex-direction:column}
 }
 </style>
