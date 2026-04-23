@@ -1,4 +1,4 @@
-// POST /api/mystery/upload — password-protected photo upload
+// POST /api/mystery/upload — password-protected photo upload, stores base64 in D1
 export async function onRequestPost(context) {
   const { request, env } = context;
   const corsHeaders = {
@@ -21,15 +21,19 @@ export async function onRequestPost(context) {
     }
 
     // Validate file type
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/tiff'];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
     if (!allowedTypes.includes(file.type)) {
-      return new Response(JSON.stringify({ error: 'Sallitut tiedostotyypit: JPEG, PNG, WEBP, TIFF' }), { status: 400, headers: corsHeaders });
+      return new Response(JSON.stringify({ error: 'Sallitut tiedostotyypit: JPEG, PNG, WEBP' }), { status: 400, headers: corsHeaders });
     }
 
-    // Max 20MB
-    if (file.size > 20 * 1024 * 1024) {
-      return new Response(JSON.stringify({ error: 'Tiedosto on liian suuri (max 20 MB)' }), { status: 400, headers: corsHeaders });
+    // Max 5MB (D1 friendly)
+    if (file.size > 5 * 1024 * 1024) {
+      return new Response(JSON.stringify({ error: 'Tiedosto on liian suuri (max 5 MB)' }), { status: 400, headers: corsHeaders });
     }
+
+    // Convert to base64
+    const arrayBuffer = await file.arrayBuffer();
+    const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
 
     // Metadata from form
     const uploaderName = formData.get('uploader_name') || 'Tuntematon';
@@ -38,21 +42,11 @@ export async function onRequestPost(context) {
     const locationNotes = formData.get('location_notes') || '';
     const notes = formData.get('notes') || '';
 
-    // Generate unique R2 key
-    const timestamp = Date.now();
-    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-    const r2Key = `photos/${timestamp}_${safeName}`;
-
-    // Store in R2
-    await env.MYSTERY_PHOTOS.put(r2Key, file.stream(), {
-      httpMetadata: { contentType: file.type },
-    });
-
-    // Create DB record
+    // Store in D1
     const result = await env.DB.prepare(
-      `INSERT INTO photos (filename, r2_key, uploader_name, year_estimate, people, location_notes, notes)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`
-    ).bind(file.name, r2Key, uploaderName, yearEstimate, people, locationNotes, notes).run();
+      `INSERT INTO photos (filename, content_type, image_data, uploader_name, year_estimate, people, location_notes, notes)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+    ).bind(file.name, file.type, base64, uploaderName, yearEstimate, people, locationNotes, notes).run();
 
     return new Response(JSON.stringify({
       success: true,

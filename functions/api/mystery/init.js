@@ -11,7 +11,8 @@ export async function onRequestPost(context) {
       CREATE TABLE IF NOT EXISTS photos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         filename TEXT NOT NULL,
-        r2_key TEXT NOT NULL,
+        content_type TEXT DEFAULT 'image/jpeg',
+        image_data TEXT NOT NULL,
         uploader_name TEXT NOT NULL,
         year_estimate TEXT DEFAULT '',
         people TEXT DEFAULT '',
