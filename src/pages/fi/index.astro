@@ -80,8 +80,10 @@ const galleryItems = featuredGalleries.map(g => ({
   {/* ===== Typographic hero band ===== */}
   <section class="hero-band">
     <div class="container">
-      <h1 class="hero-band__title">Vauhtia ja elämää linssin läpi</h1>
-      <p class="hero-band__subtitle">Every frame tells a story</p>
+      <div class="hero-band__row">
+        <h1 class="hero-band__title">Vauhtia ja elämää linssin läpi</h1>
+        <p class="hero-band__subtitle">Every frame tells a story</p>
+      </div>
     </div>
   </section>
 
@@ -160,14 +162,41 @@ const galleryItems = featuredGalleries.map(g => ({
       <RotatingHeroSplit items={podcastEpisodes} />
     </div>
   </section>
+
+  {/* ===== Ota yhteyttä CTA section ===== */}
+  <section class="section cta-section">
+    <div class="container">
+      <h2 class="cta-section__heading">Ota yhteyttä</h2>
+      <div class="cta-grid">
+        <a href="/fi/yhteystiedot" class="cta-card">
+          <h3 class="cta-card__heading">Kuvien käyttö</h3>
+          <p class="cta-card__body">Haluatko käyttää kuviamme? Käsittelemme pyynnöt tapauskohtaisesti.</p>
+        </a>
+        <a href="/fi/yhteystiedot" class="cta-card">
+          <h3 class="cta-card__heading">Kysymykset</h3>
+          <p class="cta-card__body">Mietityttääkö jokin? Meillä voi olla siihen vastaus.</p>
+        </a>
+        <a href="/fi/yhteystiedot" class="cta-card">
+          <h3 class="cta-card__heading">Jutut</h3>
+          <p class="cta-card__body">Jaa aiheeseen liittyvä juttusi artikkelinamme.</p>
+        </a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
   /* ===== Typographic hero band ===== */
   .hero-band {
     background: #0e0e0e;
-    padding: var(--space-5) 0 var(--space-4);
-    text-align: center;
+    padding: var(--space-3) 0;
+  }
+
+  .hero-band__row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    flex-wrap: wrap;
   }
 
   .hero-band__title {
@@ -178,7 +207,7 @@ const galleryItems = featuredGalleries.map(g => ({
     text-transform: uppercase;
     letter-spacing: 0.5px;
     line-height: 1;
-    margin: 0 0 var(--space-2);
+    margin: 0;
   }
 
   .hero-band__subtitle {
@@ -236,7 +265,7 @@ const galleryItems = featuredGalleries.map(g => ({
 
   .hero-split__big {
     display: flex;
-    min-height: 500px;
+    min-height: 440px;
   }
   .hero-split__big > article {
     width: 100%;
@@ -278,6 +307,62 @@ const galleryItems = featuredGalleries.map(g => ({
     padding: var(--space-6) 0;
   }
 
+  /* ===== CTA section ("Ota yhteyttä") ===== */
+  .cta-section {
+    background: white;
+    padding: var(--space-12) 0;
+  }
+
+  .cta-section__heading {
+    font-family: var(--font-headline);
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin: 0 0 var(--space-4);
+  }
+
+  .cta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+  }
+
+  .cta-card {
+    display: block;
+    background: #0e0e0e;
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    text-decoration: none;
+    transition: transform 0.2s ease, background 0.2s ease;
+    border: 1px solid rgba(255, 153, 0, 0.15);
+  }
+
+  .cta-card:hover {
+    transform: translateY(-2px);
+    background: #1a1a1a;
+    border-color: rgba(255, 153, 0, 0.4);
+  }
+
+  .cta-card__heading {
+    font-family: var(--font-headline);
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--brand-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 var(--space-2);
+    line-height: 1.2;
+  }
+
+  .cta-card__body {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+    margin: 0;
+  }
+
   /* Responsive breakpoints */
   @media (max-width: 900px) {
     .hero-split {
@@ -292,6 +377,12 @@ const galleryItems = featuredGalleries.map(g => ({
     }
     .secondary-row {
       grid-template-columns: repeat(2, 1fr);
+    }
+    .cta-grid {
+      grid-template-columns: 1fr;
+    }
+    .cta-section {
+      padding: var(--space-8) 0;
     }
   }
 
