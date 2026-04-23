@@ -35,7 +35,7 @@ const rawEvents = fs.readFileSync('public/data/calendar.json', 'utf-8');
 </BaseLayout>
 <script define:vars={{rawEvents}}>
 const EVENTS=JSON.parse(rawEvents);
-const CATS={MXGP:'#ff9900',AMA:'#E24B4A',SM:'#1D9E75',SML:'#378ADD',Motocross:'#D4537E',Enduro:'#7F77DD',Trial:'#639922',Muu:'#888'};
+const CATS={MXGP:'#ff9900',MotoGP:'#E10600',AMA:'#E24B4A',SM:'#1D9E75',SML:'#378ADD',Motocross:'#D4537E',Enduro:'#7F77DD',Trial:'#639922',Muu:'#888'};
 const MONTH_NAMES=['Tammikuu','Helmikuu','Maaliskuu','Huhtikuu','Toukokuu','Kesäkuu','Heinäkuu','Elokuu','Syyskuu','Lokakuu','Marraskuu','Joulukuu'];
 let curMonth=new Date().getMonth();
 let curYear=2026;

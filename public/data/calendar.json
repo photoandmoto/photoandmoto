@@ -7,6 +7,13 @@
     "category": "AMA"
   },
   {
+    "date": "2026-03-01",
+    "title": "MotoGP: Thai Grand Prix",
+    "location": "Chang International Circuit, Buriram, Thailand",
+    "description": "Round 1",
+    "category": "MotoGP"
+  },
+  {
     "date": "2026-03-07",
     "title": "Wintage snowcross Pello 2025 – Vintage Snowcross – Kansallinen",
     "location": "Kittisvaaran moottoriurheilukeskus",
@@ -63,6 +70,13 @@
     "category": "SM"
   },
   {
+    "date": "2026-03-22",
+    "title": "MotoGP: Brazilian Grand Prix",
+    "location": "Autódromo Ayrton Senna, Goiânia, Brazil",
+    "description": "Round 2",
+    "category": "MotoGP"
+  },
+  {
     "date": "2026-03-28",
     "title": "SML SM Snowcross Finaali Härmä 2026 – Snowcross",
     "location": "Powerpark",
@@ -75,6 +89,13 @@
     "location": "Frauenfeld, Switzerland",
     "description": "",
     "category": "MXGP"
+  },
+  {
+    "date": "2026-03-29",
+    "title": "MotoGP: Americas Grand Prix",
+    "location": "Circuit of the Americas, Austin, USA",
+    "description": "Round 3",
+    "category": "MotoGP"
   },
   {
     "date": "2026-04-12",
@@ -105,6 +126,13 @@
     "category": "SM"
   },
   {
+    "date": "2026-04-26",
+    "title": "MotoGP: Spanish Grand Prix",
+    "location": "Circuito de Jerez, Spain",
+    "description": "Round 4",
+    "category": "MotoGP"
+  },
+  {
     "date": "2026-05-03",
     "title": "MSC Championship MX Series AMA District 34 ProAm",
     "location": "Walden Motocross - Wallkill, NY",
@@ -126,11 +154,25 @@
     "category": "Motocross"
   },
   {
+    "date": "2026-05-10",
+    "title": "MotoGP: French Grand Prix",
+    "location": "Le Mans, France",
+    "description": "Round 5",
+    "category": "MotoGP"
+  },
+  {
     "date": "2026-05-17",
     "title": "HLR Motorsports ProAm (AMA Pro-Am)",
     "location": "HLR Motorsports Park - Huntsville, MO",
     "description": "Contact: (660) 263-4321, hlrmotorsports@gmail.com, hlrmotorsports.net",
     "category": "AMA"
+  },
+  {
+    "date": "2026-05-17",
+    "title": "MotoGP: Catalan Grand Prix",
+    "location": "Circuit de Barcelona-Catalunya, Spain",
+    "description": "Round 6",
+    "category": "MotoGP"
   },
   {
     "date": "2026-05-24",
@@ -161,6 +203,13 @@
     "category": "MXGP"
   },
   {
+    "date": "2026-05-31",
+    "title": "MotoGP: Italian Grand Prix",
+    "location": "Autodromo del Mugello, Italy",
+    "description": "Round 7",
+    "category": "MotoGP"
+  },
+  {
     "date": "2026-06-07",
     "title": "Motocross: MX-Liiga",
     "location": "Imatra",
@@ -189,6 +238,13 @@
     "category": "MXGP"
   },
   {
+    "date": "2026-06-07",
+    "title": "MotoGP: Hungarian Grand Prix",
+    "location": "Balaton Park Circuit, Hungary",
+    "description": "Round 8",
+    "category": "MotoGP"
+  },
+  {
     "date": "2026-06-14",
     "title": "Motocross: EMX65 / EMX85 & WOMEN'S (Heinola)",
     "location": "Heinola",
@@ -201,6 +257,13 @@
     "location": "Montevarchi, Italy",
     "description": "",
     "category": "MXGP"
+  },
+  {
+    "date": "2026-06-21",
+    "title": "MotoGP: Czech Grand Prix",
+    "location": "Automotodrom Brno, Czechia",
+    "description": "Round 9",
+    "category": "MotoGP"
   },
   {
     "date": "2026-06-28",
@@ -222,6 +285,13 @@
     "location": "Agueda, Portugal",
     "description": "",
     "category": "MXGP"
+  },
+  {
+    "date": "2026-06-28",
+    "title": "MotoGP: Dutch Grand Prix",
+    "location": "TT Circuit Assen, Netherlands",
+    "description": "Round 10",
+    "category": "MotoGP"
   },
   {
     "date": "2026-07-05",
@@ -257,6 +327,13 @@
     "location": "Siilinjärvi",
     "description": "",
     "category": "Motocross"
+  },
+  {
+    "date": "2026-07-12",
+    "title": "MotoGP: German Grand Prix",
+    "location": "Sachsenring, Germany",
+    "description": "Round 11",
+    "category": "MotoGP"
   },
   {
     "date": "2026-07-19",
@@ -301,6 +378,13 @@
     "category": "SM"
   },
   {
+    "date": "2026-08-09",
+    "title": "MotoGP: British Grand Prix",
+    "location": "Silverstone Circuit, UK",
+    "description": "Round 12",
+    "category": "MotoGP"
+  },
+  {
     "date": "2026-08-15",
     "title": "SML SISU EXTREME ENDURO Kalpalinna 2026 – Cross Country – Kansallinen",
     "location": "Kalpalinna",
@@ -341,6 +425,13 @@
     "location": "Miehikkälä",
     "description": "",
     "category": "SM"
+  },
+  {
+    "date": "2026-08-30",
+    "title": "MotoGP: Aragon Grand Prix",
+    "location": "MotorLand Aragón, Spain",
+    "description": "Round 13",
+    "category": "MotoGP"
   },
   {
     "date": "2026-09-05",
@@ -399,6 +490,13 @@
     "category": "MXGP"
   },
   {
+    "date": "2026-09-13",
+    "title": "MotoGP: San Marino Grand Prix",
+    "location": "Misano World Circuit, Italy",
+    "description": "Round 14",
+    "category": "MotoGP"
+  },
+  {
     "date": "2026-09-20",
     "title": "MXGP of Australia",
     "location": "Darwin, Australia",
@@ -418,6 +516,13 @@
     "location": "X-Mas Motorsports Park - Athelstane, WI",
     "description": "Contact: johnanets@yahoo.com, xmasmotorsportspark.com",
     "category": "AMA"
+  },
+  {
+    "date": "2026-09-20",
+    "title": "MotoGP: Austrian Grand Prix",
+    "location": "Red Bull Ring, Spielberg, Austria",
+    "description": "Round 15",
+    "category": "MotoGP"
   },
   {
     "date": "2026-09-26",
@@ -441,11 +546,25 @@
     "category": "Motocross"
   },
   {
+    "date": "2026-10-04",
+    "title": "MotoGP: Japanese Grand Prix",
+    "location": "Mobility Resort Motegi, Japan",
+    "description": "Round 16",
+    "category": "MotoGP"
+  },
+  {
     "date": "2026-10-10",
     "title": "SML CrossCountry SM Orimattila 2026 – Cross Country – SM",
     "location": "Orimattilan motocrossrata",
     "description": "",
     "category": "SM"
+  },
+  {
+    "date": "2026-10-11",
+    "title": "MotoGP: Indonesian Grand Prix",
+    "location": "Mandalika International Circuit, Indonesia",
+    "description": "Round 17",
+    "category": "MotoGP"
   },
   {
     "date": "2026-10-24",
@@ -455,6 +574,13 @@
     "category": "SM"
   },
   {
+    "date": "2026-10-25",
+    "title": "MotoGP: Australian Grand Prix",
+    "location": "Phillip Island Circuit, Australia",
+    "description": "Round 18",
+    "category": "MotoGP"
+  },
+  {
     "date": "2026-10-31",
     "title": "SML Sprint Savonlinna 2026 – Enduro",
     "location": "Savonlinna",
@@ -462,10 +588,31 @@
     "category": "SML"
   },
   {
+    "date": "2026-11-01",
+    "title": "MotoGP: Malaysian Grand Prix",
+    "location": "Sepang International Circuit, Malaysia",
+    "description": "Round 19",
+    "category": "MotoGP"
+  },
+  {
+    "date": "2026-11-08",
+    "title": "MotoGP: Qatar Grand Prix",
+    "location": "Lusail International Circuit, Qatar",
+    "description": "Round 20",
+    "category": "MotoGP"
+  },
+  {
     "date": "2026-11-21",
     "title": "SML Metso II, SML Enduro Sprint 2026 – Enduro",
     "location": "Ruuhijärvi, Hirvelä",
     "description": "",
     "category": "SML"
+  },
+  {
+    "date": "2026-11-29",
+    "title": "MotoGP: Valencia Grand Prix",
+    "location": "Circuit Ricardo Tormo, Valencia, Spain",
+    "description": "Round 22",
+    "category": "MotoGP"
   }
 ]
