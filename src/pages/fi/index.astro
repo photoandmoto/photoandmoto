@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import TrendingTicker from '../../components/TrendingTicker.astro';
 import UpcomingRaces from '../../components/UpcomingRaces.astro';
+import RotatingHeroSplit from '../../components/RotatingHeroSplit.astro';
 import { getCollection } from 'astro:content';
 import { ui } from '../../i18n/ui';
 
@@ -32,29 +33,41 @@ const tickerItems = articles.slice(0, 5).map(a => ({
 const galleries = await getCollection('galleries');
 const featuredGalleries = galleries.slice(0, 4);
 
-// Podcast episodes (MVP: placeholder image for all)
+// Podcast episodes — using archive photos as cover images
 const podcastEpisodes = [
   {
     title: 'Heikki Mikkola: Nelinkertainen Motocrossin Maailmanmestari',
     subtitle: 'Tarina legendaarisesta suomalaiskuljettajasta',
     href: '/fi/podcast#ep-0',
+    image: '/galleries/hyvinkaa-scramble/display/Heikki Mikkola ja Jaroslav Falta_display.jpg',
   },
   {
     title: 'Honda CR250: Legendan Synty ja Loppu',
     subtitle: 'Motocrossin ikonisimman pyörän tarina',
     href: '/fi/podcast#ep-1',
+    image: '/galleries/suomi-70s/display/Arto Vilkman ja Honda CR 250 1979_display.jpg',
   },
   {
     title: 'Suzuki Motocross Racing: From Disastrous Start to Golden Era',
     subtitle: 'Suzukin tie motocrossin kultaiselle aikakaudelle',
     href: '/fi/podcast#ep-2',
+    image: '/galleries/international-70s/display/Hyvinkää GP-250 1971 Joel Robertin, Sylvain Geboersin ja Olle Petterssonin Suzukit_display.jpg',
   },
   {
     title: 'Motocross of Nations: Historia ja Voittajat',
     subtitle: 'Motocross of Nations -kilpailun legendat',
     href: '/fi/podcast#ep-3',
+    image: '/galleries/international-70s/display/R. De Coster, H.Everts ja A. Malherbe. Motocross Des Nations 500 Ruskeasanta 1979_display.jpg',
   },
 ];
+
+// Build items array for galleries using the existing structure
+const galleryItems = featuredGalleries.map(g => ({
+  href: `/fi/galleria/${g.data.slug}`,
+  image: `/galleries/${g.data.slug}/${g.data.cover_image}`,
+  title: g.data.title,
+  subtitle: t['gallery.photoCount'].replace('{count}', g.data.images.length.toString()),
+}));
 ---
 
 <BaseLayout
@@ -124,7 +137,7 @@ const podcastEpisodes = [
   {/* ===== Upcoming races band ===== */}
   <UpcomingRaces />
 
-  {/* ===== Gallery section (1 big + 3 stacked) ===== */}
+  {/* ===== Gallery section (rotating 1 big + 3 stacked) ===== */}
   {featuredGalleries.length > 0 && (
     <section class="section gallery-section">
       <div class="container">
@@ -132,63 +145,19 @@ const podcastEpisodes = [
           <h2 class="section-heading">Galleria</h2>
           <a href="/fi/galleria" class="section-all-link">Kaikki galleriat →</a>
         </div>
-
-        <div class="hero-split">
-          <div class="hero-split__big">
-            <ArticleCard
-              href={`/fi/galleria/${featuredGalleries[0].data.slug}`}
-              image={`/galleries/${featuredGalleries[0].data.slug}/${featuredGalleries[0].data.cover_image}`}
-              title={featuredGalleries[0].data.title}
-              subtitle={t['gallery.photoCount'].replace('{count}', featuredGalleries[0].data.images.length.toString())}
-              size="lg"
-            />
-          </div>
-          <div class="hero-split__stack">
-            {featuredGalleries.slice(1, 4).map(gallery => (
-              <ArticleCard
-                href={`/fi/galleria/${gallery.data.slug}`}
-                image={`/galleries/${gallery.data.slug}/${gallery.data.cover_image}`}
-                title={gallery.data.title}
-                subtitle={t['gallery.photoCount'].replace('{count}', gallery.data.images.length.toString())}
-                size="md"
-              />
-            ))}
-          </div>
-        </div>
+        <RotatingHeroSplit items={galleryItems} />
       </div>
     </section>
   )}
 
-  {/* ===== Podcast section (1 big + 3 stacked) ===== */}
+  {/* ===== Podcast section (rotating 1 big + 3 stacked) ===== */}
   <section class="section podcast-section">
     <div class="container">
       <div class="section-header-row">
         <h2 class="section-heading">Podcast</h2>
         <a href="/fi/podcast" class="section-all-link">Kaikki jaksot →</a>
       </div>
-
-      <div class="hero-split">
-        <div class="hero-split__big">
-          <ArticleCard
-            href={podcastEpisodes[0].href}
-            image="/images/hero-podcast.jpg"
-            title={podcastEpisodes[0].title}
-            subtitle={podcastEpisodes[0].subtitle}
-            size="lg"
-          />
-        </div>
-        <div class="hero-split__stack">
-          {podcastEpisodes.slice(1, 4).map(ep => (
-            <ArticleCard
-              href={ep.href}
-              image="/images/hero-podcast.jpg"
-              title={ep.title}
-              subtitle={ep.subtitle}
-              size="md"
-            />
-          ))}
-        </div>
-      </div>
+      <RotatingHeroSplit items={podcastEpisodes} />
     </div>
   </section>
 </BaseLayout>
@@ -196,26 +165,25 @@ const podcastEpisodes = [
 <style>
   /* ===== Typographic hero band ===== */
   .hero-band {
-    background: #000;
+    background: #0e0e0e;
     padding: var(--space-5) 0 var(--space-4);
-    border-bottom: 1px solid rgba(255, 153, 0, 0.15);
     text-align: center;
   }
 
   .hero-band__title {
     font-family: var(--font-headline);
-    font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+    font-size: 2.2rem;
     font-weight: 900;
     color: var(--brand-primary);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    line-height: 1.1;
+    line-height: 1;
     margin: 0 0 var(--space-2);
   }
 
   .hero-band__subtitle {
     font-family: var(--font-headline);
-    font-size: clamp(0.9rem, 1.3vw, 1.1rem);
+    font-size: 1.05rem;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.55);
     letter-spacing: 0.5px;
@@ -259,6 +227,11 @@ const podcastEpisodes = [
     grid-template-columns: 1.6fr 1fr;
     gap: var(--space-3);
     align-items: stretch;
+  }
+
+  /* Variant for 1 big + 3 stacked (Galleria, Podcast) — wider right column */
+  .hero-split--1-3 {
+    grid-template-columns: 1.3fr 1fr;
   }
 
   .hero-split__big {
@@ -337,6 +310,12 @@ const podcastEpisodes = [
     }
     .section-heading {
       font-size: 1.4rem;
+    }
+    .hero-band__title {
+      font-size: 1.5rem;
+    }
+    .hero-band__subtitle {
+      font-size: 0.9rem;
     }
   }
 </style>

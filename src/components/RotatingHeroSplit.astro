@@ -1,0 +1,397 @@
+---
+interface Item {
+  href: string;
+  image: string;
+  title: string;
+  subtitle?: string;
+  category?: string;
+}
+
+interface Props {
+  items: Item[];
+  intervalMs?: number;
+}
+
+const { items, intervalMs = 10000 } = Astro.props;
+
+// Unique ID so multiple instances on the same page don't clash
+const uid = 'rhs-' + Math.random().toString(36).slice(2, 9);
+
+// Category key helper for chips (not used in Gallery/Podcast usually)
+function catKey(cat?: string) {
+  return cat ? cat.toLowerCase().replace(/[^a-z0-9]/g, '') : '';
+}
+---
+
+{items.length > 0 && (
+  <div class="rhs" id={uid} data-interval={intervalMs}>
+    {/* Big card (rotates) */}
+    <div class="rhs__big">
+      <a href={items[0].href} class="rhs__big-link" data-role="big-link">
+        <div class="rhs__big-wrap">
+          {items.map((item, i) => (
+            <div class={`rhs__big-slide ${i === 0 ? 'is-active' : ''}`} data-idx={i}>
+              <img
+                src={item.image}
+                alt={item.title}
+                class="rhs__big-img"
+                loading={i === 0 ? 'eager' : 'lazy'}
+              />
+              <div class="rhs__big-overlay"></div>
+              {item.category && (
+                <span class={`chip chip--${catKey(item.category)} rhs__big-chip`}>{item.category}</span>
+              )}
+              <div class="rhs__big-text">
+                <h3 class="rhs__big-title">{item.title}</h3>
+                {item.subtitle && <p class="rhs__big-subtitle">{item.subtitle}</p>}
+              </div>
+            </div>
+          ))}
+        </div>
+      </a>
+    </div>
+
+    {/* Stack column (3 smaller cards, silently swap content) */}
+    <div class="rhs__stack" data-role="stack">
+      {items.slice(1, 4).map(item => (
+        <a href={item.href} class="rhs__stack-card" data-role="stack-card">
+          <div class="rhs__stack-wrap">
+            <img src={item.image} alt={item.title} class="rhs__stack-img" loading="lazy" data-role="stack-img" />
+            <div class="rhs__stack-overlay"></div>
+            {item.category && (
+              <span class={`chip chip--${catKey(item.category)} rhs__stack-chip`} data-role="stack-chip">{item.category}</span>
+            )}
+            <div class="rhs__stack-text">
+              <h4 class="rhs__stack-title" data-role="stack-title">{item.title}</h4>
+              {item.subtitle && <p class="rhs__stack-subtitle" data-role="stack-subtitle">{item.subtitle}</p>}
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    {/* Data payload for JS to read */}
+    <script type="application/json" data-role="items" set:html={JSON.stringify(items)} />
+  </div>
+)}
+
+<script>
+  document.querySelectorAll('.rhs').forEach(root => {
+    const el = root as HTMLElement;
+    const bigLink = el.querySelector('[data-role="big-link"]') as HTMLAnchorElement | null;
+    const slides = Array.from(el.querySelectorAll('.rhs__big-slide')) as HTMLElement[];
+    const stackCards = Array.from(el.querySelectorAll('[data-role="stack-card"]')) as HTMLAnchorElement[];
+    const intervalMs = parseInt(el.dataset.interval || '10000', 10);
+
+    const itemsScript = el.querySelector('[data-role="items"]') as HTMLElement | null;
+    if (!itemsScript) return;
+    let items: any[] = [];
+    try {
+      items = JSON.parse(itemsScript.textContent || '[]');
+    } catch (err) {
+      return;
+    }
+    if (items.length < 2) return;
+
+    let idx = 0;
+    let timer: number | null = null;
+    let paused = false;
+
+    function rotate() {
+      idx = (idx + 1) % items.length;
+      // Big card: fade to next slide
+      slides.forEach((slide, i) => {
+        const slideIdx = parseInt(slide.dataset.idx || '0', 10);
+        slide.classList.toggle('is-active', slideIdx === idx);
+      });
+      // Big link href updates
+      if (bigLink) bigLink.href = items[idx].href;
+
+      // Stack cards: show next 3 items after the current big, wrapping around
+      stackCards.forEach((card, k) => {
+        const itemIndex = (idx + 1 + k) % items.length;
+        const item = items[itemIndex];
+        card.href = item.href;
+        const img = card.querySelector('[data-role="stack-img"]') as HTMLImageElement | null;
+        const title = card.querySelector('[data-role="stack-title"]') as HTMLElement | null;
+        const subtitle = card.querySelector('[data-role="stack-subtitle"]') as HTMLElement | null;
+        if (img) {
+          img.src = item.image;
+          img.alt = item.title;
+        }
+        if (title) title.textContent = item.title;
+        if (subtitle && item.subtitle) subtitle.textContent = item.subtitle;
+      });
+    }
+
+    function start() {
+      if (timer) window.clearInterval(timer);
+      if (!paused) {
+        timer = window.setInterval(rotate, intervalMs);
+      }
+    }
+    function stop() {
+      if (timer) {
+        window.clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    el.addEventListener('mouseenter', () => { paused = true; stop(); });
+    el.addEventListener('mouseleave', () => { paused = false; start(); });
+
+    start();
+  });
+</script>
+
+<style>
+  .rhs {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: var(--space-3);
+    align-items: stretch;
+  }
+
+  /* Big card */
+  .rhs__big {
+    display: flex;
+    min-height: 500px;
+  }
+
+  .rhs__big-link {
+    position: relative;
+    display: block;
+    width: 100%;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: #1a1a1a;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .rhs__big-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+  }
+
+  .rhs__big-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    pointer-events: none;
+  }
+  .rhs__big-slide.is-active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .rhs__big-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .rhs__big-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0,0,0,0.1) 0%,
+      rgba(0,0,0,0.2) 45%,
+      rgba(0,0,0,0.85) 100%
+    );
+    pointer-events: none;
+  }
+
+  .rhs__big-chip {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    font-family: var(--font-headline);
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+    background: #5F5E5A;
+    padding: 6px 12px;
+    border-radius: 3px;
+    line-height: 1;
+    z-index: 2;
+  }
+
+  .rhs__big-text {
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    z-index: 2;
+    color: white;
+  }
+
+  .rhs__big-title {
+    font-family: var(--font-headline);
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+    font-weight: 900;
+    color: white;
+    margin: 0 0 8px;
+    line-height: 1.15;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  }
+
+  .rhs__big-subtitle {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.92);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  /* Stack column */
+  .rhs__stack {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    gap: var(--space-3);
+  }
+
+  .rhs__stack-card {
+    position: relative;
+    display: block;
+    min-height: 0;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: #1a1a1a;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease;
+  }
+
+  .rhs__stack-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .rhs__stack-wrap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 140px;
+  }
+
+  .rhs__stack-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+
+  .rhs__stack-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0,0,0,0.1) 0%,
+      rgba(0,0,0,0.2) 45%,
+      rgba(0,0,0,0.85) 100%
+    );
+    pointer-events: none;
+  }
+
+  .rhs__stack-chip {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-family: var(--font-headline);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+    background: #5F5E5A;
+    padding: 4px 8px;
+    border-radius: 3px;
+    line-height: 1;
+    z-index: 2;
+  }
+
+  .rhs__stack-text {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 2;
+    color: white;
+  }
+
+  .rhs__stack-title {
+    font-family: var(--font-headline);
+    font-size: 1rem;
+    font-weight: 900;
+    color: white;
+    margin: 0;
+    line-height: 1.2;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .rhs__stack-subtitle {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.85);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    margin: 4px 0 0;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Chip color overrides (inherit from global chip--* styles via class composition) */
+  .rhs .chip--mxgp     { background: #FF9900; color: #000; }
+  .rhs .chip--mx2      { background: #D85A30; }
+  .rhs .chip--historical { background: #5F5E5A; }
+  .rhs .chip--speedway { background: #378ADD; }
+  .rhs .chip--enduro   { background: #639922; }
+  .rhs .chip--technical { background: #7F77DD; }
+  .rhs .chip--interview { background: #D4537E; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .rhs {
+      grid-template-columns: 1fr;
+    }
+    .rhs__big,
+    .rhs__big-wrap {
+      min-height: 320px;
+    }
+    .rhs__stack {
+      grid-template-rows: auto;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .rhs__stack-card,
+    .rhs__stack-wrap {
+      min-height: 180px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .rhs__stack {
+      grid-template-columns: 1fr;
+    }
+    .rhs__stack-wrap {
+      min-height: 160px;
+    }
+  }
+</style>
