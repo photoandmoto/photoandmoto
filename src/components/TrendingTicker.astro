@@ -1,0 +1,199 @@
+---
+interface TickerItem {
+  href: string;
+  title: string;
+}
+
+interface Props {
+  label: string;
+  items: TickerItem[];
+  intervalMs?: number;
+}
+
+const { label, items, intervalMs = 6000 } = Astro.props;
+---
+
+{items.length > 0 && (
+  <div class="ticker" data-interval={intervalMs}>
+    <div class="container ticker__inner">
+      <span class="ticker__badge">{label}</span>
+      <div class="ticker__viewport">
+        <ul class="ticker__list">
+          {items.map((item, i) => (
+            <li class={`ticker__item ${i === 0 ? 'is-active' : ''}`}>
+              <a href={item.href} class="ticker__link">{item.title}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="ticker__controls">
+        <button class="ticker__arrow" data-dir="prev" aria-label="Previous headline">‹</button>
+        <button class="ticker__arrow" data-dir="next" aria-label="Next headline">›</button>
+      </div>
+    </div>
+  </div>
+)}
+
+<script>
+  const ticker = document.querySelector('.ticker') as HTMLElement | null;
+  if (ticker) {
+    const items = Array.from(ticker.querySelectorAll('.ticker__item')) as HTMLElement[];
+    const prevBtn = ticker.querySelector('[data-dir="prev"]') as HTMLButtonElement | null;
+    const nextBtn = ticker.querySelector('[data-dir="next"]') as HTMLButtonElement | null;
+    const intervalMs = parseInt(ticker.dataset.interval || '6000', 10);
+
+    let idx = 0;
+    let timer: number | null = null;
+    let paused = false;
+
+    function show(i: number) {
+      items.forEach((el, k) => el.classList.toggle('is-active', k === i));
+      idx = i;
+    }
+    function next() { show((idx + 1) % items.length); }
+    function prev() { show((idx - 1 + items.length) % items.length); }
+
+    function startTimer() {
+      if (timer) window.clearInterval(timer);
+      if (items.length > 1 && !paused) {
+        timer = window.setInterval(next, intervalMs);
+      }
+    }
+    function stopTimer() {
+      if (timer) {
+        window.clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    prevBtn?.addEventListener('click', () => { prev(); startTimer(); });
+    nextBtn?.addEventListener('click', () => { next(); startTimer(); });
+
+    ticker.addEventListener('mouseenter', () => { paused = true; stopTimer(); });
+    ticker.addEventListener('mouseleave', () => { paused = false; startTimer(); });
+
+    startTimer();
+  }
+</script>
+
+<style>
+  .ticker {
+    background: #0a0a0a;
+    color: white;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: var(--font-headline);
+  }
+
+  .ticker__inner {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    min-height: 36px;
+  }
+
+  .ticker__badge {
+    background: var(--brand-primary);
+    color: #000;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+  }
+
+  .ticker__viewport {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    position: relative;
+    height: 22px;
+  }
+
+  .ticker__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    height: 100%;
+  }
+
+  .ticker__item {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    pointer-events: none;
+  }
+
+  .ticker__item.is-active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .ticker__link {
+    color: white;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    width: 100%;
+    transition: color 0.15s;
+  }
+
+  .ticker__link:hover {
+    color: var(--brand-primary);
+  }
+
+  .ticker__controls {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .ticker__arrow {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.6);
+    width: 26px;
+    height: 26px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    line-height: 1;
+    padding: 0;
+    transition: all 0.15s;
+  }
+
+  .ticker__arrow:hover {
+    color: white;
+    border-color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.06);
+  }
+
+  @media (max-width: 600px) {
+    .ticker__badge {
+      font-size: 0.65rem;
+      padding: 3px 8px;
+    }
+    .ticker__link {
+      font-size: 0.75rem;
+    }
+    .ticker__arrow {
+      width: 24px;
+      height: 24px;
+    }
+  }
+</style>

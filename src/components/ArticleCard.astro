@@ -1,0 +1,188 @@
+---
+interface Props {
+  href: string;
+  image: string;
+  imageAlt?: string;
+  category: string;
+  title: string;
+  subtitle?: string;
+  size?: 'lg' | 'md' | 'sm';
+}
+
+const {
+  href,
+  image,
+  imageAlt,
+  category,
+  title,
+  subtitle,
+  size = 'md',
+} = Astro.props;
+
+// Category → CSS class for chip coloring (matches .chip--<key> in styles)
+const categoryKey = category.toLowerCase().replace(/[^a-z0-9]/g, '');
+---
+
+<article class={`acard acard--${size}`}>
+  <a href={href} class="acard__link">
+    <div class="acard__image-wrap">
+      <img
+        src={image}
+        alt={imageAlt || title}
+        class="acard__image"
+        loading={size === 'lg' ? 'eager' : 'lazy'}
+      />
+      <div class="acard__overlay"></div>
+      <span class={`chip chip--${categoryKey}`}>{category}</span>
+      <div class="acard__text-wrap">
+        <h3 class="acard__title">{title}</h3>
+        {size === 'lg' && subtitle && (
+          <p class="acard__subtitle">{subtitle}</p>
+        )}
+      </div>
+    </div>
+  </a>
+</article>
+
+<style>
+  .acard {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: #1a1a1a;
+    transition: transform 0.2s ease;
+  }
+
+  .acard:hover {
+    transform: translateY(-3px);
+  }
+
+  .acard__link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .acard__image-wrap {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* Aspect ratios per size */
+  .acard--lg .acard__image-wrap { aspect-ratio: 4/3; }
+  .acard--md .acard__image-wrap { aspect-ratio: 1/1; }
+  .acard--sm .acard__image-wrap { aspect-ratio: 4/3; }
+
+  .acard__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .acard:hover .acard__image {
+    transform: scale(1.04);
+  }
+
+  .acard__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0.2) 45%,
+      rgba(0, 0, 0, 0.85) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Category chip — top-left corner */
+  .chip {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-family: var(--font-headline);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+    background: #5F5E5A;
+    padding: 5px 10px;
+    border-radius: 3px;
+    line-height: 1;
+    z-index: 2;
+  }
+
+  /* Category color mapping */
+  .chip--mxgp     { background: #FF9900; color: #000; }
+  .chip--mx2      { background: #D85A30; }
+  .chip--historical { background: #5F5E5A; }
+  .chip--speedway { background: #378ADD; }
+  .chip--enduro   { background: #639922; }
+  .chip--technical { background: #7F77DD; }
+  .chip--interview { background: #D4537E; }
+
+  /* Large card gets larger chip */
+  .acard--lg .chip {
+    top: 16px;
+    left: 16px;
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+
+  /* Text overlay at bottom */
+  .acard__text-wrap {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 2;
+    color: white;
+  }
+
+  .acard--lg .acard__text-wrap {
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+  }
+
+  .acard__title {
+    font-family: var(--font-headline);
+    font-weight: 900;
+    color: white;
+    margin: 0;
+    line-height: 1.15;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+  }
+
+  .acard--lg .acard__title {
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+  }
+  .acard--md .acard__title {
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+  .acard--sm .acard__title {
+    font-size: 0.95rem;
+    line-height: 1.2;
+  }
+
+  .acard__subtitle {
+    font-family: var(--font-body);
+    margin: 8px 0 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.92);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    line-height: 1.35;
+  }
+
+  @media (max-width: 768px) {
+    .acard__title { font-size: 1rem; }
+    .acard--lg .acard__title { font-size: 1.3rem; }
+    .acard--lg .acard__subtitle { font-size: 0.9rem; }
+  }
+</style>

@@ -122,6 +122,7 @@ const otherLang = lang === 'fi' ? 'en' : 'fi';
   </script>
 </head>
 <body>
+  <slot name="pre-header" />
   <Header lang={lang} currentPath={Astro.url.pathname} />
 
   <main>
