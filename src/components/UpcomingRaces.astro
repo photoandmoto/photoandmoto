@@ -1,6 +1,10 @@
 ---
 import fs from 'fs';
 
+interface Props {
+  lang?: 'fi' | 'en';
+}
+
 interface CalendarEvent {
   date: string;
   title: string;
@@ -8,6 +12,8 @@ interface CalendarEvent {
   description?: string;
   category: string;
 }
+
+const { lang = 'fi' } = Astro.props;
 
 const raw = fs.readFileSync('public/data/calendar.json', 'utf-8');
 const allEvents: CalendarEvent[] = JSON.parse(raw);
@@ -20,7 +26,13 @@ const upcoming = allEvents
   .sort((a, b) => a.date.localeCompare(b.date))
   .slice(0, 5);
 
-const MONTHS_SHORT = ['TAM', 'HEL', 'MAA', 'HUH', 'TOU', 'KES', 'HEI', 'ELO', 'SYY', 'LOK', 'MAR', 'JOU'];
+const MONTHS_FI = ['TAM', 'HEL', 'MAA', 'HUH', 'TOU', 'KES', 'HEI', 'ELO', 'SYY', 'LOK', 'MAR', 'JOU'];
+const MONTHS_EN = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+const MONTHS_SHORT = lang === 'en' ? MONTHS_EN : MONTHS_FI;
+
+const sectionTitle = lang === 'en' ? 'Upcoming races' : 'Tulevat kilpailut';
+const calendarLink = lang === 'en' ? '/fi/kalenteri' : '/fi/kalenteri';
+const calendarLabel = lang === 'en' ? 'Full calendar →' : 'Koko kalenteri →';
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
@@ -47,15 +59,15 @@ const CAT_COLORS: Record<string, string> = {
   <section class="upcoming-section">
     <div class="container">
       <div class="upcoming-header">
-        <h2 class="upcoming-title">Tulevat kilpailut</h2>
-        <a href="/fi/kalenteri" class="upcoming-all">Koko kalenteri →</a>
+        <h2 class="upcoming-title">{sectionTitle}</h2>
+        <a href={calendarLink} class="upcoming-all">{calendarLabel}</a>
       </div>
       <div class="upcoming-grid">
         {upcoming.map(e => {
           const d = formatDate(e.date);
           const catColor = CAT_COLORS[e.category] || CAT_COLORS.Muu;
           return (
-            <a href="/fi/kalenteri" class="upcoming-card">
+            <a href={calendarLink} class="upcoming-card">
               <div class="upcoming-date">
                 <span class="upcoming-day">{d.day}</span>
                 <span class="upcoming-mon">{d.mon}</span>

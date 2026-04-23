@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PageHero from '../../components/PageHero.astro';
-import heroImage from '../../assets/site/hero-etusivu.jpg';
+import UpcomingRaces from '../../components/UpcomingRaces.astro';
+import RotatingHeroSplit from '../../components/RotatingHeroSplit.astro';
 import { getCollection } from 'astro:content';
 import { ui } from '../../i18n/ui';
 
@@ -10,85 +10,247 @@ const t = ui[lang];
 
 const galleries = await getCollection('galleries');
 const featuredGalleries = galleries.slice(0, 4);
+
+// Podcast episodes — using archive photos as cover images
+const podcastEpisodes = [
+  {
+    title: 'Heikki Mikkola: Four-Time Motocross World Champion',
+    subtitle: 'The story of a legendary Finnish rider',
+    href: '/fi/podcast#ep-0',
+    image: '/galleries/hyvinkaa-scramble/display/Heikki Mikkola ja Jaroslav Falta_display.jpg',
+  },
+  {
+    title: 'Honda CR250: Birth and End of a Legend',
+    subtitle: "The story of motocross' most iconic bike",
+    href: '/fi/podcast#ep-1',
+    image: '/galleries/suomi-70s/display/Arto Vilkman ja Honda CR 250 1979_display.jpg',
+  },
+  {
+    title: 'Suzuki Motocross Racing: From Disastrous Start to Golden Era',
+    subtitle: "Suzuki's path to the golden age of motocross",
+    href: '/fi/podcast#ep-2',
+    image: '/galleries/international-70s/display/Hyvinkää GP-250 1971 Joel Robertin, Sylvain Geboersin ja Olle Petterssonin Suzukit_display.jpg',
+  },
+  {
+    title: 'Motocross of Nations: History and Champions',
+    subtitle: 'Legends of the Motocross of Nations',
+    href: '/fi/podcast#ep-3',
+    image: '/galleries/international-70s/display/R. De Coster, H.Everts ja A. Malherbe. Motocross Des Nations 500 Ruskeasanta 1979_display.jpg',
+  },
+];
+
+// Build items array for galleries
+const galleryItems = featuredGalleries.map(g => ({
+  href: `/en/gallery/${g.data.slug}`,
+  image: `/galleries/${g.data.slug}/${g.data.cover_image}`,
+  title: g.data.title,
+  subtitle: t['gallery.photoCount'].replace('{count}', g.data.images.length.toString()),
+}));
 ---
 
-<BaseLayout 
-  title="Home" 
+<BaseLayout
+  title="Home"
   lang={lang}
   description="Motocross and motorcycle sport photos, stories and race results from the 1960s to today. MXGP 2026, Time Machine archive and photo gallery."
 >
-  <section class="section section--hero">
+
+  {/* ===== Typographic hero band ===== */}
+  <section class="hero-band">
     <div class="container">
-      <PageHero
-        image={heroImage}
-        title={t['hero.tagline']}
-        subtitle={t['hero.subtitle']}
-      />
-    </div>
-  </section>
-  
-  <section class="intro-section">
-    <div class="container">
-      <div class="intro-grid">
-        <div class="intro-col">
-          <h2 class="intro-title">Welcome to the archive</h2>
-          <div class="intro-image-wrap">
-            <img src="/images/intro-gallery.jpg" alt="Welcome" class="intro-image" />
-          </div>
-          <p class="intro-text">Motorsport history and amazing stories. We add new photos and articles regularly, so stay tuned!</p>
-        </div>
-        <div class="intro-col">
-          <h2 class="intro-title">Travel back in time</h2>
-          <div class="intro-image-wrap">
-            <img src="/images/intro-articles.jpg" alt="Time Machine" class="intro-image" />
-          </div>
-          <p class="intro-text">Dive into the stories and technology of motorsport. We bring history's most thrilling moments straight to you.</p>
-        </div>
+      <div class="hero-band__row">
+        <h1 class="hero-band__title">Speed and life through the lens – Every frame tells a story</h1>
       </div>
     </div>
   </section>
-  
+
+  {/* ===== Gallery section (rotating 1 big + 3 stacked) ===== */}
   {featuredGalleries.length > 0 && (
-    <section class="section featured-galleries">
+    <section class="section gallery-section">
       <div class="container">
-        <div class="section__header">
-          <h2 class="section__title">Gallery</h2>
-          <p class="section__subtitle">Explore photo galleries from different eras</p>
+        <div class="section-header-row">
+          <h2 class="section-heading">Gallery</h2>
+          <a href="/en/gallery" class="section-all-link">All galleries →</a>
         </div>
-        
-        <p class="gallery-intro">Find your favorite moments easily. These photos capture the atmosphere of history and take you straight to the sport's most significant moments.</p>
-        
-        <div class="grid grid--4">
-          {featuredGalleries.map(gallery => (
-            <article class="card">
-              <a href={`/en/gallery/${gallery.data.slug}`}>
-                <img src={`/galleries/${gallery.data.slug}/${gallery.data.cover_image}`} alt={gallery.data.title} class="card__image" loading="lazy" />
-                <div class="card__content">
-                  <h3 class="card__title">{gallery.data.title}</h3>
-                  <p class="card__text">{t['gallery.photoCount'].replace('{count}', gallery.data.images.length.toString())}</p>
-                </div>
-              </a>
-            </article>
-          ))}
-        </div>
-        
-        <div style="text-align: center; margin-top: var(--space-6);">
-          <a href="/en/gallery" class="btn btn--secondary">View all galleries</a>
-        </div>
+        <RotatingHeroSplit items={galleryItems} />
       </div>
     </section>
   )}
+
+  {/* ===== Upcoming races band ===== */}
+  <UpcomingRaces lang="en" />
+
+  {/* ===== Podcast section (rotating 1 big + 3 stacked) ===== */}
+  <section class="section podcast-section">
+    <div class="container">
+      <div class="section-header-row">
+        <h2 class="section-heading">Podcast</h2>
+        <a href="/fi/podcast" class="section-all-link">All episodes →</a>
+      </div>
+      <RotatingHeroSplit items={podcastEpisodes} />
+    </div>
+  </section>
+
+  {/* ===== Contact CTA section ===== */}
+  <section class="section cta-section">
+    <div class="container">
+      <h2 class="cta-section__heading">Get in touch</h2>
+      <div class="cta-grid">
+        <a href="/en/yhteystiedot" class="cta-card">
+          <h3 class="cta-card__heading">Photo usage</h3>
+          <p class="cta-card__body">Want to use our photos? We handle requests on a case-by-case basis.</p>
+        </a>
+        <a href="/en/yhteystiedot" class="cta-card">
+          <h3 class="cta-card__heading">Questions</h3>
+          <p class="cta-card__body">Something on your mind? We might have the answer.</p>
+        </a>
+        <a href="/en/yhteystiedot" class="cta-card">
+          <h3 class="cta-card__heading">Stories</h3>
+          <p class="cta-card__body">Share a related story as our article.</p>
+        </a>
+      </div>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .section--hero { padding-bottom: 0; }
-  .intro-section { background: white; color: var(--text-primary); padding: 0 0 var(--space-8); }
-  .intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); align-items: start; }
-  .intro-image-wrap { position: relative; overflow: hidden; border-radius: var(--radius-md); margin-bottom: var(--space-3); height: 280px; }
-  .intro-image { width: 100%; height: 100%; display: block; object-fit: cover; }
-  .intro-title { font-size: 1.75rem; font-weight: 900; color: var(--text-primary); margin-bottom: var(--space-3); text-align: center; }
-  .intro-text { font-size: 1rem; line-height: 1.7; color: var(--text-secondary); font-weight: 600; }
-  .featured-galleries { background: white; }
-  .gallery-intro { max-width: 100%; margin: 0 auto var(--space-6); text-align: center; font-size: 1.05rem; line-height: 1.7; color: var(--text-secondary); font-weight: 600; }
-  @media (max-width: 768px) { .intro-grid { grid-template-columns: 1fr; } .intro-image-wrap { height: 220px; } }
+  /* ===== Typographic hero band ===== */
+  .hero-band {
+    background: #0e0e0e;
+    padding: var(--space-3) 0;
+  }
+
+  .hero-band__row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .hero-band__title {
+    font-family: var(--font-headline);
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.75);
+    letter-spacing: 0.5px;
+    line-height: 1;
+    margin: 0;
+  }
+
+  /* Section shared */
+  .section-header-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .section-heading {
+    font-family: var(--font-headline);
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .section-all-link {
+    font-family: var(--font-headline);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--brand-primary);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .section-all-link:hover {
+    text-decoration: underline;
+  }
+
+  /* Gallery section */
+  .gallery-section {
+    background: white;
+    padding: var(--space-6) 0;
+  }
+
+  /* Podcast section */
+  .podcast-section {
+    background: var(--bg-secondary);
+    padding: var(--space-6) 0;
+  }
+
+  /* ===== CTA section ===== */
+  .cta-section {
+    background: white;
+    padding: var(--space-12) 0;
+  }
+
+  .cta-section__heading {
+    font-family: var(--font-headline);
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin: 0 0 var(--space-4);
+  }
+
+  .cta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+  }
+
+  .cta-card {
+    display: block;
+    background: #0e0e0e;
+    border-radius: var(--radius-md);
+    padding: var(--space-4);
+    text-decoration: none;
+    transition: transform 0.2s ease, background 0.2s ease;
+    border: 1px solid rgba(255, 153, 0, 0.15);
+  }
+
+  .cta-card:hover {
+    transform: translateY(-2px);
+    background: #1a1a1a;
+    border-color: rgba(255, 153, 0, 0.4);
+  }
+
+  .cta-card__heading {
+    font-family: var(--font-headline);
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--brand-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 var(--space-2);
+    line-height: 1.2;
+  }
+
+  .cta-card__body {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .cta-grid {
+      grid-template-columns: 1fr;
+    }
+    .cta-section {
+      padding: var(--space-8) 0;
+    }
+  }
+
+  @media (max-width: 540px) {
+    .section-heading {
+      font-size: 1.4rem;
+    }
+    .hero-band__title {
+      font-size: 1.1rem;
+    }
+  }
 </style>
