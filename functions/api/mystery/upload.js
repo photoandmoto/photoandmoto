@@ -26,14 +26,21 @@ export async function onRequestPost(context) {
       return new Response(JSON.stringify({ error: 'Sallitut tiedostotyypit: JPEG, PNG, WEBP' }), { status: 400, headers: corsHeaders });
     }
 
-    // Max 5MB (D1 friendly)
+    // Max 5MB
     if (file.size > 5 * 1024 * 1024) {
       return new Response(JSON.stringify({ error: 'Tiedosto on liian suuri (max 5 MB)' }), { status: 400, headers: corsHeaders });
     }
 
-    // Convert to base64
+    // Convert to base64 in chunks (avoids stack overflow)
     const arrayBuffer = await file.arrayBuffer();
-    const base64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+    const bytes = new Uint8Array(arrayBuffer);
+    let binary = '';
+    const chunkSize = 8192;
+    for (let i = 0; i < bytes.length; i += chunkSize) {
+      const chunk = bytes.subarray(i, i + chunkSize);
+      binary += String.fromCharCode.apply(null, chunk);
+    }
+    const base64 = btoa(binary);
 
     // Metadata from form
     const uploaderName = formData.get('uploader_name') || 'Tuntematon';
