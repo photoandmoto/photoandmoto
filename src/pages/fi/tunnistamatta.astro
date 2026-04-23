@@ -14,22 +14,20 @@ const lang = 'fi';
         </div>
       </div>
 
-      <!-- Upload form (hidden by default) -->
+      <!-- Upload form (admin only) -->
       <div id="uploadPanel" class="mystery-panel" style="display:none;">
         <h2 class="panel-title">Lähetä kuva tunnistettavaksi</h2>
         <div id="uploadAuth" class="auth-box">
           <input type="password" id="uploadPw" class="mystery-input" placeholder="Salasana" />
           <button id="uploadPwBtn" class="mystery-btn">Kirjaudu</button>
+          <span id="uploadPwError" class="auth-error" style="display:none;">Väärä salasana</span>
         </div>
         <div id="uploadForm" style="display:none;">
+          <p class="form-hint">Täytä tiedot joita tiedät — tyhjät kentät avautuvat yhteisölle tunnistettavaksi.</p>
           <div class="form-grid">
             <div class="form-group form-group--full">
               <label>Kuva *</label>
               <input type="file" id="photoFile" accept="image/jpeg,image/png,image/webp" class="mystery-input" />
-            </div>
-            <div class="form-group">
-              <label>Nimesi *</label>
-              <input type="text" id="uploaderName" class="mystery-input" placeholder="Kuka lähettää?" />
             </div>
             <div class="form-group">
               <label>Vuosiarvio</label>
@@ -43,9 +41,9 @@ const lang = 'fi';
               <label>Paikka / tapahtuma</label>
               <input type="text" id="locationNotes" class="mystery-input" placeholder="Missä kuva on otettu?" />
             </div>
-            <div class="form-group form-group--full">
+            <div class="form-group">
               <label>Lisätietoja</label>
-              <textarea id="notes" class="mystery-input mystery-textarea" placeholder="Mitä muuta tiedät kuvasta?"></textarea>
+              <input type="text" id="notes" class="mystery-input" placeholder="Mitä muuta tiedät?" />
             </div>
           </div>
           <button id="uploadBtn" class="mystery-btn">Lataa kuva</button>
@@ -53,19 +51,20 @@ const lang = 'fi';
         </div>
       </div>
 
-      <!-- Admin panel (hidden by default) -->
+      <!-- Admin panel -->
       <div id="adminPanel" class="mystery-panel" style="display:none;">
         <h2 class="panel-title">Ylläpito</h2>
         <div id="adminAuth" class="auth-box">
           <input type="password" id="adminPw" class="mystery-input" placeholder="Salasana" />
           <button id="adminPwBtn" class="mystery-btn">Kirjaudu</button>
+          <span id="adminPwError" class="auth-error" style="display:none;">Väärä salasana</span>
         </div>
         <div id="adminTools" style="display:none;">
-          <p class="admin-hint">Klikkaa kuvaa alla hallinnoidaksesi sitä.</p>
+          <p class="admin-hint">Kirjautunut ylläpitäjänä. Klikkaa kuvaa hallinnoidaksesi.</p>
         </div>
       </div>
 
-      <!-- Status filter -->
+      <!-- Status filters -->
       <div class="status-filters">
         <button class="status-filter is-active" data-status="all">Kaikki</button>
         <button class="status-filter" data-status="new">Uudet</button>
@@ -82,20 +81,27 @@ const lang = 'fi';
       <div id="photoModal" class="modal" style="display:none;">
         <div class="modal-backdrop"></div>
         <div class="modal-content">
-          <button class="modal-close" id="modalClose">✕</button>
+          <button class="modal-close" id="modalClose">&#x2715;</button>
           <div class="modal-body">
             <div class="modal-image-wrap">
               <img id="modalImage" class="modal-image" src="" alt="" />
             </div>
             <div class="modal-info">
-              <div id="modalMeta" class="modal-meta"></div>
+              <!-- Admin controls at top -->
               <div id="adminActions" class="admin-actions" style="display:none;"></div>
-              <h3 class="comments-title">Kommentit</h3>
-              <div id="modalComments" class="comments-list"></div>
-              <div class="comment-form">
-                <input type="text" id="commentName" class="mystery-input" placeholder="Nimesi" />
-                <textarea id="commentText" class="mystery-input mystery-textarea" placeholder="Kerro mitä tiedät tästä kuvasta..."></textarea>
-                <button id="commentBtn" class="mystery-btn">Lähetä kommentti</button>
+
+              <!-- Field sections -->
+              <div id="modalFields" class="modal-fields"></div>
+
+              <!-- General comments -->
+              <div class="general-comments">
+                <h3 class="comments-title">Kommentit</h3>
+                <div id="modalComments" class="comments-list"></div>
+                <div class="comment-form">
+                  <input type="text" id="commentName" class="mystery-input" placeholder="Nimesi" />
+                  <textarea id="commentText" class="mystery-input mystery-textarea" placeholder="Vapaa kommentti..."></textarea>
+                  <button id="commentBtn" class="mystery-btn">Lähetä kommentti</button>
+                </div>
               </div>
             </div>
           </div>
@@ -111,121 +117,188 @@ const lang = 'fi';
   let uploadPassword = null;
   let currentFilter = 'all';
   let currentPhotoId = null;
+  const votedComments = JSON.parse(localStorage.getItem('pm_votes') || '{}');
 
-  // DOM refs
   const grid = document.getElementById('photoGrid');
   const modal = document.getElementById('photoModal');
 
-  // Initialize DB on first load (idempotent)
+  // Init DB
   fetch('/api/mystery/init', { method: 'POST' }).catch(() => {});
 
-  // Load photos
+  // ===== Password verification =====
+  async function verifyPassword(pw) {
+    const r = await fetch('/api/mystery/verify', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pw })
+    });
+    const d = await r.json();
+    return d.valid === true;
+  }
+
+  // ===== Load photos =====
   async function loadPhotos() {
     try {
-      const resp = await fetch('/api/mystery/photos');
-      const data = await resp.json();
-      photos = data.photos || [];
+      const r = await fetch('/api/mystery/photos');
+      const d = await r.json();
+      photos = d.photos || [];
       renderGrid();
-    } catch (err) {
+    } catch (e) {
       grid.innerHTML = '<div class="loading">Kuvien lataus epäonnistui.</div>';
     }
   }
 
   function renderGrid() {
     const filtered = currentFilter === 'all' ? photos : photos.filter(p => p.status === currentFilter);
-    if (filtered.length === 0) {
-      grid.innerHTML = '<div class="loading">Ei kuvia tässä kategoriassa.</div>';
-      return;
-    }
+    if (!filtered.length) { grid.innerHTML = '<div class="loading">Ei kuvia tässä kategoriassa.</div>'; return; }
     grid.innerHTML = filtered.map(p => `
       <div class="photo-card" data-id="${p.id}">
         <div class="photo-card__img-wrap">
           <img src="${p.image_url}" alt="Tuntematon kuva" loading="lazy" class="photo-card__img" />
           <span class="photo-card__status photo-card__status--${p.status}">${statusLabel(p.status)}</span>
-          ${p.comments.length > 0 ? `<span class="photo-card__comments">${p.comments.length} 💬</span>` : ''}
+          ${p.comments.length ? `<span class="photo-card__comments">${p.comments.length} &#x1F4AC;</span>` : ''}
         </div>
         <div class="photo-card__info">
-          ${p.year_estimate ? `<span class="photo-card__year">${p.year_estimate}</span>` : ''}
-          ${p.people ? `<span class="photo-card__people">${p.people}</span>` : ''}
-          ${!p.year_estimate && !p.people ? '<span class="photo-card__unknown">Tuntematon</span>' : ''}
+          ${p.people ? `<span class="photo-card__people">${esc(p.people)}</span>` : ''}
+          ${p.year_estimate ? `<span class="photo-card__year">${esc(p.year_estimate)}</span>` : ''}
+          ${!p.people && !p.year_estimate ? '<span class="photo-card__unknown">Tuntematon &#8212; auta tunnistamaan!</span>' : ''}
         </div>
       </div>
     `).join('');
-
-    grid.querySelectorAll('.photo-card').forEach(card => {
-      card.addEventListener('click', () => openModal(parseInt(card.dataset.id)));
-    });
+    grid.querySelectorAll('.photo-card').forEach(c => c.addEventListener('click', () => openModal(+c.dataset.id)));
   }
 
   function statusLabel(s) {
-    return { new: 'Uusi', partial: 'Osittain', identified: 'Tunnistettu', archived: 'Arkistoitu' }[s] || s;
+    return { new: 'Uusi', partial: 'Osittain tunnistettu', identified: 'Tunnistettu', archived: 'Arkistoitu' }[s] || s;
   }
 
-  // Modal
+  // ===== Modal =====
+  const FIELDS = [
+    { key: 'year_estimate', label: 'Vuosiarvio', type: 'year', placeholder: 'Esim. 1977, 1970-luku' },
+    { key: 'people', label: 'Henkilöt kuvassa', type: 'people', placeholder: 'Kenet tunnistat?' },
+    { key: 'location_notes', label: 'Paikka / tapahtuma', type: 'location', placeholder: 'Missä kuva on otettu?' },
+    { key: 'notes', label: 'Lisätietoja', type: 'notes', placeholder: 'Mitä muuta tiedät?' },
+  ];
+
   function openModal(id) {
     const p = photos.find(x => x.id === id);
     if (!p) return;
     currentPhotoId = id;
-
     document.getElementById('modalImage').src = p.image_url;
-    document.getElementById('modalMeta').innerHTML = `
-      <div class="meta-row"><strong>Lähettäjä:</strong> ${esc(p.uploader_name)}</div>
-      <div class="meta-row"><strong>Lisätty:</strong> ${new Date(p.created_at).toLocaleDateString('fi-FI')}</div>
-      ${p.year_estimate ? `<div class="meta-row"><strong>Vuosiarvio:</strong> ${esc(p.year_estimate)}</div>` : ''}
-      ${p.people ? `<div class="meta-row"><strong>Henkilöt:</strong> ${esc(p.people)}</div>` : ''}
-      ${p.location_notes ? `<div class="meta-row"><strong>Paikka:</strong> ${esc(p.location_notes)}</div>` : ''}
-      ${p.notes ? `<div class="meta-row"><strong>Lisätiedot:</strong> ${esc(p.notes)}</div>` : ''}
-      <div class="meta-row"><strong>Tila:</strong> <span class="status-badge status-badge--${p.status}">${statusLabel(p.status)}</span></div>
-    `;
 
-    // Render comments
-    const commentsEl = document.getElementById('modalComments');
-    if (p.comments.length === 0) {
-      commentsEl.innerHTML = '<p class="no-comments">Ei vielä kommentteja. Ole ensimmäinen!</p>';
-    } else {
-      commentsEl.innerHTML = p.comments.map(c => `
-        <div class="comment">
-          <div class="comment__header">
-            <strong class="comment__author">${esc(c.author_name)}</strong>
-            <span class="comment__date">${new Date(c.created_at).toLocaleDateString('fi-FI')}</span>
+    // Build field sections
+    const fieldsEl = document.getElementById('modalFields');
+    fieldsEl.innerHTML = FIELDS.map(f => {
+      const value = p[f.key];
+      const fieldComments = p.comments.filter(c => c.field_type === f.type);
+      const hasValue = value && value.trim();
+
+      let html = `<div class="field-section">`;
+      html += `<h4 class="field-label">${f.label}</h4>`;
+
+      if (hasValue) {
+        html += `<div class="field-value">${esc(value)}</div>`;
+      } else {
+        // Show suggestions from community
+        if (fieldComments.length) {
+          html += fieldComments.map(c => renderComment(c, true)).join('');
+        }
+        // Input for new suggestion
+        html += `<div class="field-suggest">
+          <div class="suggest-row">
+            <input type="text" class="mystery-input suggest-name" placeholder="Nimesi" />
+            <input type="text" class="mystery-input suggest-input" placeholder="${f.placeholder}" data-field="${f.type}" data-photo="${id}" />
+            <button class="mystery-btn mystery-btn--small suggest-btn" data-field="${f.type}" data-photo="${id}">Ehdota</button>
           </div>
-          <p class="comment__text">${esc(c.content)}</p>
-        </div>
-      `).join('');
-    }
+        </div>`;
+      }
+
+      html += `</div>`;
+      return html;
+    }).join('');
+
+    // Bind suggest buttons
+    fieldsEl.querySelectorAll('.suggest-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const row = btn.closest('.suggest-row');
+        const name = row.querySelector('.suggest-name').value.trim() || 'Nimetön';
+        const input = row.querySelector('.suggest-input');
+        const text = input.value.trim();
+        if (text.length < 2) return;
+        await fetch('/api/mystery/comment', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ photo_id: id, author_name: name, content: text, field_type: btn.dataset.field })
+        });
+        row.querySelector('.suggest-name').value = '';
+        input.value = '';
+        await loadPhotos();
+        openModal(id);
+      });
+    });
+
+    // General comments (field_type === 'general')
+    const generalComments = p.comments.filter(c => !c.field_type || c.field_type === 'general');
+    const commentsEl = document.getElementById('modalComments');
+    commentsEl.innerHTML = generalComments.length
+      ? generalComments.map(c => renderComment(c, false)).join('')
+      : '<p class="no-comments">Ei vielä kommentteja.</p>';
 
     // Admin actions
     const adminEl = document.getElementById('adminActions');
     if (adminPassword) {
       adminEl.style.display = 'block';
       adminEl.innerHTML = `
-        <div class="admin-bar">
-          <select id="adminStatus" class="mystery-input">
-            <option value="new" ${p.status === 'new' ? 'selected' : ''}>Uusi</option>
-            <option value="partial" ${p.status === 'partial' ? 'selected' : ''}>Osittain tunnistettu</option>
-            <option value="identified" ${p.status === 'identified' ? 'selected' : ''}>Tunnistettu</option>
-            <option value="archived" ${p.status === 'archived' ? 'selected' : ''}>Arkistoitu</option>
-          </select>
-          <button class="mystery-btn mystery-btn--small" id="adminStatusBtn">Päivitä tila</button>
-          <button class="mystery-btn mystery-btn--danger mystery-btn--small" id="adminDeleteBtn">Poista</button>
-        </div>
-      `;
-      document.getElementById('adminStatusBtn').addEventListener('click', async () => {
-        const status = document.getElementById('adminStatus').value;
+        <div class="admin-section">
+          <h4 class="admin-section-title">Ylläpito</h4>
+          <div class="admin-meta-grid">
+            ${FIELDS.map(f => `
+              <div class="admin-field">
+                <label>${f.label}</label>
+                <input type="text" class="mystery-input" id="admin_${f.key}" value="${esc(p[f.key] || '')}" placeholder="${f.placeholder}" />
+              </div>
+            `).join('')}
+          </div>
+          <div class="admin-bar">
+            <button class="mystery-btn mystery-btn--small" id="adminSaveBtn">Tallenna tiedot</button>
+            <select id="adminStatus" class="mystery-input admin-select">
+              <option value="new" ${p.status === 'new' ? 'selected' : ''}>Uusi</option>
+              <option value="partial" ${p.status === 'partial' ? 'selected' : ''}>Osittain tunnistettu</option>
+              <option value="identified" ${p.status === 'identified' ? 'selected' : ''}>Tunnistettu</option>
+              <option value="archived" ${p.status === 'archived' ? 'selected' : ''}>Arkistoitu</option>
+            </select>
+            <button class="mystery-btn mystery-btn--small" id="adminStatusBtn">Päivitä tila</button>
+            <button class="mystery-btn mystery-btn--danger mystery-btn--small" id="adminDeleteBtn">Poista kuva</button>
+          </div>
+        </div>`;
+
+      document.getElementById('adminSaveBtn').addEventListener('click', async () => {
         await fetch('/api/mystery/admin', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password: adminPassword, action: 'set_status', photo_id: id, status })
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            password: adminPassword, action: 'update_meta', photo_id: id,
+            year_estimate: document.getElementById('admin_year_estimate').value,
+            people: document.getElementById('admin_people').value,
+            location_notes: document.getElementById('admin_location_notes').value,
+            notes: document.getElementById('admin_notes').value,
+          })
         });
         await loadPhotos();
         openModal(id);
       });
+
+      document.getElementById('adminStatusBtn').addEventListener('click', async () => {
+        await fetch('/api/mystery/admin', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: adminPassword, action: 'set_status', photo_id: id, status: document.getElementById('adminStatus').value })
+        });
+        await loadPhotos();
+        openModal(id);
+      });
+
       document.getElementById('adminDeleteBtn').addEventListener('click', async () => {
         if (!confirm('Poistetaanko kuva pysyvästi?')) return;
         await fetch('/api/mystery/admin', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ password: adminPassword, action: 'delete', photo_id: id })
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: adminPassword, action: 'delete_photo', photo_id: id })
         });
         closeModal();
         await loadPhotos();
@@ -234,8 +307,70 @@ const lang = 'fi';
       adminEl.style.display = 'none';
     }
 
+    // Bind vote buttons
+    bindVoteButtons();
+    // Bind admin delete-comment buttons
+    if (adminPassword) bindDeleteCommentButtons();
+
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
+  }
+
+  function renderComment(c, isFieldSuggestion) {
+    const voted = votedComments[c.id];
+    const upClass = voted === 1 ? 'vote-btn--active' : '';
+    const downClass = voted === -1 ? 'vote-btn--active' : '';
+    const deleteBtn = adminPassword ? `<button class="del-comment-btn" data-cid="${c.id}" title="Poista kommentti">&#x1F5D1;</button>` : '';
+
+    return `<div class="comment ${isFieldSuggestion ? 'comment--suggestion' : ''}">
+      <div class="comment__header">
+        <strong class="comment__author">${esc(c.author_name)}</strong>
+        <span class="comment__date">${new Date(c.created_at).toLocaleDateString('fi-FI')}</span>
+        ${deleteBtn}
+      </div>
+      <p class="comment__text">${esc(c.content)}</p>
+      <div class="comment__votes">
+        <button class="vote-btn vote-up ${upClass}" data-cid="${c.id}" data-vote="1">&#x1F44D; ${c.upvotes || 0}</button>
+        <button class="vote-btn vote-down ${downClass}" data-cid="${c.id}" data-vote="-1">&#x1F44E; ${c.downvotes || 0}</button>
+      </div>
+    </div>`;
+  }
+
+  function bindVoteButtons() {
+    document.querySelectorAll('.vote-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const cid = +btn.dataset.cid;
+        const vote = +btn.dataset.vote;
+        if (votedComments[cid]) return; // already voted
+        const r = await fetch('/api/mystery/vote', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ comment_id: cid, vote })
+        });
+        const d = await r.json();
+        if (d.success) {
+          votedComments[cid] = vote;
+          localStorage.setItem('pm_votes', JSON.stringify(votedComments));
+          await loadPhotos();
+          openModal(currentPhotoId);
+        }
+      });
+    });
+  }
+
+  function bindDeleteCommentButtons() {
+    document.querySelectorAll('.del-comment-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        if (!confirm('Poistetaanko kommentti?')) return;
+        await fetch('/api/mystery/admin', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: adminPassword, action: 'delete_comment', comment_id: +btn.dataset.cid })
+        });
+        await loadPhotos();
+        openModal(currentPhotoId);
+      });
+    });
   }
 
   function closeModal() {
@@ -243,53 +378,50 @@ const lang = 'fi';
     document.body.style.overflow = '';
     currentPhotoId = null;
   }
-
   document.getElementById('modalClose').addEventListener('click', closeModal);
   document.querySelector('.modal-backdrop').addEventListener('click', closeModal);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-  // Comments
+  // General comment submission
   document.getElementById('commentBtn').addEventListener('click', async () => {
     const name = document.getElementById('commentName').value.trim();
     const text = document.getElementById('commentText').value.trim();
-    if (!text || text.length < 2) return;
-
-    const resp = await fetch('/api/mystery/comment', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ photo_id: currentPhotoId, author_name: name || 'Nimetön', content: text })
+    if (text.length < 2) return;
+    await fetch('/api/mystery/comment', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ photo_id: currentPhotoId, author_name: name || 'Nimetön', content: text, field_type: 'general' })
     });
-    const data = await resp.json();
-    if (data.success) {
-      document.getElementById('commentText').value = '';
-      await loadPhotos();
-      openModal(currentPhotoId);
-    }
+    document.getElementById('commentName').value = '';
+    document.getElementById('commentText').value = '';
+    await loadPhotos();
+    openModal(currentPhotoId);
   });
 
   // Upload panel
   document.getElementById('uploadToggle').addEventListener('click', () => {
-    const panel = document.getElementById('uploadPanel');
-    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    const p = document.getElementById('uploadPanel');
+    p.style.display = p.style.display === 'none' ? 'block' : 'none';
     document.getElementById('adminPanel').style.display = 'none';
   });
 
-  document.getElementById('uploadPwBtn').addEventListener('click', () => {
-    uploadPassword = document.getElementById('uploadPw').value;
-    document.getElementById('uploadAuth').style.display = 'none';
-    document.getElementById('uploadForm').style.display = 'block';
+  document.getElementById('uploadPwBtn').addEventListener('click', async () => {
+    const pw = document.getElementById('uploadPw').value;
+    const valid = await verifyPassword(pw);
+    if (valid) {
+      uploadPassword = pw;
+      document.getElementById('uploadAuth').style.display = 'none';
+      document.getElementById('uploadForm').style.display = 'block';
+    } else {
+      document.getElementById('uploadPwError').style.display = 'inline';
+    }
   });
 
   document.getElementById('uploadBtn').addEventListener('click', async () => {
     const file = document.getElementById('photoFile').files[0];
     if (!file) return;
-    const name = document.getElementById('uploaderName').value.trim();
-    if (!name) { alert('Nimesi on pakollinen'); return; }
-
     const fd = new FormData();
     fd.append('photo', file);
     fd.append('password', uploadPassword);
-    fd.append('uploader_name', name);
     fd.append('year_estimate', document.getElementById('yearEstimate').value);
     fd.append('people', document.getElementById('people').value);
     fd.append('location_notes', document.getElementById('locationNotes').value);
@@ -298,12 +430,11 @@ const lang = 'fi';
     const status = document.getElementById('uploadStatus');
     status.innerHTML = '<span class="upload-loading">Ladataan...</span>';
     document.getElementById('uploadBtn').disabled = true;
-
     try {
-      const resp = await fetch('/api/mystery/upload', { method: 'POST', body: fd });
-      const data = await resp.json();
-      if (data.success) {
-        status.innerHTML = '<span class="upload-success">✓ Kuva ladattu!</span>';
+      const r = await fetch('/api/mystery/upload', { method: 'POST', body: fd });
+      const d = await r.json();
+      if (d.success) {
+        status.innerHTML = '<span class="upload-success">&#x2713; Kuva ladattu!</span>';
         document.getElementById('photoFile').value = '';
         document.getElementById('yearEstimate').value = '';
         document.getElementById('people').value = '';
@@ -311,9 +442,9 @@ const lang = 'fi';
         document.getElementById('notes').value = '';
         await loadPhotos();
       } else {
-        status.innerHTML = `<span class="upload-error">${data.error}</span>`;
+        status.innerHTML = `<span class="upload-error">${d.error}</span>`;
       }
-    } catch (err) {
+    } catch (e) {
       status.innerHTML = '<span class="upload-error">Lataus epäonnistui</span>';
     }
     document.getElementById('uploadBtn').disabled = false;
@@ -321,15 +452,21 @@ const lang = 'fi';
 
   // Admin panel
   document.getElementById('adminToggle').addEventListener('click', () => {
-    const panel = document.getElementById('adminPanel');
-    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    const p = document.getElementById('adminPanel');
+    p.style.display = p.style.display === 'none' ? 'block' : 'none';
     document.getElementById('uploadPanel').style.display = 'none';
   });
 
-  document.getElementById('adminPwBtn').addEventListener('click', () => {
-    adminPassword = document.getElementById('adminPw').value;
-    document.getElementById('adminAuth').style.display = 'none';
-    document.getElementById('adminTools').style.display = 'block';
+  document.getElementById('adminPwBtn').addEventListener('click', async () => {
+    const pw = document.getElementById('adminPw').value;
+    const valid = await verifyPassword(pw);
+    if (valid) {
+      adminPassword = pw;
+      document.getElementById('adminAuth').style.display = 'none';
+      document.getElementById('adminTools').style.display = 'block';
+    } else {
+      document.getElementById('adminPwError').style.display = 'inline';
+    }
   });
 
   // Status filters
@@ -342,55 +479,19 @@ const lang = 'fi';
     });
   });
 
-  // Escape HTML
-  function esc(s) {
-    const d = document.createElement('div');
-    d.textContent = s || '';
-    return d.innerHTML;
-  }
+  function esc(s) { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
 
-  // Go
   loadPhotos();
 </script>
 
 <style>
-  .mystery-page {
-    background: var(--bg-secondary);
-    padding: var(--space-6) 0 var(--space-12);
-    min-height: 80vh;
-  }
-
+  .mystery-page { background: var(--bg-secondary); padding: var(--space-6) 0 var(--space-12); min-height: 80vh; }
   .mystery-header { margin-bottom: var(--space-6); }
-
-  .mystery-title {
-    font-family: var(--font-headline);
-    font-size: 2rem;
-    font-weight: 900;
-    color: var(--text-primary);
-    margin: 0 0 var(--space-2);
-  }
-
-  .mystery-subtitle {
-    font-size: 1.05rem;
-    color: var(--text-secondary);
-    margin: 0 0 var(--space-4);
-    max-width: 600px;
-  }
-
+  .mystery-title { font-family: var(--font-headline); font-size: 2rem; font-weight: 900; color: var(--text-primary); margin: 0 0 var(--space-2); }
+  .mystery-subtitle { font-size: 1.05rem; color: var(--text-secondary); margin: 0 0 var(--space-4); max-width: 600px; }
   .mystery-actions { display: flex; gap: var(--space-2); flex-wrap: wrap; }
 
-  .mystery-btn {
-    font-family: var(--font-headline);
-    font-size: 0.85rem;
-    font-weight: 700;
-    padding: 10px 20px;
-    border-radius: var(--radius-sm);
-    border: 2px solid var(--brand-primary);
-    background: var(--brand-primary);
-    color: #000;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
+  .mystery-btn { font-family: var(--font-headline); font-size: 0.85rem; font-weight: 700; padding: 10px 20px; border-radius: var(--radius-sm); border: 2px solid var(--brand-primary); background: var(--brand-primary); color: #000; cursor: pointer; transition: all 0.15s; }
   .mystery-btn:hover { background: #e08800; border-color: #e08800; }
   .mystery-btn--secondary { background: transparent; color: var(--brand-primary); }
   .mystery-btn--secondary:hover { background: var(--brand-primary); color: #000; }
@@ -399,37 +500,16 @@ const lang = 'fi';
   .mystery-btn--danger:hover { background: #c33; border-color: #c33; }
   .mystery-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  .mystery-input {
-    font-family: var(--font-body);
-    font-size: 0.95rem;
-    padding: 10px 14px;
-    border: 2px solid #ddd;
-    border-radius: var(--radius-sm);
-    background: #fff;
-    color: var(--text-primary);
-    width: 100%;
-    box-sizing: border-box;
-  }
+  .mystery-input { font-family: var(--font-body); font-size: 0.95rem; padding: 10px 14px; border: 2px solid #ddd; border-radius: var(--radius-sm); background: #fff; color: var(--text-primary); width: 100%; box-sizing: border-box; }
   .mystery-input:focus { border-color: var(--brand-primary); outline: none; }
   .mystery-textarea { min-height: 80px; resize: vertical; }
 
-  /* Panels */
-  .mystery-panel {
-    background: #fff;
-    border-radius: var(--radius-md);
-    padding: var(--space-4);
-    margin-bottom: var(--space-4);
-    border: 1px solid #eee;
-  }
-  .panel-title {
-    font-family: var(--font-headline);
-    font-size: 1.2rem;
-    font-weight: 800;
-    margin: 0 0 var(--space-3);
-    color: var(--text-primary);
-  }
-  .auth-box { display: flex; gap: var(--space-2); max-width: 400px; }
-  .auth-box .mystery-input { flex: 1; }
+  .mystery-panel { background: #fff; border-radius: var(--radius-md); padding: var(--space-4); margin-bottom: var(--space-4); border: 1px solid #eee; }
+  .panel-title { font-family: var(--font-headline); font-size: 1.2rem; font-weight: 800; margin: 0 0 var(--space-3); color: var(--text-primary); }
+  .auth-box { display: flex; gap: var(--space-2); max-width: 400px; align-items: center; flex-wrap: wrap; }
+  .auth-box .mystery-input { flex: 1; min-width: 150px; }
+  .auth-error { color: #E24B4A; font-size: 0.85rem; font-weight: 600; }
+  .form-hint { font-size: 0.9rem; color: var(--text-secondary); margin: 0 0 var(--space-3); }
 
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); margin-bottom: var(--space-3); }
   .form-group label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 4px; color: var(--text-secondary); }
@@ -439,174 +519,87 @@ const lang = 'fi';
   .upload-success { color: #1D9E75; font-weight: 600; }
   .upload-error { color: #E24B4A; font-weight: 600; }
   .upload-loading { color: var(--brand-primary); font-weight: 600; }
-
   .admin-hint { color: var(--text-secondary); font-size: 0.9rem; margin: 0; }
 
-  /* Status filters */
   .status-filters { display: flex; gap: var(--space-2); margin-bottom: var(--space-4); flex-wrap: wrap; }
-  .status-filter {
-    font-family: var(--font-headline);
-    font-size: 0.78rem;
-    font-weight: 700;
-    padding: 6px 14px;
-    border-radius: 20px;
-    border: 2px solid #ccc;
-    background: transparent;
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .status-filter.is-active, .status-filter:hover {
-    border-color: var(--brand-primary);
-    color: var(--brand-primary);
-  }
+  .status-filter { font-family: var(--font-headline); font-size: 0.78rem; font-weight: 700; padding: 6px 14px; border-radius: 20px; border: 2px solid #ccc; background: transparent; color: var(--text-secondary); cursor: pointer; transition: all 0.15s; }
+  .status-filter.is-active, .status-filter:hover { border-color: var(--brand-primary); color: var(--brand-primary); }
   .status-filter.is-active { background: var(--brand-primary); color: #000; }
 
-  /* Photo grid */
-  .photo-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-3);
-  }
-
-  .photo-card {
-    background: #fff;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    cursor: pointer;
-    transition: transform 0.15s, box-shadow 0.15s;
-  }
+  .photo-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+  .photo-card { background: #fff; border-radius: var(--radius-md); overflow: hidden; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
   .photo-card:hover { transform: translateY(-3px); box-shadow: 0 4px 20px rgba(0,0,0,0.12); }
-
   .photo-card__img-wrap { position: relative; aspect-ratio: 4/3; overflow: hidden; }
   .photo-card__img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-  .photo-card__status {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    font-family: var(--font-headline);
-    font-size: 0.65rem;
-    font-weight: 700;
-    color: #fff;
-    padding: 2px 8px;
-    border-radius: 10px;
-    text-transform: uppercase;
-  }
+  .photo-card__status { position: absolute; top: 8px; left: 8px; font-family: var(--font-headline); font-size: 0.6rem; font-weight: 700; color: #fff; padding: 2px 8px; border-radius: 10px; text-transform: uppercase; }
   .photo-card__status--new { background: var(--brand-primary); }
   .photo-card__status--partial { background: #378ADD; }
   .photo-card__status--identified { background: #1D9E75; }
-
-  .photo-card__comments {
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #fff;
-    background: rgba(0,0,0,0.6);
-    padding: 2px 8px;
-    border-radius: 10px;
-  }
-
+  .photo-card__comments { position: absolute; bottom: 8px; right: 8px; font-size: 0.75rem; font-weight: 700; color: #fff; background: rgba(0,0,0,0.6); padding: 2px 8px; border-radius: 10px; }
   .photo-card__info { padding: 10px 12px; }
-  .photo-card__year { font-size: 0.8rem; font-weight: 700; color: var(--brand-primary); margin-right: 8px; }
-  .photo-card__people { font-size: 0.8rem; color: var(--text-secondary); }
+  .photo-card__year { font-size: 0.8rem; font-weight: 700; color: var(--brand-primary); margin-left: 4px; }
+  .photo-card__people { font-size: 0.8rem; color: var(--text-primary); font-weight: 600; }
   .photo-card__unknown { font-size: 0.8rem; color: #aaa; font-style: italic; }
-
   .loading { text-align: center; color: var(--text-secondary); padding: var(--space-6); grid-column: 1 / -1; }
 
   /* Modal */
-  .modal {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  .modal { position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center; }
   .modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.8); }
-  .modal-content {
-    position: relative;
-    background: #fff;
-    border-radius: var(--radius-md);
-    max-width: 1100px;
-    width: 95%;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-  .modal-close {
-    position: absolute;
-    top: 12px;
-    right: 16px;
-    font-size: 1.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #666;
-    z-index: 10;
-  }
+  .modal-content { position: relative; background: #fff; border-radius: var(--radius-md); max-width: 1100px; width: 95%; max-height: 90vh; overflow-y: auto; }
+  .modal-close { position: absolute; top: 12px; right: 16px; font-size: 1.5rem; background: none; border: none; cursor: pointer; color: #666; z-index: 10; }
   .modal-body { display: grid; grid-template-columns: 1fr 1fr; }
   .modal-image-wrap { background: #000; display: flex; align-items: center; justify-content: center; min-height: 400px; }
   .modal-image { width: 100%; height: auto; max-height: 80vh; object-fit: contain; }
-
   .modal-info { padding: var(--space-4); overflow-y: auto; max-height: 80vh; }
-  .modal-meta { margin-bottom: var(--space-3); }
-  .meta-row { font-size: 0.9rem; margin-bottom: 6px; color: var(--text-primary); }
-  .meta-row strong { color: var(--text-secondary); }
 
-  .status-badge {
-    display: inline-block;
-    font-family: var(--font-headline);
-    font-size: 0.7rem;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 10px;
-    color: #fff;
-    text-transform: uppercase;
-  }
-  .status-badge--new { background: var(--brand-primary); }
-  .status-badge--partial { background: #378ADD; }
-  .status-badge--identified { background: #1D9E75; }
+  /* Field sections */
+  .field-section { margin-bottom: var(--space-3); padding-bottom: var(--space-3); border-bottom: 1px solid #eee; }
+  .field-section:last-child { border-bottom: none; }
+  .field-label { font-family: var(--font-headline); font-size: 0.85rem; font-weight: 800; color: var(--text-secondary); margin: 0 0 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .field-value { font-size: 1rem; font-weight: 600; color: var(--text-primary); padding: 6px 0; }
+  .suggest-row { display: flex; gap: 6px; margin-top: 6px; }
+  .suggest-name { max-width: 120px; font-size: 0.85rem; padding: 8px 10px; }
+  .suggest-input { flex: 1; font-size: 0.85rem; padding: 8px 10px; }
 
-  .admin-actions { margin-bottom: var(--space-3); }
-  .admin-bar { display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap; }
-  .admin-bar .mystery-input { width: auto; min-width: 160px; }
-
-  .comments-title {
-    font-family: var(--font-headline);
-    font-size: 1rem;
-    font-weight: 800;
-    margin: 0 0 var(--space-2);
-    color: var(--text-primary);
-    border-top: 1px solid #eee;
-    padding-top: var(--space-3);
-  }
+  /* Comments */
+  .comments-title { font-family: var(--font-headline); font-size: 1rem; font-weight: 800; margin: var(--space-3) 0 var(--space-2); color: var(--text-primary); border-top: 1px solid #eee; padding-top: var(--space-3); }
   .comments-list { margin-bottom: var(--space-3); }
   .no-comments { color: #aaa; font-style: italic; font-size: 0.9rem; }
-
-  .comment {
-    background: #f5f5f5;
-    border-radius: var(--radius-sm);
-    padding: 10px 14px;
-    margin-bottom: var(--space-2);
-  }
-  .comment__header { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .comment { background: #f5f5f5; border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: var(--space-2); }
+  .comment--suggestion { background: #FFF8EE; border-left: 3px solid var(--brand-primary); }
+  .comment__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; gap: 8px; }
   .comment__author { font-size: 0.85rem; color: var(--text-primary); }
   .comment__date { font-size: 0.75rem; color: #aaa; }
-  .comment__text { font-size: 0.9rem; color: var(--text-primary); margin: 0; line-height: 1.5; }
+  .comment__text { font-size: 0.9rem; color: var(--text-primary); margin: 0 0 6px; line-height: 1.5; }
+  .comment__votes { display: flex; gap: 8px; }
+  .vote-btn { background: none; border: 1px solid #ddd; border-radius: 14px; padding: 2px 10px; font-size: 0.8rem; cursor: pointer; transition: all 0.15s; }
+  .vote-btn:hover { border-color: var(--brand-primary); }
+  .vote-btn--active { background: #eee; border-color: var(--brand-primary); }
+  .del-comment-btn { background: none; border: none; cursor: pointer; font-size: 0.9rem; opacity: 0.4; }
+  .del-comment-btn:hover { opacity: 1; }
 
   .comment-form { display: flex; flex-direction: column; gap: var(--space-2); }
+
+  /* Admin */
+  .admin-actions { margin-bottom: var(--space-3); }
+  .admin-section { background: #FFF3E0; border-radius: var(--radius-sm); padding: var(--space-3); border: 1px solid #FFE0B2; }
+  .admin-section-title { font-family: var(--font-headline); font-size: 0.9rem; font-weight: 800; color: var(--brand-primary); margin: 0 0 var(--space-2); }
+  .admin-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); margin-bottom: var(--space-2); }
+  .admin-field label { display: block; font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 2px; }
+  .admin-bar { display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap; }
+  .admin-select { width: auto; min-width: 140px; }
 
   @media (max-width: 900px) {
     .photo-grid { grid-template-columns: repeat(2, 1fr); }
     .modal-body { grid-template-columns: 1fr; }
     .modal-image-wrap { min-height: 250px; }
     .form-grid { grid-template-columns: 1fr; }
+    .admin-meta-grid { grid-template-columns: 1fr; }
   }
-
   @media (max-width: 540px) {
     .photo-grid { grid-template-columns: 1fr; }
     .mystery-title { font-size: 1.5rem; }
+    .suggest-row { flex-direction: column; }
+    .suggest-name { max-width: none; }
   }
 </style>
