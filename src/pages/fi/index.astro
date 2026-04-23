@@ -64,7 +64,15 @@ const podcastEpisodes = [
 >
   <TrendingTicker label="Nyt luetuimmat" items={tickerItems} slot="pre-header" />
 
-  {/* ===== Featured grid (hero) ===== */}
+  {/* ===== Typographic hero band ===== */}
+  <section class="hero-band">
+    <div class="container">
+      <h1 class="hero-band__title">Vauhtia ja elämää linssin läpi</h1>
+      <p class="hero-band__subtitle">Every frame tells a story</p>
+    </div>
+  </section>
+
+  {/* ===== Featured grid (articles) ===== */}
   {bigCard && (
     <section class="section featured-grid-section">
       <div class="container">
@@ -72,8 +80,8 @@ const podcastEpisodes = [
           <h2 class="section-heading">Uusimmat artikkelit</h2>
           <a href="/fi/aikakone" class="section-all-link">Kaikki artikkelit →</a>
         </div>
-        <div class="featured-grid">
-          <div class="featured-grid__big">
+        <div class="hero-split">
+          <div class="hero-split__big">
             <ArticleCard
               href={slugFor(bigCard)}
               image={imgFor(bigCard)}
@@ -83,7 +91,7 @@ const podcastEpisodes = [
               size="lg"
             />
           </div>
-          <div class="featured-grid__stack">
+          <div class="hero-split__stack">
             {stackedCards.map(a => (
               <ArticleCard
                 href={slugFor(a)}
@@ -116,7 +124,7 @@ const podcastEpisodes = [
   {/* ===== Upcoming races band ===== */}
   <UpcomingRaces />
 
-  {/* ===== Gallery section (restyled to match article cards) ===== */}
+  {/* ===== Gallery section (1 big + 3 stacked) ===== */}
   {featuredGalleries.length > 0 && (
     <section class="section gallery-section">
       <div class="container">
@@ -125,22 +133,33 @@ const podcastEpisodes = [
           <a href="/fi/galleria" class="section-all-link">Kaikki galleriat →</a>
         </div>
 
-        <div class="gallery-grid">
-          {featuredGalleries.map(gallery => (
+        <div class="hero-split">
+          <div class="hero-split__big">
             <ArticleCard
-              href={`/fi/galleria/${gallery.data.slug}`}
-              image={`/galleries/${gallery.data.slug}/${gallery.data.cover_image}`}
-              title={gallery.data.title}
-              subtitle={t['gallery.photoCount'].replace('{count}', gallery.data.images.length.toString())}
-              size="sm"
+              href={`/fi/galleria/${featuredGalleries[0].data.slug}`}
+              image={`/galleries/${featuredGalleries[0].data.slug}/${featuredGalleries[0].data.cover_image}`}
+              title={featuredGalleries[0].data.title}
+              subtitle={t['gallery.photoCount'].replace('{count}', featuredGalleries[0].data.images.length.toString())}
+              size="lg"
             />
-          ))}
+          </div>
+          <div class="hero-split__stack">
+            {featuredGalleries.slice(1, 4).map(gallery => (
+              <ArticleCard
+                href={`/fi/galleria/${gallery.data.slug}`}
+                image={`/galleries/${gallery.data.slug}/${gallery.data.cover_image}`}
+                title={gallery.data.title}
+                subtitle={t['gallery.photoCount'].replace('{count}', gallery.data.images.length.toString())}
+                size="md"
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
   )}
 
-  {/* ===== Podcast section ===== */}
+  {/* ===== Podcast section (1 big + 3 stacked) ===== */}
   <section class="section podcast-section">
     <div class="container">
       <div class="section-header-row">
@@ -148,22 +167,61 @@ const podcastEpisodes = [
         <a href="/fi/podcast" class="section-all-link">Kaikki jaksot →</a>
       </div>
 
-      <div class="podcast-grid">
-        {podcastEpisodes.map(ep => (
+      <div class="hero-split">
+        <div class="hero-split__big">
           <ArticleCard
-            href={ep.href}
+            href={podcastEpisodes[0].href}
             image="/images/hero-podcast.jpg"
-            title={ep.title}
-            subtitle={ep.subtitle}
-            size="sm"
+            title={podcastEpisodes[0].title}
+            subtitle={podcastEpisodes[0].subtitle}
+            size="lg"
           />
-        ))}
+        </div>
+        <div class="hero-split__stack">
+          {podcastEpisodes.slice(1, 4).map(ep => (
+            <ArticleCard
+              href={ep.href}
+              image="/images/hero-podcast.jpg"
+              title={ep.title}
+              subtitle={ep.subtitle}
+              size="md"
+            />
+          ))}
+        </div>
       </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
+  /* ===== Typographic hero band ===== */
+  .hero-band {
+    background: #000;
+    padding: var(--space-5) 0 var(--space-4);
+    border-bottom: 1px solid rgba(255, 153, 0, 0.15);
+    text-align: center;
+  }
+
+  .hero-band__title {
+    font-family: var(--font-headline);
+    font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+    font-weight: 900;
+    color: var(--brand-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+    margin: 0 0 var(--space-2);
+  }
+
+  .hero-band__subtitle {
+    font-family: var(--font-headline);
+    font-size: clamp(0.9rem, 1.3vw, 1.1rem);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.55);
+    letter-spacing: 0.5px;
+    margin: 0;
+  }
+
   /* Section shared */
   .section-header-row {
     display: flex;
@@ -195,36 +253,36 @@ const podcastEpisodes = [
     text-decoration: underline;
   }
 
-  /* Articles section */
-  .featured-grid-section {
-    background: var(--bg-secondary);
-    padding-top: var(--space-5);
-    padding-bottom: var(--space-6);
-  }
-
-  /* 1 big + 2 stacked — columns sync height */
-  .featured-grid {
+  /* ===== Shared: 1 big + N stacked layout (hero-split) ===== */
+  .hero-split {
     display: grid;
     grid-template-columns: 1.6fr 1fr;
     gap: var(--space-3);
     align-items: stretch;
   }
 
-  .featured-grid__big {
+  .hero-split__big {
     display: flex;
     min-height: 500px;
   }
-  .featured-grid__big > article {
+  .hero-split__big > article {
     width: 100%;
   }
 
-  .featured-grid__stack {
+  .hero-split__stack {
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: repeat(auto-fit, minmax(0, 1fr));
     gap: var(--space-3);
   }
-  .featured-grid__stack > article {
+  .hero-split__stack > article {
     min-height: 0;
+  }
+
+  /* Articles section */
+  .featured-grid-section {
+    background: var(--bg-secondary);
+    padding-top: var(--space-5);
+    padding-bottom: var(--space-6);
   }
 
   /* Secondary row: 4 cards */
@@ -241,50 +299,40 @@ const podcastEpisodes = [
     padding: var(--space-6) 0;
   }
 
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-3);
-  }
-
   /* Podcast section */
   .podcast-section {
     background: var(--bg-secondary);
     padding: var(--space-6) 0;
   }
 
-  .podcast-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-3);
-  }
-
   /* Responsive breakpoints */
   @media (max-width: 900px) {
-    .featured-grid {
+    .hero-split {
       grid-template-columns: 1fr;
     }
-    .featured-grid__big {
+    .hero-split__big {
       min-height: 320px;
     }
-    .featured-grid__stack {
-      grid-template-rows: auto auto;
-      grid-template-columns: 1fr 1fr;
+    .hero-split__stack {
+      grid-template-rows: auto;
+      grid-template-columns: repeat(3, 1fr);
     }
-    .secondary-row,
-    .gallery-grid,
-    .podcast-grid {
+    .secondary-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-split__stack {
       grid-template-columns: repeat(2, 1fr);
     }
   }
 
   @media (max-width: 540px) {
-    .featured-grid__stack {
+    .hero-split__stack {
       grid-template-columns: 1fr;
     }
-    .secondary-row,
-    .gallery-grid,
-    .podcast-grid {
+    .secondary-row {
       grid-template-columns: 1fr;
     }
     .section-heading {
