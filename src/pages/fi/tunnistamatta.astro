@@ -140,7 +140,7 @@ function renderFilters(){
   bar.innerHTML=set.map(f=>{
     let badge='';
     if(adminPw && f.key==='tarkistettavaa'){
-      const n=photos.filter(p=>getNewCount(p)>0).length;
+      const n=photos.filter(p=>isTarkistettavaa(p)).length;
       if(n>0)badge=` <span class="pill__badge">${n}</span>`;
     }
     return `<button class="pill ${f.key===curFilter?'pill--on':''}" data-s="${f.key}">${f.label}${badge}</button>`;
@@ -159,6 +159,17 @@ function getNewCount(p){
   return p.comments.filter(c=>new Date(c.created_at).getTime()>cutoff).length;
 }
 
+// A photo is "tarkistettavaa" if it has new comments OR was uploaded since last admin visit.
+function isTarkistettavaa(p){
+  if(!adminPw || !adminLastVisit)return false;
+  if(getNewCount(p)>0)return true;
+  if(p.created_at){
+    const cutoff=new Date(adminLastVisit).getTime();
+    if(new Date(p.created_at).getTime()>cutoff)return true;
+  }
+  return false;
+}
+
 fetch('/api/mystery/init',{method:'POST'}).catch(()=>{});
 async function verifyPw(pw){const r=await fetch('/api/mystery/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});return(await r.json()).valid===true;}
 
@@ -172,8 +183,8 @@ function renderGrid(){
   if(adminPw){
     const enriched=photos.map(p=>({...p, newCount: getNewCount(p)}));
     switch(curFilter){
-      case 'tarkistettavaa': f=enriched.filter(p=>p.newCount>0); break;
-      case 'kesken': f=enriched.filter(p=>p.status!=='identified' && p.newCount===0); break;
+      case 'tarkistettavaa': f=enriched.filter(p=>isTarkistettavaa(p)); break;
+      case 'kesken': f=enriched.filter(p=>p.status!=='identified' && !isTarkistettavaa(p)); break;
       case 'valmiit': f=enriched.filter(p=>p.status==='identified'); break;
       default: f=enriched; break;
     }
