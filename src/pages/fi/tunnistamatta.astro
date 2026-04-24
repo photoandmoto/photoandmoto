@@ -292,19 +292,31 @@ function updateStatusDisplay(el){
 
 function renderThread(p){
   const el=document.getElementById('modalThread');
-  // In admin mode, field suggestions (and their replies) are shown in the admin form.
-  // Thread keeps only general chat.
+  // Determine which fields have been officially confirmed — their whole
+  // discussion is removed from the community thread to reduce clutter.
+  // Admin mode: field-typed comments + their replies are shown in the admin form instead.
   let comments=p.comments;
+  const hide=new Set();
   if(adminPw){
-    const hide=new Set();
+    // Old admin rule: hide all field-type top-levels and their replies (moved to admin form)
     p.comments.forEach(c=>{
       if(!c.parent_id&&c.field_type&&c.field_type!=='general'){
         hide.add(c.id);
         p.comments.forEach(r=>{if(r.parent_id===c.id)hide.add(r.id);});
       }
     });
-    comments=p.comments.filter(c=>!hide.has(c.id));
+  }else{
+    // Community rule: hide a field's top-levels (and their replies) once the field is confirmed.
+    const confirmedTypes=new Set();
+    FIELDS.forEach(f=>{if(p[f.key]&&String(p[f.key]).trim())confirmedTypes.add(f.type);});
+    p.comments.forEach(c=>{
+      if(!c.parent_id&&c.field_type&&confirmedTypes.has(c.field_type)){
+        hide.add(c.id);
+        p.comments.forEach(r=>{if(r.parent_id===c.id)hide.add(r.id);});
+      }
+    });
   }
+  if(hide.size)comments=p.comments.filter(c=>!hide.has(c.id));
   const top=comments.filter(c=>!c.parent_id).reverse();
   let h=`<div class="thread-card"><div class="thread-card__header"><h3>Kommentoi keskustelua</h3></div>`;
   if(!top.length){h+=`<p class="thread-empty">Ei vielä keskustelua. Ole ensimmäinen!</p>`;}
