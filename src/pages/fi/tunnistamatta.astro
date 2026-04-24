@@ -195,7 +195,12 @@ fetch('/api/mystery/init',{method:'POST'}).catch(()=>{});
 async function verifyPw(pw){const r=await fetch('/api/mystery/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});return(await r.json()).valid===true;}
 
 async function load(){
-  try{const r=await fetch('/api/mystery/photos');photos=(await r.json()).photos||[];renderFilters();renderGrid();}
+  try{
+    const qs=adminPw?'?include=all':'';
+    const r=await fetch('/api/mystery/photos'+qs);
+    photos=(await r.json()).photos||[];
+    renderFilters();renderGrid();
+  }
   catch(e){grid.innerHTML='<div class="grid-empty">Virhe ladattaessa.</div>';}
 }
 
@@ -561,7 +566,7 @@ document.getElementById('adminPwBtn').addEventListener('click',async()=>{
     document.getElementById('adminPwErr').style.display='none';
     curFilter=null; // force default for admin
     renderFilters();
-    renderGrid();
+    load(); // reload with include=all to pick up identified photos
   }else{
     document.getElementById('adminPwErr').style.display='inline';
   }
@@ -582,7 +587,7 @@ document.getElementById('adminLogout').addEventListener('click',()=>{
   document.querySelectorAll('.admin-tab').forEach(t=>t.classList.toggle('admin-tab--on',t.dataset.tab==='tarkista'));
   curFilter=null;
   renderFilters();
-  renderGrid();
+  load(); // reload without include=all so identified photos drop out for community
 });
 
 // Tab switching (Tarkista / Lähetä)

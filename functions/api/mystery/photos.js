@@ -1,9 +1,15 @@
 export async function onRequestGet(context) {
-  const { env } = context;
+  const { request, env } = context;
   const h = { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' };
   try {
+    const url = new URL(request.url);
+    const includeAll = url.searchParams.get('include') === 'all';
+    // Community default: hide archived + identified. Admin (?include=all): only hide archived.
+    const whereSql = includeAll
+      ? `WHERE status != 'archived'`
+      : `WHERE status NOT IN ('archived','identified')`;
     const photos = await env.DB.prepare(
-      `SELECT id,filename,content_type,year_estimate,people,location_notes,notes,status,created_at FROM photos WHERE status NOT IN ('archived','identified') ORDER BY created_at DESC`
+      `SELECT id,filename,content_type,year_estimate,people,location_notes,notes,status,created_at FROM photos ${whereSql} ORDER BY created_at DESC`
     ).all();
     const comments = await env.DB.prepare(`SELECT * FROM comments ORDER BY created_at ASC`).all();
     const byPhoto = {};
