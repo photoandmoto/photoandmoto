@@ -8,7 +8,27 @@ const lang = 'fi';
       <div class="mp-header">
         <div class="mp-header__left">
           <h1 class="mp-title">Tunnista kuva</h1>
-          <p class="mp-sub">Auta meitä tunnistamaan vanhoja moottoriurheilukuvia.<br/>Kuka on kuvassa? Mistä vuodelta? Missä otettu?</p>
+          <p class="mp-sub" id="mpSubCommunity">Auta meitä tunnistamaan vanhoja moottoriurheilukuvia.<br/>Kuka on kuvassa? Mistä vuodelta? Missä otettu?</p>
+          <div class="mp-sub mp-sub--admin" id="mpSubAdmin" style="display:none;">
+            <strong>Ohje</strong>
+            <div class="ohje-section">
+              <span class="ohje-section__title">Tarkista-välilehti</span>
+              <ul class="ohje-list">
+                <li>Lue yhteisön ehdotukset kuvaa klikkaamalla</li>
+                <li>Kirjoita viralliset tiedot per kenttä ja tallenna</li>
+                <li>Kun vuosi, henkilöt ja paikka on täytetty → status muuttuu Tunnistetuksi</li>
+                <li>Julkaise Galleriaan siirtää kuvan pysyvään galleriaan (tulossa)</li>
+              </ul>
+            </div>
+            <div class="ohje-section">
+              <span class="ohje-section__title">Lähetä kuva -välilehti</span>
+              <ul class="ohje-list">
+                <li>Valitse kuvatiedosto (JPEG, PNG, WEBP, max 5 MB)</li>
+                <li>Täytä tiedot, jotka jo tiedät — tyhjät kentät aukeavat yhteisön ehdotettavaksi</li>
+                <li>Lataa kuva → näkyy heti yhteisölle</li>
+              </ul>
+            </div>
+          </div>
         </div>
         <div class="mp-header__right">
           <a href="#" id="adminToggle" class="admin-link">Ylläpito →</a>
@@ -499,6 +519,8 @@ document.getElementById('adminPwBtn').addEventListener('click',async()=>{
     document.getElementById('adminToggle').style.display='none';
     document.getElementById('adminActions').style.display='flex';
     document.getElementById('adminTabs').style.display='flex';
+    document.getElementById('mpSubCommunity').style.display='none';
+    document.getElementById('mpSubAdmin').style.display='block';
     document.getElementById('adminPw').value='';
     document.getElementById('adminPwErr').style.display='none';
     curFilter=null; // force default for admin
@@ -516,6 +538,8 @@ document.getElementById('adminLogout').addEventListener('click',()=>{
   document.getElementById('adminActions').style.display='none';
   document.getElementById('adminTabs').style.display='none';
   document.getElementById('adminToggle').style.display='';
+  document.getElementById('mpSubCommunity').style.display='';
+  document.getElementById('mpSubAdmin').style.display='none';
   // Reset to Tarkista tab so re-login lands on the right place
   document.getElementById('tabTarkista').style.display='';
   document.getElementById('tabLaheta').style.display='none';
@@ -568,6 +592,54 @@ load();
 .mp-header__right{display:flex;align-items:center;gap:8px}
 .mp-title{font-family:var(--font-headline);font-size:2.2rem;font-weight:900;margin:0 0 6px;color:#111;letter-spacing:-.5px}
 .mp-sub{font-size:.95rem;color:#666;margin:0;line-height:1.6}
+
+/* Admin-only ohje card — replaces the community intro */
+.mp-sub--admin{
+  background:#fff;
+  border-radius:12px;
+  padding:16px 20px;
+  border:1px solid #eee;
+  box-shadow:0 1px 4px rgba(0,0,0,.04);
+  max-width:720px;
+  margin-top:8px;
+}
+.mp-sub--admin > strong{
+  display:block;
+  font-family:var(--font-headline);
+  font-size:.9rem;
+  color:#ff9900;
+  text-transform:uppercase;
+  letter-spacing:.8px;
+  margin-bottom:10px;
+}
+.ohje-section{margin-bottom:10px}
+.ohje-section:last-child{margin-bottom:0}
+.ohje-section__title{
+  display:block;
+  font-size:.82rem;
+  font-weight:700;
+  color:#333;
+  margin-bottom:4px;
+}
+.ohje-list{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+.ohje-list li{
+  font-size:.85rem;
+  color:#555;
+  line-height:1.5;
+  padding:2px 0 2px 18px;
+  position:relative;
+}
+.ohje-list li::before{
+  content:"•";
+  position:absolute;
+  left:4px;
+  color:#ff9900;
+  font-weight:700;
+}
 
 /* Subtle admin link (community view) */
 .admin-link{
