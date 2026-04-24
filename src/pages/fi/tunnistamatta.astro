@@ -120,12 +120,14 @@ function renderGrid(){
 function openModal(id){
   const p=photos.find(x=>x.id===id);if(!p)return;curPhoto=p;
   document.getElementById('modalImg').src=p.image_url;
-  if(adminPw){renderAdminForm(p);}else{renderCommunityForm(p);}
-  renderThread(p);
+  // Admin mode: single column (no thread). Community: two columns (form + thread).
+  document.querySelector('.lb-layout').classList.toggle('lb-layout--admin',!!adminPw);
+  document.querySelector('.lb-right').style.display=adminPw?'none':'';
+  if(adminPw){renderAdminForm(p);}else{renderCommunityForm(p);renderThread(p);}
   modal.style.display='flex';document.body.style.overflow='hidden';
   // Reset scroll positions on open
   document.querySelector('.lb-left').scrollTop=0;
-  document.querySelector('.lb-right').scrollTop=0;
+  const r=document.querySelector('.lb-right');if(r)r.scrollTop=0;
 }
 
 function renderCommunityForm(p){
@@ -443,6 +445,14 @@ load();
   flex:1;
   min-height:0;
 }
+
+/* Admin mode: single column, no thread — more space for photo + field review */
+.lb-layout--admin{
+  grid-template-columns:1fr;
+  max-width:820px;
+  margin:0 auto;
+}
+.lb-layout--admin .lb-thumb-img{height:240px}
 
 /* Left column: photo (fixed) + form (flows). Scrolls internally when tall. */
 .lb-left{
