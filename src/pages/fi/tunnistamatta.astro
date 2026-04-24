@@ -53,7 +53,7 @@ const lang = 'fi';
         <div class="lightbox">
           <button class="lightbox-close" id="modalX">&#x2715;</button>
           <div class="lb-layout">
-            <!-- Left: photo + form (both static) -->
+            <!-- Left: photo + form (scrollable if tall) -->
             <div class="lb-left">
               <div class="lb-thumb-card" id="thumbCard">
                 <img id="modalImg" class="lb-thumb-img" src="" alt="" />
@@ -123,6 +123,9 @@ function openModal(id){
   if(adminPw){renderAdminForm(p);}else{renderCommunityForm(p);}
   renderThread(p);
   modal.style.display='flex';document.body.style.overflow='hidden';
+  // Reset scroll positions on open
+  document.querySelector('.lb-left').scrollTop=0;
+  document.querySelector('.lb-right').scrollTop=0;
 }
 
 function renderCommunityForm(p){
@@ -356,25 +359,69 @@ load();
 .overlay{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px}
 .overlay-bg{position:absolute;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(8px)}
 
-/* ===== LIGHTBOX ===== */
-.lightbox{position:relative;background:#111;border-radius:20px;max-width:1200px;width:100%;max-height:90vh;box-shadow:0 24px 80px rgba(0,0,0,.4)}
+/* ===== LIGHTBOX =====
+   Architecture: lightbox is a flex column with overflow:hidden.
+   The lb-layout grid grows to fill available height (flex:1; min-height:0).
+   Grid cells stretch to row height, and each column scrolls internally.
+   This keeps the border-radius clean AND prevents any column from overflowing
+   off-screen at any browser zoom. */
+.lightbox{
+  position:relative;
+  background:#111;
+  border-radius:20px;
+  max-width:1200px;
+  width:100%;
+  max-height:90vh;
+  box-shadow:0 24px 80px rgba(0,0,0,.4);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
 .lightbox-close{position:absolute;top:16px;right:20px;font-size:1.3rem;background:rgba(255,255,255,.15);border:none;cursor:pointer;color:#fff;z-index:10;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s}
 .lightbox-close:hover{background:rgba(255,255,255,.3)}
 
-/* Two-column layout */
-.lb-layout{display:grid;grid-template-columns:1.2fr 0.8fr;gap:16px;padding:16px;align-items:start}
+/* Two-column grid — fills lightbox height, each column scrolls internally */
+.lb-layout{
+  display:grid;
+  grid-template-columns:1.2fr 0.8fr;
+  gap:16px;
+  padding:16px;
+  flex:1;
+  min-height:0;
+}
 
-/* Left: photo + form — natural height, never scrolls */
-.lb-left{display:flex;flex-direction:column;gap:12px}
-.lb-thumb-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);cursor:pointer;position:relative;transition:transform .2s,box-shadow .2s}
+/* Left column: photo (fixed) + form (flows). Scrolls internally when tall. */
+.lb-left{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  min-height:0;
+  overflow-y:auto;
+  padding-right:4px; /* room for scrollbar */
+}
+.lb-thumb-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);cursor:pointer;position:relative;transition:transform .2s,box-shadow .2s;flex-shrink:0}
 .lb-thumb-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.15)}
 .lb-thumb-img{width:100%;height:140px;object-fit:contain;background:#1a1a1a;display:block}
 .lb-thumb-hint{position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:.72rem;font-weight:600;color:#fff;background:rgba(0,0,0,.5);padding:4px;backdrop-filter:blur(4px);opacity:0;transition:opacity .2s}
 .lb-thumb-card:hover .lb-thumb-hint{opacity:1}
-.lb-form-wrap{}
+.lb-form-wrap{flex-shrink:0}
 
-/* Right: thread — independently scrollable, capped height */
-.lb-right{max-height:calc(90vh - 48px);overflow-y:auto}
+/* Right column: thread. Scrolls internally. */
+.lb-right{
+  min-height:0;
+  overflow-y:auto;
+  padding-right:4px;
+}
+
+/* Subtle scrollbars on both columns */
+.lb-left::-webkit-scrollbar,
+.lb-right::-webkit-scrollbar{width:6px}
+.lb-left::-webkit-scrollbar-track,
+.lb-right::-webkit-scrollbar-track{background:transparent}
+.lb-left::-webkit-scrollbar-thumb,
+.lb-right::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:3px}
+.lb-left::-webkit-scrollbar-thumb:hover,
+.lb-right::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.3)}
 
 /* ===== FULLSCREEN PHOTO VIEWER ===== */
 .photo-viewer{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center}
@@ -397,18 +444,18 @@ load();
 .form-locked__label{font-size:.78rem;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.5px}
 .form-locked__value{font-size:.9rem;font-weight:700;color:#222}
 
-.form-fields{display:flex;flex-direction:column;gap:12px;flex:1}
+.form-fields{display:flex;flex-direction:column;gap:12px}
 .ff label{display:block;font-size:.78rem;font-weight:700;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
 .ff-opt{text-transform:none;font-weight:400;color:#bbb;letter-spacing:0}
 
 .admin-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding-top:8px;border-top:1px solid #f0f0f0}
 
 /* ===== THREAD CARD ===== */
-.thread-card{background:transparent;border-radius:14px;padding:0;height:100%;box-sizing:border-box;display:flex;flex-direction:column}
+.thread-card{background:transparent;border-radius:14px;padding:0;box-sizing:border-box;display:flex;flex-direction:column}
 .thread-card__header{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.15)}
 .thread-card__header h3{font-family:var(--font-headline);font-size:1.05rem;font-weight:800;margin:0;color:#fff}
 .thread-empty{color:#888;font-style:italic;font-size:.9rem;text-align:center;padding:32px 0}
-.thread-list{display:flex;flex-direction:column;gap:16px;flex:1}
+.thread-list{display:flex;flex-direction:column;gap:16px}
 
 /* ===== POST (thread item) ===== */
 .post{background:#fff;border-radius:12px;padding:16px;border:1px solid #e8e8e8}
@@ -435,13 +482,15 @@ load();
 .post-reply-box{display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #eee}
 .post-reply-inp{flex:1}
 
-/* ===== RESPONSIVE ===== */
+/* ===== RESPONSIVE =====
+   Mobile: whole lightbox scrolls as one unit, columns don't scroll internally.
+   Overrides desktop flex/overflow architecture. */
 @media(max-width:900px){
   .photo-grid{grid-template-columns:repeat(2,1fr)}
-  .lb-layout{grid-template-columns:1fr}
-  .lightbox{height:auto;max-height:95vh;overflow-y:auto}
-  .lb-left{overflow:visible;height:auto}
-  .lb-right{overflow:visible;height:auto;max-height:none}
+  .lightbox{height:auto;max-height:95vh;overflow-y:auto;display:block}
+  .lb-layout{grid-template-columns:1fr;flex:none;min-height:auto}
+  .lb-left{overflow:visible;min-height:auto;padding-right:0}
+  .lb-right{overflow:visible;min-height:auto;padding-right:0}
   .upload-grid{grid-template-columns:1fr}
 }
 @media(max-width:540px){
