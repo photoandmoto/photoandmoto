@@ -13,12 +13,23 @@ const lang = 'fi';
             <strong>Ohje</strong>
             <div class="ohje-section">
               <span class="ohje-section__title">Tarkista-välilehti</span>
-              <ul class="ohje-list">
-                <li>Lue yhteisön ehdotukset kuvaa klikkaamalla</li>
-                <li>Kirjoita viralliset tiedot per kenttä ja tallenna</li>
-                <li>Kun vuosi, henkilöt ja paikka on täytetty → status muuttuu Tunnistetuksi</li>
-                <li>Julkaise Galleriaan siirtää kuvan pysyvään galleriaan (tulossa)</li>
-              </ul>
+              <div class="ohje-subsection">
+                <span class="ohje-subsection__title">Yleistä</span>
+                <ul class="ohje-list">
+                  <li>Klikkaa kuvaa → lue yhteisön ehdotukset</li>
+                  <li>Kirjoita viralliset tiedot per kenttä ja tallenna</li>
+                  <li>Kun vuosi, henkilöt ja paikka on täytetty → status muuttuu Tunnistetuksi</li>
+                  <li>Julkaise Galleriaan siirtää kuvan pysyvään galleriaan (tulossa)</li>
+                </ul>
+              </div>
+              <div class="ohje-subsection">
+                <span class="ohje-subsection__title">Suodattimet</span>
+                <ul class="ohje-list">
+                  <li><strong>Tarkistettavaa</strong> — kuvia, joihin on tullut uusia ehdotuksia tai jotka on ladattu edellisen kirjautumisen jälkeen</li>
+                  <li><strong>Kesken</strong> — osittain täytetyt tai tyhjät kuvat, ei uutta aktiviteettia</li>
+                  <li><strong>Valmiit</strong> — tunnistetut kuvat, valmiina julkaistavaksi galleriaan</li>
+                </ul>
+              </div>
             </div>
             <div class="ohje-section">
               <span class="ohje-section__title">Lähetä kuva -välilehti</span>
@@ -631,6 +642,17 @@ load();
   font-weight:700;
   color:#333;
   margin-bottom:4px;
+}
+.ohje-subsection{margin:6px 0 10px 0}
+.ohje-subsection:last-child{margin-bottom:0}
+.ohje-subsection__title{
+  display:block;
+  font-size:.76rem;
+  font-weight:700;
+  color:#888;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+  margin:0 0 3px 0;
 }
 .ohje-list{
   list-style:none;
