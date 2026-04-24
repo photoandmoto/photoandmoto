@@ -192,7 +192,7 @@ function renderAdminForm(p){
 
 function renderThread(p){
   const el=document.getElementById('modalThread');
-  const top=p.comments.filter(c=>!c.parent_id);
+  const top=p.comments.filter(c=>!c.parent_id).reverse();
   let h=`<div class="thread-card"><div class="thread-card__header"><h3>Kommentoi keskustelua</h3></div>`;
   if(!top.length){h+=`<p class="thread-empty">Ei vielä keskustelua. Ole ensimmäinen!</p>`;}
   else{
@@ -358,7 +358,7 @@ load();
 .overlay-bg{position:absolute;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(8px)}
 
 /* ===== LIGHTBOX ===== */
-.lightbox{position:relative;background:#f4f3f1;border-radius:20px;max-width:1200px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.4)}
+.lightbox{position:relative;background:#111;border-radius:20px;max-width:1200px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.4)}
 .lightbox-close{position:absolute;top:16px;right:20px;font-size:1.3rem;background:rgba(0,0,0,.5);border:none;cursor:pointer;color:#fff;z-index:10;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s}
 .lightbox-close:hover{background:rgba(0,0,0,.8)}
 
@@ -373,8 +373,8 @@ load();
 .lb-thumb-card:hover .lb-thumb-hint{opacity:1}
 
 /* Two cards bottom row */
-.lb-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
-.lb-card-right{max-height:50vh;overflow-y:auto}
+.lb-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch}
+.lb-card-right{overflow-y:auto}
 
 /* ===== FULLSCREEN PHOTO VIEWER ===== */
 .photo-viewer{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center}
@@ -384,7 +384,7 @@ load();
 .pv-close:hover{background:rgba(255,255,255,.3)}
 
 /* ===== FORM CARD ===== */
-.form-card{background:#fff;border-radius:14px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.form-card{background:#fff;border-radius:14px;padding:24px;height:100%;box-sizing:border-box;box-shadow:0 2px 12px rgba(0,0,0,.06);display:flex;flex-direction:column}
 .form-card--admin{border:2px solid #ffe0a0}
 .form-card__header{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f0f0f0}
 .form-card__header h3{font-family:var(--font-headline);font-size:1.05rem;font-weight:800;margin:0;color:#222}
@@ -397,18 +397,18 @@ load();
 .form-locked__label{font-size:.78rem;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:.5px}
 .form-locked__value{font-size:.9rem;font-weight:700;color:#222}
 
-.form-fields{display:flex;flex-direction:column;gap:12px}
+.form-fields{display:flex;flex-direction:column;gap:12px;flex:1}
 .ff label{display:block;font-size:.78rem;font-weight:700;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
 .ff-opt{text-transform:none;font-weight:400;color:#bbb;letter-spacing:0}
 
 .admin-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding-top:8px;border-top:1px solid #f0f0f0}
 
 /* ===== THREAD CARD ===== */
-.thread-card{background:#fff;border-radius:14px;padding:24px;min-height:100%;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+.thread-card{background:#fff;border-radius:14px;padding:24px;height:100%;box-sizing:border-box;box-shadow:0 2px 12px rgba(0,0,0,.06);display:flex;flex-direction:column}
 .thread-card__header{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f0f0f0}
 .thread-card__header h3{font-family:var(--font-headline);font-size:1.05rem;font-weight:800;margin:0;color:#222}
 .thread-empty{color:#bbb;font-style:italic;font-size:.9rem;text-align:center;padding:32px 0}
-.thread-list{display:flex;flex-direction:column;gap:14px}
+.thread-list{display:flex;flex-direction:column;gap:14px;flex:1}
 
 /* ===== POST (thread item) ===== */
 .post{background:#fafaf8;border-radius:12px;padding:16px;border:1px solid #eee;transition:border-color .2s}
