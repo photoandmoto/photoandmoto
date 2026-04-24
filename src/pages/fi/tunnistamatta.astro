@@ -202,9 +202,9 @@ function renderThread(p){
         <div class="post-header">${tag}<span class="post-author">${esc(c.author_name)}</span><time class="post-date">${fmtDate(c.created_at)}</time>${adminPw?`<button class="post-del" data-cid="${c.id}">🗑</button>`:''}</div>
         <p class="post-body">${esc(c.content)}</p>
         <div class="post-actions">${voteBtns(c)}<button class="post-reply-btn" data-cid="${c.id}">Kommentoi</button></div>
-        <div class="post-reply-box" id="rb-${c.id}" style="display:none;"><input type="text" class="inp post-reply-inp" placeholder="Kirjoita kommentti..." /><button class="btn btn--sm post-reply-send" data-cid="${c.id}" data-pid="${p.id}">Lähetä</button></div>`;
+        <div class="post-reply-box" id="rb-${c.id}" style="display:none;"><input type="text" class="inp post-reply-inp" placeholder="Kirjoita kommentti..." /><button class="btn btn--sm post-reply-send" data-cid="${c.id}" data-pid="${p.id}">Lähetä</button></div>
+      </div>`;
       if(replies.length){
-        h+=`<div class="post-replies">`;
         replies.forEach(r=>{
           h+=`<div class="post post--child">
             <div class="post-header"><span class="post-author">${esc(r.author_name)}</span><time class="post-date">${fmtDate(r.created_at)}</time>${adminPw?`<button class="post-del" data-cid="${r.id}">🗑</button>`:''}</div>
@@ -212,9 +212,7 @@ function renderThread(p){
             <div class="post-actions">${voteBtns(r)}</div>
           </div>`;
         });
-        h+=`</div>`;
       }
-      h+=`</div>`;
     });
     h+=`</div>`;
   }
@@ -370,7 +368,7 @@ load();
 .lb-thumb-img{width:100%;height:200px;object-fit:contain;background:#1a1a1a;display:block}
 .lb-thumb-hint{position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:.72rem;font-weight:600;color:#fff;background:rgba(0,0,0,.5);padding:4px;backdrop-filter:blur(4px);opacity:0;transition:opacity .2s}
 .lb-thumb-card:hover .lb-thumb-hint{opacity:1}
-.lb-form-wrap{flex:1;overflow:hidden}
+.lb-form-wrap{flex:1;min-height:0}
 
 /* Right: thread (scrollable) */
 .lb-right{height:100%;overflow-y:auto;min-height:0}
@@ -383,7 +381,7 @@ load();
 .pv-close:hover{background:rgba(255,255,255,.3)}
 
 /* ===== FORM CARD ===== */
-.form-card{background:#fff;border-radius:14px;padding:24px;height:100%;box-sizing:border-box;box-shadow:0 2px 12px rgba(0,0,0,.06);display:flex;flex-direction:column}
+.form-card{background:#fff;border-radius:14px;padding:24px;box-sizing:border-box;box-shadow:0 2px 12px rgba(0,0,0,.06)}
 .form-card--admin{border:2px solid #ffe0a0}
 .form-card__header{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #f0f0f0}
 .form-card__header h3{font-family:var(--font-headline);font-size:1.05rem;font-weight:800;margin:0;color:#222}
@@ -411,7 +409,7 @@ load();
 
 /* ===== POST (thread item) ===== */
 .post{background:#fff;border-radius:12px;padding:16px;border:1px solid #e8e8e8}
-.post--child{background:#fafafa;margin-top:10px;margin-left:16px;border:none;border-left:3px solid #ff9900;border-radius:0 8px 8px 0;padding:12px 14px}
+.post--child{background:#fff;margin-left:32px;margin-top:-8px;border-left:3px solid #ff9900;border-radius:0 12px 12px 0;padding:14px 16px}
 .post-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
 .post-tag{font-size:.6rem;font-weight:700;color:#fff;background:#ff9900;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.8px}
 .post-author{font-size:.88rem;font-weight:700;color:#333}
@@ -432,7 +430,6 @@ load();
 .post-reply-btn:hover{color:#cc7a00;text-decoration:underline}
 .post-reply-box{display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #eee}
 .post-reply-inp{flex:1}
-.post-replies{margin-top:12px;padding-top:12px;border-top:1px solid #f0f0f0}
 
 /* ===== RESPONSIVE ===== */
 @media(max-width:900px){
