@@ -195,10 +195,12 @@ function renderThread(p){
   if(!top.length){h+=`<p class="thread-empty">Ei vielä keskustelua. Ole ensimmäinen!</p>`;}
   else{
     h+=`<div class="thread-list">`;
+    let idx=0;
     top.forEach(c=>{
       const replies=p.comments.filter(r=>r.parent_id===c.id);
       const tag=c.field_type&&c.field_type!=='general'?`<span class="post-tag">${FL[c.field_type]||''}</span>`:'';
-      h+=`<div class="post">
+      const alt=idx%2===1?'post--alt':'';
+      h+=`<div class="post ${alt}">
         <div class="post-header">${tag}<span class="post-author">${esc(c.author_name)}</span><time class="post-date">${fmtDate(c.created_at)}</time>${adminPw?`<button class="post-del" data-cid="${c.id}">🗑</button>`:''}</div>
         <p class="post-body">${esc(c.content)}</p>
         <div class="post-actions">${voteBtns(c)}<button class="post-reply-btn" data-cid="${c.id}">Kommentoi</button></div>
@@ -206,13 +208,14 @@ function renderThread(p){
       </div>`;
       if(replies.length){
         replies.forEach(r=>{
-          h+=`<div class="post post--child">
+          h+=`<div class="post post--child ${alt}">
             <div class="post-header"><span class="post-author">${esc(r.author_name)}</span><time class="post-date">${fmtDate(r.created_at)}</time>${adminPw?`<button class="post-del" data-cid="${r.id}">🗑</button>`:''}</div>
             <p class="post-body">${esc(r.content)}</p>
             <div class="post-actions">${voteBtns(r)}</div>
           </div>`;
         });
       }
+      idx++;
     });
     h+=`</div>`;
   }
@@ -354,7 +357,7 @@ load();
 .overlay-bg{position:absolute;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(8px)}
 
 /* ===== LIGHTBOX ===== */
-.lightbox{position:relative;background:#111;border-radius:20px;max-width:1200px;width:100%;max-height:90vh;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.4)}
+.lightbox{position:relative;background:#111;border-radius:20px;max-width:1200px;width:100%;max-height:90vh;box-shadow:0 24px 80px rgba(0,0,0,.4)}
 .lightbox-close{position:absolute;top:16px;right:20px;font-size:1.3rem;background:rgba(255,255,255,.15);border:none;cursor:pointer;color:#fff;z-index:10;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s}
 .lightbox-close:hover{background:rgba(255,255,255,.3)}
 
@@ -409,7 +412,8 @@ load();
 
 /* ===== POST (thread item) ===== */
 .post{background:#fff;border-radius:12px;padding:16px;border:1px solid #e8e8e8}
-.post--child{background:#fff;margin-left:32px;border-left:3px solid #ff9900;border-radius:0 12px 12px 0;padding:14px 16px}
+.post--alt{background:#f8f6f3}
+.post--child{margin-left:32px;border-left:3px solid #ff9900;border-radius:0 12px 12px 0;padding:14px 16px}
 .post-header{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
 .post-tag{font-size:.6rem;font-weight:700;color:#fff;background:#ff9900;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.8px}
 .post-author{font-size:.88rem;font-weight:700;color:#333}
