@@ -29,15 +29,6 @@ export async function onRequestPost(context) {
         await env.DB.prepare('UPDATE photos SET status=? WHERE id=?').bind(status, photo_id).run();
         return new Response(JSON.stringify({ success: true }), { headers: h });
       }
-      case 'reclassify_comment': {
-        const { comment_id, field_type } = body;
-        const allowed = ['general','year','people','location','notes'];
-        const ft = allowed.includes(field_type) ? field_type : 'general';
-        // Also detach from any parent — a reclassified comment stands on its own,
-        // otherwise replies keep showing under the parent's field group.
-        await env.DB.prepare('UPDATE comments SET field_type=?, parent_id=NULL WHERE id=?').bind(ft, comment_id).run();
-        return new Response(JSON.stringify({ success: true, field_type: ft }), { headers: h });
-      }
       case 'delete_photo': {
         await env.DB.prepare('DELETE FROM comments WHERE photo_id=?').bind(body.photo_id).run();
         await env.DB.prepare('DELETE FROM photos WHERE id=?').bind(body.photo_id).run();

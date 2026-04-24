@@ -182,7 +182,6 @@ function renderAdminForm(p){
               <span class="af-sugg__text">${esc(s.content)}</span>
               <div class="af-sugg__actions">
                 <button type="button" class="af-sugg__copy" data-target="ab_${f.key}" data-text="${escAttr(s.content)}">↪ kopioi</button>
-                <button type="button" class="af-sugg__move" data-cid="${s.id}" title="Siirrä yleiseen keskusteluun">→ keskustelu</button>
                 <button type="button" class="af-sugg__del" data-cid="${s.id}" title="Poista kokonaan">🗑</button>
               </div>
             </div>
@@ -218,10 +217,6 @@ function renderAdminForm(p){
   el.querySelectorAll('.af-sugg__copy').forEach(btn=>btn.addEventListener('click',()=>{
     const t=document.getElementById(btn.dataset.target);
     if(t){t.value=btn.dataset.text;t.focus();updateStatusDisplay(el);}
-  }));
-  el.querySelectorAll('.af-sugg__move').forEach(btn=>btn.addEventListener('click',async()=>{
-    const ok=await adminAction('reclassify_comment',{comment_id:+btn.dataset.cid,field_type:'general'});
-    if(ok){await load();openModal(p.id);}
   }));
   el.querySelectorAll('.af-sugg__del').forEach(btn=>btn.addEventListener('click',async()=>{
     if(!confirm('Poistetaanko ehdotus kokonaan?'))return;
@@ -330,7 +325,10 @@ function renderThread(p){
   el.querySelectorAll('.post-reply-send').forEach(btn=>btn.addEventListener('click',async()=>{
     const inp=btn.parentElement.querySelector('.post-reply-inp');const txt=inp.value.trim();if(txt.length<2)return;
     const nameEl=document.getElementById('sfName');const name=nameEl?nameEl.value.trim()||'Nimetön':'Nimetön';
-    await postComment(+btn.dataset.pid,name,txt,'general',+btn.dataset.cid);
+    const parentCid=+btn.dataset.cid;
+    // Inherit field_type from the root of the thread — replies stay bound to their parent field.
+    const ft=getRootFieldType(curPhoto.comments, parentCid);
+    await postComment(+btn.dataset.pid,name,txt,ft,parentCid);
     await load();openModal(curPhoto.id);
   }));
   if(adminPw){el.querySelectorAll('.post-del').forEach(btn=>btn.addEventListener('click',async e=>{
@@ -397,6 +395,14 @@ document.getElementById('uploadBtn').addEventListener('click',async()=>{
 document.querySelectorAll('.pill').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.pill').forEach(x=>x.classList.remove('pill--on'));b.classList.add('pill--on');curFilter=b.dataset.s;renderGrid();}));
 function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
 function escAttr(s){return esc(s).replace(/"/g,'&quot;');}
+// Walk up parent_id chain to find the root comment's field_type.
+// New replies inherit the field they belong to, so the whole debate stays bound to its parent field.
+function getRootFieldType(comments, commentId){
+  const byId=Object.fromEntries(comments.map(c=>[c.id,c]));
+  let c=byId[commentId];
+  while(c && c.parent_id){c=byId[c.parent_id];}
+  return c ? (c.field_type||'general') : 'general';
+}
 load();
 </script>
 
@@ -596,8 +602,6 @@ load();
 .af-sugg__actions{display:flex;gap:4px;align-items:center;flex-shrink:0}
 .af-sugg__copy{background:none;border:none;color:#ff9900;font-size:.72rem;font-weight:700;cursor:pointer;padding:2px 6px;border-radius:4px;transition:background .15s;white-space:nowrap}
 .af-sugg__copy:hover{background:#fff3e0;text-decoration:underline}
-.af-sugg__move{background:none;border:none;color:#888;font-size:.72rem;font-weight:600;cursor:pointer;padding:2px 6px;border-radius:4px;transition:all .15s;white-space:nowrap}
-.af-sugg__move:hover{background:#eeeeee;color:#555}
 .af-sugg__del{background:none;border:none;color:#bbb;font-size:.82rem;cursor:pointer;padding:2px 4px;border-radius:4px;transition:all .15s;line-height:1}
 .af-sugg__del:hover{background:#fde8e8;color:#dc3545}
 .af-sugg__meta{font-size:.68rem;color:#a8a8a8;margin-top:2px}
