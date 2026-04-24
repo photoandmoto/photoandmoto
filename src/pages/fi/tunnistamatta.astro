@@ -75,15 +75,20 @@ const lang = 'fi';
         <div class="upload-section">
           <h3 class="upload-title">Lähetä kuva tunnistettavaksi</h3>
           <p class="upload-hint">Täytä kentät joita tiedät. Tyhjät kentät avautuvat yhteisölle.</p>
-          <div class="upload-grid">
-            <div class="uf uf--full"><label>Kuva *</label><input type="file" id="photoFile" accept="image/jpeg,image/png,image/webp" class="inp" /></div>
+          <div class="upload-stack">
+            <div class="uf"><label>Kuva *</label><input type="file" id="photoFile" accept="image/jpeg,image/png,image/webp" class="inp" /></div>
             <div class="uf"><label>Vuosiarvio</label><input type="text" id="fYear" class="inp" placeholder="Esim. 1977" /></div>
             <div class="uf"><label>Henkilöt kuvassa</label><input type="text" id="fPeople" class="inp" placeholder="Keitä tunnistat?" /></div>
             <div class="uf"><label>Paikka / tapahtuma</label><input type="text" id="fLocation" class="inp" placeholder="Missä otettu?" /></div>
             <div class="uf"><label>Lisätietoja</label><input type="text" id="fNotes" class="inp" placeholder="Muuta tietoa?" /></div>
           </div>
-          <button id="uploadBtn" class="btn btn--wide">Lataa kuva</button>
-          <div id="uploadMsg" class="upload-msg"></div>
+          <div class="upload-copyright">
+            <strong>⚠ Ennen lähettämistä varmista</strong>, että sinulla on kuvan tekijänoikeudet tai oikeudenhaltijan lupa julkaista kuva.
+          </div>
+          <div class="upload-actions">
+            <button id="uploadBtn" class="btn btn--submit">Lataa kuva</button>
+            <div id="uploadMsg" class="upload-msg"></div>
+          </div>
         </div>
       </div>
 
@@ -751,13 +756,27 @@ load();
 .admin-auth{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .admin-auth .inp{flex:1;min-width:150px;max-width:260px}
 .err-msg{color:#dc3545;font-size:.85rem;font-weight:600}
-.upload-section{margin-top:4px}
-.upload-title{font-family:var(--font-headline);font-size:1.1rem;font-weight:800;margin:0 0 6px;color:#111}
-.upload-hint{font-size:.85rem;color:#888;margin:0 0 16px}
-.upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.upload-section{margin-top:4px;max-width:680px}
+.upload-title{font-family:var(--font-headline);font-size:1.25rem;font-weight:800;margin:0 0 6px;color:#111}
+.upload-hint{font-size:.88rem;color:#888;margin:0 0 20px}
+.upload-stack{display:flex;flex-direction:column;gap:14px;margin-bottom:18px}
+.upload-copyright{
+  background:#fff8e6;
+  border:1px solid #ffdf85;
+  border-left:3px solid #ff9900;
+  border-radius:8px;
+  padding:10px 14px;
+  font-size:.85rem;
+  color:#5a4010;
+  line-height:1.5;
+  margin-bottom:18px;
+}
+.upload-copyright strong{color:#a06400;font-weight:700}
+.upload-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.btn--submit{padding:10px 28px;font-size:.85rem}
 .uf label{display:block;font-size:.78rem;font-weight:700;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
 .uf--full{grid-column:1/-1}
-.upload-msg{margin-top:8px}
+.upload-msg{flex:0 0 auto}
 .u-ok{color:#1a8a5c;font-weight:700;font-size:.88rem}.u-err{color:#dc3545;font-weight:700;font-size:.88rem}.u-load{color:#ff9900;font-weight:700;font-size:.88rem}
 
 /* ===== FILTERS ===== */
