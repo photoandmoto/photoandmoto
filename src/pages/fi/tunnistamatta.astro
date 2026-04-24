@@ -206,44 +206,70 @@ function renderAdminForm(p){
         <h3>Ylläpito</h3>
         <span class="form-card__sub">Tarkista ehdotukset ja kirjoita viralliset tiedot</span>
       </div>
+      <div id="afStatus" class="af-status"></div>
       ${fieldsHtml}
-      <button class="btn btn--wide" id="abSave">Tallenna tiedot</button>
-      <div class="admin-controls">
-        <select class="inp inp--sel" id="abStatus">
-          <option value="new" ${p.status==='new'?'selected':''}>Uusi</option>
-          <option value="partial" ${p.status==='partial'?'selected':''}>Osittain tunnistettu</option>
-          <option value="identified" ${p.status==='identified'?'selected':''}>Tunnistettu</option>
-        </select>
-        <button class="btn btn--sm" id="abSetStatus">Päivitä</button>
-        <button class="btn btn--sm btn--danger" id="abDel">Poista</button>
+      <button class="btn btn--wide" id="abSave">Tallenna</button>
+      <div class="af-footer">
+        <button type="button" class="btn btn--secondary" id="afPublish" disabled>Julkaise Galleriaan</button>
+        <button type="button" class="af-footer__del" id="abDel">Poista kuva</button>
       </div>
     </div>`;
 
   el.querySelectorAll('.af-sugg__copy').forEach(btn=>btn.addEventListener('click',()=>{
     const t=document.getElementById(btn.dataset.target);
-    if(t){t.value=btn.dataset.text;t.focus();}
+    if(t){t.value=btn.dataset.text;t.focus();updateStatusDisplay(el);}
   }));
   el.querySelectorAll('.af-sugg__move').forEach(btn=>btn.addEventListener('click',async()=>{
-    await adminAction('reclassify_comment',{comment_id:+btn.dataset.cid,field_type:'general'});
-    await load();openModal(p.id);
+    const ok=await adminAction('reclassify_comment',{comment_id:+btn.dataset.cid,field_type:'general'});
+    if(ok){await load();openModal(p.id);}
   }));
   el.querySelectorAll('.af-sugg__del').forEach(btn=>btn.addEventListener('click',async()=>{
     if(!confirm('Poistetaanko ehdotus kokonaan?'))return;
-    await adminAction('delete_comment',{comment_id:+btn.dataset.cid});
-    await load();openModal(p.id);
+    const ok=await adminAction('delete_comment',{comment_id:+btn.dataset.cid});
+    if(ok){await load();openModal(p.id);}
   }));
-  el.querySelector('#abSave').addEventListener('click',async()=>{
-    await adminAction('update_meta',{photo_id:p.id,year_estimate:el.querySelector('#ab_year_estimate').value,people:el.querySelector('#ab_people').value,location_notes:el.querySelector('#ab_location_notes').value,notes:el.querySelector('#ab_notes').value});
-    await load();openModal(p.id);
+  ['year_estimate','people','location_notes'].forEach(k=>{
+    const inp=el.querySelector('#ab_'+k);
+    if(inp)inp.addEventListener('input',()=>updateStatusDisplay(el));
   });
-  el.querySelector('#abSetStatus').addEventListener('click',async()=>{
-    await adminAction('set_status',{photo_id:p.id,status:el.querySelector('#abStatus').value});
-    await load();openModal(p.id);
+  el.querySelector('#abSave').addEventListener('click',async()=>{
+    const ok=await adminAction('update_meta',{photo_id:p.id,year_estimate:el.querySelector('#ab_year_estimate').value,people:el.querySelector('#ab_people').value,location_notes:el.querySelector('#ab_location_notes').value,notes:el.querySelector('#ab_notes').value});
+    if(ok){await load();openModal(p.id);}
+  });
+  el.querySelector('#afPublish').addEventListener('click',()=>{
+    alert('Galleriaan julkaisu tulossa seuraavassa päivityksessä.');
   });
   el.querySelector('#abDel').addEventListener('click',async()=>{
     if(!confirm('Poistetaanko kuva pysyvästi?'))return;
-    await adminAction('delete_photo',{photo_id:p.id});closeModal();await load();
+    const ok=await adminAction('delete_photo',{photo_id:p.id});
+    if(ok){closeModal();await load();}
   });
+
+  updateStatusDisplay(el);
+}
+
+// Derive status live from the 3 core field inputs (notes is optional).
+// Updates the status readout and enables/disables the Julkaise button.
+function updateStatusDisplay(el){
+  const core=['year_estimate','people','location_notes'];
+  const filled=core.map(k=>{
+    const inp=el.querySelector('#ab_'+k);
+    return inp && inp.value.trim();
+  }).filter(Boolean).length;
+  let key,label,detail,ready;
+  if(filled===0){key='new';label='Uusi';detail=`${filled}/3 tarvittavista`;ready=false;}
+  else if(filled<3){key='partial';label='Osittain tunnistettu';detail=`${filled}/3 tarvittavista`;ready=false;}
+  else{key='identified';label='Tunnistettu';detail='Kaikki tiedot täytetty';ready=true;}
+  const statusEl=el.querySelector('#afStatus');
+  if(statusEl){
+    statusEl.className='af-status af-status--'+key;
+    statusEl.innerHTML=`<span class="af-status__dot"></span><strong>${label}</strong><span class="af-status__detail">· ${detail}</span>`;
+  }
+  const pubBtn=el.querySelector('#afPublish');
+  if(pubBtn){
+    pubBtn.disabled=!ready;
+    pubBtn.title=ready?'Julkaise kuva Galleriaan':'Tiedot puuttuvat — ei voi julkaista';
+  }
 }
 
 function renderThread(p){
@@ -323,7 +349,20 @@ async function postComment(pid,name,text,ft,parentId){
     body:JSON.stringify({photo_id:pid,author_name:name,content:text,field_type:ft,parent_id:parentId||null})});
 }
 function fmtDate(d){return new Date(d).toLocaleDateString('fi-FI');}
-async function adminAction(a,d){await fetch('/api/mystery/admin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:adminPw,action:a,...d})});}
+async function adminAction(a,d){
+  try{
+    const r=await fetch('/api/mystery/admin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:adminPw,action:a,...d})});
+    const data=await r.json().catch(()=>({}));
+    if(!r.ok||data.success===false){
+      alert('Virhe: '+(data.error||'Tuntematon vika ('+r.status+')'));
+      return false;
+    }
+    return true;
+  }catch(e){
+    alert('Virhe: yhteysvirhe');
+    return false;
+  }
+}
 function closeModal(){modal.style.display='none';document.body.style.overflow='';curPhoto=null;}
 document.getElementById('modalX').addEventListener('click',closeModal);
 document.querySelector('.overlay-bg').addEventListener('click',closeModal);
@@ -526,6 +565,22 @@ load();
 .ff-opt{text-transform:none;font-weight:400;color:#bbb;letter-spacing:0}
 
 .admin-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding-top:8px;border-top:1px solid #f0f0f0}
+
+/* ===== ADMIN STATUS READOUT (derived from filled fields) ===== */
+.af-status{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;margin-bottom:18px;font-size:.88rem;font-weight:500}
+.af-status--new{background:#fff3e0;color:#a06400;border:1px solid #ffd89a}
+.af-status--partial{background:#e6f2fd;color:#1265b5;border:1px solid #b3d4ef}
+.af-status--identified{background:#e8f5e9;color:#2e7d32;border:1px solid #a8d6a8}
+.af-status__dot{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.7;flex-shrink:0}
+.af-status__detail{font-weight:400;opacity:.75;font-size:.82rem}
+
+/* ===== ADMIN FOOTER (Julkaise + Poista) ===== */
+.af-footer{display:flex;align-items:center;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid #f0f0f0}
+.btn--secondary{background:#fff;color:#333;border:1.5px solid #ddd;padding:10px 18px;font-size:.82rem;border-radius:10px;flex:1;cursor:pointer;font-weight:700;transition:all .2s;font-family:'DM Sans',sans-serif}
+.btn--secondary:hover:not(:disabled){border-color:#ff9900;color:#ff9900;transform:translateY(-1px);box-shadow:0 4px 12px rgba(255,153,0,.15)}
+.btn--secondary:disabled{opacity:.5;cursor:not-allowed;background:#fafafa;color:#999;border-color:#e5e5e5}
+.af-footer__del{background:none;border:none;color:#bbb;font-size:.78rem;cursor:pointer;padding:8px 12px;border-radius:6px;transition:all .15s;font-weight:600;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.af-footer__del:hover{background:#fde8e8;color:#dc3545}
 
 /* ===== ADMIN FIELD REVIEW (field-grouped suggestions + manual input) ===== */
 .af-field{padding-bottom:14px;border-bottom:1px solid #f0f0f0;margin-bottom:14px}
