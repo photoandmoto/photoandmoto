@@ -175,18 +175,26 @@ function renderAdminForm(p){
 
   const fieldsHtml=FIELDS.map(f=>{
     const suggs=perField[f.key];
+    // Lookup map for parent text when rendering reply context
+    const byId=Object.fromEntries(p.comments.map(c=>[c.id,c]));
     const suggHtml=suggs.length
-      ? `<div class="af-suggs">${suggs.map(s=>`
-          <div class="af-sugg">
+      ? `<div class="af-suggs">${suggs.map(s=>{
+          const parent=s.parent_id?byId[s.parent_id]:null;
+          const replyPrefix=parent?'<span class="af-sugg__arrow">↳</span> ':'';
+          const replyCtx=parent?`<span class="af-sugg__replyctx">vastaus: "${esc(parent.content)}"</span> · `:'';
+          const rowCls=parent?'af-sugg af-sugg--reply':'af-sugg';
+          return `
+          <div class="${rowCls}">
             <div class="af-sugg__main">
-              <span class="af-sugg__text">${esc(s.content)}</span>
+              <span class="af-sugg__text">${replyPrefix}${esc(s.content)}</span>
               <div class="af-sugg__actions">
                 <button type="button" class="af-sugg__copy" data-target="ab_${f.key}" data-text="${escAttr(s.content)}">↪ kopioi</button>
                 <button type="button" class="af-sugg__del" data-cid="${s.id}" title="Poista kokonaan">🗑</button>
               </div>
             </div>
-            <div class="af-sugg__meta">${esc(s.author_name)} · 👍 ${s.upvotes||0} · 👎 ${s.downvotes||0} · ${fmtDate(s.created_at)}</div>
-          </div>`).join('')}</div>`
+            <div class="af-sugg__meta">${replyCtx}${esc(s.author_name)} · 👍 ${s.upvotes||0} · 👎 ${s.downvotes||0} · ${fmtDate(s.created_at)}</div>
+          </div>`;
+        }).join('')}</div>`
       : `<p class="af-empty">Ei ehdotuksia vielä</p>`;
     return `
       <div class="af-field">
@@ -223,7 +231,7 @@ function renderAdminForm(p){
     const ok=await adminAction('delete_comment',{comment_id:+btn.dataset.cid});
     if(ok){await load();openModal(p.id);}
   }));
-  ['year_estimate','people','location_notes'].forEach(k=>{
+  ['year_estimate','people','location_notes','notes'].forEach(k=>{
     const inp=el.querySelector('#ab_'+k);
     if(inp)inp.addEventListener('input',()=>updateStatusDisplay(el));
   });
@@ -244,9 +252,24 @@ function renderAdminForm(p){
 }
 
 // Derive status live from the 3 core field inputs (notes is optional).
-// Updates the status readout and enables/disables the Julkaise button.
+// Updates the status readout, enables/disables the Julkaise button,
+// and marks filled inputs with a "done" visual.
 function updateStatusDisplay(el){
   const core=['year_estimate','people','location_notes'];
+  const all=['year_estimate','people','location_notes','notes'];
+  // Visual done-state on every input (including notes)
+  all.forEach(k=>{
+    const inp=el.querySelector('#ab_'+k);
+    if(!inp)return;
+    const field=inp.closest('.af-field');
+    if(inp.value.trim()){
+      inp.classList.add('af-input--done');
+      if(field)field.classList.add('af-field--done');
+    }else{
+      inp.classList.remove('af-input--done');
+      if(field)field.classList.remove('af-field--done');
+    }
+  });
   const filled=core.map(k=>{
     const inp=el.querySelector('#ab_'+k);
     return inp && inp.value.trim();
@@ -510,7 +533,7 @@ load();
   max-width:820px;
   margin:0 auto;
 }
-.lb-layout--admin .lb-thumb-img{height:240px}
+.lb-layout--admin .lb-thumb-img{height:220px}
 
 /* Left column: photo (fixed) + form (flows). Scrolls internally when tall. */
 .lb-left{
@@ -606,7 +629,16 @@ load();
 .af-sugg__del:hover{background:#fde8e8;color:#dc3545}
 .af-sugg__meta{font-size:.68rem;color:#a8a8a8;margin-top:2px}
 .af-empty{font-size:.78rem;color:#bbb;font-style:italic;margin:0 0 8px;padding:4px 0}
-.af-input{width:100%}
+.af-input{width:100%;transition:border-color .2s, box-shadow .2s}
+
+/* Confirmed-field visual: subtle green accent when an input has a saved value */
+.af-input--done{border-left:3px solid #2e7d32}
+.af-field--done .af-field__head label::after{content:" ✓";color:#2e7d32;font-weight:700;font-size:.85rem}
+
+/* Reply context — the ↳ arrow and "vastaus: ..." meta label for threaded suggestions */
+.af-sugg--reply{padding-left:10px;border-left:2px solid #eee8d6;margin-left:6px}
+.af-sugg__arrow{color:#b08030;font-weight:700;margin-right:2px}
+.af-sugg__replyctx{font-style:italic;color:#9a7a3a}
 
 /* ===== THREAD CARD ===== */
 .thread-card{background:transparent;border-radius:14px;padding:0;box-sizing:border-box;display:flex;flex-direction:column}
