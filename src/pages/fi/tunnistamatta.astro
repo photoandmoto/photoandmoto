@@ -9,35 +9,40 @@ const lang = 'fi';
         <div class="mp-header__left">
           <h1 class="mp-title">Tunnista kuva</h1>
           <p class="mp-sub" id="mpSubCommunity">Auta meitä tunnistamaan vanhoja moottoriurheilukuvia.<br/>Kuka on kuvassa? Mistä vuodelta? Missä otettu?</p>
-          <div class="mp-sub mp-sub--admin" id="mpSubAdmin" style="display:none;">
-            <strong>Ohje</strong>
-            <div class="ohje-section">
-              <span class="ohje-section__title">Tarkista-välilehti</span>
-              <div class="ohje-subsection">
-                <span class="ohje-subsection__title">Yleistä</span>
+          <div class="mp-sub mp-sub--admin mp-sub--collapsed" id="mpSubAdmin" style="display:none;">
+            <button type="button" class="ohje-toggle" id="ohjeToggle">
+              <span class="ohje-toggle__label">Ohje</span>
+              <span class="ohje-toggle__icon">▸</span>
+            </button>
+            <div class="ohje-content">
+              <div class="ohje-section">
+                <span class="ohje-section__title">Tarkista-välilehti</span>
+                <div class="ohje-subsection">
+                  <span class="ohje-subsection__title">Yleistä</span>
+                  <ul class="ohje-list">
+                    <li>Klikkaa kuvaa → lue yhteisön ehdotukset</li>
+                    <li>Kirjoita viralliset tiedot per kenttä ja tallenna</li>
+                    <li>Kun vuosi, henkilöt ja paikka on täytetty → status muuttuu Tunnistetuksi</li>
+                    <li>Julkaise Galleriaan siirtää kuvan pysyvään galleriaan (tulossa)</li>
+                  </ul>
+                </div>
+                <div class="ohje-subsection">
+                  <span class="ohje-subsection__title">Suodattimet</span>
+                  <ul class="ohje-list">
+                    <li><strong>Tarkistettavaa</strong> — kuvia, joihin on tullut uusia ehdotuksia tai jotka on ladattu edellisen kirjautumisen jälkeen</li>
+                    <li><strong>Kesken</strong> — osittain täytetyt tai tyhjät kuvat, ei uutta aktiviteettia</li>
+                    <li><strong>Valmiit</strong> — tunnistetut kuvat, valmiina julkaistavaksi galleriaan</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="ohje-section">
+                <span class="ohje-section__title">Lähetä kuva -välilehti</span>
                 <ul class="ohje-list">
-                  <li>Klikkaa kuvaa → lue yhteisön ehdotukset</li>
-                  <li>Kirjoita viralliset tiedot per kenttä ja tallenna</li>
-                  <li>Kun vuosi, henkilöt ja paikka on täytetty → status muuttuu Tunnistetuksi</li>
-                  <li>Julkaise Galleriaan siirtää kuvan pysyvään galleriaan (tulossa)</li>
+                  <li>Valitse kuvatiedosto (JPEG, PNG, WEBP, max 5 MB)</li>
+                  <li>Täytä tiedot, jotka jo tiedät — tyhjät kentät aukeavat yhteisön ehdotettavaksi</li>
+                  <li>Lataa kuva → näkyy heti yhteisölle</li>
                 </ul>
               </div>
-              <div class="ohje-subsection">
-                <span class="ohje-subsection__title">Suodattimet</span>
-                <ul class="ohje-list">
-                  <li><strong>Tarkistettavaa</strong> — kuvia, joihin on tullut uusia ehdotuksia tai jotka on ladattu edellisen kirjautumisen jälkeen</li>
-                  <li><strong>Kesken</strong> — osittain täytetyt tai tyhjät kuvat, ei uutta aktiviteettia</li>
-                  <li><strong>Valmiit</strong> — tunnistetut kuvat, valmiina julkaistavaksi galleriaan</li>
-                </ul>
-              </div>
-            </div>
-            <div class="ohje-section">
-              <span class="ohje-section__title">Lähetä kuva -välilehti</span>
-              <ul class="ohje-list">
-                <li>Valitse kuvatiedosto (JPEG, PNG, WEBP, max 5 MB)</li>
-                <li>Täytä tiedot, jotka jo tiedät — tyhjät kentät aukeavat yhteisön ehdotettavaksi</li>
-                <li>Lataa kuva → näkyy heti yhteisölle</li>
-              </ul>
             </div>
           </div>
         </div>
@@ -548,6 +553,10 @@ document.getElementById('adminPwBtn').addEventListener('click',async()=>{
     document.getElementById('adminTabs').style.display='flex';
     document.getElementById('mpSubCommunity').style.display='none';
     document.getElementById('mpSubAdmin').style.display='block';
+    // Restore collapsed preference (default: collapsed)
+    if(localStorage.getItem('pm_ohje_expanded')==='1'){
+      document.getElementById('mpSubAdmin').classList.remove('mp-sub--collapsed');
+    }
     document.getElementById('adminPw').value='';
     document.getElementById('adminPwErr').style.display='none';
     curFilter=null; // force default for admin
@@ -583,6 +592,13 @@ document.querySelectorAll('.admin-tab').forEach(t=>t.addEventListener('click',()
   document.getElementById('tabTarkista').style.display=tab==='tarkista'?'':'none';
   document.getElementById('tabLaheta').style.display=tab==='laheta'?'':'none';
 }));
+
+// Ohje collapse/expand — remember the user's preference across logins
+document.getElementById('ohjeToggle').addEventListener('click',()=>{
+  const card=document.getElementById('mpSubAdmin');
+  const nowCollapsed=card.classList.toggle('mp-sub--collapsed');
+  localStorage.setItem('pm_ohje_expanded', nowCollapsed ? '0' : '1');
+});
 
 document.getElementById('uploadBtn').addEventListener('click',async()=>{
   const file=document.getElementById('photoFile').files[0];if(!file)return;
@@ -620,24 +636,58 @@ load();
 .mp-title{font-family:var(--font-headline);font-size:2.2rem;font-weight:900;margin:0 0 6px;color:#111;letter-spacing:-.5px}
 .mp-sub{font-size:.95rem;color:#666;margin:0;line-height:1.6}
 
-/* Admin-only ohje card — replaces the community intro */
+/* Admin-only ohje card — collapsible, replaces the community intro */
 .mp-sub--admin{
   background:#fff;
   border-radius:12px;
-  padding:16px 20px;
+  padding:0;
   border:1px solid #eee;
   box-shadow:0 1px 4px rgba(0,0,0,.04);
   max-width:720px;
   margin-top:8px;
+  overflow:hidden;
 }
-.mp-sub--admin > strong{
-  display:block;
+.ohje-toggle{
+  width:100%;
+  background:none;
+  border:none;
+  padding:12px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+  text-align:left;
+  transition:background .15s;
+}
+.ohje-toggle:hover{background:rgba(255,153,0,.04)}
+.ohje-toggle__label{
   font-family:var(--font-headline);
   font-size:.9rem;
   color:#ff9900;
   text-transform:uppercase;
   letter-spacing:.8px;
-  margin-bottom:10px;
+  font-weight:800;
+}
+.ohje-toggle__icon{
+  color:#ff9900;
+  font-weight:700;
+  font-size:1rem;
+  transition:transform .2s;
+  display:inline-block;
+}
+.mp-sub--admin:not(.mp-sub--collapsed) .ohje-toggle__icon{
+  transform:rotate(90deg);
+}
+.ohje-content{
+  padding:0 18px 16px;
+  overflow:hidden;
+  transition:max-height .25s ease, padding .25s ease;
+}
+.mp-sub--collapsed .ohje-content{
+  max-height:0;
+  padding-top:0;
+  padding-bottom:0;
 }
 .ohje-section{margin-bottom:10px}
 .ohje-section:last-child{margin-bottom:0}
