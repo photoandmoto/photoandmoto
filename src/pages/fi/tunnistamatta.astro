@@ -52,16 +52,28 @@ const lang = 'fi';
         <div class="overlay-bg"></div>
         <div class="lightbox">
           <button class="lightbox-close" id="modalX">&#x2715;</button>
-          <div class="lightbox-layout">
-            <!-- Left: photo + form -->
-            <div class="lightbox-left">
-              <div class="lb-photo-card"><div class="lb-photo"><img id="modalImg" class="lb-img" src="" alt="" /></div></div>
-              <div class="lb-form" id="modalForm"></div>
+          <div class="lb-layout">
+            <!-- Top: photo thumbnail -->
+            <div class="lb-thumb-row">
+              <div class="lb-thumb-card" id="thumbCard">
+                <img id="modalImg" class="lb-thumb-img" src="" alt="" />
+                <div class="lb-thumb-hint">Klikkaa suurentaaksesi</div>
+              </div>
             </div>
-            <!-- Right: thread -->
-            <div class="lightbox-right" id="modalThread"></div>
+            <!-- Bottom: two cards side by side -->
+            <div class="lb-cards">
+              <div class="lb-card-left" id="modalForm"></div>
+              <div class="lb-card-right" id="modalThread"></div>
+            </div>
           </div>
         </div>
+      </div>
+
+      <!-- Fullscreen photo viewer -->
+      <div id="photoViewer" class="photo-viewer" style="display:none;">
+        <div class="pv-bg"></div>
+        <img id="pvImg" class="pv-img" src="" alt="" />
+        <button class="pv-close" id="pvClose">&#x2715;</button>
       </div>
     </div>
   </section>
@@ -245,7 +257,16 @@ async function adminAction(a,d){await fetch('/api/mystery/admin',{method:'POST',
 function closeModal(){modal.style.display='none';document.body.style.overflow='';curPhoto=null;}
 document.getElementById('modalX').addEventListener('click',closeModal);
 document.querySelector('.overlay-bg').addEventListener('click',closeModal);
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(document.getElementById('photoViewer').style.display==='flex'){document.getElementById('photoViewer').style.display='none';}else{closeModal();}}});
+
+// Photo viewer - click thumbnail to enlarge
+document.getElementById('thumbCard').addEventListener('click',()=>{
+  const viewer=document.getElementById('photoViewer');
+  document.getElementById('pvImg').src=document.getElementById('modalImg').src;
+  viewer.style.display='flex';
+});
+document.getElementById('pvClose').addEventListener('click',()=>{document.getElementById('photoViewer').style.display='none';});
+document.querySelector('.pv-bg').addEventListener('click',()=>{document.getElementById('photoViewer').style.display='none';});
 
 document.getElementById('adminToggle').addEventListener('click',()=>{const p=document.getElementById('adminPanel');p.style.display=p.style.display==='none'?'block':'none';});
 document.getElementById('adminPwBtn').addEventListener('click',async()=>{
@@ -337,21 +358,30 @@ load();
 .overlay-bg{position:absolute;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(8px)}
 
 /* ===== LIGHTBOX ===== */
-.lightbox{position:relative;background:#f4f3f1;border-radius:20px;max-width:1200px;width:100%;height:88vh;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.4)}
+.lightbox{position:relative;background:#f4f3f1;border-radius:20px;max-width:1200px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.4)}
 .lightbox-close{position:absolute;top:16px;right:20px;font-size:1.3rem;background:rgba(0,0,0,.5);border:none;cursor:pointer;color:#fff;z-index:10;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s}
 .lightbox-close:hover{background:rgba(0,0,0,.8)}
 
-.lightbox-layout{display:grid;grid-template-columns:1fr 1fr;height:100%}
+.lb-layout{padding:20px;display:flex;flex-direction:column;gap:16px}
 
-/* Left column: photo + form, scrollable */
-.lightbox-left{display:flex;flex-direction:column;height:100%;overflow-y:auto;background:#eae9e6}
-.lb-photo-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);margin:16px 16px 0;flex-shrink:0}
-.lb-photo{background:#111;display:flex;align-items:center;justify-content:center;height:300px;border-radius:12px;overflow:hidden}
-.lb-img{width:100%;height:100%;object-fit:contain}
-.lb-form{padding:16px;flex-shrink:0}
+/* Thumbnail row */
+.lb-thumb-row{display:flex;justify-content:center}
+.lb-thumb-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);cursor:pointer;position:relative;transition:transform .2s,box-shadow .2s;max-width:400px;width:100%}
+.lb-thumb-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.lb-thumb-img{width:100%;height:200px;object-fit:contain;background:#111;display:block}
+.lb-thumb-hint{position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:.72rem;font-weight:600;color:#fff;background:rgba(0,0,0,.5);padding:4px;backdrop-filter:blur(4px);opacity:0;transition:opacity .2s}
+.lb-thumb-card:hover .lb-thumb-hint{opacity:1}
 
-/* Right column: thread, scrollable */
-.lightbox-right{height:100%;overflow-y:auto;padding:16px}
+/* Two cards bottom row */
+.lb-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.lb-card-right{max-height:50vh;overflow-y:auto}
+
+/* ===== FULLSCREEN PHOTO VIEWER ===== */
+.photo-viewer{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center}
+.pv-bg{position:absolute;inset:0;background:rgba(0,0,0,.95)}
+.pv-img{position:relative;max-width:95vw;max-height:95vh;object-fit:contain;border-radius:8px}
+.pv-close{position:absolute;top:20px;right:24px;font-size:1.5rem;background:rgba(255,255,255,.15);border:none;cursor:pointer;color:#fff;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background .2s;z-index:10}
+.pv-close:hover{background:rgba(255,255,255,.3)}
 
 /* ===== FORM CARD ===== */
 .form-card{background:#fff;border-radius:14px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
@@ -407,15 +437,10 @@ load();
 .post-replies{margin-top:12px}
 
 /* ===== RESPONSIVE ===== */
-@media(max-width:1024px){.photo-grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:900px){
   .photo-grid{grid-template-columns:repeat(2,1fr)}
-  .lightbox-layout{grid-template-columns:1fr;height:auto}
-  .lightbox{height:auto;max-height:95vh;overflow-y:auto}
-  .lightbox-left{overflow:visible;height:auto}
-  .lightbox-right{overflow:visible;height:auto;max-height:none}
-  .lb-photo{height:220px}
-  .lb-photo-card{margin:12px 12px 0}
+  .lb-cards{grid-template-columns:1fr}
+  .lb-card-right{max-height:none}
   .upload-grid{grid-template-columns:1fr}
 }
 @media(max-width:540px){
