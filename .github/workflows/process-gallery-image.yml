@@ -38,7 +38,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.ref_name }}
-          fetch-depth: 1
+          # Need full history so the detect step can diff against previous commit.
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
