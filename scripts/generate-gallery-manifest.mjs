@@ -9,6 +9,18 @@ const THUMB_WIDTH = 600;
 const DISPLAY_WIDTH = 1400;
 const WATERMARK_TEXT = '© Photo & Moto';
 
+// Escape XML special characters so the watermark SVG parses cleanly.
+// Sharp's libvips uses a strict XML parser — bare '&' in <text> content
+// gets read as the start of an entity reference and throws.
+function xmlEscape(s) {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
+
 // =============================================================================
 // Shared image processing helpers (used by both full-rebuild and --add modes)
 // =============================================================================
@@ -43,7 +55,8 @@ async function processOneImage(galleryDir, filename) {
 
   const wmFontSize = Math.round(actualW * 0.025);
   const wmPadding = Math.round(wmFontSize * 0.8);
-  const wmSvg = Buffer.from(`<svg width="${actualW}" height="${actualH}">
+  const wmText = xmlEscape(WATERMARK_TEXT);
+  const wmSvg = Buffer.from(`<svg width="${actualW}" height="${actualH}" xmlns="http://www.w3.org/2000/svg">
     <style>
       .wm {
         fill: rgba(255,255,255,0.5);
@@ -52,7 +65,7 @@ async function processOneImage(galleryDir, filename) {
         font-weight: bold;
       }
     </style>
-    <text x="${actualW - wmPadding}" y="${actualH - wmPadding}" text-anchor="end" class="wm">${WATERMARK_TEXT}</text>
+    <text x="${actualW - wmPadding}" y="${actualH - wmPadding}" text-anchor="end" class="wm">${wmText}</text>
   </svg>`);
 
   await sharp(resizedBuffer)
