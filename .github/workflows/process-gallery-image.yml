@@ -28,10 +28,10 @@ jobs:
       contents: write
 
     # Skip runs that the App itself triggered (prevents Action loops).
-    # The App commits use a "[skip ci]" tag in the message; bot commits also skip.
-    if: |
-      !contains(github.event.head_commit.message, '[skip ci]') &&
-      github.event.head_commit.author.name != 'photoandmoto-publisher[bot]'
+    # We rely on the bot author check — NOT [skip ci] tags — because
+    # Cloudflare Pages also honors [skip ci] and we DO want it to deploy
+    # the bot's commit (which contains the actual gallery derivatives).
+    if: github.event.head_commit.author.name != 'photoandmoto-publisher[bot]'
 
     steps:
       - name: Checkout
@@ -113,5 +113,7 @@ jobs:
             exit 0
           fi
 
-          git commit -m "chore(gallery): process new image derivatives [skip ci]"
+          # NOTE: no [skip ci] tag — Cloudflare Pages must deploy this commit.
+          # Action loop is prevented by the bot-author check at the top of the job.
+          git commit -m "chore(gallery): process new image derivatives"
           git push origin ${{ github.ref_name }}
