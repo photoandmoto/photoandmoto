@@ -27,11 +27,14 @@ jobs:
     permissions:
       contents: write
 
-    # Skip runs that the App itself triggered (prevents Action loops).
-    # We rely on the bot author check — NOT [skip ci] tags — because
-    # Cloudflare Pages also honors [skip ci] and we DO want it to deploy
-    # the bot's commit (which contains the actual gallery derivatives).
-    if: github.event.head_commit.author.name != 'photoandmoto-publisher[bot]'
+    # Loop guard — both the Worker's publish commits AND the Action's own
+    # derivative commits are authored by photoandmoto-publisher[bot] (because
+    # both use the same GitHub App installation token). We distinguish them
+    # by commit message:
+    #   - Action's derivative commit:  "chore(gallery): process new image derivatives"
+    #   - Worker's publish commit:     "Gallery: publish photo #N to <slug>"
+    # Skip only the Action's own commits to prevent infinite loops.
+    if: "!startsWith(github.event.head_commit.message, 'chore(gallery): process new image derivatives')"
 
     steps:
       - name: Checkout
@@ -113,7 +116,7 @@ jobs:
             exit 0
           fi
 
-          # NOTE: no [skip ci] tag — Cloudflare Pages must deploy this commit.
-          # Action loop is prevented by the bot-author check at the top of the job.
+          # IMPORTANT: this commit message must match the loop guard's startsWith()
+          # check at the top of the job. If you change one, change the other.
           git commit -m "chore(gallery): process new image derivatives"
           git push origin ${{ github.ref_name }}
