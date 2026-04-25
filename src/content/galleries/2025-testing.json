@@ -3,6 +3,17 @@
   "slug": "2025-testing",
   "description": "Photo gallery: 2025 testing",
   "cover_image": "",
-  "images": [],
+  "images": [
+    {
+      "filename": "Tipi and Tapi Studio 2025.jpg",
+      "thumb": "thumbs/Tipi and Tapi Studio 2025_thumb.jpg",
+      "display": "display/Tipi and Tapi Studio 2025_display.jpg",
+      "caption": "Tipi and Tapi Studio 2025",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 887
+    }
+  ],
   "category": "international"
 }
