@@ -198,7 +198,7 @@ async function generateManifest(gallerySlug) {
 // MODE 2: --add (incremental, used by GitHub Action after publish endpoint commits)
 // Usage: npm run generate-gallery <gallery-slug> --add <filename>
 // Behavior: process ONE file, append to existing manifest, do not touch other entries
-// If manifest doesn't exist yet, creates a new one with this single image
+// If manifest doesn't exist yet (or is an empty stub), creates/initializes it.
 // =============================================================================
 
 async function addSingleImage(gallerySlug, filename) {
@@ -226,23 +226,28 @@ async function addSingleImage(gallerySlug, filename) {
 
     // Load existing manifest, or build a fresh one if this is gallery's first image
     let manifest;
-    let isNewGallery = false;
     try {
       const existing = await fs.readFile(outputPath, 'utf8');
       manifest = JSON.parse(existing);
-      console.log(`   ✓ Loaded existing manifest (${manifest.images.length} images)`);
+      console.log(`   ✓ Loaded existing manifest (${(manifest.images||[]).length} images)`);
     } catch {
-      isNewGallery = true;
       console.log(`   ✓ No existing manifest — creating new gallery`);
       manifest = {
         title: formatTitle(gallerySlug),
         slug: gallerySlug,
         description: `Photo gallery: ${formatTitle(gallerySlug)}`,
-        cover_image: newEntry.thumb,
+        cover_image: '',
         images: [],
         category: determineCategory(gallerySlug),
       };
     }
+
+    // Defensive defaults — handle stub manifests where required fields might be missing or empty
+    if (!Array.isArray(manifest.images)) manifest.images = [];
+    if (!manifest.title) manifest.title = formatTitle(gallerySlug);
+    if (!manifest.slug) manifest.slug = gallerySlug;
+    if (!manifest.description) manifest.description = `Photo gallery: ${formatTitle(gallerySlug)}`;
+    if (!manifest.category) manifest.category = determineCategory(gallerySlug);
 
     // Skip if this exact filename is already in the manifest (idempotent re-runs)
     const alreadyExists = manifest.images.some(img => img.filename === filename);
@@ -254,9 +259,13 @@ async function addSingleImage(gallerySlug, filename) {
     manifest.images.push(newEntry);
     manifest.images = sortImages(manifest.images);
 
-    // Refresh cover_image only if this is a brand new gallery
-    if (isNewGallery) {
+    // Set cover_image if missing/empty. This catches three cases:
+    //   1. Brand new gallery (no manifest existed)
+    //   2. Stub manifest pre-created by Worker's publish endpoint
+    //   3. Existing manifest that somehow lost its cover (future-proofing)
+    if (!manifest.cover_image || manifest.cover_image.trim() === '') {
       manifest.cover_image = newEntry.thumb;
+      console.log(`   ✓ Set cover_image: ${newEntry.thumb}`);
     }
 
     await fs.writeFile(outputPath, JSON.stringify(manifest, null, 2));
