@@ -4,6 +4,7 @@ import ArticleCard from '../../components/ArticleCard.astro';
 import TrendingTicker from '../../components/TrendingTicker.astro';
 import UpcomingRaces from '../../components/UpcomingRaces.astro';
 import RotatingHeroSplit from '../../components/RotatingHeroSplit.astro';
+import MysteryHelpBlock from '../../components/MysteryHelpBlock.astro';
 import { getCollection } from 'astro:content';
 import { ui } from '../../i18n/ui';
 
@@ -150,6 +151,9 @@ const galleryItems = featuredGalleries.map(g => ({
       </div>
     </section>
   )}
+
+  {/* ===== Mystery photo help block — appears only when unidentified photos exist ===== */}
+  <MysteryHelpBlock lang="fi" />
 
   {/* ===== Podcast section (rotating 1 big + 3 stacked) ===== */}
   <section class="section podcast-section">
