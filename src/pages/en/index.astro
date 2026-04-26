@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
 import UpcomingRaces from '../../components/UpcomingRaces.astro';
 import RotatingHeroSplit from '../../components/RotatingHeroSplit.astro';
 import MysteryHelpBlock from '../../components/MysteryHelpBlock.astro';
@@ -8,6 +9,17 @@ import { ui } from '../../i18n/ui';
 
 const lang = 'en';
 const t = ui[lang];
+
+const articles = (await getCollection('articles', ({ data }) =>
+  data.language === 'en' && !data.draft
+)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const slugFor = (a) => `/en/time-machine/${a.slug.replace(/^en\//, '')}`;
+const imgFor = (a) => a.data.card_image || a.data.featured_image;
+
+const bigCard = articles[0];
+const stackedCards = articles.slice(1, 3);
+const secondaryCards = articles.slice(3, 7);
 
 const galleries = await getCollection('galleries');
 const featuredGalleries = galleries.slice(0, 4);
@@ -35,6 +47,55 @@ const galleryItems = featuredGalleries.map(g => ({
       </div>
     </div>
   </section>
+
+  {/* ===== Featured grid (articles) ===== */}
+  {bigCard && (
+    <section class="section featured-grid-section">
+      <div class="container">
+        <div class="section-header-row">
+          <h2 class="section-heading">Latest articles</h2>
+          <a href="/en/time-machine" class="section-all-link">All articles →</a>
+        </div>
+        <div class="hero-split">
+          <div class="hero-split__big">
+            <ArticleCard
+              href={slugFor(bigCard)}
+              image={imgFor(bigCard)}
+              category={bigCard.data.category}
+              title={bigCard.data.title}
+              subtitle={bigCard.data.subtitle}
+              size="lg"
+            />
+          </div>
+          <div class="hero-split__stack">
+            {stackedCards.map(a => (
+              <ArticleCard
+                href={slugFor(a)}
+                image={imgFor(a)}
+                category={a.data.category}
+                title={a.data.title}
+                size="md"
+              />
+            ))}
+          </div>
+        </div>
+
+        {secondaryCards.length > 0 && (
+          <div class="secondary-row">
+            {secondaryCards.map(a => (
+              <ArticleCard
+                href={slugFor(a)}
+                image={imgFor(a)}
+                category={a.data.category}
+                title={a.data.title}
+                size="sm"
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  )}
 
   {/* ===== Gallery section (rotating 1 big + 3 stacked) ===== */}
   {featuredGalleries.length > 0 && (
@@ -133,6 +194,46 @@ const galleryItems = featuredGalleries.map(g => ({
     text-decoration: underline;
   }
 
+  /* ===== Shared: 1 big + N stacked layout (hero-split) ===== */
+  .hero-split {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: var(--space-3);
+    align-items: stretch;
+  }
+
+  .hero-split__big {
+    display: flex;
+    min-height: 380px;
+  }
+  .hero-split__big > article {
+    width: 100%;
+  }
+
+  .hero-split__stack {
+    display: grid;
+    grid-template-rows: repeat(auto-fit, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+  .hero-split__stack > article {
+    min-height: 0;
+  }
+
+  /* Articles section */
+  .featured-grid-section {
+    background: var(--bg-secondary);
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-6);
+  }
+
+  /* Secondary row: 4 cards */
+  .secondary-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+
   /* Gallery section */
   .gallery-section {
     background: white;
@@ -198,6 +299,19 @@ const galleryItems = featuredGalleries.map(g => ({
 
   /* Responsive */
   @media (max-width: 900px) {
+    .hero-split {
+      grid-template-columns: 1fr;
+    }
+    .hero-split__big {
+      min-height: 320px;
+    }
+    .hero-split__stack {
+      grid-template-rows: auto;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .secondary-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
     .cta-grid {
       grid-template-columns: 1fr;
     }
@@ -206,7 +320,19 @@ const galleryItems = featuredGalleries.map(g => ({
     }
   }
 
+  @media (max-width: 640px) {
+    .hero-split__stack {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   @media (max-width: 540px) {
+    .hero-split__stack {
+      grid-template-columns: 1fr;
+    }
+    .secondary-row {
+      grid-template-columns: 1fr;
+    }
     .section-heading {
       font-size: 1.4rem;
     }
