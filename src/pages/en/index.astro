@@ -12,34 +12,6 @@ const t = ui[lang];
 const galleries = await getCollection('galleries');
 const featuredGalleries = galleries.slice(0, 4);
 
-// Podcast episodes — using archive photos as cover images
-const podcastEpisodes = [
-  {
-    title: 'Heikki Mikkola: Four-Time Motocross World Champion',
-    subtitle: 'The story of a legendary Finnish rider',
-    href: '/fi/podcast#ep-0',
-    image: '/galleries/hyvinkaa-scramble/display/Heikki Mikkola ja Jaroslav Falta_display.jpg',
-  },
-  {
-    title: 'Honda CR250: Birth and End of a Legend',
-    subtitle: "The story of motocross' most iconic bike",
-    href: '/fi/podcast#ep-1',
-    image: '/galleries/suomi-70s/display/Arto Vilkman ja Honda CR 250 1979_display.jpg',
-  },
-  {
-    title: 'Suzuki Motocross Racing: From Disastrous Start to Golden Era',
-    subtitle: "Suzuki's path to the golden age of motocross",
-    href: '/fi/podcast#ep-2',
-    image: '/galleries/international-70s/display/Hyvinkää GP-250 1971 Joel Robertin, Sylvain Geboersin ja Olle Petterssonin Suzukit_display.jpg',
-  },
-  {
-    title: 'Motocross of Nations: History and Champions',
-    subtitle: 'Legends of the Motocross of Nations',
-    href: '/fi/podcast#ep-3',
-    image: '/galleries/international-70s/display/R. De Coster, H.Everts ja A. Malherbe. Motocross Des Nations 500 Ruskeasanta 1979_display.jpg',
-  },
-];
-
 // Build items array for galleries
 const galleryItems = featuredGalleries.map(g => ({
   href: `/en/gallery/${g.data.slug}`,
@@ -83,16 +55,6 @@ const galleryItems = featuredGalleries.map(g => ({
   {/* ===== Upcoming races band ===== */}
   <UpcomingRaces lang="en" />
 
-  {/* ===== Podcast section (rotating 1 big + 3 stacked) ===== */}
-  <section class="section podcast-section">
-    <div class="container">
-      <div class="section-header-row">
-        <h2 class="section-heading">Podcast</h2>
-        <a href="/fi/podcast" class="section-all-link">All episodes →</a>
-      </div>
-      <RotatingHeroSplit items={podcastEpisodes} />
-    </div>
-  </section>
 
   {/* ===== Contact CTA section ===== */}
   <section class="section cta-section">
@@ -177,11 +139,6 @@ const galleryItems = featuredGalleries.map(g => ({
     padding: var(--space-6) 0;
   }
 
-  /* Podcast section */
-  .podcast-section {
-    background: var(--bg-secondary);
-    padding: var(--space-6) 0;
-  }
 
   /* ===== CTA section ===== */
   .cta-section {
