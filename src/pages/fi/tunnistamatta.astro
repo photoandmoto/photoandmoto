@@ -27,6 +27,34 @@ const lang = 'fi';
                   </ul>
                 </div>
                 <div class="ohje-subsection">
+                  <span class="ohje-subsection__title">Julkaise olemassa olevaan galleriaan</span>
+                  <ul class="ohje-list">
+                    <li>Avaa Tunnistettu-kuva → klikkaa <strong>Julkaise Galleriaan</strong></li>
+                    <li>Valitse galleria pudotusvalikosta</li>
+                    <li>Tarkista kuvateksti (vakio: henkilöt + paikka + vuosi) ja muokkaa tarvittaessa</li>
+                    <li>Klikkaa <strong>Julkaise</strong> → kuva ilmestyy galleriaan ~2 minuutissa</li>
+                  </ul>
+                </div>
+                <div class="ohje-subsection">
+                  <span class="ohje-subsection__title">Luo uusi galleria</span>
+                  <ul class="ohje-list">
+                    <li>Avaa Tunnistettu-kuva → klikkaa <strong>Julkaise Galleriaan</strong></li>
+                    <li>Valitse pudotusvalikosta <strong>➕ Luo uusi galleria…</strong></li>
+                    <li>Anna gallerialle nimi alla olevien ohjeiden mukaisesti</li>
+                    <li>Tarkista kuvateksti ja klikkaa <strong>Julkaise</strong></li>
+                  </ul>
+                  <div class="ohje-naming">
+                    <span class="ohje-naming__title">Nimeämiskäytäntö</span>
+                    <p class="ohje-naming__intro">Galleriat järjestyvät indeksisivulla aakkosjärjestyksessä. Käytä näitä kaavoja, jotta uusi galleria asettuu loogiseen paikkaan olemassa olevien rinnalle:</p>
+                    <ul class="ohje-list">
+                      <li><strong>Vuosikymmen-galleria:</strong> <em>Suomi 60s</em>, <em>International 60s</em> — käytä kaksinumeroista vuosikymmentä, jotta järjestys pysyy yhtenäisenä olemassa olevien kanssa</li>
+                      <li><strong>Tapahtuma- tai paikkagalleria:</strong> <em>Hyvinkää Scramble 2026</em>, <em>Orimattila SM 1984</em> — paikka ensin, sitten tapahtuma ja vuosi</li>
+                      <li><strong>Erikoiskategoria:</strong> <em>Enduro 70s</em>, <em>Black White 60s</em> — laji + vuosikymmen</li>
+                    </ul>
+                    <p class="ohje-naming__hint"><strong>Vinkki:</strong> Kirjoita nimi suomeksi ja luonnollisilla välilyönneillä — ä/ö/å muunnetaan automaattisesti URL-osoitteen muotoon (esim. "Hyvinkää" → <code>hyvinkaa</code>).</p>
+                  </div>
+                </div>
+                <div class="ohje-subsection">
                   <span class="ohje-subsection__title">Suodattimet</span>
                   <ul class="ohje-list">
                     <li><strong>Tarkistettavaa</strong> — kuvia, joihin on tullut uusia ehdotuksia tai jotka on ladattu edellisen kirjautumisen jälkeen</li>
@@ -928,6 +956,56 @@ load();
   left:4px;
   color:#ff9900;
   font-weight:700;
+}
+
+/* Naming convention callout (under Luo uusi galleria) */
+.ohje-naming{
+  margin-top:8px;
+  padding:10px 12px;
+  background:#fffaf2;
+  border:1px solid #ffd89a;
+  border-radius:8px;
+}
+.ohje-naming__title{
+  display:block;
+  font-size:.74rem;
+  font-weight:700;
+  color:#a06400;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  margin:0 0 4px 0;
+}
+.ohje-naming__intro{
+  font-size:.82rem;
+  color:#555;
+  line-height:1.5;
+  margin:0 0 6px 0;
+}
+.ohje-naming__hint{
+  font-size:.78rem;
+  color:#666;
+  line-height:1.5;
+  margin:6px 0 0 0;
+  padding-top:6px;
+  border-top:1px dashed #f0e0c0;
+}
+.ohje-naming__hint code{
+  background:#fff3e0;
+  color:#a06400;
+  padding:1px 5px;
+  border-radius:3px;
+  font-family:'SF Mono','Consolas',monospace;
+  font-size:.78rem;
+}
+.ohje-naming em{
+  font-style:normal;
+  background:#fff;
+  color:#222;
+  padding:1px 6px;
+  border-radius:3px;
+  border:1px solid #ffe0a0;
+  font-weight:600;
+  font-size:.86rem;
 }
 
 /* Subtle admin link (community view) */
