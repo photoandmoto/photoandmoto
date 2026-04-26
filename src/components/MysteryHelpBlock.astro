@@ -15,6 +15,10 @@
 //
 // Props:
 //   lang: "fi" | "en"  — controls UI text. Defaults to "fi".
+//
+// IMPORTANT: <style is:global> is required because the thumbnail DOM is created
+// at runtime by the inline script. Astro's default style scoping wouldn't reach
+// those JS-injected elements, so the .mhb-thumb sizing rules wouldn't apply.
 
 const { lang = 'fi' } = Astro.props;
 
@@ -44,11 +48,6 @@ const STRINGS = {
 const t = STRINGS[lang] || STRINGS.fi;
 ---
 
-<!--
-  Block is hidden by default (display:none). The inline script fetches the
-  endpoint, populates the thumbs, and toggles display only if count > 0.
-  This avoids any flash of empty content during load.
--->
 <section class="mhb" id="mhbRoot" style="display:none;" data-lang={lang}>
   <div class="container">
     <a href="/fi/tunnistamatta" class="mhb-card">
@@ -87,14 +86,10 @@ const t = STRINGS[lang] || STRINGS.fi;
     const countEl = document.getElementById('mhbCount');
     if (!root || !thumbsEl || !countEl) return;
 
-    // Render available thumbs (may be 0..6 even if count > 0, since legacy rows
-    // may not yet have thumb_data). If no thumbs available, hide the thumbs row.
     const photos = (data.photos || []).filter(p => p && p.thumb_data);
     if (photos.length === 0) {
       thumbsEl.style.display = 'none';
     } else {
-      // Wrap each thumb in .mhb-thumb (the square frame) with .mhb-thumb__inner
-      // (absolutely positioned to make object-fit:cover work inside the padding box).
       thumbsEl.innerHTML = photos.map(p =>
         '<div class="mhb-thumb"><div class="mhb-thumb__inner">' +
         '<img src="' + p.thumb_data + '" alt="" loading="lazy" />' +
@@ -102,11 +97,9 @@ const t = STRINGS[lang] || STRINGS.fi;
       ).join('');
     }
 
-    // Count text
     const label = data.count === 1 ? countSingular : countPlural;
     countEl.textContent = data.count + ' ' + label;
 
-    // Reveal block
     root.style.display = '';
   } catch (e) {
     // Silent fail — block stays hidden
@@ -114,7 +107,7 @@ const t = STRINGS[lang] || STRINGS.fi;
 })();
 </script>
 
-<style>
+<style is:global>
 .mhb {
   background: #f4f3f1;
   padding: 48px 0;
@@ -186,15 +179,10 @@ const t = STRINGS[lang] || STRINGS.fi;
   margin-bottom: 24px;
   align-items: start;
 }
-/*
-  Square thumbs — bulletproof technique using padding-bottom: 100%.
-  This makes height equal to width regardless of grid sizing quirks,
-  and works consistently across all browsers and aspect-ratio contexts.
-*/
 .mhb-thumb {
   position: relative;
   width: 100%;
-  padding-bottom: 100%; /* forces square: height = width */
+  padding-bottom: 100%;
   border-radius: 10px;
   overflow: hidden;
   background: #fff;
@@ -242,7 +230,6 @@ const t = STRINGS[lang] || STRINGS.fi;
   color: #cc7a00;
 }
 
-/* Responsive: 3x2 grid on tablets, 2x3 on phones */
 @media (max-width: 768px) {
   .mhb-thumbs {
     grid-template-columns: repeat(3, 1fr);
