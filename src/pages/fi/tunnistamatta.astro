@@ -23,8 +23,36 @@ const lang = 'fi';
                     <li>Klikkaa kuvaa → lue yhteisön ehdotukset</li>
                     <li>Kirjoita viralliset tiedot per kenttä ja tallenna</li>
                     <li>Kun vuosi, henkilöt ja paikka on täytetty → status muuttuu Tunnistetuksi</li>
-                    <li>Julkaise Galleriaan siirtää kuvan pysyvään galleriaan (tulossa)</li>
+                    <li>Julkaise Galleriaan siirtää kuvan pysyvään galleriaan</li>
                   </ul>
+                </div>
+                <div class="ohje-subsection">
+                  <span class="ohje-subsection__title">Julkaise olemassa olevaan galleriaan</span>
+                  <ul class="ohje-list">
+                    <li>Avaa Tunnistettu-kuva → klikkaa <strong>Julkaise Galleriaan</strong></li>
+                    <li>Valitse galleria pudotusvalikosta</li>
+                    <li>Tarkista kuvateksti (vakio: henkilöt + paikka + vuosi) ja muokkaa tarvittaessa</li>
+                    <li>Klikkaa <strong>Julkaise</strong> → kuva ilmestyy galleriaan ~2 minuutissa</li>
+                  </ul>
+                </div>
+                <div class="ohje-subsection">
+                  <span class="ohje-subsection__title">Luo uusi galleria</span>
+                  <ul class="ohje-list">
+                    <li>Avaa Tunnistettu-kuva → klikkaa <strong>Julkaise Galleriaan</strong></li>
+                    <li>Valitse pudotusvalikosta <strong>➕ Luo uusi galleria…</strong></li>
+                    <li>Anna gallerialle nimi alla olevien ohjeiden mukaisesti</li>
+                    <li>Tarkista kuvateksti ja klikkaa <strong>Julkaise</strong></li>
+                  </ul>
+                  <div class="ohje-naming">
+                    <span class="ohje-naming__title">Nimeämiskäytäntö</span>
+                    <p class="ohje-naming__intro">Galleriat järjestyvät indeksisivulla aakkosjärjestyksessä. Käytä näitä kaavoja, jotta uusi galleria asettuu loogiseen paikkaan olemassa olevien rinnalle:</p>
+                    <ul class="ohje-list">
+                      <li><strong>Vuosikymmen-galleria:</strong> <em>Suomi 60s</em>, <em>International 60s</em> — käytä kaksinumeroista vuosikymmentä, jotta järjestys pysyy yhtenäisenä olemassa olevien kanssa</li>
+                      <li><strong>Tapahtuma- tai paikkagalleria:</strong> <em>Hyvinkää Scramble 2026</em>, <em>Orimattila SM 1984</em> — paikka ensin, sitten tapahtuma ja vuosi</li>
+                      <li><strong>Erikoiskategoria:</strong> <em>Enduro 70s</em>, <em>Black White 60s</em> — laji + vuosikymmen</li>
+                    </ul>
+                    <p class="ohje-naming__hint"><strong>Vinkki:</strong> Kirjoita nimi suomeksi ja luonnollisilla välilyönneillä — ä/ö/å muunnetaan automaattisesti URL-osoitteen muotoon (esim. "Hyvinkää" → <code>hyvinkaa</code>).</p>
+                  </div>
                 </div>
                 <div class="ohje-subsection">
                   <span class="ohje-subsection__title">Suodattimet</span>
@@ -129,6 +157,7 @@ const lang = 'fi';
 
 <script>
 let photos=[],adminPw=null,curFilter=null,curPhoto=null,adminLastVisit=null;
+let cachedGalleries=null; // cached list from /api/mystery/galleries
 const voted=JSON.parse(localStorage.getItem('pm_v')||'{}');
 const grid=document.getElementById('grid');
 const modal=document.getElementById('modal');
@@ -202,6 +231,21 @@ async function load(){
     renderFilters();renderGrid();
   }
   catch(e){grid.innerHTML='<div class="grid-empty">Virhe ladattaessa.</div>';}
+}
+
+// Fetch the list of available galleries from the backend.
+// Cached for the session — admin can force a reload by logging out + back in.
+async function loadGalleries(){
+  if(cachedGalleries) return cachedGalleries;
+  try{
+    const r=await fetch('/api/mystery/galleries?password='+encodeURIComponent(adminPw));
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const data=await r.json();
+    cachedGalleries=data.galleries||[];
+    return cachedGalleries;
+  }catch(e){
+    return [];
+  }
 }
 
 function renderGrid(){
@@ -345,6 +389,7 @@ function renderAdminForm(p){
         <button type="button" class="btn btn--secondary" id="afPublish" disabled>Julkaise Galleriaan</button>
         <button type="button" class="af-footer__del" id="abDel">Poista kuva</button>
       </div>
+      <div id="pubPanel" class="pub-panel" style="display:none;"></div>
     </div>`;
 
   el.querySelectorAll('.af-sugg__copy').forEach(btn=>btn.addEventListener('click',()=>{
@@ -364,9 +409,7 @@ function renderAdminForm(p){
     const ok=await adminAction('update_meta',{photo_id:p.id,year_estimate:el.querySelector('#ab_year_estimate').value,people:el.querySelector('#ab_people').value,location_notes:el.querySelector('#ab_location_notes').value,notes:el.querySelector('#ab_notes').value});
     if(ok){await load();openModal(p.id);}
   });
-  el.querySelector('#afPublish').addEventListener('click',()=>{
-    alert('Galleriaan julkaisu tulossa seuraavassa päivityksessä.');
-  });
+  el.querySelector('#afPublish').addEventListener('click',()=>openPublishPanel(p));
   el.querySelector('#abDel').addEventListener('click',async()=>{
     if(!confirm('Poistetaanko kuva pysyvästi?'))return;
     const ok=await adminAction('delete_photo',{photo_id:p.id});
@@ -374,6 +417,185 @@ function renderAdminForm(p){
   });
 
   updateStatusDisplay(el);
+}
+
+// =====================================================================
+// PUBLISH PANEL — inline confirmation UI for "Julkaise Galleriaan"
+// =====================================================================
+//
+// Expands below the Julkaise button. Lets admin:
+//   - Pick a target gallery from a dropdown (or "+ Luo uusi")
+//   - Preview the auto-composed caption (people + location + year)
+//   - Edit the caption / filename if desired
+//   - Confirm or cancel
+//
+// On confirm: calls POST /api/mystery/publish, shows progress, then on success
+// closes the modal, clears the gallery cache (in case a new one was created),
+// and reloads the grid.
+
+async function openPublishPanel(p){
+  const panel=document.getElementById('pubPanel');
+  if(!panel) return;
+
+  // Toggle: clicking Julkaise twice closes the panel
+  if(panel.style.display!=='none' && panel.dataset.photoId===String(p.id)){
+    closePublishPanel();
+    return;
+  }
+  panel.dataset.photoId=String(p.id);
+
+  panel.style.display='block';
+  panel.innerHTML=`<div class="pub-loading">Ladataan gallerioita...</div>`;
+
+  const galleries=await loadGalleries();
+  const captionDefault=composeCaption(p);
+
+  const optionsHtml=galleries.map(g=>`<option value="${escAttr(g.slug)}">${esc(g.title)}</option>`).join('');
+
+  panel.innerHTML=`
+    <div class="pub-panel__header">
+      <h4>Julkaise galleriaan</h4>
+      <button type="button" class="pub-panel__close" id="pubClose">&#x2715;</button>
+    </div>
+    <div class="pub-panel__body">
+      <div class="pub-row">
+        <label>Galleria</label>
+        <div class="pub-select-row">
+          <select id="pubGallerySelect" class="inp inp--sel">
+            <option value="">— valitse —</option>
+            ${optionsHtml}
+            <option value="__new__">➕ Luo uusi galleria…</option>
+          </select>
+        </div>
+      </div>
+      <div id="pubNewBox" class="pub-row pub-newbox" style="display:none;">
+        <label>Uuden gallerian nimi</label>
+        <input type="text" id="pubNewTitle" class="inp" placeholder="Esim. Hyvinkää 1980s" />
+        <div class="pub-hint" id="pubSlugPreview"></div>
+      </div>
+      <div class="pub-row">
+        <label>Kuvateksti (näkyy galleriassa)</label>
+        <input type="text" id="pubCaption" class="inp" value="${escAttr(captionDefault)}" />
+        <div class="pub-hint">Nimi pohjautuu kuvatekstiin: <span id="pubFilenamePreview"></span></div>
+      </div>
+      <div class="pub-actions">
+        <button type="button" class="btn btn--ghost" id="pubCancel">Peruuta</button>
+        <button type="button" class="btn" id="pubGo" disabled>Julkaise</button>
+      </div>
+      <div id="pubMsg" class="pub-msg"></div>
+    </div>
+  `;
+
+  const sel=panel.querySelector('#pubGallerySelect');
+  const newBox=panel.querySelector('#pubNewBox');
+  const newTitleInp=panel.querySelector('#pubNewTitle');
+  const slugPrev=panel.querySelector('#pubSlugPreview');
+  const captionInp=panel.querySelector('#pubCaption');
+  const filenamePrev=panel.querySelector('#pubFilenamePreview');
+  const goBtn=panel.querySelector('#pubGo');
+
+  function refreshFilenamePreview(){
+    const cap=captionInp.value.trim();
+    filenamePrev.textContent=cap?cap.replace(/[\\/:*?"<>|]/g,'').replace(/\s+/g,' ')+'.jpg':'(tyhjä)';
+  }
+  function refreshSlugPreview(){
+    const t=newTitleInp.value.trim();
+    slugPrev.textContent=t?'Slug: '+slugify(t):'';
+  }
+  function refreshGoEnabled(){
+    const slugPicked=sel.value && sel.value!=='';
+    const newReady=sel.value==='__new__' && newTitleInp.value.trim().length>=2;
+    const captionOk=captionInp.value.trim().length>=2;
+    goBtn.disabled=!((slugPicked && sel.value!=='__new__' && captionOk) || (newReady && captionOk));
+  }
+
+  sel.addEventListener('change',()=>{
+    newBox.style.display=sel.value==='__new__'?'block':'none';
+    if(sel.value==='__new__')newTitleInp.focus();
+    refreshGoEnabled();
+  });
+  newTitleInp.addEventListener('input',()=>{refreshSlugPreview();refreshGoEnabled();});
+  captionInp.addEventListener('input',()=>{refreshFilenamePreview();refreshGoEnabled();});
+
+  panel.querySelector('#pubCancel').addEventListener('click',closePublishPanel);
+  panel.querySelector('#pubClose').addEventListener('click',closePublishPanel);
+  goBtn.addEventListener('click',()=>doPublish(p,sel,newTitleInp,captionInp,goBtn));
+
+  refreshFilenamePreview();
+  refreshGoEnabled();
+}
+
+function closePublishPanel(){
+  const panel=document.getElementById('pubPanel');
+  if(!panel) return;
+  panel.style.display='none';
+  panel.innerHTML='';
+  delete panel.dataset.photoId;
+}
+
+function composeCaption(p){
+  return [p.people, p.location_notes, p.year_estimate]
+    .map(s=>(s||'').trim())
+    .filter(Boolean)
+    .join(' ');
+}
+
+function slugify(s){
+  return String(s||'')
+    .toLowerCase()
+    // normalise common Nordic chars for slug use
+    .replace(/[äà]/g,'a').replace(/[öø]/g,'o').replace(/[å]/g,'a').replace(/[éè]/g,'e').replace(/[ü]/g,'u')
+    .replace(/[^a-z0-9-]+/g,'-')
+    .replace(/-+/g,'-')
+    .replace(/^-|-$/g,'');
+}
+
+async function doPublish(p,sel,newTitleInp,captionInp,goBtn){
+  const msg=document.getElementById('pubMsg');
+  goBtn.disabled=true;
+  msg.innerHTML='<span class="u-load">Julkaistaan…</span>';
+
+  const createNew=sel.value==='__new__';
+  const slug=createNew?slugify(newTitleInp.value):sel.value;
+  const title=createNew?newTitleInp.value.trim():'';
+  const filename=captionInp.value.trim();
+
+  try{
+    const r=await fetch('/api/mystery/publish',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        password:adminPw,
+        photo_id:p.id,
+        gallery_slug:slug,
+        gallery_title:title,
+        create_new:createNew,
+        filename_override:filename,
+      }),
+    });
+    const data=await r.json().catch(()=>({}));
+    if(!r.ok || data.success!==true){
+      msg.innerHTML=`<span class="u-err">Virhe: ${esc(data.error||('HTTP '+r.status))}</span>`;
+      goBtn.disabled=false;
+      return;
+    }
+    if(data.cleanup_warning){
+      msg.innerHTML=`<span class="u-ok">✓ Julkaistu. Huom: ${esc(data.cleanup_warning)}</span>`;
+    }else{
+      msg.innerHTML=`<span class="u-ok">✓ Julkaistu galleriaan ${esc(data.gallery_slug)}.</span>`;
+    }
+    // If admin created a new gallery, drop the cache so next time it's re-fetched
+    if(createNew) cachedGalleries=null;
+    // Brief pause so admin sees the success message, then close + reload
+    setTimeout(()=>{
+      closePublishPanel();
+      closeModal();
+      load();
+    },900);
+  }catch(e){
+    msg.innerHTML=`<span class="u-err">Virhe: ${esc(e.message||'yhteysvirhe')}</span>`;
+    goBtn.disabled=false;
+  }
 }
 
 // Derive status live from the 3 core field inputs (notes is optional).
@@ -521,7 +743,7 @@ async function adminAction(a,d){
     return false;
   }
 }
-function closeModal(){modal.style.display='none';document.body.style.overflow='';curPhoto=null;}
+function closeModal(){modal.style.display='none';document.body.style.overflow='';curPhoto=null;closePublishPanel();}
 document.getElementById('modalX').addEventListener('click',closeModal);
 document.querySelector('.overlay-bg').addEventListener('click',closeModal);
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(document.getElementById('photoViewer').style.display==='flex'){document.getElementById('photoViewer').style.display='none';}else{closeModal();}}});
@@ -549,6 +771,7 @@ document.getElementById('adminPwBtn').addEventListener('click',async()=>{
   const pw=document.getElementById('adminPw').value;
   if(await verifyPw(pw)){
     adminPw=pw;
+    cachedGalleries=null; // ensure fresh fetch under new credentials
     adminLastVisit=localStorage.getItem('pm_admin_lastVisit'); // previous login's timestamp
     localStorage.setItem('pm_admin_lastVisit', new Date().toISOString()); // for next session
     // UI transitions
@@ -576,6 +799,7 @@ document.getElementById('adminPwBtn').addEventListener('click',async()=>{
 document.getElementById('adminLogout').addEventListener('click',()=>{
   adminPw=null;
   adminLastVisit=null;
+  cachedGalleries=null;
   document.getElementById('adminActions').style.display='none';
   document.getElementById('adminTabs').style.display='none';
   document.getElementById('adminToggle').style.display='';
@@ -732,6 +956,56 @@ load();
   left:4px;
   color:#ff9900;
   font-weight:700;
+}
+
+/* Naming convention callout (under Luo uusi galleria) */
+.ohje-naming{
+  margin-top:8px;
+  padding:10px 12px;
+  background:#fffaf2;
+  border:1px solid #ffd89a;
+  border-radius:8px;
+}
+.ohje-naming__title{
+  display:block;
+  font-size:.74rem;
+  font-weight:700;
+  color:#a06400;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  margin:0 0 4px 0;
+}
+.ohje-naming__intro{
+  font-size:.82rem;
+  color:#555;
+  line-height:1.5;
+  margin:0 0 6px 0;
+}
+.ohje-naming__hint{
+  font-size:.78rem;
+  color:#666;
+  line-height:1.5;
+  margin:6px 0 0 0;
+  padding-top:6px;
+  border-top:1px dashed #f0e0c0;
+}
+.ohje-naming__hint code{
+  background:#fff3e0;
+  color:#a06400;
+  padding:1px 5px;
+  border-radius:3px;
+  font-family:'SF Mono','Consolas',monospace;
+  font-size:.78rem;
+}
+.ohje-naming em{
+  font-style:normal;
+  background:#fff;
+  color:#222;
+  padding:1px 6px;
+  border-radius:3px;
+  border:1px solid #ffe0a0;
+  font-weight:600;
+  font-size:.86rem;
 }
 
 /* Subtle admin link (community view) */
@@ -979,6 +1253,32 @@ load();
 .btn--secondary:disabled{opacity:.5;cursor:not-allowed;background:#fafafa;color:#999;border-color:#e5e5e5}
 .af-footer__del{background:none;border:none;color:#bbb;font-size:.78rem;cursor:pointer;padding:8px 12px;border-radius:6px;transition:all .15s;font-weight:600;font-family:'DM Sans',sans-serif;white-space:nowrap}
 .af-footer__del:hover{background:#fde8e8;color:#dc3545}
+
+/* ===== PUBLISH PANEL (inline confirm UI for Julkaise Galleriaan) ===== */
+.pub-panel{
+  margin-top:14px;
+  padding:14px 16px;
+  background:#fffaf2;
+  border:1.5px solid #ffd89a;
+  border-radius:12px;
+  animation:pubFadeIn .2s ease-out;
+}
+@keyframes pubFadeIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.pub-panel__header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.pub-panel__header h4{font-family:var(--font-headline);font-size:.95rem;font-weight:800;color:#a06400;margin:0;letter-spacing:.2px}
+.pub-panel__close{background:none;border:none;color:#a06400;cursor:pointer;font-size:.95rem;padding:4px 8px;border-radius:6px;line-height:1;transition:background .15s}
+.pub-panel__close:hover{background:rgba(255,153,0,.12)}
+.pub-panel__body{display:flex;flex-direction:column;gap:10px}
+.pub-row{display:flex;flex-direction:column;gap:4px}
+.pub-row label{font-size:.74rem;font-weight:700;color:#a06400;text-transform:uppercase;letter-spacing:.5px}
+.pub-row .inp{width:100%}
+.pub-select-row{display:flex;gap:8px;align-items:center}
+.pub-select-row .inp--sel{width:100%;max-width:none}
+.pub-newbox{padding-top:6px}
+.pub-hint{font-size:.74rem;color:#8a6630;line-height:1.4;margin-top:2px}
+.pub-actions{display:flex;gap:10px;align-items:center;justify-content:flex-end;margin-top:4px}
+.pub-msg{min-height:1.2em;font-size:.85rem;text-align:right}
+.pub-loading{padding:12px;text-align:center;color:#a06400;font-size:.88rem;font-weight:600}
 
 /* ===== ADMIN FIELD REVIEW (field-grouped suggestions + manual input) ===== */
 .af-field{padding-bottom:14px;border-bottom:1px solid #f0f0f0;margin-bottom:14px}
