@@ -23,6 +23,7 @@ const STRINGS = {
     eyebrow: 'APUA TARVITAAN',
     headline: 'Tunnetko näitä kuvia?',
     subline: 'Vanhoja moottoriurheilukuvia odottaa tunnistamista.',
+    trustline: 'Ei rekisteröitymistä. Kommentoi nimettömästi tai omalla nimelläsi.',
     countSingular: 'kuva odottaa',
     countPlural: 'kuvaa odottaa',
     cta: 'Auta tunnistamaan →',
@@ -32,6 +33,7 @@ const STRINGS = {
     eyebrow: 'HELP NEEDED',
     headline: 'Do you recognize any of these photos?',
     subline: 'Old motorsport photos are waiting to be identified.',
+    trustline: 'No registration. Comment anonymously or with your name.',
     countSingular: 'photo waiting',
     countPlural: 'photos waiting',
     cta: 'Help identify →',
@@ -57,6 +59,7 @@ const t = STRINGS[lang] || STRINGS.fi;
           {t.subline}
           {t.languageNote && <span class="mhb-langnote">{t.languageNote}</span>}
         </p>
+        <p class="mhb-trustline">{t.trustline}</p>
       </div>
 
       <div class="mhb-thumbs" id="mhbThumbs">
@@ -90,8 +93,12 @@ const t = STRINGS[lang] || STRINGS.fi;
     if (photos.length === 0) {
       thumbsEl.style.display = 'none';
     } else {
+      // Wrap each thumb in .mhb-thumb (the square frame) with .mhb-thumb__inner
+      // (absolutely positioned to make object-fit:cover work inside the padding box).
       thumbsEl.innerHTML = photos.map(p =>
-        '<div class="mhb-thumb"><img src="' + p.thumb_data + '" alt="" loading="lazy" /></div>'
+        '<div class="mhb-thumb"><div class="mhb-thumb__inner">' +
+        '<img src="' + p.thumb_data + '" alt="" loading="lazy" />' +
+        '</div></div>'
       ).join('');
     }
 
@@ -114,7 +121,7 @@ const t = STRINGS[lang] || STRINGS.fi;
 }
 .mhb-card {
   display: block;
-  background: linear-gradient(135deg, #fffaf2 0%, #fff8e8 100%);
+  background: transparent;
   border: 2px solid #ffd89a;
   border-radius: 18px;
   padding: 32px 28px;
@@ -157,6 +164,14 @@ const t = STRINGS[lang] || STRINGS.fi;
   margin: 0;
   line-height: 1.5;
 }
+.mhb-trustline {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .82rem;
+  color: #999;
+  margin: 4px 0 0;
+  line-height: 1.4;
+  font-style: italic;
+}
 .mhb-langnote {
   display: inline-block;
   font-size: .82rem;
@@ -169,14 +184,26 @@ const t = STRINGS[lang] || STRINGS.fi;
   grid-template-columns: repeat(6, 1fr);
   gap: 12px;
   margin-bottom: 24px;
+  align-items: start;
 }
+/*
+  Square thumbs — bulletproof technique using padding-bottom: 100%.
+  This makes height equal to width regardless of grid sizing quirks,
+  and works consistently across all browsers and aspect-ratio contexts.
+*/
 .mhb-thumb {
-  aspect-ratio: 1 / 1;
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%; /* forces square: height = width */
   border-radius: 10px;
   overflow: hidden;
   background: #fff;
   box-shadow: 0 2px 6px rgba(0,0,0,.08);
   transition: transform .2s ease;
+}
+.mhb-thumb__inner {
+  position: absolute;
+  inset: 0;
 }
 .mhb-thumb img {
   width: 100%;
