@@ -1,0 +1,242 @@
+---
+// MysteryHelpBlock.astro
+//
+// Landing-page section that surfaces unidentified mystery photos to encourage
+// community help. Renders only when there are photos awaiting identification.
+//
+// Data source: GET /api/mystery/featured
+//   Returns { count: N, photos: [{ id, thumb_data }, ...] }
+//
+// Behavior:
+//   - count === 0   → block hides itself entirely (no visible DOM)
+//   - count > 0     → block renders with thumbnails, count, and CTA
+//
+// Click anywhere → /fi/tunnistamatta (single destination, regardless of language)
+//
+// Props:
+//   lang: "fi" | "en"  — controls UI text. Defaults to "fi".
+
+const { lang = 'fi' } = Astro.props;
+
+const STRINGS = {
+  fi: {
+    eyebrow: 'APUA TARVITAAN',
+    headline: 'Tunnetko näitä kuvia?',
+    subline: 'Vanhoja moottoriurheilukuvia odottaa tunnistamista.',
+    countSingular: 'kuva odottaa',
+    countPlural: 'kuvaa odottaa',
+    cta: 'Auta tunnistamaan →',
+    languageNote: '',
+  },
+  en: {
+    eyebrow: 'HELP NEEDED',
+    headline: 'Do you recognize any of these photos?',
+    subline: 'Old motorsport photos are waiting to be identified.',
+    countSingular: 'photo waiting',
+    countPlural: 'photos waiting',
+    cta: 'Help identify →',
+    languageNote: '(Identification page is in Finnish)',
+  },
+};
+
+const t = STRINGS[lang] || STRINGS.fi;
+---
+
+<!--
+  Block is hidden by default (display:none). The inline script fetches the
+  endpoint, populates the thumbs, and toggles display only if count > 0.
+  This avoids any flash of empty content during load.
+-->
+<section class="mhb" id="mhbRoot" style="display:none;" data-lang={lang}>
+  <div class="container">
+    <a href="/fi/tunnistamatta" class="mhb-card">
+      <div class="mhb-header">
+        <span class="mhb-eyebrow">{t.eyebrow}</span>
+        <h2 class="mhb-headline">{t.headline}</h2>
+        <p class="mhb-subline">
+          {t.subline}
+          {t.languageNote && <span class="mhb-langnote">{t.languageNote}</span>}
+        </p>
+      </div>
+
+      <div class="mhb-thumbs" id="mhbThumbs">
+        {/* thumbs injected here by script */}
+      </div>
+
+      <div class="mhb-footer">
+        <span class="mhb-count" id="mhbCount"></span>
+        <span class="mhb-cta">{t.cta}</span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<script is:inline define:vars={{ countSingular: t.countSingular, countPlural: t.countPlural }}>
+(async function(){
+  try {
+    const r = await fetch('/api/mystery/featured');
+    if (!r.ok) return;
+    const data = await r.json();
+    if (!data || !data.count || data.count < 1) return;
+
+    const root = document.getElementById('mhbRoot');
+    const thumbsEl = document.getElementById('mhbThumbs');
+    const countEl = document.getElementById('mhbCount');
+    if (!root || !thumbsEl || !countEl) return;
+
+    // Render available thumbs (may be 0..6 even if count > 0, since legacy rows
+    // may not yet have thumb_data). If no thumbs available, hide the thumbs row.
+    const photos = (data.photos || []).filter(p => p && p.thumb_data);
+    if (photos.length === 0) {
+      thumbsEl.style.display = 'none';
+    } else {
+      thumbsEl.innerHTML = photos.map(p =>
+        '<div class="mhb-thumb"><img src="' + p.thumb_data + '" alt="" loading="lazy" /></div>'
+      ).join('');
+    }
+
+    // Count text
+    const label = data.count === 1 ? countSingular : countPlural;
+    countEl.textContent = data.count + ' ' + label;
+
+    // Reveal block
+    root.style.display = '';
+  } catch (e) {
+    // Silent fail — block stays hidden
+  }
+})();
+</script>
+
+<style>
+.mhb {
+  background: #f4f3f1;
+  padding: 48px 0;
+}
+.mhb-card {
+  display: block;
+  background: linear-gradient(135deg, #fffaf2 0%, #fff8e8 100%);
+  border: 2px solid #ffd89a;
+  border-radius: 18px;
+  padding: 32px 28px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  cursor: pointer;
+}
+.mhb-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(255,153,0,.18);
+  border-color: #ff9900;
+}
+.mhb-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+.mhb-eyebrow {
+  display: inline-block;
+  font-family: var(--font-headline, 'Bebas Neue', sans-serif);
+  font-size: .9rem;
+  font-weight: 800;
+  color: #ff9900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.mhb-headline {
+  font-family: var(--font-headline, 'Bebas Neue', sans-serif);
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #222;
+  margin: 0 0 8px;
+  letter-spacing: -.3px;
+}
+.mhb-subline {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .95rem;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+.mhb-langnote {
+  display: inline-block;
+  font-size: .82rem;
+  color: #999;
+  font-style: italic;
+  margin-left: 6px;
+}
+.mhb-thumbs {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.mhb-thumb {
+  aspect-ratio: 1 / 1;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,.08);
+  transition: transform .2s ease;
+}
+.mhb-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.mhb-card:hover .mhb-thumb {
+  transform: scale(1.02);
+}
+.mhb-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,153,0,.2);
+  flex-wrap: wrap;
+}
+.mhb-count {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .9rem;
+  font-weight: 600;
+  color: #a06400;
+}
+.mhb-cta {
+  font-family: 'DM Sans', sans-serif;
+  font-size: .95rem;
+  font-weight: 800;
+  color: #ff9900;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  transition: color .2s ease;
+}
+.mhb-card:hover .mhb-cta {
+  color: #cc7a00;
+}
+
+/* Responsive: 3x2 grid on tablets, 2x3 on phones */
+@media (max-width: 768px) {
+  .mhb-thumbs {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .mhb-headline {
+    font-size: 1.4rem;
+  }
+  .mhb-card {
+    padding: 24px 20px;
+  }
+}
+@media (max-width: 480px) {
+  .mhb-thumbs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .mhb-footer {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    gap: 8px;
+  }
+}
+</style>
