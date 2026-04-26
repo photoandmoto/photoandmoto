@@ -335,6 +335,40 @@ During the production smoke test of the publish pipeline, the typed year (2026) 
 
 ---
 
+
+
+---
+
+## Way of Working
+
+### Git workflow (solo project)
+
+This is a one-person project. Use direct merges, not Pull Requests.
+
+```
+dev branch  →  push  →  verify on staging  →  git merge dev  →  git push origin main
+```
+
+- **dev branch:** all work happens here first
+- **Staging:** photoandmoto-staging.pages.dev — auto-deploys from `dev`
+- **Production:** www.photoandmoto.fi — auto-deploys from `main`
+- **No PRs needed:** merge directly from command line, saves time
+- **Always verify on staging** before merging to main
+
+### Working with Claude
+
+- Claude provides PowerShell commands to run locally
+- For file writes with template literals or special characters, use Node `.cjs` scripts (PowerShell mangles backticks and Unicode)
+- Pattern: write `fix-something.cjs` → `node fix-something.cjs` → verify → delete script → commit → push
+- One change at a time: do → verify → next
+
+### Article translation workflow
+
+- Write article in Finnish (`src/content/articles/fi/`)
+- Paste to Claude for translation
+- Save English version to `src/content/articles/en/`
+- Push to dev, verify on staging, merge to main
+- API-based translation can be added later if volume increases
 ## License
 
 © 2026 Photo & Moto — All rights reserved.
