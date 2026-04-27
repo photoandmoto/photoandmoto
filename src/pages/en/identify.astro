@@ -748,7 +748,7 @@ function renderThread(p){
   el.querySelectorAll('.th-vote').forEach(btn=>btn.addEventListener('click',async e=>{
     e.stopPropagation();const cid=+btn.dataset.cid,v=+btn.dataset.v;if(voted[cid])return;
     const r=await fetch('/api/mystery/vote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({comment_id:cid,vote:v})});
-    if((await r.json()).success){voted[cid]=v;localStorage.setItem('pm_v',JSON.stringify(voted));await load();openModal(curPhoto.id);}
+    if((await r.json()).success){voted[cid]=v;localStorage.setItem('pm_v',JSON.stringify(voted));window._keepThreadOpen=true;await load();openModal(curPhoto.id);}
   }));
   el.querySelectorAll('.post-reply-btn').forEach(btn=>btn.addEventListener('click',()=>{
     const rb=document.getElementById('rb-'+btn.dataset.cid);rb.style.display=rb.style.display==='none'?'flex':'none';
@@ -760,11 +760,11 @@ function renderThread(p){
     // Inherit field_type from the root of the thread — replies stay bound to their parent field.
     const ft=getRootFieldType(curPhoto.comments, parentCid);
     await postComment(+btn.dataset.pid,name,txt,ft,parentCid);
-    await load();openModal(curPhoto.id);
+    window._keepThreadOpen=true;await load();openModal(curPhoto.id);
   }));
   if(adminPw){el.querySelectorAll('.post-del').forEach(btn=>btn.addEventListener('click',async e=>{
     e.stopPropagation();if(!confirm('Poistetaanko?'))return;
-    await adminAction('delete_comment',{comment_id:+btn.dataset.cid});await load();openModal(curPhoto.id);
+    await adminAction('delete_comment',{comment_id:+btn.dataset.cid});window._keepThreadOpen=true;await load();openModal(curPhoto.id);
   }));}
 }
 
