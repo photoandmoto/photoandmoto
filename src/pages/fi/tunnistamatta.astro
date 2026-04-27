@@ -176,7 +176,7 @@ const T=LANG==='en'?{
   yourName:'Nimesi',nameOpt:'(vapaaehtoinen)',anonymous:'Nimetön',submit:'Lähetä',
   yearEst:'Vuosiarvio',people:'Henkilöt kuvassa',place:'Paikka / tapahtuma',moreInfo:'Lisätietoja',
   phYear:'Esim. 1977',phPeople:'Kenet tunnistat?',phPlace:'Missä otettu?',phNotes:'Mitä muuta tiedät?',
-  joinDiscussion:'Kommentoi keskustelua',noDiscussion:'${T.noDiscussion}',
+  joinDiscussion:'Kommentoi keskustelua',noDiscussion:'Aloita keskustelu kommentoimalla tiedoillasi ensin',
   comment:'Kommentoi',writeComment:'Kirjoita kommentti...',
   all:'Kaikki',new_:'Uudet',partial:'Osittain tunnistettu',
   flYear:'Vuosiarvio',flPeople:'Henkilöt',flPlace:'Paikka',flNotes:'Lisätiedot'
@@ -704,7 +704,7 @@ function renderThread(p){
   if(hide.size)comments=p.comments.filter(c=>!hide.has(c.id));
   const top=comments.filter(c=>!c.parent_id).reverse();
   let h=`<div class="thread-card"><div class="thread-card__header"><h3 onclick="var p=this.closest('.thread-card');var t=p.querySelector('.thread-list')||p.querySelector('.thread-empty');if(t){t.style.display=t.style.display==='none'?'':'none';}p.classList.toggle('expanded');var a=this.querySelector('.thread-arrow');if(a)a.textContent=a.textContent==='\u25B8'?'\u25BE':'\u25B8';">${T.joinDiscussion}</h3><div class='thread-sub' style='font-size:0.85rem;font-weight:400;font-style:italic;color:#000;opacity:0.75;display:flex;justify-content:space-between;align-items:center;margin-top:4px;'><span>Klikkaa avataksesi</span><span class='thread-arrow' style='font-style:normal;font-size:1.2em;opacity:1;'>\u25B8</span></div></div>`;
-  if(!top.length){h+=`<p class="thread-empty">Ei vielä keskustelua. Ole ensimmäinen!</p>`;}
+  if(!top.length){h+=`<p class="thread-empty">${T.noDiscussion}</p>`;}
   else{
     h+=`<div class="thread-list" style="display:none;">`;
     let idx=0;
