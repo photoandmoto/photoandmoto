@@ -129,7 +129,7 @@ const lang = 'en';
       <div id="modal" class="overlay" style="display:none;">
         <div class="overlay-bg"></div>
         <div class="lightbox">
-          <button class="lightbox-close" id="modalX" style="background:var(--brand-primary);color:#000;border:none;font-family:var(--font-headline);font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;padding:8px 18px;border-radius:var(--radius-sm);cursor:pointer;width:auto;height:auto;">Close</button>
+          <button class="lightbox-close" id="modalX">Close</button>
           <div class="lb-layout">
             <!-- Left: photo + form (scrollable if tall) -->
             <div class="lb-left">
@@ -325,12 +325,12 @@ function renderCommunityForm(p){
   const open=FIELDS.filter(f=>!p[f.key]||!p[f.key].trim());
   el.innerHTML=`
     <div class="form-card">
-      <div class="form-card__header form-card__toggle" style="cursor:pointer;user-select:none;background:var(--brand-primary);color:#000;padding:14px 20px;border-radius:var(--radius-sm);margin-bottom:0;">
-        <h3 style='color:#000;margin:0;'>${T.commentWithInfo}</h3>
-        <span class="form-card__sub">${T.oneOrAll} <span class='form-toggle-arrow' id='sfArrow' style='color:#000;font-size:1.2em;'>\u25BE</span></span>
+      <div class="form-card__header form-card__toggle">
+        <h3>${T.commentWithInfo}</h3>
+        <span class="form-card__sub">${T.oneOrAll} <span class='form-toggle-arrow' id='sfArrow'>\u25B8</span></span>
       </div>
-      ${locked.length?`<div class="form-locked">${locked.map(f=>`<div class="form-locked__row"><span class="form-locked__label">${f.label}</span><span class="form-locked__value">${esc(p[f.key])}</span></div>`).join('')}</div>`:''}
-      <div class="form-fields" id="sfFields">
+      ${locked.length?`<div class="form-locked" id="sfLocked" style="display:none;">${locked.map(f=>`<div class="form-locked__row"><span class="form-locked__label">${f.label}</span><span class="form-locked__value">${esc(p[f.key])}</span></div>`).join('')}</div>`:''}
+      <div class="form-fields" id="sfFields" style="display:none;">
         <div class="ff"><label>${T.yourName} <span class="ff-opt">${T.nameOpt}</span></label><input type="text" class="inp" id="sfName" placeholder="${T.anonymous}" /></div>
         ${open.map(f=>`<div class="ff"><label>${f.label}</label><input type="text" class="inp sf-inp" data-ft="${f.type}" placeholder="${f.ph}" /></div>`).join('')}
         <button class="btn btn--wide" id="sfSubmit">${T.submit}</button>
@@ -348,9 +348,20 @@ function renderCommunityForm(p){
   // Toggle form collapse
   el.querySelector('.form-card__toggle').addEventListener('click',()=>{
     const fields=el.querySelector('#sfFields');
+    const locked=el.querySelector('#sfLocked');
     const arrow=el.querySelector('#sfArrow');
-    if(fields.style.display==='none'){fields.style.display='';arrow.textContent='\u25BE';}
-    else{fields.style.display='none';arrow.textContent='\u25B8';}
+    const card=el.querySelector('.form-card');
+    if(fields.style.display==='none'){
+      fields.style.display='';
+      if(locked)locked.style.display='';
+      arrow.textContent='\u25BE';
+      card.classList.add('expanded');
+    }else{
+      fields.style.display='none';
+      if(locked)locked.style.display='none';
+      arrow.textContent='\u25B8';
+      card.classList.remove('expanded');
+    }
   });
 }
 
@@ -692,10 +703,10 @@ function renderThread(p){
   }
   if(hide.size)comments=p.comments.filter(c=>!hide.has(c.id));
   const top=comments.filter(c=>!c.parent_id).reverse();
-  let h=`<div class="thread-card"><div class="thread-card__header" style="background:var(--brand-primary);color:#000;padding:14px 20px;border-radius:var(--radius-sm);cursor:pointer;user-select:none;" onclick="var t=this.parentElement.querySelector('.thread-list, .thread-empty');if(t){t.style.display=t.style.display==='none'?'':'none';}var a=this.querySelector('.thread-arrow');if(a)a.textContent=a.textContent==='\u25BE'?'\u25B8':'\u25BE';"><h3 style='color:#000;margin:0;display:flex;justify-content:space-between;align-items:center;'>${T.joinDiscussion} <span class='thread-arrow' style='color:#000;font-size:1.2em;'>\u25BE</span></h3></div>`;
+  let h=`<div class="thread-card"><div class="thread-card__header"><h3 onclick="var p=this.closest('.thread-card');var t=p.querySelector('.thread-list')||p.querySelector('.thread-empty');if(t){t.style.display=t.style.display==='none'?'':'none';}p.classList.toggle('expanded');var a=this.querySelector('.thread-arrow');if(a)a.textContent=a.textContent==='\u25B8'?'\u25BE':'\u25B8';">${T.joinDiscussion} <span class='thread-arrow'>\u25B8</span></h3></div>`;
   if(!top.length){h+=`<p class="thread-empty">No discussion yet. Be the first!</p>`;}
   else{
-    h+=`<div class="thread-list">`;
+    h+=`<div class="thread-list" style="display:none;">`;
     let idx=0;
     top.forEach(c=>{
       const replies=comments.filter(r=>r.parent_id===c.id);
@@ -1458,4 +1469,81 @@ load();
   .mp-title{font-size:1.6rem}
   .mp-header{flex-direction:column}
 }
+
+
+  /* === UI fixes: orange banners, transparent cards, Close button === */
+  .lightbox-close {
+    background: var(--brand-primary) !important;
+    color: #000 !important;
+    border: none !important;
+    font-family: var(--font-headline) !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    padding: 8px 18px !important;
+    border-radius: var(--radius-sm) !important;
+    cursor: pointer !important;
+    width: auto !important;
+    height: auto !important;
+  }
+  .form-card {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+  .form-card.expanded {
+    background: #fff !important;
+    padding: 0 0 var(--space-3) 0 !important;
+    border-radius: var(--radius-md) !important;
+  }
+  .form-card__header {
+    background: var(--brand-primary) !important;
+    color: #000 !important;
+    padding: 14px 20px !important;
+    border-radius: var(--radius-sm) !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    margin: 0 !important;
+  }
+  .form-card__header h3 {
+    color: #000 !important;
+    margin: 0 !important;
+  }
+  .form-card__header .form-card__sub {
+    color: #000 !important;
+    opacity: 0.85 !important;
+  }
+  .form-toggle-arrow {
+    color: #000 !important;
+    font-size: 1.2em !important;
+  }
+  .thread-card {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  .thread-card.expanded {
+    background: #fff !important;
+  }
+  .thread-card__header {
+    background: var(--brand-primary) !important;
+    color: #000 !important;
+    padding: 14px 20px !important;
+    border-radius: var(--radius-sm) !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    margin: 0 !important;
+  }
+  .thread-card__header h3 {
+    color: #000 !important;
+    margin: 0 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+  .thread-arrow {
+    color: #000 !important;
+    font-size: 1.2em !important;
+  }
 </style>
