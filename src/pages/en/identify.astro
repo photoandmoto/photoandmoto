@@ -423,6 +423,7 @@ function renderAdminForm(p){
       <div id="afStatus" class="af-status"></div>
       ${fieldsHtml}
       <button class="btn btn--wide" id="abSave">Tallenna</button>
+      <div id="abSaveMsg" class="ab-save-msg" aria-live="polite"></div>
       <div class="af-footer">
         <button type="button" class="btn btn--secondary" id="afPublish" disabled>Julkaise Galleriaan</button>
         <button type="button" class="af-footer__del" id="abDel">Poista kuva</button>
@@ -444,8 +445,16 @@ function renderAdminForm(p){
     if(inp)inp.addEventListener('input',()=>updateStatusDisplay(el));
   });
   el.querySelector('#abSave').addEventListener('click',async()=>{
+    const btn=el.querySelector('#abSave');const msg=el.querySelector('#abSaveMsg');
+    btn.disabled=true;btn.textContent='Saving…';if(msg){msg.textContent='';msg.className='ab-save-msg';}
     const ok=await adminAction('update_meta',{photo_id:p.id,year_estimate:el.querySelector('#ab_year_estimate').value,people:el.querySelector('#ab_people').value,location_notes:el.querySelector('#ab_location_notes').value,notes:el.querySelector('#ab_notes').value});
-    if(ok){await load();openModal(p.id);}
+    if(ok){
+      if(msg){msg.textContent='✓ Saved';msg.className='ab-save-msg ab-save-msg--ok';}
+      setTimeout(async()=>{await load();openModal(p.id);},900);
+    } else {
+      btn.disabled=false;btn.textContent='Save';
+      if(msg){msg.textContent='✗ Error — please try again';msg.className='ab-save-msg ab-save-msg--err';}
+    }
   });
   el.querySelector('#afPublish').addEventListener('click',()=>openPublishPanel(p));
   el.querySelector('#abDel').addEventListener('click',async()=>{
@@ -1400,6 +1409,9 @@ load();
 .pub-panel__header h4{font-family:var(--font-headline);font-size:.95rem;font-weight:800;color:#a06400;margin:0;letter-spacing:.2px}
 .pub-panel__close{background:none;border:none;color:#a06400;cursor:pointer;font-size:.95rem;padding:4px 8px;border-radius:6px;line-height:1;transition:background .15s}
 .pub-panel__close:hover{background:rgba(255,153,0,.12)}
+.ab-save-msg{margin-top:8px;font-size:.85rem;font-weight:600;min-height:1.2em;text-align:center;transition:opacity .2s}
+.ab-save-msg--ok{color:#1a8c3a}
+.ab-save-msg--err{color:#c0392b}
 .pub-panel__body{display:flex;flex-direction:column;gap:10px}
 .pub-row{display:flex;flex-direction:column;gap:4px}
 .pub-row label{font-size:.74rem;font-weight:700;color:#a06400;text-transform:uppercase;letter-spacing:.5px}
