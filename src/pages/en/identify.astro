@@ -327,7 +327,7 @@ function renderCommunityForm(p){
     <div class="form-card">
       <div class="form-card__header form-card__toggle">
         <h3>${T.commentWithInfo}</h3>
-        <span class="form-card__sub">${T.oneOrAll} <span class='form-toggle-arrow' id='sfArrow'>\u25B8</span></span>
+        <span class="form-card__sub"><span class='form-hint'>Click to open</span> <span class='form-toggle-arrow' id='sfArrow'>\u25B8</span></span>
       </div>
       ${locked.length?`<div class="form-locked" id="sfLocked" style="display:none;">${locked.map(f=>`<div class="form-locked__row"><span class="form-locked__label">${f.label}</span><span class="form-locked__value">${esc(p[f.key])}</span></div>`).join('')}</div>`:''}
       <div class="form-fields" id="sfFields" style="display:none;">
@@ -343,7 +343,7 @@ function renderCommunityForm(p){
       const val=inp.value.trim();
       if(val.length>=2){promises.push(postComment(p.id,name,val,inp.dataset.ft));inp.value='';}
     });
-    if(promises.length){await Promise.all(promises);await load();openModal(p.id);}
+    if(promises.length){window._keepThreadOpen=true;await Promise.all(promises);await load();openModal(p.id);}
   });
   // Toggle form collapse
   el.querySelector('.form-card__toggle').addEventListener('click',()=>{
@@ -703,7 +703,7 @@ function renderThread(p){
   }
   if(hide.size)comments=p.comments.filter(c=>!hide.has(c.id));
   const top=comments.filter(c=>!c.parent_id).reverse();
-  let h=`<div class="thread-card"><div class="thread-card__header"><h3 onclick="var p=this.closest('.thread-card');var t=p.querySelector('.thread-list')||p.querySelector('.thread-empty');if(t){t.style.display=t.style.display==='none'?'':'none';}p.classList.toggle('expanded');var a=this.querySelector('.thread-arrow');if(a)a.textContent=a.textContent==='\u25B8'?'\u25BE':'\u25B8';">${T.joinDiscussion} <span class='thread-arrow'>\u25B8</span></h3></div>`;
+  let h=`<div class="thread-card"><div class="thread-card__header"><h3 onclick="var p=this.closest('.thread-card');var t=p.querySelector('.thread-list')||p.querySelector('.thread-empty');if(t){t.style.display=t.style.display==='none'?'':'none';}p.classList.toggle('expanded');var a=this.querySelector('.thread-arrow');if(a)a.textContent=a.textContent==='\u25B8'?'\u25BE':'\u25B8';">${T.joinDiscussion} <span class='thread-hint'>Click to open</span> <span class='thread-arrow'>\u25B8</span></h3></div>`;
   if(!top.length){h+=`<p class="thread-empty">No discussion yet. Be the first!</p>`;}
   else{
     h+=`<div class="thread-list" style="display:none;">`;
@@ -716,7 +716,7 @@ function renderThread(p){
         <div class="post-header">${tag}<span class="post-author">${esc(c.author_name)}</span><time class="post-date">${fmtDate(c.created_at)}</time>${adminPw?`<button class="post-del" data-cid="${c.id}">🗑</button>`:''}</div>
         <p class="post-body">${esc(c.content)}</p>
         <div class="post-actions">${voteBtns(c)}<button class="post-reply-btn" data-cid="${c.id}">${T.comment}</button></div>
-        <div class="post-reply-box" id="rb-${c.id}" style="display:none;"><input type="text" class="inp post-reply-inp" placeholder="${T.writeComment}" /><button class="btn btn--sm post-reply-send" data-cid="${c.id}" data-pid="${p.id}">${T.submit}</button></div>
+        <div class="post-reply-box" id="rb-${c.id}" style="display:none;"><input type="text" class="inp post-reply-inp" placeholder="${T.writeComment}" /><button class="btn btn--sm post-reply-send" data-cid="${c.id}" data-pid="${p.id}">${T.submit}</button><button class="btn btn--sm post-reply-cancel" data-cid="${c.id}" style="background:#ccc;color:#000;margin-left:6px;">✕</button></div>
       </div>`;
       if(replies.length){
         replies.forEach(r=>{
@@ -965,6 +965,15 @@ function getRootFieldType(comments, commentId){
 }
 renderFilters();
 load();
+
+  // Cancel reply button
+  document.addEventListener('click',(e)=>{
+    if(e.target.classList.contains('post-reply-cancel')){
+      const cid=e.target.dataset.cid;
+      const box=document.getElementById('rb-'+cid);
+      if(box){box.style.display='none';box.querySelector('.post-reply-inp').value='';}
+    }
+  });
 </script>
 
 <style is:global>
@@ -1603,5 +1612,63 @@ load();
         "form"
         "thread" !important;
     }
+  }
+
+
+  /* === Final UI fixes === */
+
+  /* Fix 1: Equal height banners */
+  .lb-form-wrap .form-card,
+  .lb-right .thread-card {
+    display: flex;
+    flex-direction: column;
+  }
+  .lb-form-wrap > div,
+  .lb-right > div {
+    min-height: 80px;
+  }
+  .form-card__header,
+  .thread-card__header {
+    min-height: 80px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
+
+  /* Style for "Click to open" hint */
+  .form-hint, .thread-hint {
+    color: #000 !important;
+    opacity: 0.75 !important;
+    font-size: 0.85rem !important;
+    font-weight: 400 !important;
+    font-style: italic !important;
+  }
+
+  /* Fix 6: Modal scrollable when expanded */
+  #modal .lightbox {
+    max-height: 92vh !important;
+    overflow-y: auto !important;
+  }
+  #modal .lb-layout {
+    overflow: visible !important;
+  }
+  #modal .lb-form-wrap,
+  #modal .lb-right {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* Cancel button styling */
+  .post-reply-cancel {
+    background: #ccc !important;
+    color: #000 !important;
+    border: none !important;
+    padding: 6px 10px !important;
+    border-radius: var(--radius-sm) !important;
+    cursor: pointer !important;
+    margin-left: 6px !important;
+  }
+  .post-reply-cancel:hover {
+    background: #999 !important;
   }
 </style>
