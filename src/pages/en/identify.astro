@@ -129,7 +129,7 @@ const lang = 'en';
       <div id="modal" class="overlay" style="display:none;">
         <div class="overlay-bg"></div>
         <div class="lightbox">
-          <button class="lightbox-close" id="modalX">&#x2715;</button>
+          <button class="lightbox-close" id="modalX" style="background:var(--brand-primary);color:#000;border:none;font-family:var(--font-headline);font-size:0.85rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;padding:8px 18px;border-radius:var(--radius-sm);cursor:pointer;width:auto;height:auto;">Close</button>
           <div class="lb-layout">
             <!-- Left: photo + form (scrollable if tall) -->
             <div class="lb-left">
@@ -325,9 +325,9 @@ function renderCommunityForm(p){
   const open=FIELDS.filter(f=>!p[f.key]||!p[f.key].trim());
   el.innerHTML=`
     <div class="form-card">
-      <div class="form-card__header form-card__toggle" style="cursor:pointer;user-select:none;">
-        <h3>${T.commentWithInfo}</h3>
-        <span class="form-card__sub">${T.oneOrAll} <span class='form-toggle-arrow' id='sfArrow' style='color:var(--brand-primary);font-size:1.2em;'>\u25BE</span></span>
+      <div class="form-card__header form-card__toggle" style="cursor:pointer;user-select:none;background:var(--brand-primary);color:#000;padding:14px 20px;border-radius:var(--radius-sm);margin-bottom:0;">
+        <h3 style='color:#000;margin:0;'>${T.commentWithInfo}</h3>
+        <span class="form-card__sub">${T.oneOrAll} <span class='form-toggle-arrow' id='sfArrow' style='color:#000;font-size:1.2em;'>\u25BE</span></span>
       </div>
       ${locked.length?`<div class="form-locked">${locked.map(f=>`<div class="form-locked__row"><span class="form-locked__label">${f.label}</span><span class="form-locked__value">${esc(p[f.key])}</span></div>`).join('')}</div>`:''}
       <div class="form-fields" id="sfFields">
@@ -692,7 +692,7 @@ function renderThread(p){
   }
   if(hide.size)comments=p.comments.filter(c=>!hide.has(c.id));
   const top=comments.filter(c=>!c.parent_id).reverse();
-  let h=`<div class="thread-card"><div class="thread-card__header"><h3 style='cursor:pointer;user-select:none;' onclick='this.parentElement.nextElementSibling&&(this.parentElement.nextElementSibling.style.display=this.parentElement.nextElementSibling.style.display==="none"?"":"none");var a=this.querySelector(".thread-arrow");if(a)a.textContent=a.textContent==="\u25BE"?"\u25B8":"\u25BE";'>${T.joinDiscussion} <span class='thread-arrow' style='color:var(--brand-primary);font-size:1.2em;'>\u25BE</span></h3></div>`;
+  let h=`<div class="thread-card"><div class="thread-card__header" style="background:var(--brand-primary);color:#000;padding:14px 20px;border-radius:var(--radius-sm);cursor:pointer;user-select:none;" onclick="var t=this.parentElement.querySelector('.thread-list, .thread-empty');if(t){t.style.display=t.style.display==='none'?'':'none';}var a=this.querySelector('.thread-arrow');if(a)a.textContent=a.textContent==='\u25BE'?'\u25B8':'\u25BE';"><h3 style='color:#000;margin:0;display:flex;justify-content:space-between;align-items:center;'>${T.joinDiscussion} <span class='thread-arrow' style='color:#000;font-size:1.2em;'>\u25BE</span></h3></div>`;
   if(!top.length){h+=`<p class="thread-empty">No discussion yet. Be the first!</p>`;}
   else{
     h+=`<div class="thread-list">`;
