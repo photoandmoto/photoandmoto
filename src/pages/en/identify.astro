@@ -75,7 +75,7 @@ const lang = 'en';
           </div>
         </div>
         <div class="mp-header__right">
-          <a href="#" id="adminToggle" class="admin-link">Ylläpito →</a>
+          <a href="#" id="adminToggle" class="admin-link">Admin →</a>
           <div id="adminActions" class="admin-actions" style="display:none;">
             <button id="adminLogout" class="admin-logout">Kirjaudu ulos</button>
           </div>
@@ -176,7 +176,7 @@ const T=LANG==='en'?{
   yourName:'Nimesi',nameOpt:'(vapaaehtoinen)',anonymous:'Nimetön',submit:'Lähetä',
   yearEst:'Vuosiarvio',people:'Henkilöt kuvassa',place:'Paikka / tapahtuma',moreInfo:'Lisätietoja',
   phYear:'Esim. 1977',phPeople:'Kenet tunnistat?',phPlace:'Missä otettu?',phNotes:'Mitä muuta tiedät?',
-  joinDiscussion:'Kommentoi keskustelua',noDiscussion:'${T.noDiscussion}',
+  joinDiscussion:'Kommentoi keskustelua',noDiscussion:'Ei viel\u00e4 keskustelua. Ole ensimm\u00e4inen!',
   comment:'Kommentoi',writeComment:'Kirjoita kommentti...',
   all:'Kaikki',new_:'Uudet',partial:'Osittain tunnistettu',
   flYear:'Vuosiarvio',flPeople:'Henkilöt',flPlace:'Paikka',flNotes:'Lisätiedot'
@@ -293,14 +293,14 @@ function renderGrid(){
     <article class="pcard" data-id="${p.id}">
       <div class="pcard-visual">
         <img src="${p.image_url}" alt="" loading="lazy"/>
-        <div class="pcard-badge pcard-badge--${p.status}">${p.status==='new'?'Uusi':p.status==='partial'?'Osittain tunnistettu':'Tunnistettu'}</div>
+        <div class="pcard-badge pcard-badge--${p.status}">${p.status==='new'?'New':p.status==='partial'?'Partially identified':'Identified'}</div>
         ${p.newCount>0?`<div class="pcard-newbadge">${p.newCount} uutta</div>`:''}
         ${p.comments.length?`<div class="pcard-comments">💬 ${p.comments.length}</div>`:''}
       </div>
       <div class="pcard-meta">
         ${p.people?`<span class="pcard-who">${esc(p.people)}</span>`:''}
         ${p.year_estimate?`<span class="pcard-yr">${esc(p.year_estimate)}</span>`:''}
-        ${!p.people&&!p.year_estimate?'<span class="pcard-unk">Tuntematon — auta tunnistamaan!</span>':''}
+        ${!p.people&&!p.year_estimate?'<span class="pcard-unk">Unknown — help identify!</span>':''}
       </div>
     </article>`).join('');
   grid.querySelectorAll('.pcard').forEach(c=>c.addEventListener('click',()=>openModal(+c.dataset.id)));
@@ -595,7 +595,7 @@ async function doPublish(p,sel,newTitleInp,captionInp,goBtn){
     });
     const data=await r.json().catch(()=>({}));
     if(!r.ok || data.success!==true){
-      msg.innerHTML=`<span class="u-err">Virhe: ${esc(data.error||('HTTP '+r.status))}</span>`;
+      msg.innerHTML=`<span class="u-err">Error: ${esc(data.error||('HTTP '+r.status))}</span>`;
       goBtn.disabled=false;
       return;
     }
@@ -642,8 +642,8 @@ function updateStatusDisplay(el){
     return inp && inp.value.trim();
   }).filter(Boolean).length;
   let key,label,detail,ready;
-  if(filled===0){key='new';label='Uusi';detail=`${filled}/3 tarvittavista`;ready=false;}
-  else if(filled<3){key='partial';label='Osittain tunnistettu';detail=`${filled}/3 tarvittavista`;ready=false;}
+  if(filled===0){key='new';label='New';detail=`${filled}/3 required`;ready=false;}
+  else if(filled<3){key='partial';label='Partially identified';detail=`${filled}/3 required`;ready=false;}
   else{key='identified';label='Tunnistettu';detail='Kaikki tiedot täytetty';ready=true;}
   const statusEl=el.querySelector('#afStatus');
   if(statusEl){
@@ -686,7 +686,7 @@ function renderThread(p){
   if(hide.size)comments=p.comments.filter(c=>!hide.has(c.id));
   const top=comments.filter(c=>!c.parent_id).reverse();
   let h=`<div class="thread-card"><div class="thread-card__header"><h3>${T.joinDiscussion}</h3></div>`;
-  if(!top.length){h+=`<p class="thread-empty">Ei vielä keskustelua. Ole ensimmäinen!</p>`;}
+  if(!top.length){h+=`<p class="thread-empty">No discussion yet. Be the first!</p>`;}
   else{
     h+=`<div class="thread-list">`;
     let idx=0;
@@ -754,7 +754,7 @@ async function adminAction(a,d){
     const r=await fetch('/api/mystery/admin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:adminPw,action:a,...d})});
     const data=await r.json().catch(()=>({}));
     if(!r.ok||data.success===false){
-      alert('Virhe: '+(data.error||'Tuntematon vika ('+r.status+')'));
+      alert('Virhe: '+(data.error||'Unknown error ('+r.status+')'));
       return false;
     }
     return true;
