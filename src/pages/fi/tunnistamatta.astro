@@ -1546,4 +1546,62 @@ load();
     color: #000 !important;
     font-size: 1.2em !important;
   }
+
+
+  /* === Layout: photo on top, form + thread side by side === */
+  #modal .lightbox-close,
+  .lightbox-close {
+    position: absolute !important;
+    top: 16px !important;
+    right: 16px !important;
+    z-index: 100 !important;
+  }
+  #modal .lb-layout,
+  .lb-layout {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-areas:
+      "photo photo"
+      "form thread" !important;
+    gap: var(--space-3) !important;
+    padding-top: 60px !important;
+  }
+  #modal .lb-thumb-card,
+  .lb-thumb-card {
+    grid-area: photo !important;
+    margin: 0 !important;
+    max-height: 280px !important;
+  }
+  #modal .lb-left,
+  .lb-left {
+    display: contents !important;
+  }
+  #modal .lb-form-wrap,
+  .lb-form-wrap {
+    grid-area: form !important;
+    padding-top: 0 !important;
+  }
+  #modal .lb-right,
+  .lb-right {
+    grid-area: thread !important;
+    padding-top: 0 !important;
+  }
+  /* Form fields padding when expanded */
+  .form-card.expanded .form-fields {
+    padding: var(--space-3) var(--space-3) 0 var(--space-3) !important;
+  }
+  .form-card.expanded .form-locked {
+    padding: var(--space-3) var(--space-3) 0 var(--space-3) !important;
+  }
+  /* Mobile: stack everything */
+  @media (max-width: 700px) {
+    #modal .lb-layout,
+    .lb-layout {
+      grid-template-columns: 1fr !important;
+      grid-template-areas:
+        "photo"
+        "form"
+        "thread" !important;
+    }
+  }
 </style>
