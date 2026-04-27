@@ -15,6 +15,7 @@ interface Props {
     image_caption?: string;
     language: 'fi' | 'en';
     seo_description?: string;
+    author_url?: string;
   };
 }
 
@@ -40,7 +41,11 @@ const articleJsonLd = {
   "image": _articleImage,
   "datePublished": frontmatter.date.toISOString(),
   "dateModified": frontmatter.date.toISOString(),
-  "author": { "@type": "Person", "name": frontmatter.author },
+  "author": {
+    "@type": "Person",
+    "name": frontmatter.author,
+    "url": frontmatter.author_url || (_siteUrl + "/" + frontmatter.language + "/yhteystiedot/")
+  },
   "publisher": {
     "@type": "Organization",
     "name": "Photo & Moto",
