@@ -26,6 +26,31 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
   month: 'long',
   day: 'numeric'
 }).format(frontmatter.date);
+
+const _siteUrl = import.meta.env.SITE || 'https://www.photoandmoto.fi';
+const _articleImage = frontmatter.featured_image
+  ? (frontmatter.featured_image.startsWith('http') ? frontmatter.featured_image : _siteUrl + frontmatter.featured_image)
+  : _siteUrl + '/images/og-default.jpg';
+const _articleUrl = _siteUrl + Astro.url.pathname.replace(/\/+$/, '');
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": frontmatter.title,
+  "description": frontmatter.seo_description || frontmatter.subtitle || frontmatter.title,
+  "image": _articleImage,
+  "datePublished": frontmatter.date.toISOString(),
+  "dateModified": frontmatter.date.toISOString(),
+  "author": { "@type": "Person", "name": frontmatter.author },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Photo & Moto",
+    "logo": { "@type": "ImageObject", "url": _siteUrl + "/favicon.png" }
+  },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": _articleUrl },
+  "inLanguage": frontmatter.language === 'fi' ? 'fi-FI' : 'en-US',
+  "articleSection": frontmatter.category,
+  "keywords": (frontmatter.tags || []).join(', ')
+};
 ---
 
 <BaseLayout
@@ -35,6 +60,7 @@ const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'f
   lang={frontmatter.language}
 >
   <article class="article">
+    <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />
     <div class="container">
       <header class="article-header">
         <a href={`/${frontmatter.language}/aikakone`} class="back-link">

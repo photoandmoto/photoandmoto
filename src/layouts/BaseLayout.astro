@@ -112,6 +112,29 @@ const otherLang = lang === 'fi' ? 'en' : 'fi';
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="apple-touch-icon" href="/favicon.png">
 
+  <!-- JSON-LD: Organization + WebSite -->
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": siteUrl + "/#organization",
+        "name": "Photo & Moto",
+        "url": siteUrl,
+        "logo": { "@type": "ImageObject", "url": siteUrl + "/favicon.png" }
+      },
+      {
+        "@type": "WebSite",
+        "@id": siteUrl + "/#website",
+        "url": siteUrl,
+        "name": "Photo & Moto",
+        "description": "Moottoriurheilun historian kuvia ja tarinoita",
+        "publisher": { "@id": siteUrl + "/#organization" },
+        "inLanguage": lang === "fi" ? "fi-FI" : "en-US"
+      }
+    ]
+  })} />
+
   <!-- Google Analytics (GA4) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Y0PEJY0XG"></script>
   <script is:inline>
