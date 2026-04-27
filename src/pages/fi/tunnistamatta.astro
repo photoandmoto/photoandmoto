@@ -703,7 +703,7 @@ function renderThread(p){
   }
   if(hide.size)comments=p.comments.filter(c=>!hide.has(c.id));
   const top=comments.filter(c=>!c.parent_id).reverse();
-  let h=`<div class="thread-card"><div class="thread-card__header"><h3 onclick="var p=this.closest('.thread-card');var t=p.querySelector('.thread-list')||p.querySelector('.thread-empty');if(t){t.style.display=t.style.display==='none'?'':'none';}p.classList.toggle('expanded');var a=this.querySelector('.thread-arrow');if(a)a.textContent=a.textContent==='\u25B8'?'\u25BE':'\u25B8';">${T.joinDiscussion}</h3><div class='thread-sub' style='font-size:0.85rem;font-weight:400;font-style:italic;color:#000;opacity:0.75;display:flex;justify-content:space-between;align-items:center;margin-top:4px;'><span>Klikkaa avataksesi</span><span class='thread-arrow' style='font-style:normal;font-size:1.2em;opacity:1;'>\u25B8</span></div></div>`;
+  let h=`<div class="thread-card"><div class="thread-card__header"><h3 onclick="var p=this.closest('.thread-card');var t=p.querySelector('.thread-list')||p.querySelector('.thread-empty');if(t){t.style.display=t.style.display==='none'?'':'none';}var nc=p.querySelector('.thread-new-comment');if(nc){nc.style.display=nc.style.display==='none'?'':'none';}p.classList.toggle('expanded');var a=this.querySelector('.thread-arrow');if(a)a.textContent=a.textContent==='\u25B8'?'\u25BE':'\u25B8';">${T.joinDiscussion}</h3><div class='thread-sub' style='font-size:0.85rem;font-weight:400;font-style:italic;color:#000;opacity:0.75;display:flex;justify-content:space-between;align-items:center;margin-top:4px;'><span>Klikkaa avataksesi</span><span class='thread-arrow' style='font-style:normal;font-size:1.2em;opacity:1;'>\u25B8</span></div></div><div class="thread-new-comment" style="display:none;padding:var(--space-2) var(--space-3);background:#fff;border-bottom:1px solid #eee;"><input type="text" class="inp" id="newCommentInp" placeholder="${T.writeComment}" style="margin-bottom:8px;" /><button class="btn" id="newCommentSend" data-pid="${p.id}">${T.submit}</button></div>`;
   if(!top.length){h+=`<p class="thread-empty">Ei vielä keskustelua. Ole ensimmäinen!</p>`;}
   else{
     h+=`<div class="thread-list" style="display:none;">`;
@@ -743,6 +743,274 @@ function renderThread(p){
       if(ta)ta.textContent='\u25BE';
     }
     window._keepThreadOpen=false;
+  }
+  // New top-level comment from discussion box
+  const newCommentBtn=el.querySelector('#newCommentSend');
+  if(newCommentBtn){
+    newCommentBtn.addEventListener('click',async()=>{
+      const inp=el.querySelector('#newCommentInp');
+      const val=inp.value.trim();
+      if(val.length>=2){
+        const pid=newCommentBtn.dataset.pid;
+        window._keepThreadOpen=true;
+        await postComment(pid,T.anonymous,val,'general');
+        inp.value='';
+        await load();
+        openModal(pid);
+      }
+    });
+  }
+  // Show new comment box when thread is expanded
+  const tcHeader=el.querySelector('.thread-card__header');
+  if(tcHeader){
+    tcHeader.addEventListener('click',()=>{
+      const newBox=el.querySelector('.thread-new-comment');
+      const tc=el.querySelector('.thread-card');
+      if(newBox&&tc){
+        setTimeout(()=>{newBox.style.display=tc.classList.contains('expanded')?'':'none';},10);
+      }
+    });
+  }
+
+  el.querySelectorAll('.th-vote').forEach(btn=>btn.addEventListener('click',async e=>{
+    e.stopPropagation();const cid=+btn.dataset.cid,v=+btn.dataset.v;if(voted[cid])return;
+    const r=await fetch('/api/mystery/vote',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({comment_id:cid,vote:v})});
+    if((await r.json()).success){voted[cid]=v;localStorage.setItem('pm_v',JSON.stringify(voted));await load();openModal(curPhoto.id);}
+  }));
+  el.querySelectorAll('.post-reply-btn').forEach(btn=>btn.addEventListener('click',()=>{
+    const rb=document.getElementById('rb-'+btn.dataset.cid);rb.style.display=rb.style.display==='none'?'flex':'none';
+  }));
+  el.querySelectorAll('.post-reply-send').forEach(btn=>btn.addEventListener('click',async()=>{
+    const inp=btn.parentElement.querySelector('.post-reply-inp');const txt=inp.value.trim();if(txt.length<2)return;
+    const nameEl=document.getElementById('sfName');const name=nameEl?nameEl.value.trim()||'Nimetön':'Nimetön';
+    const parentCid=+btn.dataset.cid;
+    // Inherit field_type from the root of the thread — replies stay bound to their parent field.
+    const ft=getRootFieldType(curPhoto.comments, parentCid);
+    await postComment(+btn.dataset.pid,name,txt,ft,parentCid);
+    await load();openModal(curPhoto.id);
+  }));
+  if(adminPw){el.querySelectorAll('.post-del').forEach(btn=>btn.addEventListener('click',async e=>{
+    e.stopPropagation();if(!confirm('Poistetaanko?'))return;
+    await adminAction('delete_comment',{comment_id:+btn.dataset.cid});await load();openModal(curPhoto.id);
+  }));}
+}
+
+function voteBtns(c){
+  const v=voted[c.id];
+  return `<button class="th-vote ${v===1?'th-vote--on':''}" data-cid="${c.id}" data-v="1">👍 <span>${c.upvotes||0}</span></button><button class="th-vote ${v===-1?'th-vote--on':''}" data-cid="${c.id}" data-v="-1">👎 <span>${c.downvotes||0}</span></button>`;
+}
+
+async function postComment(pid,name,text,ft,parentId){
+  return fetch('/api/mystery/comment',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({photo_id:pid,author_name:name,content:text,field_type:ft,parent_id:parentId||null})});
+}
+function fmtDate(d){return new Date(d).toLocaleDateString('fi-FI');}
+async function adminAction(a,d){
+  try{
+    const r=await fetch('/api/mystery/admin',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:adminPw,action:a,...d})});
+    const data=await r.json().catch(()=>({}));
+    if(!r.ok||data.success===false){
+      alert('Virhe: '+(data.error||'Tuntematon vika ('+r.status+')'));
+      return false;
+    }
+    return true;
+  }catch(e){
+    alert('Virhe: yhteysvirhe');
+    return false;
+  }
+}
+function closeModal(){modal.style.display='none';document.body.style.overflow='';curPhoto=null;closePublishPanel();}
+document.getElementById('modalX').addEventListener('click',closeModal);
+document.querySelector('.overlay-bg').addEventListener('click',closeModal);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(document.getElementById('photoViewer').style.display==='flex'){document.getElementById('photoViewer').style.display='none';}else{closeModal();}}});
+
+// Photo viewer - click thumbnail to enlarge
+document.getElementById('thumbCard').addEventListener('click',()=>{
+  const viewer=document.getElementById('photoViewer');
+  document.getElementById('pvImg').src=document.getElementById('modalImg').src;
+  viewer.style.display='flex';
+});
+document.getElementById('pvClose').addEventListener('click',()=>{document.getElementById('photoViewer').style.display='none';});
+document.querySelector('.pv-bg').addEventListener('click',()=>{document.getElementById('photoViewer').style.display='none';});
+
+// Admin toggle shows/hides the password panel (only when logged out).
+document.getElementById('adminToggle').addEventListener('click',e=>{
+  e.preventDefault();
+  const p=document.getElementById('adminPanel');
+  p.style.display=p.style.display==='none'?'block':'none';
+  if(p.style.display==='block')document.getElementById('adminPw').focus();
+});
+
+// Admin login — on success: capture old lastVisit for this session's "new" badges,
+// then update lastVisit to NOW for the NEXT session.
+document.getElementById('adminPwBtn').addEventListener('click',async()=>{
+  const pw=document.getElementById('adminPw').value;
+  if(await verifyPw(pw)){
+    adminPw=pw;
+    cachedGalleries=null; // ensure fresh fetch under new credentials
+    adminLastVisit=localStorage.getItem('pm_admin_lastVisit'); // previous login's timestamp
+    localStorage.setItem('pm_admin_lastVisit', new Date().toISOString()); // for next session
+    // UI transitions
+    document.getElementById('adminPanel').style.display='none';
+    document.getElementById('adminToggle').style.display='none';
+    document.getElementById('adminActions').style.display='flex';
+    document.getElementById('adminTabs').style.display='flex';
+    document.getElementById('mpSubCommunity').style.display='none';
+    document.getElementById('mpSubAdmin').style.display='block';
+    // Restore collapsed preference (default: collapsed)
+    if(localStorage.getItem('pm_ohje_expanded')==='1'){
+      document.getElementById('mpSubAdmin').classList.remove('mp-sub--collapsed');
+    }
+    document.getElementById('adminPw').value='';
+    document.getElementById('adminPwErr').style.display='none';
+    curFilter=null; // force default for admin
+    renderFilters();
+    load(); // reload with include=all to pick up identified photos
+  }else{
+    document.getElementById('adminPwErr').style.display='inline';
+  }
+});
+
+// Logout: revert to community view (but keep lastVisit in localStorage so next login remembers).
+document.getElementById('adminLogout').addEventListener('click',()=>{
+  adminPw=null;
+  adminLastVisit=null;
+  cachedGalleries=null;
+  document.getElementById('adminActions').style.display='none';
+  document.getElementById('adminTabs').style.display='none';
+  document.getElementById('adminToggle').style.display='';
+  document.getElementById('mpSubCommunity').style.display='';
+  document.getElementById('mpSubAdmin').style.display='none';
+  // Reset to Tarkista tab so re-login lands on the right place
+  document.getElementById('tabTarkista').style.display='';
+  document.getElementById('tabLaheta').style.display='none';
+  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.toggle('admin-tab--on',t.dataset.tab==='tarkista'));
+  curFilter=null;
+  renderFilters();
+  load(); // reload without include=all so identified photos drop out for community
+});
+
+// Tab switching (Tarkista / Lähetä)
+document.querySelectorAll('.admin-tab').forEach(t=>t.addEventListener('click',()=>{
+  const tab=t.dataset.tab;
+  document.querySelectorAll('.admin-tab').forEach(x=>x.classList.toggle('admin-tab--on',x===t));
+  document.getElementById('tabTarkista').style.display=tab==='tarkista'?'':'none';
+  document.getElementById('tabLaheta').style.display=tab==='laheta'?'':'none';
+}));
+
+// Ohje collapse/expand — remember the user's preference across logins
+document.getElementById('ohjeToggle').addEventListener('click',()=>{
+  const card=document.getElementById('mpSubAdmin');
+  const nowCollapsed=card.classList.toggle('mp-sub--collapsed');
+  localStorage.setItem('pm_ohje_expanded', nowCollapsed ? '0' : '1');
+});
+
+// =====================================================================
+// THUMBNAIL GENERATION (browser-side, before upload)
+// =====================================================================
+//
+// Generates a small thumbnail of the uploaded image using Canvas API.
+// The thumb is sent alongside the original and stored in D1 (thumb_data column).
+// This thumb is later used by the landing page "Help needed" block.
+//
+// Target: 300px max edge, JPEG quality 0.7, transparent fail (returns null on error).
+// Result is a base64 data URL string, typically 10-25 KB.
+
+async function generateThumbDataUrl(file){
+  return new Promise((resolve)=>{
+    try{
+      const reader=new FileReader();
+      reader.onload=(e)=>{
+        const img=new Image();
+        img.onload=()=>{
+          try{
+            const MAX=300;
+            let w=img.width, h=img.height;
+            if(w>h){
+              if(w>MAX){h=Math.round(h*(MAX/w));w=MAX;}
+            }else{
+              if(h>MAX){w=Math.round(w*(MAX/h));h=MAX;}
+            }
+            const canvas=document.createElement('canvas');
+            canvas.width=w; canvas.height=h;
+            const ctx=canvas.getContext('2d');
+            ctx.drawImage(img,0,0,w,h);
+            const dataUrl=canvas.toDataURL('image/jpeg',0.7);
+            resolve(dataUrl);
+          }catch(err){
+            console.warn('Thumb canvas error:',err);
+            resolve(null);
+          }
+        };
+        img.onerror=()=>{console.warn('Thumb img load error');resolve(null);};
+        img.src=e.target.result;
+      };
+      reader.onerror=()=>{console.warn('Thumb FileReader error');resolve(null);};
+      reader.readAsDataURL(file);
+    }catch(err){
+      console.warn('Thumb generation error:',err);
+      resolve(null);
+    }
+  });
+}
+
+document.getElementById('uploadBtn').addEventListener('click',async()=>{
+  const file=document.getElementById('photoFile').files[0];if(!file)return;
+  const msg=document.getElementById('uploadMsg');
+  const btn=document.getElementById('uploadBtn');
+  msg.innerHTML='<span class="u-load">Käsitellään...</span>';
+  btn.disabled=true;
+
+  // Generate thumb in browser before upload (graceful: if it fails, upload continues without thumb)
+  const thumbDataUrl=await generateThumbDataUrl(file);
+
+  msg.innerHTML='<span class="u-load">Ladataan...</span>';
+
+  const fd=new FormData();
+  fd.append('photo',file);
+  fd.append('password',adminPw);
+  fd.append('year_estimate',document.getElementById('fYear').value);
+  fd.append('people',document.getElementById('fPeople').value);
+  fd.append('location_notes',document.getElementById('fLocation').value);
+  fd.append('notes',document.getElementById('fNotes').value);
+  if(thumbDataUrl)fd.append('thumb_data',thumbDataUrl);
+
+  try{
+    const r=await fetch('/api/mystery/upload',{method:'POST',body:fd});
+    const d=await r.json();
+    if(d.success){
+      msg.innerHTML='<span class="u-ok">✓ Kuva ladattu!</span>';
+      ['photoFile','fYear','fPeople','fLocation','fNotes'].forEach(id=>document.getElementById(id).value='');
+      await load();
+    } else {
+      msg.innerHTML=`<span class="u-err">${d.error}</span>`;
+    }
+  } catch(e){
+    msg.innerHTML='<span class="u-err">Virhe</span>';
+  }
+  btn.disabled=false;
+});
+
+function esc(s){const d=document.createElement('div');d.textContent=s||'';return d.innerHTML;}
+function escAttr(s){return esc(s).replace(/"/g,'&quot;');}
+// Walk up parent_id chain to find the root comment's field_type.
+// New replies inherit the field they belong to, so the whole debate stays bound to its parent field.
+function getRootFieldType(comments, commentId){
+  const byId=Object.fromEntries(comments.map(c=>[c.id,c]));
+  let c=byId[commentId];
+  while(c && c.parent_id){c=byId[c.parent_id];}
+  return c ? (c.field_type||'general') : 'general';
+}
+renderFilters();
+load();
+
+  // Cancel reply button
+  document.addEventListener('click',(e)=>{
+    if(e.target.classList.contains('post-reply-cancel')){
+      const cid=e.target.dataset.cid;
+      const box=document.getElementById('rb-'+cid);
+      if(box){box.style.display='none';box.querySelector('.post-reply-inp').value='';}
+    }
   });
 </script>
 
@@ -1440,16 +1708,5 @@ function renderThread(p){
   }
   .post-reply-cancel:hover {
     background: #999 !important;
-  }
-
-
-  /* Thread spacing */
-  .thread-card.expanded .thread-list,
-  .thread-card.expanded .thread-empty {
-    padding: var(--space-3) !important;
-    padding-bottom: var(--space-4) !important;
-  }
-  .thread-card.expanded .post:last-child {
-    margin-bottom: var(--space-2) !important;
   }
 </style>
