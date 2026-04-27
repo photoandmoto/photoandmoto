@@ -11,7 +11,7 @@
 //   - count === 0   → block hides itself entirely (no visible DOM)
 //   - count > 0     → block renders with thumbnails, count, and CTA
 //
-// Click anywhere → /fi/tunnistamatta (single destination, regardless of language)
+// Click anywhere → language-appropriate identify page
 //
 // Props:
 //   lang: "fi" | "en"  — controls UI text. Defaults to "fi".
@@ -50,7 +50,7 @@ const t = STRINGS[lang] || STRINGS.fi;
 
 <section class="mhb" id="mhbRoot" style="display:none;" data-lang={lang}>
   <div class="container">
-    <a href="/fi/tunnistamatta" class="mhb-card">
+    <a href={lang === "en" ? "/en/identify" : "/fi/tunnistamatta"} class="mhb-card">
       <div class="mhb-header">
         <span class="mhb-eyebrow">{t.eyebrow}</span>
         <h2 class="mhb-headline">{t.headline}</h2>
