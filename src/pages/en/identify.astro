@@ -794,7 +794,7 @@ async function adminAction(a,d){
 }
 function closeModal(){modal.style.display='none';document.body.style.overflow='';curPhoto=null;closePublishPanel();}
 document.getElementById('modalX').addEventListener('click',closeModal);
-document.querySelector('.overlay-bg').addEventListener('click',closeModal);
+// Issue #3 fix: backdrop click no longer closes modal — only Sulje button or Escape key
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(document.getElementById('photoViewer').style.display==='flex'){document.getElementById('photoViewer').style.display='none';}else{closeModal();}}});
 
 // Photo viewer - click thumbnail to enlarge
