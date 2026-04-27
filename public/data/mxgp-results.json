@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-04-26",
+  "lastUpdated": "2026-04-27",
   "seasonComplete": false,
   "totalRounds": 19,
   "latestRace": {
@@ -30,23 +30,17 @@
   },
   "highlights": {
     "fi": {
-      "mxgp_quali": [
-        "Jeffrey Herlings nappasi paalupaikan lauantain aika-ajossa.",
-        "Vaikeissa olosuhteissa nopein oli Herlings, osoittaen vahvaa vauhtia."
-      ],
+      "mxgp_quali": [],
       "mxgp_race": [
-        "Jeffrey Herlings dominoi ensimmäistä erää ylivoimaisesti.",
-        "Tom Vialle voitti toisen erän tiukan taistelun jälkeen.",
-        "Jeffrey Herlings vei Ranskan GP:n kokonaisvoiton näyttävästi."
+        "Jeffrey Herlings dominoi ensimmäistä MXGP-erää.",
+        "Tom Vialle voitti toisen erän ja kokonaiskilpailun.",
+        "Herlings varmisti toisen sijan kokonaiskilpailussa."
       ],
-      "mx2_quali": [
-        "Lucas Coenen oli nopein MX2-luokan aika-ajossa.",
-        "Sacha Coenen näytti vauhtiaan haastavissa olosuhteissa."
-      ],
+      "mx2_quali": [],
       "mx2_race": [
-        "Lucas Coenen hallitsi ensimmäistä MX2-erää alusta loppuun.",
-        "Sacha Coenen taisteli voitosta toisessa erässä.",
-        "Lucas Coenen kruunattiin Ranskan MX2 GP:n voittajaksi."
+        "Lucas Coenen hallitsi MX2-kilpailua voittaen molemmat erät.",
+        "Sacha Coenen taisteli vahvasti toisessa erässä.",
+        "Lucas Coenen vei ylivoimaisesti MX2 GP:n voiton."
       ],
       "standings": [
         "Lucas Coenen johtaa MXGP-sarjaa 231 pisteellä.",
@@ -55,28 +49,22 @@
       ]
     },
     "en": {
-      "mxgp_quali": [
-        "Jeffrey Herlings claimed pole position in Saturday's qualifying.",
-        "Herlings was fastest in difficult conditions, showing strong pace."
-      ],
+      "mxgp_quali": [],
       "mxgp_race": [
-        "Jeffrey Herlings dominated the first moto with sheer dominance.",
-        "Tom Vialle won the second moto after a fierce battle.",
-        "Jeffrey Herlings claimed the overall French GP victory impressively."
+        "Jeffrey Herlings dominated the first MXGP moto.",
+        "Tom Vialle won the second moto and the overall GP.",
+        "Herlings secured second place in the overall standings."
       ],
-      "mx2_quali": [
-        "Lucas Coenen set the fastest time in MX2 qualifying.",
-        "Sacha Coenen showed his speed in challenging conditions."
-      ],
+      "mx2_quali": [],
       "mx2_race": [
-        "Lucas Coenen controlled the first MX2 moto from start to finish.",
-        "Sacha Coenen battled hard for victory in the second moto.",
-        "Lucas Coenen was crowned the winner of the French MX2 GP."
+        "Lucas Coenen dominated MX2, winning both motos.",
+        "Sacha Coenen charged hard in the second moto.",
+        "Lucas Coenen claimed a commanding MX2 GP victory."
       ],
       "standings": [
         "Lucas Coenen leads the MXGP standings with 231 points.",
         "Jeffrey Herlings holds second place with 227 points.",
-        "Tom Vialle remains in third position with 206 points."
+        "Tom Vialle remains in third with 206 points."
       ]
     }
   },
