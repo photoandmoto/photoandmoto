@@ -713,7 +713,7 @@ function renderThread(p){
   if(hide.size)comments=p.comments.filter(c=>!hide.has(c.id));
   const top=comments.filter(c=>!c.parent_id).reverse();
   let h=`<div class="thread-card"><div class="thread-card__header"><h3 onclick="var p=this.closest('.thread-card');var t=p.querySelector('.thread-list')||p.querySelector('.thread-empty');if(t){t.style.display=t.style.display==='none'?'':'none';}p.classList.toggle('expanded');var a=this.querySelector('.thread-arrow');if(a)a.textContent=a.textContent==='\u25B8'?'\u25BE':'\u25B8';">${T.joinDiscussion}</h3><div class='thread-sub' style='font-size:0.85rem;font-weight:400;font-style:italic;color:#000;opacity:0.75;display:flex;justify-content:space-between;align-items:center;margin-top:4px;'><span>Klikkaa avataksesi</span><span class='thread-arrow' style='font-style:normal;font-size:1.2em;opacity:1;'>\u25B8</span></div></div>`;
-  if(!top.length){h+=`<p class="thread-empty">${T.noDiscussion}</p>`;}
+  if(!top.length){h+=`<p class="thread-empty"><span class="thread-empty__arrow" aria-hidden="true">←</span><span class="thread-empty__text">${T.noDiscussion}</span></p>`;}
   else{
     h+=`<div class="thread-list" style="display:none;">`;
     let idx=0;
@@ -1457,7 +1457,10 @@ load();
 .thread-card{background:transparent;border-radius:14px;padding:0;box-sizing:border-box;display:flex;flex-direction:column}
 .thread-card__header{margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.15)}
 .thread-card__header h3{font-family:var(--font-headline);font-size:1.05rem;font-weight:800;margin:0;color:#fff}
-.thread-empty{color:#888;font-style:italic;font-size:.9rem;text-align:center;padding:32px 0}
+.thread-empty{color:#888;font-style:italic;font-size:.9rem;padding:32px 0;display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.thread-empty__arrow{display:inline-block;font-size:1.6rem;font-style:normal;color:#ff9900;font-weight:700;line-height:1;animation:thread-empty-bounce 1.6s ease-in-out infinite}
+.thread-empty__text{font-style:italic}
+@keyframes thread-empty-bounce{0%,100%{transform:translateX(0)}50%{transform:translateX(-6px)}}
 .thread-list{display:flex;flex-direction:column;gap:16px}
 
 /* ===== POST (thread item) ===== */
