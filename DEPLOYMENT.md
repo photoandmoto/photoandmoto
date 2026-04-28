@@ -182,6 +182,67 @@ This avoids polluting `dev` with mid-progress code if the fix needs to ship now.
 
 ---
 
+## SEO operations
+
+The site is fully SEO-instrumented (titles, descriptions, canonical, hreflang, OG, Twitter, JSON-LD Organization + WebSite + Article, GA4, sitemap). For implementation details see `README.md` § SEO. This section covers the operational side: where things live, how to monitor, what to do when GSC complains.
+
+### Where things live
+
+| Asset | Location | Notes |
+|---|---|---|
+| Sitemap | https://www.photoandmoto.fi/sitemap-index.xml | Auto-generated each build by `@astrojs/sitemap` |
+| robots.txt | `public/robots.txt` | Static — allows all, points to sitemap |
+| Root redirect | `public/_redirects` | Cloudflare Pages 301: `/` → `/fi` |
+| GA4 measurement ID | `G-9Y0PEJY0XG` (in `src/layouts/BaseLayout.astro`) | Hardcoded; site-wide |
+| GSC property | `photoandmoto.fi` (Domain property, covers all subdomains + protocols) | Verified owners: `atvilkman`, Lars Lönneberg |
+
+### What to check periodically
+
+- **GSC Performance** (weekly) — top queries, click-through rate, average position. The Queries tab tells you what content topics are working and what to write next.
+- **GSC Indexing → Pages** (monthly) — Indexed count should trend up. Spikes in "Not indexed" are usually fine after deploys (Google revalidates), but investigate if numbers stay elevated for >2 weeks.
+- **GSC Enhancements → Articles** (after publishing new articles) — confirms Article rich-result eligibility was detected.
+
+### When GSC reports "Discovered – currently not indexed"
+
+This is normal post-deploy / post-migration behavior. Google has the URLs from the sitemap but hasn't crawled them yet. To accelerate:
+
+1. GSC → top search bar → paste the URL → wait for inspection
+2. Click **Request indexing**
+3. ~10 URLs/day limit per property
+
+Prioritize article pages (richest schema) over gallery indexes.
+
+### When GSC reports "Redirect error" / "robots.txt 404"
+
+Usually stale. Verify with curl first:
+
+```powershell
+curl.exe -sIL "https://www.photoandmoto.fi/<path>" | Select-String -Pattern "^HTTP|^Location"
+curl.exe -sI "https://photoandmoto.fi/robots.txt" | Select-String -Pattern "^HTTP|^Location"
+```
+
+If curl shows a clean redirect chain (e.g. `308 → 200` or `301 → 200`), the GSC alert is just outdated. Click **Validate Fix** in the report — Google re-crawls within 1–14 days and clears it.
+
+### Submitting a fresh sitemap
+
+Should never be needed (Google re-fetches automatically), but if the sitemap is removed and re-added:
+
+1. GSC left sidebar → **Sitemaps**
+2. Enter `sitemap-index.xml` → **Submit**
+3. Wait ~1 day, status should be `Success`
+
+### Apex domain redirect
+
+`photoandmoto.fi` (no www) is hosted at Domainkeskus and uses a server-side .htaccess 301 to `https://www.photoandmoto.fi`. If apex starts returning 404 or showing the Domainkeskus parking page, contact Domainkeskus support (reference ticket #129612, Joel) — DNS misconfiguration on their end has happened before.
+
+### Adding new pages or articles
+
+Zero SEO work required. New articles automatically get full Article schema, sitemap inclusion, hreflang, OG/Twitter, GA4. Just write the markdown with the standard frontmatter (see `README.md` § SEO for the field reference) and push. Within ~24 hours of deploy, Google discovers the URL via the updated sitemap and queues it for crawling.
+
+For faster indexing of important new articles, manually submit via GSC URL Inspection → Request Indexing.
+
+---
+
 ## Backup and restore
 
 ### What is and isn't backed up automatically

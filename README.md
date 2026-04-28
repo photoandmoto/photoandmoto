@@ -299,6 +299,60 @@ CREATE INDEX IF NOT EXISTS idx_photos_status ON photos(status);
 
 ---
 
+## SEO and structured data
+
+The site has full structured-data SEO baked into the layouts. New articles and galleries pick this up automatically — no per-page work required.
+
+### What ships out of the box (every page)
+
+- Per-page `<title>` and `<meta description>` (set via BaseLayout props)
+- Canonical URL with trailing-slash normalization
+- Hreflang `fi` / `en` / `x-default` alternates (computed in BaseLayout)
+- Open Graph + Twitter Card tags
+- **JSON-LD: Organization + WebSite** schema (in BaseLayout, on every page)
+- Google Analytics (GA4: `G-9Y0PEJY0XG`)
+
+### Article pages additionally get
+
+- **JSON-LD: Article** schema with headline, description, image, dates, author, publisher, language, section, keywords
+- Author URL (defaults to `/{lang}/yhteystiedot/`, override via `author_url` in frontmatter)
+
+### Frontmatter fields that affect SEO
+
+```yaml
+---
+title: "..."                  # → page title + Article.headline
+subtitle: "..."               # → fallback for description
+seo_description: "..."        # → meta description + Article.description (preferred)
+author: "Author Name"         # → Article.author.name
+author_url: "/fi/about/jane"  # optional → Article.author.url
+date: 2026-04-25              # → Article.datePublished + dateModified
+category: "MXGP"              # → Article.articleSection
+tags: ["motocross", ...]      # → Article.keywords
+featured_image: "/images/.."  # → Article.image + og:image (≥1200×675 for rich results)
+language: "fi"                # → Article.inLanguage + html lang
+---
+```
+
+### Sitemap and robots
+
+- `@astrojs/sitemap` is configured in `astro.config.mjs` — generates `sitemap-index.xml` on every build with hreflang alternates
+- `/haku` and `/tilastot` are excluded (search tools, not content)
+- `public/robots.txt` allows everything and points to the sitemap
+- `public/_redirects` handles `/` → `/fi` (proper 301)
+
+### Validating SEO after changes
+
+```powershell
+# Verify a page has the expected schemas
+$r = Invoke-WebRequest -Uri "https://www.photoandmoto.fi/fi/aikakone/<slug>/" -UseBasicParsing
+($r.Content | Select-String -Pattern '"@type":"Organization"|"@type":"WebSite"|"@type":"Article"' -AllMatches).Matches.Value
+```
+
+For a full validation, paste the URL into [Google's Rich Results Test](https://search.google.com/test/rich-results). Article pages should report "1 valid item detected" with zero non-critical issues.
+
+---
+
 ## Backlog
 
 Tracked work that's not blocking but worth picking up in future sessions. Listed in rough priority order.
