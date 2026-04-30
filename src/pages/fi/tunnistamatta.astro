@@ -95,6 +95,7 @@ const lang = 'fi';
       <div id="adminTabs" class="admin-tabs" style="display:none;">
         <button type="button" class="admin-tab admin-tab--on" data-tab="tarkista">Tarkista</button>
         <button type="button" class="admin-tab" data-tab="laheta">Lähetä kuva</button>
+        <button type="button" class="admin-tab" data-tab="hallitse">Hallitse galleriaa</button>
       </div>
 
       <!-- Tarkista tab: filters + grid (community sees filters too) -->
@@ -122,6 +123,28 @@ const lang = 'fi';
             <button id="uploadBtn" class="btn btn--submit">Lataa kuva</button>
             <div id="uploadMsg" class="upload-msg"></div>
           </div>
+        </div>
+      </div>
+
+      
+      <!-- Hallitse galleriaa tab (admin only) -->
+      <div id="tabHallitse" class="tab-content" style="display:none;">
+        <div class="hallitse-section">
+          <h3 class="upload-title">Hallitse galleriaa</h3>
+          <div class="hallitse-top">
+            <div class="hallitse-select-row">
+              <select id="hallitseGallerySelect" class="inp inp--sel">
+                <option value="">— valitse galleria —</option>
+              </select>
+              <button id="hallitseLoadBtn" class="btn" disabled>Lataa kuvat</button>
+            </div>
+            <div id="hallitseGalleryActions" class="hallitse-gallery-actions" style="display:none;">
+              <button id="hallitseRenameGalleryBtn" class="btn btn--ghost">✏ Muuta nimeä</button>
+              <button id="hallitseDeleteGalleryBtn" class="btn btn--danger">🗑 Poista galleria</button>
+            </div>
+          </div>
+          <div id="hallitseMsg" class="upload-msg" style="margin-top:8px;"></div>
+          <div id="hallitseGrid" class="hallitse-grid"></div>
         </div>
       </div>
 
@@ -866,6 +889,7 @@ document.getElementById('adminLogout').addEventListener('click',()=>{
   // Reset to Tarkista tab so re-login lands on the right place
   document.getElementById('tabTarkista').style.display='';
   document.getElementById('tabLaheta').style.display='none';
+  document.getElementById('tabHallitse').style.display='none';
   document.querySelectorAll('.admin-tab').forEach(t=>t.classList.toggle('admin-tab--on',t.dataset.tab==='tarkista'));
   curFilter=null;
   renderFilters();
@@ -878,6 +902,8 @@ document.querySelectorAll('.admin-tab').forEach(t=>t.addEventListener('click',()
   document.querySelectorAll('.admin-tab').forEach(x=>x.classList.toggle('admin-tab--on',x===t));
   document.getElementById('tabTarkista').style.display=tab==='tarkista'?'':'none';
   document.getElementById('tabLaheta').style.display=tab==='laheta'?'':'none';
+  document.getElementById('tabHallitse').style.display=tab==='hallitse'?'':'none';
+  if(tab==='hallitse' && adminPw && !document.getElementById('hallitseGallerySelect').options.length>1){loadHallitseGalleries();}
 }));
 
 // Ohje collapse/expand — remember the user's preference across logins
@@ -994,6 +1020,168 @@ load();
       if(box){box.style.display='none';box.querySelector('.post-reply-inp').value='';}
     }
   });
+
+// =====================================================================
+// HALLITSE GALLERIAA TAB
+// =====================================================================
+
+let hallitseCurrentSlug = null;
+let hallitsePhotos = [];
+
+async function loadHallitseGalleries() {
+  const sel = document.getElementById('hallitseGallerySelect');
+  if (!sel) return;
+  const galleries = await loadGalleries();
+  sel.innerHTML = '<option value="">— valitse galleria —</option>' +
+    galleries.map(g => `<option value="${escAttr(g.slug)}">${esc(g.title)}</option>`).join('');
+  document.getElementById('hallitseLoadBtn').disabled = false;
+}
+
+async function loadHallitsePhotos() {
+  const slug = document.getElementById('hallitseGallerySelect').value;
+  if (!slug) return;
+  hallitseCurrentSlug = slug;
+  const msg  = document.getElementById('hallitseMsg');
+  const grid = document.getElementById('hallitseGrid');
+  msg.innerHTML = '<span class="u-load">Ladataan...</span>';
+  grid.innerHTML = '';
+  try {
+    const r = await fetch('/api/mystery/gallery-manage', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({password: adminPw, action: 'list_gallery_photos', gallery_slug: slug}),
+    });
+    const data = await r.json();
+    if (!r.ok || !data.success) {
+      msg.innerHTML = `<span class="u-err">${esc(data.error || 'Virhe')}</span>`;
+      return;
+    }
+    hallitsePhotos = data.photos;
+    msg.innerHTML = `<span class="u-ok">${data.photos.length} kuvaa — ${esc(data.title)}</span>`;
+    document.getElementById('hallitseGalleryActions').style.display = 'flex';
+    renderHallitseGrid(data.photos, slug);
+  } catch(e) {
+    msg.innerHTML = `<span class="u-err">Virhe: ${esc(e.message)}</span>`;
+  }
+}
+
+function renderHallitseGrid(photos, slug) {
+  const grid = document.getElementById('hallitseGrid');
+  if (!photos.length) {
+    grid.innerHTML = '<div class="grid-empty">Galleria on tyhjä.</div>';
+    return;
+  }
+  grid.innerHTML = photos.map(p => `
+    <div class="hcard">
+      <div class="hcard-img">
+        <img src="/galleries/${escAttr(slug)}/${escAttr(p.thumb)}" alt="" loading="lazy" />
+      </div>
+      <div class="hcard-caption" title="${escAttr(p.caption)}">${esc(p.caption)}</div>
+      <div class="hcard-actions">
+        <button class="btn btn--ghost hcard-edit" data-filename="${escAttr(p.filename)}" data-caption="${escAttr(p.caption)}">✏</button>
+        <button class="btn btn--danger hcard-del" data-filename="${escAttr(p.filename)}">🗑</button>
+      </div>
+    </div>`).join('');
+
+  grid.querySelectorAll('.hcard-del').forEach(btn => btn.addEventListener('click', async () => {
+    const filename = btn.dataset.filename;
+    if (!confirm(`Poistetaanko kuva "${filename}" galleriasta ${hallitseCurrentSlug}? Ei voi peruuttaa.`)) return;
+    btn.disabled = true;
+    const msg = document.getElementById('hallitseMsg');
+    msg.innerHTML = '<span class="u-load">Poistetaan...</span>';
+    const r = await fetch('/api/mystery/gallery-manage', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({password: adminPw, action: 'delete_photo', gallery_slug: hallitseCurrentSlug, filename}),
+    });
+    const data = await r.json();
+    if (data.success) {
+      msg.innerHTML = `<span class="u-ok">✓ Poistettu: ${esc(filename)}</span>`;
+      await loadHallitsePhotos();
+    } else {
+      msg.innerHTML = `<span class="u-err">Virhe: ${esc(data.error)}</span>`;
+      btn.disabled = false;
+    }
+  }));
+
+  grid.querySelectorAll('.hcard-edit').forEach(btn => btn.addEventListener('click', () => {
+    const filename = btn.dataset.filename;
+    const currentCaption = btn.dataset.caption;
+    const newCaption = prompt('Uusi kuvateksti:', currentCaption);
+    if (!newCaption || newCaption.trim() === currentCaption) return;
+    const msg = document.getElementById('hallitseMsg');
+    msg.innerHTML = '<span class="u-load">Tallennetaan...</span>';
+    fetch('/api/mystery/gallery-manage', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({password: adminPw, action: 'update_caption', gallery_slug: hallitseCurrentSlug, filename, caption: newCaption.trim()}),
+    }).then(r => r.json()).then(data => {
+      if (data.success) {
+        msg.innerHTML = '<span class="u-ok">✓ Kuvateksti päivitetty</span>';
+        loadHallitsePhotos();
+      } else {
+        msg.innerHTML = `<span class="u-err">Virhe: ${esc(data.error)}</span>`;
+      }
+    });
+  }));
+}
+
+document.getElementById('hallitseGallerySelect') && document.getElementById('hallitseGallerySelect').addEventListener('change', () => {
+  document.getElementById('hallitseGalleryActions').style.display = 'none';
+  document.getElementById('hallitseGrid').innerHTML = '';
+  document.getElementById('hallitseMsg').innerHTML = '';
+  hallitseCurrentSlug = null;
+});
+
+document.getElementById('hallitseLoadBtn') && document.getElementById('hallitseLoadBtn').addEventListener('click', loadHallitsePhotos);
+
+document.getElementById('hallitseRenameGalleryBtn') && document.getElementById('hallitseRenameGalleryBtn').addEventListener('click', async () => {
+  if (!hallitseCurrentSlug) return;
+  const currentTitle = document.getElementById('hallitseGallerySelect').selectedOptions[0]?.text || '';
+  const newTitle = prompt('Uusi nimi gallerialle:', currentTitle);
+  if (!newTitle || newTitle.trim() === currentTitle) return;
+  const msg = document.getElementById('hallitseMsg');
+  msg.innerHTML = '<span class="u-load">Tallennetaan...</span>';
+  const r = await fetch('/api/mystery/gallery-manage', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({password: adminPw, action: 'rename_gallery', gallery_slug: hallitseCurrentSlug, title: newTitle.trim()}),
+  });
+  const data = await r.json();
+  if (data.success) {
+    msg.innerHTML = `<span class="u-ok">✓ Nimi päivitetty: ${esc(data.title)}</span>`;
+    cachedGalleries = null;
+    await loadHallitseGalleries();
+  } else {
+    msg.innerHTML = `<span class="u-err">Virhe: ${esc(data.error)}</span>`;
+  }
+});
+
+document.getElementById('hallitseDeleteGalleryBtn') && document.getElementById('hallitseDeleteGalleryBtn').addEventListener('click', async () => {
+  if (!hallitseCurrentSlug) return;
+  const title = document.getElementById('hallitseGallerySelect').selectedOptions[0]?.text || hallitseCurrentSlug;
+  if (!confirm(`Poistetaanko galleria "${title}"?\n\nGalleria poistetaan sivustolta seuraavassa käännöksessä. Kuvatiedostot säilyvät repossa.`)) return;
+  const msg = document.getElementById('hallitseMsg');
+  msg.innerHTML = '<span class="u-load">Poistetaan...</span>';
+  const r = await fetch('/api/mystery/gallery-manage', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({password: adminPw, action: 'delete_gallery', gallery_slug: hallitseCurrentSlug}),
+  });
+  const data = await r.json();
+  if (data.success) {
+    msg.innerHTML = `<span class="u-ok">✓ Galleria poistettu</span>`;
+    document.getElementById('hallitseGalleryActions').style.display = 'none';
+    document.getElementById('hallitseGrid').innerHTML = '';
+    hallitseCurrentSlug = null;
+    hallitsePhotos = [];
+    cachedGalleries = null;
+    await loadHallitseGalleries();
+  } else {
+    msg.innerHTML = `<span class="u-err">Virhe: ${esc(data.error)}</span>`;
+  }
+});
+
 </script>
 
 <style is:global>
