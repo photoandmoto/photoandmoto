@@ -401,3 +401,10 @@ During the production smoke test of the publish pipeline, the typed year (2026) 
 ## License
 
 © 2026 Photo & Moto — All rights reserved.
+
+### Use --add flag for bulk gallery imports to avoid manifest overwrite
+
+When adding photos to an existing gallery, use incremental mode:
+`npm run generate-gallery <slug> -- --add <filename>`
+rather than the full rebuild. Full rebuild rescans only locally present files and overwrites the manifest, wiping entries whose originals aren't in the local folder. For bulk imports, loop --add over each new file instead.
+
