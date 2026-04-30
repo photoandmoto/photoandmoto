@@ -191,7 +191,8 @@ async function fetchFile(token, branch, filePath) {
 async function fetchManifest(token, branch, slug) {
   const path = `src/content/galleries/${slug}.json`;
   const { content } = await fetchFile(token, branch, path);
-  const decoded = atob(content);
+  const bytes = base64ToBytes(content);
+  const decoded = new TextDecoder('utf-8').decode(bytes);
   return JSON.parse(decoded);
 }
 
