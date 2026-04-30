@@ -1157,30 +1157,75 @@ document.getElementById('hallitseRenameGalleryBtn') && document.getElementById('
   }
 });
 
-document.getElementById('hallitseDeleteGalleryBtn') && document.getElementById('hallitseDeleteGalleryBtn').addEventListener('click', async () => {
+document.getElementById('hallitseDeleteGalleryBtn') && document.getElementById('hallitseDeleteGalleryBtn').addEventListener('click', () => {
   if (!hallitseCurrentSlug) return;
-  const title = document.getElementById('hallitseGallerySelect').selectedOptions[0]?.text || hallitseCurrentSlug;
-  if (!confirm(`Poistetaanko galleria "${title}"?\n\nGalleria poistetaan sivustolta seuraavassa käännöksessä. Kuvatiedostot säilyvät repossa.`)) return;
-  const msg = document.getElementById('hallitseMsg');
-  msg.innerHTML = '<span class="u-load">Poistetaan...</span>';
-  const r = await fetch('/api/mystery/gallery-manage', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({password: adminPw, action: 'delete_gallery', gallery_slug: hallitseCurrentSlug}),
-  });
-  const data = await r.json();
-  if (data.success) {
-    msg.innerHTML = `<span class="u-ok">✓ Galleria poistettu</span>`;
-    document.getElementById('hallitseGalleryActions').style.display = 'none';
-    document.getElementById('hallitseGrid').innerHTML = '';
-    hallitseCurrentSlug = null;
-    hallitsePhotos = [];
-    cachedGalleries = null;
-    await loadHallitseGalleries();
-  } else {
-    msg.innerHTML = `<span class="u-err">Virhe: ${esc(data.error)}</span>`;
-  }
+  openDeleteGalleryPanel();
 });
+
+function openDeleteGalleryPanel() {
+  const title = document.getElementById('hallitseGallerySelect').selectedOptions[0]?.text || hallitseCurrentSlug;
+  // Remove existing panel if any
+  const existing = document.getElementById('deleteGalleryPanel');
+  if (existing) { existing.remove(); return; }
+
+  const panel = document.createElement('div');
+  panel.id = 'deleteGalleryPanel';
+  panel.className = 'del-gallery-panel';
+  panel.innerHTML = `
+    <div class="del-gallery-panel__header">
+      <span class="del-gallery-panel__icon">⚠</span>
+      <strong>Poistetaanko galleria "${esc(title)}"?</strong>
+    </div>
+    <p class="del-gallery-panel__info">Galleria poistetaan sivustolta seuraavassa käännöksessä. Kuvatiedostot säilyvät repossa.</p>
+    <div class="del-gallery-panel__auth">
+      <label>Vahvista salasanalla</label>
+      <input type="password" id="delGalleryPw" class="inp" placeholder="Salasana" autocomplete="off" />
+    </div>
+    <div class="del-gallery-panel__actions">
+      <button class="btn btn--ghost" id="delGalleryCancel">Peruuta</button>
+      <button class="btn btn--danger" id="delGalleryConfirm">Poista galleria</button>
+    </div>
+    <div id="delGalleryMsg" class="del-gallery-panel__msg"></div>
+  `;
+
+  // Insert panel after the gallery actions row
+  const actions = document.getElementById('hallitseGalleryActions');
+  actions.parentNode.insertBefore(panel, actions.nextSibling);
+
+  document.getElementById('delGalleryCancel').addEventListener('click', () => panel.remove());
+
+  document.getElementById('delGalleryConfirm').addEventListener('click', async () => {
+    const pw = document.getElementById('delGalleryPw').value;
+    const msg = document.getElementById('delGalleryMsg');
+    if (!pw) { msg.innerHTML = '<span class="u-err">Syötä salasana</span>'; return; }
+    if (pw !== adminPw) { msg.innerHTML = '<span class="u-err">Väärä salasana</span>'; return; }
+
+    msg.innerHTML = '<span class="u-load">Poistetaan...</span>';
+    document.getElementById('delGalleryConfirm').disabled = true;
+
+    const r = await fetch('/api/mystery/gallery-manage', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({password: adminPw, action: 'delete_gallery', gallery_slug: hallitseCurrentSlug}),
+    });
+    const data = await r.json();
+    if (data.success) {
+      panel.remove();
+      document.getElementById('hallitseMsg').innerHTML = `<span class="u-ok">✓ Galleria poistettu</span>`;
+      document.getElementById('hallitseGalleryActions').style.display = 'none';
+      document.getElementById('hallitseGrid').innerHTML = '';
+      hallitseCurrentSlug = null;
+      hallitsePhotos = [];
+      cachedGalleries = null;
+      await loadHallitseGalleries();
+    } else {
+      msg.innerHTML = `<span class="u-err">Virhe: ${esc(data.error)}</span>`;
+      document.getElementById('delGalleryConfirm').disabled = false;
+    }
+  });
+
+  document.getElementById('delGalleryPw').focus();
+}
 
 </script>
 
@@ -1911,5 +1956,33 @@ document.getElementById('hallitseDeleteGalleryBtn') && document.getElementById('
   .hcard-actions .btn{font-size:.72rem;padding:6px 10px;flex:1}
   @media(max-width:900px){.hallitse-grid{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:540px){.hallitse-grid{grid-template-columns:1fr}}
+
+
+  /* ===== DELETE GALLERY PANEL ===== */
+  .del-gallery-panel{
+    margin-top:12px;
+    padding:16px;
+    background:#fff5f5;
+    border:1.5px solid #f5c6c6;
+    border-radius:12px;
+    animation:pubFadeIn .2s ease-out;
+  }
+  .del-gallery-panel__header{
+    display:flex;align-items:center;gap:8px;
+    font-size:.95rem;color:#c0392b;margin-bottom:8px;
+  }
+  .del-gallery-panel__icon{font-size:1.2rem}
+  .del-gallery-panel__info{
+    font-size:.82rem;color:#666;margin:0 0 12px;line-height:1.5;
+  }
+  .del-gallery-panel__auth label{
+    display:block;font-size:.74rem;font-weight:700;color:#c0392b;
+    text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;
+  }
+  .del-gallery-panel__auth .inp{max-width:260px}
+  .del-gallery-panel__actions{
+    display:flex;gap:8px;margin-top:12px;
+  }
+  .del-gallery-panel__msg{margin-top:8px;font-size:.85rem;min-height:1.2em}
 
 </style>
