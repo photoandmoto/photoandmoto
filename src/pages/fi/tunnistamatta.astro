@@ -1107,21 +1107,56 @@ function renderHallitseGrid(photos, slug) {
   grid.querySelectorAll('.hcard-edit').forEach(btn => btn.addEventListener('click', () => {
     const filename = btn.dataset.filename;
     const currentCaption = btn.dataset.caption;
-    const newCaption = prompt('Uusi kuvateksti:', currentCaption);
-    if (!newCaption || newCaption.trim() === currentCaption) return;
-    const msg = document.getElementById('hallitseMsg');
-    msg.innerHTML = '<span class="u-load">Tallennetaan...</span>';
-    fetch('/api/mystery/gallery-manage', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({password: adminPw, action: 'update_caption', gallery_slug: hallitseCurrentSlug, filename, caption: newCaption.trim()}),
-    }).then(r => r.json()).then(data => {
+    // Close any open edit panel
+    const existing = document.getElementById('editCaptionPanel');
+    if (existing) {
+      if (existing.dataset.filename === filename) { existing.remove(); return; }
+      existing.remove();
+    }
+    const card = btn.closest('.hcard');
+    const panel = document.createElement('div');
+    panel.id = 'editCaptionPanel';
+    panel.className = 'edit-caption-panel';
+    panel.dataset.filename = filename;
+    panel.innerHTML = `
+      <label class="edit-caption-panel__label">Kuvateksti</label>
+      <input type="text" id="editCaptionInp" class="inp" value="${escAttr(currentCaption)}" />
+      <div class="edit-caption-panel__actions">
+        <button class="btn btn--ghost edit-caption-cancel">Peruuta</button>
+        <button class="btn edit-caption-save">Tallenna</button>
+      </div>
+      <div id="editCaptionMsg" class="edit-caption-panel__msg"></div>
+    `;
+    card.after(panel);
+    const inp = document.getElementById('editCaptionInp');
+    inp.focus();
+    inp.select();
+    panel.querySelector('.edit-caption-cancel').addEventListener('click', () => panel.remove());
+    panel.querySelector('.edit-caption-save').addEventListener('click', async () => {
+      const newCaption = inp.value.trim();
+      const msg = document.getElementById('editCaptionMsg');
+      if (!newCaption) { msg.innerHTML = '<span class="u-err">Kuvateksti ei voi olla tyhjä</span>'; return; }
+      if (newCaption === currentCaption) { panel.remove(); return; }
+      msg.innerHTML = '<span class="u-load">Tallennetaan...</span>';
+      panel.querySelector('.edit-caption-save').disabled = true;
+      const r = await fetch('/api/mystery/gallery-manage', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({password: adminPw, action: 'update_caption', gallery_slug: hallitseCurrentSlug, filename, caption: newCaption}),
+      });
+      const data = await r.json();
       if (data.success) {
-        msg.innerHTML = '<span class="u-ok">✓ Kuvateksti päivitetty</span>';
-        loadHallitsePhotos();
+        panel.remove();
+        document.getElementById('hallitseMsg').innerHTML = '<span class="u-ok">✓ Kuvateksti päivitetty</span>';
+        await loadHallitsePhotos();
       } else {
         msg.innerHTML = `<span class="u-err">Virhe: ${esc(data.error)}</span>`;
+        panel.querySelector('.edit-caption-save').disabled = false;
       }
+    });
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Enter') panel.querySelector('.edit-caption-save').click();
+      if (e.key === 'Escape') panel.remove();
     });
   }));
 }
@@ -1135,27 +1170,75 @@ document.getElementById('hallitseGallerySelect') && document.getElementById('hal
 
 document.getElementById('hallitseLoadBtn') && document.getElementById('hallitseLoadBtn').addEventListener('click', loadHallitsePhotos);
 
-document.getElementById('hallitseRenameGalleryBtn') && document.getElementById('hallitseRenameGalleryBtn').addEventListener('click', async () => {
+document.getElementById('hallitseRenameGalleryBtn') && document.getElementById('hallitseRenameGalleryBtn').addEventListener('click', () => {
   if (!hallitseCurrentSlug) return;
-  const currentTitle = document.getElementById('hallitseGallerySelect').selectedOptions[0]?.text || '';
-  const newTitle = prompt('Uusi nimi gallerialle:', currentTitle);
-  if (!newTitle || newTitle.trim() === currentTitle) return;
-  const msg = document.getElementById('hallitseMsg');
-  msg.innerHTML = '<span class="u-load">Tallennetaan...</span>';
-  const r = await fetch('/api/mystery/gallery-manage', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({password: adminPw, action: 'rename_gallery', gallery_slug: hallitseCurrentSlug, title: newTitle.trim()}),
-  });
-  const data = await r.json();
-  if (data.success) {
-    msg.innerHTML = `<span class="u-ok">✓ Nimi päivitetty: ${esc(data.title)}</span>`;
-    cachedGalleries = null;
-    await loadHallitseGalleries();
-  } else {
-    msg.innerHTML = `<span class="u-err">Virhe: ${esc(data.error)}</span>`;
-  }
+  openRenameGalleryPanel();
 });
+
+function openRenameGalleryPanel() {
+  const currentTitle = document.getElementById('hallitseGallerySelect').selectedOptions[0]?.text || '';
+  const existing = document.getElementById('renameGalleryPanel');
+  if (existing) { existing.remove(); return; }
+  // Close delete panel if open
+  const delPanel = document.getElementById('deleteGalleryPanel');
+  if (delPanel) delPanel.remove();
+
+  const panel = document.createElement('div');
+  panel.id = 'renameGalleryPanel';
+  panel.className = 'del-gallery-panel';
+  panel.innerHTML = `
+    <div class="del-gallery-panel__header">
+      <span class="del-gallery-panel__icon">✏</span>
+      <strong>Muuta gallerian nimeä</strong>
+    </div>
+    <div class="del-gallery-panel__auth">
+      <label>Uusi nimi</label>
+      <input type="text" id="renameGalleryInp" class="inp" value="${escAttr(currentTitle)}" placeholder="Gallerian nimi" style="max-width:320px;margin-bottom:10px;" />
+      <label>Vahvista salasanalla</label>
+      <input type="password" id="renameGalleryPw" class="inp" placeholder="Salasana" autocomplete="off" style="max-width:260px;" />
+    </div>
+    <div class="del-gallery-panel__actions">
+      <button class="btn btn--ghost" id="renameGalleryCancel">Peruuta</button>
+      <button class="btn" id="renameGalleryConfirm">Tallenna nimi</button>
+    </div>
+    <div id="renameGalleryMsg" class="del-gallery-panel__msg"></div>
+  `;
+
+  const actions = document.getElementById('hallitseGalleryActions');
+  actions.parentNode.insertBefore(panel, actions.nextSibling);
+
+  const inp = document.getElementById('renameGalleryInp');
+  inp.focus();
+  inp.select();
+
+  document.getElementById('renameGalleryCancel').addEventListener('click', () => panel.remove());
+  document.getElementById('renameGalleryConfirm').addEventListener('click', async () => {
+    const newTitle = inp.value.trim();
+    const pw = document.getElementById('renameGalleryPw').value;
+    const msg = document.getElementById('renameGalleryMsg');
+    if (!newTitle) { msg.innerHTML = '<span class="u-err">Nimi ei voi olla tyhjä</span>'; return; }
+    if (!pw) { msg.innerHTML = '<span class="u-err">Syötä salasana</span>'; return; }
+    if (pw !== adminPw) { msg.innerHTML = '<span class="u-err">Väärä salasana</span>'; return; }
+    if (newTitle === currentTitle) { panel.remove(); return; }
+    msg.innerHTML = '<span class="u-load">Tallennetaan...</span>';
+    document.getElementById('renameGalleryConfirm').disabled = true;
+    const r = await fetch('/api/mystery/gallery-manage', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({password: adminPw, action: 'rename_gallery', gallery_slug: hallitseCurrentSlug, title: newTitle}),
+    });
+    const data = await r.json();
+    if (data.success) {
+      panel.remove();
+      document.getElementById('hallitseMsg').innerHTML = `<span class="u-ok">✓ Nimi päivitetty: ${esc(data.title)}</span>`;
+      cachedGalleries = null;
+      await loadHallitseGalleries();
+    } else {
+      msg.innerHTML = `<span class="u-err">Virhe: ${esc(data.error)}</span>`;
+      document.getElementById('renameGalleryConfirm').disabled = false;
+    }
+  });
+}
 
 document.getElementById('hallitseDeleteGalleryBtn') && document.getElementById('hallitseDeleteGalleryBtn').addEventListener('click', () => {
   if (!hallitseCurrentSlug) return;
@@ -1984,5 +2067,23 @@ function openDeleteGalleryPanel() {
     display:flex;gap:8px;margin-top:12px;
   }
   .del-gallery-panel__msg{margin-top:8px;font-size:.85rem;min-height:1.2em}
+
+
+  /* ===== CAPTION EDIT PANEL ===== */
+  .edit-caption-panel{
+    grid-column: 1 / -1;
+    background:#fffaf2;
+    border:1.5px solid #ffd89a;
+    border-radius:12px;
+    padding:14px 16px;
+    margin-bottom:4px;
+    animation:pubFadeIn .15s ease-out;
+  }
+  .edit-caption-panel__label{
+    display:block;font-size:.74rem;font-weight:700;color:#a06400;
+    text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;
+  }
+  .edit-caption-panel__actions{display:flex;gap:8px;margin-top:10px}
+  .edit-caption-panel__msg{margin-top:6px;font-size:.82rem;min-height:1.2em}
 
 </style>
