@@ -903,7 +903,7 @@ document.querySelectorAll('.admin-tab').forEach(t=>t.addEventListener('click',()
   document.getElementById('tabTarkista').style.display=tab==='tarkista'?'':'none';
   document.getElementById('tabLaheta').style.display=tab==='laheta'?'':'none';
   document.getElementById('tabHallitse').style.display=tab==='hallitse'?'':'none';
-  if(tab==='hallitse' && adminPw && !document.getElementById('hallitseGallerySelect').options.length>1){loadHallitseGalleries();}
+  if(tab==='hallitse' && adminPw){loadHallitseGalleries();}
 }));
 
 // Ohje collapse/expand — remember the user's preference across logins
