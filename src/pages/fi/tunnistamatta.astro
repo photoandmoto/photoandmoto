@@ -804,8 +804,8 @@ document.getElementById('adminToggle').addEventListener('click',e=>{
 
 // Admin login — on success: capture old lastVisit for this session's "new" badges,
 // then update lastVisit to NOW for the NEXT session.
-// Admin login moved to /fi/yllapito
-if(false && document.getElementById('adminPwBtn')){document.getElementById('adminPwBtn').addEventListener('click',async()=>{
+// Admin login moved to /fi/yllapito — see /fi/yllapito.astro
+
   const pw=document.getElementById('adminPw').value;
   if(await verifyPw(pw)){
     adminPw=pw;
@@ -840,7 +840,7 @@ document.getElementById('adminLogout').addEventListener('click',()=>{
   cachedGalleries=null;
   document.getElementById('adminActions').style.display='none';
   document.getElementById('adminTabs').style.display='none';
-  document.getElementById('adminToggle').style.display='';
+  
   document.getElementById('mpSubCommunity').style.display='';
   document.getElementById('mpSubAdmin').style.display='none';
   // Reset to Tarkista tab so re-login lands on the right place
