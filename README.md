@@ -38,7 +38,8 @@ The public site is bilingual (Finnish primary, English secondary):
 - **Tilastot** — stats pages (FIM World Champions, SM, Motocross des Nations, AMA, Trans-AMA)
 - **MXGP 2026** — current MXGP season tracker
 - **Podcast** — episodes
-- **Tunnista kuva** — community-driven mystery photo identification (see below)
+- **Tunnista kuva** — community-driven mystery photo identification (public, see below)
+- **Ylläpito** — admin panel for mystery photo curation, uploads, and gallery management (password-protected)
 
 Each gallery uses [PhotoSwipe](https://photoswipe.com) for the lightbox experience.
 
@@ -58,11 +59,22 @@ A two-sided feature where the public helps identify old motorsport photos and ad
 
 ### Admin side
 
-- Admin login (password-protected) reveals additional UI on the same page
-- **Tarkista tab**: review suggestions, write canonical metadata per field, save → photo status auto-promotes (Uusi → Osittain tunnistettu → Tunnistettu)
-- **Lähetä kuva tab**: upload new mystery photos with optional partial metadata. The browser generates a 300px-edge JPEG thumbnail at upload time (Canvas API, ~10–25 KB) so the photo can immediately appear in the landing-page help block.
-- Filters show what's new since last login (`Tarkistettavaa`, `Kesken`, `Valmiit`)
-- One-click **Julkaise Galleriaan** moves a fully-identified photo into the permanent gallery (see "Publishing pipeline" below)
+The admin panel lives at `/fi/yllapito` (separate from the public Tunnista kuva page) and is password-protected. Reachable via the **MUUTA → Ylläpito** menu item. When logged out the page shows only the login panel; on successful login the admin tabs appear.
+
+The login input has a visibility toggle (eye icon) and a Caps Lock warning.
+
+**Three admin tabs:**
+
+- **Tarkista** — review community suggestions, write canonical metadata per field, save → photo status auto-promotes (Uusi → Osittain tunnistettu → Tunnistettu). Filters show what's new since last login (`Tarkistettavaa`, `Kesken`, `Valmiit`). One-click **Julkaise Galleriaan** moves a fully-identified photo into the permanent gallery (see "Publishing pipeline" below).
+- **Lähetä kuva** — upload new mystery photos with optional partial metadata. The browser generates a 300px-edge JPEG thumbnail at upload time (Canvas API, ~10–25 KB) so the photo can immediately appear in the landing-page help block.
+- **Hallitse galleriaa** — manage already-published galleries (Phase D). Pick a gallery from the dropdown, load its photos, then:
+  - Search/filter photos by caption (live filter)
+  - Edit a photo caption inline
+  - Delete a photo (removes original + thumb + display + manifest entry in one commit)
+  - Rename the entire gallery (with password re-confirmation)
+  - Delete the entire gallery (with password re-confirmation)
+
+Destructive actions (delete photo, delete gallery, rename gallery) open an inline confirmation panel — no browser `confirm()` dialogs. Gallery-level destructive actions require re-entering the admin password as a final safety check.
 
 ### Storage
 
@@ -188,7 +200,8 @@ photoandmoto/
 │       ├── init.js                      # POST — schema bootstrap (idempotent)
 │       ├── galleries.js                 # GET — gallery dropdown list (auto-discovered)
 │       ├── featured.js                  # GET — public endpoint for landing-page help block
-│       └── publish.js                   # POST — Julkaise Galleriaan flow
+│       ├── publish.js                   # POST — Julkaise Galleriaan flow
+│       └── gallery-manage.js           # POST — Hallitse galleriaa actions (delete/rename/list photos, delete/rename gallery)
 ├── public/
 │   ├── galleries/<slug>/                # Original images
 │   ├── galleries/<slug>/thumbs/         # 600px thumbs
@@ -364,16 +377,13 @@ Photos uploaded to live D1 before the `thumb_data` feature shipped (currently 3 
 - **Wait for new uploads** (current default) — the block fills organically as admin uploads new mystery photos.
 - **Build a backfill admin tool** — a one-shot button on the Tunnistamatta admin tab that fetches each existing image, generates a 300px Canvas thumbnail in the browser, and PUTs it back to D1. ~30 min of work.
 
-### Phase D — Admin gallery management
+### ✅ Phase D — Admin gallery management (DONE)
 
-Currently, fixing mistakes in published galleries (typos in captions, wrong year, deleting bad photos, renaming galleries) requires manual git commits. A "Hallitse galleriaa" admin tab inside Tunnistamatta would let admin:
+Shipped: "Hallitse galleriaa" tab inside `/fi/yllapito` lets admin delete photos, edit captions, rename galleries, and delete entire galleries — all via inline panels with password confirmation for destructive actions. Live caption-search filter included.
 
-- Delete a photo from a gallery (removes original + thumb + display + manifest entry, single commit)
-- Rename a photo (regenerates derivatives, updates manifest)
-- Rename or delete an entire gallery
+Not yet implemented:
+- Rename a single photo (regenerate derivatives + update manifest)
 - Reorder photos within a gallery
-
-Estimated: full session of work.
 
 ### Phase E — Storage and cost ops
 
@@ -395,6 +405,24 @@ Low priority — it's just clutter, not a bug.
 ### Filename year quirk in publish flow
 
 During the production smoke test of the publish pipeline, the typed year (2026) ended up as `1980` in the resulting filename. Likely an order-of-operations bug where the filename is composed before the Tallenna click commits the metadata. Worth investigating before publishing real curated photos to avoid mislabeling. Reproduction: live admin → Tunnista kuva → publish a photo → check the filename in `public/galleries/<slug>/`.
+
+
+
+### Clean up patch scripts from repo root
+
+During the Phase D/E development session, several one-shot `.cjs` migration scripts ended up committed to the repo root: `fix-hallitse.cjs`, `fix-phase-d.cjs`, `patch-tunnistamatta.cjs`, and others. These are not part of the build — they were used once to apply changes during development. Either delete them or move them to a `scripts/migrations/` archive folder. Low priority, just clutter.
+
+### `/en/yllapito` — English admin page
+
+Currently `/fi/yllapito` exists but there's no English equivalent. The MUUTA menu in EN doesn't have an Ylläpito entry. If admin work is ever expected to happen from English context (unlikely — admin is always Finnish-speaking), build the EN mirror.
+
+### Use `--add` flag for bulk gallery imports to avoid manifest overwrite
+
+When adding photos to an existing gallery, use the incremental mode:
+```
+npm run generate-gallery <slug> -- --add <filename>
+```
+instead of the full rebuild `npm run generate-gallery <slug>`. The full rebuild rescans only locally present files and overwrites the manifest, wiping entries whose originals aren't in the local folder. The `--add` flag appends a single photo without touching existing entries. For bulk imports, loop `--add` over each new file or build a batch script.
 
 ---
 
