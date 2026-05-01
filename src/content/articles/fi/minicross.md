@@ -5,7 +5,7 @@ seo_description: "1970-luvun nappulacrossin tarina: kuinka 50-kuutioisten luokka
 date: 2026-05-01
 category: "Historical"
 tags: ["motocross", "minicross", "historia", "50cc"]
-featured_image: "/src/assets/articles/minicross/hero-minicross.jpg"
+featured_image: "/images/minicross-hero.jpg"
 author: "Photo & Moto"
 language: "fi"
 ---
@@ -39,7 +39,7 @@ Tekninen kehitys oli nopeaa, ja Solifer toi markkinoille täysiverisen Minicross
 
 > Tehdasvalmis paketti muutti lajin luonnetta pelkästä hupiajosta tavoitteelliseksi urheiluksi.
 
-![Solifer Minicross](/src/assets/articles/minicross/solifer-minicross.png)
+![Solifer Minicross](/images/minicross-solifer.png)
 
 Vuoteen 1974 tultaessa taso nousi entisestään, kun Monark esitteli 15-hevosvoimaisen Sachsin moottorilla varustetun mallinsa. Myös Zündapp vakiinnutti asemansa vahvana kilpailijana, jolloin alkuaikojen viritetyt mopot jäivät lopullisesti historian hämärään.
 
@@ -53,7 +53,7 @@ Suomen Moottoriliitto toimi tuolloin aktiivisesti lajin tunnettuuden eteen. Merk
 
 Lajin kasvu kulminoitui vuoden 1974 tilastoihin. Elokuun 4. päivänä Hyvinkään MM-motocrossin yhteydessä 50-kuutioisten C-luokan viivalle asettui 37 kuljettajaa 15 eri kerhosta. Monark oli vallannut markkinat 22 pyörällä, yhdeksän kuljettajan luottaessa Zündappiin. Loput lähtöruudut täyttyivät Solifereilla ja Tuntureilla, joista jälkimmäinen oli valmistanut pienen erän erikoisräätälöityjä malleja.
 
-![Hyvinkään 1974 lähtöruudukko](/src/assets/articles/minicross/hyvinkaa-1974-startti.jpg)
+![Hyvinkään 1974 lähtöruudukko](/images/minicross-hyvinkaa-1974-startti.jpg)
 
 Kilpailun voittoon ajoi Tikkurilan Moottorikerhon Jarmo Paavola Monarkilla. Toiseksi sijoittui Kari Virta Tunturilla ja kolmanneksi Arto Wilkman Zündappilla, molempien edustaessa Hyvinkään Moottorikerhoa.
 

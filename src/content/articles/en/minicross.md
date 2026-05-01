@@ -5,7 +5,7 @@ seo_description: "The story of 1970s minicross: how the 50cc class opened the do
 date: 2026-05-01
 category: "Historical"
 tags: ["motocross", "minicross", "history", "50cc"]
-featured_image: "/src/assets/articles/minicross/hero-minicross.jpg"
+featured_image: "/images/minicross-hero.jpg"
 author: "Photo & Moto"
 language: "en"
 ---
@@ -38,7 +38,7 @@ Technical development was rapid, and Solifer brought a full-blooded Minicross ra
 
 > The factory-built package transformed the nature of the sport from mere fun riding into goal-oriented competition.
 
-![Solifer Minicross](/src/assets/articles/minicross/solifer-minicross.png)
+![Solifer Minicross](/images/minicross-solifer.png)
 
 By 1974, the level rose further when Monark introduced its model with a 15-horsepower Sachs engine. Zündapp also established itself as a strong competitor, and the tuned mopeds of the early days were finally relegated to the dim corners of history.
 
@@ -52,7 +52,7 @@ The Finnish Motorcycle Federation worked actively to raise the sport's profile a
 
 The growth of the sport culminated in the statistics of 1974. On August 4, in conjunction with the Hyvinkää Motocross World Championship, 37 riders from 15 different clubs lined up on the start line of the 50cc C-class. Monark had captured the market with 22 bikes, while nine riders trusted Zündapp. The remaining starting positions were filled by Solifers and Tunturis — the latter manufacturer having produced a small batch of specially tailored models.
 
-![Hyvinkää 1974 starting grid](/src/assets/articles/minicross/hyvinkaa-1974-startti.jpg)
+![Hyvinkää 1974 starting grid](/images/minicross-hyvinkaa-1974-startti.jpg)
 
 The race was won by Tikkurila Motor Club's Jarmo Paavola on a Monark. Second place went to Kari Virta on a Tunturi, and third to Arto Wilkman on a Zündapp — both representing Hyvinkää Motor Club.
 
