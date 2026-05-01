@@ -1,5 +1,5 @@
 ---
-title: "For the Sake of Just 50cc"
+title: "Vain 50 kuutiosenttimetrin tähden"
 subtitle: "A story of speed, gravel, and growth"
 seo_description: "The story of 1970s minicross: how the 50cc class opened the door to official motocross competition for young riders in Finland and Sweden."
 date: 2026-05-01
