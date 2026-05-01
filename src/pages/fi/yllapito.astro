@@ -75,7 +75,7 @@ const lang = 'fi';
           </div>
         </div>
         <div class="mp-header__right">
-          <a href="/fi/tunnistamatta" class="admin-link">← Tunnista kuva</a>
+          
           <div id="adminActions" class="admin-actions" style="display:none;">
             <button id="adminLogout" class="admin-logout">Kirjaudu ulos</button>
           </div>
@@ -85,7 +85,11 @@ const lang = 'fi';
       <!-- Admin login panel (small, shown on demand) -->
       <div id="adminPanel" class="admin-panel">
         <div id="adminAuth" class="admin-auth">
-          <input type="password" id="adminPw" class="inp" placeholder="Salasana" />
+          <div class="pw-wrap">
+            <input type="password" id="adminPw" class="inp inp--pw" placeholder="Salasana" />
+            <button type="button" class="pw-eye" id="pwEye" aria-label="Näytä salasana" tabindex="-1">👁</button>
+            <div class="pw-caps" id="pwCaps" style="display:none;">⚠ Caps Lock päällä</div>
+          </div>
           <button id="adminPwBtn" class="btn">Kirjaudu</button>
           <span id="adminPwErr" class="err-msg" style="display:none;">Väärä salasana</span>
         </div>
@@ -99,7 +103,7 @@ const lang = 'fi';
       </div>
 
       <!-- Tarkista tab: filters + grid (community sees filters too) -->
-      <div id="tabTarkista" class="tab-content">
+      <div id="tabTarkista" class="tab-content" style="display:none;">
         <div class="filters" id="filterBar"></div>
         <div id="grid" class="photo-grid"><div class="grid-empty">Ladataan kuvia...</div></div>
       </div>
@@ -840,9 +844,30 @@ document.getElementById('thumbCard').addEventListener('click',()=>{
 document.getElementById('pvClose').addEventListener('click',()=>{document.getElementById('photoViewer').style.display='none';});
 document.querySelector('.pv-bg').addEventListener('click',()=>{document.getElementById('photoViewer').style.display='none';});
 
-// On yllapito page: auto-focus the password input on load
+// On yllapito page: auto-focus password + eye toggle + capslock detection
 const _pwInp = document.getElementById('adminPw');
-if (_pwInp) _pwInp.focus();
+if (_pwInp) {
+  _pwInp.focus();
+  // Eye icon toggle
+  const _pwEye = document.getElementById('pwEye');
+  if (_pwEye) {
+    _pwEye.addEventListener('click', () => {
+      const showing = _pwInp.type === 'text';
+      _pwInp.type = showing ? 'password' : 'text';
+      _pwEye.classList.toggle('pw-eye--on', !showing);
+      _pwInp.focus();
+    });
+  }
+  // CapsLock detection
+  const _pwCaps = document.getElementById('pwCaps');
+  const checkCaps = (e) => {
+    if (!_pwCaps) return;
+    const on = e.getModifierState && e.getModifierState('CapsLock');
+    _pwCaps.style.display = on ? 'block' : 'none';
+  };
+  _pwInp.addEventListener('keydown', checkCaps);
+  _pwInp.addEventListener('keyup', checkCaps);
+}
 
 // Admin login — on success: capture old lastVisit for this session's "new" badges,
 // then update lastVisit to NOW for the NEXT session.
@@ -856,6 +881,7 @@ document.getElementById('adminPwBtn').addEventListener('click',async()=>{
     // UI transitions
     document.getElementById('adminPanel').style.display='none';
     document.getElementById('adminActions').style.display='flex';
+    document.getElementById('tabTarkista').style.display='';
     document.getElementById('adminTabs').style.display='flex';
     document.getElementById('mpSubCommunity').style.display='none';
     document.getElementById('mpSubAdmin').style.display='block';
@@ -881,6 +907,9 @@ document.getElementById('adminLogout').addEventListener('click',()=>{
   document.getElementById('adminActions').style.display='none';
   document.getElementById('adminTabs').style.display='none';
   document.getElementById('adminPanel').style.display='block';
+  document.getElementById('tabTarkista').style.display='none';
+  document.getElementById('tabLaheta').style.display='none';
+  document.getElementById('tabHallitse').style.display='none';
   document.getElementById('mpSubAdmin').style.display='none';
   // Reset to Tarkista tab so re-login lands on the right place
   document.getElementById('tabTarkista').style.display='';
@@ -2108,4 +2137,13 @@ function openDeleteGalleryPanel() {
 
   .hallitse-search-row{display:flex;align-items:center;gap:12px;margin-top:12px;}
   .hallitse-search-count{font-size:.8rem;color:#888;font-weight:600;}
+
+  /* ===== PASSWORD INPUT ENHANCEMENTS ===== */
+  .pw-wrap{position:relative;flex:1;min-width:150px;max-width:260px}
+  .pw-wrap .inp--pw{padding-right:40px;width:100%}
+  .pw-eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1.1rem;opacity:.5;padding:4px 8px;border-radius:4px;transition:opacity .15s}
+  .pw-eye:hover{opacity:1}
+  .pw-eye--on{opacity:1;color:#ff9900}
+  .pw-caps{position:absolute;top:100%;left:0;margin-top:4px;font-size:.78rem;color:#a06400;background:#fff8e6;border:1px solid #ffd89a;padding:4px 8px;border-radius:6px;font-weight:600;white-space:nowrap;z-index:10}
+
 </style>
