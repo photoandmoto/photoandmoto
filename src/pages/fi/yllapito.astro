@@ -2,13 +2,13 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 const lang = 'fi';
 ---
-<BaseLayout title="Tunnista kuva" lang={lang} description="Auta tunnistamaan vanhoja moottoriurheilukuvia.">
+<BaseLayout title="Ylläpito" lang={lang} description="Photo & Moto hallintapaneeli.">
   <section class="mp">
     <div class="container">
       <div class="mp-header">
         <div class="mp-header__left">
-          <h1 class="mp-title">Tunnista kuva</h1>
-          <p class="mp-sub" id="mpSubCommunity">Auta meitä tunnistamaan vanhoja moottoriurheilukuvia.<br/>Kuka on kuvassa? Mistä vuodelta? Missä otettu?</p>
+          <h1 class="mp-title">Ylläpito</h1>
+          <p class="mp-sub" id="mpSubCommunity" style="display:none;"></p>
           <div class="mp-sub mp-sub--admin mp-sub--collapsed" id="mpSubAdmin" style="display:none;">
             <button type="button" class="ohje-toggle" id="ohjeToggle">
               <span class="ohje-toggle__label">Ohje</span>
@@ -75,7 +75,7 @@ const lang = 'fi';
           </div>
         </div>
         <div class="mp-header__right">
-          <a href="#" id="adminToggle" class="admin-link">Ylläpito →</a>
+          <a href="/fi/tunnistamatta" class="admin-link">← Tunnista kuva</a>
           <div id="adminActions" class="admin-actions" style="display:none;">
             <button id="adminLogout" class="admin-logout">Kirjaudu ulos</button>
           </div>
@@ -83,7 +83,7 @@ const lang = 'fi';
       </div>
 
       <!-- Admin login panel (small, shown on demand) -->
-      <div id="adminPanel" class="admin-panel" style="display:none;">
+      <div id="adminPanel" class="admin-panel">
         <div id="adminAuth" class="admin-auth">
           <input type="password" id="adminPw" class="inp" placeholder="Salasana" />
           <button id="adminPwBtn" class="btn">Kirjaudu</button>
@@ -102,6 +102,54 @@ const lang = 'fi';
       <div id="tabTarkista" class="tab-content">
         <div class="filters" id="filterBar"></div>
         <div id="grid" class="photo-grid"><div class="grid-empty">Ladataan kuvia...</div></div>
+      </div>
+
+      <!-- Lähetä tab: upload form (admin only) -->
+      <div id="tabLaheta" class="tab-content" style="display:none;">
+        <div class="upload-section">
+          <h3 class="upload-title">Lähetä kuva tunnistettavaksi</h3>
+          <p class="upload-hint">Täytä kentät joita tiedät. Tyhjät kentät avautuvat yhteisölle.</p>
+          <div class="upload-stack">
+            <div class="uf"><label>Kuva *</label><input type="file" id="photoFile" accept="image/jpeg,image/png,image/webp" class="inp" /></div>
+            <div class="uf"><label>Vuosiarvio</label><input type="text" id="fYear" class="inp" placeholder="Esim. 1977" /></div>
+            <div class="uf"><label>Henkilöt kuvassa</label><input type="text" id="fPeople" class="inp" placeholder="Keitä tunnistat?" /></div>
+            <div class="uf"><label>Paikka / tapahtuma</label><input type="text" id="fLocation" class="inp" placeholder="Missä otettu?" /></div>
+            <div class="uf"><label>Lisätietoja</label><input type="text" id="fNotes" class="inp" placeholder="Muuta tietoa?" /></div>
+          </div>
+          <div class="upload-copyright">
+            <strong>⚠ Ennen lähettämistä varmista</strong>, että sinulla on kuvan tekijänoikeudet tai oikeudenhaltijan lupa julkaista kuva.
+          </div>
+          <div class="upload-actions">
+            <button id="uploadBtn" class="btn btn--submit">Lataa kuva</button>
+            <div id="uploadMsg" class="upload-msg"></div>
+          </div>
+        </div>
+      </div>
+
+      
+      <!-- Hallitse galleriaa tab (admin only) -->
+      <div id="tabHallitse" class="tab-content" style="display:none;">
+        <div class="hallitse-section">
+          <h3 class="upload-title">Hallitse galleriaa</h3>
+          <div class="hallitse-top">
+            <div class="hallitse-select-row">
+              <select id="hallitseGallerySelect" class="inp inp--sel">
+                <option value="">— valitse galleria —</option>
+              </select>
+              <button id="hallitseLoadBtn" class="btn" disabled>Lataa kuvat</button>
+            </div>
+            <div id="hallitseGalleryActions" class="hallitse-gallery-actions" style="display:none;">
+              <button id="hallitseRenameGalleryBtn" class="btn btn--ghost">✏ Muuta nimeä</button>
+              <button id="hallitseDeleteGalleryBtn" class="btn btn--danger">🗑 Poista galleria</button>
+            </div>
+          </div>
+          <div id="hallitseMsg" class="upload-msg" style="margin-top:8px;"></div>
+          <div class="hallitse-search-row" id="hallitseSearchRow" style="display:none;">
+            <input type="text" id="hallitseSearch" class="inp" placeholder="Hae kuvaa..." style="max-width:320px;" />
+            <span id="hallitseSearchCount" class="hallitse-search-count"></span>
+          </div>
+          <div id="hallitseGrid" class="hallitse-grid"></div>
+        </div>
       </div>
 
       <!-- Modal overlay -->
@@ -804,8 +852,7 @@ document.getElementById('adminToggle').addEventListener('click',e=>{
 
 // Admin login — on success: capture old lastVisit for this session's "new" badges,
 // then update lastVisit to NOW for the NEXT session.
-// Admin login moved to /fi/yllapito
-if(false && document.getElementById('adminPwBtn')){document.getElementById('adminPwBtn').addEventListener('click',async()=>{
+document.getElementById('adminPwBtn').addEventListener('click',async()=>{
   const pw=document.getElementById('adminPw').value;
   if(await verifyPw(pw)){
     adminPw=pw;
@@ -1017,6 +1064,7 @@ async function loadHallitsePhotos() {
     msg.innerHTML = `<span class="u-ok">${data.photos.length} kuvaa — ${esc(data.title)}</span>`;
     document.getElementById('hallitseGalleryActions').style.display = 'flex';
     renderHallitseGrid(data.photos, slug);
+    initHallitseSearch();
   } catch(e) {
     msg.innerHTML = `<span class="u-err">Virhe: ${esc(e.message)}</span>`;
   }
@@ -1116,6 +1164,32 @@ function renderHallitseGrid(photos, slug) {
       if (e.key === 'Escape') panel.remove();
     });
   }));
+}
+
+
+// Gallery search filter
+function initHallitseSearch() {
+  const inp = document.getElementById('hallitseSearch');
+  const row = document.getElementById('hallitseSearchRow');
+  const count = document.getElementById('hallitseSearchCount');
+  if (!inp) return;
+  row.style.display = 'flex';
+  inp.value = '';
+  inp.addEventListener('input', () => {
+    const q = inp.value.trim().toLowerCase();
+    const cards = document.querySelectorAll('#hallitseGrid .hcard');
+    let visible = 0;
+    cards.forEach(card => {
+      const caption = (card.querySelector('.hcard-caption')?.textContent || '').toLowerCase();
+      const show = !q || caption.includes(q);
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    count.textContent = q ? `${visible} tulosta` : '';
+    // Also hide edit panel if open
+    const ep = document.getElementById('editCaptionPanel');
+    if (ep && q) ep.remove();
+  });
 }
 
 document.getElementById('hallitseGallerySelect') && document.getElementById('hallitseGallerySelect').addEventListener('change', () => {
@@ -2043,4 +2117,6 @@ function openDeleteGalleryPanel() {
   .edit-caption-panel__actions{display:flex;gap:8px;margin-top:10px}
   .edit-caption-panel__msg{margin-top:6px;font-size:.82rem;min-height:1.2em}
 
+  .hallitse-search-row{display:flex;align-items:center;gap:12px;margin-top:12px;}
+  .hallitse-search-count{font-size:.8rem;color:#888;font-weight:600;}
 </style>
