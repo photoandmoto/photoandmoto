@@ -339,10 +339,22 @@ async function actionMovePhoto(token, branch, sourceSlug, filename, targetSlug) 
   const sourceBase = `public/galleries/${sourceSlug}`;
   const targetBase = `public/galleries/${targetSlug}`;
 
-  // Fetch all 3 binary files (original + thumb + display) from source location.
-  // fetchFile returns { content (base64), sha }.
-  const [origFile, thumbFile, displayFile] = await Promise.all([
-    fetchFile(token, branch, `${sourceBase}/${filename}`),
+  // Fetch the binary files. The original may legitimately not exist for some
+  // historical galleries that were imported with thumbs+display only — in that
+  // case, skip moving the original and just move the thumb+display+manifest.
+  // Thumb and display ARE required (the site uses them to render the gallery).
+  let origFile = null;
+  try {
+    origFile = await fetchFile(token, branch, `${sourceBase}/${filename}`);
+  } catch (e) {
+    if (e.message && e.message.includes('404')) {
+      // Original missing — proceed with thumb+display only
+      console.log(`Note: original "${filename}" not found in ${sourceSlug}, moving thumb+display only`);
+    } else {
+      throw e;
+    }
+  }
+  const [thumbFile, displayFile] = await Promise.all([
     fetchFile(token, branch, `${sourceBase}/${entry.thumb}`),
     fetchFile(token, branch, `${sourceBase}/${entry.display}`),
   ]);
@@ -362,25 +374,29 @@ async function actionMovePhoto(token, branch, sourceSlug, filename, targetSlug) 
 
   // Build the atomic commit. ORDER MATTERS: GitHub Trees API processes in order,
   // but adds and deletes for different paths don't conflict.
-  const changes = [
-    // Add to target
-    { path: `${targetBase}/${filename}`,        base64Content: origFile.content },
-    { path: `${targetBase}/${entry.thumb}`,     base64Content: thumbFile.content },
-    { path: `${targetBase}/${entry.display}`,   base64Content: displayFile.content },
-    // Delete from source
-    { path: `${sourceBase}/${filename}`,        base64Content: null },
-    { path: `${sourceBase}/${entry.thumb}`,     base64Content: null },
-    { path: `${sourceBase}/${entry.display}`,   base64Content: null },
-    // Update both manifests
-    {
-      path: `src/content/galleries/${sourceSlug}.json`,
-      base64Content: utf8ToBase64(JSON.stringify(sourceManifest, null, 2) + '\n'),
-    },
-    {
-      path: `src/content/galleries/${targetSlug}.json`,
-      base64Content: utf8ToBase64(JSON.stringify(targetManifest, null, 2) + '\n'),
-    },
-  ];
+  const changes = [];
+
+  // Original — only move/delete if it exists
+  if (origFile) {
+    changes.push({ path: `${targetBase}/${filename}`, base64Content: origFile.content });
+    changes.push({ path: `${sourceBase}/${filename}`, base64Content: null });
+  }
+
+  // Thumb + display — always present, always moved
+  changes.push({ path: `${targetBase}/${entry.thumb}`,   base64Content: thumbFile.content });
+  changes.push({ path: `${targetBase}/${entry.display}`, base64Content: displayFile.content });
+  changes.push({ path: `${sourceBase}/${entry.thumb}`,   base64Content: null });
+  changes.push({ path: `${sourceBase}/${entry.display}`, base64Content: null });
+
+  // Update both manifests
+  changes.push({
+    path: `src/content/galleries/${sourceSlug}.json`,
+    base64Content: utf8ToBase64(JSON.stringify(sourceManifest, null, 2) + '\n'),
+  });
+  changes.push({
+    path: `src/content/galleries/${targetSlug}.json`,
+    base64Content: utf8ToBase64(JSON.stringify(targetManifest, null, 2) + '\n'),
+  });
 
   // Commit message starts with "chore(gallery): move " — the workflow loop guard
   // skips this prefix, so the GitHub Action won't try to re-process the moved file.
