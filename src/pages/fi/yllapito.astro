@@ -1156,8 +1156,9 @@ function renderHallitseGrid(photos, slug) {
       </div>
       <div class="hcard-caption" title="${escAttr(p.caption)}">${esc(p.caption)}</div>
       <div class="hcard-actions">
-        <button class="btn btn--ghost hcard-edit" data-filename="${escAttr(p.filename)}" data-caption="${escAttr(p.caption)}">✏</button>
-        <button class="btn btn--danger hcard-del" data-filename="${escAttr(p.filename)}">🗑</button>
+        <button class="btn btn--ghost hcard-edit" data-filename="${escAttr(p.filename)}" data-caption="${escAttr(p.caption)}" title="Muokkaa kuvatekstiä">✏</button>
+        <button class="btn btn--ghost hcard-move" data-filename="${escAttr(p.filename)}" title="Siirrä toiseen galleriaan">→</button>
+        <button class="btn btn--danger hcard-del" data-filename="${escAttr(p.filename)}" title="Poista kuva">🗑</button>
       </div>
     </div>`).join('');
 
@@ -1235,6 +1236,82 @@ function renderHallitseGrid(photos, slug) {
     inp.addEventListener('keydown', e => {
       if (e.key === 'Enter') panel.querySelector('.edit-caption-save').click();
       if (e.key === 'Escape') panel.remove();
+    });
+  }));
+
+  // Move handler — opens inline panel under the card with gallery dropdown
+  grid.querySelectorAll('.hcard-move').forEach(btn => btn.addEventListener('click', async () => {
+    const filename = btn.dataset.filename;
+    // Close any open panels first (edit or move) — same toggle pattern as edit
+    const existingEdit = document.getElementById('editCaptionPanel');
+    if (existingEdit) existingEdit.remove();
+    const existingMove = document.getElementById('movePhotoPanel');
+    if (existingMove) {
+      if (existingMove.dataset.filename === filename) { existingMove.remove(); return; }
+      existingMove.remove();
+    }
+    const card = btn.closest('.hcard');
+    const panel = document.createElement('div');
+    panel.id = 'movePhotoPanel';
+    panel.className = 'edit-caption-panel';
+    panel.dataset.filename = filename;
+    panel.innerHTML = `
+      <label class="edit-caption-panel__label">Siirrä galleriaan</label>
+      <select id="movePhotoSelect" class="inp"><option value="">— ladataan gallerioita —</option></select>
+      <div class="edit-caption-panel__actions">
+        <button class="btn btn--ghost move-photo-cancel">Peruuta</button>
+        <button class="btn move-photo-confirm" disabled>Siirrä</button>
+      </div>
+      <div id="movePhotoMsg" class="edit-caption-panel__msg"></div>
+    `;
+    card.after(panel);
+
+    // Populate dropdown — exclude the source gallery
+    const select = document.getElementById('movePhotoSelect');
+    const confirmBtn = panel.querySelector('.move-photo-confirm');
+    try {
+      const galleries = await loadGalleries();
+      const others = galleries.filter(g => g.slug !== hallitseCurrentSlug);
+      if (others.length === 0) {
+        select.innerHTML = '<option value="">Ei muita gallerioita</option>';
+      } else {
+        select.innerHTML = '<option value="">— valitse galleria —</option>' +
+          others.map(g => `<option value="${escAttr(g.slug)}">${esc(g.title)}</option>`).join('');
+      }
+    } catch(e) {
+      select.innerHTML = '<option value="">Virhe ladattaessa</option>';
+    }
+    select.addEventListener('change', () => { confirmBtn.disabled = !select.value; });
+
+    panel.querySelector('.move-photo-cancel').addEventListener('click', () => panel.remove());
+    confirmBtn.addEventListener('click', async () => {
+      const targetSlug = select.value;
+      if (!targetSlug) return;
+      const msg = document.getElementById('movePhotoMsg');
+      msg.innerHTML = '<span class="u-load">Siirretään... (voi kestää 10–30 s)</span>';
+      confirmBtn.disabled = true;
+      panel.querySelector('.move-photo-cancel').disabled = true;
+      try {
+        const r = await fetch('/api/mystery/gallery-manage', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({password: adminPw, action: 'move_photo', gallery_slug: hallitseCurrentSlug, filename, target_slug: targetSlug}),
+        });
+        const data = await r.json();
+        if (data.success) {
+          panel.remove();
+          document.getElementById('hallitseMsg').innerHTML = `<span class="u-ok">✓ Siirretty galleriaan ${esc(targetSlug)}</span>`;
+          await loadHallitsePhotos();
+        } else {
+          msg.innerHTML = `<span class="u-err">Virhe: ${esc(data.error || 'Tuntematon virhe')}</span>`;
+          confirmBtn.disabled = false;
+          panel.querySelector('.move-photo-cancel').disabled = false;
+        }
+      } catch(e) {
+        msg.innerHTML = `<span class="u-err">Verkkovirhe: ${esc(e.message)}</span>`;
+        confirmBtn.disabled = false;
+        panel.querySelector('.move-photo-cancel').disabled = false;
+      }
     });
   }));
 }
