@@ -5,6 +5,26 @@
   "cover_image": "thumbs/A. Panttila Ruskeasanta SM 500cc 1992_thumb.jpg",
   "images": [
     {
+      "filename": "Arto Vilkman Hyvinkää Erkylän lukot 1979.jpg",
+      "thumb": "thumbs/Arto Vilkman Hyvinkää Erkylän lukot 1979_thumb.jpg",
+      "display": "display/Arto Vilkman Hyvinkää Erkylän lukot 1979_display.jpg",
+      "caption": "Arto Vilkman Hyvinkää Erkylän lukot 1979",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 993
+    },
+    {
+      "filename": "Pekka Vehkonen SM 250cc Mäntyharju 1989.jpg",
+      "thumb": "thumbs/Pekka Vehkonen SM 250cc Mäntyharju 1989_thumb.jpg",
+      "display": "display/Pekka Vehkonen SM 250cc Mäntyharju 1989_display.jpg",
+      "caption": "Pekka Vehkonen SM 250cc Mäntyharju 1989",
+      "photographer": "",
+      "date": "",
+      "width": 1195,
+      "height": 722
+    },
+    {
       "filename": "Hyvinkään motocross- ja speedway-radat 90-luvulla ilmasta katsottuna.jpg",
       "thumb": "thumbs/Hyvinkään motocross- ja speedway-radat 90-luvulla ilmasta katsottuna_thumb.jpg",
       "display": "display/Hyvinkään motocross- ja speedway-radat 90-luvulla ilmasta katsottuna_display.jpg",
@@ -695,6 +715,16 @@
       "height": 959
     },
     {
+      "filename": "Jerry Wathen keulilla Järvenpään SM jäärata 250cc 1994.jpg",
+      "thumb": "thumbs/Jerry Wathen keulilla Järvenpään SM jäärata 250cc 1994_thumb.jpg",
+      "display": "display/Jerry Wathen keulilla Järvenpään SM jäärata 250cc 1994_display.jpg",
+      "caption": "Jerry Wathen keulilla Järvenpään SM jäärata 250cc 1994",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 998
+    },
+    {
       "filename": "Jukka Pirinen vielä junnukilvissä 1994.jpg",
       "thumb": "thumbs/Jukka Pirinen vielä junnukilvissä 1994_thumb.jpg",
       "display": "display/Jukka Pirinen vielä junnukilvissä 1994_display.jpg",
@@ -703,6 +733,36 @@
       "date": "",
       "width": 1400,
       "height": 923
+    },
+    {
+      "filename": "Jussi-Pekka Vehviläinen (50) ja Mika Saarenkoski (86) Mäntyharjun supercross 1994.jpg",
+      "thumb": "thumbs/Jussi-Pekka Vehviläinen (50) ja Mika Saarenkoski (86) Mäntyharjun supercross 1994_thumb.jpg",
+      "display": "display/Jussi-Pekka Vehviläinen (50) ja Mika Saarenkoski (86) Mäntyharjun supercross 1994_display.jpg",
+      "caption": "Jussi-Pekka Vehviläinen (50) ja Mika Saarenkoski (86) Mäntyharjun supercross 1994",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 910
+    },
+    {
+      "filename": "Kuka kuvassa vuosi 1994.jpg",
+      "thumb": "thumbs/Kuka kuvassa vuosi 1994_thumb.jpg",
+      "display": "display/Kuka kuvassa vuosi 1994_display.jpg",
+      "caption": "Kuka kuvassa vuosi 1994",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 952
+    },
+    {
+      "filename": "Kuka mahtanee olla 1994.jpg",
+      "thumb": "thumbs/Kuka mahtanee olla 1994_thumb.jpg",
+      "display": "display/Kuka mahtanee olla 1994_display.jpg",
+      "caption": "Kuka mahtanee olla 1994",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 1898
     },
     {
       "filename": "Lari Lehtiö vielä junnuluokassa 1994.jpg",
@@ -725,6 +785,16 @@
       "height": 1756
     },
     {
+      "filename": "Samuli Aro (6) Lumicrossia 1994.jpg",
+      "thumb": "thumbs/Samuli Aro (6) Lumicrossia 1994_thumb.jpg",
+      "display": "display/Samuli Aro (6) Lumicrossia 1994_display.jpg",
+      "caption": "Samuli Aro (6) Lumicrossia 1994",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 870
+    },
+    {
       "filename": "SM 250 1994 Kurt Ljungqvist.jpg",
       "thumb": "thumbs/SM 250 1994 Kurt Ljungqvist_thumb.jpg",
       "display": "display/SM 250 1994 Kurt Ljungqvist_display.jpg",
@@ -733,6 +803,36 @@
       "date": "",
       "width": 1400,
       "height": 953
+    },
+    {
+      "filename": "V-P Seppälä taistelee Supercross 1994.jpg",
+      "thumb": "thumbs/V-P Seppälä taistelee Supercross 1994_thumb.jpg",
+      "display": "display/V-P Seppälä taistelee Supercross 1994_display.jpg",
+      "caption": "V-P Seppälä taistelee Supercross 1994",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 862
+    },
+    {
+      "filename": "Veli-Petteri Seppälä Supercross 1994.jpg",
+      "thumb": "thumbs/Veli-Petteri Seppälä Supercross 1994_thumb.jpg",
+      "display": "display/Veli-Petteri Seppälä Supercross 1994_display.jpg",
+      "caption": "Veli-Petteri Seppälä Supercross 1994",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 881
+    },
+    {
+      "filename": "Äksöniä. Supercross 1994.jpg",
+      "thumb": "thumbs/Äksöniä. Supercross 1994_thumb.jpg",
+      "display": "display/Äksöniä. Supercross 1994_display.jpg",
+      "caption": "Äksöniä. Supercross 1994",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 935
     },
     {
       "filename": "Antti Pyrhönen ja look mallia 1995.JPG",
@@ -825,6 +925,26 @@
       "height": 920
     },
     {
+      "filename": "Jussi-Pekka Vehviläinen Mäntyharjun supercross 1995.jpg",
+      "thumb": "thumbs/Jussi-Pekka Vehviläinen Mäntyharjun supercross 1995_thumb.jpg",
+      "display": "display/Jussi-Pekka Vehviläinen Mäntyharjun supercross 1995_display.jpg",
+      "caption": "Jussi-Pekka Vehviläinen Mäntyharjun supercross 1995",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 2161
+    },
+    {
+      "filename": "Jussi-Pekka Vehviläinen Supercross Mäntyharju 1995.jpg",
+      "thumb": "thumbs/Jussi-Pekka Vehviläinen Supercross Mäntyharju 1995_thumb.jpg",
+      "display": "display/Jussi-Pekka Vehviläinen Supercross Mäntyharju 1995_display.jpg",
+      "caption": "Jussi-Pekka Vehviläinen Supercross Mäntyharju 1995",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 1804
+    },
+    {
       "filename": "Kouvola SM 250 1995 podium Aaltonen, Kovalainen, Nykänen.jpg",
       "thumb": "thumbs/Kouvola SM 250 1995 podium Aaltonen, Kovalainen, Nykänen_thumb.jpg",
       "display": "display/Kouvola SM 250 1995 podium Aaltonen, Kovalainen, Nykänen_display.jpg",
@@ -853,6 +973,26 @@
       "date": "",
       "width": 1400,
       "height": 936
+    },
+    {
+      "filename": "Kurt Ljungqvist (8) Mäntyharjun supercross 1995.jpg",
+      "thumb": "thumbs/Kurt Ljungqvist (8) Mäntyharjun supercross 1995_thumb.jpg",
+      "display": "display/Kurt Ljungqvist (8) Mäntyharjun supercross 1995_display.jpg",
+      "caption": "Kurt Ljungqvist (8) Mäntyharjun supercross 1995",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 950
+    },
+    {
+      "filename": "Mika Saarenkoski SM 250 Kouvola 1995.jpg",
+      "thumb": "thumbs/Mika Saarenkoski SM 250 Kouvola 1995_thumb.jpg",
+      "display": "display/Mika Saarenkoski SM 250 Kouvola 1995_display.jpg",
+      "caption": "Mika Saarenkoski SM 250 Kouvola 1995",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 2006
     },
     {
       "filename": "Mikkeli SM 125cc 1995 I-erän startti.jpg",
@@ -893,6 +1033,66 @@
       "date": "",
       "width": 1400,
       "height": 873
+    },
+    {
+      "filename": "Mikko Nykänen SM 125cc Karkkila 1995.jpg",
+      "thumb": "thumbs/Mikko Nykänen SM 125cc Karkkila 1995_thumb.jpg",
+      "display": "display/Mikko Nykänen SM 125cc Karkkila 1995_display.jpg",
+      "caption": "Mikko Nykänen SM 125cc Karkkila 1995",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 944
+    },
+    {
+      "filename": "Miska Aaltonen SM 250cc Hyvinkää 1995.jpg",
+      "thumb": "thumbs/Miska Aaltonen SM 250cc Hyvinkää 1995_thumb.jpg",
+      "display": "display/Miska Aaltonen SM 250cc Hyvinkää 1995_display.jpg",
+      "caption": "Miska Aaltonen SM 250cc Hyvinkää 1995",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 879
+    },
+    {
+      "filename": "Miska Aaltonen SM 250cc Riihimäki 1995.jpg",
+      "thumb": "thumbs/Miska Aaltonen SM 250cc Riihimäki 1995_thumb.jpg",
+      "display": "display/Miska Aaltonen SM 250cc Riihimäki 1995_display.jpg",
+      "caption": "Miska Aaltonen SM 250cc Riihimäki 1995",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 948
+    },
+    {
+      "filename": "Neljän tunnin motocross Hyvinkää 1995.jpg",
+      "thumb": "thumbs/Neljän tunnin motocross Hyvinkää 1995_thumb.jpg",
+      "display": "display/Neljän tunnin motocross Hyvinkää 1995_display.jpg",
+      "caption": "Neljän tunnin motocross Hyvinkää 1995",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 679
+    },
+    {
+      "filename": "Petteri Gustafsson SM 125 Karkkila 1995.jpg",
+      "thumb": "thumbs/Petteri Gustafsson SM 125 Karkkila 1995_thumb.jpg",
+      "display": "display/Petteri Gustafsson SM 125 Karkkila 1995_display.jpg",
+      "caption": "Petteri Gustafsson SM 125 Karkkila 1995",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 2265
+    },
+    {
+      "filename": "Petteri Gustafsson SM 125cc Karkkila 1995.jpg",
+      "thumb": "thumbs/Petteri Gustafsson SM 125cc Karkkila 1995_thumb.jpg",
+      "display": "display/Petteri Gustafsson SM 125cc Karkkila 1995_display.jpg",
+      "caption": "Petteri Gustafsson SM 125cc Karkkila 1995",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 918
     },
     {
       "filename": "Sipoo 1995 junnu SM 125 Mika Ahola.jpg",
@@ -1035,6 +1235,26 @@
       "height": 863
     },
     {
+      "filename": "Toni Gröning (18) ja Niko Kalatie (21) SM 125 Karkkila 1995.jpg",
+      "thumb": "thumbs/Toni Gröning (18) ja Niko Kalatie (21) SM 125 Karkkila 1995_thumb.jpg",
+      "display": "display/Toni Gröning (18) ja Niko Kalatie (21) SM 125 Karkkila 1995_display.jpg",
+      "caption": "Toni Gröning (18) ja Niko Kalatie (21) SM 125 Karkkila 1995",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 794
+    },
+    {
+      "filename": "Toni Gröning SM 125cc Karkkila 1995.jpg",
+      "thumb": "thumbs/Toni Gröning SM 125cc Karkkila 1995_thumb.jpg",
+      "display": "display/Toni Gröning SM 125cc Karkkila 1995_display.jpg",
+      "caption": "Toni Gröning SM 125cc Karkkila 1995",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 906
+    },
+    {
       "filename": "Veli-Petteri Seppälä Mikkeli SM 125cc 1995.jpg",
       "thumb": "thumbs/Veli-Petteri Seppälä Mikkeli SM 125cc 1995_thumb.jpg",
       "display": "display/Veli-Petteri Seppälä Mikkeli SM 125cc 1995_display.jpg",
@@ -1043,6 +1263,16 @@
       "date": "",
       "width": 1400,
       "height": 907
+    },
+    {
+      "filename": "Voitto tuli jälleen. Miska Aaltonen kiittää mekanikkoaan Peukkua SM 250cc Hyvinkää 1995.jpg",
+      "thumb": "thumbs/Voitto tuli jälleen. Miska Aaltonen kiittää mekanikkoaan Peukkua SM 250cc Hyvinkää 1995_thumb.jpg",
+      "display": "display/Voitto tuli jälleen. Miska Aaltonen kiittää mekanikkoaan Peukkua SM 250cc Hyvinkää 1995_display.jpg",
+      "caption": "Voitto tuli jälleen. Miska Aaltonen kiittää mekanikkoaan Peukkua SM 250cc Hyvinkää 1995",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 940
     },
     {
       "filename": "Toiset saa 40v lahjaksi konjakkipullon. S. Taimi sai 2001 kavereilta vanhan piikin hussen..jpg",
@@ -1113,206 +1343,6 @@
       "date": "",
       "width": 1075,
       "height": 1760
-    },
-    {
-      "filename": "Jussi-Pekka Vehviläinen (50) ja Mika Saarenkoski (86) Mäntyharjun supercross 1994.jpg",
-      "thumb": "thumbs/Jussi-Pekka Vehviläinen (50) ja Mika Saarenkoski (86) Mäntyharjun supercross 1994_thumb.jpg",
-      "display": "display/Jussi-Pekka Vehviläinen (50) ja Mika Saarenkoski (86) Mäntyharjun supercross 1994_display.jpg",
-      "caption": "Jussi-Pekka Vehviläinen (50) ja Mika Saarenkoski (86) Mäntyharjun supercross 1994",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 910
-    },
-    {
-      "filename": "Kuka kuvassa vuosi 1994.jpg",
-      "thumb": "thumbs/Kuka kuvassa vuosi 1994_thumb.jpg",
-      "display": "display/Kuka kuvassa vuosi 1994_display.jpg",
-      "caption": "Kuka kuvassa vuosi 1994",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 952
-    },
-    {
-      "filename": "Kuka mahtanee olla 1994.jpg",
-      "thumb": "thumbs/Kuka mahtanee olla 1994_thumb.jpg",
-      "display": "display/Kuka mahtanee olla 1994_display.jpg",
-      "caption": "Kuka mahtanee olla 1994",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 1898
-    },
-    {
-      "filename": "Samuli Aro (6) Lumicrossia 1994.jpg",
-      "thumb": "thumbs/Samuli Aro (6) Lumicrossia 1994_thumb.jpg",
-      "display": "display/Samuli Aro (6) Lumicrossia 1994_display.jpg",
-      "caption": "Samuli Aro (6) Lumicrossia 1994",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 870
-    },
-    {
-      "filename": "V-P Seppälä taistelee Supercross 1994.jpg",
-      "thumb": "thumbs/V-P Seppälä taistelee Supercross 1994_thumb.jpg",
-      "display": "display/V-P Seppälä taistelee Supercross 1994_display.jpg",
-      "caption": "V-P Seppälä taistelee Supercross 1994",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 862
-    },
-    {
-      "filename": "Veli-Petteri Seppälä Supercross 1994.jpg",
-      "thumb": "thumbs/Veli-Petteri Seppälä Supercross 1994_thumb.jpg",
-      "display": "display/Veli-Petteri Seppälä Supercross 1994_display.jpg",
-      "caption": "Veli-Petteri Seppälä Supercross 1994",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 881
-    },
-    {
-      "filename": "Äksöniä. Supercross 1994.jpg",
-      "thumb": "thumbs/Äksöniä. Supercross 1994_thumb.jpg",
-      "display": "display/Äksöniä. Supercross 1994_display.jpg",
-      "caption": "Äksöniä. Supercross 1994",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 935
-    },
-    {
-      "filename": "Jussi-Pekka Vehviläinen Mäntyharjun supercross 1995.jpg",
-      "thumb": "thumbs/Jussi-Pekka Vehviläinen Mäntyharjun supercross 1995_thumb.jpg",
-      "display": "display/Jussi-Pekka Vehviläinen Mäntyharjun supercross 1995_display.jpg",
-      "caption": "Jussi-Pekka Vehviläinen Mäntyharjun supercross 1995",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 2161
-    },
-    {
-      "filename": "Jussi-Pekka Vehviläinen Supercross Mäntyharju 1995.jpg",
-      "thumb": "thumbs/Jussi-Pekka Vehviläinen Supercross Mäntyharju 1995_thumb.jpg",
-      "display": "display/Jussi-Pekka Vehviläinen Supercross Mäntyharju 1995_display.jpg",
-      "caption": "Jussi-Pekka Vehviläinen Supercross Mäntyharju 1995",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 1804
-    },
-    {
-      "filename": "Kurt Ljungqvist (8) Mäntyharjun supercross 1995.jpg",
-      "thumb": "thumbs/Kurt Ljungqvist (8) Mäntyharjun supercross 1995_thumb.jpg",
-      "display": "display/Kurt Ljungqvist (8) Mäntyharjun supercross 1995_display.jpg",
-      "caption": "Kurt Ljungqvist (8) Mäntyharjun supercross 1995",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 950
-    },
-    {
-      "filename": "Mika Saarenkoski SM 250 Kouvola 1995.jpg",
-      "thumb": "thumbs/Mika Saarenkoski SM 250 Kouvola 1995_thumb.jpg",
-      "display": "display/Mika Saarenkoski SM 250 Kouvola 1995_display.jpg",
-      "caption": "Mika Saarenkoski SM 250 Kouvola 1995",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 2006
-    },
-    {
-      "filename": "Mikko Nykänen SM 125cc Karkkila 1995.jpg",
-      "thumb": "thumbs/Mikko Nykänen SM 125cc Karkkila 1995_thumb.jpg",
-      "display": "display/Mikko Nykänen SM 125cc Karkkila 1995_display.jpg",
-      "caption": "Mikko Nykänen SM 125cc Karkkila 1995",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 944
-    },
-    {
-      "filename": "Miska Aaltonen SM 250cc Hyvinkää 1995.jpg",
-      "thumb": "thumbs/Miska Aaltonen SM 250cc Hyvinkää 1995_thumb.jpg",
-      "display": "display/Miska Aaltonen SM 250cc Hyvinkää 1995_display.jpg",
-      "caption": "Miska Aaltonen SM 250cc Hyvinkää 1995",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 879
-    },
-    {
-      "filename": "Miska Aaltonen SM 250cc Riihimäki 1995.jpg",
-      "thumb": "thumbs/Miska Aaltonen SM 250cc Riihimäki 1995_thumb.jpg",
-      "display": "display/Miska Aaltonen SM 250cc Riihimäki 1995_display.jpg",
-      "caption": "Miska Aaltonen SM 250cc Riihimäki 1995",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 948
-    },
-    {
-      "filename": "Neljän tunnin motocross Hyvinkää 1995.jpg",
-      "thumb": "thumbs/Neljän tunnin motocross Hyvinkää 1995_thumb.jpg",
-      "display": "display/Neljän tunnin motocross Hyvinkää 1995_display.jpg",
-      "caption": "Neljän tunnin motocross Hyvinkää 1995",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 679
-    },
-    {
-      "filename": "Petteri Gustafsson SM 125 Karkkila 1995.jpg",
-      "thumb": "thumbs/Petteri Gustafsson SM 125 Karkkila 1995_thumb.jpg",
-      "display": "display/Petteri Gustafsson SM 125 Karkkila 1995_display.jpg",
-      "caption": "Petteri Gustafsson SM 125 Karkkila 1995",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 2265
-    },
-    {
-      "filename": "Petteri Gustafsson SM 125cc Karkkila 1995.jpg",
-      "thumb": "thumbs/Petteri Gustafsson SM 125cc Karkkila 1995_thumb.jpg",
-      "display": "display/Petteri Gustafsson SM 125cc Karkkila 1995_display.jpg",
-      "caption": "Petteri Gustafsson SM 125cc Karkkila 1995",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 918
-    },
-    {
-      "filename": "Toni Gröning (18) ja Niko Kalatie (21) SM 125 Karkkila 1995.jpg",
-      "thumb": "thumbs/Toni Gröning (18) ja Niko Kalatie (21) SM 125 Karkkila 1995_thumb.jpg",
-      "display": "display/Toni Gröning (18) ja Niko Kalatie (21) SM 125 Karkkila 1995_display.jpg",
-      "caption": "Toni Gröning (18) ja Niko Kalatie (21) SM 125 Karkkila 1995",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 794
-    },
-    {
-      "filename": "Toni Gröning SM 125cc Karkkila 1995.jpg",
-      "thumb": "thumbs/Toni Gröning SM 125cc Karkkila 1995_thumb.jpg",
-      "display": "display/Toni Gröning SM 125cc Karkkila 1995_display.jpg",
-      "caption": "Toni Gröning SM 125cc Karkkila 1995",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 906
-    },
-    {
-      "filename": "Voitto tuli jälleen. Miska Aaltonen kiittää mekanikkoaan Peukkua SM 250cc Hyvinkää 1995.jpg",
-      "thumb": "thumbs/Voitto tuli jälleen. Miska Aaltonen kiittää mekanikkoaan Peukkua SM 250cc Hyvinkää 1995_thumb.jpg",
-      "display": "display/Voitto tuli jälleen. Miska Aaltonen kiittää mekanikkoaan Peukkua SM 250cc Hyvinkää 1995_display.jpg",
-      "caption": "Voitto tuli jälleen. Miska Aaltonen kiittää mekanikkoaan Peukkua SM 250cc Hyvinkää 1995",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 940
     }
   ],
   "category": "finland"
