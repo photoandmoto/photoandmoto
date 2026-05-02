@@ -11,8 +11,8 @@
     "generate-gallery": "node scripts/generate-gallery-manifest.mjs"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.2.1",
-    "astro": "^4.5.0",
+    "@astrojs/sitemap": "^3.7.2",
+    "astro": "^6.2.1",
     "photoswipe": "^5.4.3",
     "sharp": "^0.33.2"
   },
