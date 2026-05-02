@@ -796,6 +796,16 @@
       "height": 937
     },
     {
+      "filename": "Arto Vili Vilkman Erkylän Lukot, Hyvinkää 1979.jpg",
+      "thumb": "thumbs/Arto Vili Vilkman Erkylän Lukot, Hyvinkää 1979_thumb.jpg",
+      "display": "display/Arto Vili Vilkman Erkylän Lukot, Hyvinkää 1979_display.jpg",
+      "caption": "Arto Vili Vilkman Erkylän Lukot, Hyvinkää 1979",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 945
+    },
+    {
       "filename": "Malherben tehdas Honda vm 1979.JPG",
       "thumb": "thumbs/Malherben tehdas Honda vm 1979_thumb.jpg",
       "display": "display/Malherben tehdas Honda vm 1979_display.jpg",
@@ -1236,26 +1246,6 @@
       "height": 859
     },
     {
-      "filename": "G.Rond.JPG",
-      "thumb": "thumbs/G.Rond_thumb.jpg",
-      "display": "display/G.Rond_display.jpg",
-      "caption": "Gerard Rond",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 861
-    },
-    {
-      "filename": "G.Wolsink.JPG",
-      "thumb": "thumbs/G.Wolsink_thumb.jpg",
-      "display": "display/G.Wolsink_display.jpg",
-      "caption": "Gerrit Wolsink",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 895
-    },
-    {
       "filename": "Georges Jobe testaa hevosvoimia. Hyvinkään MM-cross..jpg",
       "thumb": "thumbs/Georges Jobe testaa hevosvoimia. Hyvinkään MM-cross._thumb.jpg",
       "display": "display/Georges Jobe testaa hevosvoimia. Hyvinkään MM-cross._display.jpg",
@@ -1264,6 +1254,16 @@
       "date": "",
       "width": 1107,
       "height": 1242
+    },
+    {
+      "filename": "G.Rond.JPG",
+      "thumb": "thumbs/G.Rond_thumb.jpg",
+      "display": "display/G.Rond_display.jpg",
+      "caption": "Gerard Rond",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 861
     },
     {
       "filename": "Gerard Rond.JPG",
@@ -1276,6 +1276,16 @@
       "height": 914
     },
     {
+      "filename": "G.Wolsink.JPG",
+      "thumb": "thumbs/G.Wolsink_thumb.jpg",
+      "display": "display/G.Wolsink_display.jpg",
+      "caption": "Gerrit Wolsink",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 895
+    },
+    {
       "filename": "Gerrit Wolsink.JPG",
       "thumb": "thumbs/Gerrit Wolsink_thumb.jpg",
       "display": "display/Gerrit Wolsink_display.jpg",
@@ -1284,6 +1294,26 @@
       "date": "",
       "width": 1400,
       "height": 932
+    },
+    {
+      "filename": "Wolsink.JPG",
+      "thumb": "thumbs/Wolsink_thumb.jpg",
+      "display": "display/Wolsink_display.jpg",
+      "caption": "Gerrit Wolsink - Lentävä hammaslääkäri",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 902
+    },
+    {
+      "filename": "Lippumies seuraa tarkkana Graham Noycen menoa.JPG",
+      "thumb": "thumbs/Lippumies seuraa tarkkana Graham Noycen menoa_thumb.jpg",
+      "display": "display/Lippumies seuraa tarkkana Graham Noycen menoa_display.jpg",
+      "caption": "Graham Noycen - Lippumies seuraa tarkkana menoa",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 862
     },
     {
       "filename": "Göte Liljegren_Hyvinkää.jpg",
@@ -1324,6 +1354,16 @@
       "date": "",
       "width": 1400,
       "height": 1807
+    },
+    {
+      "filename": "multi maailmanmestari Harry Everts.JPG",
+      "thumb": "thumbs/multi maailmanmestari Harry Everts_thumb.jpg",
+      "display": "display/multi maailmanmestari Harry Everts_display.jpg",
+      "caption": "Harry Everts - multi maailmanmestari",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 906
     },
     {
       "filename": "Harry Everts B.JPG",
@@ -1406,16 +1446,6 @@
       "height": 898
     },
     {
-      "filename": "Lippumies seuraa tarkkana Graham Noycen menoa.JPG",
-      "thumb": "thumbs/Lippumies seuraa tarkkana Graham Noycen menoa_thumb.jpg",
-      "display": "display/Lippumies seuraa tarkkana Graham Noycen menoa_display.jpg",
-      "caption": "Graham Noycen - Lippumies seuraa tarkkana menoa",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 862
-    },
-    {
       "filename": "Maico saa kyytiä saksalaiskuskilta.JPG",
       "thumb": "thumbs/Maico saa kyytiä saksalaiskuskilta_thumb.jpg",
       "display": "display/Maico saa kyytiä saksalaiskuskilta_display.jpg",
@@ -1464,16 +1494,6 @@
       "date": "",
       "width": 1400,
       "height": 868
-    },
-    {
-      "filename": "multi maailmanmestari Harry Everts.JPG",
-      "thumb": "thumbs/multi maailmanmestari Harry Everts_thumb.jpg",
-      "display": "display/multi maailmanmestari Harry Everts_display.jpg",
-      "caption": "Harry Everts - multi maailmanmestari",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 906
     },
     {
       "filename": "N. Hudson.JPG",
@@ -1594,16 +1614,6 @@
       "date": "",
       "width": 1400,
       "height": 932
-    },
-    {
-      "filename": "Wolsink.JPG",
-      "thumb": "thumbs/Wolsink_thumb.jpg",
-      "display": "display/Wolsink_display.jpg",
-      "caption": "Gerrit Wolsink - Lentävä hammaslääkäri",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 902
     }
   ]
 }
