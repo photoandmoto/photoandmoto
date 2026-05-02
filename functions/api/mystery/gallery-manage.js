@@ -10,6 +10,7 @@
 //   update_caption       — update a photo's caption in the manifest
 //   delete_gallery       — delete the gallery manifest (unpublishes the gallery)
 //   rename_gallery       — update the gallery title field in the manifest
+//   move_photo           — atomically move a photo (original + thumb + display + manifests) to another gallery
 
 // ---------------------------------------------------------------------------
 // Helpers — JSON responses
@@ -316,6 +317,84 @@ async function actionRenameGallery(token, branch, slug, newTitle) {
   return jsonResponse({ success: true, slug, title: manifest.title });
 }
 
+async function actionMovePhoto(token, branch, sourceSlug, filename, targetSlug) {
+  if (sourceSlug === targetSlug) {
+    return badRequest('Source and target galleries are the same');
+  }
+
+  // Fetch both manifests up-front to validate before any commits.
+  const sourceManifest = await fetchManifest(token, branch, sourceSlug);
+  const targetManifest = await fetchManifest(token, branch, targetSlug);
+
+  const idx = sourceManifest.images.findIndex(i => i.filename === filename);
+  if (idx === -1) return badRequest(`Photo "${filename}" not found in ${sourceSlug}`);
+
+  const entry = sourceManifest.images[idx];
+
+  // Refuse if a photo with the same filename already exists in the target.
+  if (targetManifest.images.some(i => i.filename === filename)) {
+    return badRequest(`Photo "${filename}" already exists in target gallery "${targetSlug}"`);
+  }
+
+  const sourceBase = `public/galleries/${sourceSlug}`;
+  const targetBase = `public/galleries/${targetSlug}`;
+
+  // Fetch all 3 binary files (original + thumb + display) from source location.
+  // fetchFile returns { content (base64), sha }.
+  const [origFile, thumbFile, displayFile] = await Promise.all([
+    fetchFile(token, branch, `${sourceBase}/${filename}`),
+    fetchFile(token, branch, `${sourceBase}/${entry.thumb}`),
+    fetchFile(token, branch, `${sourceBase}/${entry.display}`),
+  ]);
+
+  // Build the new entry for the target manifest. Same metadata, but thumb/display
+  // paths are RELATIVE within the gallery folder (e.g. "thumbs/foo_thumb.jpg"),
+  // so they don't need to change. Just copy the entry as-is.
+  const newEntry = { ...entry };
+
+  // Update both manifests.
+  sourceManifest.images.splice(idx, 1);
+  // If source cover_image pointed to this photo's thumb, switch to first remaining.
+  if (sourceManifest.cover_image === entry.thumb && sourceManifest.images.length > 0) {
+    sourceManifest.cover_image = sourceManifest.images[0].thumb;
+  }
+  targetManifest.images.push(newEntry);
+
+  // Build the atomic commit. ORDER MATTERS: GitHub Trees API processes in order,
+  // but adds and deletes for different paths don't conflict.
+  const changes = [
+    // Add to target
+    { path: `${targetBase}/${filename}`,        base64Content: origFile.content },
+    { path: `${targetBase}/${entry.thumb}`,     base64Content: thumbFile.content },
+    { path: `${targetBase}/${entry.display}`,   base64Content: displayFile.content },
+    // Delete from source
+    { path: `${sourceBase}/${filename}`,        base64Content: null },
+    { path: `${sourceBase}/${entry.thumb}`,     base64Content: null },
+    { path: `${sourceBase}/${entry.display}`,   base64Content: null },
+    // Update both manifests
+    {
+      path: `src/content/galleries/${sourceSlug}.json`,
+      base64Content: utf8ToBase64(JSON.stringify(sourceManifest, null, 2) + '\n'),
+    },
+    {
+      path: `src/content/galleries/${targetSlug}.json`,
+      base64Content: utf8ToBase64(JSON.stringify(targetManifest, null, 2) + '\n'),
+    },
+  ];
+
+  // Commit message starts with "chore(gallery): move " — the workflow loop guard
+  // skips this prefix, so the GitHub Action won't try to re-process the moved file.
+  const message = `chore(gallery): move "${filename}" from ${sourceSlug} to ${targetSlug}`;
+  await commitChanges(token, branch, message, changes);
+
+  return jsonResponse({
+    success: true,
+    filename,
+    source: sourceSlug,
+    target: targetSlug,
+  });
+}
+
 // ---------------------------------------------------------------------------
 // Main handler
 // ---------------------------------------------------------------------------
@@ -366,6 +445,14 @@ export async function onRequestPost({ request, env }) {
         const newTitle = (body.title || '').trim();
         if (!newTitle) return badRequest('title required');
         return await actionRenameGallery(token, branch, slug, newTitle);
+      }
+
+      case 'move_photo': {
+        const filename    = (body.filename || '').trim();
+        const targetSlug  = (body.target_slug || '').trim();
+        if (!filename)   return badRequest('filename required');
+        if (!targetSlug) return badRequest('target_slug required');
+        return await actionMovePhoto(token, branch, slug, filename, targetSlug);
       }
 
       default:

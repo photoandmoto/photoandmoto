@@ -34,7 +34,7 @@ jobs:
     #   - Action's derivative commit:  "chore(gallery): process new image derivatives"
     #   - Worker's publish commit:     "Gallery: publish photo #N to <slug>"
     # Skip only the Action's own commits to prevent infinite loops.
-    if: "!startsWith(github.event.head_commit.message, 'chore(gallery): process new image derivatives')"
+    if: "!startsWith(github.event.head_commit.message, 'chore(gallery): process new image derivatives') && !startsWith(github.event.head_commit.message, 'chore(gallery): move ')"
 
     steps:
       - name: Checkout
