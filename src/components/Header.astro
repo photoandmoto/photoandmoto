@@ -10,7 +10,7 @@ interface Props {
 const { lang, currentPath } = Astro.props;
 const t = ui[lang];
 
-const navItems = lang === 'fi' 
+const navItems = lang === 'fi'
   ? [
       { href: '/fi', label: t['nav.home'] },
       { href: '/fi/galleria', label: t['nav.gallery'] },
@@ -26,7 +26,7 @@ const contactItem = lang === 'fi'
   ? { href: '/fi/yhteystiedot', label: t['nav.contact'] }
   : { href: '/en/yhteystiedot', label: t['nav.contact'] };
 
-const moreItems = lang === 'fi' 
+const moreItems = lang === 'fi'
   ? [
       { href: '/fi/mxgp-2026', label: 'MXGP 2026' },
       { href: '/fi/tilastot', label: 'Tilastot' },
@@ -46,10 +46,15 @@ const showMore = moreItems.length > 0;
 const moreLabel = lang === 'fi' ? 'Muuta' : 'More';
 const isMoreActive = moreItems.some(item => currentPath.startsWith(item.href));
 
-// Flat list for mobile menu (in visual order: main + more + contact)
+// Search page link
+const searchHref = lang === 'fi' ? '/fi/etsi' : '/en/search';
+const searchLabel = lang === 'fi' ? 'Etsi' : 'Search';
+
+// Flat list for mobile menu (in visual order: main + more + search + contact)
 const mobileFlatItems = [
   ...navItems,
   ...moreItems,
+  { href: searchHref, label: searchLabel },
   contactItem,
 ];
 ---
@@ -65,7 +70,7 @@ const mobileFlatItems = [
       <ul>
         {navItems.map(item => (
           <li>
-            <a 
+            <a
               href={item.href}
               class:list={['nav-link', { active: currentPath === item.href || (item.href !== `/${lang}` && currentPath.startsWith(item.href)) }]}
             >
@@ -88,7 +93,7 @@ const mobileFlatItems = [
         </li>
         )}
         <li>
-          <a 
+          <a
             href={contactItem.href}
             class:list={['nav-link', { active: currentPath === contactItem.href || currentPath.startsWith(contactItem.href) }]}
           >
@@ -99,6 +104,20 @@ const mobileFlatItems = [
     </nav>
 
     <div class="header-right">
+      <a
+        href={searchHref}
+        class:list={['search-icon-link', { active: currentPath.startsWith(searchHref) }]}
+        target="_blank"
+        rel="noopener"
+        aria-label={searchLabel}
+        title={searchLabel}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </a>
+
       <LanguageSwitcher lang={lang} currentPath={currentPath} />
 
       <!-- Hamburger button (mobile only) -->
@@ -115,7 +134,7 @@ const mobileFlatItems = [
     <ul>
       {mobileFlatItems.map(item => (
         <li>
-          <a 
+          <a
             href={item.href}
             class:list={['mobile-nav-link', { active: currentPath === item.href || (item.href !== `/${lang}` && currentPath.startsWith(item.href)) }]}
           >
@@ -133,12 +152,12 @@ const mobileFlatItems = [
   if (dropdown) {
     const btn = dropdown.querySelector('.nav-drop-btn');
     const menu = dropdown.querySelector('.nav-drop-menu');
-    
+
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       menu.classList.toggle('nav-drop-open');
     });
-    
+
     document.addEventListener('click', () => {
       menu.classList.remove('nav-drop-open');
     });
@@ -178,7 +197,7 @@ const mobileFlatItems = [
     border-bottom: 1px solid rgba(255,255,255,0.1);
     backdrop-filter: blur(10px);
   }
-  
+
   .header-container {
     display: flex;
     align-items: center;
@@ -187,7 +206,7 @@ const mobileFlatItems = [
     padding-bottom: var(--space-3);
     gap: var(--space-3);
   }
-  
+
   .logo {
     text-decoration: none;
     display: flex;
@@ -195,12 +214,12 @@ const mobileFlatItems = [
     gap: 12px;
     flex-shrink: 0;
   }
-  
+
   .logo-icon {
     height: 52px;
     width: auto;
   }
-  
+
   .logo-text {
     font-family: var(--font-headline);
     font-size: 2.2rem;
@@ -216,7 +235,7 @@ const mobileFlatItems = [
     align-items: center;
     gap: var(--space-2);
   }
-  
+
   .main-nav ul {
     display: flex;
     gap: var(--space-4);
@@ -225,7 +244,7 @@ const mobileFlatItems = [
     padding: 0;
     align-items: center;
   }
-  
+
   .nav-link {
     font-family: var(--font-headline);
     font-size: 0.9rem;
@@ -238,22 +257,45 @@ const mobileFlatItems = [
     transition: all var(--transition-fast);
     text-decoration: none;
   }
-  
+
   .nav-link:hover {
     background: var(--brand-primary);
     color: black;
   }
-  
+
   .nav-link.active {
     background: var(--brand-primary);
     color: black;
   }
-  
+
+  /* Search icon (desktop) */
+  .search-icon-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    color: white;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+  }
+
+  .search-icon-link:hover {
+    background: var(--brand-primary);
+    color: black;
+  }
+
+  .search-icon-link.active {
+    background: var(--brand-primary);
+    color: black;
+  }
+
   /* Dropdown (desktop) */
   .nav-dropdown {
     position: relative;
   }
-  
+
   .nav-drop-btn {
     background: none;
     border: none;
@@ -262,11 +304,11 @@ const mobileFlatItems = [
     align-items: center;
     gap: 4px;
   }
-  
+
   .drop-arrow {
     font-size: 0.7rem;
   }
-  
+
   .nav-drop-menu {
     display: none;
     position: absolute;
@@ -280,12 +322,12 @@ const mobileFlatItems = [
     padding: 6px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.4);
   }
-  
+
   .nav-drop-open {
     display: flex;
     flex-direction: column;
   }
-  
+
   .nav-drop-item {
     font-family: var(--font-headline);
     font-size: 0.85rem;
@@ -298,12 +340,12 @@ const mobileFlatItems = [
     text-decoration: none;
     transition: all var(--transition-fast);
   }
-  
+
   .nav-drop-item:hover {
     background: var(--brand-primary);
     color: black;
   }
-  
+
   .nav-drop-item.active {
     color: var(--brand-primary);
   }

@@ -153,5 +153,21 @@ const otherLang = lang === 'fi' ? 'en' : 'fi';
   </main>
 
   <Footer lang={lang} />
+<script is:inline>
+  // Open every link in a new tab, except those marked data-no-newtab.
+  // Runs once on page load.
+  (function () {
+    document.querySelectorAll('a[href]').forEach(function (a) {
+      if (a.hasAttribute('data-no-newtab')) return;
+      if (a.target) return;
+      var href = a.getAttribute('href');
+      if (!href) return;
+      // Skip pure anchors and javascript: links
+      if (href.startsWith('#') || href.startsWith('javascript:')) return;
+      a.target = '_blank';
+      a.rel = a.rel ? a.rel + ' noopener' : 'noopener';
+    });
+  })();
+</script>
 </body>
 </html>

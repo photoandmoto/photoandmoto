@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import pagefind from 'astro-pagefind';
 
 export default defineConfig({
   site: 'https://www.photoandmoto.fi',
@@ -26,5 +27,6 @@ export default defineConfig({
       },
       filter: (page) => !page.includes('/haku') && !page.includes('/tilastot'),
     }),
+    pagefind(),
   ],
 });
