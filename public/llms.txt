@@ -1,0 +1,70 @@
+# Photo & Moto
+
+> Motorsport history photos, articles, and stats — bilingual (Finnish primary, English secondary), focused on motocross with broader racing coverage.
+
+Photo & Moto is a community-driven archive at https://www.photoandmoto.fi covering Finnish and international motorsport history. The site combines curated photo galleries, long-form historical articles, championship statistics, an MXGP 2026 season tracker, a race calendar, and a podcast.
+
+Two complementary search experiences are available: an AI-powered Q&A search (`/fi/haku`, `/en/haku`) and a keyword-based full-text search (`/fi/etsi`, `/en/search`).
+
+Most original article content is in Finnish; English versions are provided for articles, galleries, and the MXGP season tracker. Statistics, race calendar, and podcast pages are Finnish-only.
+
+## Articles (Aikakone / Time Machine)
+
+Long-form pieces on motorsport history, riders, and racing. Bilingual: each article exists in both Finnish and English.
+
+- [Crossin mekan nousu ja lasku](https://www.photoandmoto.fi/fi/aikakone/crossin-mekan-nousu-ja-lasku/) — English: [Crossin mekan nousu ja lasku](https://www.photoandmoto.fi/en/time-machine/crossin-mekan-nousu-ja-lasku/)
+- [Heikki Huusko Euroopan mestariksi Varkaudessa](https://www.photoandmoto.fi/fi/aikakone/em-jaaspeedway-varkaus-2026/) — English: [Heikki Huusko Euroopan mestariksi Varkaudessa](https://www.photoandmoto.fi/en/time-machine/em-jaaspeedway-varkaus-2026/)
+- [Moottoriurheilun juhlaa Hyvinkäällä](https://www.photoandmoto.fi/fi/aikakone/hyvinkaa-scramble-2026/) — English: [Moottoriurheilun juhlaa Hyvinkäällä](https://www.photoandmoto.fi/en/time-machine/hyvinkaa-scramble-2026/)
+- [Vain 50 kuutiosenttimetrin tähden](https://www.photoandmoto.fi/fi/aikakone/minicross/) — English: [Vain 50 kuutiosenttimetrin tähden](https://www.photoandmoto.fi/en/time-machine/minicross/)
+- [Argentiinan MM-Avaus](https://www.photoandmoto.fi/fi/aikakone/mxgp-2026-argentiina/) — English: [Argentiinan MM-Avaus](https://www.photoandmoto.fi/en/time-machine/mxgp-2026-argentiina/)
+- [MXGP 2026: Kolme osakilpailua, kolme oppituntia](https://www.photoandmoto.fi/fi/aikakone/mxgp-2026-kausianalyysi/) — English: [MXGP 2026: Kolme osakilpailua, kolme oppituntia](https://www.photoandmoto.fi/en/time-machine/mxgp-2026-kausianalyysi/)
+- [Jukka Sintonen ja Simo Taimi kutsuvieraina Orp-Le-Grandissa](https://www.photoandmoto.fi/fi/aikakone/orp-le-grand-vintage-2025/) — English: [Jukka Sintonen ja Simo Taimi kutsuvieraina Orp-Le-Grandissa](https://www.photoandmoto.fi/en/time-machine/orp-le-grand-vintage-2025/)
+- [Osattiin sitä ennenkin – Pentti Kalteva](https://www.photoandmoto.fi/fi/aikakone/pentti-kalteva/) — English: [Osattiin sitä ennenkin – Pentti Kalteva](https://www.photoandmoto.fi/en/time-machine/pentti-kalteva/)
+- [Sandblowers – Väriloistoa speedwayihin](https://www.photoandmoto.fi/fi/aikakone/sandblowers/) — English: [Sandblowers – Väriloistoa speedwayihin](https://www.photoandmoto.fi/en/time-machine/sandblowers/)
+
+## Photo galleries (Galleria / Gallery)
+
+Curated photo collections by era and theme. Bilingual.
+
+- [Hyvinkaa Scramble](https://www.photoandmoto.fi/fi/galleria/hyvinkaa-scramble/) — English: [Hyvinkaa Scramble](https://www.photoandmoto.fi/en/gallery/hyvinkaa-scramble/)
+- [International 70s](https://www.photoandmoto.fi/fi/galleria/international-70s/) — English: [International 70s](https://www.photoandmoto.fi/en/gallery/international-70s/)
+- [International 80s](https://www.photoandmoto.fi/fi/galleria/international-80s/) — English: [International 80s](https://www.photoandmoto.fi/en/gallery/international-80s/)
+- [International 90s](https://www.photoandmoto.fi/fi/galleria/international-90s/) — English: [International 90s](https://www.photoandmoto.fi/en/gallery/international-90s/)
+- [Suomi 70s](https://www.photoandmoto.fi/fi/galleria/suomi-70s/) — English: [Suomi 70s](https://www.photoandmoto.fi/en/gallery/suomi-70s/)
+- [Suomi 80s](https://www.photoandmoto.fi/fi/galleria/suomi-80s/) — English: [Suomi 80s](https://www.photoandmoto.fi/en/gallery/suomi-80s/)
+- [Suomi 90s](https://www.photoandmoto.fi/fi/galleria/suomi-90s/) — English: [Suomi 90s](https://www.photoandmoto.fi/en/gallery/suomi-90s/)
+
+## Statistics (Tilastot)
+
+Championship results, race winners, and historical records. Finnish only.
+
+- [FIM World Champions 1957-2025](https://www.photoandmoto.fi/fi/tilastot/)
+- [Suomen mestarit (SM) 1954-2025 - kaikki sijat ja luokat](https://www.photoandmoto.fi/fi/tilastot/)
+- [Motocross des Nations 1947-2024](https://www.photoandmoto.fi/fi/tilastot/)
+- [AMA Champions 1972-2025](https://www.photoandmoto.fi/fi/tilastot/)
+- [Trans-AMA Champions](https://www.photoandmoto.fi/fi/tilastot/)
+
+## Race calendar (Kalenteri)
+
+Upcoming and past race calendar. Finnish only.
+
+- [Kilpailukalenteri 2026](https://www.photoandmoto.fi/fi/kalenteri/)
+
+## MXGP 2026 season tracker
+
+Live results, standings, and AI-generated highlights for the current MXGP season. Bilingual.
+
+- [MXGP 2026 tulokset ja pistetilanne](https://www.photoandmoto.fi/fi/mxgp-2026/) — English: [MXGP 2026 tulokset ja pistetilanne](https://www.photoandmoto.fi/en/mxgp-2026/)
+
+## Podcast
+
+Episodes on Finnish motorsport history. Finnish only.
+
+- [Podcast-jaksot](https://www.photoandmoto.fi/fi/podcast/)
+
+## Optional
+
+- [Sitemap](https://www.photoandmoto.fi/sitemap-index.xml): XML sitemap index with all pages and hreflang alternates.
+- [Keyword search (FI)](https://www.photoandmoto.fi/fi/etsi) — English: [Keyword search (EN)](https://www.photoandmoto.fi/en/search): Static full-text search across articles and galleries.
+- [AI search (FI)](https://www.photoandmoto.fi/fi/haku) — English: [AI search (EN)](https://www.photoandmoto.fi/en/haku): Natural-language Q&A over site content.
+- [Identify a photo (FI)](https://www.photoandmoto.fi/fi/tunnistamatta) — English: [Identify a photo (EN)](https://www.photoandmoto.fi/en/identify): Community-driven identification of unidentified historical motorsport photos.

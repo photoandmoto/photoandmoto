@@ -20,7 +20,7 @@ if (fs.existsSync(articlesDir)) {
       parts[1].split('\n').forEach(line => {
         if (line.startsWith('title:')) title = line.split(':').slice(1).join(':').trim().replace(/^"|"$/g, '');
       });
-      index.push({ type: 'article', title, content: body.substring(0, 3000) });
+      index.push({ type: 'article', title, url: `/fi/aikakone/${f.replace('.md','')}/`, content: body.substring(0, 3000) });
     }
   });
 }
@@ -35,7 +35,7 @@ if (fs.existsSync(champFile)) {
     const parts = Object.entries(e).filter(([k]) => k !== 'year').map(([k, v]) => `${k}=${v}`);
     return `${e.year}: ${parts.join(', ')}`;
   });
-  index.push({ type: 'stats', title: 'FIM World Champions 1957-2025', content: fimLines.join('\n') });
+  index.push({ type: 'stats', title: 'FIM World Champions 1957-2025', url: '/fi/tilastot/', content: fimLines.join('\n') });
 
   // SM - complete
   const smLines = [];
@@ -48,22 +48,22 @@ if (fs.existsSync(champFile)) {
       }
     });
   });
-  index.push({ type: 'stats', title: 'Suomen mestarit (SM) 1954-2025 - kaikki sijat ja luokat', content: smLines.join('\n') });
+  index.push({ type: 'stats', title: 'Suomen mestarit (SM) 1954-2025 - kaikki sijat ja luokat', url: '/fi/tilastot/', content: smLines.join('\n') });
 
   // MXdN
   const mxdnLines = champ.mxdn.map(e => `${e.year}: ${e.country} (${e.riders})`);
-  index.push({ type: 'stats', title: 'Motocross des Nations 1947-2024', content: mxdnLines.join('\n') });
+  index.push({ type: 'stats', title: 'Motocross des Nations 1947-2024', url: '/fi/tilastot/', content: mxdnLines.join('\n') });
 
   // AMA
   const amaLines = champ.ama.map(e => {
     const parts = Object.entries(e).filter(([k]) => k !== 'year').map(([k, v]) => `${k}=${v}`);
     return `${e.year}: ${parts.join(', ')}`;
   });
-  index.push({ type: 'stats', title: 'AMA Champions 1972-2025', content: amaLines.join('\n') });
+  index.push({ type: 'stats', title: 'AMA Champions 1972-2025', url: '/fi/tilastot/', content: amaLines.join('\n') });
 
   // Trans-AMA
   const xamaLines = champ.xama.map(e => `${e.year}: ${e.series} - ${e.rider} (${e.country}, ${e.bike})`);
-  index.push({ type: 'stats', title: 'Trans-AMA Champions', content: xamaLines.join('\n') });
+  index.push({ type: 'stats', title: 'Trans-AMA Champions', url: '/fi/tilastot/', content: xamaLines.join('\n') });
 }
 
 // 3. Calendar
@@ -71,7 +71,7 @@ const calFile = path.join(ROOT, 'public/data/calendar.json');
 if (fs.existsSync(calFile)) {
   const cal = JSON.parse(fs.readFileSync(calFile, 'utf-8'));
   const calLines = cal.map(e => `${e.date}: ${e.title} @ ${e.location} (${e.category})`);
-  index.push({ type: 'calendar', title: 'Kilpailukalenteri 2026', content: calLines.join('\n') });
+  index.push({ type: 'calendar', title: 'Kilpailukalenteri 2026', url: '/fi/kalenteri/', content: calLines.join('\n') });
 }
 
 // 4. Galleries - include captions for searching (names, places, years)
@@ -81,7 +81,7 @@ if (fs.existsSync(galDir)) {
     const g = JSON.parse(fs.readFileSync(path.join(galDir, f), 'utf-8'));
     const captions = (g.images || []).map(img => img.caption).filter(Boolean);
     const content = `Gallery: ${g.title || ''} - ${(g.images || []).length} photos.\nKuvien sisältö (henkilöt, paikat, vuodet):\n${captions.join('; ')}`;
-    index.push({ type: 'gallery', title: g.title || '', content });
+    index.push({ type: 'gallery', title: g.title || '', url: `/fi/galleria/${f.replace('.json','')}/`, content });
   });
 }
 
@@ -109,7 +109,7 @@ const podcastEpisodes = [
   },
 ];
 const podcastContent = podcastEpisodes.map(p => `${p.title}: ${p.description}`).join('\n');
-index.push({ type: 'podcast', title: 'Podcast-jaksot', content: podcastContent });
+index.push({ type: 'podcast', title: 'Podcast-jaksot', url: '/fi/podcast/', content: podcastContent });
 
 // 6. MXGP Results
 const mxgpFile = path.join(ROOT, 'public/data/mxgp-results.json');
@@ -130,7 +130,7 @@ if (fs.existsSync(mxgpFile)) {
     if (mxgp.standings?.mx2?.length) {
       lines.push('MX2 MM-pistetilanne: ' + mxgp.standings.mx2.map(e => `${e.pos}. ${e.rider} ${e.pts}p`).join(', '));
     }
-    index.push({ type: 'mxgp', title: `MXGP ${mxgp.season} tulokset ja pistetilanne`, content: lines.join('\n') });
+    index.push({ type: 'mxgp', title: `MXGP ${mxgp.season} tulokset ja pistetilanne`, url: '/fi/mxgp-2026/', content: lines.join('\n') });
   }
 }
 
