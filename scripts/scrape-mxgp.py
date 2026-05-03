@@ -43,14 +43,24 @@ def fetch_page(url):
         return None
 
 
-def find_latest_race():
-    """Dynamically find the latest completed race from mxgpresults.com."""
-    url = f"{BASE_URL}/mxgp/{SEASON}/"
+MONTHS_LOOKUP = {
+    'january': '01', 'february': '02', 'march': '03', 'april': '04',
+    'may': '05', 'june': '06', 'july': '07', 'august': '08',
+    'september': '09', 'october': '10', 'november': '11', 'december': '12'
+}
+
+
+def _list_season_slugs(year):
+    """Return ordered list of race slugs for the given season's index page.
+
+    Returns [] if the page cannot be fetched or contains no slugs.
+    """
+    url = f"{BASE_URL}/mxgp/{year}/"
     html = fetch_page(url)
     if not html:
-        return None
+        return []
 
-    race_links = re.findall(rf'/mxgp/{SEASON}/([a-z0-9-]+)', html)
+    race_links = re.findall(rf'/mxgp/{year}/([a-z0-9-]+)', html)
 
     seen = set()
     slugs = []
@@ -59,19 +69,21 @@ def find_latest_race():
         if slug not in seen and slug not in skip:
             seen.add(slug)
             slugs.append(slug)
+    return slugs
 
-    if not slugs:
-        return None
 
-    latest_slug = slugs[-1]
-    latest_round = len(slugs)
+def _parse_race_meta(year, slug):
+    """Fetch a race detail page and extract name, location, date, total_rounds.
 
-    race_url = f"{BASE_URL}/mxgp/{SEASON}/{latest_slug}"
+    Returns a dict with keys name, location, date (YYYY-MM-DD or ""), total_rounds.
+    """
+    race_url = f"{BASE_URL}/mxgp/{year}/{slug}"
     race_html = fetch_page(race_url)
 
-    race_name = f"MXGP of {latest_slug.replace('-', ' ').title()}"
+    race_name = f"MXGP of {slug.replace('-', ' ').title()}"
     location = ""
     race_date = ""
+    total_rounds = 19
 
     if race_html:
         h1_match = re.search(r'<h1[^>]*>(.*?)</h1>', race_html, re.DOTALL)
@@ -86,38 +98,119 @@ def find_latest_race():
 
         date_match = re.search(r'(?:Sunday|Saturday),?\s+(\w+)\s+(\d+)\w*\s+(\d{4})', race_html, re.IGNORECASE)
         if date_match:
-            months = {
-                'january': '01', 'february': '02', 'march': '03', 'april': '04',
-                'may': '05', 'june': '06', 'july': '07', 'august': '08',
-                'september': '09', 'october': '10', 'november': '11', 'december': '12'
-            }
-            month = months.get(date_match.group(1).lower(), '01')
+            month = MONTHS_LOOKUP.get(date_match.group(1).lower(), '01')
             day = date_match.group(2).zfill(2)
-            year = date_match.group(3)
-            race_date = f"{year}-{month}-{day}"
+            yr = date_match.group(3)
+            race_date = f"{yr}-{month}-{day}"
 
-    total_match = re.search(r'after\s+(\d+)\s+of\s+(\d+)\s+rounds', race_html or '', re.IGNORECASE)
-    total_rounds = int(total_match.group(2)) if total_match else 19
-
-    log(f"  Latest race: R{latest_round} - {race_name}")
-    log(f"  Location: {location or 'unknown'}")
-    log(f"  Date: {race_date or 'unknown'}")
+        total_match = re.search(r'after\s+(\d+)\s+of\s+(\d+)\s+rounds', race_html, re.IGNORECASE)
+        if total_match:
+            total_rounds = int(total_match.group(2))
 
     return {
-        "round": latest_round,
-        "slug": latest_slug,
         "name": race_name,
         "location": location,
         "date": race_date,
-        "totalRounds": total_rounds
+        "total_rounds": total_rounds,
     }
 
 
-MONTHS_LOOKUP = {
-    'january': '01', 'february': '02', 'march': '03', 'april': '04',
-    'may': '05', 'june': '06', 'july': '07', 'august': '08',
-    'september': '09', 'october': '10', 'november': '11', 'december': '12'
-}
+def _has_results(year, slug):
+    """Quick check: does this race actually have published results?
+
+    We consider a race "has results" if MXGP has at least race1 OR overall populated.
+    Done by re-running the same scraper used downstream so we stay consistent.
+    """
+    res = scrape_race_results("mxgp", slug, year=year)
+    if not res:
+        return False
+    return bool(res.get("race1") or res.get("overall"))
+
+
+def find_latest_race():
+    """Find the latest completed race with results.
+
+    Walks the current season's slugs newest-to-oldest, skipping any race
+    whose date is in the future or whose result tables are still empty.
+    If nothing in the current season qualifies (e.g. season hasn't started),
+    falls back to the last completed race of the previous season.
+
+    Returns a dict with keys round, slug, name, location, date, totalRounds,
+    season — or None if both seasons fail.
+    """
+    today = date.today().isoformat()
+
+    # 1) Try current season
+    log(f"Finding latest completed race for {SEASON}...")
+    slugs = _list_season_slugs(SEASON)
+
+    if slugs:
+        # Walk newest-to-oldest. Round number = position in the calendar (1-indexed).
+        for idx in range(len(slugs) - 1, -1, -1):
+            slug = slugs[idx]
+            round_num = idx + 1
+            meta = _parse_race_meta(SEASON, slug)
+
+            if meta["date"] and meta["date"] > today:
+                log(f"  R{round_num} ({slug}) date {meta['date']} is in the future; skipping")
+                continue
+
+            if not _has_results(SEASON, slug):
+                log(f"  R{round_num} ({slug}) has no results yet; skipping")
+                continue
+
+            log(f"  Latest race: R{round_num} - {meta['name']}")
+            log(f"  Location: {meta['location'] or 'unknown'}")
+            log(f"  Date: {meta['date'] or 'unknown'}")
+            return {
+                "round": round_num,
+                "slug": slug,
+                "name": meta["name"],
+                "location": meta["location"],
+                "date": meta["date"],
+                "totalRounds": meta["total_rounds"],
+                "season": SEASON,
+            }
+
+        log(f"  No completed-with-results race found in {SEASON}.")
+    else:
+        log(f"  No slugs listed for {SEASON} yet.")
+
+    # 2) Cross-season fallback: last completed race of SEASON - 1
+    prev_year = SEASON - 1
+    log(f"Falling back to {prev_year} season for last completed race...")
+    prev_slugs = _list_season_slugs(prev_year)
+
+    if not prev_slugs:
+        log(f"  No slugs listed for {prev_year} either; giving up.")
+        return None
+
+    # For previous season, also walk newest-to-oldest in case the very last
+    # listed race never produced results for some reason.
+    for idx in range(len(prev_slugs) - 1, -1, -1):
+        slug = prev_slugs[idx]
+        round_num = idx + 1
+        meta = _parse_race_meta(prev_year, slug)
+
+        if not _has_results(prev_year, slug):
+            log(f"  {prev_year} R{round_num} ({slug}) has no results; skipping")
+            continue
+
+        log(f"  Cross-season fallback: {prev_year} R{round_num} - {meta['name']}")
+        log(f"  Location: {meta['location'] or 'unknown'}")
+        log(f"  Date: {meta['date'] or 'unknown'}")
+        return {
+            "round": round_num,
+            "slug": slug,
+            "name": meta["name"],
+            "location": meta["location"],
+            "date": meta["date"],
+            "totalRounds": meta["total_rounds"],
+            "season": prev_year,
+        }
+
+    log(f"  No completed-with-results race found in {prev_year} either.")
+    return None
 
 
 def find_next_race(latest_round):
@@ -232,9 +325,15 @@ def parse_table_from_html(table_html):
     return results
 
 
-def scrape_race_results(class_name, slug):
-    """Scrape all results for a specific class and race."""
-    url = f"{BASE_URL}/{class_name}/{SEASON}/{slug}"
+def scrape_race_results(class_name, slug, year=None):
+    """Scrape all results for a specific class and race.
+
+    `year` defaults to SEASON, but accepts a specific year so the
+    cross-season fallback can re-fetch last year's data.
+    """
+    if year is None:
+        year = SEASON
+    url = f"{BASE_URL}/{class_name}/{year}/{slug}"
     html = fetch_page(url)
     if not html:
         return None
@@ -491,11 +590,10 @@ OUTPUT FORMAT (JSON only, exact shape):
 def build_json():
     """Main function: find latest round, scrape, generate highlights, output JSON."""
 
-    log(f"Finding latest completed race for {SEASON}...")
     latest = find_latest_race()
 
     if not latest:
-        log("No completed rounds found.")
+        log("No completed rounds found in current or previous season.")
         data = {
             "season": SEASON,
             "lastUpdated": date.today().isoformat(),
@@ -514,11 +612,13 @@ def build_json():
 
     slug = latest["slug"]
     total_rounds = latest["totalRounds"]
-    is_season_complete = latest["round"] == total_rounds
+    latest_season = latest["season"]
+    is_cross_season = latest_season != SEASON
+    is_season_complete = (not is_cross_season) and latest["round"] == total_rounds
 
-    log(f"Scraping race results for {slug}...")
-    mxgp_results = scrape_race_results("mxgp", slug)
-    mx2_results = scrape_race_results("mx2", slug)
+    log(f"Scraping race results for {slug} ({latest_season})...")
+    mxgp_results = scrape_race_results("mxgp", slug, year=latest_season)
+    mx2_results = scrape_race_results("mx2", slug, year=latest_season)
 
     log(f"Scraping standings...")
     mxgp_standings = scrape_standings("mxgp")
@@ -533,8 +633,14 @@ def build_json():
     log("Generating highlights...")
     highlights = generate_highlights(latest, mxgp_results, mx2_results, standings, previous_standings)
 
+    # Determine next race.
+    # - If we're showing last year's race (cross-season), next race = round 1 of current season (from calendar).
+    # - If we're showing this season's latest race and the season isn't complete, find the next one.
     next_race = None
-    if not is_season_complete:
+    if is_cross_season:
+        log("Cross-season: looking up first race of current season as nextRace...")
+        next_race = find_next_race(0)  # so nextRace.round = 1
+    elif not is_season_complete:
         log("Finding next upcoming race...")
         next_race = find_next_race(latest["round"])
 
@@ -549,6 +655,7 @@ def build_json():
             "slug": slug,
             "location": latest["location"],
             "date": latest["date"],
+            "season": latest_season,
             "mxgp": mxgp_results or {"qualifying": [], "race1": [], "race2": [], "overall": []},
             "mx2": mx2_results or {"qualifying": [], "race1": [], "race2": [], "overall": []}
         },

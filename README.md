@@ -424,6 +424,17 @@ npm run generate-gallery <slug> -- --add <filename>
 ```
 instead of the full rebuild `npm run generate-gallery <slug>`. The full rebuild rescans only locally present files and overwrites the manifest, wiping entries whose originals aren't in the local folder. The `--add` flag appends a single photo without touching existing entries. For bulk imports, loop `--add` over each new file or build a batch script.
 
+### MXGP results data missing
+
+Discovered during the Astro 6 migration smoke test. Both staging and production show empty result tables on `/fi/mxgp-2026/` (LÃ„HTÃ– 1, LÃ„HTÃ– 2, GP-KOKONAISTULOS) under the MXGP and MX2 tabs. The standings (MM-PISTEET) are still populated, and weekend highlights render correctly, so the data file is partially populated. Likely root cause: the GitHub Actions MXGP scraper either hasn't run since the last completed round (Trentino), or the data source format has changed. Investigate by checking the most recent run of the scraper workflow on GitHub, then the contents of the JSON it produces.
+
+### D1 row size limit on mystery photo uploads
+
+Uploads of original JPEG images larger than ~1.5 MB hit a D1 per-row limit and fail with `D1_ERROR: string or blob too big: SQLITE_TOOBIG`. Reproducible on a 2.05 MB JPEG (becomes ~2.7 MB once base64-encoded for storage). Pre-existing, not introduced by the Astro 6 upgrade. Two paths forward: (a) compress originals client-side before upload â€” reuse the existing 300 px Canvas thumbnail logic but at higher quality, e.g. 1600 px max edge at ~80% JPEG; or (b) move original-image storage out of D1 entirely, to R2 or to a direct GitHub commit at upload time. Option (a) is the quick fix; option (b) overlaps with Phase E (Storage and cost ops) above.
+
+### Node.js 22 entering LTS Maintenance
+
+Cloudflare build logs now show `WARNING: node-v22.22.0-linux-x64 is in LTS Maintenance mode and nearing its end of life`. Node 22 still receives critical security and bug fixes through April 2027, so no urgency, but it's worth bumping to Node 24 as the next LTS during a future maintenance session. Update `NODE_VERSION` in both Cloudflare Pages projects (staging + production) and re-deploy.
 ---
 
 ## License

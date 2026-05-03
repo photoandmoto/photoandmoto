@@ -25,3 +25,7 @@ pnpm-debug.log*
 # temporary files
 *.tmp
 *.log
+
+# Local development scratch scripts (one-shot patches/diags)
+*.cjs
+

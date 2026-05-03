@@ -64,7 +64,7 @@ const articleJsonLd = {
   image={frontmatter.featured_image}
   lang={frontmatter.language}
 >
-  <article class="article">
+  <article class="article" data-pagefind-body data-pagefind-meta="type:article">
     <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />
     <div class="container">
       <header class="article-header">

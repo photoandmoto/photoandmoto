@@ -5,19 +5,21 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "node scripts/generate-site-index.mjs && astro build",
+    "build": "node scripts/generate-site-index.mjs && node scripts/generate-llms.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "generate-gallery": "node scripts/generate-gallery-manifest.mjs"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.2.1",
-    "astro": "^4.5.0",
+    "@astrojs/sitemap": "^3.7.2",
+    "astro": "^6.2.1",
     "photoswipe": "^5.4.3",
     "sharp": "^0.33.2"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
+    "astro-pagefind": "^1.8.6",
+    "pagefind": "^1.5.2",
     "prettier": "^3.2.5",
     "prettier-plugin-astro": "^0.13.0",
     "typescript": "^5.3.3"
