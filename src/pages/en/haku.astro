@@ -1,34 +1,31 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-const lang = 'fi';
+const lang = 'en';
 ---
-<BaseLayout title="AI-haku" lang={lang} description="Hae Photo & Moton sisällöstä tekoälyn avulla">
+<BaseLayout title="AI Search" lang={lang} description="Search Photo & Moto's content with AI">
   <section class="search-page">
     <div class="container">
       <div class="section__header">
-        <h1 class="section__title">AI-haku</h1>
-        <p class="section__subtitle">Kysy mitä tahansa sivuston sisällöstä</p>
+        <h1 class="section__title">AI Search</h1>
+        <p class="section__subtitle">Ask anything about the site's content</p>
       </div>
-      
       <div class="ai-search-box">
         <div class="ai-input-wrap">
-          <input type="text" id="aiQuery" class="ai-input" placeholder="Esim. Kuka voitti MM-kultaa 1977?" />
-          <button id="aiSearchBtn" class="ai-btn">Hae</button>
+          <input type="text" id="aiQuery" class="ai-input" placeholder="e.g. Who won the world title in 1977?" />
+          <button id="aiSearchBtn" class="ai-btn">Search</button>
         </div>
         <div class="ai-examples">
-          <span class="ai-ex-label">Kokeile:</span>
-          <button class="ai-ex" data-q="Kuka voitti eniten MM-titteleitä?">Kuka voitti eniten MM-titteleitä?</button>
-          <button class="ai-ex" data-q="Mitä kilpailuja on kesäkuussa 2026?">Mitä kilpailuja on kesäkuussa?</button>
-          <button class="ai-ex" data-q="Kerro Pentti Kaltevasta">Kerro Pentti Kaltevasta</button>
+          <span class="ai-ex-label">Try:</span>
+          <button class="ai-ex" data-q="Who won the most world championship titles?">Who won the most world titles?</button>
+          <button class="ai-ex" data-q="What races are in June 2026?">What races are in June?</button>
+          <button class="ai-ex" data-q="Tell me about Pentti Kalteva">Tell me about Pentti Kalteva</button>
         </div>
       </div>
-      
       <div id="aiResult" class="ai-result"></div>
-      <p class="search-hint-link">Etsitkö sivua avainsanalla? Kokeile <a href="/fi/etsi">avainsanahakua</a>.</p>
+      <p class="search-hint-link">Looking for a page by keyword? Try <a href="/en/search" target="_blank" rel="noopener">keyword search</a>.</p>
     </div>
   </section>
 </BaseLayout>
-
 <script>
   const input = document.getElementById('aiQuery');
   const btn = document.getElementById('aiSearchBtn');
@@ -37,109 +34,91 @@ const lang = 'fi';
   let lastSearchTime = 0;
   const COOLDOWN_MS = 15000;
   const queryCache = {};
-  
   // Load site index on page load
   fetch('/data/site-index.json')
     .then(r => r.json())
     .then(d => { siteData = JSON.stringify(d); })
     .catch(() => { siteData = '[]'; });
-  
   function renderMarkdown(text) {
     let lines = text.split('\n');
     let html = '';
     let inList = false;
-    
     lines.forEach(line => {
       line = line.trim();
-      if (!line) { 
+      if (!line) {
         if (inList) { html += '</ul>'; inList = false; }
-        html += '<br>'; 
-        return; 
+        html += '<br>';
+        return;
       }
-      
       // Bold
       line = line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
       // Italic
       line = line.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-      
       // List items (*, -, •)
       if (/^[\*\-•]\s/.test(line)) {
         if (!inList) { html += '<ul class="ai-list">'; inList = true; }
         html += '<li>' + line.replace(/^[\*\-•]\s+/, '') + '</li>';
         return;
       }
-      
       // Numbered list
       if (/^\d+[\.\)]\s/.test(line)) {
         if (!inList) { html += '<ol class="ai-list">'; inList = true; }
         html += '<li>' + line.replace(/^\d+[\.\)]\s+/, '') + '</li>';
         return;
       }
-      
       if (inList) { html += '</ul>'; inList = false; }
-      
       // Headings
       if (line.startsWith('### ')) { html += '<h4 class="ai-h">' + line.slice(4) + '</h4>'; return; }
       if (line.startsWith('## ')) { html += '<h3 class="ai-h">' + line.slice(3) + '</h3>'; return; }
-      
       html += '<p>' + line + '</p>';
     });
-    
     if (inList) html += '</ul>';
     return html;
   }
-  
   async function doSearch() {
     const q = input.value.trim();
     if (q.length < 2) return;
-    
     // Check cooldown
     const now = Date.now();
     const remaining = Math.ceil((COOLDOWN_MS - (now - lastSearchTime)) / 1000);
     if (remaining > 0) {
-      result.innerHTML = '<div class="ai-error">Odota ' + remaining + ' sekuntia ennen seuraavaa hakua.</div>';
+      result.innerHTML = '<div class="ai-error">Please wait ' + remaining + ' seconds before the next search.</div>';
       return;
     }
-    
     // Check cache
     if (queryCache[q]) {
       const html = renderMarkdown(queryCache[q]);
-      result.innerHTML = '<div class="ai-answer"><div class="ai-answer-label">Vastaus (välimuistista)</div><div class="ai-answer-text">' + html + '</div></div>';
+      result.innerHTML = '<div class="ai-answer"><div class="ai-answer-label">Answer (cached)</div><div class="ai-answer-text">' + html + '</div></div>';
       return;
     }
-    
-    result.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div><span>Etsitään vastausta...</span></div>';
+    result.innerHTML = '<div class="ai-loading"><div class="ai-spinner"></div><span>Searching for an answer...</span></div>';
     btn.disabled = true;
     lastSearchTime = Date.now();
-    
     try {
       const resp = await fetch('/api/search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: q, siteData: siteData, lang: 'fi' })
+        body: JSON.stringify({ query: q, siteData: siteData, lang: 'en' })
       });
       const data = await resp.json();
-      
       if (data.error) {
         if (data.error.includes('429')) {
-          result.innerHTML = '<div class="ai-error">Liian monta hakua. Odota hetki ja yritä uudelleen.</div>';
+          result.innerHTML = '<div class="ai-error">Too many searches. Please wait a moment and try again.</div>';
         } else {
-          result.innerHTML = '<div class="ai-error">Haku epäonnistui: ' + data.error + '</div>';
+          result.innerHTML = '<div class="ai-error">Search failed: ' + data.error + '</div>';
         }
       } else {
         queryCache[q] = data.answer;
         const html = renderMarkdown(data.answer);
-        result.innerHTML = '<div class="ai-answer"><div class="ai-answer-label">Vastaus</div><div class="ai-answer-text">' + html + '</div></div>';
+        result.innerHTML = '<div class="ai-answer"><div class="ai-answer-label">Answer</div><div class="ai-answer-text">' + html + '</div></div>';
       }
     } catch (err) {
-      result.innerHTML = '<div class="ai-error">Yhteysvirhe. Yritä uudelleen.</div>';
+      result.innerHTML = '<div class="ai-error">Connection error. Please try again.</div>';
     }
     btn.disabled = false;
   }
-  
   btn.addEventListener('click', doSearch);
   input.addEventListener('keydown', (e) => { if (e.key === 'Enter') doSearch(); });
-  
   document.querySelectorAll('.ai-ex').forEach(ex => {
     ex.addEventListener('click', () => {
       input.value = ex.dataset.q;

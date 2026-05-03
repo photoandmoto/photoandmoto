@@ -1,0 +1,142 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const lang = 'fi';
+---
+
+<BaseLayout
+  title="Etsi"
+  lang={lang}
+  description="Etsi sivuston sisällöstä avainsanoilla – artikkelit ja galleriat"
+>
+  <section class="search-page">
+    <div class="container">
+      <div class="section__header">
+        <h1 class="section__title">Etsi</h1>
+        <p class="section__subtitle">Etsi avainsanoilla artikkeleista ja gallerioista</p>
+      </div>
+
+      <div class="pagefind-wrap">
+        <div id="search"></div>
+      </div>
+
+      <p class="search-hint">
+        Etsitkö tarkempaa vastausta? Kokeile <a href="/fi/haku" target="_blank" rel="noopener">tekoälyhakua</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<link href="/pagefind/pagefind-ui.css" rel="stylesheet" />
+<script src="/pagefind/pagefind-ui.js" is:inline></script>
+<script is:inline>
+  window.addEventListener('DOMContentLoaded', () => {
+    new PagefindUI({
+      element: '#search',
+      showSubResults: true,
+      showImages: false,
+      resetStyles: false,
+      translations: {
+        placeholder: 'Etsi sivustolta…',
+        clear_search: 'Tyhjennä',
+        load_more: 'Lataa lisää tuloksia',
+        search_label: 'Etsi sivustolta',
+        filters_label: 'Suodattimet',
+        zero_results: 'Ei tuloksia haulle [SEARCH_TERM]',
+        many_results: '[COUNT] tulosta haulle [SEARCH_TERM]',
+        one_result: '[COUNT] tulos haulle [SEARCH_TERM]',
+        alt_search: 'Ei tuloksia haulle [SEARCH_TERM]. Näytetään tulokset haulle [DIFFERENT_TERM]',
+        search_suggestion: 'Ei tuloksia haulle [SEARCH_TERM]. Kokeile yhtä seuraavista hakusanoista',
+        searching: 'Etsitään…',
+      },
+    });
+
+    // Open all Pagefind result links in new tabs
+    const observer = new MutationObserver(() => {
+      document.querySelectorAll('.pagefind-ui__result-link').forEach((a) => {
+        if (!a.target) {
+          a.target = '_blank';
+          a.rel = 'noopener';
+        }
+      });
+    });
+    const root = document.getElementById('search');
+    if (root) observer.observe(root, { childList: true, subtree: true });
+  });
+</script>
+
+<style is:global>
+  .search-page { padding: var(--space-6) 0; min-height: 60vh; }
+  .pagefind-wrap { max-width: 700px; margin: 0 auto var(--space-4); }
+  .search-hint { text-align: center; color: var(--text-secondary); font-size: 0.9rem; margin-top: var(--space-6); }
+  .search-hint a { color: var(--brand-primary); font-weight: 600; }
+  .search-hint a:hover { text-decoration: underline; }
+
+  /* Pagefind UI brand variables */
+  :root {
+    --pagefind-ui-primary: #ff9900;
+    --pagefind-ui-text: #1D1D1F;
+    --pagefind-ui-background: #fff;
+    --pagefind-ui-border: #ddd;
+    --pagefind-ui-tag: #F9F9F9;
+    --pagefind-ui-border-width: 2px;
+    --pagefind-ui-border-radius: 8px;
+    --pagefind-ui-font: var(--font-body);
+  }
+
+  /*
+   * Move the clear button OUT of the search input and render it
+   * as a normal button below the input.
+   * Pagefind's default: position:absolute inside form, top-right.
+   * We override to position:static (normal flow), add margin, brand it.
+   * Pagefind still toggles its visibility via the "pagefind-ui__suppressed"
+   * class — we keep that behaviour, just restyle the element.
+   */
+  .pagefind-ui__form .pagefind-ui__search-clear.pagefind-ui__search-clear {
+    position: static !important;
+    display: inline-block !important;
+    margin: 12px 0 0 0 !important;
+    justify-self: end !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    width: fit-content !important;
+    padding: 12px 28px !important;
+    height: auto !important;
+    background: #ff9900 !important;
+    color: #000 !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-family: var(--font-headline) !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    line-height: 1 !important;
+    cursor: pointer !important;
+    transition: background 0.15s !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08) !important;
+  }
+  .pagefind-ui__form .pagefind-ui__search-clear:hover {
+    background: #cc7a00 !important;
+    color: #fff !important;
+  }
+  .pagefind-ui__form .pagefind-ui__search-clear:focus-visible {
+    outline: 2px solid #1D1D1F !important;
+    outline-offset: 2px !important;
+  }
+
+  /* The Pagefind form is flex by default (input + button row).
+     Stack them vertically so the now-static button drops below the input. */
+  .pagefind-ui__form {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    row-gap: 12px !important;
+  }
+
+  /* Make the input span the full row width again now that the button isn't beside it. */
+  .pagefind-ui__form .pagefind-ui__search-input {
+    width: 100% !important;
+    flex: 1 1 100% !important;
+    padding-right: 40px !important;
+  }
+</style>
