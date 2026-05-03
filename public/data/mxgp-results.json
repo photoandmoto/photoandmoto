@@ -679,18 +679,54 @@
   },
   "highlights": {
     "fi": {
-      "mxgp_quali": [],
-      "mxgp_race": [],
-      "mx2_quali": [],
-      "mx2_race": [],
-      "standings": []
+      "mxgp_quali": [
+        "Lucas Coenen nappasi paalupaikan lauantain karsinnassa.",
+        "Tim Gajser osoitti vahvuutensa tiukassa karsintaväännössä."
+      ],
+      "mxgp_race": [
+        "Jeffrey Herlings dominoi ensimmäistä MXGP-erää.",
+        "Tim Gajser hallitsi toista erää ja nousi palkintokorokkeelle.",
+        "Jeffrey Herlings vei Trentinon MXGP-osakilpailun voiton."
+      ],
+      "mx2_quali": [
+        "Sacha Coenen oli nopein MX2-luokan karsinnassa.",
+        "Guillem Farres varmisti toisen lähtöruudun karsinnasta."
+      ],
+      "mx2_race": [
+        "Sacha Coenen oli pysäyttämätön voittaen molemmat MX2-erät.",
+        "Guillem Farres taisteli vahvasti ja nousi podiumille.",
+        "Sacha Coenen vei Trentinon MX2-osakilpailun voiton."
+      ],
+      "standings": [
+        "Lucas Coenen johtaa MXGP-sarjaa vankasti.",
+        "Jeffrey Herlings pysyi toisena MXGP-sarjassa.",
+        "Tom Vialle piti kolmannen sijan MXGP-sarjassa."
+      ]
     },
     "en": {
-      "mxgp_quali": [],
-      "mxgp_race": [],
-      "mx2_quali": [],
-      "mx2_race": [],
-      "standings": []
+      "mxgp_quali": [
+        "Lucas Coenen claimed pole position in Saturday's qualifying.",
+        "Tim Gajser showed strength in a tight qualifying battle."
+      ],
+      "mxgp_race": [
+        "Jeffrey Herlings dominated the first MXGP moto.",
+        "Tim Gajser controlled the second moto, securing a podium.",
+        "Jeffrey Herlings claimed the overall MXGP victory in Trentino."
+      ],
+      "mx2_quali": [
+        "Sacha Coenen was the fastest in MX2 qualifying.",
+        "Guillem Farres secured the second gate pick from qualifying."
+      ],
+      "mx2_race": [
+        "Sacha Coenen was unstoppable, winning both MX2 motos.",
+        "Guillem Farres battled hard, surging to a podium finish.",
+        "Sacha Coenen took the overall MX2 win in Trentino."
+      ],
+      "standings": [
+        "Lucas Coenen held firm at the top of the MXGP standings.",
+        "Jeffrey Herlings held firm in second place in MXGP.",
+        "Tom Vialle held firm in third place in MXGP."
+      ]
     }
   },
   "standings": {
