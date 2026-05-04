@@ -99,6 +99,7 @@ const lang = 'fi';
       <div id="adminTabs" class="admin-tabs" style="display:none;">
         <button type="button" class="admin-tab admin-tab--on" data-tab="tarkista">Tarkista</button>
         <button type="button" class="admin-tab" data-tab="laheta">Lähetä kuva</button>
+        <button type="button" class="admin-tab" data-tab="laheta-artikkeli">Lähetä artikkeli</button>
         <button type="button" class="admin-tab" data-tab="hallitse">Hallitse galleriaa</button>
       </div>
 
@@ -131,6 +132,120 @@ const lang = 'fi';
       </div>
 
       <!-- Hallitse galleriaa tab (admin only) -->
+      <div id="tabLahetaArtikkeli" class="tab-content" style="display:none;">
+        <div class="art-form">
+          <h3 class="art-form__title">Uusi artikkeli</h3>
+          <p class="art-form__hint">Tallenna luonnos -painike vie artikkelin staging-ympäristöön (~2 min). Julkaise tuotantoon -painike julkaisee live-sivulle. Voit tallentaa luonnoksen niin monta kertaa kuin haluat ennen julkaisua.</p>
+
+          <div class="art-row">
+            <label class="art-field art-field--full">
+              <span>Otsikko *</span>
+              <input id="artTitle" type="text" maxlength="200" placeholder="Esim. Hyvinkään scramble 1976" />
+            </label>
+          </div>
+
+          <div class="art-row">
+            <label class="art-field art-field--full">
+              <span>Alaotsikko</span>
+              <input id="artSubtitle" type="text" maxlength="200" placeholder="Lyhyt alaotsikko (näkyy listauksessa ja artikkelissa)" />
+            </label>
+          </div>
+
+          <div class="art-row">
+            <label class="art-field">
+              <span>Päiväys *</span>
+              <input id="artDate" type="date" />
+            </label>
+            <label class="art-field">
+              <span>Kategoria *</span>
+              <select id="artCategory">
+                <option value="Historical">Historical</option>
+                <option value="MXGP">MXGP</option>
+                <option value="Speedway">Speedway</option>
+                <option value="">Muu (kirjoita alle)…</option>
+              </select>
+            </label>
+            <label class="art-field">
+              <span>Kieli *</span>
+              <select id="artLanguage">
+                <option value="fi" selected>Suomi (FI)</option>
+                <option value="en">English (EN)</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="art-row" id="artCategoryCustomRow" style="display:none;">
+            <label class="art-field art-field--full">
+              <span>Mukautettu kategoria</span>
+              <input id="artCategoryCustom" type="text" maxlength="60" placeholder="Esim. Endurance" />
+            </label>
+          </div>
+
+          <div class="art-row">
+            <label class="art-field art-field--full">
+              <span>Tagit (pilkulla erotettuna)</span>
+              <input id="artTags" type="text" maxlength="200" placeholder="motocross, hyvinkää, 1976" />
+            </label>
+          </div>
+
+          <div class="art-row">
+            <label class="art-field art-field--full">
+              <span>Slug (URL-osa)</span>
+              <input id="artSlug" type="text" maxlength="80" placeholder="luodaan automaattisesti otsikosta" />
+              <small class="art-hint" id="artSlugPreview">URL: /<em>fi</em>/aikakone/<em>(otsikosta)</em>/</small>
+            </label>
+          </div>
+
+          <div class="art-row">
+            <label class="art-field art-field--full">
+              <span>Pääkuva (hero) — valinnainen</span>
+              <input id="artHero" type="file" accept="image/jpeg,image/png,image/webp" />
+              <small class="art-hint">Kuva resize-pakataan 1600px / 80% JPEG -laatuun selaimessa ennen lähetystä.</small>
+            </label>
+          </div>
+
+          <div class="art-row">
+            <label class="art-field">
+              <span>
+                <input id="artShowHero" type="checkbox" />
+                Näytä pääkuva artikkelin yläosassa
+              </span>
+            </label>
+          </div>
+
+          <div class="art-row">
+            <div class="art-field art-field--full">
+              <span>Sisäkkäiset kuvat</span>
+              <div id="artInlineImages" class="art-inline-list"></div>
+              <button type="button" id="artAddInline" class="art-btn art-btn--add">+ Lisää kuva</button>
+              <small class="art-hint">Käytä rungossa <code>[[image:1]]</code>, <code>[[image:2]]</code> jne. Kuvat tallentuvat <code>/images/&lt;slug&gt;-&lt;numero&gt;.jpg</code></small>
+            </div>
+          </div>
+
+          <div class="art-row">
+            <label class="art-field art-field--full">
+              <span>Runko (Markdown) *</span>
+              <textarea id="artBody" rows="18" placeholder="Tämä on ensimmäinen kappale.&#10;&#10;[[image:1]]&#10;&#10;Toinen kappale jatkaa tarinaa.&#10;&#10;## Väliotsikko&#10;&#10;Lisää tekstiä..."></textarea>
+              <small class="art-hint">Markdown tukee otsikoita (## H2), listoja, lainauksia (&gt; ...) ja taulukoita. Linkit: <code>[teksti](https://...)</code></small>
+            </label>
+          </div>
+
+          <div class="art-row">
+            <label class="art-field art-field--full">
+              <span>SEO-kuvaus (valinnainen)</span>
+              <input id="artSeoDescription" type="text" maxlength="160" placeholder="160 merkin yhteenveto hakukoneille" />
+            </label>
+          </div>
+
+          <div class="art-actions">
+            <button type="button" id="artSaveDraft" class="art-btn art-btn--draft">Tallenna luonnos</button>
+            <button type="button" id="artPublishProd" class="art-btn art-btn--publish">Julkaise tuotantoon</button>
+            <span id="artStatus" class="art-status"></span>
+          </div>
+
+          <div id="artResult" class="art-result" style="display:none;"></div>
+        </div>
+      </div>
       <div id="tabHallitse" class="tab-content" style="display:none;">
         <div class="hallitse-section">
           <h3 class="upload-title">Hallitse galleriaa</h3>
@@ -909,11 +1024,13 @@ document.getElementById('adminLogout').addEventListener('click',()=>{
   document.getElementById('adminPanel').style.display='block';
   document.getElementById('tabTarkista').style.display='none';
   document.getElementById('tabLaheta').style.display='none';
+  document.getElementById('tabLahetaArtikkeli').style.display='none';
   document.getElementById('tabHallitse').style.display='none';
   document.getElementById('mpSubAdmin').style.display='none';
   // Reset to Tarkista tab so re-login lands on the right place
   document.getElementById('tabTarkista').style.display='';
   document.getElementById('tabLaheta').style.display='none';
+  document.getElementById('tabLahetaArtikkeli').style.display='none';
   document.getElementById('tabHallitse').style.display='none';
   document.querySelectorAll('.admin-tab').forEach(t=>t.classList.toggle('admin-tab--on',t.dataset.tab==='tarkista'));
   curFilter=null;
@@ -921,12 +1038,283 @@ document.getElementById('adminLogout').addEventListener('click',()=>{
   load(); // reload without include=all so identified photos drop out for community
 });
 
+// =====================================================================
+// LÄHETÄ ARTIKKELI TAB — article publishing pipeline
+// =====================================================================
+
+let artInlineRows = [];
+let artInlineCounter = 0;
+
+function artSlugify(s){
+  return String(s||'')
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9-]/g,'-')
+    .replace(/-+/g,'-')
+    .replace(/^-|-$/g,'');
+}
+
+function artUpdateSlugPreview(){
+  const titleEl = document.getElementById('artTitle');
+  const slugEl  = document.getElementById('artSlug');
+  const langEl  = document.getElementById('artLanguage');
+  const preview = document.getElementById('artSlugPreview');
+  const lang = langEl.value || 'fi';
+  const slugRaw = slugEl.value.trim() || titleEl.value;
+  const slug = artSlugify(slugRaw) || '(otsikosta)';
+  const route = lang === 'fi' ? 'aikakone' : 'time-machine';
+  preview.innerHTML = 'URL: /' + lang + '/' + route + '/' + slug + '/';
+}
+
+function artRenderInlineRows(){
+  const wrap = document.getElementById('artInlineImages');
+  wrap.innerHTML = '';
+  artInlineRows.forEach((row, idx) => {
+    const num = idx + 1;
+    row.num = num;
+    const div = document.createElement('div');
+    div.className = 'art-inline-row';
+    div.innerHTML = ''
+      + '<span class="art-inline-num">' + num + '.</span>'
+      + '<input type="file" accept="image/jpeg,image/png,image/webp" class="art-inline-file" />'
+      + '<input type="text" placeholder="Kuvateksti (alt)" class="art-inline-caption" maxlength="120" />'
+      + '<button type="button" class="art-inline-rm" title="Poista">×</button>';
+    const fileInp = div.querySelector('.art-inline-file');
+    const capInp  = div.querySelector('.art-inline-caption');
+    const rmBtn   = div.querySelector('.art-inline-rm');
+    if (row.file) {
+      const label = document.createElement('span');
+      label.className = 'art-inline-label';
+      label.textContent = row.file.name + ' (' + Math.round(row.file.size/1024) + ' KB)';
+      fileInp.style.display = 'none';
+      div.insertBefore(label, capInp);
+    }
+    fileInp.addEventListener('change', () => { row.file = fileInp.files[0] || null; artRenderInlineRows(); });
+    capInp.value = row.caption || '';
+    capInp.addEventListener('input', () => { row.caption = capInp.value; });
+    rmBtn.addEventListener('click', () => {
+      artInlineRows = artInlineRows.filter(r => r !== row);
+      artRenderInlineRows();
+    });
+    wrap.appendChild(div);
+  });
+}
+
+document.getElementById('artAddInline').addEventListener('click', () => {
+  artInlineCounter += 1;
+  artInlineRows.push({ num: artInlineCounter, file: null, caption: '' });
+  artRenderInlineRows();
+});
+
+document.getElementById('artTitle').addEventListener('input', artUpdateSlugPreview);
+document.getElementById('artSlug').addEventListener('input', artUpdateSlugPreview);
+document.getElementById('artLanguage').addEventListener('change', artUpdateSlugPreview);
+
+document.getElementById('artCategory').addEventListener('change', (e) => {
+  document.getElementById('artCategoryCustomRow').style.display = e.target.value === '' ? '' : 'none';
+});
+
+(function(){
+  const d = new Date();
+  const iso = d.toISOString().slice(0,10);
+  document.getElementById('artDate').value = iso;
+})();
+
+async function artResizeImage(file){
+  return new Promise((resolve)=>{
+    try{
+      const reader=new FileReader();
+      reader.onload=(e)=>{
+        const img=new Image();
+        img.onload=()=>{
+          try{
+            const MAX=1600;
+            if(img.width<=MAX && img.height<=MAX){resolve(file);return;}
+            let w=img.width, h=img.height;
+            if(w>h){h=Math.round(h*(MAX/w));w=MAX;}
+            else   {w=Math.round(w*(MAX/h));h=MAX;}
+            const canvas=document.createElement('canvas');
+            canvas.width=w; canvas.height=h;
+            canvas.getContext('2d').drawImage(img,0,0,w,h);
+            canvas.toBlob((blob)=>{
+              if(!blob){resolve(file);return;}
+              const newName=file.name.replace(/\.(jpe?g|png|webp)$/i,'.jpg');
+              resolve(new File([blob], newName, {type:'image/jpeg', lastModified:Date.now()}));
+            },'image/jpeg',0.8);
+          }catch(err){console.warn('resize err',err);resolve(file);}
+        };
+        img.onerror=()=>resolve(file);
+        img.src=e.target.result;
+      };
+      reader.onerror=()=>resolve(file);
+      reader.readAsDataURL(file);
+    }catch(err){resolve(file);}
+  });
+}
+
+function artGetForm(){
+  const titleEl = document.getElementById('artTitle');
+  const subtitleEl = document.getElementById('artSubtitle');
+  const dateEl = document.getElementById('artDate');
+  const categoryEl = document.getElementById('artCategory');
+  const categoryCustomEl = document.getElementById('artCategoryCustom');
+  const langEl = document.getElementById('artLanguage');
+  const tagsEl = document.getElementById('artTags');
+  const slugEl = document.getElementById('artSlug');
+  const heroEl = document.getElementById('artHero');
+  const showHeroEl = document.getElementById('artShowHero');
+  const bodyEl = document.getElementById('artBody');
+  const seoEl = document.getElementById('artSeoDescription');
+
+  const category = categoryEl.value || (categoryCustomEl ? categoryCustomEl.value.trim() : '');
+  const slug = artSlugify(slugEl.value.trim() || titleEl.value);
+
+  return {
+    title: titleEl.value.trim(),
+    subtitle: subtitleEl.value.trim(),
+    date: dateEl.value,
+    category,
+    language: langEl.value,
+    tags: tagsEl.value.trim(),
+    slug,
+    body: bodyEl.value,
+    show_hero: showHeroEl.checked,
+    seo_description: seoEl.value.trim(),
+    hero_file: heroEl.files[0] || null,
+    inline: artInlineRows.filter(r => r.file).map(r => ({ num: r.num, file: r.file, caption: r.caption || '' })),
+  };
+}
+
+function artValidate(form){
+  if (!form.title) return 'Otsikko puuttuu';
+  if (!form.date) return 'Päiväys puuttuu';
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(form.date)) return 'Päiväyksen muoto YYYY-MM-DD';
+  if (!form.category) return 'Kategoria puuttuu';
+  if (!form.body.trim()) return 'Runko puuttuu';
+  if (!form.slug) return 'Slug ei muodostunut otsikosta — kirjoita slug käsin';
+  return null;
+}
+
+function artSetStatus(text, kind){
+  const el = document.getElementById('artStatus');
+  el.textContent = text || '';
+  el.className = 'art-status' + (kind ? ' art-status--' + kind : '');
+}
+
+function artShowResult(html){
+  const el = document.getElementById('artResult');
+  el.innerHTML = html;
+  el.style.display = '';
+}
+
+async function artSubmitDraft(){
+  const form = artGetForm();
+  const err = artValidate(form);
+  if (err) { artSetStatus(err, 'err'); return; }
+  if (!adminPw) { artSetStatus('Et ole kirjautunut ylläpitäjäksi', 'err'); return; }
+
+  const draftBtn = document.getElementById('artSaveDraft');
+  const prodBtn  = document.getElementById('artPublishProd');
+  draftBtn.disabled = true; prodBtn.disabled = true;
+  artSetStatus('Pakataan kuvia…', 'load');
+  document.getElementById('artResult').style.display = 'none';
+
+  try {
+    const fd = new FormData();
+    fd.append('password', adminPw);
+    fd.append('mode', 'draft');
+    fd.append('title', form.title);
+    fd.append('subtitle', form.subtitle);
+    fd.append('date', form.date);
+    fd.append('category', form.category);
+    fd.append('language', form.language);
+    fd.append('tags', form.tags);
+    fd.append('slug', form.slug);
+    fd.append('body', form.body);
+    fd.append('show_hero', form.show_hero ? 'true' : 'false');
+    if (form.seo_description) fd.append('seo_description', form.seo_description);
+
+    if (form.hero_file) {
+      const resized = await artResizeImage(form.hero_file);
+      fd.append('hero_image', resized, resized.name);
+    }
+    for (const inl of form.inline) {
+      const resized = await artResizeImage(inl.file);
+      fd.append('inline_image_' + inl.num, resized, resized.name);
+      fd.append('image_' + inl.num + '_caption', inl.caption);
+    }
+
+    artSetStatus('Lähetetään…', 'load');
+    const r = await fetch('/api/articles/publish', { method:'POST', body: fd });
+    const d = await r.json();
+    if (!d.success) throw new Error(d.error || 'Tuntematon virhe');
+
+    artSetStatus('Luonnos tallennettu', 'ok');
+    artShowResult(
+      '<strong>Luonnos tallennettu staging-ympäristöön.</strong>'
+      + '<br>Cloudflare buildaa staging-sivun ~2 min. Kun valmis, esikatsele:'
+      + '<br><a href="' + d.url + '" target="_blank" rel="noopener">' + d.url + '</a>'
+      + '<br><br>Voit muokata kenttiä yllä ja painaa <em>Tallenna luonnos</em> uudelleen — uusi commit korvaa vanhan.'
+    );
+  } catch (e) {
+    artSetStatus('Virhe: ' + e.message, 'err');
+  } finally {
+    draftBtn.disabled = false; prodBtn.disabled = false;
+  }
+}
+
+async function artPublishProduction(){
+  const form = artGetForm();
+  if (!form.slug) { artSetStatus('Slug puuttuu — tallenna ensin luonnos', 'err'); return; }
+  if (!adminPw) { artSetStatus('Et ole kirjautunut ylläpitäjäksi', 'err'); return; }
+
+  if (!confirm('Julkaistaanko artikkeli "' + form.slug + '" tuotantoon? Vie ~2 min ennen kuin näkyy live-sivulla.')) return;
+
+  const draftBtn = document.getElementById('artSaveDraft');
+  const prodBtn  = document.getElementById('artPublishProd');
+  draftBtn.disabled = true; prodBtn.disabled = true;
+  artSetStatus('Julkaistaan tuotantoon…', 'load');
+  document.getElementById('artResult').style.display = 'none';
+
+  try {
+    const r = await fetch('/api/articles/publish', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        password: adminPw,
+        mode: 'production',
+        slug: form.slug,
+        language: form.language,
+      }),
+    });
+    const d = await r.json();
+    if (!d.success) throw new Error(d.error || 'Tuntematon virhe');
+
+    artSetStatus('Julkaistu tuotantoon', 'ok');
+    artShowResult(
+      '<strong>Artikkeli julkaistu tuotantoon.</strong>'
+      + '<br>Cloudflare buildaa live-sivun ~2 min. Kun valmis:'
+      + '<br><a href="' + d.url + '" target="_blank" rel="noopener">' + d.url + '</a>'
+    );
+  } catch (e) {
+    artSetStatus('Virhe: ' + e.message, 'err');
+  } finally {
+    draftBtn.disabled = false; prodBtn.disabled = false;
+  }
+}
+
+document.getElementById('artSaveDraft').addEventListener('click', artSubmitDraft);
+document.getElementById('artPublishProd').addEventListener('click', artPublishProduction);
+
+artUpdateSlugPreview();
+
 // Tab switching (Tarkista / Lähetä)
 document.querySelectorAll('.admin-tab').forEach(t=>t.addEventListener('click',()=>{
   const tab=t.dataset.tab;
   document.querySelectorAll('.admin-tab').forEach(x=>x.classList.toggle('admin-tab--on',x===t));
   document.getElementById('tabTarkista').style.display=tab==='tarkista'?'':'none';
   document.getElementById('tabLaheta').style.display=tab==='laheta'?'':'none';
+  document.getElementById('tabLahetaArtikkeli').style.display=tab==='laheta-artikkeli'?'':'none';
   document.getElementById('tabHallitse').style.display=tab==='hallitse'?'':'none';
   if(tab==='hallitse' && adminPw){loadHallitseGalleries();}
 }));
@@ -1685,6 +2073,47 @@ function openDeleteGalleryPanel() {
 }
 .admin-tab:hover{color:#555}
 .admin-tab--on{color:#222;border-bottom-color:#ff9900}
+
+/* Lähetä artikkeli form */
+.art-form{max-width:880px;padding:8px 0}
+.art-form__title{margin:0 0 8px;font-size:20px;color:#222}
+.art-form__hint{margin:0 0 18px;color:#666;font-size:14px;line-height:1.5}
+.art-row{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px}
+.art-field{display:flex;flex-direction:column;gap:6px;flex:1 1 200px;min-width:180px}
+.art-field--full{flex-basis:100%}
+.art-field>span{font-size:13px;color:#444;font-weight:500}
+.art-field input[type=text],
+.art-field input[type=date],
+.art-field select,
+.art-field textarea{
+  padding:8px 10px;border:1px solid #ccc;border-radius:4px;font-size:14px;font-family:inherit;background:#fff;
+}
+.art-field textarea{font-family:Menlo,Consolas,Monaco,monospace;font-size:13px;line-height:1.5;resize:vertical}
+.art-hint{color:#888;font-size:12px;line-height:1.4}
+.art-hint code{background:#f3f3f3;padding:1px 4px;border-radius:3px;font-size:11px}
+.art-inline-list{display:flex;flex-direction:column;gap:6px;margin:6px 0}
+.art-inline-row{display:flex;gap:8px;align-items:center;padding:6px;background:#fafafa;border:1px solid #eee;border-radius:4px}
+.art-inline-num{font-weight:600;color:#666;width:24px;text-align:right}
+.art-inline-file{flex:0 0 auto;font-size:12px}
+.art-inline-label{flex:1 1 auto;font-size:12px;color:#444;font-style:italic}
+.art-inline-caption{flex:1 1 auto;padding:4px 8px;border:1px solid #ccc;border-radius:3px;font-size:13px}
+.art-inline-rm{background:#eee;border:none;width:28px;height:28px;border-radius:3px;cursor:pointer;font-size:18px;color:#666}
+.art-inline-rm:hover{background:#fdd;color:#900}
+.art-actions{display:flex;gap:12px;align-items:center;margin-top:18px;flex-wrap:wrap}
+.art-btn{padding:10px 18px;border:none;border-radius:4px;font-size:14px;font-weight:500;cursor:pointer}
+.art-btn--add{background:#eee;color:#333;padding:6px 12px;font-size:13px;align-self:flex-start;margin-top:4px}
+.art-btn--add:hover{background:#ddd}
+.art-btn--draft{background:#666;color:#fff}
+.art-btn--draft:hover:not(:disabled){background:#555}
+.art-btn--publish{background:#ff9900;color:#222}
+.art-btn--publish:hover:not(:disabled){background:#e68a00}
+.art-btn:disabled{opacity:0.5;cursor:not-allowed}
+.art-status{font-size:13px;color:#666}
+.art-status--err{color:#c33}
+.art-status--ok{color:#0a0}
+.art-status--load{color:#888;font-style:italic}
+.art-result{margin-top:18px;padding:14px;background:#f5f9ff;border:1px solid #cdd;border-radius:4px;font-size:14px;line-height:1.6}
+.art-result a{color:#06c;text-decoration:underline;word-break:break-all}
 
 /* ===== BUTTONS ===== */
 .btn{font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:700;padding:11px 24px;border-radius:10px;border:none;background:#ff9900;color:#000;cursor:pointer;transition:all .2s ease;letter-spacing:.2px}
