@@ -986,12 +986,7 @@ async function generateThumbDataUrl(file){
     }
   });
 }
-// Resize the original image to a max edge of 1600px and re-encode as JPEG
-// quality 0.85 BEFORE upload. D1 has a ~1MB per-bound-parameter limit; the
-// original file gets base64-encoded server-side, so anything over ~700KB
-// raw breaks. Returns a Blob to swap into FormData. Falls back to the
-// original file if anything goes wrong (better than blocking the upload).
-function resizeImageForUpload(file){
+async function generateMainImageFile(file){
   return new Promise((resolve)=>{
     try{
       const reader=new FileReader();
@@ -1000,36 +995,31 @@ function resizeImageForUpload(file){
         img.onload=()=>{
           try{
             const MAX=1600;
+            if(img.width<=MAX && img.height<=MAX){resolve(file);return;}
             let w=img.width, h=img.height;
-            // If already small enough, no point re-encoding
-            if(w<=MAX && h<=MAX && file.size < 700*1024){
-              resolve(file);
-              return;
-            }
-            if(w>h){
-              if(w>MAX){h=Math.round(h*(MAX/w));w=MAX;}
-            }else{
-              if(h>MAX){w=Math.round(w*(MAX/h));h=MAX;}
-            }
+            if(w>h){h=Math.round(h*(MAX/w));w=MAX;}
+            else   {w=Math.round(w*(MAX/h));h=MAX;}
             const canvas=document.createElement('canvas');
             canvas.width=w; canvas.height=h;
             const ctx=canvas.getContext('2d');
             ctx.drawImage(img,0,0,w,h);
             canvas.toBlob((blob)=>{
-              if(blob){resolve(blob);}else{console.warn('toBlob returned null, using original');resolve(file);}
-            },'image/jpeg',0.85);
+              if(!blob){resolve(file);return;}
+              const newName=file.name.replace(/\.(jpe?g|png|webp)$/i,'.jpg');
+              resolve(new File([blob], newName, {type:'image/jpeg', lastModified:Date.now()}));
+            },'image/jpeg',0.8);
           }catch(err){
-            console.warn('Resize canvas error, using original:',err);
+            console.warn('Main image canvas error:',err);
             resolve(file);
           }
         };
-        img.onerror=()=>{console.warn('Resize img load error, using original');resolve(file);};
+        img.onerror=()=>{console.warn('Main image img load error');resolve(file);};
         img.src=e.target.result;
       };
-      reader.onerror=()=>{console.warn('Resize FileReader error, using original');resolve(file);};
+      reader.onerror=()=>{console.warn('Main image FileReader error');resolve(file);};
       reader.readAsDataURL(file);
     }catch(err){
-      console.warn('Resize generation error, using original:',err);
+      console.warn('Main image generation error:',err);
       resolve(file);
     }
   });
@@ -1045,15 +1035,11 @@ document.getElementById('uploadBtn').addEventListener('click',async()=>{
   // Generate thumb in browser before upload (graceful: if it fails, upload continues without thumb)
   const thumbDataUrl=await generateThumbDataUrl(file);
 
-  msg.innerHTML='<span class="u-load">Pakataan...</span>';
-  const uploadBlob=await resizeImageForUpload(file);
-
   msg.innerHTML='<span class="u-load">Ladataan...</span>';
 
   const fd=new FormData();
-  // Pass the resized blob, but preserve the original filename so the server
-  // can compose the final filename from the user's metadata as before.
-  fd.append('photo',uploadBlob,file.name);
+  const mainFile=await generateMainImageFile(file);
+  fd.append('photo',mainFile);
   fd.append('password',adminPw);
   fd.append('year_estimate',document.getElementById('fYear').value);
   fd.append('people',document.getElementById('fPeople').value);

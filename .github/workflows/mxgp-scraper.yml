@@ -3,35 +3,34 @@ name: MXGP Scraper
 on:
   schedule:
     # Sunday 20:00 UTC — primary run, after Sunday races (all timezones)
-    - cron: '0 20 * * 0'
+    # Gated to Feb–Oct (MXGP season window + safety margin for late-season slips)
+    - cron: '0 20 * 2-10 0'
     # Monday 06:00 UTC — safety net in case Sunday run failed
-    - cron: '0 6 * * 1'
-  workflow_dispatch: # Allow manual trigger
+    - cron: '0 6 * 2-10 1'
+  workflow_dispatch: # Allow manual trigger (year-round, no month gate)
 
 jobs:
   update-mxgp:
     runs-on: ubuntu-latest
-    
     permissions:
       contents: write
-    
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      
+
       - name: Install dependencies
         run: pip install -r scripts/requirements.txt
-      
+
       - name: Run MXGP scraper
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scripts/scrape-mxgp.py
-      
+
       - name: Check for changes
         id: changes
         run: |
@@ -42,7 +41,7 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
             echo "Changes detected, will commit"
           fi
-      
+
       - name: Commit and push
         if: steps.changes.outputs.changed == 'true'
         run: |
