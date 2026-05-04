@@ -201,7 +201,60 @@ Delete the `migrate-astro-6` branch. Update `README.md` to reflect that the site
 
 ## Lessons learned
 
-*To be filled in after the migration completes. Examples of what belongs here: surprises during the Zod 4 migration, Pagefind config that needed tweaking for the Finnish content, anything that took longer than expected, anything that should be done differently for the next major upgrade.*
+Hard-won lessons from the Astro 4.5 → 6.2.1 + Pagefind + llms.txt migration. Each one cost real time on Day 1 of the migration; logged here so the next major upgrade doesn't re-pay the same tuition.
+
+### 1. Two-strike rule
+
+If the second attempt at a problem also fails, **stop guessing**. No third attempt without one of the following: read the source code of the thing you're fighting, inspect the actual DOM in the browser, or question the framing of the problem itself. Most "third attempts" on this project's migration day were just the second attempt with a different typo — they didn't address the underlying misunderstanding, so they couldn't succeed.
+
+### 2. Verify before optimizing
+
+When overriding a third-party library's CSS or JS, the **first** action is to read what the library actually ships, not to assume from the docs or from prior experience with similar tools. Pagefind's clear-button styling cost more time than it should have because we wrote overrides against an assumed DOM structure before reading the rendered DOM. Five minutes with the dev tools would have saved an hour of CSS specificity wars.
+
+### 3. Name the frame out loud
+
+When stuck, **say the working assumption out loud** before another attempt. Something like: "I'm assuming the clear button must be inside the input element." If the user can challenge the frame ("…why does it have to be inside?"), one cycle of wasted work is avoided. If the user agrees the frame is right, at least the next attempt is informed by an explicit hypothesis instead of an implicit one.
+
+### 4. Chat formatting contamination
+
+Strings like `a.target`, `[System.IO]`, `article.id`, or anything that looks like a hostname or class reference get auto-formatted into markdown links (`[token](http://token)`) when copied through chat into PowerShell. The link wrappers break the command silently — PowerShell sees a different string than what was intended. Mitigations:
+
+- Prefer **file downloads over copy-paste edits** for anything non-trivial. The artifact survives the chat round-trip; pasted commands don't.
+- When copy-paste is unavoidable, **build PowerShell strings via concatenation** (`'a' + '.' + 'target'`) so no token in the source matches the chat's auto-link pattern.
+- Use `(Resolve-Path ...).Path` instead of relative `$path` variables when the path is dynamic — fewer chances for a token to be eaten.
+
+### 5. PowerShell encoding
+
+Repeated `Get-Content` / `Set-Content` cycles re-encode UTF-8 → Windows-1252 → corrupted bytes. Each round-trip silently mangles `§`, `→`, `—`, `–`, `Ä`, `Ö`, etc. The cycle is invisible until someone views the file in a tool that doesn't share PowerShell's wrong assumption. Always edit non-ASCII content with:
+
+```powershell
+$bytes = [System.IO.File]::ReadAllBytes($path)
+$content = [System.Text.Encoding]::UTF8.GetString($bytes)
+# ...modify $content...
+$utf8NoBom = [System.Text.UTF8Encoding]::new($false)
+[System.IO.File]::WriteAllText($path, $content, $utf8NoBom)
+```
+
+The `$false` to `UTF8Encoding` matters — it suppresses the BOM, which Astro's parser and Cloudflare's static asset handling both prefer absent.
+
+### 6. PowerShell template-literal escaping
+
+Wrapping JS template literals (`` `${var}` ``) inside a PowerShell **double-quoted** string drops the `$` because PowerShell tries to interpolate it as a variable. Two safe patterns:
+
+- Use **single-quoted PowerShell strings** (`'...'`) when the target file content contains `${...}` — single quotes don't interpolate.
+- Use **string concatenation** for patterns that must contain both `'` and `${...}`: `"part1" + '${var}' + "part2"`.
+
+The mistake is silent: the file gets written with a missing `$` and the JS just breaks at runtime with a confusing reference error.
+
+### 7. PowerShell `Select-String` display
+
+The terminal renders `a.target` as a markdown-link visually, **even when the underlying file content is plain text** with no link wrapper. Don't trust visual output of `Select-String`, `Get-Content`, or any ANSI-rendering tool when verifying that a fix actually landed. Verify with a regex match count on the raw bytes:
+
+```powershell
+([regex]::Matches((Get-Content $path -Raw), 'pattern')).Count
+```
+
+If the count is what you expect, the fix is real regardless of what the terminal showed.
 
 ---
 
