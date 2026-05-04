@@ -1,0 +1,387 @@
+---
+// Pre-publish article preview page.
+//
+// Lives at /fi/yllapito-preview/ — embedded in an iframe inside the admin form.
+// Listens for postMessage from the parent (yllapito.astro form) with article
+// data, renders it into an article-shaped layout that mirrors ArticleLayout.astro
+// as closely as possible.
+//
+// NOT linked from anywhere in the navigation. Reachable only by direct URL.
+// Excluded from sitemap and search via robots meta.
+//
+// Renders markdown client-side via marked.js (CDN). Image placeholders
+// [[image:N]] are replaced with the actual local-preview blob URLs the parent
+// posts in. Hero image is also passed in as a blob URL.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Esikatselu"
+  description="Artikkelin esikatselu"
+  lang="fi"
+>
+  <Fragment slot="head">
+    <meta name="robots" content="noindex, nofollow" />
+  </Fragment>
+
+  <article class="article" id="prevArticle">
+    <div class="container">
+      <header class="article-header">
+        <a class="back-link" href="#" onclick="return false;">← Esikatselu</a>
+
+        <div class="article-meta-top">
+          <span class="badge" id="prevCategory">CATEGORY</span>
+          <span class="meta-date" id="prevDate">PVM</span>
+        </div>
+
+        <h1 class="article-title" id="prevTitle">Otsikko</h1>
+        <p class="article-subtitle" id="prevSubtitle" style="display:none"></p>
+      </header>
+
+      <div class="article-hero" id="prevHero" style="display:none">
+        <img id="prevHeroImg" src="" alt="" />
+      </div>
+
+      <div class="article-body" id="prevBody">
+        <p>Aloita kirjoittaminen lomakkeessa — esikatselu päivittyy tähän reaaliajassa.</p>
+      </div>
+
+      <footer class="article-footer">
+        <div class="author-info">
+          <strong>Kirjoittaja:</strong> <span id="prevAuthor">Photo &amp; Moto</span>
+        </div>
+        <div class="article-tags" id="prevTags"></div>
+      </footer>
+    </div>
+  </article>
+</BaseLayout>
+
+<script is:inline src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+
+<script is:inline>
+  // --- Preview state ---
+  let inlineImageMap = {}; // { 1: blobUrl, 2: blobUrl, ... }
+
+  function fmtDate(iso, lang) {
+    if (!iso) return '';
+    try {
+      const d = new Date(iso + 'T00:00:00');
+      return new Intl.DateTimeFormat(lang === 'fi' ? 'fi-FI' : 'en-US', {
+        year: 'numeric', month: 'long', day: 'numeric'
+      }).format(d);
+    } catch { return iso; }
+  }
+
+  function escapeHtml(s) {
+    return String(s || '')
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function replaceImagePlaceholders(md) {
+    // [[image:N]] → ![alt](blob-url) using inlineImageMap
+    return String(md || '').replace(/\[\[image:(\d+)\]\]/g, (full, num) => {
+      const url = inlineImageMap[num];
+      if (!url) return `*[Kuva ${num} — ei vielä lisätty]*`;
+      return `![Kuva ${num}](${url})`;
+    });
+  }
+
+  function render(data) {
+    // Title / subtitle
+    document.getElementById('prevTitle').textContent = data.title || 'Otsikko';
+    const subEl = document.getElementById('prevSubtitle');
+    if (data.subtitle) {
+      subEl.textContent = data.subtitle;
+      subEl.style.display = '';
+    } else {
+      subEl.style.display = 'none';
+    }
+
+    // Category + date
+    document.getElementById('prevCategory').textContent = data.category || 'KATEGORIA';
+    document.getElementById('prevDate').textContent = fmtDate(data.date, data.language);
+
+    // Author
+    document.getElementById('prevAuthor').textContent = data.author || 'Photo & Moto';
+
+    // Hero
+    const heroWrap = document.getElementById('prevHero');
+    const heroImg = document.getElementById('prevHeroImg');
+    if (data.hero_url && data.show_hero) {
+      heroImg.src = data.hero_url;
+      heroImg.alt = data.title || '';
+      heroWrap.style.display = '';
+    } else {
+      heroImg.src = '';
+      heroWrap.style.display = 'none';
+    }
+
+    // Tags
+    const tagsEl = document.getElementById('prevTags');
+    tagsEl.innerHTML = '';
+    (data.tags || []).forEach(t => {
+      const span = document.createElement('span');
+      span.className = 'tag';
+      span.textContent = '#' + t;
+      tagsEl.appendChild(span);
+    });
+
+    // Body — markdown rendering
+    inlineImageMap = data.inline_images || {};
+    const md = replaceImagePlaceholders(data.body || '');
+    const html = window.marked ? window.marked.parse(md) : ('<pre>' + escapeHtml(md) + '</pre>');
+    document.getElementById('prevBody').innerHTML = html;
+  }
+
+  // Listen for the parent form's updates
+  window.addEventListener('message', (e) => {
+    // Same-origin only — parent and iframe live on the same Pages deployment
+    if (e.origin !== window.location.origin) return;
+    if (!e.data || e.data.type !== 'article-preview-update') return;
+    try {
+      render(e.data.payload || {});
+    } catch (err) {
+      console.warn('preview render failed:', err);
+    }
+  });
+
+  // Tell the parent we're ready to receive updates
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({ type: 'article-preview-ready' }, window.location.origin);
+  }
+</script>
+
+<style>
+  /* Strip site chrome that doesn't make sense in a preview iframe */
+  :global(header.site-header),
+  :global(footer.site-footer),
+  :global(.trending-ticker) {
+    display: none !important;
+  }
+  :global(body) {
+    background: var(--bg-primary, #fff);
+  }
+
+  /* === Mirror ArticleLayout.astro styles below === */
+
+  .article {
+    padding: var(--space-6, 4rem) 0;
+  }
+
+  .article .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  /* Header */
+  .article-header {
+    margin-bottom: var(--space-5, 3rem);
+  }
+
+  .back-link {
+    display: inline-block;
+    font-family: var(--font-headline);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--brand-primary);
+    margin-bottom: var(--space-3, 1.5rem);
+    text-decoration: none;
+    pointer-events: none;
+    opacity: 0.6;
+  }
+
+  .article-meta-top {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2, 1rem);
+    margin-bottom: var(--space-2, 1rem);
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    background: var(--brand-primary, #ff9900);
+    color: #222;
+    font-family: var(--font-headline);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-radius: 999px;
+  }
+
+  .meta-date {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+
+  .article-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--text-primary);
+    margin-bottom: var(--space-2, 1rem);
+    line-height: 1.1;
+  }
+
+  .article-subtitle {
+    font-size: 1.6rem;
+    color: var(--text-primary);
+    font-style: normal;
+    font-weight: 600;
+    margin-bottom: 0;
+    line-height: 1.3;
+  }
+
+  /* Hero image */
+  .article-hero {
+    margin-bottom: var(--space-6, 4rem);
+    border-radius: var(--radius-md, 8px);
+    max-width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+  }
+
+  .article-hero img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Body */
+  .article-body {
+    max-width: 760px;
+    margin: 0 auto;
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+
+  .article-body :global(p:first-of-type::first-letter) {
+    float: left;
+    font-family: var(--font-headline);
+    font-size: 4.5rem;
+    line-height: 0.8;
+    padding-right: 8px;
+    padding-top: 6px;
+    color: var(--text-primary);
+    font-weight: bold;
+  }
+
+  .article-body :global(p) {
+    margin-bottom: var(--space-3, 1.5rem);
+  }
+
+  .article-body :global(h2) {
+    font-family: var(--font-headline);
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-primary);
+    border-left: 4px solid #ff9900;
+    padding-left: var(--space-2, 1rem);
+    margin-top: var(--space-5, 3rem);
+    margin-bottom: var(--space-3, 1.5rem);
+  }
+
+  .article-body :global(h3) {
+    font-size: 1.2rem;
+    color: var(--brand-secondary);
+    margin-top: var(--space-4, 2rem);
+    margin-bottom: var(--space-2, 1rem);
+  }
+
+  .article-body :global(blockquote) {
+    margin: var(--space-4, 2rem) 0;
+    padding: var(--space-3, 1.5rem);
+    background: var(--bg-secondary);
+    border-left: 4px solid var(--brand-primary);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+  }
+
+  .article-body :global(blockquote p) {
+    margin-bottom: 0;
+  }
+
+  .article-body :global(strong) {
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .article-body :global(em) {
+    font-style: italic;
+    color: var(--text-secondary);
+  }
+
+  .article-body :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-4, 2rem) 0;
+    font-size: 0.9rem;
+  }
+
+  .article-body :global(thead) {
+    background: #000;
+    color: white;
+  }
+
+  .article-body :global(th) {
+    font-family: var(--font-headline);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 700;
+  }
+
+  .article-body :global(td) {
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .article-body :global(tr:nth-child(even)) {
+    background: var(--bg-secondary);
+  }
+
+  .article-body :global(img) {
+    width: 60%;
+    max-width: 500px;
+    height: auto;
+    border-radius: var(--radius-md, 8px);
+    margin: var(--space-4, 2rem) auto;
+    display: block;
+  }
+
+  /* Footer */
+  .article-footer {
+    margin-top: var(--space-6, 4rem);
+    padding-top: var(--space-4, 2rem);
+    border-top: 2px solid var(--bg-secondary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2, 1rem);
+  }
+
+  .author-info {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+  }
+
+  .article-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 0.85rem;
+    color: var(--brand-primary);
+    font-weight: 600;
+  }
+</style>
