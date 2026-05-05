@@ -152,35 +152,37 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 </script>
 
-<style>
+<style is:global>
   /* Strip site chrome that doesn't make sense in a preview iframe */
-  :global(header.site-header),
-  :global(footer.site-footer),
-  :global(.trending-ticker) {
+  header.site-header,
+  footer.site-footer,
+  .trending-ticker {
     display: none !important;
   }
-  :global(body) {
+  body {
     background: var(--bg-primary, #fff);
   }
 
-  /* === Mirror ArticleLayout.astro styles below === */
+  /* === Mirror ArticleLayout.astro styles below ===
+     Scoped under #prevArticle so this preview-only style block doesn't bleed
+     into the parent admin page when the iframe lives inside it. */
 
-  .article {
+  #prevArticle.article {
     padding: var(--space-6, 4rem) 0;
   }
 
-  .article .container {
+  #prevArticle .container {
     max-width: 1000px;
     margin: 0 auto;
     padding: 0 1rem;
   }
 
   /* Header */
-  .article-header {
+  #prevArticle .article-header {
     margin-bottom: var(--space-5, 3rem);
   }
 
-  .back-link {
+  #prevArticle .back-link {
     display: inline-block;
     font-family: var(--font-headline);
     font-size: 0.9rem;
@@ -193,14 +195,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     opacity: 0.6;
   }
 
-  .article-meta-top {
+  #prevArticle .article-meta-top {
     display: flex;
     align-items: center;
     gap: var(--space-2, 1rem);
     margin-bottom: var(--space-2, 1rem);
   }
 
-  .badge {
+  #prevArticle .badge {
     display: inline-block;
     padding: 4px 12px;
     background: var(--brand-primary, #ff9900);
@@ -213,29 +215,31 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     border-radius: 999px;
   }
 
-  .meta-date {
+  #prevArticle .meta-date {
     font-size: 0.9rem;
     color: var(--text-secondary);
   }
 
-  .article-title {
+  #prevArticle .article-title {
     font-size: clamp(2rem, 5vw, 3rem);
     color: var(--text-primary);
     margin-bottom: var(--space-2, 1rem);
     line-height: 1.1;
+    overflow-wrap: anywhere;
   }
 
-  .article-subtitle {
+  #prevArticle .article-subtitle {
     font-size: 1.6rem;
     color: var(--text-primary);
     font-style: normal;
     font-weight: 600;
     margin-bottom: 0;
     line-height: 1.3;
+    overflow-wrap: anywhere;
   }
 
   /* Hero image */
-  .article-hero {
+  #prevArticle .article-hero {
     margin-bottom: var(--space-6, 4rem);
     border-radius: var(--radius-md, 8px);
     max-width: 60%;
@@ -244,21 +248,25 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     overflow: hidden;
   }
 
-  .article-hero img {
+  #prevArticle .article-hero img {
     width: 100%;
     height: auto;
     display: block;
   }
 
   /* Body */
-  .article-body {
+  #prevArticle .article-body {
     max-width: 760px;
     margin: 0 auto;
     font-size: 1.05rem;
     line-height: 1.75;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
-  .article-body :global(p:first-of-type::first-letter) {
+  /* Drop cap on the first paragraph. Also fires on a leading blockquote's
+     inner <p>, mirroring ArticleLayout behaviour. */
+  #prevArticle .article-body p:first-of-type::first-letter {
     float: left;
     font-family: var(--font-headline);
     font-size: 4.5rem;
@@ -269,11 +277,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     font-weight: bold;
   }
 
-  .article-body :global(p) {
+  #prevArticle .article-body p {
     margin-bottom: var(--space-3, 1.5rem);
   }
 
-  .article-body :global(h2) {
+  #prevArticle .article-body h2 {
     font-family: var(--font-headline);
     font-size: 1.4rem;
     text-transform: uppercase;
@@ -285,14 +293,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     margin-bottom: var(--space-3, 1.5rem);
   }
 
-  .article-body :global(h3) {
+  #prevArticle .article-body h3 {
     font-size: 1.2rem;
     color: var(--brand-secondary);
     margin-top: var(--space-4, 2rem);
     margin-bottom: var(--space-2, 1rem);
   }
 
-  .article-body :global(blockquote) {
+  #prevArticle .article-body blockquote {
     margin: var(--space-4, 2rem) 0;
     padding: var(--space-3, 1.5rem);
     background: var(--bg-secondary);
@@ -302,33 +310,44 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     color: var(--text-primary);
   }
 
-  .article-body :global(blockquote p) {
+  #prevArticle .article-body blockquote p {
     margin-bottom: 0;
   }
 
-  .article-body :global(strong) {
+  #prevArticle .article-body strong {
     font-weight: 700;
     color: var(--text-primary);
   }
 
-  .article-body :global(em) {
+  #prevArticle .article-body em {
     font-style: italic;
     color: var(--text-secondary);
   }
 
-  .article-body :global(table) {
+  /* Long inline tokens (URLs, hashes) shouldn't blow out the column */
+  #prevArticle .article-body code,
+  #prevArticle .article-body a {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  #prevArticle .article-body pre {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+
+  #prevArticle .article-body table {
     width: 100%;
     border-collapse: collapse;
     margin: var(--space-4, 2rem) 0;
     font-size: 0.9rem;
   }
 
-  .article-body :global(thead) {
+  #prevArticle .article-body thead {
     background: #000;
     color: white;
   }
 
-  .article-body :global(th) {
+  #prevArticle .article-body th {
     font-family: var(--font-headline);
     font-size: 0.85rem;
     text-transform: uppercase;
@@ -338,16 +357,22 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     font-weight: 700;
   }
 
-  .article-body :global(td) {
+  #prevArticle .article-body td {
     padding: 8px 12px;
     border-bottom: 1px solid #eee;
   }
 
-  .article-body :global(tr:nth-child(even)) {
+  #prevArticle .article-body tr:nth-child(even) {
     background: var(--bg-secondary);
   }
 
-  .article-body :global(img) {
+  /* Mirror ArticleLayout: first body row gets bold + brand color */
+  #prevArticle .article-body tr:first-child td {
+    font-weight: 700;
+    color: var(--brand-primary);
+  }
+
+  #prevArticle .article-body img {
     width: 60%;
     max-width: 500px;
     height: auto;
@@ -357,7 +382,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   }
 
   /* Footer */
-  .article-footer {
+  #prevArticle .article-footer {
     margin-top: var(--space-6, 4rem);
     padding-top: var(--space-4, 2rem);
     border-top: 2px solid var(--bg-secondary);
@@ -368,18 +393,18 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     gap: var(--space-2, 1rem);
   }
 
-  .author-info {
+  #prevArticle .author-info {
     font-size: 0.95rem;
     color: var(--text-secondary);
   }
 
-  .article-tags {
+  #prevArticle .article-tags {
     display: flex;
     gap: 6px;
     flex-wrap: wrap;
   }
 
-  .tag {
+  #prevArticle .tag {
     font-size: 0.85rem;
     color: var(--brand-primary);
     font-weight: 600;

@@ -101,6 +101,7 @@ const lang = 'fi';
         <button type="button" class="admin-tab" data-tab="laheta">Lähetä kuva</button>
         <button type="button" class="admin-tab" data-tab="laheta-artikkeli">Lähetä artikkeli</button>
         <button type="button" class="admin-tab" data-tab="hallitse">Hallitse galleriaa</button>
+        <button type="button" class="admin-tab" data-tab="hallitse-artikkeleita">Hallitse artikkeleita</button>
       </div>
 
       <!-- Tarkista tab: filters + grid (community sees filters too) -->
@@ -227,6 +228,15 @@ const lang = 'fi';
           <div class="art-row">
             <label class="art-field art-field--full">
               <span>Runko (Markdown) *</span>
+              <div class="md-toolbar" role="toolbar" aria-label="Markdown-työkalut">
+                <button type="button" class="md-tool md-tool--block" data-md-action="h2" title="Väliotsikko (## H2)">Väliotsikko</button>
+                <button type="button" class="md-tool md-tool--block" data-md-action="h3" title="Alaotsikko (### H3)">Alaotsikko</button>
+                <button type="button" class="md-tool md-tool--block" data-md-action="quote" title="Lainaus (&gt; ...)">Lainaus</button>
+                <span class="md-toolbar__sep" aria-hidden="true"></span>
+                <button type="button" class="md-tool md-tool--bold" data-md-action="bold" title="Lihavointi (**teksti**)">B</button>
+                <button type="button" class="md-tool md-tool--italic" data-md-action="italic" title="Kursivointi (*teksti*)">I</button>
+                <button type="button" class="md-tool" data-md-action="link" title="Linkki ([teksti](url))">Linkki</button>
+              </div>
               <textarea id="artBody" rows="18" placeholder="Tämä on ensimmäinen kappale.&#10;&#10;[[image:1]]&#10;&#10;Toinen kappale jatkaa tarinaa.&#10;&#10;## Väliotsikko&#10;&#10;Lisää tekstiä..."></textarea>
               <small class="art-hint">Markdown tukee otsikoita (## H2), listoja, lainauksia (&gt; ...) ja taulukoita. Linkit: <code>[teksti](https://...)</code></small>
             </label>
@@ -287,6 +297,28 @@ const lang = 'fi';
           <div id="hallitseGrid" class="hallitse-grid"></div>
         </div>
       </div>
+
+      <!-- Hallitse artikkeleita tab (admin only) -->
+      <div id="tabHallitseArtikkeleita" class="tab-content" style="display:none;">
+        <div class="hallitse-section">
+          <h3 class="upload-title">Hallitse artikkeleita</h3>
+          <div class="hart-top">
+            <div class="hart-branch-row">
+              <span class="hart-branch-label">Ympäristö:</span>
+              <button type="button" id="hartBranchProd" class="hart-branch-btn hart-branch-btn--on">Tuotanto (main)</button>
+              <button type="button" id="hartBranchDraft" class="hart-branch-btn">Luonnokset (dev)</button>
+              <button type="button" id="hartReload" class="btn btn--ghost hart-reload">↻ Päivitä</button>
+            </div>
+          </div>
+          <div id="hartMsg" class="upload-msg" style="margin-top:8px;"></div>
+          <div class="hart-search-row" id="hartSearchRow" style="display:none;">
+            <input type="text" id="hartSearch" class="inp" placeholder="Hae otsikkoa, slugia, kategoriaa..." style="max-width:340px;" />
+            <span id="hartSearchCount" class="hallitse-search-count"></span>
+          </div>
+          <div id="hartList" class="hart-list"></div>
+        </div>
+      </div>
+
       <!-- Modal overlay -->
       <div id="modal" class="overlay" style="display:none;">
         <div class="overlay-bg"></div>
@@ -1044,12 +1076,14 @@ document.getElementById('adminLogout').addEventListener('click',()=>{
   document.getElementById('tabLaheta').style.display='none';
   document.getElementById('tabLahetaArtikkeli').style.display='none';
   document.getElementById('tabHallitse').style.display='none';
+  document.getElementById('tabHallitseArtikkeleita').style.display='none';
   document.getElementById('mpSubAdmin').style.display='none';
   // Reset to Tarkista tab so re-login lands on the right place
   document.getElementById('tabTarkista').style.display='';
   document.getElementById('tabLaheta').style.display='none';
   document.getElementById('tabLahetaArtikkeli').style.display='none';
   document.getElementById('tabHallitse').style.display='none';
+  document.getElementById('tabHallitseArtikkeleita').style.display='none';
   document.querySelectorAll('.admin-tab').forEach(t=>t.classList.toggle('admin-tab--on',t.dataset.tab==='tarkista'));
   curFilter=null;
   renderFilters();
@@ -1433,6 +1467,92 @@ artRenderInlineRows = function(){
   artPushPreview();
 };
 
+// =====================================================================
+// MARKDOWN TOOLBAR — insert MD syntax into #artBody at cursor / selection
+// =====================================================================
+//
+// Block actions (h2 / h3 / quote): if the cursor isn't at the start of a
+// blank line, we prepend "\n\n" so the prefix lands on its own line. We
+// also append "\n\n" after so the next paragraph starts cleanly.
+//
+// Inline actions (bold / italic / link): wrap the current selection (or
+// insert a placeholder and pre-select it so the user can type to replace).
+
+function artMdInsert(action) {
+  const ta = document.getElementById('artBody');
+  if (!ta) return;
+  ta.focus();
+  const start = ta.selectionStart;
+  const end   = ta.selectionEnd;
+  const value = ta.value;
+  const sel   = value.slice(start, end);
+
+  const BLOCKS = {
+    h2:    { prefix: '## ',  placeholder: 'Väliotsikko' },
+    h3:    { prefix: '### ', placeholder: 'Alaotsikko' },
+    quote: { prefix: '> ',   placeholder: 'Lainattu teksti' },
+  };
+  const INLINES = {
+    bold:   { prefix: '**', suffix: '**', placeholder: 'lihava teksti' },
+    italic: { prefix: '*',  suffix: '*',  placeholder: 'kursiivi teksti' },
+  };
+
+  if (action === 'link') {
+    const text = sel || 'linkin teksti';
+    const url  = 'https://';
+    const insert = '[' + text + '](' + url + ')';
+    const before = value.slice(0, start);
+    const after  = value.slice(end);
+    ta.value = before + insert + after;
+    // Place cursor inside the URL parens so the user types the address next.
+    const urlStart = before.length + 1 + text.length + 2;
+    const urlEnd   = urlStart + url.length;
+    ta.setSelectionRange(urlStart, urlEnd);
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+    return;
+  }
+
+  if (BLOCKS[action]) {
+    const cfg = BLOCKS[action];
+    const text = sel || cfg.placeholder;
+    // Decide if we need a leading blank line.
+    const needLeadingBreak = start > 0 && !/(\n\n|^)$/.test(value.slice(0, start));
+    const lead  = needLeadingBreak ? '\n\n' : '';
+    const trail = '\n\n';
+    const insert = lead + cfg.prefix + text + trail;
+    const before = value.slice(0, start);
+    const after  = value.slice(end);
+    ta.value = before + insert + after;
+    // Select just the placeholder/text part so the user can immediately type over it.
+    const selStart = before.length + lead.length + cfg.prefix.length;
+    const selEnd   = selStart + text.length;
+    ta.setSelectionRange(selStart, selEnd);
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+    return;
+  }
+
+  if (INLINES[action]) {
+    const cfg = INLINES[action];
+    const text = sel || cfg.placeholder;
+    const insert = cfg.prefix + text + cfg.suffix;
+    const before = value.slice(0, start);
+    const after  = value.slice(end);
+    ta.value = before + insert + after;
+    const selStart = before.length + cfg.prefix.length;
+    const selEnd   = selStart + text.length;
+    ta.setSelectionRange(selStart, selEnd);
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+    return;
+  }
+}
+
+document.querySelectorAll('.md-toolbar .md-tool').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    artMdInsert(btn.dataset.mdAction);
+  });
+});
+
 // "Esikatselu tarkistettu" checkbox — gates Tallenna luonnos
 (function wireReviewGate(){
   const cb = document.getElementById('artReviewed');
@@ -1463,7 +1583,9 @@ document.querySelectorAll('.admin-tab').forEach(t=>t.addEventListener('click',()
   document.getElementById('tabLaheta').style.display=tab==='laheta'?'':'none';
   document.getElementById('tabLahetaArtikkeli').style.display=tab==='laheta-artikkeli'?'':'none';
   document.getElementById('tabHallitse').style.display=tab==='hallitse'?'':'none';
+  document.getElementById('tabHallitseArtikkeleita').style.display=tab==='hallitse-artikkeleita'?'':'none';
   if(tab==='hallitse' && adminPw){loadHallitseGalleries();}
+  if(tab==='hallitse-artikkeleita' && adminPw){loadHartArticles();}
 }));
 
 // Ohje collapse/expand — remember the user's preference across logins
@@ -2011,6 +2133,254 @@ function openDeleteGalleryPanel() {
 
   document.getElementById('delGalleryPw').focus();
 }
+
+// =====================================================================
+// HALLITSE ARTIKKELEITA TAB — list + delete published / draft articles
+// =====================================================================
+
+let hartCurrentBranch = 'main';
+let hartArticles = [];
+
+async function loadHartArticles() {
+  const msg  = document.getElementById('hartMsg');
+  const list = document.getElementById('hartList');
+  msg.innerHTML = '<span class="u-load">Ladataan...</span>';
+  list.innerHTML = '';
+  document.getElementById('hartSearchRow').style.display = 'none';
+  try {
+    const r = await fetch('/api/articles/list?branch=' + encodeURIComponent(hartCurrentBranch), {
+      headers: { 'X-Admin-Password': adminPw },
+    });
+    const data = await r.json();
+    if (!r.ok) {
+      msg.innerHTML = `<span class="u-err">${esc(data.error || 'Virhe')}</span>`;
+      return;
+    }
+    hartArticles = data.articles || [];
+    const branchLabel = data.branch === 'main' ? 'tuotanto' : 'luonnokset';
+    msg.innerHTML = `<span class="u-ok">${hartArticles.length} artikkelitiedostoa (${esc(branchLabel)})</span>`;
+    renderHartList(hartArticles);
+    initHartSearch();
+  } catch(e) {
+    msg.innerHTML = `<span class="u-err">Verkkovirhe: ${esc(e.message)}</span>`;
+  }
+}
+
+function hartGroupBySlug(articles) {
+  // Each slug may have FI and/or EN entries — fold into one row.
+  const bySlug = new Map();
+  for (const a of articles) {
+    if (!bySlug.has(a.slug)) bySlug.set(a.slug, { slug: a.slug, fi: null, en: null });
+    bySlug.get(a.slug)[a.language] = a;
+  }
+  const rows = [...bySlug.values()];
+  rows.sort((a, b) => {
+    const da = (a.fi && a.fi.date) || (a.en && a.en.date) || '';
+    const db = (b.fi && b.fi.date) || (b.en && b.en.date) || '';
+    if (da !== db) return da < db ? 1 : -1;
+    return a.slug < b.slug ? -1 : 1;
+  });
+  return rows;
+}
+
+function hartArticleUrl(slug, language, branch) {
+  const route = language === 'fi' ? 'aikakone' : 'time-machine';
+  const host  = branch === 'main' ? 'https://www.photoandmoto.fi' : 'https://photoandmoto-staging.pages.dev';
+  return host + '/' + language + '/' + route + '/' + slug + '/';
+}
+
+function renderHartList(articles) {
+  const list = document.getElementById('hartList');
+  if (!articles.length) {
+    list.innerHTML = '<div class="grid-empty">Ei artikkeleita tässä haarassa.</div>';
+    return;
+  }
+  const rows = hartGroupBySlug(articles);
+  list.innerHTML = `
+    <table class="hart-table">
+      <thead>
+        <tr>
+          <th>Otsikko</th>
+          <th class="hart-col-date">Päiväys</th>
+          <th class="hart-col-cat">Kategoria</th>
+          <th class="hart-col-langs">Kielet</th>
+          <th class="hart-col-actions">Toiminnot</th>
+        </tr>
+      </thead>
+      <tbody>
+      ${rows.map(r => {
+        const primary = r.fi || r.en;
+        const langs = [];
+        if (r.fi) langs.push(`<span class="hart-lang-badge${r.fi.is_stub ? ' hart-lang-badge--stub' : ''}" title="${r.fi.is_stub ? 'Käännöstynkä' : 'Suomi'}">FI${r.fi.is_stub ? '*' : ''}</span>`);
+        if (r.en) langs.push(`<span class="hart-lang-badge${r.en.is_stub ? ' hart-lang-badge--stub' : ''}" title="${r.en.is_stub ? 'Käännöstynkä' : 'English'}">EN${r.en.is_stub ? '*' : ''}</span>`);
+        const openBtns = [];
+        if (r.fi) openBtns.push(`<a class="hart-link" href="${escAttr(hartArticleUrl(r.slug, 'fi', hartCurrentBranch))}" target="_blank" rel="noopener" title="Avaa FI-artikkeli">FI ↗</a>`);
+        if (r.en) openBtns.push(`<a class="hart-link" href="${escAttr(hartArticleUrl(r.slug, 'en', hartCurrentBranch))}" target="_blank" rel="noopener" title="Avaa EN-artikkeli">EN ↗</a>`);
+        return `
+        <tr data-slug="${escAttr(r.slug)}">
+          <td>
+            <div class="hart-title">${esc(primary.title || r.slug)}</div>
+            ${primary.subtitle ? `<div class="hart-subtitle">${esc(primary.subtitle)}</div>` : ''}
+            <div class="hart-slug">/${esc(r.slug)}/</div>
+          </td>
+          <td class="hart-col-date">${esc(primary.date || '—')}</td>
+          <td class="hart-col-cat">${esc(primary.category || '—')}</td>
+          <td class="hart-col-langs">${langs.join(' ')}</td>
+          <td class="hart-col-actions">
+            <div class="hart-action-stack">
+              <div class="hart-link-row">${openBtns.join('')}</div>
+              <button class="btn btn--danger hart-del" data-slug="${escAttr(r.slug)}" title="Poista artikkeli">🗑 Poista</button>
+            </div>
+          </td>
+        </tr>`;
+      }).join('')}
+      </tbody>
+    </table>
+    <div class="hart-legend">* = käännöstynkä (englanninkielinen aihio luotu automaattisesti, sisältöä ei ole vielä käännetty)</div>
+  `;
+
+  list.querySelectorAll('.hart-del').forEach(btn => btn.addEventListener('click', () => openHartDeletePanel(btn.dataset.slug)));
+}
+
+function openHartDeletePanel(slug) {
+  const existing = document.getElementById('hartDeletePanel');
+  if (existing) {
+    if (existing.dataset.slug === slug) { existing.remove(); return; }
+    existing.remove();
+  }
+  const fi = hartArticles.find(a => a.slug === slug && a.language === 'fi');
+  const en = hartArticles.find(a => a.slug === slug && a.language === 'en');
+  if (!fi && !en) return;
+
+  const tr = document.querySelector(`#hartList tr[data-slug="${CSS.escape(slug)}"]`);
+  if (!tr) return;
+
+  const opts = [];
+  if (fi && en) {
+    opts.push('<label class="hart-del-opt"><input type="radio" name="hartDelMode" value="both" checked /> <strong>Molemmat kielet</strong> (suositus — myös kuvat)</label>');
+    opts.push('<label class="hart-del-opt"><input type="radio" name="hartDelMode" value="fi" /> Vain FI (kuvat säilyvät, koska EN viittaa niihin)</label>');
+    opts.push('<label class="hart-del-opt"><input type="radio" name="hartDelMode" value="en" /> Vain EN (kuvat säilyvät, koska FI viittaa niihin)</label>');
+  } else if (fi) {
+    opts.push('<label class="hart-del-opt"><input type="radio" name="hartDelMode" value="fi" checked /> Poista FI-artikkeli ja sen kuvat</label>');
+  } else {
+    opts.push('<label class="hart-del-opt"><input type="radio" name="hartDelMode" value="en" checked /> Poista EN-artikkeli ja sen kuvat</label>');
+  }
+
+  const branchLabel = hartCurrentBranch === 'main' ? 'TUOTANNOSTA' : 'luonnoksista (dev)';
+  const detailRow = document.createElement('tr');
+  detailRow.id = 'hartDeletePanel';
+  detailRow.dataset.slug = slug;
+  detailRow.className = 'hart-detail-row';
+  detailRow.innerHTML = `
+    <td colspan="5">
+      <div class="hart-del-panel">
+        <div class="hart-del-panel__head">
+          <span class="hart-del-panel__icon">⚠</span>
+          <strong>Poista artikkeli ${esc(branchLabel)}</strong> &nbsp;<code>${esc(slug)}</code>
+        </div>
+        <div class="hart-del-panel__opts">${opts.join('')}</div>
+        <label class="hart-del-panel__gate">
+          <input type="checkbox" id="hartDelConfirm" />
+          <span>Olen varma — poista artikkelin tiedostot ja kuvat lopullisesti tästä haarasta. Toiminto kirjautuu git-historiaan.</span>
+        </label>
+        <div class="hart-del-panel__actions">
+          <button class="btn btn--ghost" id="hartDelCancel">Peruuta</button>
+          <button class="btn btn--danger" id="hartDelGo" disabled>Poista lopullisesti</button>
+        </div>
+        <div id="hartDelMsg" class="hart-del-panel__msg"></div>
+      </div>
+    </td>
+  `;
+  tr.after(detailRow);
+
+  const gate  = document.getElementById('hartDelConfirm');
+  const goBtn = document.getElementById('hartDelGo');
+  gate.addEventListener('change', () => { goBtn.disabled = !gate.checked; });
+
+  document.getElementById('hartDelCancel').addEventListener('click', () => detailRow.remove());
+
+  goBtn.addEventListener('click', async () => {
+    const mode = document.querySelector('input[name="hartDelMode"]:checked');
+    if (!mode) return;
+    const choice = mode.value; // 'fi' | 'en' | 'both'
+    const language   = choice === 'both' ? (fi ? 'fi' : 'en') : choice;
+    const deleteBoth = choice === 'both';
+    const msg = document.getElementById('hartDelMsg');
+    msg.innerHTML = '<span class="u-load">Poistetaan...</span>';
+    goBtn.disabled = true;
+    document.getElementById('hartDelCancel').disabled = true;
+    try {
+      const r = await fetch('/api/articles/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          password: adminPw,
+          mode: hartCurrentBranch === 'main' ? 'production' : 'draft',
+          slug,
+          language,
+          delete_both: deleteBoth,
+        }),
+      });
+      const data = await r.json();
+      if (data.success) {
+        const env = hartCurrentBranch === 'main' ? 'tuotantosivun' : 'staging-sivun';
+        document.getElementById('hartMsg').innerHTML =
+          `<span class="u-ok">✓ Poistettu (${data.deleted_files.length} tiedostoa). ${env} päivitys vie ~2 min.</span>`;
+        await loadHartArticles();
+      } else {
+        msg.innerHTML = `<span class="u-err">Virhe: ${esc(data.error || 'Tuntematon virhe')}</span>`;
+        goBtn.disabled = false;
+        document.getElementById('hartDelCancel').disabled = false;
+      }
+    } catch(e) {
+      msg.innerHTML = `<span class="u-err">Verkkovirhe: ${esc(e.message)}</span>`;
+      goBtn.disabled = false;
+      document.getElementById('hartDelCancel').disabled = false;
+    }
+  });
+}
+
+function initHartSearch() {
+  const inp   = document.getElementById('hartSearch');
+  const row   = document.getElementById('hartSearchRow');
+  const count = document.getElementById('hartSearchCount');
+  if (!inp) return;
+  row.style.display = 'flex';
+  inp.value = '';
+  count.textContent = '';
+  inp.oninput = () => {
+    const q = inp.value.trim().toLowerCase();
+    const trs = document.querySelectorAll('#hartList tbody tr:not(.hart-detail-row)');
+    let visible = 0;
+    trs.forEach(tr => {
+      const text = (tr.textContent || '').toLowerCase();
+      const show = !q || text.includes(q);
+      tr.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    count.textContent = q ? `${visible} tulosta` : '';
+    const dp = document.getElementById('hartDeletePanel');
+    if (dp && q) dp.remove();
+  };
+}
+
+document.getElementById('hartBranchProd') && document.getElementById('hartBranchProd').addEventListener('click', () => {
+  if (hartCurrentBranch === 'main') return;
+  hartCurrentBranch = 'main';
+  document.getElementById('hartBranchProd').classList.add('hart-branch-btn--on');
+  document.getElementById('hartBranchDraft').classList.remove('hart-branch-btn--on');
+  if (adminPw) loadHartArticles();
+});
+document.getElementById('hartBranchDraft') && document.getElementById('hartBranchDraft').addEventListener('click', () => {
+  if (hartCurrentBranch === 'dev') return;
+  hartCurrentBranch = 'dev';
+  document.getElementById('hartBranchDraft').classList.add('hart-branch-btn--on');
+  document.getElementById('hartBranchProd').classList.remove('hart-branch-btn--on');
+  if (adminPw) loadHartArticles();
+});
+document.getElementById('hartReload') && document.getElementById('hartReload').addEventListener('click', () => {
+  if (adminPw) loadHartArticles();
+});
 </script>
 
 <style is:global>
@@ -2236,6 +2606,24 @@ function openDeleteGalleryPanel() {
   padding:8px 10px;border:1px solid #ccc;border-radius:4px;font-size:14px;font-family:inherit;background:#fff;
 }
 .art-field textarea{font-family:Menlo,Consolas,Monaco,monospace;font-size:13px;line-height:1.5;resize:vertical}
+
+/* Markdown toolbar — sits between the body label and the textarea */
+.md-toolbar{
+  display:flex;flex-wrap:wrap;align-items:center;gap:4px;
+  padding:6px;background:#f7f6f4;border:1px solid #ccc;border-bottom:none;
+  border-top-left-radius:4px;border-top-right-radius:4px;
+}
+.md-toolbar + textarea{border-top-left-radius:0;border-top-right-radius:0}
+.md-toolbar__sep{width:1px;height:18px;background:#ccc;margin:0 4px}
+.md-tool{
+  background:#fff;border:1px solid #ddd;border-radius:3px;
+  padding:4px 10px;font-size:12px;font-weight:600;color:#444;cursor:pointer;
+  font-family:inherit;line-height:1.2;transition:all .12s;
+}
+.md-tool:hover{background:#ff9900;border-color:#ff9900;color:#fff}
+.md-tool--bold{font-weight:800;font-family:Menlo,Consolas,Monaco,monospace;min-width:28px}
+.md-tool--italic{font-style:italic;font-family:Menlo,Consolas,Monaco,monospace;min-width:28px}
+
 .art-hint{color:#888;font-size:12px;line-height:1.4}
 .art-hint code{background:#f3f3f3;padding:1px 4px;border-radius:3px;font-size:11px}
 .art-inline-list{display:flex;flex-direction:column;gap:6px;margin:6px 0}
@@ -2851,6 +3239,95 @@ function openDeleteGalleryPanel() {
 
   .hallitse-search-row{display:flex;align-items:center;gap:12px;margin-top:12px;}
   .hallitse-search-count{font-size:.8rem;color:#888;font-weight:600;}
+
+  /* ===== HALLITSE ARTIKKELEITA TAB ===== */
+  .hart-top{margin-bottom:8px}
+  .hart-branch-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .hart-branch-label{font-size:.78rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-right:4px}
+  .hart-branch-btn{
+    background:#fff;border:1.5px solid #ddd;border-radius:8px;
+    padding:7px 14px;font-size:.85rem;font-weight:600;color:#555;cursor:pointer;
+    font-family:inherit;transition:all .15s;
+  }
+  .hart-branch-btn:hover{border-color:#bbb;color:#222}
+  .hart-branch-btn--on{background:#ff9900;border-color:#ff9900;color:#fff}
+  .hart-branch-btn--on:hover{background:#e68a00;border-color:#e68a00;color:#fff}
+  .hart-reload{margin-left:auto}
+  .hart-search-row{display:flex;align-items:center;gap:12px;margin-top:12px;}
+  .hart-list{margin-top:14px}
+  .hart-table{
+    width:100%;border-collapse:separate;border-spacing:0;
+    background:#fff;border-radius:12px;overflow:hidden;
+    box-shadow:0 2px 8px rgba(0,0,0,.06);font-size:.88rem;
+  }
+  .hart-table th{
+    background:#f7f6f4;text-align:left;padding:10px 14px;
+    font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.5px;color:#666;
+    border-bottom:1px solid #e8e6e2;
+  }
+  .hart-table td{padding:12px 14px;border-bottom:1px solid #f0eeea;vertical-align:top}
+  .hart-table tbody tr:last-child td{border-bottom:none}
+  .hart-table tbody tr:hover:not(.hart-detail-row){background:#fafaf8}
+  .hart-col-date{white-space:nowrap;width:110px;color:#555}
+  .hart-col-cat{white-space:nowrap;width:120px;color:#555}
+  .hart-col-langs{width:90px}
+  .hart-col-actions{width:170px;text-align:right}
+  .hart-title{font-weight:700;color:#111;line-height:1.3;margin-bottom:2px;word-break:break-word}
+  .hart-subtitle{font-size:.8rem;color:#666;line-height:1.35;margin-bottom:2px;word-break:break-word}
+  .hart-slug{font-size:.74rem;color:#999;font-family:ui-monospace,Menlo,Consolas,monospace}
+  .hart-lang-badge{
+    display:inline-block;background:#eaeaea;color:#333;
+    font-size:.7rem;font-weight:700;padding:2px 7px;border-radius:4px;
+    letter-spacing:.5px;margin-right:4px;
+  }
+  .hart-lang-badge--stub{background:#fff1d6;color:#a06400}
+  .hart-action-stack{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+  .hart-link-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+  .hart-link{
+    font-size:.74rem;color:#ff9900;text-decoration:none;font-weight:600;
+    padding:3px 7px;border:1px solid #ffd89a;border-radius:4px;background:#fff8e6;
+  }
+  .hart-link:hover{background:#ffe9bb}
+  .hart-table .hart-del{font-size:.78rem;padding:6px 12px}
+  .hart-legend{font-size:.74rem;color:#888;margin-top:8px;padding:0 4px}
+  .hart-detail-row td{padding:0;background:#fff5f5}
+  .hart-del-panel{
+    margin:0;padding:16px 20px;
+    background:#fff5f5;border-top:2px solid #f5c6c6;
+    animation:pubFadeIn .2s ease-out;
+  }
+  .hart-del-panel__head{
+    display:flex;align-items:center;gap:8px;
+    font-size:.95rem;color:#c0392b;margin-bottom:12px;
+  }
+  .hart-del-panel__icon{font-size:1.2rem}
+  .hart-del-panel__head code{
+    background:#fff;padding:2px 6px;border-radius:4px;
+    font-size:.85rem;color:#666;font-family:ui-monospace,Menlo,Consolas,monospace;
+  }
+  .hart-del-panel__opts{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+  .hart-del-opt{
+    display:flex;align-items:center;gap:8px;font-size:.88rem;color:#444;cursor:pointer;
+    padding:6px 10px;border-radius:6px;transition:background .12s;
+  }
+  .hart-del-opt:hover{background:#fff}
+  .hart-del-opt input{margin:0}
+  .hart-del-panel__gate{
+    display:flex;align-items:flex-start;gap:8px;
+    font-size:.85rem;color:#7a3a3a;line-height:1.4;
+    background:#fff;padding:10px 12px;border-radius:8px;border:1px solid #f5c6c6;
+    margin-bottom:12px;cursor:pointer;
+  }
+  .hart-del-panel__gate input{margin-top:3px;flex-shrink:0}
+  .hart-del-panel__actions{display:flex;gap:8px}
+  .hart-del-panel__msg{margin-top:10px;font-size:.85rem;min-height:1.2em}
+  @media(max-width:760px){
+    .hart-table{font-size:.82rem}
+    .hart-col-cat{display:none}
+    .hart-col-actions{width:auto}
+    .hart-action-stack{align-items:stretch}
+    .hart-link-row{justify-content:flex-start}
+  }
 
   /* ===== PASSWORD INPUT ENHANCEMENTS ===== */
   .pw-wrap{position:relative;flex:1;min-width:150px;max-width:260px}
