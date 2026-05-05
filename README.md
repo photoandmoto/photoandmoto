@@ -1,6 +1,6 @@
 # Photo & Moto Website
 
-Modern static site for motorsport history photos and stories. Built with [Astro 6](https://astro.build), deployed on [Cloudflare Pages](https://pages.cloudflare.com), with a small set of Cloudflare Pages Functions for the community-curation features (mystery-photo identification, comments, voting, admin tooling, gallery publishing).
+Modern static site for motorsport history photos and stories. Built with [Astro 4.5](https://astro.build), deployed on [Cloudflare Pages](https://pages.cloudflare.com), with a small set of Cloudflare Pages Functions for the community-curation features (mystery-photo identification, comments, voting, admin tooling, gallery publishing).
 
 **Live:** [www.photoandmoto.fi](https://www.photoandmoto.fi)
 
@@ -23,7 +23,7 @@ npm run build
 npm run preview
 ```
 
-Node.js 20+ required. Production and staging Cloudflare Pages projects both run **Node 24** (set via `NODE_VERSION` env var).
+Node.js 20+ required.
 
 ---
 
@@ -60,8 +60,7 @@ A two-sided feature where the public helps identify old motorsport photos and ad
 
 - Admin login (password-protected) reveals additional UI on the same page
 - **Tarkista tab**: review suggestions, write canonical metadata per field, save → photo status auto-promotes (Uusi → Osittain tunnistettu → Tunnistettu)
-- **Lähetä kuva tab**: upload new mystery photos with optional partial metadata. The browser resizes the image to **1600px max edge / 80% JPEG** before upload (Canvas API), keeping the row under D1's ~2 MB limit, and also generates a 300px-edge thumbnail (~10–25 KB) for the landing-page help block. Both run client-side; the original file stays on the user's local machine.
-- **Hallitse galleriaa tab**: post-publish gallery management. Delete a photo from a published gallery, or use **Siirrä** to move a photo between galleries (atomic move of original + derivatives + manifest entries across both galleries, single commit). Implemented by `functions/api/mystery/gallery-manage.js`.
+- **Lähetä kuva tab**: upload new mystery photos with optional partial metadata. The browser generates a 300px-edge JPEG thumbnail at upload time (Canvas API, ~10–25 KB) so the photo can immediately appear in the landing-page help block.
 - Filters show what's new since last login (`Tarkistettavaa`, `Kesken`, `Valmiit`)
 - One-click **Julkaise Galleriaan** moves a fully-identified photo into the permanent gallery (see "Publishing pipeline" below)
 
@@ -108,6 +107,85 @@ The whole thing takes ~2 minutes and requires zero manual steps. Loop guard: the
 - Or pick **➕ Luo uusi galleria…** and the new gallery is created on the fly
 - Edit the auto-composed caption before publishing
 - See a live filename preview
+
+---
+
+## Article publishing pipeline (admin-only)
+
+A separate flow from the gallery one above — for writing and publishing long-form articles to **Aikakone**. The whole loop happens in the admin UI; no CLI, no git, no manual file editing.
+
+### Where it lives
+
+The **Lähetä artikkeli** tab inside `/fi/yllapito/` (admin login required). Sits next to Tarkista, Lähetä kuva, and Hallitse galleriaa.
+
+### What's in the form
+
+- Title, subtitle, date (defaults to today), category dropdown (Historical / MXGP / Speedway / custom), language toggle (FI / EN)
+- Tags (comma-separated)
+- Slug — auto-derived from title (NFD-stripped, lowercased, hyphenated), editable
+- Hero image (optional) + show-hero checkbox
+- Inline images: dynamic list, each with a numbered slot (`[[image:1]]`, `[[image:2]]`, ...) and an alt-text caption. Use `[[image:N]]` placeholders in the body — they get replaced with markdown image syntax server-side.
+- Body (Markdown)
+- SEO description (optional)
+
+All images get **client-side resize to 1600px / 80% JPEG** before upload (same pattern as the mystery-photo tab). Keeps payloads under D1 row limits.
+
+### Side-by-side live preview
+
+The form is split-layout: form on the left, preview iframe on the right. Every keystroke postMessages the iframe with the current frontmatter + body. Hero and inline images become local `blob:` URLs inside the browser — they only get uploaded when you click Tallenna luonnos.
+
+The preview page lives at `/fi/yllapito-preview/` (noindex, not linked anywhere). Renders Markdown via `marked` from a CDN, mirrors `ArticleLayout.astro` styling.
+
+### Manual review gate
+
+Before Tallenna luonnos can be clicked, admin must tick **"Olen tarkistanut esikatselun ja artikkeli on valmis tallennettavaksi luonnokseksi"**. This forces a deliberate "I looked at the preview, I approve" step before anything leaves the browser.
+
+The checkbox auto-resets after a successful save, so the next edit cycle requires a fresh review.
+
+### What the buttons do
+
+```
+Tallenna luonnos
+    ↓
+publish.js Worker (mode=draft, multipart/form-data):
+  - Authenticates as the GitHub App "Photoandmoto Publisher"
+  - Composes the article markdown file with frontmatter
+  - Replaces [[image:N]] placeholders with /images/<slug>-<N>.jpg references
+  - Uploads hero + inline images to public/images/
+  - Creates an EN stub at src/content/articles/en/<slug>.md (when source is FI)
+    so sitemap/hreflang stays balanced
+  - Atomic GitHub commit to dev branch
+    ↓
+Cloudflare Pages auto-deploys staging (~2 min)
+    ↓
+Article visible at https://photoandmoto-staging.pages.dev/fi/aikakone/<slug>/
+```
+
+```
+Julkaise tuotantoon
+    ↓
+publish.js Worker (mode=production, JSON):
+  - Reads the article + images from dev
+  - Atomic GitHub commit to main with the same files
+    ↓
+Cloudflare Pages auto-deploys prod (~2 min)
+    ↓
+Article visible at https://www.photoandmoto.fi/fi/aikakone/<slug>/
+```
+
+You can re-save drafts as many times as you want — each Tallenna luonnos overwrites the previous commit on dev.
+
+### API endpoints
+
+Sit under `functions/api/articles/`:
+
+| Endpoint | Method | Purpose |
+|---|---|---|
+| `/api/articles/publish` | POST | Both draft (multipart) and production-promote (JSON) modes |
+| `/api/articles/list` | GET | Returns metadata for all articles on a branch (`?branch=main\|dev`). Auth: `X-Admin-Password` header. Used by the upcoming Hallitse artikkeleita tab. |
+| `/api/articles/delete` | POST | Atomic delete of article markdown + images. Smart image preservation: keeps shared images if the other-language counterpart still exists. |
+
+All three require `UPLOAD_PASSWORD`. Same GitHub App credential as the gallery publish flow.
 
 ---
 
@@ -177,31 +255,31 @@ photoandmoto/
 ├── .github/
 │   └── workflows/
 │       ├── process-gallery-image.yml    # Sharp processing on push to galleries/
-│       ├── mxgp-scraper.yml             # MXGP results scraper (Sun/Mon cron, Feb–Oct only)
-│       └── ...
+│       └── ...                          # MXGP scraper, etc
 ├── functions/                           # Cloudflare Pages Functions (server-side)
-│   └── api/mystery/
-│       ├── photos.js                    # GET — list photos
-│       ├── upload.js                    # POST — admin uploads new mystery photo (incl. thumb_data)
-│       ├── comment.js                   # POST — community suggestion / reply
-│       ├── vote.js                      # POST — upvote / downvote
-│       ├── admin.js                     # POST — admin actions (update_meta, delete_*, etc)
-│       ├── verify.js                    # POST — admin login
-│       ├── init.js                      # POST — schema bootstrap (idempotent)
-│       ├── galleries.js                 # GET — gallery dropdown list (auto-discovered)
-│       ├── featured.js                  # GET — public endpoint for landing-page help block
-│       ├── gallery-manage.js            # POST — Hallitse galleriaa tab (delete/move photos in published galleries)
-│       └── publish.js                   # POST — Julkaise Galleriaan flow
+│   ├── api/mystery/
+│   │   ├── photos.js                    # GET — list photos
+│   │   ├── upload.js                    # POST — admin uploads new mystery photo (incl. thumb_data)
+│   │   ├── comment.js                   # POST — community suggestion / reply
+│   │   ├── vote.js                      # POST — upvote / downvote
+│   │   ├── admin.js                     # POST — admin actions (update_meta, delete_*, etc)
+│   │   ├── verify.js                    # POST — admin login
+│   │   ├── init.js                      # POST — schema bootstrap (idempotent)
+│   │   ├── galleries.js                 # GET — gallery dropdown list (auto-discovered)
+│   │   ├── featured.js                  # GET — public endpoint for landing-page help block
+│   │   └── publish.js                   # POST — Julkaise Galleriaan flow
+│   └── api/articles/
+│       ├── publish.js                   # POST — draft + production promote
+│       ├── list.js                      # GET — admin article list (branch-filtered)
+│       └── delete.js                    # POST — atomic article + images delete
 ├── public/
 │   ├── galleries/<slug>/                # Original images
 │   ├── galleries/<slug>/thumbs/         # 600px thumbs
 │   ├── galleries/<slug>/display/        # 1400px display + watermark
-│   └── data/site-index.json             # Generated build artifact (used by AI search + llms.txt)
+│   └── data/site-index.json             # Generated build artifact
 ├── scripts/
 │   ├── generate-gallery-manifest.mjs    # Sharp + manifest generator (full + --add)
-│   ├── generate-site-index.mjs          # Site index builder (feeds AI search + llms.txt)
-│   ├── generate-llms.mjs                # llms.txt generator (runs after site-index)
-│   ├── scrape-mxgp.py                   # MXGP results scraper (called by mxgp-scraper.yml)
+│   ├── generate-site-index.mjs          # Search index builder
 │   └── ...
 ├── src/
 │   ├── assets/                          # Astro-processed images (articles, site)
@@ -214,10 +292,12 @@ photoandmoto/
 │   ├── i18n/                            # Translations (fi, en)
 │   ├── layouts/                         # Page layouts
 │   ├── pages/                           # Routes — split fi/ and en/
+│   │   ├── fi/yllapito.astro            # Admin UI (Tarkista, Lähetä kuva, Lähetä artikkeli, Hallitse galleriaa)
+│   │   ├── fi/yllapito-preview.astro    # Live preview iframe target for Lähetä artikkeli (noindex)
+│   │   └── ...
 │   ├── styles/                          # Global CSS
 │   └── utils/                           # Helpers
 ├── DEPLOYMENT.md                        # Deployment + secrets reference
-├── MIGRATION.md                         # Migration playbook + lessons learned
 ├── astro.config.mjs
 └── package.json
 ```
@@ -234,8 +314,6 @@ Automatic via Cloudflare Pages.
 | `dev`  | photoandmoto-staging | photoandmoto-staging.pages.dev | photoandmoto-community-dev |
 
 Pushes to either branch trigger an auto-build. The publish pipeline's Worker auto-detects which branch it's running on (via `CF_PAGES_BRANCH`) and commits to the matching one — so a publish on staging stays on staging.
-
-> **Note on dev/main divergence:** because the publish pipeline (`publish.js`) and the gallery-management endpoint (`gallery-manage.js`) commit directly to whichever branch they run on, **`main` accumulates commits independently of `dev`** as photos get published or galleries get reorganized in production. Before any `dev → main` promotion, run `git log dev..main --oneline` and `git log main..dev --oneline` to see the actual divergence. A naive `git merge dev` may conflict on shared files (e.g. `yllapito.astro`) if both branches edited them. The clean approach when divergence exists is to branch off `main`, cherry-pick the dev-only commits onto that branch, open a PR, and merge — then `git reset --hard origin/main` on dev to re-sync.
 
 ### Required secrets (per Pages project)
 
@@ -285,16 +363,14 @@ CREATE INDEX IF NOT EXISTS idx_photos_status ON photos(status);
 
 ## Tech Stack
 
-- **Framework**: Astro 6.2 (static output)
+- **Framework**: Astro 4.5 (static output)
 - **Gallery viewer**: PhotoSwipe 5.4
 - **Image processing**: Sharp (libvips) — thumbnails, display, watermark
-- **Search**: Pagefind (keyword/full-text) at `/fi/etsi` and `/en/search`; Gemini-powered AI Q&A search at `/fi/haku` and `/en/haku`
 - **Server-side**: Cloudflare Pages Functions (Workers runtime)
 - **Database**: Cloudflare D1 (edge SQLite)
 - **Storage**: GitHub repo as the canonical image store
-- **CI**: GitHub Actions (Sharp pipeline; MXGP scraper Sun/Mon, Feb–Oct only) + Cloudflare auto-deploy
+- **CI**: GitHub Actions (Sharp pipeline) + Cloudflare auto-deploy
 - **Auth (publish pipeline)**: GitHub App + JWT signed in-Worker via Web Crypto
-- **AI agent discovery**: `/llms.txt` (regenerated on every build by `scripts/generate-llms.mjs`)
 - **Languages**: Finnish (`fi`), English (`en`)
 
 ---
@@ -306,7 +382,6 @@ CREATE INDEX IF NOT EXISTS idx_photos_status ON photos(status);
 - TypeScript strict mode
 - Astro content collections (zod-validated)
 - Cloudflare Pages Functions can be tested locally with `wrangler pages dev` (separate workflow, optional)
-- Direct D1 access from the terminal (read or modify): `wrangler d1 execute photoandmoto-community --remote --command "<SQL>"`. Drop `--remote` for local dev DB; add `-dev` to the database name (`photoandmoto-community-dev`) for staging.
 
 ---
 
@@ -345,18 +420,12 @@ language: "fi"                # → Article.inLanguage + html lang
 ---
 ```
 
-### Sitemap, robots, and llms.txt
+### Sitemap and robots
 
 - `@astrojs/sitemap` is configured in `astro.config.mjs` — generates `sitemap-index.xml` on every build with hreflang alternates
 - `/haku` and `/tilastot` are excluded (search tools, not content)
-- `public/robots.txt` allows everything via wildcard, plus explicit `Allow: /` rules for major AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, Bytespider, CCBot, Applebot-Extended, etc.). Kept explicit so individual bots can be tightened later without affecting the rest.
-- `public/llms.txt` — auto-generated on every build by `scripts/generate-llms.mjs` from `public/data/site-index.json`. Provides AI agents a clean markdown index of all site content with bilingual FI + EN URLs (where applicable). Follows the [llms.txt convention](https://llmstxt.org/).
+- `public/robots.txt` allows everything and points to the sitemap
 - `public/_redirects` handles `/` → `/fi` (proper 301)
-
-### Search
-
-- **Keyword search (Pagefind)**: builds a static index at build time, indexes article + gallery pages tagged with `data-pagefind-body`. Available at `/fi/etsi` and `/en/search`. Branded clear button, results open in new tabs.
-- **AI search (Gemini)**: `/fi/haku` and `/en/haku`. Reads `public/data/site-index.json` and answers natural-language questions with citations.
 
 ### Validating SEO after changes
 
@@ -372,24 +441,54 @@ For a full validation, paste the URL into [Google's Rich Results Test](https://s
 
 ## Backlog
 
-Tracked work that's not blocking but worth picking up in future sessions. Listed in rough priority order. Items get removed from this list when they ship — if you finish one, scrub it from here in the same commit.
+Tracked work that's not blocking but worth picking up in future sessions. Listed in rough priority order.
 
-### Filename year quirk in publish flow
+### Article preview — rendering polish
 
-During an earlier production smoke test of the publish pipeline, the typed year (2026) ended up as `1980` in the resulting filename. Likely an order-of-operations bug where the filename is composed before the Tallenna click commits the metadata. Worth investigating before publishing real curated photos to avoid mislabeling. Reproduction: live admin → Tunnista kuva → publish a photo → check the filename in `public/galleries/<slug>/`.
+The pre-publish preview iframe (`/fi/yllapito-preview/`) currently renders Markdown via `marked` but doesn't faithfully reproduce all of `ArticleLayout.astro`'s distinctive styling. Known gaps:
 
-### Mystery photo help block — backfill old rows
+- **H2 with orange left border + uppercase callout** — the real article CSS is copied into the preview page, but Astro's `:global()` selectors may not be matching `marked`'s output inside the iframe. Inspect the rendered DOM and verify the rules apply.
+- **Blockquote** — should have orange left bar, grey background, italic, drop-cap on the first letter (matching the real article style with the "R" drop-cap on quoted paragraphs).
+- **Long-word wrapping** — long unbroken strings break the iframe layout. Add `overflow-wrap: anywhere` or similar so edge cases don't disturb the column.
 
-A handful of photos uploaded to live D1 before the `thumb_data` feature shipped have `thumb_data = NULL`. The landing-page help block correctly hides the thumbnails row when none are available, but the block looks more compelling once at least 6 photos have thumbs. Two paths:
+Reference: real Photo & Moto articles in production use these styles (e.g. *Crossin mekan nousu ja lasku* shows H2 "MUTKAINEN KIERTOTIE" with orange bar + a blockquote with drop-cap "R"). The preview should look pixel-close to that.
+
+### Article form — Markdown toolbar
+
+The Lähetä artikkeli body textarea is plain Markdown — publishers must type `##`, `###`, `>`, `**`, `*`, `[teksti](url)` syntax by hand. Add a small toolbar above the textarea with insert buttons: H2 (väliotsikko), H3 (alaotsikko), Lainaus (blockquote), Lihavointi (bold), Kursivointi (italic), Linkki (link). Each button inserts the syntax at the cursor position with sensible defaults.
+
+Design choice pending — compact icons vs. labeled buttons vs. two-row split. Pick at start of next session.
+
+Estimated: ~30–60 min once design is locked.
+
+### Hallitse artikkeleita admin tab
+
+`list.js` and `delete.js` endpoints are shipped and verified, but the UI tab that uses them isn't built yet. Should mirror the existing Hallitse galleriaa tab's pattern:
+
+- All articles for the current branch (default main, toggle to dev to see drafts)
+- Per-row: title, language, date, category, status (live / draft / stub)
+- Delete button per row with a confirmation modal that uses the existing review-gate pattern
+- Optionally: open-on-environment links (staging vs prod)
+
+Estimated: ~150 lines of UI code in `yllapito.astro`.
+
+### Mystery photo help block — backfill existing rows
+
+Photos uploaded to live D1 before the `thumb_data` feature shipped (currently 3 rows) have `thumb_data = NULL`. The landing-page help block correctly hides the thumbnails row when none are available, but the block looks more compelling once at least 6 photos have thumbs. Two paths:
 
 - **Wait for new uploads** (current default) — the block fills organically as admin uploads new mystery photos.
 - **Build a backfill admin tool** — a one-shot button on the Tunnistamatta admin tab that fetches each existing image, generates a 300px Canvas thumbnail in the browser, and PUTs it back to D1. ~30 min of work.
 
-Quick state check:
+### Phase D — Admin gallery management
 
-```bash
-wrangler d1 execute photoandmoto-community --remote --command "SELECT COUNT(*) AS missing FROM photos WHERE thumb_data IS NULL AND status != 'identified' AND published_to_gallery_at IS NULL"
-```
+Currently, fixing mistakes in published galleries (typos in captions, wrong year, deleting bad photos, renaming galleries) requires manual git commits. A "Hallitse galleriaa" admin tab inside Tunnistamatta would let admin:
+
+- Delete a photo from a gallery (removes original + thumb + display + manifest entry, single commit)
+- Rename a photo (regenerates derivatives, updates manifest)
+- Rename or delete an entire gallery
+- Reorder photos within a gallery
+
+Estimated: full session of work.
 
 ### Phase E — Storage and cost ops
 
@@ -401,16 +500,16 @@ The current model commits original-resolution images to the GitHub repo. This is
 
 ### Generated `site-index.json` shows as modified on every checkout
 
-`public/data/site-index.json` is a build artifact (regenerated by `scripts/generate-site-index.mjs`, also consumed by `generate-llms.mjs` and the AI search) but committed to the repo. Every `git checkout` between branches shows it as locally modified, which is noisy and occasionally causes confusion ("did I change something?"). Two options:
+`public/data/site-index.json` is a build artifact (regenerated by `scripts/generate-site-index.mjs`) but committed to the repo. Every `git checkout` between branches shows it as locally modified, which is noisy and occasionally causes confusion ("did I change something?"). Two options:
 
-- **Add to `.gitignore`** and stop committing it. The file is regenerated on every Cloudflare build, so the live site stays correct, but local `npm run dev` and `npm run build` need the generator to run first (which they already do via `npm run build`).
+- **Add to `.gitignore`** and stop committing it. The file is regenerated on every Cloudflare build, so the live site stays correct, but local `npm run dev` won't have it unless the build script ran first.
 - **Generate to a `dist`-only path** instead of `public/`. Cleaner but requires updating whatever consumes the file at runtime.
 
-Low priority — clutter, not a bug.
+Low priority — it's just clutter, not a bug.
 
-### Audit Admin section against actual UI
+### Filename year quirk in publish flow
 
-The Admin side description in this README is a high-level summary. It's possible the actual UI has more nuance (button placement, confirmation flows, edge cases) that isn't captured here. Quick task for a future session: open production admin, walk through every flow, update this section to match. ~15 min of work.
+During the production smoke test of the publish pipeline, the typed year (2026) ended up as `1980` in the resulting filename. Likely an order-of-operations bug where the filename is composed before the Tallenna click commits the metadata. Worth investigating before publishing real curated photos to avoid mislabeling. Reproduction: live admin → Tunnista kuva → publish a photo → check the filename in `public/galleries/<slug>/`.
 
 ---
 

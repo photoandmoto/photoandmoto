@@ -51,13 +51,7 @@ The clean approach today was option 1 — turned a messy 4-region conflict into 
 
 In rough priority order. All also mirrored in `README.md` § Backlog.
 
-### 1. Filename year quirk in publish flow
-
-During an earlier production smoke test, the typed year (2026) ended up as `1980` in the resulting filename. Likely a race between `Tallenna` saving the metadata and `Julkaise Galleriaan` reading it. Worth investigating before doing any curated publishing batch — mislabeled filenames are annoying to fix after the fact.
-
-Reproduction: live admin → Tunnista kuva → publish a photo → check the filename in `public/galleries/<slug>/`. Look in `publish.js` for where `year_estimate` is read vs. when the metadata save round-trips.
-
-### 2. Mystery photo help block — backfill old rows
+### 1. Mystery photo help block — backfill old rows
 
 A handful of pre-`thumb_data` rows still have `NULL` thumbs. Block hides correctly when no thumbs exist but is more compelling with 6+. Two paths:
 
@@ -70,11 +64,11 @@ Quick state check:
 wrangler d1 execute photoandmoto-community --remote --command "SELECT COUNT(*) AS missing FROM photos WHERE thumb_data IS NULL AND status != 'identified' AND published_to_gallery_at IS NULL"
 ```
 
-### 3. Audit Admin section against actual UI
+### 2. Audit Admin section against actual UI
 
 The README's Admin side description is a high-level summary. The real UI may have more detail than captured. Open production admin, walk through every tab, sync the README to reality. ~15 min.
 
-### 4. Phase E — Storage and cost ops
+### 3. Phase E — Storage and cost ops
 
 Repo will eventually outgrow GitHub's recommended size. Decisions to make later, not urgent now:
 
@@ -82,7 +76,7 @@ Repo will eventually outgrow GitHub's recommended size. Decisions to make later,
 - Basic D1 growth monitoring (row counts, byte counts per table)
 - Cleanup endpoint for legacy `field_type='general'` rows in `comments`
 
-### 5. `site-index.json` checkout noise
+### 4. `site-index.json` checkout noise
 
 Build artifact committed to the repo. Shows as modified on every branch checkout. Two solutions in the README backlog. Low priority — clutter, not a bug.
 
