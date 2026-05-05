@@ -99,8 +99,8 @@ const lang = 'fi';
       <div id="adminTabs" class="admin-tabs" style="display:none;">
         <button type="button" class="admin-tab admin-tab--on" data-tab="tarkista">Tarkista</button>
         <button type="button" class="admin-tab" data-tab="laheta">Lähetä kuva</button>
-        <button type="button" class="admin-tab" data-tab="laheta-artikkeli">Lähetä artikkeli</button>
         <button type="button" class="admin-tab" data-tab="hallitse">Hallitse galleriaa</button>
+        <button type="button" class="admin-tab" data-tab="laheta-artikkeli">Lähetä artikkeli</button>
         <button type="button" class="admin-tab" data-tab="hallitse-artikkeleita">Hallitse artikkeleita</button>
       </div>
 
@@ -228,6 +228,12 @@ const lang = 'fi';
           <div class="art-row">
             <label class="art-field art-field--full">
               <span>Runko (Markdown) *</span>
+              <div class="art-import-bar">
+                <button type="button" id="artImportFile" class="art-import-btn">📄 Lataa tiedosto (.txt / .docx)</button>
+                <input type="file" id="artImportFileInput" accept=".txt,.docx,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none;" />
+                <span class="art-import-hint">tai liitä teksti Wordista / Google Docsista suoraan alle — muotoilut ja kuvat tulevat mukana</span>
+                <span id="artImportStatus" class="art-import-status" aria-live="polite"></span>
+              </div>
               <div class="md-toolbar" role="toolbar" aria-label="Markdown-työkalut">
                 <button type="button" class="md-tool md-tool--block" data-md-action="h2" title="Väliotsikko (## H2)">Väliotsikko</button>
                 <button type="button" class="md-tool md-tool--block" data-md-action="h3" title="Alaotsikko (### H3)">Alaotsikko</button>
@@ -244,8 +250,9 @@ const lang = 'fi';
 
           <div class="art-row">
             <label class="art-field art-field--full">
-              <span>SEO-kuvaus (valinnainen)</span>
-              <input id="artSeoDescription" type="text" maxlength="160" placeholder="160 merkin yhteenveto hakukoneille" />
+              <span>SEO-kuvaus <small id="artSeoCount" class="art-seo-count">0 / 160</small></span>
+              <input id="artSeoDescription" type="text" maxlength="160" placeholder="Täyttyy automaattisesti rungosta — voit muokata" />
+              <small id="artSeoHint" class="art-hint art-seo-hint">↺ Auto-täytetty rungosta. Käsin muokattu kuvaus säilyy ennallaan.</small>
             </label>
           </div>
 
@@ -1130,10 +1137,14 @@ function artRenderInlineRows(){
       + '<span class="art-inline-num">' + num + '.</span>'
       + '<input type="file" accept="image/jpeg,image/png,image/webp" class="art-inline-file" />'
       + '<input type="text" placeholder="Kuvateksti (alt)" class="art-inline-caption" maxlength="120" />'
+      + '<code class="art-inline-tag" title="Tämä paikkamerkki sijoittuu artikkelin runkoon">[[image:' + num + ']]</code>'
+      + '<button type="button" class="art-inline-insert" title="Lisää tämä paikkamerkki kohtaan, jossa kursori on rungossa (tai loppuun)">↳ Lisää bodyyn</button>'
       + '<button type="button" class="art-inline-rm" title="Poista">×</button>';
     const fileInp = div.querySelector('.art-inline-file');
     const capInp  = div.querySelector('.art-inline-caption');
+    const insBtn  = div.querySelector('.art-inline-insert');
     const rmBtn   = div.querySelector('.art-inline-rm');
+    insBtn.addEventListener('click', () => artInsertImagePlaceholder(num));
     if (row.file) {
       const label = document.createElement('span');
       label.className = 'art-inline-label';
@@ -1552,6 +1563,372 @@ document.querySelectorAll('.md-toolbar .md-tool').forEach(btn => {
     artMdInsert(btn.dataset.mdAction);
   });
 });
+
+// =====================================================================
+// SEO DESCRIPTION AUTO-FILL — keep the field populated from the body
+// =====================================================================
+//
+// On every body input we compute a deterministic summary (first ~155 chars
+// of the prose, with MD syntax stripped, trimmed at the last word boundary)
+// and write it into the SEO field. The moment the publisher edits the SEO
+// field manually, we stop overwriting — their text wins from then on.
+
+let artSeoManuallyEdited = false;
+
+function artStripMarkdown(md) {
+  return String(md || '')
+    // Remove image placeholders
+    .replace(/\[\[image:\d+\]\]/g, '')
+    // Strip ATX headings (## text)
+    .replace(/^#{1,6}\s+/gm, '')
+    // Strip blockquote markers
+    .replace(/^>\s+/gm, '')
+    // Strip bold + italic syntax (keep the inner text)
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/__([^_]+)__/g, '$1')
+    .replace(/_([^_]+)_/g, '$1')
+    // Inline code
+    .replace(/`([^`]+)`/g, '$1')
+    // Markdown links: [text](url) -> text
+    .replace(/!?\[([^\]]+)\]\([^)]+\)/g, '$1')
+    // Reference-style links
+    .replace(/\[([^\]]+)\]\[[^\]]*\]/g, '$1')
+    // HTML tags
+    .replace(/<[^>]+>/g, '')
+    // List markers at start of line
+    .replace(/^\s*[-*+]\s+/gm, '')
+    .replace(/^\s*\d+\.\s+/gm, '')
+    // Horizontal rules
+    .replace(/^[-*_]{3,}\s*$/gm, '')
+    // Collapse whitespace
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function artComputeSeoSummary(md, maxLen) {
+  const text = artStripMarkdown(md);
+  if (!text) return '';
+  if (text.length <= maxLen) return text;
+  // Trim at last word boundary before maxLen, leave room for ellipsis
+  const sliceEnd = maxLen - 1; // 1 char for the ellipsis
+  const slice = text.slice(0, sliceEnd);
+  const lastSpace = slice.lastIndexOf(' ');
+  const trimmed = lastSpace > sliceEnd * 0.6 ? slice.slice(0, lastSpace) : slice;
+  return trimmed.replace(/[\s,;:.!?\-]+$/, '') + '…';
+}
+
+function artUpdateSeoCount() {
+  const seoEl = document.getElementById('artSeoDescription');
+  const countEl = document.getElementById('artSeoCount');
+  if (!seoEl || !countEl) return;
+  const len = (seoEl.value || '').length;
+  countEl.textContent = len + ' / 160';
+  countEl.classList.toggle('art-seo-count--full', len >= 155);
+}
+
+function artRefreshSeoFromBody() {
+  if (artSeoManuallyEdited) return;
+  const body = document.getElementById('artBody');
+  const seoEl = document.getElementById('artSeoDescription');
+  if (!body || !seoEl) return;
+  const summary = artComputeSeoSummary(body.value, 160);
+  seoEl.value = summary;
+  artUpdateSeoCount();
+}
+
+(function wireSeoAutofill(){
+  const body = document.getElementById('artBody');
+  const seoEl = document.getElementById('artSeoDescription');
+  const seoHint = document.getElementById('artSeoHint');
+  if (!body || !seoEl) return;
+  body.addEventListener('input', artRefreshSeoFromBody);
+  seoEl.addEventListener('input', () => {
+    artSeoManuallyEdited = true;
+    if (seoHint) {
+      seoHint.textContent = '✎ Käsin muokattu — auto-täyttö pois käytöstä.';
+      seoHint.classList.add('art-seo-hint--manual');
+    }
+    artUpdateSeoCount();
+  });
+  // First paint
+  artUpdateSeoCount();
+})();
+
+// =====================================================================
+// IMPORT — paste / upload .txt / .docx -> Markdown + extracted images
+// =====================================================================
+//
+// Two entry points:
+//   1) "Lataa tiedosto" button -> reads a .txt or .docx and replaces the body
+//   2) Paste into the body textarea -> if rich-text (HTML) is on the clipboard
+//      it's converted to MD and inserted at the cursor position
+//
+// Both paths share artHtmlToMarkdownAndImages():
+//   - Walks all <img> in DOM order
+//   - For each: fetches the image data (base64 data: URL or http(s) URL),
+//     resizes it through the existing 1600/80% JPEG pipeline, appends it
+//     to artInlineRows with a fresh [[image:N]] number, and replaces the
+//     <img> in the parsed DOM with a <p>[[image:N]]</p> marker
+//   - Hands the rewritten HTML to turndown for the HTML -> MD conversion
+//
+// turndown + mammoth load lazily from a CDN on first use.
+
+const TURNDOWN_URL = 'https://cdn.jsdelivr.net/npm/turndown@7.2.0/dist/turndown.js';
+const MAMMOTH_URL  = 'https://cdn.jsdelivr.net/npm/mammoth@1.7.2/mammoth.browser.min.js';
+
+function artLoadScriptOnce(src) {
+  if (document.querySelector('script[data-import-src="' + src + '"]')) {
+    return Promise.resolve();
+  }
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = src;
+    s.dataset.importSrc = src;
+    s.onload = () => resolve();
+    s.onerror = () => reject(new Error('Lataus epäonnistui: ' + src));
+    document.head.appendChild(s);
+  });
+}
+
+let _artTurndownInstance = null;
+async function artGetTurndown() {
+  await artLoadScriptOnce(TURNDOWN_URL);
+  if (!window.TurndownService) throw new Error('Turndown ei latautunut');
+  if (!_artTurndownInstance) {
+    _artTurndownInstance = new window.TurndownService({
+      headingStyle:    'atx',     // ## H2 instead of underline-style
+      bulletListMarker: '-',
+      codeBlockStyle:   'fenced',
+      emDelimiter:      '*',
+      strongDelimiter:  '**',
+    });
+    // A standalone <p>[[image:N]]</p> should stay on its own line.
+    _artTurndownInstance.addRule('preservePlaceholderParagraph', {
+      filter: function(node) {
+        return node.nodeName === 'P' && /^\[\[image:\d+\]\]$/.test((node.textContent || '').trim());
+      },
+      replacement: function(content, node) {
+        return '\n\n' + (node.textContent || '').trim() + '\n\n';
+      },
+    });
+  }
+  return _artTurndownInstance;
+}
+
+async function artGetMammoth() {
+  await artLoadScriptOnce(MAMMOTH_URL);
+  if (!window.mammoth) throw new Error('Mammoth ei latautunut');
+  return window.mammoth;
+}
+
+function artImportSetStatus(msg, kind) {
+  const el = document.getElementById('artImportStatus');
+  if (!el) return;
+  el.className = 'art-import-status' + (kind ? (' art-import-status--' + kind) : '');
+  el.textContent = msg || '';
+}
+
+// Walk the parsed HTML, extract every <img>, replace it with a placeholder,
+// return { md, newImages, skipped }. Image fetches that fail (e.g. CORS on
+// external URLs) are counted in `skipped` and the <img> is removed from the
+// DOM so it doesn't appear as a broken link in the resulting MD.
+async function artHtmlToMarkdownAndImages(html) {
+  const doc = new DOMParser().parseFromString(html || '', 'text/html');
+  const imgs = Array.from(doc.querySelectorAll('img'));
+  const newImages = [];
+  let nextNum = (artInlineCounter || 0) + 1;
+  let skipped = 0;
+
+  for (const img of imgs) {
+    const src = img.getAttribute('src') || '';
+    let blob = null;
+
+    if (src.startsWith('data:')) {
+      try {
+        const res = await fetch(src);
+        blob = await res.blob();
+      } catch { skipped++; img.remove(); continue; }
+    } else if (/^https?:/i.test(src)) {
+      try {
+        const res = await fetch(src, { mode: 'cors' });
+        if (!res.ok) { skipped++; img.remove(); continue; }
+        blob = await res.blob();
+      } catch { skipped++; img.remove(); continue; }
+    } else {
+      // Unrecognised src (relative URL inside a foreign doc, etc.) — skip
+      skipped++; img.remove(); continue;
+    }
+
+    const mime = blob.type || 'image/jpeg';
+    const ext  = (mime.split('/')[1] || 'jpg').replace('jpeg', 'jpg').replace('+xml', '');
+    const num  = nextNum++;
+    const file = new File([blob], 'import-' + num + '.' + ext, { type: mime });
+    let resized;
+    try {
+      resized = await artResizeImage(file);
+    } catch {
+      resized = file;
+    }
+    newImages.push({ num, file: resized, caption: img.getAttribute('alt') || '' });
+
+    // Replace <img> with a <p>[[image:N]]</p> marker so turndown emits the
+    // placeholder on its own line.
+    const p = doc.createElement('p');
+    p.textContent = '[[image:' + num + ']]';
+    if (img.parentNode) img.parentNode.replaceChild(p, img);
+  }
+
+  const td = await artGetTurndown();
+  let md = td.turndown(doc.body ? doc.body.innerHTML : '');
+
+  // Tidy: collapse runs of 3+ blank lines to a single blank-line gap.
+  md = md.replace(/\n{3,}/g, '\n\n').trim() + '\n';
+
+  return { md, newImages, skipped };
+}
+
+// Apply imported MD + images to the form. Mode 'replace' overwrites the body,
+// 'insert' inserts at cursor position. Images are always appended to the
+// inline list (numbering continues from the current artInlineCounter).
+function artApplyImport(md, newImages, mode) {
+  if (newImages && newImages.length > 0) {
+    for (const img of newImages) {
+      artInlineRows.push(img);
+      artInlineCounter = Math.max(artInlineCounter, img.num);
+    }
+    artRenderInlineRows();
+  }
+  const body = document.getElementById('artBody');
+  if (!body) return;
+  if (mode === 'insert') {
+    const start = body.selectionStart;
+    const end   = body.selectionEnd;
+    const value = body.value;
+    body.value = value.slice(0, start) + md + value.slice(end);
+    const newPos = start + md.length;
+    body.focus();
+    body.setSelectionRange(newPos, newPos);
+  } else {
+    body.value = md;
+  }
+  body.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+async function artImportFile(file) {
+  if (!file) return;
+  const name  = (file.name || '').toLowerCase();
+  const type  = file.type || '';
+  artImportSetStatus('Käsitellään tiedostoa...', 'load');
+
+  // If the body already has content, ask before replacing.
+  const body = document.getElementById('artBody');
+  if (body && body.value.trim().length > 0) {
+    const ok = confirm('Korvataanko nykyinen rungon sisältö ladatulla tiedostolla? (Peruuta = säilytä nykyinen.)');
+    if (!ok) { artImportSetStatus('Lataus peruttu — runko säilytetty', ''); return; }
+  }
+
+  try {
+    if (name.endsWith('.txt') || type === 'text/plain') {
+      const text = await file.text();
+      // Plain text: paragraphs separated by blank lines are already valid MD.
+      // Normalise CRLF -> LF and collapse triple+ newlines.
+      const md = text.replace(/\r\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
+      artApplyImport(md, [], 'replace');
+      artImportSetStatus('✓ Tekstitiedosto ladattu', 'ok');
+      return;
+    }
+
+    if (name.endsWith('.docx') ||
+        type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+      const mammoth = await artGetMammoth();
+      const buffer  = await file.arrayBuffer();
+      const result  = await mammoth.convertToHtml({ arrayBuffer: buffer });
+      const { md, newImages, skipped } = await artHtmlToMarkdownAndImages(result.value || '');
+      artApplyImport(md, newImages, 'replace');
+      const imgPart = newImages.length
+        ? ' + ' + newImages.length + ' kuva' + (newImages.length === 1 ? '' : 'a')
+        : '';
+      const skipPart = skipped ? ' (' + skipped + ' kuvaa ohitettu)' : '';
+      artImportSetStatus('✓ .docx ladattu' + imgPart + skipPart, 'ok');
+      return;
+    }
+
+    if (name.endsWith('.doc')) {
+      artImportSetStatus(
+        '⚠ Vanha .doc-muoto ei tuettu selaimessa. Tallenna ensin .docx-muotoon (Word: Tiedosto → Tallenna nimellä → .docx).',
+        'err'
+      );
+      return;
+    }
+
+    artImportSetStatus('⚠ Tuntematon tiedostotyyppi: ' + (name || type || '?'), 'err');
+  } catch (e) {
+    console.error('Import failed:', e);
+    artImportSetStatus('Virhe: ' + (e.message || e), 'err');
+  }
+}
+
+// Wire the upload button (hidden file input + visible button)
+document.getElementById('artImportFile') && document.getElementById('artImportFile').addEventListener('click', () => {
+  const inp = document.getElementById('artImportFileInput');
+  if (inp) inp.click();
+});
+document.getElementById('artImportFileInput') && document.getElementById('artImportFileInput').addEventListener('change', (e) => {
+  const file = e.target.files && e.target.files[0];
+  e.target.value = ''; // reset so re-uploading the same file works
+  artImportFile(file);
+});
+
+// Paste handler on the body textarea — convert rich-text paste to MD,
+// extract embedded images, insert at cursor.
+document.getElementById('artBody') && document.getElementById('artBody').addEventListener('paste', async (e) => {
+  const cd = e.clipboardData;
+  if (!cd) return;
+  const html = cd.getData('text/html');
+  if (!html || html.trim().length === 0) {
+    // Plain text paste — let the browser do its default thing
+    return;
+  }
+  e.preventDefault();
+  artImportSetStatus('Käsitellään liitetty teksti...', 'load');
+  try {
+    const { md, newImages, skipped } = await artHtmlToMarkdownAndImages(html);
+    artApplyImport(md, newImages, 'insert');
+    const imgPart = newImages.length
+      ? ' + ' + newImages.length + ' kuva' + (newImages.length === 1 ? '' : 'a')
+      : '';
+    const skipPart = skipped ? ' (' + skipped + ' kuvaa ohitettu)' : '';
+    artImportSetStatus('✓ Liitetty teksti muunnettu Markdowniksi' + imgPart + skipPart, 'ok');
+  } catch (err) {
+    console.error('Paste convert failed:', err);
+    artImportSetStatus('Virhe liittäessä: ' + (err.message || err), 'err');
+  }
+});
+
+// Insert an [[image:N]] placeholder into the body at the current cursor
+// position (or at start if the body has never been focused). Always lands
+// the placeholder on its own paragraph.
+function artInsertImagePlaceholder(num) {
+  const ta = document.getElementById('artBody');
+  if (!ta) return;
+  const insert = '[[image:' + num + ']]';
+  const value  = ta.value;
+  const start  = ta.selectionStart;
+  const end    = ta.selectionEnd;
+  const before = value.slice(0, start);
+  const after  = value.slice(end);
+  // Pad with blank lines so the placeholder forms its own paragraph.
+  const needLeadingBreak  = start > 0 && !/\n\n$/.test(before) && !/^\s*$/.test(before);
+  const needTrailingBreak = after.length > 0 && !/^\n\n/.test(after);
+  const lead  = needLeadingBreak  ? '\n\n' : '';
+  const trail = needTrailingBreak ? '\n\n' : '';
+  ta.value = before + lead + insert + trail + after;
+  const newPos = (before + lead + insert).length;
+  ta.focus();
+  ta.setSelectionRange(newPos, newPos);
+  ta.dispatchEvent(new Event('input', { bubbles: true }));
+}
 
 // "Esikatselu tarkistettu" checkbox — gates Tallenna luonnos
 (function wireReviewGate(){
@@ -2607,7 +2984,31 @@ document.getElementById('hartReload') && document.getElementById('hartReload').a
 }
 .art-field textarea{font-family:Menlo,Consolas,Monaco,monospace;font-size:13px;line-height:1.5;resize:vertical}
 
-/* Markdown toolbar — sits between the body label and the textarea */
+/* Import bar — sits ABOVE the markdown toolbar, lets publishers upload
+   .txt / .docx or paste rich text from Word / Docs to auto-convert to MD */
+.art-import-bar{
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+  padding:8px 10px;background:#fff8e6;border:1px solid #ffd89a;
+  border-radius:6px;margin-bottom:6px;
+}
+.art-import-btn{
+  background:#ff9900;color:#fff;border:none;border-radius:4px;
+  padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;
+  font-family:inherit;line-height:1.3;transition:background .12s;
+  white-space:nowrap;
+}
+.art-import-btn:hover{background:#e68a00}
+.art-import-hint{font-size:11px;color:#7a5400;flex:1 1 200px;line-height:1.3}
+.art-import-status{
+  font-size:11px;font-weight:600;color:#666;
+  padding:3px 8px;border-radius:3px;min-height:1em;
+}
+.art-import-status:empty{display:none}
+.art-import-status--load{background:#fff;color:#666}
+.art-import-status--ok{background:#e8f5e8;color:#2a7a2a}
+.art-import-status--err{background:#fff0f0;color:#c0392b}
+
+/* Markdown toolbar — sits between the import bar and the textarea */
 .md-toolbar{
   display:flex;flex-wrap:wrap;align-items:center;gap:4px;
   padding:6px;background:#f7f6f4;border:1px solid #ccc;border-bottom:none;
@@ -2634,6 +3035,28 @@ document.getElementById('hartReload') && document.getElementById('hartReload').a
 .art-inline-caption{flex:1 1 auto;padding:4px 8px;border:1px solid #ccc;border-radius:3px;font-size:13px}
 .art-inline-rm{background:#eee;border:none;width:28px;height:28px;border-radius:3px;cursor:pointer;font-size:18px;color:#666}
 .art-inline-rm:hover{background:#fdd;color:#900}
+.art-inline-tag{
+  background:#fff8e6;color:#a06400;
+  padding:3px 7px;border-radius:3px;font-size:11px;
+  font-family:Menlo,Consolas,Monaco,monospace;border:1px solid #ffe1a8;
+  flex-shrink:0;line-height:1.3;
+}
+.art-inline-insert{
+  background:#fff;border:1px solid #ddd;border-radius:3px;
+  padding:4px 9px;font-size:11px;font-weight:600;color:#444;cursor:pointer;
+  font-family:inherit;line-height:1.2;transition:all .12s;flex-shrink:0;white-space:nowrap;
+}
+.art-inline-insert:hover{background:#ff9900;border-color:#ff9900;color:#fff}
+.art-seo-count{
+  font-weight:500;color:#888;font-size:11px;
+  margin-left:6px;font-family:Menlo,Consolas,Monaco,monospace;
+}
+.art-seo-count--full{color:#c0392b;font-weight:700}
+.art-seo-hint{
+  display:flex;align-items:center;gap:4px;
+  color:#888;margin-top:2px;
+}
+.art-seo-hint--manual{color:#a06400}
 .art-actions{display:flex;gap:12px;align-items:center;margin-top:18px;flex-wrap:wrap}
 .art-btn{padding:10px 18px;border:none;border-radius:4px;font-size:14px;font-weight:500;cursor:pointer}
 .art-btn--add{background:#eee;color:#333;padding:6px 12px;font-size:13px;align-self:flex-start;margin-top:4px}
