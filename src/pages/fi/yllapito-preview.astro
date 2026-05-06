@@ -264,9 +264,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     word-break: break-word;
   }
 
-  /* Drop cap on the first paragraph. Also fires on a leading blockquote's
-     inner <p>, mirroring ArticleLayout behaviour. */
-  #prevArticle .article-body p:first-of-type::first-letter {
+  /* Drop cap on the article's lead paragraph only. The `>` direct-child
+     combinator stops the cap firing on every blockquote's inner <p>
+     (which was making subsequent pull quotes show a giant disconnected
+     first letter). The second selector handles the case where the article
+     opens with a leading blockquote. */
+  #prevArticle .article-body > p:first-of-type::first-letter,
+  #prevArticle .article-body > blockquote:first-of-type > p:first-of-type::first-letter {
     float: left;
     font-family: var(--font-headline);
     font-size: 4.5rem;

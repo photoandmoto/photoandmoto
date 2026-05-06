@@ -138,7 +138,7 @@ const lang = 'fi';
         <div class="art-split__left">
         <div class="art-form">
           <h3 class="art-form__title">Uusi artikkeli</h3>
-          <p class="art-form__hint">Tallenna luonnos -painike vie artikkelin staging-ympäristöön (~2 min). Julkaise tuotantoon -painike julkaisee live-sivulle. Voit tallentaa luonnoksen niin monta kertaa kuin haluat ennen julkaisua.</p>
+          <p class="art-form__hint">Julkaise testiympäristöön -painike vie artikkelin staging-sivulle (~2 min) tarkistettavaksi. Voit julkaista uudestaan niin monta kertaa kuin haluat. Tuotantoon vienti tehdään erikseen Hallitse artikkeleita -välilehdellä.</p>
 
           <div class="art-row">
             <label class="art-field art-field--full">
@@ -168,13 +168,7 @@ const lang = 'fi';
                 <option value="">Muu (kirjoita alle)…</option>
               </select>
             </label>
-            <label class="art-field">
-              <span>Kieli *</span>
-              <select id="artLanguage">
-                <option value="fi" selected>Suomi (FI)</option>
-                <option value="en">English (EN)</option>
-              </select>
-            </label>
+            <input type="hidden" id="artLanguage" value="fi" />
           </div>
 
           <div class="art-row" id="artCategoryCustomRow" style="display:none;">
@@ -259,15 +253,16 @@ const lang = 'fi';
           <div class="art-review-gate">
             <label class="art-review-gate__label">
               <input id="artReviewed" type="checkbox" />
-              <span>Olen tarkistanut esikatselun ja artikkeli on valmis tallennettavaksi luonnokseksi</span>
+              <span>Olen tarkistanut esikatselun ja artikkeli on valmis julkaistavaksi testiympäristöön</span>
             </label>
           </div>
 
           <div class="art-actions">
-            <button type="button" id="artSaveDraft" class="art-btn art-btn--draft" disabled>Tallenna luonnos</button>
-            <button type="button" id="artPublishProd" class="art-btn art-btn--publish">Julkaise tuotantoon</button>
+            <button type="button" id="artSaveDraft" class="art-btn art-btn--draft" disabled>Julkaise testiympäristöön</button>
+            <button type="button" id="artClearForm" class="art-btn art-btn--clear">Tyhjennä lomake</button>
             <span id="artStatus" class="art-status"></span>
           </div>
+          <p class="art-prod-note">Tuotantoon julkaisu tapahtuu Hallitse artikkeleita -välilehdellä, kun olet tarkistanut artikkelin testiympäristössä.</p>
 
           <div id="artResult" class="art-result" style="display:none;"></div>
         </div>
@@ -312,8 +307,8 @@ const lang = 'fi';
           <div class="hart-top">
             <div class="hart-branch-row">
               <span class="hart-branch-label">Ympäristö:</span>
-              <button type="button" id="hartBranchProd" class="hart-branch-btn hart-branch-btn--on">Tuotanto (main)</button>
-              <button type="button" id="hartBranchDraft" class="hart-branch-btn">Luonnokset (dev)</button>
+              <button type="button" id="hartBranchDraft" class="hart-branch-btn hart-branch-btn--on">Luonnokset (dev)</button>
+              <button type="button" id="hartBranchProd" class="hart-branch-btn">Tuotanto (main)</button>
               <button type="button" id="hartReload" class="btn btn--ghost hart-reload">↻ Päivitä</button>
             </div>
           </div>
@@ -1113,14 +1108,25 @@ function artSlugify(s){
     .replace(/^-|-$/g,'');
 }
 
+// Tracks whether the publisher has manually edited the slug input. Once
+// they do, autofill stops touching it.
+let artSlugManuallyEdited = false;
+
 function artUpdateSlugPreview(){
   const titleEl = document.getElementById('artTitle');
   const slugEl  = document.getElementById('artSlug');
   const langEl  = document.getElementById('artLanguage');
   const preview = document.getElementById('artSlugPreview');
-  const lang = langEl.value || 'fi';
-  const slugRaw = slugEl.value.trim() || titleEl.value;
-  const slug = artSlugify(slugRaw) || '(otsikosta)';
+  const lang = (langEl && langEl.value) || 'fi';
+
+  // Auto-fill the slug input from the title if the publisher hasn't typed
+  // anything in it yet. Otherwise leave their value alone.
+  if (!artSlugManuallyEdited) {
+    const autoSlug = artSlugify(titleEl.value);
+    slugEl.value = autoSlug;
+  }
+
+  const slug = artSlugify(slugEl.value || titleEl.value) || '(otsikosta)';
   const route = lang === 'fi' ? 'aikakone' : 'time-machine';
   preview.innerHTML = 'URL: /' + lang + '/' + route + '/' + slug + '/';
 }
@@ -1145,14 +1151,47 @@ function artRenderInlineRows(){
     const insBtn  = div.querySelector('.art-inline-insert');
     const rmBtn   = div.querySelector('.art-inline-rm');
     insBtn.addEventListener('click', () => artInsertImagePlaceholder(num));
+
     if (row.file) {
+      // Brand-new upload — show filename + size, hide raw file input.
       const label = document.createElement('span');
       label.className = 'art-inline-label';
       label.textContent = row.file.name + ' (' + Math.round(row.file.size/1024) + ' KB)';
       fileInp.style.display = 'none';
       div.insertBefore(label, capInp);
+    } else if (row.existing) {
+      // Loaded from a saved article in edit mode — file already on branch.
+      // Show "Säilytetään" badge + Vaihda button that exposes the file
+      // input to upload a replacement.
+      const label = document.createElement('span');
+      label.className = 'art-inline-label art-inline-label--existing';
+      label.textContent = '✓ ' + row.existing.name + ' (säilytetään)';
+      fileInp.style.display = 'none';
+      div.insertBefore(label, capInp);
+      const swapBtn = document.createElement('button');
+      swapBtn.type = 'button';
+      swapBtn.className = 'art-inline-swap';
+      swapBtn.textContent = 'Vaihda';
+      swapBtn.title = 'Korvaa nykyinen kuva uudella tiedostolla';
+      swapBtn.addEventListener('click', () => {
+        // Reveal the file input so the publisher can pick a replacement
+        label.style.display = 'none';
+        swapBtn.style.display = 'none';
+        fileInp.style.display = '';
+        fileInp.click();
+      });
+      div.insertBefore(swapBtn, capInp);
     }
-    fileInp.addEventListener('change', () => { row.file = fileInp.files[0] || null; artRenderInlineRows(); });
+
+    fileInp.addEventListener('change', () => {
+      const f = fileInp.files[0] || null;
+      if (f) {
+        row.file = f;
+        // If this was an existing row, the new file replaces it on save —
+        // publish.js will overwrite <slug>-N.jpg in the same commit.
+      }
+      artRenderInlineRows();
+    });
     capInp.value = row.caption || '';
     capInp.addEventListener('input', () => { row.caption = capInp.value; });
     rmBtn.addEventListener('click', () => {
@@ -1170,7 +1209,12 @@ document.getElementById('artAddInline').addEventListener('click', () => {
 });
 
 document.getElementById('artTitle').addEventListener('input', artUpdateSlugPreview);
-document.getElementById('artSlug').addEventListener('input', artUpdateSlugPreview);
+document.getElementById('artSlug').addEventListener('input', () => {
+  // Any keystroke in the slug field counts as a manual edit — autofill stops
+  // overwriting from now on. Empty value also counts (publisher cleared it).
+  artSlugManuallyEdited = true;
+  artUpdateSlugPreview();
+});
 document.getElementById('artLanguage').addEventListener('change', artUpdateSlugPreview);
 
 document.getElementById('artCategory').addEventListener('change', (e) => {
@@ -1245,6 +1289,10 @@ function artGetForm(){
     seo_description: seoEl.value.trim(),
     hero_file: heroEl.files[0] || null,
     inline: artInlineRows.filter(r => r.file).map(r => ({ num: r.num, file: r.file, caption: r.caption || '' })),
+    // Captions for ALL rows including existing/kept ones — publish.js uses
+    // them when replacing [[image:N]] placeholders, regardless of whether a
+    // fresh file was uploaded for that slot.
+    all_captions: artInlineRows.map(r => ({ num: r.num, caption: r.caption || '' })),
   };
 }
 
@@ -1277,8 +1325,7 @@ async function artSubmitDraft(){
   if (!adminPw) { artSetStatus('Et ole kirjautunut ylläpitäjäksi', 'err'); return; }
 
   const draftBtn = document.getElementById('artSaveDraft');
-  const prodBtn  = document.getElementById('artPublishProd');
-  draftBtn.disabled = true; prodBtn.disabled = true;
+  draftBtn.disabled = true;
   artSetStatus('Pakataan kuvia…', 'load');
   document.getElementById('artResult').style.display = 'none';
 
@@ -1300,11 +1347,24 @@ async function artSubmitDraft(){
     if (form.hero_file) {
       const resized = await artResizeImage(form.hero_file);
       fd.append('hero_image', resized, resized.name);
+    } else if (artExistingFeaturedImage) {
+      // Edit mode: no new hero uploaded but the article had one before.
+      // Pass the existing path so publish.js writes it back into the
+      // frontmatter instead of dropping the hero from the saved markdown.
+      fd.append('featured_image', artExistingFeaturedImage);
     }
+    // Upload only rows that have a fresh file. Existing/kept rows on the
+    // branch don't need re-upload — publish.js's [[image:N]] -> /images/...
+    // replacement still resolves to the existing file path on the branch.
     for (const inl of form.inline) {
       const resized = await artResizeImage(inl.file);
       fd.append('inline_image_' + inl.num, resized, resized.name);
-      fd.append('image_' + inl.num + '_caption', inl.caption);
+    }
+    // Send captions for ALL inline rows so publish.js can use them for the
+    // alt text in [[image:N]] -> ![alt](/images/...) replacement, even when
+    // no new file is uploaded for that slot.
+    for (const c of form.all_captions) {
+      fd.append('image_' + c.num + '_caption', c.caption);
     }
 
     artSetStatus('Lähetetään…', 'load');
@@ -1312,62 +1372,226 @@ async function artSubmitDraft(){
     const d = await r.json();
     if (!d.success) throw new Error(d.error || 'Tuntematon virhe');
 
-    artSetStatus('Luonnos tallennettu', 'ok');
+    artSetStatus('Julkaistu testiympäristöön', 'ok');
     artShowResult(
-      '<strong>Luonnos tallennettu staging-ympäristöön.</strong>'
-      + '<br>Cloudflare buildaa staging-sivun ~2 min. Kun valmis, esikatsele:'
+      '<strong>Artikkeli julkaistu testiympäristöön (staging).</strong>'
+      + '<br>Cloudflare buildaa staging-sivun ~2 min. Kun valmis, tarkista:'
       + '<br><a href="' + d.url + '" target="_blank" rel="noopener">' + d.url + '</a>'
-      + '<br><br>Voit muokata kenttiä yllä ja painaa <em>Tallenna luonnos</em> uudelleen — uusi commit korvaa vanhan.'
+      + '<br><br>Voit julkaista uudelleen niin monta kertaa kuin haluat — uusi commit korvaa vanhan.'
+      + '<br>Kun artikkeli on valmis, vie se tuotantoon <em>Hallitse artikkeleita</em> -välilehdeltä.'
     );
   } catch (e) {
     artSetStatus('Virhe: ' + e.message, 'err');
   } finally {
-    draftBtn.disabled = false; prodBtn.disabled = false;
+    draftBtn.disabled = false;
   }
 }
 
-async function artPublishProduction(){
-  const form = artGetForm();
-  if (!form.slug) { artSetStatus('Slug puuttuu — tallenna ensin luonnos', 'err'); return; }
-  if (!adminPw) { artSetStatus('Et ole kirjautunut ylläpitäjäksi', 'err'); return; }
+// Resets the entire Lähetä artikkeli form so the publisher can start a new
+// article without reloading the page. Confirms first because it nukes any
+// in-progress work (uploaded images, body, captions, etc.).
+function artClearForm(){
+  if (!confirm('Tyhjennetäänkö koko lomake? Kaikki tämänhetkiset kentät, kuvat ja runko nollataan.')) return;
 
-  if (!confirm('Julkaistaanko artikkeli "' + form.slug + '" tuotantoon? Vie ~2 min ennen kuin näkyy live-sivulla.')) return;
-
-  const draftBtn = document.getElementById('artSaveDraft');
-  const prodBtn  = document.getElementById('artPublishProd');
-  draftBtn.disabled = true; prodBtn.disabled = true;
-  artSetStatus('Julkaistaan tuotantoon…', 'load');
-  document.getElementById('artResult').style.display = 'none';
-
-  try {
-    const r = await fetch('/api/articles/publish', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        password: adminPw,
-        mode: 'production',
-        slug: form.slug,
-        language: form.language,
-      }),
-    });
-    const d = await r.json();
-    if (!d.success) throw new Error(d.error || 'Tuntematon virhe');
-
-    artSetStatus('Julkaistu tuotantoon', 'ok');
-    artShowResult(
-      '<strong>Artikkeli julkaistu tuotantoon.</strong>'
-      + '<br>Cloudflare buildaa live-sivun ~2 min. Kun valmis:'
-      + '<br><a href="' + d.url + '" target="_blank" rel="noopener">' + d.url + '</a>'
-    );
-  } catch (e) {
-    artSetStatus('Virhe: ' + e.message, 'err');
-  } finally {
-    draftBtn.disabled = false; prodBtn.disabled = false;
+  // Reset text/select/checkbox fields
+  const ids = ['artTitle','artSubtitle','artSubtitle','artTags','artSlug','artBody','artSeoDescription','artCategoryCustom'];
+  for (const id of ids) {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
   }
+  // Restore date to today
+  const dateEl = document.getElementById('artDate');
+  if (dateEl) dateEl.valueAsDate = new Date();
+  // Reset selects to defaults
+  const catEl = document.getElementById('artCategory');
+  if (catEl) catEl.value = 'Historical';
+  const customRow = document.getElementById('artCategoryCustomRow');
+  if (customRow) customRow.style.display = 'none';
+  // Hero
+  const heroEl = document.getElementById('artHero');
+  if (heroEl) heroEl.value = '';
+  if (artHeroBlobUrl) { try { URL.revokeObjectURL(artHeroBlobUrl); } catch{} artHeroBlobUrl = null; }
+  const showHeroEl = document.getElementById('artShowHero');
+  if (showHeroEl) showHeroEl.checked = false;
+  // Inline images
+  for (const k of Object.keys(artInlineBlobUrls)) {
+    try { URL.revokeObjectURL(artInlineBlobUrls[k]); } catch{}
+  }
+  artInlineBlobUrls = {};
+  artInlineRows = [];
+  artInlineCounter = 0;
+  artRenderInlineRows();
+  // Review gate
+  const reviewedEl = document.getElementById('artReviewed');
+  if (reviewedEl) reviewedEl.checked = false;
+  document.getElementById('artSaveDraft').disabled = true;
+  // Manual-edit flags
+  artSlugManuallyEdited = false;
+  artSeoManuallyEdited  = false;
+  const seoHint = document.getElementById('artSeoHint');
+  if (seoHint) {
+    seoHint.textContent = '↺ Auto-täytetty rungosta. Käsin muokattu kuvaus säilyy ennallaan.';
+    seoHint.classList.remove('art-seo-hint--manual');
+  }
+  artUpdateSeoCount();
+  // Status + result
+  artSetStatus('Lomake tyhjennetty', 'ok');
+  document.getElementById('artResult').style.display = 'none';
+  // Refresh the URL preview + push the empty preview to the iframe
+  artUpdateSlugPreview();
+  artPushPreview();
 }
 
 document.getElementById('artSaveDraft').addEventListener('click', artSubmitDraft);
-document.getElementById('artPublishProd').addEventListener('click', artPublishProduction);
+document.getElementById('artClearForm') && document.getElementById('artClearForm').addEventListener('click', artClearForm);
+
+// =====================================================================
+// EDIT MODE — load an existing article into the form
+// =====================================================================
+//
+// The Hallitse artikkeleita "Avaa muokattavaksi" button calls
+// artLoadForEdit({ slug, language, branch }), which fetches the article
+// via /api/articles/get, populates every field, marks each existing inline
+// image as a "kept" row (file=null, existing={path,name}), and locks the
+// slug input so the publisher can't accidentally orphan the existing image
+// files by renaming.
+//
+// Saving from edit mode goes through the same Tallenna luonnos -> dev
+// commit flow. Existing images stay on the branch unless explicitly
+// replaced via the per-row Vaihda button.
+
+let artEditMode = null; // { slug, language, branch } when editing, null otherwise
+let artExistingFeaturedImage = ''; // frontmatter.featured_image carried from edit-load
+
+function artSetEditModeBanner(info) {
+  let banner = document.getElementById('artEditBanner');
+  if (!info) {
+    if (banner) banner.remove();
+    const slugEl = document.getElementById('artSlug');
+    if (slugEl) slugEl.readOnly = false;
+    return;
+  }
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'artEditBanner';
+    banner.className = 'art-edit-banner';
+    const formTitleEl = document.querySelector('.art-form__title');
+    if (formTitleEl) formTitleEl.after(banner);
+  }
+  banner.innerHTML =
+    '<strong>✎ Muokkaustila</strong> — artikkeli <code>' + esc(info.slug) + '</code> (' + esc(info.language.toUpperCase()) + ', ' + esc(info.branch) + ').'
+    + ' Tallennus korvaa nykyisen luonnoksen. Slug on lukittu kuvatiedostojen säilyttämiseksi. '
+    + '<a href="#" id="artEditExit">Poistu muokkaustilasta</a>.';
+  document.getElementById('artEditExit') && document.getElementById('artEditExit').addEventListener('click', (e) => {
+    e.preventDefault();
+    artClearForm();
+  });
+  // Lock the slug field
+  const slugEl = document.getElementById('artSlug');
+  if (slugEl) slugEl.readOnly = true;
+}
+
+async function artLoadForEdit({ slug, language, branch }) {
+  if (!adminPw) { alert('Et ole kirjautunut ylläpitäjäksi'); return; }
+  // If the form has any in-progress content, ask before clobbering.
+  const body = document.getElementById('artBody');
+  if (body && body.value.trim().length > 0 && !artEditMode) {
+    if (!confirm('Avataanko artikkeli muokattavaksi? Lomakkeen nykyinen sisältö korvataan.')) return;
+  }
+  try {
+    const url = '/api/articles/get?slug=' + encodeURIComponent(slug)
+              + '&language=' + encodeURIComponent(language)
+              + '&branch=' + encodeURIComponent(branch);
+    const r = await fetch(url, { headers: { 'X-Admin-Password': adminPw } });
+    const data = await r.json();
+    if (!r.ok) { alert('Lataus epäonnistui: ' + (data.error || r.status)); return; }
+
+    // Switch to the Lähetä artikkeli tab
+    const tabBtn = document.querySelector('.admin-tab[data-tab="laheta-artikkeli"]');
+    if (tabBtn) tabBtn.click();
+
+    // Populate fields from frontmatter
+    const fm = data.frontmatter || {};
+    document.getElementById('artTitle').value = fm.title || '';
+    document.getElementById('artSubtitle').value = fm.subtitle || '';
+    if (fm.date) document.getElementById('artDate').value = fm.date;
+    // Category — match against dropdown options, fallback to custom field
+    const catEl = document.getElementById('artCategory');
+    const knownCats = Array.from(catEl.options).map(o => o.value);
+    if (knownCats.includes(fm.category || '')) {
+      catEl.value = fm.category;
+      document.getElementById('artCategoryCustomRow').style.display = 'none';
+    } else {
+      catEl.value = '';
+      document.getElementById('artCategoryCustomRow').style.display = '';
+      document.getElementById('artCategoryCustom').value = fm.category || '';
+    }
+    document.getElementById('artLanguage').value = fm.language || data.language || 'fi';
+    document.getElementById('artTags').value = (Array.isArray(fm.tags) ? fm.tags.join(', ') : (fm.tags || ''));
+    // Slug — set first, THEN flag as manually-edited so autofill won't touch it
+    artSlugManuallyEdited = true;
+    document.getElementById('artSlug').value = data.slug;
+    // Hero — show as "kept" hint; we don't load the binary into the form.
+    // Stash the path so artSubmitDraft can resend it if the publisher
+    // doesn't upload a replacement.
+    artExistingFeaturedImage = fm.featured_image || '';
+    const heroShownEl = document.getElementById('artShowHero');
+    if (heroShownEl) heroShownEl.checked = fm.show_hero !== false;
+
+    // Inline images — populate as "existing" rows (no File, just metadata)
+    artInlineRows = (data.inline_images || []).map(im => ({
+      num: im.num,
+      file: null,
+      caption: im.caption || '',
+      existing: { path: im.path, name: im.name },
+    }));
+    artInlineCounter = artInlineRows.reduce((max, r) => Math.max(max, r.num), 0);
+    artRenderInlineRows();
+
+    // Body — already has [[image:N]] placeholders restored by the endpoint
+    document.getElementById('artBody').value = data.body || '';
+
+    // SEO — load as manually-edited so autofill doesn't overwrite
+    document.getElementById('artSeoDescription').value = fm.seo_description || '';
+    artSeoManuallyEdited = !!(fm.seo_description);
+    const seoHint = document.getElementById('artSeoHint');
+    if (seoHint && artSeoManuallyEdited) {
+      seoHint.textContent = '✎ Käsin muokattu — auto-täyttö pois käytöstä.';
+      seoHint.classList.add('art-seo-hint--manual');
+    }
+    artUpdateSeoCount();
+
+    // Trigger preview refresh + URL preview
+    artUpdateSlugPreview();
+    artPushPreview();
+
+    // Edit-mode state + banner
+    artEditMode = { slug: data.slug, language: data.language, branch: data.branch };
+    artSetEditModeBanner(artEditMode);
+
+    // Reset the review gate so the publisher confirms the loaded content
+    const reviewedEl = document.getElementById('artReviewed');
+    if (reviewedEl) reviewedEl.checked = false;
+    document.getElementById('artSaveDraft').disabled = true;
+
+    artSetStatus('Artikkeli ladattu muokattavaksi', 'ok');
+  } catch (e) {
+    console.error('Edit load failed:', e);
+    alert('Verkkovirhe ladattaessa: ' + e.message);
+  }
+}
+
+// Hook into artClearForm to also exit edit mode (we patch via wrapper so we
+// don't have to touch the original function above)
+const _origArtClearForm = artClearForm;
+artClearForm = function() {
+  _origArtClearForm();
+  artExistingFeaturedImage = '';
+  if (artEditMode) {
+    artEditMode = null;
+    artSetEditModeBanner(null);
+  }
+};
 
 artUpdateSlugPreview();
 
@@ -1735,6 +1959,26 @@ function artImportSetStatus(msg, kind) {
 // DOM so it doesn't appear as a broken link in the resulting MD.
 async function artHtmlToMarkdownAndImages(html) {
   const doc = new DOMParser().parseFromString(html || '', 'text/html');
+
+  // ----- Junk-link cleanup -----------------------------------------------
+  // Word / Google Docs auto-linkify names, dates, and places — turndown
+  // would faithfully preserve them as <a> tags and the result is a wall of
+  // blue underlined text in the published article. Unwrap any <a> whose
+  // href isn't a real http(s)/mailto/tel destination so the inner text
+  // survives but the link tag goes away.
+  const anchors = Array.from(doc.querySelectorAll('a'));
+  let junkLinks = 0;
+  for (const a of anchors) {
+    const href = (a.getAttribute('href') || '').trim();
+    const isReal = /^(https?:\/\/|mailto:|tel:)/i.test(href);
+    if (isReal) continue;
+    const parent = a.parentNode;
+    if (!parent) continue;
+    while (a.firstChild) parent.insertBefore(a.firstChild, a);
+    parent.removeChild(a);
+    junkLinks++;
+  }
+
   const imgs = Array.from(doc.querySelectorAll('img'));
   const newImages = [];
   let nextNum = (artInlineCounter || 0) + 1;
@@ -1782,10 +2026,32 @@ async function artHtmlToMarkdownAndImages(html) {
   const td = await artGetTurndown();
   let md = td.turndown(doc.body ? doc.body.innerHTML : '');
 
+  // ----- Bold-line -> H2 promotion ---------------------------------------
+  // Source docs that use **bold paragraph** as a section heading instead of
+  // Word's "Heading 2" style come through turndown as plain bold and miss
+  // ArticleLayout's orange-bar callout styling. Promote any line that
+  // consists ONLY of a short bold phrase AND is surrounded by blank lines.
+  // The blank-line constraint prevents in-flow bold sentences from being
+  // mistaken for headings.
+  let h2Promoted = 0;
+  const lines = md.split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
+    const m = trimmed.match(/^\*\*([^*\n]{1,80})\*\*$/);
+    if (!m) continue;
+    const prevBlank = i === 0 || lines[i - 1].trim() === '';
+    const nextBlank = i === lines.length - 1 || lines[i + 1].trim() === '';
+    if (prevBlank && nextBlank) {
+      lines[i] = '## ' + m[1].trim();
+      h2Promoted++;
+    }
+  }
+  md = lines.join('\n');
+
   // Tidy: collapse runs of 3+ blank lines to a single blank-line gap.
   md = md.replace(/\n{3,}/g, '\n\n').trim() + '\n';
 
-  return { md, newImages, skipped };
+  return { md, newImages, skipped, junkLinks, h2Promoted };
 }
 
 // Apply imported MD + images to the form. Mode 'replace' overwrites the body,
@@ -1844,13 +2110,15 @@ async function artImportFile(file) {
       const mammoth = await artGetMammoth();
       const buffer  = await file.arrayBuffer();
       const result  = await mammoth.convertToHtml({ arrayBuffer: buffer });
-      const { md, newImages, skipped } = await artHtmlToMarkdownAndImages(result.value || '');
+      const { md, newImages, skipped, junkLinks, h2Promoted } = await artHtmlToMarkdownAndImages(result.value || '');
       artApplyImport(md, newImages, 'replace');
-      const imgPart = newImages.length
-        ? ' + ' + newImages.length + ' kuva' + (newImages.length === 1 ? '' : 'a')
-        : '';
+      const imgPart  = newImages.length ? ' + ' + newImages.length + ' kuva' + (newImages.length === 1 ? '' : 'a') : '';
       const skipPart = skipped ? ' (' + skipped + ' kuvaa ohitettu)' : '';
-      artImportSetStatus('✓ .docx ladattu' + imgPart + skipPart, 'ok');
+      const cleanups = [];
+      if (junkLinks)  cleanups.push(junkLinks  + ' linkkiä siivottu');
+      if (h2Promoted) cleanups.push(h2Promoted + ' otsikkoa muunnettu');
+      const cleanPart = cleanups.length ? ' [' + cleanups.join(', ') + ']' : '';
+      artImportSetStatus('✓ .docx ladattu' + imgPart + skipPart + cleanPart, 'ok');
       return;
     }
 
@@ -1893,13 +2161,15 @@ document.getElementById('artBody') && document.getElementById('artBody').addEven
   e.preventDefault();
   artImportSetStatus('Käsitellään liitetty teksti...', 'load');
   try {
-    const { md, newImages, skipped } = await artHtmlToMarkdownAndImages(html);
+    const { md, newImages, skipped, junkLinks, h2Promoted } = await artHtmlToMarkdownAndImages(html);
     artApplyImport(md, newImages, 'insert');
-    const imgPart = newImages.length
-      ? ' + ' + newImages.length + ' kuva' + (newImages.length === 1 ? '' : 'a')
-      : '';
+    const imgPart  = newImages.length ? ' + ' + newImages.length + ' kuva' + (newImages.length === 1 ? '' : 'a') : '';
     const skipPart = skipped ? ' (' + skipped + ' kuvaa ohitettu)' : '';
-    artImportSetStatus('✓ Liitetty teksti muunnettu Markdowniksi' + imgPart + skipPart, 'ok');
+    const cleanups = [];
+    if (junkLinks)  cleanups.push(junkLinks  + ' linkkiä siivottu');
+    if (h2Promoted) cleanups.push(h2Promoted + ' otsikkoa muunnettu');
+    const cleanPart = cleanups.length ? ' [' + cleanups.join(', ') + ']' : '';
+    artImportSetStatus('✓ Liitetty teksti muunnettu Markdowniksi' + imgPart + skipPart + cleanPart, 'ok');
   } catch (err) {
     console.error('Paste convert failed:', err);
     artImportSetStatus('Virhe liittäessä: ' + (err.message || err), 'err');
@@ -2515,8 +2785,19 @@ function openDeleteGalleryPanel() {
 // HALLITSE ARTIKKELEITA TAB — list + delete published / draft articles
 // =====================================================================
 
-let hartCurrentBranch = 'main';
+// Default to Luonnokset (dev) — that's where the active workflow lives
+// (drafts arrive on dev, then get promoted to main from this same view).
+let hartCurrentBranch = 'dev';
 let hartArticles = [];
+
+async function hartFetchBranch(branch) {
+  const r = await fetch('/api/articles/list?branch=' + encodeURIComponent(branch), {
+    headers: { 'X-Admin-Password': adminPw },
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.error || 'Lista (' + branch + ') epäonnistui');
+  return data.articles || [];
+}
 
 async function loadHartArticles() {
   const msg  = document.getElementById('hartMsg');
@@ -2525,17 +2806,22 @@ async function loadHartArticles() {
   list.innerHTML = '';
   document.getElementById('hartSearchRow').style.display = 'none';
   try {
-    const r = await fetch('/api/articles/list?branch=' + encodeURIComponent(hartCurrentBranch), {
-      headers: { 'X-Admin-Password': adminPw },
-    });
-    const data = await r.json();
-    if (!r.ok) {
-      msg.innerHTML = `<span class="u-err">${esc(data.error || 'Virhe')}</span>`;
-      return;
+    if (hartCurrentBranch === 'dev') {
+      // Luonnokset view: only show articles on dev that are NOT yet on main
+      // (true drafts pending promotion). Fetch both branches in parallel
+      // and compute the slug+language set difference.
+      const [devList, mainList] = await Promise.all([
+        hartFetchBranch('dev'),
+        hartFetchBranch('main'),
+      ]);
+      const onMain = new Set(mainList.map(a => a.slug + '|' + a.language));
+      hartArticles = devList.filter(a => !onMain.has(a.slug + '|' + a.language));
+      msg.innerHTML = `<span class="u-ok">${hartArticles.length} luonnos${hartArticles.length === 1 ? '' : 'ta'} (dev mutta ei vielä mainissa)</span>`;
+    } else {
+      // Tuotanto view: list everything on main as-is
+      hartArticles = await hartFetchBranch('main');
+      msg.innerHTML = `<span class="u-ok">${hartArticles.length} artikkelitiedostoa tuotannossa</span>`;
     }
-    hartArticles = data.articles || [];
-    const branchLabel = data.branch === 'main' ? 'tuotanto' : 'luonnokset';
-    msg.innerHTML = `<span class="u-ok">${hartArticles.length} artikkelitiedostoa (${esc(branchLabel)})</span>`;
     renderHartList(hartArticles);
     initHartSearch();
   } catch(e) {
@@ -2606,6 +2892,13 @@ function renderHartList(articles) {
           <td class="hart-col-actions">
             <div class="hart-action-stack">
               <div class="hart-link-row">${openBtns.join('')}</div>
+              ${hartCurrentBranch === 'dev'
+                ? `<div class="hart-edit-row">
+                    ${r.fi ? `<button class="hart-edit" data-slug="${escAttr(r.slug)}" data-lang="fi" title="Avaa FI-artikkeli muokattavaksi">✎ Muokkaa FI</button>` : ''}
+                    ${r.en ? `<button class="hart-edit" data-slug="${escAttr(r.slug)}" data-lang="en" title="Avaa EN-artikkeli muokattavaksi">✎ Muokkaa EN</button>` : ''}
+                  </div>
+                  <button class="btn btn--publish hart-promote" data-slug="${escAttr(r.slug)}" title="Vie artikkeli tuotantoon">✓ Julkaise tuotantoon</button>`
+                : ''}
               <button class="btn btn--danger hart-del" data-slug="${escAttr(r.slug)}" title="Poista artikkeli">🗑 Poista</button>
             </div>
           </td>
@@ -2617,6 +2910,12 @@ function renderHartList(articles) {
   `;
 
   list.querySelectorAll('.hart-del').forEach(btn => btn.addEventListener('click', () => openHartDeletePanel(btn.dataset.slug)));
+  list.querySelectorAll('.hart-promote').forEach(btn => btn.addEventListener('click', () => openHartPromotePanel(btn.dataset.slug)));
+  list.querySelectorAll('.hart-edit').forEach(btn => btn.addEventListener('click', () => artLoadForEdit({
+    slug: btn.dataset.slug,
+    language: btn.dataset.lang,
+    branch: hartCurrentBranch,
+  })));
 }
 
 function openHartDeletePanel(slug) {
@@ -2717,6 +3016,106 @@ function openHartDeletePanel(slug) {
   });
 }
 
+// Promote a draft from dev -> main. Shows an inline panel with a review-gate
+// checkbox + danger-styled "Julkaise tuotantoon" button. Calls
+// /api/articles/publish with mode=production, which copies the article + all
+// /images/<slug>-* image blobs from dev to main without re-uploading them.
+function openHartPromotePanel(slug) {
+  const existing = document.getElementById('hartPromotePanel');
+  if (existing) {
+    if (existing.dataset.slug === slug) { existing.remove(); return; }
+    existing.remove();
+  }
+  // Close any open delete panel — only one inline panel at a time
+  const delPanel = document.getElementById('hartDeletePanel');
+  if (delPanel) delPanel.remove();
+
+  const fi = hartArticles.find(a => a.slug === slug && a.language === 'fi');
+  const en = hartArticles.find(a => a.slug === slug && a.language === 'en');
+  if (!fi && !en) return;
+
+  const tr = document.querySelector(`#hartList tr[data-slug="${CSS.escape(slug)}"]`);
+  if (!tr) return;
+
+  // What gets promoted (publish.js production mode auto-includes EN stub for
+  // FI source + all /images/<slug>-*.jpg files, so one call covers both
+  // languages when FI is the source). Show the publisher exactly what's
+  // about to land on main.
+  const lines = [];
+  if (fi) lines.push('• <code>' + esc(slug) + '.md</code> (FI) sekä kaikki <code>/images/' + esc(slug) + '-*.jpg</code> kuvat');
+  if (en) lines.push('• <code>' + esc(slug) + '.md</code> (EN' + (en.is_stub ? ' — käännöstynkä' : '') + ')');
+
+  const detailRow = document.createElement('tr');
+  detailRow.id = 'hartPromotePanel';
+  detailRow.dataset.slug = slug;
+  detailRow.className = 'hart-detail-row hart-promote-detail';
+  detailRow.innerHTML = `
+    <td colspan="5">
+      <div class="hart-promote-panel">
+        <div class="hart-promote-panel__head">
+          <span class="hart-promote-panel__icon">✓</span>
+          <strong>Julkaise tuotantoon</strong> &nbsp;<code>${esc(slug)}</code>
+        </div>
+        <div class="hart-promote-panel__info">
+          <p>Tämä toiminto kopioi seuraavat tiedostot dev-haarasta main-haaraan:</p>
+          <div class="hart-promote-panel__files">${lines.join('<br>')}</div>
+          <p class="hart-promote-panel__note">Tuotannossa artikkeli näkyy ~2 minuutin päästä Cloudflaren rakennettua sivuston uudelleen.</p>
+        </div>
+        <label class="hart-promote-panel__gate">
+          <input type="checkbox" id="hartPromoteConfirm" />
+          <span>Olen tarkistanut artikkelin testiympäristössä ja hyväksyn sen julkaisun tuotantoon.</span>
+        </label>
+        <div class="hart-promote-panel__actions">
+          <button class="btn btn--ghost" id="hartPromoteCancel">Peruuta</button>
+          <button class="btn btn--publish" id="hartPromoteGo" disabled>Julkaise tuotantoon</button>
+        </div>
+        <div id="hartPromoteMsg" class="hart-promote-panel__msg"></div>
+      </div>
+    </td>
+  `;
+  tr.after(detailRow);
+
+  const gate  = document.getElementById('hartPromoteConfirm');
+  const goBtn = document.getElementById('hartPromoteGo');
+  gate.addEventListener('change', () => { goBtn.disabled = !gate.checked; });
+
+  document.getElementById('hartPromoteCancel').addEventListener('click', () => detailRow.remove());
+
+  goBtn.addEventListener('click', async () => {
+    const language = fi ? 'fi' : 'en'; // FI wins as source so EN stub is also promoted
+    const msg = document.getElementById('hartPromoteMsg');
+    msg.innerHTML = '<span class="u-load">Julkaistaan tuotantoon...</span>';
+    goBtn.disabled = true;
+    document.getElementById('hartPromoteCancel').disabled = true;
+    try {
+      const r = await fetch('/api/articles/publish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          password: adminPw,
+          mode: 'production',
+          slug,
+          language,
+        }),
+      });
+      const data = await r.json();
+      if (data.success) {
+        document.getElementById('hartMsg').innerHTML =
+          `<span class="u-ok">✓ Julkaistu tuotantoon (${data.promoted_files} tiedostoa). Tuotantosivun päivitys vie ~2 min.</span>`;
+        await loadHartArticles();
+      } else {
+        msg.innerHTML = `<span class="u-err">Virhe: ${esc(data.error || 'Tuntematon virhe')}</span>`;
+        goBtn.disabled = false;
+        document.getElementById('hartPromoteCancel').disabled = false;
+      }
+    } catch(e) {
+      msg.innerHTML = `<span class="u-err">Verkkovirhe: ${esc(e.message)}</span>`;
+      goBtn.disabled = false;
+      document.getElementById('hartPromoteCancel').disabled = false;
+    }
+  });
+}
+
 function initHartSearch() {
   const inp   = document.getElementById('hartSearch');
   const row   = document.getElementById('hartSearchRow');
@@ -2736,8 +3135,12 @@ function initHartSearch() {
       if (show) visible++;
     });
     count.textContent = q ? `${visible} tulosta` : '';
-    const dp = document.getElementById('hartDeletePanel');
-    if (dp && q) dp.remove();
+    if (q) {
+      const dp = document.getElementById('hartDeletePanel');
+      if (dp) dp.remove();
+      const pp = document.getElementById('hartPromotePanel');
+      if (pp) pp.remove();
+    }
   };
 }
 
@@ -3061,10 +3464,16 @@ document.getElementById('hartReload') && document.getElementById('hartReload').a
 .art-btn{padding:10px 18px;border:none;border-radius:4px;font-size:14px;font-weight:500;cursor:pointer}
 .art-btn--add{background:#eee;color:#333;padding:6px 12px;font-size:13px;align-self:flex-start;margin-top:4px}
 .art-btn--add:hover{background:#ddd}
-.art-btn--draft{background:#666;color:#fff}
-.art-btn--draft:hover:not(:disabled){background:#555}
+.art-btn--draft{background:#ff9900;color:#fff}
+.art-btn--draft:hover:not(:disabled){background:#e68a00}
 .art-btn--publish{background:#ff9900;color:#222}
 .art-btn--publish:hover:not(:disabled){background:#e68a00}
+.art-btn--clear{background:#fff;color:#666;border:1.5px solid #ddd}
+.art-btn--clear:hover{background:#f5f5f5;border-color:#bbb;color:#222}
+.art-prod-note{
+  font-size:12px;color:#888;margin:10px 0 0;line-height:1.5;
+  padding:8px 12px;background:#f7f6f4;border-left:3px solid #ddd;border-radius:3px;
+}
 .art-btn:disabled{opacity:0.5;cursor:not-allowed}
 .art-status{font-size:13px;color:#666}
 .art-status--err{color:#c33}
@@ -3744,6 +4153,75 @@ document.getElementById('hartReload') && document.getElementById('hartReload').a
   .hart-del-panel__gate input{margin-top:3px;flex-shrink:0}
   .hart-del-panel__actions{display:flex;gap:8px}
   .hart-del-panel__msg{margin-top:10px;font-size:.85rem;min-height:1.2em}
+
+  /* Promote (dev -> main) panel — green, opt-in to publication */
+  .hart-promote-detail td{padding:0;background:#f1faf3}
+  .hart-promote-panel{
+    margin:0;padding:16px 20px;
+    background:#f1faf3;border-top:2px solid #b9e0c1;
+    animation:pubFadeIn .2s ease-out;
+  }
+  .hart-promote-panel__head{
+    display:flex;align-items:center;gap:8px;
+    font-size:.95rem;color:#1f6f3a;margin-bottom:10px;
+  }
+  .hart-promote-panel__icon{font-size:1.1rem;color:#1f6f3a}
+  .hart-promote-panel__head code{
+    background:#fff;padding:2px 6px;border-radius:4px;
+    font-size:.85rem;color:#666;font-family:ui-monospace,Menlo,Consolas,monospace;
+  }
+  .hart-promote-panel__info{font-size:.85rem;color:#395}
+  .hart-promote-panel__info p{margin:0 0 6px;line-height:1.4}
+  .hart-promote-panel__files{
+    background:#fff;padding:10px 14px;border-radius:6px;border:1px solid #cdebd5;
+    font-size:.85rem;color:#234;line-height:1.7;
+  }
+  .hart-promote-panel__files code{
+    background:#f7f6f4;padding:1px 5px;border-radius:3px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.78rem;color:#444;
+  }
+  .hart-promote-panel__note{margin-top:8px !important;font-size:.78rem;color:#6a8}
+  .hart-promote-panel__gate{
+    display:flex;align-items:flex-start;gap:8px;
+    font-size:.85rem;color:#1f6f3a;line-height:1.4;
+    background:#fff;padding:10px 12px;border-radius:8px;border:1px solid #b9e0c1;
+    margin-top:14px;margin-bottom:12px;cursor:pointer;
+  }
+  .hart-promote-panel__gate input{margin-top:3px;flex-shrink:0}
+  .hart-promote-panel__actions{display:flex;gap:8px}
+  .hart-promote-panel__msg{margin-top:10px;font-size:.85rem;min-height:1.2em}
+  .hart-table .hart-promote{font-size:.78rem;padding:6px 12px;background:#27ae60;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:600;font-family:inherit}
+  .hart-table .hart-promote:hover{background:#1f8e4d}
+
+  /* Edit buttons (per-language) on dev rows */
+  .hart-edit-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+  .hart-table .hart-edit{
+    font-size:.74rem;color:#444;text-decoration:none;font-weight:600;
+    padding:5px 10px;border:1px solid #ddd;border-radius:4px;background:#fff;
+    cursor:pointer;font-family:inherit;
+  }
+  .hart-table .hart-edit:hover{background:#ff9900;border-color:#ff9900;color:#fff}
+
+  /* Edit-mode banner above the form */
+  .art-edit-banner{
+    background:#fff8e6;border:1px solid #ffd89a;border-radius:8px;
+    padding:10px 14px;margin:0 0 14px;font-size:.88rem;color:#5a3f00;line-height:1.5;
+  }
+  .art-edit-banner code{
+    background:#fff;padding:1px 6px;border-radius:3px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem;color:#444;
+  }
+  .art-edit-banner a{color:#ff9900;font-weight:700;text-decoration:underline}
+
+  /* Existing-image marker on inline rows in edit mode */
+  .art-inline-label--existing{color:#27ae60;font-weight:600;font-size:12px}
+  .art-inline-swap{
+    background:#fff;border:1px solid #ddd;border-radius:3px;
+    padding:4px 9px;font-size:11px;font-weight:600;color:#444;cursor:pointer;
+    font-family:inherit;line-height:1.2;flex-shrink:0;
+  }
+  .art-inline-swap:hover{background:#ff9900;border-color:#ff9900;color:#fff}
+
   @media(max-width:760px){
     .hart-table{font-size:.82rem}
     .hart-col-cat{display:none}

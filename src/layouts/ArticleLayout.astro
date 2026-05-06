@@ -201,8 +201,13 @@ const articleJsonLd = {
     line-height: 1.75;
   }
   
-  /* Drop cap on first paragraph */
-  .article-body :global(p:first-of-type::first-letter) {
+  /* Drop cap on first paragraph (or the first paragraph inside a leading
+     blockquote, which is how some articles open with a quoted lead). The
+     `> p:first-of-type` and `> blockquote:first-of-type > p:first-of-type`
+     scope prevents subsequent in-body blockquotes from also getting a giant
+     disconnected first letter. */
+  .article-body :global(> p:first-of-type::first-letter),
+  .article-body :global(> blockquote:first-of-type > p:first-of-type::first-letter) {
     float: left;
     font-family: var(--font-headline);
     font-size: 4.5rem;
