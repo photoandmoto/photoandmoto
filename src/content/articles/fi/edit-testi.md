@@ -14,5 +14,9 @@ Ensimmäinen kappale tätä testiä varten.
 
 Toinen kappale.
 
+
+![Kuva 1](/images/edit-testi-1.jpg)
+
+
 Kolmas kappale.
 ```
