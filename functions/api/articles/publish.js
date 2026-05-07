@@ -339,7 +339,7 @@ export async function onRequestPost({ request, env }) {
   }
 }
 
-// ---- Draft save: full form -> dev branch ----------------------------------
+// ---- Draft save: full form -> dev branch (or production-edit -> main) -----
 
 async function handleDraftSave({ request, env }) {
   let form;
@@ -353,7 +353,15 @@ async function handleDraftSave({ request, env }) {
   if (password !== env.UPLOAD_PASSWORD) return unauthorized();
 
   const mode = (form.get('mode') || 'draft').toString();
-  if (mode !== 'draft') return badRequest('Multipart upload only supports mode=draft');
+  // Two multipart modes:
+  //   draft           -> commit to dev (staging review flow)
+  //   production-edit -> commit straight to main (typo-fix flow from
+  //                      Hallitse artikkeleita Tuotanto rows). The frontend
+  //                      gates this with a confirm() dialog.
+  if (mode !== 'draft' && mode !== 'production-edit') {
+    return badRequest('Multipart upload only supports mode=draft or production-edit');
+  }
+  const targetBranch = mode === 'production-edit' ? PROD_BRANCH : DRAFT_BRANCH;
 
   // Required fields
   const title    = (form.get('title') || '').toString().trim();
@@ -433,7 +441,7 @@ async function handleDraftSave({ request, env }) {
   }
 
   // ---- Build atomic commit on dev ----
-  const branch = DRAFT_BRANCH;
+  const branch = targetBranch;
   const treeEntries = [];
 
   try {
@@ -478,17 +486,26 @@ async function handleDraftSave({ request, env }) {
     const headSha   = await getBranchHead(token, branch);
     const headCommit = await getCommit(token, headSha);
     const newTree   = await createTree(token, headCommit.tree.sha, treeEntries);
-    const message   = `Article: save draft "${slug}" (${language})`;
+    const message = mode === 'production-edit'
+      ? `Article: edit "${slug}" (${language}) in production`
+      : `Article: save draft "${slug}" (${language})`;
     const newCommit = await createCommit(token, message, newTree.sha, headSha);
     await updateBranch(token, branch, newCommit.sha);
 
+    // URL depends on which branch we just committed to. Production-edit
+    // saves go straight to www.photoandmoto.fi; drafts to staging.
+    const route = language === 'fi' ? 'aikakone' : 'time-machine';
+    const host = branch === PROD_BRANCH
+      ? 'https://www.photoandmoto.fi'
+      : 'https://photoandmoto-staging.pages.dev';
+
     return jsonResponse({
       success: true,
-      mode: 'draft',
+      mode,
       branch,
       slug,
       language,
-      url: `https://photoandmoto-staging.pages.dev/${language}/aikakone/${slug}/`,
+      url: `${host}/${language}/${route}/${slug}/`,
       committed_files: treeEntries.length,
     });
   } catch (e) {

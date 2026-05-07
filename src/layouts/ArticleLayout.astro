@@ -201,13 +201,11 @@ const articleJsonLd = {
     line-height: 1.75;
   }
   
-  /* Drop cap on first paragraph (or the first paragraph inside a leading
-     blockquote, which is how some articles open with a quoted lead). The
-     `> p:first-of-type` and `> blockquote:first-of-type > p:first-of-type`
-     scope prevents subsequent in-body blockquotes from also getting a giant
-     disconnected first letter. */
-  .article-body :global(> p:first-of-type::first-letter),
-  .article-body :global(> blockquote:first-of-type > p:first-of-type::first-letter) {
+  /* Drop cap on the article's first body paragraph only. Never on
+     blockquotes — drop cap is an article-opener flourish, not a
+     quote-styling thing, and the leading-`“` edge case (quote glyph
+     gets included in ::first-letter) makes it look broken on quotes. */
+  .article-body :global(> p:first-of-type::first-letter) {
     float: left;
     font-family: var(--font-headline);
     font-size: 4.5rem;
@@ -220,9 +218,26 @@ const articleJsonLd = {
   
   .article-body :global(p) {
     margin-bottom: var(--space-3);
-
   }
-  
+
+  /* Lists need the same breathing room after the last item */
+  .article-body :global(ul),
+  .article-body :global(ol) {
+    margin-bottom: var(--space-3);
+    padding-left: var(--space-3);
+  }
+  .article-body :global(li) {
+    margin-bottom: 4px;
+  }
+
+  /* Horizontal rules — visible thin orange-tinted divider */
+  .article-body :global(hr) {
+    border: none;
+    border-top: 2px solid #e8e0d6;
+    margin: var(--space-5) auto;
+    width: 60%;
+  }
+
   /* Headings as callout style */
   .article-body :global(h2) {
     font-family: var(--font-headline);
@@ -308,10 +323,10 @@ const articleJsonLd = {
     background: var(--bg-secondary);
   }
   
-  .article-body :global(tr:first-child td) {
-    font-weight: 700;
-    color: var(--brand-primary);
-  }
+  /* Note: previously had `tr:first-child td { color: brand-primary }` which
+     was meant for header-less <table> markup but broke any table with a
+     proper <thead> by colouring the first DATA row orange. Removed —
+     tables with <thead> now use the dedicated thead/th rules above. */
 
   .article-body :global(img) {
     width: 60%;

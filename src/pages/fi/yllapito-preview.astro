@@ -264,13 +264,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     word-break: break-word;
   }
 
-  /* Drop cap on the article's lead paragraph only. The `>` direct-child
-     combinator stops the cap firing on every blockquote's inner <p>
-     (which was making subsequent pull quotes show a giant disconnected
-     first letter). The second selector handles the case where the article
-     opens with a leading blockquote. */
-  #prevArticle .article-body > p:first-of-type::first-letter,
-  #prevArticle .article-body > blockquote:first-of-type > p:first-of-type::first-letter {
+  /* Drop cap on the article's first body paragraph only. Never on
+     blockquotes — drop cap is an article-opener flourish, not a
+     quote-styling thing. */
+  #prevArticle .article-body > p:first-of-type::first-letter {
     float: left;
     font-family: var(--font-headline);
     font-size: 4.5rem;
@@ -279,6 +276,24 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     padding-top: 6px;
     color: var(--text-primary);
     font-weight: bold;
+  }
+
+  /* Lists need breathing room after the last item (mirrors ArticleLayout) */
+  #prevArticle .article-body ul,
+  #prevArticle .article-body ol {
+    margin-bottom: var(--space-3, 1.5rem);
+    padding-left: var(--space-3, 1.5rem);
+  }
+  #prevArticle .article-body li {
+    margin-bottom: 4px;
+  }
+
+  /* Visible horizontal rule (mirrors ArticleLayout) */
+  #prevArticle .article-body hr {
+    border: none;
+    border-top: 2px solid #e8e0d6;
+    margin: var(--space-5, 3rem) auto;
+    width: 60%;
   }
 
   #prevArticle .article-body p {
@@ -370,11 +385,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     background: var(--bg-secondary);
   }
 
-  /* Mirror ArticleLayout: first body row gets bold + brand color */
-  #prevArticle .article-body tr:first-child td {
-    font-weight: 700;
-    color: var(--brand-primary);
-  }
+  /* Note: previously had `tr:first-child td { color: brand-primary }` to
+     mirror ArticleLayout, but that rule colored the first DATA row of any
+     <thead>+<tbody> table orange. Removed in both files. */
 
   #prevArticle .article-body img {
     width: 60%;
