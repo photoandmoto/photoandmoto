@@ -116,36 +116,48 @@ A separate flow from the gallery one above — for writing and publishing long-f
 
 ### Where it lives
 
-The **Lähetä artikkeli** tab inside `/fi/yllapito/` (admin login required). Sits next to Tarkista, Lähetä kuva, and Hallitse galleriaa.
+Two admin tabs work together: **Lähetä artikkeli** (create + iterate) and **Hallitse artikkeleita** (lifecycle — promote / delete / edit), both inside `/fi/yllapito/` (admin login required).
 
 ### What's in the form
 
-- Title, subtitle, date (defaults to today), category dropdown (Historical / MXGP / Speedway / custom), language toggle (FI / EN)
+- Title, subtitle, date (defaults to today), category dropdown (Historical / MXGP / Speedway / custom). Language is always Finnish — the EN side is auto-stubbed for sitemap/hreflang parity.
 - Tags (comma-separated)
-- Slug — auto-derived from title (NFD-stripped, lowercased, hyphenated), editable
+- **Kirjoittaja** input (defaults to "Photo & Moto" if left empty)
+- Slug — auto-derived from title (NFD-stripped, lowercased, hyphenated), editable for new articles, **locked when editing an existing article** (changing it would orphan all the existing image files).
 - Hero image (optional) + show-hero checkbox
-- Inline images: dynamic list, each with a numbered slot (`[[image:1]]`, `[[image:2]]`, ...) and an alt-text caption. Use `[[image:N]]` placeholders in the body — they get replaced with markdown image syntax server-side.
-- Body (Markdown)
-- SEO description (optional)
+- Inline images: dynamic list, each with a numbered slot (`[[image:1]]`, `[[image:2]]`, ...) and an alt-text caption. Each row also shows the placeholder syntax and a **"↳ Lisää bodyyn"** button that drops the matching `[[image:N]]` marker into the body at the cursor position. Use the placeholders in the body — they get replaced with markdown image syntax server-side.
+- Body (Markdown) with a small toolbar (Väliotsikko / Alaotsikko / Lainaus / B / I / Linkki) that inserts MD syntax at the cursor or wraps the selection.
+- SEO description — auto-fills from the body's first ~159 chars (markdown stripped, word-boundary trim, ellipsis). Live `0 / 160` counter. Stops auto-overwriting the moment the publisher edits the field manually.
+
+### Importing from Word / Docs / .txt
+
+Above the markdown toolbar there's an **import bar** so publishers don't have to write Markdown by hand:
+
+- **📄 Lataa tiedosto** accepts `.txt` (read as plain text) and `.docx` (parsed via [mammoth.js](https://github.com/mwilliamson/mammoth.js), lazy-loaded). `.doc` (the legacy binary format) shows a friendly "save as .docx first" message because no good browser library exists for it.
+- **Pasting** rich text directly into the body textarea is intercepted: clipboard HTML is converted to Markdown via [turndown](https://github.com/mixmark-io/turndown) (also lazy-loaded). Plain-text pastes pass through unchanged.
+- **Embedded images** in `.docx` documents (and pasted HTML, if any) are extracted in DOM order, routed through the existing 1600/80% JPEG resize pipeline, appended to the inline-image list with the next available number, and replaced in the body with `[[image:N]]` placeholders at the original positions. End result: write the article in Word with images placed inline → upload → form is fully populated, body and image slots both correct.
 
 All images get **client-side resize to 1600px / 80% JPEG** before upload (same pattern as the mystery-photo tab). Keeps payloads under D1 row limits.
 
 ### Side-by-side live preview
 
-The form is split-layout: form on the left, preview iframe on the right. Every keystroke postMessages the iframe with the current frontmatter + body. Hero and inline images become local `blob:` URLs inside the browser — they only get uploaded when you click Tallenna luonnos.
+The form is split-layout: form on the left, preview iframe on the right. Every keystroke postMessages the iframe with the current frontmatter + body. Hero and inline images become local `blob:` URLs inside the browser. In edit mode, kept images render from their deployed `/images/<slug>-N.jpg` URL instead.
 
 The preview page lives at `/fi/yllapito-preview/` (noindex, not linked anywhere). Renders Markdown via `marked` from a CDN, mirrors `ArticleLayout.astro` styling.
 
 ### Manual review gate
 
-Before Tallenna luonnos can be clicked, admin must tick **"Olen tarkistanut esikatselun ja artikkeli on valmis tallennettavaksi luonnokseksi"**. This forces a deliberate "I looked at the preview, I approve" step before anything leaves the browser.
+Before **Julkaise testiympäristöön** can be clicked, admin must tick **"Olen tarkistanut esikatselun ja artikkeli on valmis julkaistavaksi testiympäristöön"**. This forces a deliberate "I looked at the preview, I approve" step before anything leaves the browser.
 
 The checkbox auto-resets after a successful save, so the next edit cycle requires a fresh review.
 
 ### What the buttons do
 
+The form has two save paths depending on context:
+
 ```
-Tallenna luonnos
+[New article OR editing a dev draft]
+Julkaise testiympäristöön
     ↓
 publish.js Worker (mode=draft, multipart/form-data):
   - Authenticates as the GitHub App "Photoandmoto Publisher"
@@ -162,18 +174,23 @@ Article visible at https://photoandmoto-staging.pages.dev/fi/aikakone/<slug>/
 ```
 
 ```
-Julkaise tuotantoon
+[Editing a Tuotanto article — typo-fix flow]
+Julkaise testiympäristöön (red banner mode)
     ↓
-publish.js Worker (mode=production, JSON):
-  - Reads the article + images from dev
-  - Atomic GitHub commit to main with the same files
+confirm() dialog: "Tämä päivittää tuotantosivun suoraan, ohittaen testiympäristön."
+    ↓
+publish.js Worker (mode=production-edit, multipart/form-data):
+  - Same as draft mode, but commits straight to main
+  - Skips the EN stub creation if one already exists on main
     ↓
 Cloudflare Pages auto-deploys prod (~2 min)
     ↓
 Article visible at https://www.photoandmoto.fi/fi/aikakone/<slug>/
 ```
 
-You can re-save drafts as many times as you want — each Tallenna luonnos overwrites the previous commit on dev.
+**Promotion of a fresh draft** dev → main happens from a separate per-row button on Hallitse artikkeleita (production mode, JSON request, copies dev → main without re-uploading files).
+
+You can re-save drafts as many times as you want — each save overwrites the previous commit on the target branch.
 
 ### API endpoints
 
@@ -292,7 +309,7 @@ photoandmoto/
 │   ├── i18n/                            # Translations (fi, en)
 │   ├── layouts/                         # Page layouts
 │   ├── pages/                           # Routes — split fi/ and en/
-│   │   ├── fi/yllapito.astro            # Admin UI (Tarkista, Lähetä kuva, Lähetä artikkeli, Hallitse galleriaa)
+│   │   ├── fi/yllapito.astro            # Admin UI (Tarkista, Lähetä kuva, Hallitse galleriaa, Lähetä artikkeli, Hallitse artikkeleita)
 │   │   ├── fi/yllapito-preview.astro    # Live preview iframe target for Lähetä artikkeli (noindex)
 │   │   └── ...
 │   ├── styles/                          # Global CSS
@@ -443,34 +460,20 @@ For a full validation, paste the URL into [Google's Rich Results Test](https://s
 
 Tracked work that's not blocking but worth picking up in future sessions. Listed in rough priority order.
 
-### Article preview — rendering polish
+### Article publishing pipeline — followups
 
-The pre-publish preview iframe (`/fi/yllapito-preview/`) currently renders Markdown via `marked` but doesn't faithfully reproduce all of `ArticleLayout.astro`'s distinctive styling. Known gaps:
+The May 7 bug-fix + feature bundle (13 items) shipped on May 7 at commit `92b32aa` (dev only). Items still open:
 
-- **H2 with orange left border + uppercase callout** — the real article CSS is copied into the preview page, but Astro's `:global()` selectors may not be matching `marked`'s output inside the iframe. Inspect the rendered DOM and verify the rules apply.
-- **Blockquote** — should have orange left bar, grey background, italic, drop-cap on the first letter (matching the real article style with the "R" drop-cap on quoted paragraphs).
-- **Long-word wrapping** — long unbroken strings break the iframe layout. Add `overflow-wrap: anywhere` or similar so edge cases don't disturb the column.
+- **Smoke-test the May 7 bundle on staging** — none of the 13 items have been verified end-to-end yet. Test plan in `SESSION_HANDOFF.md`.
+- **Investigate**: *Hiljaisuus pauhun jälkeen* still appears on the production aikakone landing page despite the May 7 delete commit `42592c9`. Check whether the source files are actually gone from `main` (or if there's a stale Cloudflare cache).
 
-Reference: real Photo & Moto articles in production use these styles (e.g. *Crossin mekan nousu ja lasku* shows H2 "MUTKAINEN KIERTOTIE" with orange bar + a blockquote with drop-cap "R"). The preview should look pixel-close to that.
+### EN translation strategy — discussion pending
 
-### Article form — Markdown toolbar
+Today the system creates an auto-stub at `src/content/articles/en/<slug>.md` whenever FI publishes, but the stub body is *"This article is not yet translated to English. The Finnish version is available at..."* and nothing ever replaces it. Three paths to choose from before building:
 
-The Lähetä artikkeli body textarea is plain Markdown — publishers must type `##`, `###`, `>`, `**`, `*`, `[teksti](url)` syntax by hand. Add a small toolbar above the textarea with insert buttons: H2 (väliotsikko), H3 (alaotsikko), Lainaus (blockquote), Lihavointi (bold), Kursivointi (italic), Linkki (link). Each button inserts the syntax at the cursor position with sensible defaults.
-
-Design choice pending — compact icons vs. labeled buttons vs. two-row split. Pick at start of next session.
-
-Estimated: ~30–60 min once design is locked.
-
-### Hallitse artikkeleita admin tab
-
-`list.js` and `delete.js` endpoints are shipped and verified, but the UI tab that uses them isn't built yet. Should mirror the existing Hallitse galleriaa tab's pattern:
-
-- All articles for the current branch (default main, toggle to dev to see drafts)
-- Per-row: title, language, date, category, status (live / draft / stub)
-- Delete button per row with a confirmation modal that uses the existing review-gate pattern
-- Optionally: open-on-environment links (staging vs prod)
-
-Estimated: ~150 lines of UI code in `yllapito.astro`.
+1. **Manual EN articles per story** — current de-facto behaviour, lots of work per article.
+2. **Gemini "Käännä englanniksi" button per stub row** in Hallitse artikkeleita with human-in-the-loop review — recommended; `GEMINI_API_KEY` already in env.
+3. **Gemini auto-translate at publish time** with no review — risky.
 
 ### Mystery photo help block — backfill existing rows
 
@@ -479,16 +482,14 @@ Photos uploaded to live D1 before the `thumb_data` feature shipped (currently 3 
 - **Wait for new uploads** (current default) — the block fills organically as admin uploads new mystery photos.
 - **Build a backfill admin tool** — a one-shot button on the Tunnistamatta admin tab that fetches each existing image, generates a 300px Canvas thumbnail in the browser, and PUTs it back to D1. ~30 min of work.
 
-### Phase D — Admin gallery management
+### Hallitse galleriaa — residual features
 
-Currently, fixing mistakes in published galleries (typos in captions, wrong year, deleting bad photos, renaming galleries) requires manual git commits. A "Hallitse galleriaa" admin tab inside Tunnistamatta would let admin:
+The Hallitse galleriaa tab now ships with caption edit, photo move-between-galleries, photo delete, and gallery rename/delete. Two original Phase D items remain:
 
-- Delete a photo from a gallery (removes original + thumb + display + manifest entry, single commit)
-- Rename a photo (regenerates derivatives, updates manifest)
-- Rename or delete an entire gallery
-- Reorder photos within a gallery
+- **Rename a photo within a gallery** (regenerate thumb + display, update manifest)
+- **Reorder photos within a gallery** (drag-handle UI, write new ordering to the manifest)
 
-Estimated: full session of work.
+Both are nice-to-have, not blocking.
 
 ### Phase E — Storage and cost ops
 
