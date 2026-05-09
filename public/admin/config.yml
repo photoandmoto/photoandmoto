@@ -88,6 +88,114 @@ collections:
       - { name: body, label: Sisältö, widget: markdown, i18n: true }
       - { name: sources, label: 'Lähteet (valinnainen)', widget: text, required: false, i18n: true, hint: 'Lähteet, joista materiaalia on lainattu. Jokainen lähde omalla rivillä. URL-osoitteet muuttuvat automaattisesti linkeiksi.' }
 
+  # ============================================================
+  # Shadow collections: pre-filled article templates.
+  # Both write to src/content/articles/ — same folder as Artikkelit above.
+  # The list view shows all articles (Decap can't filter it). The create
+  # flow applies the template's defaults: pre-filled category, body skeleton,
+  # and auto_translated: true so the EN tab is auto-translated on save.
+  # ============================================================
+
+  - name: articles_template_mxgp
+    label: '+ Uusi MXGP-juttu'
+    label_singular: MXGP-juttu
+    description: 'Luo uusi MXGP-juttu valmiilla pohjalla. Kategoria ja sisältörunko on esitäytetty. Selaa olemassa olevia artikkeleja Artikkelit-osiossa.'
+    folder: src/content/articles
+    create: true
+    delete: false
+    extension: md
+    format: yaml-frontmatter
+    slug: '{{slug}}'
+    summary: '{{title}} — {{date | date("YYYY-MM-DD")}}'
+    i18n: true
+    fields:
+      - { name: title, label: Otsikko, widget: string, i18n: true }
+      - { name: subtitle, label: Alaotsikko, widget: string, required: false, i18n: true }
+      - { name: author, label: Kirjoittaja, widget: string, default: 'Photo & Moto', i18n: duplicate }
+      - { name: date, label: Päivämäärä, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true, i18n: duplicate }
+      - { name: category, label: Kategoria, widget: hidden, default: 'MXGP', i18n: duplicate }
+      - { name: tags, label: Avainsanat, widget: list, default: ['MXGP'], required: false, i18n: true }
+      - { name: featured_image, label: 'Pääkuva (hero)', widget: image, required: false, i18n: duplicate }
+      - { name: card_image, label: 'Korttikuva (lista- ja etusivut)', widget: image, required: false, i18n: duplicate }
+      - { name: show_hero, label: 'Näytä pääkuva otsikon yläpuolella', widget: boolean, default: true, required: false, i18n: duplicate }
+      - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
+      - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
+      - { name: seo_description, label: 'SEO-kuvaus (max 160 merkkiä)', widget: string, required: false, pattern: ['^.{0,160}$', 'Korkeintaan 160 merkkiä'], i18n: true }
+      - { name: auto_translated, label: 'Automaattisesti käännetty — käännä pois tarkistuksen jälkeen', widget: boolean, default: true, required: false, i18n: true }
+      - { name: translated_from, widget: hidden, required: false, i18n: true }
+      - { name: translated_at, widget: hidden, required: false, i18n: true }
+      - name: body
+        label: Sisältö
+        widget: markdown
+        i18n: true
+        default: |
+          [Avauskappale: mistä kilpailusta on kyse, missä, milloin, ketkä avainnimet]
+
+          ## Kilpailun kulku
+
+          [Kuvaus tärkeimmistä hetkistä — startti, käännekohdat, finaali]
+
+          ## Tulokset
+
+          | Sija | Kuljettaja | Tiimi | Pisteet |
+          |---|---|---|---|
+          | 1 |  |  |  |
+          | 2 |  |  |  |
+          | 3 |  |  |  |
+
+          ## Yhteenveto
+
+          [Mitä tämä tarkoittaa MM-sarjan kannalta?]
+      - { name: sources, label: 'Lähteet (valinnainen)', widget: text, required: false, i18n: true }
+
+  - name: articles_template_historical
+    label: '+ Uusi historiallinen tarina'
+    label_singular: Historiallinen tarina
+    description: 'Luo uusi historiallinen tarina valmiilla pohjalla. Kategoria ja sisältörunko on esitäytetty. Selaa olemassa olevia artikkeleja Artikkelit-osiossa.'
+    folder: src/content/articles
+    create: true
+    delete: false
+    extension: md
+    format: yaml-frontmatter
+    slug: '{{slug}}'
+    summary: '{{title}} — {{date | date("YYYY-MM-DD")}}'
+    i18n: true
+    fields:
+      - { name: title, label: Otsikko, widget: string, i18n: true }
+      - { name: subtitle, label: Alaotsikko, widget: string, required: false, i18n: true }
+      - { name: author, label: Kirjoittaja, widget: string, default: 'Photo & Moto', i18n: duplicate }
+      - { name: date, label: Päivämäärä, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true, i18n: duplicate }
+      - { name: category, label: Kategoria, widget: hidden, default: 'Historical', i18n: duplicate }
+      - { name: tags, label: Avainsanat, widget: list, default: ['historia'], required: false, i18n: true }
+      - { name: featured_image, label: 'Pääkuva (hero)', widget: image, required: false, i18n: duplicate }
+      - { name: card_image, label: 'Korttikuva (lista- ja etusivut)', widget: image, required: false, i18n: duplicate }
+      - { name: show_hero, label: 'Näytä pääkuva otsikon yläpuolella', widget: boolean, default: true, required: false, i18n: duplicate }
+      - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
+      - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
+      - { name: seo_description, label: 'SEO-kuvaus (max 160 merkkiä)', widget: string, required: false, pattern: ['^.{0,160}$', 'Korkeintaan 160 merkkiä'], i18n: true }
+      - { name: auto_translated, label: 'Automaattisesti käännetty — käännä pois tarkistuksen jälkeen', widget: boolean, default: true, required: false, i18n: true }
+      - { name: translated_from, widget: hidden, required: false, i18n: true }
+      - { name: translated_at, widget: hidden, required: false, i18n: true }
+      - name: body
+        label: Sisältö
+        widget: markdown
+        i18n: true
+        default: |
+          [Avauskappale: mistä ajanjaksosta on kyse ja miksi tarina on kertomisen arvoinen]
+
+          ## Tausta
+
+          [Mistä lähdettiin liikkeelle? Mikä oli ajan henki tai kontekst?]
+
+          ## Tarina
+
+          [Keskeiset tapahtumat ja henkilöt aikajärjestyksessä]
+
+          ## Perintö
+
+          [Mitä tämä jätti jälkeensä? Mitä siitä voi oppia tänään?]
+      - { name: sources, label: 'Lähteet (valinnainen)', widget: text, required: false, i18n: true }
+
   - name: categories
     label: Kategoriat
     label_singular: Kategoria
