@@ -13,16 +13,17 @@ interface Props {
     featured_image: string;
     show_hero?: boolean;
     image_caption?: string;
-    language: 'fi' | 'en';
+    language?: 'fi' | 'en';
     seo_description?: string;
     author_url?: string;
   };
+  lang: 'fi' | 'en';
 }
 
-const { frontmatter } = Astro.props;
-const t = ui[frontmatter.language];
+const { frontmatter, lang } = Astro.props;
+const t = ui[lang];
 
-const formattedDate = new Intl.DateTimeFormat(frontmatter.language === 'fi' ? 'fi-FI' : 'en-US', {
+const formattedDate = new Intl.DateTimeFormat(lang === 'fi' ? 'fi-FI' : 'en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric'
@@ -44,7 +45,7 @@ const articleJsonLd = {
   "author": {
     "@type": "Person",
     "name": frontmatter.author,
-    "url": frontmatter.author_url || (_siteUrl + "/" + frontmatter.language + "/yhteystiedot/")
+    "url": frontmatter.author_url || (_siteUrl + "/" + lang + "/yhteystiedot/")
   },
   "publisher": {
     "@type": "Organization",
@@ -52,7 +53,7 @@ const articleJsonLd = {
     "logo": { "@type": "ImageObject", "url": _siteUrl + "/favicon.png" }
   },
   "mainEntityOfPage": { "@type": "WebPage", "@id": _articleUrl },
-  "inLanguage": frontmatter.language === 'fi' ? 'fi-FI' : 'en-US',
+  "inLanguage": lang === 'fi' ? 'fi-FI' : 'en-US',
   "articleSection": frontmatter.category,
   "keywords": (frontmatter.tags || []).join(', ')
 };
@@ -62,14 +63,14 @@ const articleJsonLd = {
   title={frontmatter.title}
   description={frontmatter.seo_description || frontmatter.subtitle || frontmatter.title}
   image={frontmatter.featured_image}
-  lang={frontmatter.language}
+  lang={lang}
 >
   <article class="article" data-pagefind-body data-pagefind-meta="type:article">
     <script type="application/ld+json" set:html={JSON.stringify(articleJsonLd)} />
     <div class="container">
       <header class="article-header">
-        <a href={`/${frontmatter.language}/aikakone`} class="back-link">
-          {frontmatter.language === 'fi' ? '← Takaisin artikkeleihin' : '← Back to articles'}
+        <a href={lang === 'fi' ? '/fi/aikakone' : '/en/time-machine'} class="back-link">
+          {lang === 'fi' ? '← Takaisin artikkeleihin' : '← Back to articles'}
         </a>
         
         <div class="article-meta-top">
