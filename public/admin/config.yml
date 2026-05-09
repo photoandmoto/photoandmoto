@@ -25,6 +25,14 @@ locale: fi
 media_folder: public/images
 public_folder: /images
 
+# Normalize slugs to ASCII so Finnish titles produce clean filenames
+# (ä -> a, ö -> o, å -> a, etc.). Without this, Decap keeps Unicode chars
+# in filenames, which causes URL-encoding issues and inconsistent diffs.
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: '-'
+
 # Top-level i18n configuration — applies to any collection that opts in.
 i18n:
   structure: multiple_folders
