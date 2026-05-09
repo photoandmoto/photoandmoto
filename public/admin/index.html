@@ -6,6 +6,39 @@
     <meta name="robots" content="noindex, nofollow" />
     <title>Photo &amp; Moto — Artikkeli-CMS</title>
     <link rel="icon" href="/favicon.png" />
+
+    <!-- Same Montserrat load as the live site (matches BaseLayout.astro). -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet" />
+
+    <style>
+      /*
+       * Make text-input fields render in Montserrat so what you type looks
+       * close to what'll appear on the live site. Decap's UI chrome (sidebar,
+       * buttons, icons) stays in its default font — overriding everything
+       * breaks Decap's icon fonts.
+       *
+       * !important is needed because Decap's styled-components set inline
+       * styles that would otherwise win.
+       */
+      input[type='text'],
+      input[type='search'],
+      input[type='url'],
+      input[type='email'],
+      textarea,
+      [contenteditable='true'],
+      [contenteditable='true'] *,
+      .cms-editor-visual,
+      .cms-editor-visual * {
+        font-family: 'Montserrat', system-ui, sans-serif !important;
+      }
+
+      /*
+       * Raw markdown mode (CodeMirror) intentionally stays monospace —
+       * it's easier to spot whitespace and align code blocks.
+       */
+    </style>
   </head>
   <body>
     <script src="https://unpkg.com/decap-cms@^3.6.3/dist/decap-cms.js"></script>
