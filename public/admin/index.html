@@ -42,5 +42,10 @@
   </head>
   <body>
     <script src="https://unpkg.com/decap-cms@^3.6.3/dist/decap-cms.js"></script>
+    <script>
+      // Mirror the live site's typography in Decap's preview pane.
+      // /admin/preview.css matches the article rendering in ArticleLayout.astro.
+      CMS.registerPreviewStyle('/admin/preview.css');
+    </script>
   </body>
 </html>
