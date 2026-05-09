@@ -1,14 +1,22 @@
 ---
-title: "Sandblowers – Väriloistoa speedwayihin"
-subtitle: "Kuinka motocrosskaverusten rohkea idea mullisti suomalaista speedwayta"
-author: "Photo & Moto"
+title: Sandblowers – Väriloistoa speedwayihin PTOD-TEST
+subtitle: Kuinka motocrosskaverusten rohkea idea mullisti suomalaista speedwayta
+author: Photo & Moto
 date: 2025-07-11
-category: "Historical"
-tags: ["Speedway", "Sandblowers", "Hyvinkää", "historia", "Jawa"]
-featured_image: "/images/sandblowers-ryhma.jpg"
-language: "fi"
+category: Historical
+tags:
+  - Speedway
+  - Sandblowers
+  - Hyvinkää
+  - historia
+  - Jawa
+featured_image: /images/sandblowers-ryhma.jpg
+draft: true
+language: fi
 show_hero: false
-seo_description: "Sandblowers — motocrosskaverusten värikäs speedwayryhmä vuodesta 1986. Miten Jawan kirkkaat värit mullistivat suomalaisen speedwayn tunnelman."
+seo_description: Sandblowers — motocrosskaverusten värikäs speedwayryhmä
+  vuodesta 1986. Miten Jawan kirkkaat värit mullistivat suomalaisen speedwayn
+  tunnelman.
 ---
 
 Elettiin vuotta 1986. Motocrossissa iltahuudon kuunnellet kaverukset etsivät uusia jännityksen lähteitä. Syttyi kipinä siirtyä speedwayn pariin ja näin syntyi Sandblowers rohkealla ajatuksella, tuoda eloisaa väriä "harmaaseen" lajiin. Kirjaimellisesti ottaen, heidän Jawansakin maalattiin kirkkailla värisävyillä perinteitä haastaen.
