@@ -1,6 +1,6 @@
 ---
 title: Sandblowers – Väriloistoa speedwayihin
-subtitle: Kuinka motocrosskaverusten rohkea idea mullisti suomalaista speedwayta
+subtitle: "Kuinka motocrosskaverusten rohkea idea mullisti suomalaista speedwayta "
 author: Photo & Moto
 date: 2025-07-11
 category: Historical
