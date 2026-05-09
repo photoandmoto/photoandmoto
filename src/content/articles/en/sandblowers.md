@@ -1,23 +1,14 @@
 ---
-title: Sandblowers — A Splash of Colour in Speedway
-subtitle: How a bold idea from motocross mates revolutionised Finnish speedway
-author: Photo & Moto
+title: "Sandblowers — A Splash of Colour in Speedway"
+subtitle: "How a bold idea from motocross mates revolutionised Finnish speedway"
+author: "Photo & Moto"
 date: 2025-07-11
-category: Historical
-tags:
-  - Speedway
-  - Sandblowers
-  - Hyvinkää
-  - history
-  - Jawa
-featured_image: /images/sandblowers-ryhma.jpg
-card_image: null
-draft: true
-language: en
+category: "Historical"
+tags: ["Speedway", "Sandblowers", "Hyvinkää", "history", "Jawa"]
+featured_image: "/images/sandblowers-ryhma.jpg"
+language: "en"
 show_hero: false
-seo_description: Sandblowers — a colourful speedway team born from motocross
-  friendships in 1986. How Jawa bikes in bright colours shook up Finnish
-  speedway.
+seo_description: "Sandblowers — a colourful speedway team born from motocross friendships in 1986. How Jawa bikes in bright colours shook up Finnish speedway."
 ---
 
 It was 1986. A group of mates who had heard the last post in motocross were looking for new sources of excitement. A spark was lit to move into speedway, and so Sandblowers was born — with a bold idea to bring vivid colour to a "grey" sport. Quite literally: even their Jawas were painted in bright hues, defying tradition.
