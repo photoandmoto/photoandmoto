@@ -1,0 +1,69 @@
+name: Check Article Links
+
+# Verifies external HTTP/HTTPS links in changed article markdown are reachable.
+# Runs on push to dev/main when files in src/content/articles/ change. Doesn't
+# block deploys — Cloudflare runs independently. A red Action just gives the
+# editor a visible warning to investigate.
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+    paths:
+      - 'src/content/articles/**'
+
+concurrency:
+  group: link-checker-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Detect added/modified articles
+        id: detect
+        run: |
+          git config --global core.quotePath false
+
+          BEFORE="${{ github.event.before }}"
+          AFTER="${{ github.event.after }}"
+          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            BEFORE=$(git rev-parse $AFTER^ 2>/dev/null || echo "")
+          fi
+
+          if [ -z "$BEFORE" ]; then
+            CHANGED=$(git show --name-only --pretty=format: $AFTER)
+          else
+            CHANGED=$(git diff --name-only --diff-filter=AM "$BEFORE" "$AFTER")
+          fi
+
+          echo "$CHANGED" | grep -E '^src/content/articles/[^/]+/[^/]+\.md$' > targets.txt || true
+
+          if [ ! -s targets.txt ]; then
+            echo "No article files added or modified."
+            echo "found=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "Targets:"
+          cat targets.txt
+          echo "found=true" >> $GITHUB_OUTPUT
+
+      - name: Check links
+        if: steps.detect.outputs.found == 'true'
+        run: |
+          mapfile -t TARGETS < targets.txt
+          node scripts/check-links.mjs "${TARGETS[@]}"
