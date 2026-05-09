@@ -104,6 +104,11 @@ async function callGemini(systemPrompt, userPrompt, apiKey) {
       responseMimeType: 'application/json',
       responseSchema: RESPONSE_SCHEMA,
       temperature: 0.3,
+      // Gemini 2.5 Pro reasons internally with "thinking" tokens that count
+      // against the output budget. Translation is mechanical — no thinking
+      // needed. Disabling it gives the full budget to actual output.
+      thinkingConfig: { thinkingBudget: 0 },
+      maxOutputTokens: 32768,
     },
   };
 
@@ -121,14 +126,20 @@ async function callGemini(systemPrompt, userPrompt, apiKey) {
   const data = await res.json();
   const candidate = data.candidates && data.candidates[0];
   if (!candidate) throw new Error(`Gemini returned no candidates: ${JSON.stringify(data)}`);
+
+  // Diagnostic: log finish reason and usage so truncation is obvious next time.
+  const finishReason = candidate.finishReason || 'unknown';
+  const usage = data.usageMetadata || {};
+  console.log(`Gemini finished (reason=${finishReason}, prompt=${usage.promptTokenCount}, output=${usage.candidatesTokenCount}, total=${usage.totalTokenCount})`);
+
   const text = candidate.content && candidate.content.parts && candidate.content.parts[0] && candidate.content.parts[0].text;
-  if (!text) throw new Error(`Gemini returned no text: ${JSON.stringify(candidate)}`);
+  if (!text) throw new Error(`Gemini returned no text. finishReason=${finishReason}, candidate=${JSON.stringify(candidate).slice(0, 500)}`);
 
   let parsed;
   try {
     parsed = JSON.parse(text);
   } catch (e) {
-    throw new Error(`Gemini returned non-JSON: ${text.slice(0, 200)}`);
+    throw new Error(`Gemini returned non-JSON (length=${text.length}, finishReason=${finishReason}). First 500 chars: ${text.slice(0, 500)}\n\nLast 500 chars: ${text.slice(-500)}`);
   }
   return parsed;
 }
