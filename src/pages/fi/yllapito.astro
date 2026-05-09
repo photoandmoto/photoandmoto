@@ -100,6 +100,8 @@ const lang = 'fi';
         <button type="button" class="admin-tab admin-tab--on" data-tab="tarkista">Tarkista</button>
         <button type="button" class="admin-tab" data-tab="laheta">Lähetä kuva</button>
         <button type="button" class="admin-tab" data-tab="hallitse">Hallitse galleriaa</button>
+        <button type="button" class="admin-tab" data-tab="laheta-artikkeli">Lähetä artikkeli</button>
+        <button type="button" class="admin-tab" data-tab="hallitse-artikkeleita">Hallitse artikkeleita</button>
       </div>
 
       <!-- Tarkista tab: filters + grid (community sees filters too) -->
@@ -131,6 +133,157 @@ const lang = 'fi';
       </div>
 
       <!-- Hallitse galleriaa tab (admin only) -->
+      <div id="tabLahetaArtikkeli" class="tab-content" style="display:none;">
+        <div class="art-split">
+        <div class="art-split__left">
+        <div class="art-form">
+          <h3 class="art-form__title">Uusi artikkeli</h3>
+          <p class="art-form__hint">Julkaise testiympäristöön -painike vie artikkelin staging-sivulle (~2 min) tarkistettavaksi. Voit julkaista uudestaan niin monta kertaa kuin haluat. Tuotantoon vienti tehdään erikseen Hallitse artikkeleita -välilehdellä.</p>
+
+          <div class="art-row">
+            <label class="art-field art-field--full">
+              <span>Otsikko *</span>
+              <input id="artTitle" type="text" maxlength="200" placeholder="Esim. Hyvinkään scramble 1976" />
+            </label>
+          </div>
+
+          <div class="art-row">
+            <label class="art-field art-field--full">
+              <span>Alaotsikko</span>
+              <input id="artSubtitle" type="text" maxlength="200" placeholder="Lyhyt alaotsikko (näkyy listauksessa ja artikkelissa)" />
+            </label>
+          </div>
+
+          <div class="art-row">
+            <label class="art-field">
+              <span>Päiväys *</span>
+              <input id="artDate" type="date" />
+            </label>
+            <label class="art-field">
+              <span>Kategoria *</span>
+              <select id="artCategory">
+                <option value="Historical">Historical</option>
+                <option value="MXGP">MXGP</option>
+                <option value="Speedway">Speedway</option>
+                <option value="">Muu (kirjoita alle)…</option>
+              </select>
+            </label>
+            <input type="hidden" id="artLanguage" value="fi" />
+          </div>
+
+          <div class="art-row" id="artCategoryCustomRow" style="display:none;">
+            <label class="art-field art-field--full">
+              <span>Mukautettu kategoria</span>
+              <input id="artCategoryCustom" type="text" maxlength="60" placeholder="Esim. Endurance" />
+            </label>
+          </div>
+
+          <div class="art-row">
+            <label class="art-field art-field--full">
+              <span>Tagit (pilkulla erotettuna)</span>
+              <input id="artTags" type="text" maxlength="200" placeholder="motocross, hyvinkää, 1976" />
+            </label>
+          </div>
+
+          <div class="art-row">
+            <label class="art-field art-field--full">
+              <span>Kirjoittaja</span>
+              <input id="artAuthor" type="text" maxlength="80" placeholder="Photo & Moto" />
+              <small class="art-hint">Jos tyhjä, käytetään oletusta &laquo;Photo &amp; Moto&raquo;.</small>
+            </label>
+          </div>
+
+          <div class="art-row">
+            <label class="art-field art-field--full">
+              <span>Slug (URL-osa)</span>
+              <input id="artSlug" type="text" maxlength="80" placeholder="luodaan automaattisesti otsikosta" />
+              <small class="art-hint" id="artSlugPreview">URL: /<em>fi</em>/aikakone/<em>(otsikosta)</em>/</small>
+            </label>
+          </div>
+
+          <div class="art-row">
+            <label class="art-field art-field--full">
+              <span>Pääkuva (hero) — valinnainen</span>
+              <input id="artHero" type="file" accept="image/jpeg,image/png,image/webp" />
+              <small class="art-hint">Kuva resize-pakataan 1600px / 80% JPEG -laatuun selaimessa ennen lähetystä.</small>
+            </label>
+          </div>
+
+          <div class="art-row">
+            <label class="art-field">
+              <span>
+                <input id="artShowHero" type="checkbox" />
+                Näytä pääkuva artikkelin yläosassa
+              </span>
+            </label>
+          </div>
+
+          <div class="art-row">
+            <div class="art-field art-field--full">
+              <span>Sisäkkäiset kuvat</span>
+              <div id="artInlineImages" class="art-inline-list"></div>
+              <button type="button" id="artAddInline" class="art-btn art-btn--add">+ Lisää kuva</button>
+              <small class="art-hint">Käytä rungossa <code>[[image:1]]</code>, <code>[[image:2]]</code> jne. Kuvat tallentuvat <code>/images/&lt;slug&gt;-&lt;numero&gt;.jpg</code></small>
+            </div>
+          </div>
+
+          <div class="art-row">
+            <label class="art-field art-field--full">
+              <span>Runko (Markdown) *</span>
+              <div class="art-import-bar">
+                <button type="button" id="artImportFile" class="art-import-btn">📄 Lataa tiedosto (.txt / .docx)</button>
+                <input type="file" id="artImportFileInput" accept=".txt,.docx,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none;" />
+                <span class="art-import-hint">tai liitä teksti Wordista / Google Docsista suoraan alle — muotoilut ja kuvat tulevat mukana, linkit poistetaan automaattisesti</span>
+                <span id="artImportStatus" class="art-import-status" aria-live="polite"></span>
+              </div>
+              <div class="md-toolbar" role="toolbar" aria-label="Markdown-työkalut">
+                <button type="button" class="md-tool md-tool--block" data-md-action="h2" title="Väliotsikko (## H2)">Väliotsikko</button>
+                <button type="button" class="md-tool md-tool--block" data-md-action="h3" title="Alaotsikko (### H3)">Alaotsikko</button>
+                <button type="button" class="md-tool md-tool--block" data-md-action="quote" title="Lainaus (&gt; ...)">Lainaus</button>
+                <span class="md-toolbar__sep" aria-hidden="true"></span>
+                <button type="button" class="md-tool md-tool--bold" data-md-action="bold" title="Lihavointi (**teksti**)">B</button>
+                <button type="button" class="md-tool md-tool--italic" data-md-action="italic" title="Kursivointi (*teksti*)">I</button>
+                <button type="button" class="md-tool" data-md-action="link" title="Linkki ([teksti](url))">Linkki</button>
+              </div>
+              <textarea id="artBody" rows="18" placeholder="Tämä on ensimmäinen kappale.&#10;&#10;[[image:1]]&#10;&#10;Toinen kappale jatkaa tarinaa.&#10;&#10;## Väliotsikko&#10;&#10;Lisää tekstiä..."></textarea>
+              <small class="art-hint">Markdown tukee otsikoita (## H2), listoja, lainauksia (&gt; ...) ja taulukoita. Linkit: <code>[teksti](https://...)</code></small>
+            </label>
+          </div>
+
+          <div class="art-row">
+            <label class="art-field art-field--full">
+              <span>SEO-kuvaus <small id="artSeoCount" class="art-seo-count">0 / 160</small></span>
+              <input id="artSeoDescription" type="text" maxlength="160" placeholder="Täyttyy automaattisesti rungosta — voit muokata" />
+              <small id="artSeoHint" class="art-hint art-seo-hint">↺ Auto-täytetty rungosta. Käsin muokattu kuvaus säilyy ennallaan.</small>
+            </label>
+          </div>
+
+          <div class="art-review-gate">
+            <label class="art-review-gate__label">
+              <input id="artReviewed" type="checkbox" />
+              <span>Olen tarkistanut esikatselun ja artikkeli on valmis julkaistavaksi testiympäristöön</span>
+            </label>
+          </div>
+
+          <div class="art-actions">
+            <button type="button" id="artSaveDraft" class="art-btn art-btn--draft" disabled>Julkaise testiympäristöön</button>
+            <button type="button" id="artClearForm" class="art-btn art-btn--clear">Tyhjennä lomake</button>
+            <span id="artStatus" class="art-status"></span>
+          </div>
+          <p class="art-prod-note">Tuotantoon julkaisu tapahtuu Hallitse artikkeleita -välilehdellä, kun olet tarkistanut artikkelin testiympäristössä.</p>
+
+          <div id="artResult" class="art-result" style="display:none;"></div>
+        </div>
+        </div>
+        <div class="art-split__right">
+          <div class="art-preview-bar">
+            <span class="art-preview-bar__label">Esikatselu</span>
+            <span class="art-preview-bar__hint">Päivittyy reaaliajassa kirjoittaessasi</span>
+          </div>
+          <iframe id="artPreview" class="art-preview-frame" src="/fi/yllapito-preview/" title="Esikatselu" loading="lazy"></iframe>
+        </div>
+        </div>
+      </div>
       <div id="tabHallitse" class="tab-content" style="display:none;">
         <div class="hallitse-section">
           <h3 class="upload-title">Hallitse galleriaa</h3>
@@ -154,6 +307,28 @@ const lang = 'fi';
           <div id="hallitseGrid" class="hallitse-grid"></div>
         </div>
       </div>
+
+      <!-- Hallitse artikkeleita tab (admin only) -->
+      <div id="tabHallitseArtikkeleita" class="tab-content" style="display:none;">
+        <div class="hallitse-section">
+          <h3 class="upload-title">Hallitse artikkeleita</h3>
+          <div class="hart-top">
+            <div class="hart-branch-row">
+              <span class="hart-branch-label">Ympäristö:</span>
+              <button type="button" id="hartBranchDraft" class="hart-branch-btn hart-branch-btn--on">Luonnokset (dev)</button>
+              <button type="button" id="hartBranchProd" class="hart-branch-btn">Tuotanto (main)</button>
+              <button type="button" id="hartReload" class="btn btn--ghost hart-reload">↻ Päivitä</button>
+            </div>
+          </div>
+          <div id="hartMsg" class="upload-msg" style="margin-top:8px;"></div>
+          <div class="hart-search-row" id="hartSearchRow" style="display:none;">
+            <input type="text" id="hartSearch" class="inp" placeholder="Hae otsikkoa, slugia, kategoriaa..." style="max-width:340px;" />
+            <span id="hartSearchCount" class="hallitse-search-count"></span>
+          </div>
+          <div id="hartList" class="hart-list"></div>
+        </div>
+      </div>
+
       <!-- Modal overlay -->
       <div id="modal" class="overlay" style="display:none;">
         <div class="overlay-bg"></div>
@@ -909,17 +1084,1230 @@ document.getElementById('adminLogout').addEventListener('click',()=>{
   document.getElementById('adminPanel').style.display='block';
   document.getElementById('tabTarkista').style.display='none';
   document.getElementById('tabLaheta').style.display='none';
+  document.getElementById('tabLahetaArtikkeli').style.display='none';
   document.getElementById('tabHallitse').style.display='none';
+  document.getElementById('tabHallitseArtikkeleita').style.display='none';
   document.getElementById('mpSubAdmin').style.display='none';
   // Reset to Tarkista tab so re-login lands on the right place
   document.getElementById('tabTarkista').style.display='';
   document.getElementById('tabLaheta').style.display='none';
+  document.getElementById('tabLahetaArtikkeli').style.display='none';
   document.getElementById('tabHallitse').style.display='none';
+  document.getElementById('tabHallitseArtikkeleita').style.display='none';
   document.querySelectorAll('.admin-tab').forEach(t=>t.classList.toggle('admin-tab--on',t.dataset.tab==='tarkista'));
   curFilter=null;
   renderFilters();
   load(); // reload without include=all so identified photos drop out for community
 });
+
+// =====================================================================
+// LÄHETÄ ARTIKKELI TAB — article publishing pipeline
+// =====================================================================
+
+let artInlineRows = [];
+let artInlineCounter = 0;
+
+function artSlugify(s){
+  return String(s||'')
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9-]/g,'-')
+    .replace(/-+/g,'-')
+    .replace(/^-|-$/g,'');
+}
+
+// Tracks whether the publisher has manually edited the slug input. Once
+// they do, autofill stops touching it.
+let artSlugManuallyEdited = false;
+// Edit-mode state — { slug, language, branch } when editing an existing
+// article, null otherwise. Declared early so artUpdateSlugPreview can
+// safely check it on the page's initial paint (the EDIT MODE section
+// further down would otherwise be in TDZ at first call).
+let artEditMode = null;
+
+function artUpdateSlugPreview(){
+  const titleEl = document.getElementById('artTitle');
+  const slugEl  = document.getElementById('artSlug');
+  const langEl  = document.getElementById('artLanguage');
+  const preview = document.getElementById('artSlugPreview');
+  const lang = (langEl && langEl.value) || 'fi';
+
+  // Auto-fill the slug input from the title if:
+  //   - We're NOT in edit mode (locked to existing article's slug), AND
+  //   - The publisher hasn't typed anything in the slug yet.
+  // The artEditMode check is the load-bearing one — without it, typing
+  // a new title in edit mode would silently rename the slug, breaking the
+  // promise that "edit means edit the same article".
+  if (!artEditMode && !artSlugManuallyEdited) {
+    const autoSlug = artSlugify(titleEl.value);
+    slugEl.value = autoSlug;
+  }
+
+  const slug = artSlugify(slugEl.value || titleEl.value) || '(otsikosta)';
+  const route = lang === 'fi' ? 'aikakone' : 'time-machine';
+  preview.innerHTML = 'URL: /' + lang + '/' + route + '/' + slug + '/';
+}
+
+function artRenderInlineRows(){
+  const wrap = document.getElementById('artInlineImages');
+  wrap.innerHTML = '';
+  artInlineRows.forEach((row, idx) => {
+    const num = idx + 1;
+    row.num = num;
+    const div = document.createElement('div');
+    div.className = 'art-inline-row';
+    div.innerHTML = ''
+      + '<span class="art-inline-num">' + num + '.</span>'
+      + '<input type="file" accept="image/jpeg,image/png,image/webp" class="art-inline-file" />'
+      + '<input type="text" placeholder="Kuvateksti (alt)" class="art-inline-caption" maxlength="120" />'
+      + '<code class="art-inline-tag" title="Tämä paikkamerkki sijoittuu artikkelin runkoon">[[image:' + num + ']]</code>'
+      + '<button type="button" class="art-inline-insert" title="Lisää tämä paikkamerkki kohtaan, jossa kursori on rungossa (tai loppuun)">↳ Lisää bodyyn</button>'
+      + '<button type="button" class="art-inline-rm" title="Poista">×</button>';
+    const fileInp = div.querySelector('.art-inline-file');
+    const capInp  = div.querySelector('.art-inline-caption');
+    const insBtn  = div.querySelector('.art-inline-insert');
+    const rmBtn   = div.querySelector('.art-inline-rm');
+    insBtn.addEventListener('click', () => artInsertImagePlaceholder(num));
+
+    if (row.file) {
+      // Brand-new upload — show filename + size, hide raw file input.
+      const label = document.createElement('span');
+      label.className = 'art-inline-label';
+      label.textContent = row.file.name + ' (' + Math.round(row.file.size/1024) + ' KB)';
+      fileInp.style.display = 'none';
+      div.insertBefore(label, capInp);
+    } else if (row.existing) {
+      // Loaded from a saved article in edit mode — file already on branch.
+      // Show "Säilytetään" badge + Vaihda button that exposes the file
+      // input to upload a replacement.
+      const label = document.createElement('span');
+      label.className = 'art-inline-label art-inline-label--existing';
+      label.textContent = '✓ ' + row.existing.name + ' (säilytetään)';
+      fileInp.style.display = 'none';
+      div.insertBefore(label, capInp);
+      const swapBtn = document.createElement('button');
+      swapBtn.type = 'button';
+      swapBtn.className = 'art-inline-swap';
+      swapBtn.textContent = 'Vaihda';
+      swapBtn.title = 'Korvaa nykyinen kuva uudella tiedostolla';
+      swapBtn.addEventListener('click', () => {
+        // Reveal the file input so the publisher can pick a replacement
+        label.style.display = 'none';
+        swapBtn.style.display = 'none';
+        fileInp.style.display = '';
+        fileInp.click();
+      });
+      div.insertBefore(swapBtn, capInp);
+    }
+
+    fileInp.addEventListener('change', () => {
+      const f = fileInp.files[0] || null;
+      if (f) {
+        row.file = f;
+        // If this was an existing row, the new file replaces it on save —
+        // publish.js will overwrite <slug>-N.jpg in the same commit.
+      }
+      artRenderInlineRows();
+    });
+    capInp.value = row.caption || '';
+    capInp.addEventListener('input', () => { row.caption = capInp.value; });
+    rmBtn.addEventListener('click', () => {
+      artInlineRows = artInlineRows.filter(r => r !== row);
+      artRenderInlineRows();
+    });
+    wrap.appendChild(div);
+  });
+}
+
+document.getElementById('artAddInline').addEventListener('click', () => {
+  artInlineCounter += 1;
+  artInlineRows.push({ num: artInlineCounter, file: null, caption: '' });
+  artRenderInlineRows();
+});
+
+document.getElementById('artTitle').addEventListener('input', artUpdateSlugPreview);
+document.getElementById('artSlug').addEventListener('input', () => {
+  // Any keystroke in the slug field counts as a manual edit — autofill stops
+  // overwriting from now on. Empty value also counts (publisher cleared it).
+  artSlugManuallyEdited = true;
+  artUpdateSlugPreview();
+});
+document.getElementById('artLanguage').addEventListener('change', artUpdateSlugPreview);
+
+document.getElementById('artCategory').addEventListener('change', (e) => {
+  document.getElementById('artCategoryCustomRow').style.display = e.target.value === '' ? '' : 'none';
+});
+
+(function(){
+  const d = new Date();
+  const iso = d.toISOString().slice(0,10);
+  document.getElementById('artDate').value = iso;
+})();
+
+async function artResizeImage(file){
+  return new Promise((resolve)=>{
+    try{
+      const reader=new FileReader();
+      reader.onload=(e)=>{
+        const img=new Image();
+        img.onload=()=>{
+          try{
+            const MAX=1600;
+            if(img.width<=MAX && img.height<=MAX){resolve(file);return;}
+            let w=img.width, h=img.height;
+            if(w>h){h=Math.round(h*(MAX/w));w=MAX;}
+            else   {w=Math.round(w*(MAX/h));h=MAX;}
+            const canvas=document.createElement('canvas');
+            canvas.width=w; canvas.height=h;
+            canvas.getContext('2d').drawImage(img,0,0,w,h);
+            canvas.toBlob((blob)=>{
+              if(!blob){resolve(file);return;}
+              const newName=file.name.replace(/\.(jpe?g|png|webp)$/i,'.jpg');
+              resolve(new File([blob], newName, {type:'image/jpeg', lastModified:Date.now()}));
+            },'image/jpeg',0.8);
+          }catch(err){console.warn('resize err',err);resolve(file);}
+        };
+        img.onerror=()=>resolve(file);
+        img.src=e.target.result;
+      };
+      reader.onerror=()=>resolve(file);
+      reader.readAsDataURL(file);
+    }catch(err){resolve(file);}
+  });
+}
+
+function artGetForm(){
+  const titleEl = document.getElementById('artTitle');
+  const subtitleEl = document.getElementById('artSubtitle');
+  const dateEl = document.getElementById('artDate');
+  const categoryEl = document.getElementById('artCategory');
+  const categoryCustomEl = document.getElementById('artCategoryCustom');
+  const langEl = document.getElementById('artLanguage');
+  const tagsEl = document.getElementById('artTags');
+  const slugEl = document.getElementById('artSlug');
+  const heroEl = document.getElementById('artHero');
+  const showHeroEl = document.getElementById('artShowHero');
+  const bodyEl = document.getElementById('artBody');
+  const seoEl = document.getElementById('artSeoDescription');
+  const authorEl = document.getElementById('artAuthor');
+
+  const category = categoryEl.value || (categoryCustomEl ? categoryCustomEl.value.trim() : '');
+  const slug = artSlugify(slugEl.value.trim() || titleEl.value);
+
+  return {
+    title: titleEl.value.trim(),
+    subtitle: subtitleEl.value.trim(),
+    date: dateEl.value,
+    category,
+    language: langEl.value,
+    tags: tagsEl.value.trim(),
+    slug,
+    body: bodyEl.value,
+    show_hero: showHeroEl.checked,
+    seo_description: seoEl.value.trim(),
+    author: (authorEl && authorEl.value.trim()) || '',
+    hero_file: heroEl.files[0] || null,
+    inline: artInlineRows.filter(r => r.file).map(r => ({ num: r.num, file: r.file, caption: r.caption || '' })),
+    // Captions for ALL rows including existing/kept ones — publish.js uses
+    // them when replacing [[image:N]] placeholders, regardless of whether a
+    // fresh file was uploaded for that slot.
+    all_captions: artInlineRows.map(r => ({ num: r.num, caption: r.caption || '' })),
+  };
+}
+
+function artValidate(form){
+  if (!form.title) return 'Otsikko puuttuu';
+  if (!form.date) return 'Päiväys puuttuu';
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(form.date)) return 'Päiväyksen muoto YYYY-MM-DD';
+  if (!form.category) return 'Kategoria puuttuu';
+  if (!form.body.trim()) return 'Runko puuttuu';
+  if (!form.slug) return 'Slug ei muodostunut otsikosta — kirjoita slug käsin';
+  return null;
+}
+
+function artSetStatus(text, kind){
+  const el = document.getElementById('artStatus');
+  el.textContent = text || '';
+  el.className = 'art-status' + (kind ? ' art-status--' + kind : '');
+}
+
+function artShowResult(html){
+  const el = document.getElementById('artResult');
+  el.innerHTML = html;
+  el.style.display = '';
+}
+
+async function artSubmitDraft(){
+  const form = artGetForm();
+  const err = artValidate(form);
+  if (err) { artSetStatus(err, 'err'); return; }
+  if (!adminPw) { artSetStatus('Et ole kirjautunut ylläpitäjäksi', 'err'); return; }
+
+  // If we're editing an article that came from main (Tuotanto), this save
+  // commits DIRECTLY to main — bypassing staging review. Confirm first
+  // because production changes are visible to readers in ~2 minutes.
+  const isProductionEdit = artEditMode && artEditMode.branch === 'main';
+  if (isProductionEdit) {
+    if (!confirm('Tämä päivittää tuotantosivun (' + artEditMode.slug + ') suoraan, ohittaen testiympäristön. Vaihtoehtoinen tapa on poistua muokkaustilasta ja luoda uusi luonnos. Jatketaanko tuotantoon?')) {
+      return;
+    }
+  }
+
+  const draftBtn = document.getElementById('artSaveDraft');
+  draftBtn.disabled = true;
+  artSetStatus(isProductionEdit ? 'Tallennetaan tuotantoon…' : 'Pakataan kuvia…', 'load');
+  document.getElementById('artResult').style.display = 'none';
+
+  try {
+    const fd = new FormData();
+    fd.append('password', adminPw);
+    // 'production-edit' = multipart commit straight to main (typo-fix flow)
+    // 'draft'           = standard staging commit to dev
+    fd.append('mode', isProductionEdit ? 'production-edit' : 'draft');
+    fd.append('title', form.title);
+    fd.append('subtitle', form.subtitle);
+    fd.append('date', form.date);
+    fd.append('category', form.category);
+    fd.append('language', form.language);
+    fd.append('tags', form.tags);
+    fd.append('slug', form.slug);
+    fd.append('body', form.body);
+    fd.append('show_hero', form.show_hero ? 'true' : 'false');
+    if (form.seo_description) fd.append('seo_description', form.seo_description);
+    if (form.author) fd.append('author', form.author);
+
+    if (form.hero_file) {
+      const resized = await artResizeImage(form.hero_file);
+      fd.append('hero_image', resized, resized.name);
+    } else if (artExistingFeaturedImage) {
+      // Edit mode: no new hero uploaded but the article had one before.
+      // Pass the existing path so publish.js writes it back into the
+      // frontmatter instead of dropping the hero from the saved markdown.
+      fd.append('featured_image', artExistingFeaturedImage);
+    }
+    // Upload only rows that have a fresh file. Existing/kept rows on the
+    // branch don't need re-upload — publish.js's [[image:N]] -> /images/...
+    // replacement still resolves to the existing file path on the branch.
+    for (const inl of form.inline) {
+      const resized = await artResizeImage(inl.file);
+      fd.append('inline_image_' + inl.num, resized, resized.name);
+    }
+    // Send captions for ALL inline rows so publish.js can use them for the
+    // alt text in [[image:N]] -> ![alt](/images/...) replacement, even when
+    // no new file is uploaded for that slot.
+    for (const c of form.all_captions) {
+      fd.append('image_' + c.num + '_caption', c.caption);
+    }
+
+    artSetStatus('Lähetetään…', 'load');
+    const r = await fetch('/api/articles/publish', { method:'POST', body: fd });
+    const d = await r.json();
+    if (!d.success) throw new Error(d.error || 'Tuntematon virhe');
+
+    if (isProductionEdit) {
+      artSetStatus('Tallennettu tuotantoon', 'ok');
+      artShowResult(
+        '<strong>Muokkaus tallennettu suoraan tuotantoon.</strong>'
+        + '<br>Cloudflare buildaa live-sivun ~2 min. Kun valmis, tarkista:'
+        + '<br><a href="' + d.url + '" target="_blank" rel="noopener">' + d.url + '</a>'
+      );
+    } else {
+      artSetStatus('Julkaistu testiympäristöön', 'ok');
+      artShowResult(
+        '<strong>Artikkeli julkaistu testiympäristöön (staging).</strong>'
+        + '<br>Cloudflare buildaa staging-sivun ~2 min. Kun valmis, tarkista:'
+        + '<br><a href="' + d.url + '" target="_blank" rel="noopener">' + d.url + '</a>'
+        + '<br><br>Voit julkaista uudelleen niin monta kertaa kuin haluat — uusi commit korvaa vanhan.'
+        + '<br>Kun artikkeli on valmis, vie se tuotantoon <em>Hallitse artikkeleita</em> -välilehdeltä.'
+      );
+    }
+
+    // Success path: reset the review-gate so the next save requires a
+    // fresh review tick. Button stays disabled until the publisher
+    // explicitly re-confirms — matches the original "I saw the preview"
+    // design pattern.
+    const reviewedEl = document.getElementById('artReviewed');
+    if (reviewedEl) reviewedEl.checked = false;
+    // (button intentionally left disabled — gate listener re-enables it)
+  } catch (e) {
+    artSetStatus('Virhe: ' + e.message, 'err');
+    // Error path: re-enable the button so the publisher can retry.
+    draftBtn.disabled = false;
+  }
+}
+
+// Resets the entire Lähetä artikkeli form so the publisher can start a new
+// article without reloading the page. Confirms first because it nukes any
+// in-progress work (uploaded images, body, captions, etc.).
+function artClearForm(){
+  if (!confirm('Tyhjennetäänkö koko lomake? Kaikki tämänhetkiset kentät, kuvat ja runko nollataan.')) return;
+
+  // Reset text/select/checkbox fields
+  const ids = ['artTitle','artSubtitle','artTags','artSlug','artBody','artSeoDescription','artCategoryCustom','artAuthor'];
+  for (const id of ids) {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  }
+  // Belt-and-braces: explicitly null SEO + recompute from empty body so the
+  // counter resets even if some race left a stale value behind.
+  const seoElExplicit = document.getElementById('artSeoDescription');
+  if (seoElExplicit) seoElExplicit.value = '';
+  // Restore date to today
+  const dateEl = document.getElementById('artDate');
+  if (dateEl) dateEl.valueAsDate = new Date();
+  // Reset selects to defaults
+  const catEl = document.getElementById('artCategory');
+  if (catEl) catEl.value = 'Historical';
+  const customRow = document.getElementById('artCategoryCustomRow');
+  if (customRow) customRow.style.display = 'none';
+  // Hero
+  const heroEl = document.getElementById('artHero');
+  if (heroEl) heroEl.value = '';
+  if (artHeroBlobUrl) { try { URL.revokeObjectURL(artHeroBlobUrl); } catch{} artHeroBlobUrl = null; }
+  const showHeroEl = document.getElementById('artShowHero');
+  if (showHeroEl) showHeroEl.checked = false;
+  // Inline images
+  for (const k of Object.keys(artInlineBlobUrls)) {
+    try { URL.revokeObjectURL(artInlineBlobUrls[k]); } catch{}
+  }
+  artInlineBlobUrls = {};
+  artInlineRows = [];
+  artInlineCounter = 0;
+  artRenderInlineRows();
+  // Review gate
+  const reviewedEl = document.getElementById('artReviewed');
+  if (reviewedEl) reviewedEl.checked = false;
+  document.getElementById('artSaveDraft').disabled = true;
+  // Manual-edit flags
+  artSlugManuallyEdited = false;
+  artSeoManuallyEdited  = false;
+  const seoHint = document.getElementById('artSeoHint');
+  if (seoHint) {
+    seoHint.textContent = '↺ Auto-täytetty rungosta. Käsin muokattu kuvaus säilyy ennallaan.';
+    seoHint.classList.remove('art-seo-hint--manual');
+  }
+  artUpdateSeoCount();
+  // Status + result
+  artSetStatus('Lomake tyhjennetty', 'ok');
+  document.getElementById('artResult').style.display = 'none';
+  // Refresh the URL preview + push the empty preview to the iframe
+  artUpdateSlugPreview();
+  artPushPreview();
+}
+
+document.getElementById('artSaveDraft').addEventListener('click', artSubmitDraft);
+document.getElementById('artClearForm') && document.getElementById('artClearForm').addEventListener('click', artClearForm);
+
+// =====================================================================
+// EDIT MODE — load an existing article into the form
+// =====================================================================
+//
+// The Hallitse artikkeleita "Avaa muokattavaksi" button calls
+// artLoadForEdit({ slug, language, branch }), which fetches the article
+// via /api/articles/get, populates every field, marks each existing inline
+// image as a "kept" row (file=null, existing={path,name}), and locks the
+// slug input so the publisher can't accidentally orphan the existing image
+// files by renaming.
+//
+// Saving from edit mode goes through the same Tallenna luonnos -> dev
+// commit flow. Existing images stay on the branch unless explicitly
+// replaced via the per-row Vaihda button.
+
+let artExistingFeaturedImage = ''; // frontmatter.featured_image carried from edit-load
+
+function artSetEditModeBanner(info) {
+  let banner = document.getElementById('artEditBanner');
+  if (!info) {
+    if (banner) banner.remove();
+    const slugEl = document.getElementById('artSlug');
+    if (slugEl) slugEl.readOnly = false;
+    return;
+  }
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'artEditBanner';
+    banner.className = 'art-edit-banner';
+    const formTitleEl = document.querySelector('.art-form__title');
+    if (formTitleEl) formTitleEl.after(banner);
+  }
+  // Different copy + colour scheme depending on which branch we're editing.
+  // Editing from main is a direct production change (typo-fix workflow) and
+  // needs to feel weightier than a normal draft edit.
+  if (info.branch === 'main') {
+    banner.classList.add('art-edit-banner--prod');
+    banner.innerHTML =
+      '<strong>⚠ Muokataan TUOTANTOA</strong> — artikkeli <code>' + esc(info.slug) + '</code> (' + esc(info.language.toUpperCase()) + ').'
+      + ' Tallennus päivittää live-sivun suoraan, ohittaen testiympäristön. Slug on lukittu kuvatiedostojen säilyttämiseksi. '
+      + '<a href="#" id="artEditExit">Poistu muokkaustilasta</a>.';
+  } else {
+    banner.classList.remove('art-edit-banner--prod');
+    banner.innerHTML =
+      '<strong>✎ Muokkaustila</strong> — artikkeli <code>' + esc(info.slug) + '</code> (' + esc(info.language.toUpperCase()) + ', ' + esc(info.branch) + ').'
+      + ' Tallennus korvaa nykyisen luonnoksen. Slug on lukittu kuvatiedostojen säilyttämiseksi. '
+      + '<a href="#" id="artEditExit">Poistu muokkaustilasta</a>.';
+  }
+  document.getElementById('artEditExit') && document.getElementById('artEditExit').addEventListener('click', (e) => {
+    e.preventDefault();
+    artClearForm();
+  });
+  // Lock the slug field
+  const slugEl = document.getElementById('artSlug');
+  if (slugEl) slugEl.readOnly = true;
+}
+
+async function artLoadForEdit({ slug, language, branch }) {
+  if (!adminPw) { alert('Et ole kirjautunut ylläpitäjäksi'); return; }
+  // If the form has any in-progress content, ask before clobbering.
+  const body = document.getElementById('artBody');
+  if (body && body.value.trim().length > 0 && !artEditMode) {
+    if (!confirm('Avataanko artikkeli muokattavaksi? Lomakkeen nykyinen sisältö korvataan.')) return;
+  }
+  try {
+    const url = '/api/articles/get?slug=' + encodeURIComponent(slug)
+              + '&language=' + encodeURIComponent(language)
+              + '&branch=' + encodeURIComponent(branch);
+    const r = await fetch(url, { headers: { 'X-Admin-Password': adminPw } });
+    const data = await r.json();
+    if (!r.ok) { alert('Lataus epäonnistui: ' + (data.error || r.status)); return; }
+
+    // Switch to the Lähetä artikkeli tab
+    const tabBtn = document.querySelector('.admin-tab[data-tab="laheta-artikkeli"]');
+    if (tabBtn) tabBtn.click();
+
+    // Populate fields from frontmatter
+    const fm = data.frontmatter || {};
+    document.getElementById('artTitle').value = fm.title || '';
+    document.getElementById('artSubtitle').value = fm.subtitle || '';
+    if (fm.date) document.getElementById('artDate').value = fm.date;
+    // Category — match against dropdown options, fallback to custom field
+    const catEl = document.getElementById('artCategory');
+    const knownCats = Array.from(catEl.options).map(o => o.value);
+    if (knownCats.includes(fm.category || '')) {
+      catEl.value = fm.category;
+      document.getElementById('artCategoryCustomRow').style.display = 'none';
+    } else {
+      catEl.value = '';
+      document.getElementById('artCategoryCustomRow').style.display = '';
+      document.getElementById('artCategoryCustom').value = fm.category || '';
+    }
+    document.getElementById('artLanguage').value = fm.language || data.language || 'fi';
+    document.getElementById('artTags').value = (Array.isArray(fm.tags) ? fm.tags.join(', ') : (fm.tags || ''));
+    const authorEl = document.getElementById('artAuthor');
+    if (authorEl) authorEl.value = (fm.author && fm.author !== 'Photo & Moto') ? fm.author : '';
+    // Slug — set first, THEN flag as manually-edited so autofill won't touch it
+    artSlugManuallyEdited = true;
+    document.getElementById('artSlug').value = data.slug;
+    // Hero — show as "kept" hint; we don't load the binary into the form.
+    // Stash the path so artSubmitDraft can resend it if the publisher
+    // doesn't upload a replacement.
+    artExistingFeaturedImage = fm.featured_image || '';
+    const heroShownEl = document.getElementById('artShowHero');
+    if (heroShownEl) heroShownEl.checked = fm.show_hero !== false;
+
+    // Inline images — populate as "existing" rows (no File, just metadata)
+    artInlineRows = (data.inline_images || []).map(im => ({
+      num: im.num,
+      file: null,
+      caption: im.caption || '',
+      existing: { path: im.path, name: im.name },
+    }));
+    artInlineCounter = artInlineRows.reduce((max, r) => Math.max(max, r.num), 0);
+    artRenderInlineRows();
+
+    // Body — already has [[image:N]] placeholders restored by the endpoint
+    document.getElementById('artBody').value = data.body || '';
+
+    // SEO — load as manually-edited so autofill doesn't overwrite
+    document.getElementById('artSeoDescription').value = fm.seo_description || '';
+    artSeoManuallyEdited = !!(fm.seo_description);
+    const seoHint = document.getElementById('artSeoHint');
+    if (seoHint && artSeoManuallyEdited) {
+      seoHint.textContent = '✎ Käsin muokattu — auto-täyttö pois käytöstä.';
+      seoHint.classList.add('art-seo-hint--manual');
+    }
+    artUpdateSeoCount();
+
+    // Trigger preview refresh + URL preview
+    artUpdateSlugPreview();
+    artPushPreview();
+
+    // Edit-mode state + banner
+    artEditMode = { slug: data.slug, language: data.language, branch: data.branch };
+    artSetEditModeBanner(artEditMode);
+
+    // Reset the review gate so the publisher confirms the loaded content
+    const reviewedEl = document.getElementById('artReviewed');
+    if (reviewedEl) reviewedEl.checked = false;
+    document.getElementById('artSaveDraft').disabled = true;
+
+    artSetStatus('Artikkeli ladattu muokattavaksi', 'ok');
+  } catch (e) {
+    console.error('Edit load failed:', e);
+    alert('Verkkovirhe ladattaessa: ' + e.message);
+  }
+}
+
+// Hook into artClearForm to also exit edit mode (we patch via wrapper so we
+// don't have to touch the original function above)
+const _origArtClearForm = artClearForm;
+artClearForm = function() {
+  _origArtClearForm();
+  artExistingFeaturedImage = '';
+  if (artEditMode) {
+    artEditMode = null;
+    artSetEditModeBanner(null);
+  }
+};
+
+artUpdateSlugPreview();
+
+// =====================================================================
+// PRE-PUBLISH PREVIEW — postMessage to iframe, blob URLs, review gate
+// =====================================================================
+
+let artPreviewReady = false;
+let artHeroBlobUrl = null;
+let artInlineBlobUrls = {}; // { 1: 'blob:...', 2: 'blob:...' }
+
+function artRevokeAllBlobs(){
+  if (artHeroBlobUrl) { try { URL.revokeObjectURL(artHeroBlobUrl); } catch{} artHeroBlobUrl = null; }
+  for (const k of Object.keys(artInlineBlobUrls)) {
+    try { URL.revokeObjectURL(artInlineBlobUrls[k]); } catch{}
+  }
+  artInlineBlobUrls = {};
+}
+
+function artSyncBlobUrls(){
+  // Hero
+  const heroFile = document.getElementById('artHero').files[0] || null;
+  if (heroFile) {
+    if (artHeroBlobUrl) { try { URL.revokeObjectURL(artHeroBlobUrl); } catch{} }
+    artHeroBlobUrl = URL.createObjectURL(heroFile);
+  } else if (artExistingFeaturedImage) {
+    // Edit mode: no new file uploaded but the article had a hero before.
+    // Render it in the preview using the deployed URL (same-origin, served
+    // by Cloudflare Pages from public/).
+    if (artHeroBlobUrl && artHeroBlobUrl.startsWith('blob:')) {
+      try { URL.revokeObjectURL(artHeroBlobUrl); } catch{}
+    }
+    artHeroBlobUrl = artExistingFeaturedImage; // already a /images/... path
+  } else {
+    if (artHeroBlobUrl && artHeroBlobUrl.startsWith('blob:')) {
+      try { URL.revokeObjectURL(artHeroBlobUrl); } catch{}
+    }
+    artHeroBlobUrl = null;
+  }
+
+  // Inline images — keyed by current ROW index (1-based, matches [[image:N]])
+  const newMap = {};
+  artInlineRows.forEach((row, idx) => {
+    const num = idx + 1;
+    if (row.file) {
+      // Brand-new upload — generate a blob URL for the preview.
+      newMap[num] = URL.createObjectURL(row.file);
+    } else if (row.existing && row.existing.path) {
+      // Edit mode "kept" row — image is already on the branch. Reference
+      // it by deployed URL so the preview iframe can render it instead of
+      // showing the "ei vielä lisätty" placeholder.
+      // path like "public/images/<slug>-1.jpg" → "/images/<slug>-1.jpg"
+      newMap[num] = '/' + row.existing.path.replace(/^public\//, '');
+    }
+  });
+  // Revoke only the old blob: URLs (not the deployed-path references)
+  for (const k of Object.keys(artInlineBlobUrls)) {
+    const url = artInlineBlobUrls[k];
+    if (url && url.startsWith('blob:')) {
+      try { URL.revokeObjectURL(url); } catch{}
+    }
+  }
+  artInlineBlobUrls = newMap;
+}
+
+function artBuildPreviewPayload(){
+  const form = artGetForm();
+  artSyncBlobUrls();
+  return {
+    title: form.title,
+    subtitle: form.subtitle,
+    date: form.date,
+    category: form.category,
+    language: form.language,
+    tags: form.tags ? form.tags.split(',').map(t => t.trim()).filter(Boolean) : [],
+    body: form.body,
+    show_hero: form.show_hero,
+    author: form.author || 'Photo & Moto',
+    hero_url: artHeroBlobUrl,
+    inline_images: artInlineBlobUrls,
+  };
+}
+
+function artPushPreview(){
+  if (!artPreviewReady) return;
+  const iframe = document.getElementById('artPreview');
+  if (!iframe || !iframe.contentWindow) return;
+  try {
+    iframe.contentWindow.postMessage(
+      { type: 'article-preview-update', payload: artBuildPreviewPayload() },
+      window.location.origin
+    );
+  } catch (e) {
+    console.warn('preview postMessage failed:', e);
+  }
+}
+
+// Iframe announces it's ready, then we send the first payload
+window.addEventListener('message', (e) => {
+  if (e.origin !== window.location.origin) return;
+  if (!e.data || e.data.type !== 'article-preview-ready') return;
+  artPreviewReady = true;
+  artPushPreview();
+});
+
+// Wire all form inputs to refresh the preview on change
+(function wirePreviewListeners(){
+  const ids = ['artTitle','artSubtitle','artDate','artCategory','artCategoryCustom',
+               'artLanguage','artTags','artSlug','artShowHero','artBody','artSeoDescription','artAuthor'];
+  for (const id of ids) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    el.addEventListener('input', artPushPreview);
+    el.addEventListener('change', artPushPreview);
+  }
+  // Hero file input
+  const heroEl = document.getElementById('artHero');
+  if (heroEl) heroEl.addEventListener('change', artPushPreview);
+})();
+
+// Re-render of inline rows already happens via artRenderInlineRows() — we
+// extend it to also push the preview after re-render.
+const _origArtRenderInlineRows = artRenderInlineRows;
+artRenderInlineRows = function(){
+  _origArtRenderInlineRows();
+  artPushPreview();
+};
+
+// =====================================================================
+// MARKDOWN TOOLBAR — insert MD syntax into #artBody at cursor / selection
+// =====================================================================
+//
+// Block actions (h2 / h3 / quote): if the cursor isn't at the start of a
+// blank line, we prepend "\n\n" so the prefix lands on its own line. We
+// also append "\n\n" after so the next paragraph starts cleanly.
+//
+// Inline actions (bold / italic / link): wrap the current selection (or
+// insert a placeholder and pre-select it so the user can type to replace).
+
+function artMdInsert(action) {
+  const ta = document.getElementById('artBody');
+  if (!ta) return;
+  ta.focus();
+  const start = ta.selectionStart;
+  const end   = ta.selectionEnd;
+  const value = ta.value;
+  const sel   = value.slice(start, end);
+
+  const BLOCKS = {
+    h2:    { prefix: '## ',  placeholder: 'Väliotsikko' },
+    h3:    { prefix: '### ', placeholder: 'Alaotsikko' },
+    quote: { prefix: '> ',   placeholder: 'Lainattu teksti' },
+  };
+  const INLINES = {
+    bold:   { prefix: '**', suffix: '**', placeholder: 'lihava teksti' },
+    italic: { prefix: '*',  suffix: '*',  placeholder: 'kursiivi teksti' },
+  };
+
+  if (action === 'link') {
+    const text = sel || 'linkin teksti';
+    const url  = 'https://';
+    const insert = '[' + text + '](' + url + ')';
+    const before = value.slice(0, start);
+    const after  = value.slice(end);
+    ta.value = before + insert + after;
+    // Place cursor inside the URL parens so the user types the address next.
+    const urlStart = before.length + 1 + text.length + 2;
+    const urlEnd   = urlStart + url.length;
+    ta.setSelectionRange(urlStart, urlEnd);
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+    return;
+  }
+
+  if (BLOCKS[action]) {
+    const cfg = BLOCKS[action];
+    const text = sel || cfg.placeholder;
+    // Decide if we need a leading blank line.
+    const needLeadingBreak = start > 0 && !/(\n\n|^)$/.test(value.slice(0, start));
+    const lead  = needLeadingBreak ? '\n\n' : '';
+    const trail = '\n\n';
+    const insert = lead + cfg.prefix + text + trail;
+    const before = value.slice(0, start);
+    const after  = value.slice(end);
+    ta.value = before + insert + after;
+    // Select just the placeholder/text part so the user can immediately type over it.
+    const selStart = before.length + lead.length + cfg.prefix.length;
+    const selEnd   = selStart + text.length;
+    ta.setSelectionRange(selStart, selEnd);
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+    return;
+  }
+
+  if (INLINES[action]) {
+    const cfg = INLINES[action];
+    const text = sel || cfg.placeholder;
+    const insert = cfg.prefix + text + cfg.suffix;
+    const before = value.slice(0, start);
+    const after  = value.slice(end);
+    ta.value = before + insert + after;
+    const selStart = before.length + cfg.prefix.length;
+    const selEnd   = selStart + text.length;
+    ta.setSelectionRange(selStart, selEnd);
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+    return;
+  }
+}
+
+document.querySelectorAll('.md-toolbar .md-tool').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    artMdInsert(btn.dataset.mdAction);
+  });
+});
+
+// =====================================================================
+// SEO DESCRIPTION AUTO-FILL — keep the field populated from the body
+// =====================================================================
+//
+// On every body input we compute a deterministic summary (first ~155 chars
+// of the prose, with MD syntax stripped, trimmed at the last word boundary)
+// and write it into the SEO field. The moment the publisher edits the SEO
+// field manually, we stop overwriting — their text wins from then on.
+
+let artSeoManuallyEdited = false;
+
+function artStripMarkdown(md) {
+  return String(md || '')
+    // Remove image placeholders
+    .replace(/\[\[image:\d+\]\]/g, '')
+    // Strip ATX headings (## text)
+    .replace(/^#{1,6}\s+/gm, '')
+    // Strip blockquote markers
+    .replace(/^>\s+/gm, '')
+    // Strip bold + italic syntax (keep the inner text)
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/__([^_]+)__/g, '$1')
+    .replace(/_([^_]+)_/g, '$1')
+    // Inline code (paired backticks)
+    .replace(/`([^`]+)`/g, '$1')
+    // Code fences (triple backticks at line start) — strip the fence line
+    .replace(/^```[^\n]*$/gm, '')
+    // Any remaining stray backticks (unmatched single ` from typos, broken
+    // pairs, etc.) — drop them so the SEO summary stays clean
+    .replace(/`/g, '')
+    // Markdown links: [text](url) -> text
+    .replace(/!?\[([^\]]+)\]\([^)]+\)/g, '$1')
+    // Reference-style links
+    .replace(/\[([^\]]+)\]\[[^\]]*\]/g, '$1')
+    // HTML tags
+    .replace(/<[^>]+>/g, '')
+    // List markers at start of line
+    .replace(/^\s*[-*+]\s+/gm, '')
+    .replace(/^\s*\d+\.\s+/gm, '')
+    // Horizontal rules
+    .replace(/^[-*_]{3,}\s*$/gm, '')
+    // Collapse whitespace
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function artComputeSeoSummary(md, maxLen) {
+  const text = artStripMarkdown(md);
+  if (!text) return '';
+  if (text.length <= maxLen) return text;
+  // Trim at last word boundary before maxLen, leave room for ellipsis
+  const sliceEnd = maxLen - 1; // 1 char for the ellipsis
+  const slice = text.slice(0, sliceEnd);
+  const lastSpace = slice.lastIndexOf(' ');
+  const trimmed = lastSpace > sliceEnd * 0.6 ? slice.slice(0, lastSpace) : slice;
+  return trimmed.replace(/[\s,;:.!?\-]+$/, '') + '…';
+}
+
+function artUpdateSeoCount() {
+  const seoEl = document.getElementById('artSeoDescription');
+  const countEl = document.getElementById('artSeoCount');
+  if (!seoEl || !countEl) return;
+  const len = (seoEl.value || '').length;
+  countEl.textContent = len + ' / 160';
+  countEl.classList.toggle('art-seo-count--full', len >= 155);
+}
+
+function artRefreshSeoFromBody() {
+  if (artSeoManuallyEdited) return;
+  const body = document.getElementById('artBody');
+  const seoEl = document.getElementById('artSeoDescription');
+  if (!body || !seoEl) return;
+  const summary = artComputeSeoSummary(body.value, 160);
+  seoEl.value = summary;
+  artUpdateSeoCount();
+}
+
+(function wireSeoAutofill(){
+  const body = document.getElementById('artBody');
+  const seoEl = document.getElementById('artSeoDescription');
+  const seoHint = document.getElementById('artSeoHint');
+  if (!body || !seoEl) return;
+  body.addEventListener('input', artRefreshSeoFromBody);
+  seoEl.addEventListener('input', () => {
+    artSeoManuallyEdited = true;
+    if (seoHint) {
+      seoHint.textContent = '✎ Käsin muokattu — auto-täyttö pois käytöstä.';
+      seoHint.classList.add('art-seo-hint--manual');
+    }
+    artUpdateSeoCount();
+  });
+  // First paint
+  artUpdateSeoCount();
+})();
+
+// =====================================================================
+// IMPORT — paste / upload .txt / .docx -> Markdown + extracted images
+// =====================================================================
+//
+// Two entry points:
+//   1) "Lataa tiedosto" button -> reads a .txt or .docx and replaces the body
+//   2) Paste into the body textarea -> if rich-text (HTML) is on the clipboard
+//      it's converted to MD and inserted at the cursor position
+//
+// Both paths share artHtmlToMarkdownAndImages():
+//   - Walks all <img> in DOM order
+//   - For each: fetches the image data (base64 data: URL or http(s) URL),
+//     resizes it through the existing 1600/80% JPEG pipeline, appends it
+//     to artInlineRows with a fresh [[image:N]] number, and replaces the
+//     <img> in the parsed DOM with a <p>[[image:N]]</p> marker
+//   - Hands the rewritten HTML to turndown for the HTML -> MD conversion
+//
+// turndown + mammoth load lazily from a CDN on first use.
+
+const TURNDOWN_URL = 'https://cdn.jsdelivr.net/npm/turndown@7.2.0/dist/turndown.js';
+const MAMMOTH_URL  = 'https://cdn.jsdelivr.net/npm/mammoth@1.7.2/mammoth.browser.min.js';
+
+function artLoadScriptOnce(src) {
+  if (document.querySelector('script[data-import-src="' + src + '"]')) {
+    return Promise.resolve();
+  }
+  return new Promise((resolve, reject) => {
+    const s = document.createElement('script');
+    s.src = src;
+    s.dataset.importSrc = src;
+    s.onload = () => resolve();
+    s.onerror = () => reject(new Error('Lataus epäonnistui: ' + src));
+    document.head.appendChild(s);
+  });
+}
+
+let _artTurndownInstance = null;
+async function artGetTurndown() {
+  await artLoadScriptOnce(TURNDOWN_URL);
+  if (!window.TurndownService) throw new Error('Turndown ei latautunut');
+  if (!_artTurndownInstance) {
+    _artTurndownInstance = new window.TurndownService({
+      headingStyle:    'atx',     // ## H2 instead of underline-style
+      bulletListMarker: '-',
+      codeBlockStyle:   'fenced',
+      emDelimiter:      '*',
+      strongDelimiter:  '**',
+    });
+    // A standalone <p>[[image:N]]</p> should stay on its own line.
+    _artTurndownInstance.addRule('preservePlaceholderParagraph', {
+      filter: function(node) {
+        return node.nodeName === 'P' && /^\[\[image:\d+\]\]$/.test((node.textContent || '').trim());
+      },
+      replacement: function(content, node) {
+        return '\n\n' + (node.textContent || '').trim() + '\n\n';
+      },
+    });
+  }
+  return _artTurndownInstance;
+}
+
+async function artGetMammoth() {
+  await artLoadScriptOnce(MAMMOTH_URL);
+  if (!window.mammoth) throw new Error('Mammoth ei latautunut');
+  return window.mammoth;
+}
+
+function artImportSetStatus(msg, kind) {
+  const el = document.getElementById('artImportStatus');
+  if (!el) return;
+  el.className = 'art-import-status' + (kind ? (' art-import-status--' + kind) : '');
+  el.textContent = msg || '';
+}
+
+// Walk the parsed HTML, extract every <img>, replace it with a placeholder,
+// return { md, newImages, skipped }. Image fetches that fail (e.g. CORS on
+// external URLs) are counted in `skipped` and the <img> is removed from the
+// DOM so it doesn't appear as a broken link in the resulting MD.
+async function artHtmlToMarkdownAndImages(html) {
+  const doc = new DOMParser().parseFromString(html || '', 'text/html');
+
+  // ----- Strip ALL <a> tags ----------------------------------------------
+  // Magazine-style: pasted content becomes clean prose with NO surviving
+  // hyperlinks. Word / Google Docs auto-linkify names, dates, and places
+  // (often to valid Wikipedia URLs that look real to a naive filter) —
+  // keeping them produces a wall of blue underlined text in the published
+  // article. Strip everything; the publisher adds back any intentional
+  // links via the Linkki toolbar button.
+  const anchors = Array.from(doc.querySelectorAll('a'));
+  let junkLinks = 0;
+  for (const a of anchors) {
+    const parent = a.parentNode;
+    if (!parent) continue;
+    while (a.firstChild) parent.insertBefore(a.firstChild, a);
+    parent.removeChild(a);
+    junkLinks++;
+  }
+
+  const imgs = Array.from(doc.querySelectorAll('img'));
+  const newImages = [];
+  let nextNum = (artInlineCounter || 0) + 1;
+  let skipped = 0;
+
+  for (const img of imgs) {
+    const src = img.getAttribute('src') || '';
+    let blob = null;
+
+    if (src.startsWith('data:')) {
+      try {
+        const res = await fetch(src);
+        blob = await res.blob();
+      } catch { skipped++; img.remove(); continue; }
+    } else if (/^https?:/i.test(src)) {
+      try {
+        const res = await fetch(src, { mode: 'cors' });
+        if (!res.ok) { skipped++; img.remove(); continue; }
+        blob = await res.blob();
+      } catch { skipped++; img.remove(); continue; }
+    } else {
+      // Unrecognised src (relative URL inside a foreign doc, etc.) — skip
+      skipped++; img.remove(); continue;
+    }
+
+    const mime = blob.type || 'image/jpeg';
+    const ext  = (mime.split('/')[1] || 'jpg').replace('jpeg', 'jpg').replace('+xml', '');
+    const num  = nextNum++;
+    const file = new File([blob], 'import-' + num + '.' + ext, { type: mime });
+    let resized;
+    try {
+      resized = await artResizeImage(file);
+    } catch {
+      resized = file;
+    }
+    newImages.push({ num, file: resized, caption: img.getAttribute('alt') || '' });
+
+    // Replace <img> with a <p>[[image:N]]</p> marker so turndown emits the
+    // placeholder on its own line.
+    const p = doc.createElement('p');
+    p.textContent = '[[image:' + num + ']]';
+    if (img.parentNode) img.parentNode.replaceChild(p, img);
+  }
+
+  const td = await artGetTurndown();
+  let md = td.turndown(doc.body ? doc.body.innerHTML : '');
+
+  // ----- Bold-line -> H2 promotion ---------------------------------------
+  // Source docs that use **bold paragraph** as a section heading instead of
+  // Word's "Heading 2" style come through turndown as plain bold and miss
+  // ArticleLayout's orange-bar callout styling. Promote any line that
+  // consists ONLY of a short bold phrase AND is surrounded by blank lines.
+  // The blank-line constraint prevents in-flow bold sentences from being
+  // mistaken for headings.
+  let h2Promoted = 0;
+  const lines = md.split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    const trimmed = lines[i].trim();
+    const m = trimmed.match(/^\*\*([^*\n]{1,80})\*\*$/);
+    if (!m) continue;
+    const prevBlank = i === 0 || lines[i - 1].trim() === '';
+    const nextBlank = i === lines.length - 1 || lines[i + 1].trim() === '';
+    if (prevBlank && nextBlank) {
+      lines[i] = '## ' + m[1].trim();
+      h2Promoted++;
+    }
+  }
+  md = lines.join('\n');
+
+  // Tidy: collapse runs of 3+ blank lines to a single blank-line gap.
+  md = md.replace(/\n{3,}/g, '\n\n').trim() + '\n';
+
+  return { md, newImages, skipped, junkLinks, h2Promoted };
+}
+
+// Apply imported MD + images to the form. Mode 'replace' overwrites the body,
+// 'insert' inserts at cursor position. Images are always appended to the
+// inline list (numbering continues from the current artInlineCounter).
+function artApplyImport(md, newImages, mode) {
+  if (newImages && newImages.length > 0) {
+    for (const img of newImages) {
+      artInlineRows.push(img);
+      artInlineCounter = Math.max(artInlineCounter, img.num);
+    }
+    artRenderInlineRows();
+  }
+  const body = document.getElementById('artBody');
+  if (!body) return;
+  if (mode === 'insert') {
+    const start = body.selectionStart;
+    const end   = body.selectionEnd;
+    const value = body.value;
+    body.value = value.slice(0, start) + md + value.slice(end);
+    const newPos = start + md.length;
+    body.focus();
+    body.setSelectionRange(newPos, newPos);
+  } else {
+    body.value = md;
+  }
+  body.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+async function artImportFile(file) {
+  if (!file) return;
+  const name  = (file.name || '').toLowerCase();
+  const type  = file.type || '';
+  artImportSetStatus('Käsitellään tiedostoa...', 'load');
+
+  // If the body already has content, ask before replacing.
+  const body = document.getElementById('artBody');
+  if (body && body.value.trim().length > 0) {
+    const ok = confirm('Korvataanko nykyinen rungon sisältö ladatulla tiedostolla? (Peruuta = säilytä nykyinen.)');
+    if (!ok) { artImportSetStatus('Lataus peruttu — runko säilytetty', ''); return; }
+  }
+
+  try {
+    if (name.endsWith('.txt') || type === 'text/plain') {
+      const text = await file.text();
+      // Plain text: paragraphs separated by blank lines are already valid MD.
+      // Normalise CRLF -> LF and collapse triple+ newlines.
+      const md = text.replace(/\r\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
+      artApplyImport(md, [], 'replace');
+      artImportSetStatus('✓ Tekstitiedosto ladattu', 'ok');
+      return;
+    }
+
+    if (name.endsWith('.docx') ||
+        type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+      const mammoth = await artGetMammoth();
+      const buffer  = await file.arrayBuffer();
+      const result  = await mammoth.convertToHtml({ arrayBuffer: buffer });
+      const { md, newImages, skipped, junkLinks, h2Promoted } = await artHtmlToMarkdownAndImages(result.value || '');
+      artApplyImport(md, newImages, 'replace');
+      const imgPart  = newImages.length ? ' + ' + newImages.length + ' kuva' + (newImages.length === 1 ? '' : 'a') : '';
+      const skipPart = skipped ? ' (' + skipped + ' kuvaa ohitettu)' : '';
+      const cleanups = [];
+      if (junkLinks)  cleanups.push(junkLinks  + ' linkkiä poistettu');
+      if (h2Promoted) cleanups.push(h2Promoted + ' otsikkoa muunnettu');
+      const cleanPart = cleanups.length ? ' [' + cleanups.join(', ') + ']' : '';
+      artImportSetStatus('✓ .docx ladattu' + imgPart + skipPart + cleanPart, 'ok');
+      return;
+    }
+
+    if (name.endsWith('.doc')) {
+      artImportSetStatus(
+        '⚠ Vanha .doc-muoto ei tuettu selaimessa. Tallenna ensin .docx-muotoon (Word: Tiedosto → Tallenna nimellä → .docx).',
+        'err'
+      );
+      return;
+    }
+
+    artImportSetStatus('⚠ Tuntematon tiedostotyyppi: ' + (name || type || '?'), 'err');
+  } catch (e) {
+    console.error('Import failed:', e);
+    artImportSetStatus('Virhe: ' + (e.message || e), 'err');
+  }
+}
+
+// Wire the upload button (hidden file input + visible button)
+document.getElementById('artImportFile') && document.getElementById('artImportFile').addEventListener('click', () => {
+  const inp = document.getElementById('artImportFileInput');
+  if (inp) inp.click();
+});
+document.getElementById('artImportFileInput') && document.getElementById('artImportFileInput').addEventListener('change', (e) => {
+  const file = e.target.files && e.target.files[0];
+  e.target.value = ''; // reset so re-uploading the same file works
+  artImportFile(file);
+});
+
+// Paste handler on the body textarea — convert rich-text paste to MD,
+// extract embedded images, insert at cursor.
+document.getElementById('artBody') && document.getElementById('artBody').addEventListener('paste', async (e) => {
+  const cd = e.clipboardData;
+  if (!cd) return;
+  const html = cd.getData('text/html');
+  if (!html || html.trim().length === 0) {
+    // Plain text paste — let the browser do its default thing
+    return;
+  }
+  e.preventDefault();
+  artImportSetStatus('Käsitellään liitetty teksti...', 'load');
+  try {
+    const { md, newImages, skipped, junkLinks, h2Promoted } = await artHtmlToMarkdownAndImages(html);
+    artApplyImport(md, newImages, 'insert');
+    const imgPart  = newImages.length ? ' + ' + newImages.length + ' kuva' + (newImages.length === 1 ? '' : 'a') : '';
+    const skipPart = skipped ? ' (' + skipped + ' kuvaa ohitettu)' : '';
+    const cleanups = [];
+    if (junkLinks)  cleanups.push(junkLinks  + ' linkkiä siivottu');
+    if (h2Promoted) cleanups.push(h2Promoted + ' otsikkoa muunnettu');
+    const cleanPart = cleanups.length ? ' [' + cleanups.join(', ') + ']' : '';
+    artImportSetStatus('✓ Liitetty teksti muunnettu Markdowniksi' + imgPart + skipPart + cleanPart, 'ok');
+  } catch (err) {
+    console.error('Paste convert failed:', err);
+    artImportSetStatus('Virhe liittäessä: ' + (err.message || err), 'err');
+  }
+});
+
+// Insert an [[image:N]] placeholder into the body at the current cursor
+// position (or at start if the body has never been focused). Always lands
+// the placeholder on its own paragraph.
+function artInsertImagePlaceholder(num) {
+  const ta = document.getElementById('artBody');
+  if (!ta) return;
+  const insert = '[[image:' + num + ']]';
+  const value  = ta.value;
+  const start  = ta.selectionStart;
+  const end    = ta.selectionEnd;
+  const before = value.slice(0, start);
+  const after  = value.slice(end);
+  // Pad with blank lines so the placeholder forms its own paragraph.
+  const needLeadingBreak  = start > 0 && !/\n\n$/.test(before) && !/^\s*$/.test(before);
+  const needTrailingBreak = after.length > 0 && !/^\n\n/.test(after);
+  const lead  = needLeadingBreak  ? '\n\n' : '';
+  const trail = needTrailingBreak ? '\n\n' : '';
+  ta.value = before + lead + insert + trail + after;
+  const newPos = (before + lead + insert).length;
+  ta.focus();
+  ta.setSelectionRange(newPos, newPos);
+  ta.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+// "Esikatselu tarkistettu" checkbox — gates Tallenna luonnos
+(function wireReviewGate(){
+  const cb = document.getElementById('artReviewed');
+  const draftBtn = document.getElementById('artSaveDraft');
+  if (!cb || !draftBtn) return;
+  cb.addEventListener('change', () => {
+    draftBtn.disabled = !cb.checked;
+  });
+})();
+
+// After a successful draft submission, reset the review gate so the next
+// edit cycle requires a fresh review.
+const _origArtSubmitDraft = artSubmitDraft;
+artSubmitDraft = async function(){
+  await _origArtSubmitDraft();
+  const cb = document.getElementById('artReviewed');
+  if (cb) {
+    cb.checked = false;
+    document.getElementById('artSaveDraft').disabled = true;
+  }
+};
 
 // Tab switching (Tarkista / Lähetä)
 document.querySelectorAll('.admin-tab').forEach(t=>t.addEventListener('click',()=>{
@@ -927,8 +2315,11 @@ document.querySelectorAll('.admin-tab').forEach(t=>t.addEventListener('click',()
   document.querySelectorAll('.admin-tab').forEach(x=>x.classList.toggle('admin-tab--on',x===t));
   document.getElementById('tabTarkista').style.display=tab==='tarkista'?'':'none';
   document.getElementById('tabLaheta').style.display=tab==='laheta'?'':'none';
+  document.getElementById('tabLahetaArtikkeli').style.display=tab==='laheta-artikkeli'?'':'none';
   document.getElementById('tabHallitse').style.display=tab==='hallitse'?'':'none';
+  document.getElementById('tabHallitseArtikkeleita').style.display=tab==='hallitse-artikkeleita'?'':'none';
   if(tab==='hallitse' && adminPw){loadHallitseGalleries();}
+  if(tab==='hallitse-artikkeleita' && adminPw){loadHartArticles();}
 }));
 
 // Ohje collapse/expand — remember the user's preference across logins
@@ -1476,6 +2867,387 @@ function openDeleteGalleryPanel() {
 
   document.getElementById('delGalleryPw').focus();
 }
+
+// =====================================================================
+// HALLITSE ARTIKKELEITA TAB — list + delete published / draft articles
+// =====================================================================
+
+// Default to Luonnokset (dev) — that's where the active workflow lives
+// (drafts arrive on dev, then get promoted to main from this same view).
+let hartCurrentBranch = 'dev';
+let hartArticles = [];
+
+async function hartFetchBranch(branch) {
+  const r = await fetch('/api/articles/list?branch=' + encodeURIComponent(branch), {
+    headers: { 'X-Admin-Password': adminPw },
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.error || 'Lista (' + branch + ') epäonnistui');
+  return data.articles || [];
+}
+
+async function loadHartArticles() {
+  const msg  = document.getElementById('hartMsg');
+  const list = document.getElementById('hartList');
+  msg.innerHTML = '<span class="u-load">Ladataan...</span>';
+  list.innerHTML = '';
+  document.getElementById('hartSearchRow').style.display = 'none';
+  try {
+    if (hartCurrentBranch === 'dev') {
+      // Luonnokset view: only show articles on dev that are NOT yet on main
+      // (true drafts pending promotion). Fetch both branches in parallel
+      // and compute the slug+language set difference.
+      const [devList, mainList] = await Promise.all([
+        hartFetchBranch('dev'),
+        hartFetchBranch('main'),
+      ]);
+      const onMain = new Set(mainList.map(a => a.slug + '|' + a.language));
+      hartArticles = devList.filter(a => !onMain.has(a.slug + '|' + a.language));
+      msg.innerHTML = `<span class="u-ok">${hartArticles.length} luonnos${hartArticles.length === 1 ? '' : 'ta'} (dev mutta ei vielä mainissa)</span>`;
+    } else {
+      // Tuotanto view: list everything on main as-is
+      hartArticles = await hartFetchBranch('main');
+      msg.innerHTML = `<span class="u-ok">${hartArticles.length} artikkelitiedostoa tuotannossa</span>`;
+    }
+    renderHartList(hartArticles);
+    initHartSearch();
+  } catch(e) {
+    msg.innerHTML = `<span class="u-err">Verkkovirhe: ${esc(e.message)}</span>`;
+  }
+}
+
+function hartGroupBySlug(articles) {
+  // Each slug may have FI and/or EN entries — fold into one row.
+  const bySlug = new Map();
+  for (const a of articles) {
+    if (!bySlug.has(a.slug)) bySlug.set(a.slug, { slug: a.slug, fi: null, en: null });
+    bySlug.get(a.slug)[a.language] = a;
+  }
+  const rows = [...bySlug.values()];
+  rows.sort((a, b) => {
+    const da = (a.fi && a.fi.date) || (a.en && a.en.date) || '';
+    const db = (b.fi && b.fi.date) || (b.en && b.en.date) || '';
+    if (da !== db) return da < db ? 1 : -1;
+    return a.slug < b.slug ? -1 : 1;
+  });
+  return rows;
+}
+
+function hartArticleUrl(slug, language, branch) {
+  const route = language === 'fi' ? 'aikakone' : 'time-machine';
+  const host  = branch === 'main' ? 'https://www.photoandmoto.fi' : 'https://photoandmoto-staging.pages.dev';
+  return host + '/' + language + '/' + route + '/' + slug + '/';
+}
+
+function renderHartList(articles) {
+  const list = document.getElementById('hartList');
+  if (!articles.length) {
+    list.innerHTML = '<div class="grid-empty">Ei artikkeleita tässä haarassa.</div>';
+    return;
+  }
+  const rows = hartGroupBySlug(articles);
+  list.innerHTML = `
+    <table class="hart-table">
+      <thead>
+        <tr>
+          <th>Otsikko</th>
+          <th class="hart-col-date">Päiväys</th>
+          <th class="hart-col-cat">Kategoria</th>
+          <th class="hart-col-langs">Kielet</th>
+          <th class="hart-col-actions">Toiminnot</th>
+        </tr>
+      </thead>
+      <tbody>
+      ${rows.map(r => {
+        const primary = r.fi || r.en;
+        const langs = [];
+        if (r.fi) langs.push(`<span class="hart-lang-badge${r.fi.is_stub ? ' hart-lang-badge--stub' : ''}" title="${r.fi.is_stub ? 'Käännöstynkä' : 'Suomi'}">FI${r.fi.is_stub ? '*' : ''}</span>`);
+        if (r.en) langs.push(`<span class="hart-lang-badge${r.en.is_stub ? ' hart-lang-badge--stub' : ''}" title="${r.en.is_stub ? 'Käännöstynkä' : 'English'}">EN${r.en.is_stub ? '*' : ''}</span>`);
+        const openBtns = [];
+        if (r.fi) openBtns.push(`<a class="hart-link" href="${escAttr(hartArticleUrl(r.slug, 'fi', hartCurrentBranch))}" target="_blank" rel="noopener" title="Avaa FI-artikkeli">FI ↗</a>`);
+        if (r.en) openBtns.push(`<a class="hart-link" href="${escAttr(hartArticleUrl(r.slug, 'en', hartCurrentBranch))}" target="_blank" rel="noopener" title="Avaa EN-artikkeli">EN ↗</a>`);
+        return `
+        <tr data-slug="${escAttr(r.slug)}">
+          <td>
+            <div class="hart-title">${esc(primary.title || r.slug)}</div>
+            ${primary.subtitle ? `<div class="hart-subtitle">${esc(primary.subtitle)}</div>` : ''}
+            <div class="hart-slug">/${esc(r.slug)}/</div>
+          </td>
+          <td class="hart-col-date">${esc(primary.date || '—')}</td>
+          <td class="hart-col-cat">${esc(primary.category || '—')}</td>
+          <td class="hart-col-langs">${langs.join(' ')}</td>
+          <td class="hart-col-actions">
+            <div class="hart-action-stack">
+              <div class="hart-link-row">${openBtns.join('')}</div>
+              <div class="hart-edit-row">
+                ${r.fi ? `<button class="hart-edit" data-slug="${escAttr(r.slug)}" data-lang="fi" title="Avaa FI-artikkeli muokattavaksi">✎ Muokkaa FI</button>` : ''}
+                ${r.en ? `<button class="hart-edit" data-slug="${escAttr(r.slug)}" data-lang="en" title="Avaa EN-artikkeli muokattavaksi">✎ Muokkaa EN</button>` : ''}
+              </div>
+              ${hartCurrentBranch === 'dev'
+                ? `<button class="btn btn--publish hart-promote" data-slug="${escAttr(r.slug)}" title="Vie artikkeli tuotantoon">✓ Julkaise tuotantoon</button>`
+                : ''}
+              <button class="btn btn--danger hart-del" data-slug="${escAttr(r.slug)}" title="Poista artikkeli">🗑 Poista</button>
+            </div>
+          </td>
+        </tr>`;
+      }).join('')}
+      </tbody>
+    </table>
+    <div class="hart-legend">* = käännöstynkä (englanninkielinen aihio luotu automaattisesti, sisältöä ei ole vielä käännetty)</div>
+  `;
+
+  list.querySelectorAll('.hart-del').forEach(btn => btn.addEventListener('click', () => openHartDeletePanel(btn.dataset.slug)));
+  list.querySelectorAll('.hart-promote').forEach(btn => btn.addEventListener('click', () => openHartPromotePanel(btn.dataset.slug)));
+  list.querySelectorAll('.hart-edit').forEach(btn => btn.addEventListener('click', () => artLoadForEdit({
+    slug: btn.dataset.slug,
+    language: btn.dataset.lang,
+    branch: hartCurrentBranch,
+  })));
+}
+
+function openHartDeletePanel(slug) {
+  const existing = document.getElementById('hartDeletePanel');
+  if (existing) {
+    if (existing.dataset.slug === slug) { existing.remove(); return; }
+    existing.remove();
+  }
+  const fi = hartArticles.find(a => a.slug === slug && a.language === 'fi');
+  const en = hartArticles.find(a => a.slug === slug && a.language === 'en');
+  if (!fi && !en) return;
+
+  const tr = document.querySelector(`#hartList tr[data-slug="${CSS.escape(slug)}"]`);
+  if (!tr) return;
+
+  const opts = [];
+  if (fi && en) {
+    opts.push('<label class="hart-del-opt"><input type="radio" name="hartDelMode" value="both" checked /> <strong>Molemmat kielet</strong> (suositus — myös kuvat)</label>');
+    opts.push('<label class="hart-del-opt"><input type="radio" name="hartDelMode" value="fi" /> Vain FI (kuvat säilyvät, koska EN viittaa niihin)</label>');
+    opts.push('<label class="hart-del-opt"><input type="radio" name="hartDelMode" value="en" /> Vain EN (kuvat säilyvät, koska FI viittaa niihin)</label>');
+  } else if (fi) {
+    opts.push('<label class="hart-del-opt"><input type="radio" name="hartDelMode" value="fi" checked /> Poista FI-artikkeli ja sen kuvat</label>');
+  } else {
+    opts.push('<label class="hart-del-opt"><input type="radio" name="hartDelMode" value="en" checked /> Poista EN-artikkeli ja sen kuvat</label>');
+  }
+
+  const branchLabel = hartCurrentBranch === 'main' ? 'TUOTANNOSTA' : 'luonnoksista (dev)';
+  const detailRow = document.createElement('tr');
+  detailRow.id = 'hartDeletePanel';
+  detailRow.dataset.slug = slug;
+  detailRow.className = 'hart-detail-row';
+  detailRow.innerHTML = `
+    <td colspan="5">
+      <div class="hart-del-panel">
+        <div class="hart-del-panel__head">
+          <span class="hart-del-panel__icon">⚠</span>
+          <strong>Poista artikkeli ${esc(branchLabel)}</strong> &nbsp;<code>${esc(slug)}</code>
+        </div>
+        <div class="hart-del-panel__opts">${opts.join('')}</div>
+        <label class="hart-del-panel__gate">
+          <input type="checkbox" id="hartDelConfirm" />
+          <span>Olen varma — poista artikkelin tiedostot ja kuvat lopullisesti tästä haarasta. Toiminto kirjautuu git-historiaan.</span>
+        </label>
+        <div class="hart-del-panel__actions">
+          <button class="btn btn--ghost" id="hartDelCancel">Peruuta</button>
+          <button class="btn btn--danger" id="hartDelGo" disabled>Poista lopullisesti</button>
+        </div>
+        <div id="hartDelMsg" class="hart-del-panel__msg"></div>
+      </div>
+    </td>
+  `;
+  tr.after(detailRow);
+
+  const gate  = document.getElementById('hartDelConfirm');
+  const goBtn = document.getElementById('hartDelGo');
+  gate.addEventListener('change', () => { goBtn.disabled = !gate.checked; });
+
+  document.getElementById('hartDelCancel').addEventListener('click', () => detailRow.remove());
+
+  goBtn.addEventListener('click', async () => {
+    const mode = document.querySelector('input[name="hartDelMode"]:checked');
+    if (!mode) return;
+    const choice = mode.value; // 'fi' | 'en' | 'both'
+    const language   = choice === 'both' ? (fi ? 'fi' : 'en') : choice;
+    const deleteBoth = choice === 'both';
+    const msg = document.getElementById('hartDelMsg');
+    msg.innerHTML = '<span class="u-load">Poistetaan...</span>';
+    goBtn.disabled = true;
+    document.getElementById('hartDelCancel').disabled = true;
+    try {
+      const r = await fetch('/api/articles/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          password: adminPw,
+          mode: hartCurrentBranch === 'main' ? 'production' : 'draft',
+          slug,
+          language,
+          delete_both: deleteBoth,
+        }),
+      });
+      const data = await r.json();
+      if (data.success) {
+        const env = hartCurrentBranch === 'main' ? 'tuotantosivun' : 'staging-sivun';
+        document.getElementById('hartMsg').innerHTML =
+          `<span class="u-ok">✓ Poistettu (${data.deleted_files.length} tiedostoa). ${env} päivitys vie ~2 min.</span>`;
+        await loadHartArticles();
+      } else {
+        msg.innerHTML = `<span class="u-err">Virhe: ${esc(data.error || 'Tuntematon virhe')}</span>`;
+        goBtn.disabled = false;
+        document.getElementById('hartDelCancel').disabled = false;
+      }
+    } catch(e) {
+      msg.innerHTML = `<span class="u-err">Verkkovirhe: ${esc(e.message)}</span>`;
+      goBtn.disabled = false;
+      document.getElementById('hartDelCancel').disabled = false;
+    }
+  });
+}
+
+// Promote a draft from dev -> main. Shows an inline panel with a review-gate
+// checkbox + danger-styled "Julkaise tuotantoon" button. Calls
+// /api/articles/publish with mode=production, which copies the article + all
+// /images/<slug>-* image blobs from dev to main without re-uploading them.
+function openHartPromotePanel(slug) {
+  const existing = document.getElementById('hartPromotePanel');
+  if (existing) {
+    if (existing.dataset.slug === slug) { existing.remove(); return; }
+    existing.remove();
+  }
+  // Close any open delete panel — only one inline panel at a time
+  const delPanel = document.getElementById('hartDeletePanel');
+  if (delPanel) delPanel.remove();
+
+  const fi = hartArticles.find(a => a.slug === slug && a.language === 'fi');
+  const en = hartArticles.find(a => a.slug === slug && a.language === 'en');
+  if (!fi && !en) return;
+
+  const tr = document.querySelector(`#hartList tr[data-slug="${CSS.escape(slug)}"]`);
+  if (!tr) return;
+
+  // What gets promoted (publish.js production mode auto-includes EN stub for
+  // FI source + all /images/<slug>-*.jpg files, so one call covers both
+  // languages when FI is the source). Show the publisher exactly what's
+  // about to land on main.
+  const lines = [];
+  if (fi) lines.push('• <code>' + esc(slug) + '.md</code> (FI) sekä kaikki <code>/images/' + esc(slug) + '-*.jpg</code> kuvat');
+  if (en) lines.push('• <code>' + esc(slug) + '.md</code> (EN' + (en.is_stub ? ' — käännöstynkä' : '') + ')');
+
+  const detailRow = document.createElement('tr');
+  detailRow.id = 'hartPromotePanel';
+  detailRow.dataset.slug = slug;
+  detailRow.className = 'hart-detail-row hart-promote-detail';
+  detailRow.innerHTML = `
+    <td colspan="5">
+      <div class="hart-promote-panel">
+        <div class="hart-promote-panel__head">
+          <span class="hart-promote-panel__icon">✓</span>
+          <strong>Julkaise tuotantoon</strong> &nbsp;<code>${esc(slug)}</code>
+        </div>
+        <div class="hart-promote-panel__info">
+          <p>Tämä toiminto kopioi seuraavat tiedostot dev-haarasta main-haaraan:</p>
+          <div class="hart-promote-panel__files">${lines.join('<br>')}</div>
+          <p class="hart-promote-panel__note">Tuotannossa artikkeli näkyy ~2 minuutin päästä Cloudflaren rakennettua sivuston uudelleen.</p>
+        </div>
+        <label class="hart-promote-panel__gate">
+          <input type="checkbox" id="hartPromoteConfirm" />
+          <span>Olen tarkistanut artikkelin testiympäristössä ja hyväksyn sen julkaisun tuotantoon.</span>
+        </label>
+        <div class="hart-promote-panel__actions">
+          <button class="btn btn--ghost" id="hartPromoteCancel">Peruuta</button>
+          <button class="btn btn--publish" id="hartPromoteGo" disabled>Julkaise tuotantoon</button>
+        </div>
+        <div id="hartPromoteMsg" class="hart-promote-panel__msg"></div>
+      </div>
+    </td>
+  `;
+  tr.after(detailRow);
+
+  const gate  = document.getElementById('hartPromoteConfirm');
+  const goBtn = document.getElementById('hartPromoteGo');
+  gate.addEventListener('change', () => { goBtn.disabled = !gate.checked; });
+
+  document.getElementById('hartPromoteCancel').addEventListener('click', () => detailRow.remove());
+
+  goBtn.addEventListener('click', async () => {
+    const language = fi ? 'fi' : 'en'; // FI wins as source so EN stub is also promoted
+    const msg = document.getElementById('hartPromoteMsg');
+    msg.innerHTML = '<span class="u-load">Julkaistaan tuotantoon...</span>';
+    goBtn.disabled = true;
+    document.getElementById('hartPromoteCancel').disabled = true;
+    try {
+      const r = await fetch('/api/articles/publish', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          password: adminPw,
+          mode: 'production',
+          slug,
+          language,
+        }),
+      });
+      const data = await r.json();
+      if (data.success) {
+        document.getElementById('hartMsg').innerHTML =
+          `<span class="u-ok">✓ Julkaistu tuotantoon (${data.promoted_files} tiedostoa). Tuotantosivun päivitys vie ~2 min.</span>`;
+        await loadHartArticles();
+      } else {
+        msg.innerHTML = `<span class="u-err">Virhe: ${esc(data.error || 'Tuntematon virhe')}</span>`;
+        goBtn.disabled = false;
+        document.getElementById('hartPromoteCancel').disabled = false;
+      }
+    } catch(e) {
+      msg.innerHTML = `<span class="u-err">Verkkovirhe: ${esc(e.message)}</span>`;
+      goBtn.disabled = false;
+      document.getElementById('hartPromoteCancel').disabled = false;
+    }
+  });
+}
+
+function initHartSearch() {
+  const inp   = document.getElementById('hartSearch');
+  const row   = document.getElementById('hartSearchRow');
+  const count = document.getElementById('hartSearchCount');
+  if (!inp) return;
+  row.style.display = 'flex';
+  inp.value = '';
+  count.textContent = '';
+  inp.oninput = () => {
+    const q = inp.value.trim().toLowerCase();
+    const trs = document.querySelectorAll('#hartList tbody tr:not(.hart-detail-row)');
+    let visible = 0;
+    trs.forEach(tr => {
+      const text = (tr.textContent || '').toLowerCase();
+      const show = !q || text.includes(q);
+      tr.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    count.textContent = q ? `${visible} tulosta` : '';
+    if (q) {
+      const dp = document.getElementById('hartDeletePanel');
+      if (dp) dp.remove();
+      const pp = document.getElementById('hartPromotePanel');
+      if (pp) pp.remove();
+    }
+  };
+}
+
+document.getElementById('hartBranchProd') && document.getElementById('hartBranchProd').addEventListener('click', () => {
+  if (hartCurrentBranch === 'main') return;
+  hartCurrentBranch = 'main';
+  document.getElementById('hartBranchProd').classList.add('hart-branch-btn--on');
+  document.getElementById('hartBranchDraft').classList.remove('hart-branch-btn--on');
+  if (adminPw) loadHartArticles();
+});
+document.getElementById('hartBranchDraft') && document.getElementById('hartBranchDraft').addEventListener('click', () => {
+  if (hartCurrentBranch === 'dev') return;
+  hartCurrentBranch = 'dev';
+  document.getElementById('hartBranchDraft').classList.add('hart-branch-btn--on');
+  document.getElementById('hartBranchProd').classList.remove('hart-branch-btn--on');
+  if (adminPw) loadHartArticles();
+});
+document.getElementById('hartReload') && document.getElementById('hartReload').addEventListener('click', () => {
+  if (adminPw) loadHartArticles();
+});
 </script>
 
 <style is:global>
@@ -1685,6 +3457,139 @@ function openDeleteGalleryPanel() {
 }
 .admin-tab:hover{color:#555}
 .admin-tab--on{color:#222;border-bottom-color:#ff9900}
+
+/* Lähetä artikkeli form */
+.art-form{max-width:880px;padding:8px 0}
+.art-form__title{margin:0 0 8px;font-size:20px;color:#222}
+.art-form__hint{margin:0 0 18px;color:#666;font-size:14px;line-height:1.5}
+.art-row{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px}
+.art-field{display:flex;flex-direction:column;gap:6px;flex:1 1 200px;min-width:180px}
+.art-field--full{flex-basis:100%}
+.art-field>span{font-size:13px;color:#444;font-weight:500}
+.art-field input[type=text],
+.art-field input[type=date],
+.art-field select,
+.art-field textarea{
+  padding:8px 10px;border:1px solid #ccc;border-radius:4px;font-size:14px;font-family:inherit;background:#fff;
+}
+.art-field textarea{font-family:Menlo,Consolas,Monaco,monospace;font-size:13px;line-height:1.5;resize:vertical}
+
+/* Import bar — sits ABOVE the markdown toolbar, lets publishers upload
+   .txt / .docx or paste rich text from Word / Docs to auto-convert to MD */
+.art-import-bar{
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px;
+  padding:8px 10px;background:#fff8e6;border:1px solid #ffd89a;
+  border-radius:6px;margin-bottom:6px;
+}
+.art-import-btn{
+  background:#ff9900;color:#fff;border:none;border-radius:4px;
+  padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;
+  font-family:inherit;line-height:1.3;transition:background .12s;
+  white-space:nowrap;
+}
+.art-import-btn:hover{background:#e68a00}
+.art-import-hint{font-size:11px;color:#7a5400;flex:1 1 200px;line-height:1.3}
+.art-import-status{
+  font-size:11px;font-weight:600;color:#666;
+  padding:3px 8px;border-radius:3px;min-height:1em;
+}
+.art-import-status:empty{display:none}
+.art-import-status--load{background:#fff;color:#666}
+.art-import-status--ok{background:#e8f5e8;color:#2a7a2a}
+.art-import-status--err{background:#fff0f0;color:#c0392b}
+
+/* Markdown toolbar — sits between the import bar and the textarea */
+.md-toolbar{
+  display:flex;flex-wrap:wrap;align-items:center;gap:4px;
+  padding:6px;background:#f7f6f4;border:1px solid #ccc;border-bottom:none;
+  border-top-left-radius:4px;border-top-right-radius:4px;
+}
+.md-toolbar + textarea{border-top-left-radius:0;border-top-right-radius:0}
+.md-toolbar__sep{width:1px;height:18px;background:#ccc;margin:0 4px}
+.md-tool{
+  background:#fff;border:1px solid #ddd;border-radius:3px;
+  padding:4px 10px;font-size:12px;font-weight:600;color:#444;cursor:pointer;
+  font-family:inherit;line-height:1.2;transition:all .12s;
+}
+.md-tool:hover{background:#ff9900;border-color:#ff9900;color:#fff}
+.md-tool--bold{font-weight:800;font-family:Menlo,Consolas,Monaco,monospace;min-width:28px}
+.md-tool--italic{font-style:italic;font-family:Menlo,Consolas,Monaco,monospace;min-width:28px}
+
+.art-hint{color:#888;font-size:12px;line-height:1.4}
+.art-hint code{background:#f3f3f3;padding:1px 4px;border-radius:3px;font-size:11px}
+.art-inline-list{display:flex;flex-direction:column;gap:6px;margin:6px 0}
+.art-inline-row{display:flex;gap:8px;align-items:center;padding:6px;background:#fafafa;border:1px solid #eee;border-radius:4px}
+.art-inline-num{font-weight:600;color:#666;width:24px;text-align:right}
+.art-inline-file{flex:0 0 auto;font-size:12px}
+.art-inline-label{flex:1 1 auto;font-size:12px;color:#444;font-style:italic}
+.art-inline-caption{flex:1 1 auto;padding:4px 8px;border:1px solid #ccc;border-radius:3px;font-size:13px}
+.art-inline-rm{background:#eee;border:none;width:28px;height:28px;border-radius:3px;cursor:pointer;font-size:18px;color:#666}
+.art-inline-rm:hover{background:#fdd;color:#900}
+.art-inline-tag{
+  background:#fff8e6;color:#a06400;
+  padding:3px 7px;border-radius:3px;font-size:11px;
+  font-family:Menlo,Consolas,Monaco,monospace;border:1px solid #ffe1a8;
+  flex-shrink:0;line-height:1.3;
+}
+.art-inline-insert{
+  background:#fff;border:1px solid #ddd;border-radius:3px;
+  padding:4px 9px;font-size:11px;font-weight:600;color:#444;cursor:pointer;
+  font-family:inherit;line-height:1.2;transition:all .12s;flex-shrink:0;white-space:nowrap;
+}
+.art-inline-insert:hover{background:#ff9900;border-color:#ff9900;color:#fff}
+.art-seo-count{
+  font-weight:500;color:#888;font-size:11px;
+  margin-left:6px;font-family:Menlo,Consolas,Monaco,monospace;
+}
+.art-seo-count--full{color:#c0392b;font-weight:700}
+.art-seo-hint{
+  display:flex;align-items:center;gap:4px;
+  color:#888;margin-top:2px;
+}
+.art-seo-hint--manual{color:#a06400}
+.art-actions{display:flex;gap:12px;align-items:center;margin-top:18px;flex-wrap:wrap}
+.art-btn{padding:10px 18px;border:none;border-radius:4px;font-size:14px;font-weight:500;cursor:pointer}
+.art-btn--add{background:#eee;color:#333;padding:6px 12px;font-size:13px;align-self:flex-start;margin-top:4px}
+.art-btn--add:hover{background:#ddd}
+.art-btn--draft{background:#ff9900;color:#fff}
+.art-btn--draft:hover:not(:disabled){background:#e68a00}
+.art-btn--publish{background:#ff9900;color:#222}
+.art-btn--publish:hover:not(:disabled){background:#e68a00}
+.art-btn--clear{background:#fff;color:#666;border:1.5px solid #ddd}
+.art-btn--clear:hover{background:#f5f5f5;border-color:#bbb;color:#222}
+.art-prod-note{
+  font-size:12px;color:#888;margin:10px 0 0;line-height:1.5;
+  padding:8px 12px;background:#f7f6f4;border-left:3px solid #ddd;border-radius:3px;
+}
+.art-btn:disabled{opacity:0.5;cursor:not-allowed}
+.art-status{font-size:13px;color:#666}
+.art-status--err{color:#c33}
+.art-status--ok{color:#0a0}
+.art-status--load{color:#888;font-style:italic}
+.art-result{margin-top:18px;padding:14px;background:#f5f9ff;border:1px solid #cdd;border-radius:4px;font-size:14px;line-height:1.6}
+.art-result a{color:#06c;text-decoration:underline;word-break:break-all}
+
+/* Split: form left, preview iframe right */
+.art-split{display:flex;gap:24px;align-items:flex-start;width:100%}
+.art-split__left{flex:1 1 480px;min-width:0;max-width:760px}
+.art-split__left .art-form{max-width:none}
+.art-split__right{flex:1 1 520px;min-width:0;position:sticky;top:16px;align-self:flex-start;display:flex;flex-direction:column;height:calc(100vh - 80px);max-height:1100px}
+.art-preview-bar{display:flex;justify-content:space-between;align-items:baseline;padding:8px 12px;background:#222;color:#fff;border-radius:4px 4px 0 0;font-size:13px}
+.art-preview-bar__label{font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.art-preview-bar__hint{color:#bbb;font-size:11px;font-style:italic}
+.art-preview-frame{flex:1 1 auto;width:100%;border:1px solid #ddd;border-top:none;border-radius:0 0 4px 4px;background:#fff;min-height:600px}
+
+/* Review gate */
+.art-review-gate{margin-top:18px;padding:12px 14px;background:#fff8e6;border:1px solid #f0d27a;border-radius:4px}
+.art-review-gate__label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:14px;color:#5a4400;line-height:1.4}
+.art-review-gate__label input{margin-top:3px;flex:0 0 auto}
+
+/* Mobile / narrow: stack vertically */
+@media (max-width: 1180px){
+  .art-split{flex-direction:column}
+  .art-split__right{position:static;height:auto;max-height:none}
+  .art-preview-frame{height:60vh;min-height:500px}
+}
 
 /* ===== BUTTONS ===== */
 .btn{font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:700;padding:11px 24px;border-radius:10px;border:none;background:#ff9900;color:#000;cursor:pointer;transition:all .2s ease;letter-spacing:.2px}
@@ -2253,6 +4158,172 @@ function openDeleteGalleryPanel() {
 
   .hallitse-search-row{display:flex;align-items:center;gap:12px;margin-top:12px;}
   .hallitse-search-count{font-size:.8rem;color:#888;font-weight:600;}
+
+  /* ===== HALLITSE ARTIKKELEITA TAB ===== */
+  .hart-top{margin-bottom:8px}
+  .hart-branch-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .hart-branch-label{font-size:.78rem;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:.5px;margin-right:4px}
+  .hart-branch-btn{
+    background:#fff;border:1.5px solid #ddd;border-radius:8px;
+    padding:7px 14px;font-size:.85rem;font-weight:600;color:#555;cursor:pointer;
+    font-family:inherit;transition:all .15s;
+  }
+  .hart-branch-btn:hover{border-color:#bbb;color:#222}
+  .hart-branch-btn--on{background:#ff9900;border-color:#ff9900;color:#fff}
+  .hart-branch-btn--on:hover{background:#e68a00;border-color:#e68a00;color:#fff}
+  .hart-reload{margin-left:auto}
+  .hart-search-row{display:flex;align-items:center;gap:12px;margin-top:12px;}
+  .hart-list{margin-top:14px}
+  .hart-table{
+    width:100%;border-collapse:separate;border-spacing:0;
+    background:#fff;border-radius:12px;overflow:hidden;
+    box-shadow:0 2px 8px rgba(0,0,0,.06);font-size:.88rem;
+  }
+  .hart-table th{
+    background:#f7f6f4;text-align:left;padding:10px 14px;
+    font-weight:700;font-size:.74rem;text-transform:uppercase;letter-spacing:.5px;color:#666;
+    border-bottom:1px solid #e8e6e2;
+  }
+  .hart-table td{padding:12px 14px;border-bottom:1px solid #f0eeea;vertical-align:top}
+  .hart-table tbody tr:last-child td{border-bottom:none}
+  .hart-table tbody tr:hover:not(.hart-detail-row){background:#fafaf8}
+  .hart-col-date{white-space:nowrap;width:110px;color:#555}
+  .hart-col-cat{white-space:nowrap;width:120px;color:#555}
+  .hart-col-langs{width:90px}
+  .hart-col-actions{width:170px;text-align:right}
+  .hart-title{font-weight:700;color:#111;line-height:1.3;margin-bottom:2px;word-break:break-word}
+  .hart-subtitle{font-size:.8rem;color:#666;line-height:1.35;margin-bottom:2px;word-break:break-word}
+  .hart-slug{font-size:.74rem;color:#999;font-family:ui-monospace,Menlo,Consolas,monospace}
+  .hart-lang-badge{
+    display:inline-block;background:#eaeaea;color:#333;
+    font-size:.7rem;font-weight:700;padding:2px 7px;border-radius:4px;
+    letter-spacing:.5px;margin-right:4px;
+  }
+  .hart-lang-badge--stub{background:#fff1d6;color:#a06400}
+  .hart-action-stack{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+  .hart-link-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+  .hart-link{
+    font-size:.74rem;color:#ff9900;text-decoration:none;font-weight:600;
+    padding:3px 7px;border:1px solid #ffd89a;border-radius:4px;background:#fff8e6;
+  }
+  .hart-link:hover{background:#ffe9bb}
+  .hart-table .hart-del{font-size:.78rem;padding:6px 12px}
+  .hart-legend{font-size:.74rem;color:#888;margin-top:8px;padding:0 4px}
+  .hart-detail-row td{padding:0;background:#fff5f5}
+  .hart-del-panel{
+    margin:0;padding:16px 20px;
+    background:#fff5f5;border-top:2px solid #f5c6c6;
+    animation:pubFadeIn .2s ease-out;
+  }
+  .hart-del-panel__head{
+    display:flex;align-items:center;gap:8px;
+    font-size:.95rem;color:#c0392b;margin-bottom:12px;
+  }
+  .hart-del-panel__icon{font-size:1.2rem}
+  .hart-del-panel__head code{
+    background:#fff;padding:2px 6px;border-radius:4px;
+    font-size:.85rem;color:#666;font-family:ui-monospace,Menlo,Consolas,monospace;
+  }
+  .hart-del-panel__opts{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+  .hart-del-opt{
+    display:flex;align-items:center;gap:8px;font-size:.88rem;color:#444;cursor:pointer;
+    padding:6px 10px;border-radius:6px;transition:background .12s;
+  }
+  .hart-del-opt:hover{background:#fff}
+  .hart-del-opt input{margin:0}
+  .hart-del-panel__gate{
+    display:flex;align-items:flex-start;gap:8px;
+    font-size:.85rem;color:#7a3a3a;line-height:1.4;
+    background:#fff;padding:10px 12px;border-radius:8px;border:1px solid #f5c6c6;
+    margin-bottom:12px;cursor:pointer;
+  }
+  .hart-del-panel__gate input{margin-top:3px;flex-shrink:0}
+  .hart-del-panel__actions{display:flex;gap:8px}
+  .hart-del-panel__msg{margin-top:10px;font-size:.85rem;min-height:1.2em}
+
+  /* Promote (dev -> main) panel — green, opt-in to publication */
+  .hart-promote-detail td{padding:0;background:#f1faf3}
+  .hart-promote-panel{
+    margin:0;padding:16px 20px;
+    background:#f1faf3;border-top:2px solid #b9e0c1;
+    animation:pubFadeIn .2s ease-out;
+  }
+  .hart-promote-panel__head{
+    display:flex;align-items:center;gap:8px;
+    font-size:.95rem;color:#1f6f3a;margin-bottom:10px;
+  }
+  .hart-promote-panel__icon{font-size:1.1rem;color:#1f6f3a}
+  .hart-promote-panel__head code{
+    background:#fff;padding:2px 6px;border-radius:4px;
+    font-size:.85rem;color:#666;font-family:ui-monospace,Menlo,Consolas,monospace;
+  }
+  .hart-promote-panel__info{font-size:.85rem;color:#395}
+  .hart-promote-panel__info p{margin:0 0 6px;line-height:1.4}
+  .hart-promote-panel__files{
+    background:#fff;padding:10px 14px;border-radius:6px;border:1px solid #cdebd5;
+    font-size:.85rem;color:#234;line-height:1.7;
+  }
+  .hart-promote-panel__files code{
+    background:#f7f6f4;padding:1px 5px;border-radius:3px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.78rem;color:#444;
+  }
+  .hart-promote-panel__note{margin-top:8px !important;font-size:.78rem;color:#6a8}
+  .hart-promote-panel__gate{
+    display:flex;align-items:flex-start;gap:8px;
+    font-size:.85rem;color:#1f6f3a;line-height:1.4;
+    background:#fff;padding:10px 12px;border-radius:8px;border:1px solid #b9e0c1;
+    margin-top:14px;margin-bottom:12px;cursor:pointer;
+  }
+  .hart-promote-panel__gate input{margin-top:3px;flex-shrink:0}
+  .hart-promote-panel__actions{display:flex;gap:8px}
+  .hart-promote-panel__msg{margin-top:10px;font-size:.85rem;min-height:1.2em}
+  .hart-table .hart-promote{font-size:.78rem;padding:6px 12px;background:#27ae60;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:600;font-family:inherit}
+  .hart-table .hart-promote:hover{background:#1f8e4d}
+
+  /* Edit buttons (per-language) on dev rows */
+  .hart-edit-row{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+  .hart-table .hart-edit{
+    font-size:.74rem;color:#444;text-decoration:none;font-weight:600;
+    padding:5px 10px;border:1px solid #ddd;border-radius:4px;background:#fff;
+    cursor:pointer;font-family:inherit;
+  }
+  .hart-table .hart-edit:hover{background:#ff9900;border-color:#ff9900;color:#fff}
+
+  /* Edit-mode banner above the form */
+  .art-edit-banner{
+    background:#fff8e6;border:1px solid #ffd89a;border-radius:8px;
+    padding:10px 14px;margin:0 0 14px;font-size:.88rem;color:#5a3f00;line-height:1.5;
+  }
+  .art-edit-banner code{
+    background:#fff;padding:1px 6px;border-radius:3px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.85rem;color:#444;
+  }
+  .art-edit-banner a{color:#ff9900;font-weight:700;text-decoration:underline}
+
+  /* Red banner variant for production edits — visual cue that this save
+     bypasses staging and lands on the live site immediately */
+  .art-edit-banner--prod{
+    background:#fff5f5;border-color:#f5c6c6;color:#c0392b;
+  }
+  .art-edit-banner--prod a{color:#c0392b}
+  .art-edit-banner--prod code{background:#fff;color:#7a3a3a}
+
+  /* Existing-image marker on inline rows in edit mode */
+  .art-inline-label--existing{color:#27ae60;font-weight:600;font-size:12px}
+  .art-inline-swap{
+    background:#fff;border:1px solid #ddd;border-radius:3px;
+    padding:4px 9px;font-size:11px;font-weight:600;color:#444;cursor:pointer;
+    font-family:inherit;line-height:1.2;flex-shrink:0;
+  }
+  .art-inline-swap:hover{background:#ff9900;border-color:#ff9900;color:#fff}
+
+  @media(max-width:760px){
+    .hart-table{font-size:.82rem}
+    .hart-col-cat{display:none}
+    .hart-col-actions{width:auto}
+    .hart-action-stack{align-items:stretch}
+    .hart-link-row{justify-content:flex-start}
+  }
 
   /* ===== PASSWORD INPUT ENHANCEMENTS ===== */
   .pw-wrap{position:relative;flex:1;min-width:150px;max-width:260px}

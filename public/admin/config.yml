@@ -1,0 +1,74 @@
+# Photo & Moto — Decap CMS configuration
+# Article CRUD only. Mystery photos and galleries are managed via /fi/yllapito.
+
+backend:
+  name: github
+  repo: photoandmoto/photoandmoto
+  branch: dev
+  base_url: https://www.photoandmoto.fi
+  auth_endpoint: oauth/auth
+
+# Set to false (or remove) for production. With local_backend: true and
+# `npx decap-server` running locally, the CMS edits files on disk instead
+# of committing to GitHub — useful for config/iteration without OAuth.
+local_backend: true
+
+# Direct commits to the `dev` branch. No PR-based editorial workflow.
+publish_mode: simple
+
+site_url: https://www.photoandmoto.fi
+display_url: https://www.photoandmoto.fi
+logo_url: https://www.photoandmoto.fi/images/logo.png
+locale: fi
+
+# Media uploads land in /public/images/ and are referenced as /images/<file>.
+media_folder: public/images
+public_folder: /images
+
+# Top-level i18n configuration — applies to any collection that opts in.
+i18n:
+  structure: multiple_folders
+  locales: [fi, en]
+  default_locale: fi
+
+collections:
+  - name: articles
+    label: Artikkelit
+    label_singular: Artikkeli
+    description: 'Suomeksi (fi) ja englanniksi (en). Tiedoston nimi = URL-slug, sama molemmissa kielissä.'
+    folder: src/content/articles
+    create: true
+    delete: true
+    extension: md
+    format: yaml-frontmatter
+    slug: '{{slug}}'
+    summary: '{{title}} — {{date | date("YYYY-MM-DD")}} ({{category}})'
+    sortable_fields: [date, title, category]
+    i18n: true
+    fields:
+      - { name: title, label: Otsikko, widget: string, i18n: true }
+      - { name: subtitle, label: Alaotsikko, widget: string, required: false, i18n: true }
+      - { name: author, label: Kirjoittaja, widget: string, default: 'Photo & Moto', i18n: duplicate }
+      - { name: date, label: Päivämäärä, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true, i18n: duplicate }
+      - name: category
+        label: Kategoria
+        widget: select
+        i18n: duplicate
+        options:
+          - { label: 'MXGP', value: MXGP }
+          - { label: 'Enduro', value: Enduro }
+          - { label: 'Speedway', value: Speedway }
+          - { label: 'Historiallinen', value: Historical }
+          - { label: 'Tekninen', value: Technical }
+          - { label: 'Haastattelu', value: Interview }
+      - { name: tags, label: Avainsanat, widget: list, default: [], required: false, i18n: true }
+      - { name: featured_image, label: 'Pääkuva (hero)', widget: image, required: false, i18n: duplicate }
+      - { name: card_image, label: 'Korttikuva (lista- ja etusivut)', widget: image, required: false, i18n: duplicate }
+      - { name: show_hero, label: 'Näytä pääkuva otsikon yläpuolella', widget: boolean, default: true, required: false, i18n: duplicate }
+      - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
+      - { name: draft, label: 'Luonnos (älä julkaise sivustolle)', widget: boolean, default: false, required: false, i18n: duplicate }
+      - { name: seo_description, label: 'SEO-kuvaus (max 160 merkkiä)', widget: string, required: false, pattern: ['^.{0,160}$', 'Korkeintaan 160 merkkiä'], i18n: true }
+      - { name: auto_translated, label: 'Automaattisesti käännetty — käännä pois tarkistuksen jälkeen', widget: boolean, default: false, required: false, i18n: true }
+      - { name: translated_from, label: 'Käännetty artikkelista (slug)', widget: hidden, required: false, i18n: true }
+      - { name: translated_at, label: 'Käännetty (aikaleima)', widget: hidden, required: false, i18n: true }
+      - { name: body, label: Sisältö, widget: markdown, i18n: true }

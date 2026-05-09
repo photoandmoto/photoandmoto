@@ -1,119 +1,110 @@
-# Session Handoff — Day 2 → Day 3
+# Session Handoff — May 7 → next session
 
 > Short note for the next chat to resume work without re-explaining everything. Treat as a starting context, not a permanent doc. Delete or replace at the end of the next session.
 
 ## Where we are
 
-**Production is live and verified working.** Both `main` and `dev` are in sync at commit `02299ae`.
+**Yesterday (May 7) shipped a 13-item bug-fix + feature bundle to dev / staging** at commit `92b32aa` (rebased from `a5bfa8a` against the publish-bot's interleaved commits). Cloudflare staging built successfully. **None of the 13 items have been smoke-tested on staging yet** — the test plan was set up in the previous session but not started.
 
-Day 2 shipped (in this order):
+**Production (`main`) is unaffected** by yesterday's commit. The publish-bot's earlier delete commits did push to main, but the broader bug-fix bundle is dev-only.
 
-- **Branch cleanup** — deleted merged `feat/pagefind` (local; already gone from origin)
-- **MIGRATION.md** — added a "Lessons learned" section with 7 hard-won lessons from Day 1 (two-strike rule, verify before optimizing, name the frame, chat formatting contamination, PowerShell encoding, template-literal escaping, Select-String display lies). Future sessions should read these before similar work.
-- **MXGP scraper cron** — `.github/workflows/mxgp-scraper.yml` now gated to Feb–Oct (`cron: '0 20 * 2-10 0'` and `'0 6 * 2-10 1'`). `workflow_dispatch` stays year-round for manual re-runs.
-- **D1 row size fix** — `SQLITE_TOOBIG` on JPEG uploads >1.5 MB. Verified on staging: 24.5 MB JPEG → 311 KB stored (98.7% reduction). Applied to all three upload UIs (`yllapito.astro`, `tunnistamatta.astro`, `identify.astro`). Production smoke test passed.
-- **README.md scrubbed** — removed 4 resolved backlog items, added Hallitse galleriaa tab description, added `gallery-manage.js`/`generate-llms.mjs`/`scrape-mxgp.py` to project structure, added the dev/main divergence note in Deployment, added wrangler usage to Development.
+The **next session may take a different approach** — the user flagged this at end-of-session without specifying what. Treat the test plan below as one possible path; the user may want to rethink scope/order before resuming.
 
-Final D1 fix shipped via PR #3 (`fix/d1-resize-day2 → main`), which also reverted a partial May 2 attempt (`8f4d6ef`) that only patched `yllapito.astro`.
+### What shipped yesterday (dev only, untested)
 
-Live URLs verified:
+**Bundle 1 — Schema + CSS fixes**
+1. `featured_image` made optional in `src/content.config.ts`. Was breaking Cloudflare builds for any article without a hero image.
+2. Strip ALL `<a>` tags during paste / `.docx` import. Replaces yesterday's conservative junk-only filter (which kept Wikipedia + Google Docs auto-links). Status text now says "linkkiä poistettu". Import-bar hint updated: "linkit poistetaan automaattisesti".
+3. Drop cap restricted to the article's first body paragraph only — never on blockquotes (Option C from the May 7 discussion). Fixed in both [`ArticleLayout.astro`](src/layouts/ArticleLayout.astro) and [`yllapito-preview.astro`](src/pages/fi/yllapito-preview.astro).
+4. Removed the `tr:first-child td { color: brand-primary }` rule from both files — it was colouring the FIRST DATA ROW orange in any table that had a proper `<thead>`.
+5. Added `margin-bottom` + `padding-left` to `<ul>` and `<ol>`, plus `<li>` margin. Lists no longer butt against the next paragraph.
+6. Added a visible `<hr>` style — 2px orange-tinted top border, 60% width, centred. The `---` markdown markers now render as a clear divider.
 
-- https://www.photoandmoto.fi (production, working upload flow)
-- https://www.photoandmoto.fi/llms.txt
-- https://www.photoandmoto.fi/robots.txt
+**Bundle 2 — Form bug fixes**
+7. Slug field now genuinely locks in muokkaustila — `artUpdateSlugPreview` checks `artEditMode` directly (not just the brittle manuallyEdited flag). Moved `let artEditMode = null` declaration earlier in the file to avoid TDZ on initial paint.
+8. `Tyhjennä lomake` belt-and-braces clears SEO field (removed duplicate `'artSubtitle'` typo from the ids list, added explicit secondary clear).
+9. Review-gate auto-resets after a successful Julkaise testiympäristöön. Save button stays disabled until the publisher re-ticks the gate.
+10. SEO autofill strips stray backticks (single ones, code fences) so the auto-generated SEO summary is clean prose.
+11. Edit-mode preview now renders kept inline images using their deployed `/images/<slug>-N.jpg` URL instead of "ei vielä lisätty" placeholder. Same fallback for the hero (uses `artExistingFeaturedImage` path).
 
-## Important context: dev/main divergence model
+**Bundle 3 — New features**
+12. **Kirjoittaja input field** added to Lähetä artikkeli form. Backend already accepted the param. Empty value → defaults to "Photo & Moto". Wired through `artGetForm`, `artSubmitDraft`, preview payload, edit-load, and clear.
+13. **Muokkaa FI / Muokkaa EN buttons on Tuotanto (main) rows**. Click → loads the article from main into the form. The save flow detects `artEditMode.branch === 'main'` and:
+    - Shows a `confirm()` dialog warning that the save bypasses staging
+    - Submits with `mode=production-edit` (new multipart mode in [`publish.js`](functions/api/articles/publish.js))
+    - publish.js's draft handler now branches on mode: `draft` → dev, `production-edit` → main
+    - Banner turns red with copy "⚠ Muokataan TUOTANTOA" instead of yellow "✎ Muokkaustila"
+    - Success message says "Tallennettu tuotantoon" with the live URL
 
-This was a key learning today and is now documented in `README.md` § Deployment. **The dev → main promotion model from earlier handoffs is incomplete.** Reality:
+## Test plan for next session (all 13 untested)
 
-- The publish pipeline (`publish.js`) and the gallery management endpoint (`gallery-manage.js`) commit directly to whichever branch they run on (via `CF_PAGES_BRANCH`). Production photo publishing therefore lands on `main` directly, bypassing dev.
-- Phase D admin work (Hallitse galleriaa tab, move_photo, Siirrä button) was shipped directly to main outside of the most recent dev branch's history.
-- A May 2 partial fix for the D1 bug (`8f4d6ef`) was also committed directly to main but was incomplete (only `yllapito.astro`, not the other two upload UIs) and was never exercised in production before being reverted.
+The test plan was set up at start of May 8 but interrupted before Test 1 could run. Quick checklist:
 
-**Net effect:** by the time Day 2 started, `main` was 22 commits ahead of `dev` while `dev` thought they were in sync. The naive `git merge dev → main` produced a multi-region conflict in `yllapito.astro`.
+| # | Test | Quick how-to |
+|---|---|---|
+| 1 | Schema fix | Create draft with NO hero → Cloudflare build should pass |
+| 2 | Strip all links | Paste from Wikipedia → status shows "N linkkiä poistettu", body has no `[text](url)` markup |
+| 3 | Drop cap scope | View any article with multiple blockquotes → only first body `<p>` has the giant letter |
+| 4 | Table fix | View Formatointitesti article → first data row (1974/CR250M) is normal black, not orange |
+| 5 | List margin | Any article with `<ul>` → visible gap between last bullet and next paragraph |
+| 6 | HR styling | Article with `---` → visible orange-tinted divider line, 60% width |
+| 7 | Slug lock | Hallitse → Muokkaa FI → try to type in slug field → blocked |
+| 8 | Tyhjennä clears SEO | Fill form, click Tyhjennä lomake → SEO empties, counter back to 0/160 |
+| 9 | Review-gate auto-reset | Tick gate, save, success → gate unticks, save button re-disables |
+| 10 | SEO no backticks | Use a body with code blocks → SEO summary has no stray backticks |
+| 11 | Edit-mode kept images | Edit an article with inline images → preview shows actual images |
+| 12 | Kirjoittaja field | Lähetä artikkeli form → new "Kirjoittaja" input row visible |
+| 13 | Muokkaa on Tuotanto | Hallitse → Tuotanto (main) → Muokkaa FI/EN buttons on every row, red banner on click. **Don't save unless you mean it — it commits straight to main.** |
 
-**Rule going forward:** before any `dev → main` promotion, run:
+## Outstanding items (not implemented)
 
+These were deferred in the May 7 prioritisation:
+
+- **Investigate**: *Hiljaisuus pauhun jälkeen* still visible on production aikakone landing page despite the May 7 delete commit `42592c9`. Source files may not have actually been removed from main, or there's a stale Cloudflare cache. Check with `git ls-tree -r origin/main --name-only | findstr hiljaisuus`.
+- **Discussion**: EN translation strategy (manual / Gemini on-demand button / Gemini auto-translate). Not yet settled. Recommendation: option (b) — Gemini button per stub row in Hallitse artikkeleita with human-in-the-loop review. `GEMINI_API_KEY` already in env.
+
+## Outstanding local state
+
+`git status` will still show:
+
+- `README.md` — backlog updates (will be committed alongside this handoff)
+- `SESSION_HANDOFF.md` — this file
+- `public/data/site-index.json` — build artifact, regenerated each `npm run build`
+- `public/llms.txt` — same
+
+Suggested commit before starting next session:
 ```powershell
-git log dev..main --oneline   # what main has that dev doesn't
-git log main..dev --oneline   # what dev has that main doesn't
-git diff main..dev --stat     # files actually different
+git add README.md SESSION_HANDOFF.md
+git commit -m "docs: handoff + backlog refresh after May 7 bug-fix bundle"
+git pull --rebase origin dev
+git push origin dev
 ```
 
-If `main` has commits dev doesn't see, do one of:
+The build artifacts can be discarded with `git checkout -- public/data/site-index.json public/llms.txt` — they'll regenerate on the next build.
 
-1. **Cherry-pick dev's useful commits onto a fresh branch off main** (this is what we did today via `fix/d1-resize-day2`), open a PR, merge cleanly. Then `git reset --hard origin/main` on dev to re-sync.
-2. **Rebase dev onto main**, resolve conflicts once, then merge.
-
-The clean approach today was option 1 — turned a messy 4-region conflict into 4 reviewable commits in a PR with a green Cloudflare check.
-
-## Open items for Day 3
-
-In rough priority order. All also mirrored in `README.md` § Backlog.
-
-### 1. Filename year quirk in publish flow
-
-During an earlier production smoke test, the typed year (2026) ended up as `1980` in the resulting filename. Likely a race between `Tallenna` saving the metadata and `Julkaise Galleriaan` reading it. Worth investigating before doing any curated publishing batch — mislabeled filenames are annoying to fix after the fact.
-
-Reproduction: live admin → Tunnista kuva → publish a photo → check the filename in `public/galleries/<slug>/`. Look in `publish.js` for where `year_estimate` is read vs. when the metadata save round-trips.
-
-### 2. Mystery photo help block — backfill old rows
-
-A handful of pre-`thumb_data` rows still have `NULL` thumbs. Block hides correctly when no thumbs exist but is more compelling with 6+. Two paths:
-
-- Wait — fills organically as admin uploads new mystery photos
-- Build a one-shot backfill admin tool (~30 min): button on Tunnistamatta admin tab that fetches each image, generates a 300px Canvas thumbnail in the browser, PUTs it back to D1
-
-Quick state check:
-
-```powershell
-wrangler d1 execute photoandmoto-community --remote --command "SELECT COUNT(*) AS missing FROM photos WHERE thumb_data IS NULL AND status != 'identified' AND published_to_gallery_at IS NULL"
-```
-
-### 3. Audit Admin section against actual UI
-
-The README's Admin side description is a high-level summary. The real UI may have more detail than captured. Open production admin, walk through every tab, sync the README to reality. ~15 min.
-
-### 4. Phase E — Storage and cost ops
-
-Repo will eventually outgrow GitHub's recommended size. Decisions to make later, not urgent now:
-
-- Original-image archive strategy (R2 / Backblaze B2 / cold storage)
-- Basic D1 growth monitoring (row counts, byte counts per table)
-- Cleanup endpoint for legacy `field_type='general'` rows in `comments`
-
-### 5. `site-index.json` checkout noise
-
-Build artifact committed to the repo. Shows as modified on every branch checkout. Two solutions in the README backlog. Low priority — clutter, not a bug.
-
-## Quick sanity-check at start of next session
+## Quick sanity check at start of next session
 
 ```powershell
 cd C:\Users\atvil\Desktop\photoandmoto
-git checkout dev
-git pull origin dev
-git status
-git log --oneline -5
-
-# Confirm dev and main are still in sync
-git log main..dev --oneline   # should be empty
-git log dev..main --oneline   # may have MXGP bot commits / publish commits, that's fine
+git fetch origin dev
+git log --oneline -5 origin/dev    # latest should be 92b32aa or newer (publish-bot may have pushed overnight)
+git log --oneline -5 dev           # should match
+git status                         # README + SESSION_HANDOFF + 2 build artifacts modified
 ```
 
-Should show working tree clean. The MXGP scraper bot may have committed to main overnight (Sunday/Monday cron when in season) — that's expected and creates harmless divergence.
+If `origin/dev` advanced past `92b32aa` (publish-bot or scraper commits), `git pull --rebase origin dev` before starting work.
 
-## User context the next session will need
+## User context
 
-- **Local dev:** Windows + PowerShell 7+ at `C:\Users\atvil\Desktop\photoandmoto`. Prefers step-by-step commands, small confirmations between steps, will push back firmly if rushed or if changes look made-up.
-- **Wrangler is now installed and authed** — D1 queries work directly from the terminal: `wrangler d1 execute photoandmoto-community --remote --command "<SQL>"` (drop `--remote` for local; add `-dev` to DB name for staging).
-- **Admin password (Tunnista kuva):** `Photoandmoto!2026`
-- **PowerShell execution policy** is restrictive; downloaded scripts must be run via `powershell.exe -ExecutionPolicy Bypass -File .\script.ps1` (or `Unblock-File` first).
-- **MIGRATION.md lessons** — read them before similar work. They cover the encoding/escaping traps that cost real time on Day 1.
-- **D1 row limit awareness** — Cloudflare D1 caps individual rows at ~2 MB. Anything storing base64 image data must factor in the 1.33× expansion. The mystery upload form now resizes client-side; any new endpoint storing binary in D1 should do the same.
+- **Local dev:** Windows + PowerShell 7+ at `C:\Users\atvil\Desktop\photoandmoto`. Step-by-step commands preferred, paste outputs back for confirmation.
+- **Wrangler** is installed and authed for D1 / Cloudflare Pages.
+- **Admin password (Tunnista kuva + article publishing):** `Photoandmoto!2026`
+- **Shell tools have been broken throughout the May 5–7 sessions** — Bash and PowerShell tools both errored out for the assistant; user ran every build/git command manually. A fresh chat session usually restores them.
+- **The user expressed wanting to try a different approach** at end of May 7 session. Don't lock into the existing test plan or implementation direction — be open to course correction at the start of the next session.
 
-## What NOT to assume next session
+## Workflow conventions in force
 
-- **Don't assume `dev` is "ahead" of `main`** — the publish pipeline and gallery-manage endpoint often make main move independently. Always check both directions before promoting.
-- **Don't trust terminal display of file content for charset issues** — the bytes on disk may be fine while PowerShell renders them with the wrong code page (Lesson 7 in MIGRATION.md). Verify with raw byte regex matches before claiming a file is corrupted.
-- **Don't assume preview deployments have the same env vars as production** — `UPLOAD_PASSWORD` is set on Production env only; PR previews will fail admin login until/unless added to Preview env. Not worth doing for short-lived PRs; smoke-test on production right after merge instead.
-- **Don't update docs based on commit messages alone** — commit messages describe intent, not necessarily the final shape of the UI/feature. Verify against the actual code or running site before claiming features in the README. (This bit us on Day 2: we almost claimed UI behaviors that we hadn't actually verified.)
+- **Lähetä artikkeli is for create-and-iterate** (always lands on dev/staging via Julkaise testiympäristöön, except when the form is in muokkaustila for a main article — then `production-edit` mode commits straight to main with a confirm dialog).
+- **Hallitse artikkeleita is for lifecycle management** — promote / delete / edit. Edit buttons now appear on both Luonnokset (dev) AND Tuotanto (main) rows.
+- **Production goes through a deliberate two-step gate for new articles**: create on staging → review live → promote per-row from Luonnokset. For typo-fixes on already-live articles, the new direct-to-main save (Bundle 3.13) skips this with a confirmation modal as the safety gate.
+- **EN side editing happens through Hallitse artikkeleita** — there's no language selector on the Lähetä artikkeli form (always `fi` for new articles).
