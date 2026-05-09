@@ -12,10 +12,12 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
+    "@fontsource/montserrat": "^5.0.0",
     "astro": "^6.2.1",
     "js-yaml": "^4.1.0",
     "photoswipe": "^5.4.3",
-    "sharp": "^0.33.2"
+    "sharp": "^0.33.2",
+    "text-to-svg": "^3.1.5"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
