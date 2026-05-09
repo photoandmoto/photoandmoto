@@ -1,0 +1,112 @@
+name: Translate Article FI to EN
+
+# Runs when Finnish articles are added or modified — Decap saves, manual
+# pushes, or any commit touching src/content/articles/fi/*.md. For each
+# changed FI file, calls scripts/translate-article.mjs which itself decides
+# whether to translate or skip:
+#   - EN file missing OR auto_translated: true   -> translate
+#   - EN file exists with auto_translated falsy  -> skip (human-reviewed)
+#
+# Triggers on dev and main so staging and production both stay in sync.
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+    paths:
+      - 'src/content/articles/fi/**'
+
+# Path filter is `fi/**`, this workflow only commits to `en/**`, so the
+# action's own commits cannot re-trigger it. No loop guard needed.
+
+concurrency:
+  group: translate-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Detect added/modified FI articles
+        id: detect
+        run: |
+          # Output filenames as raw UTF-8 (Finnish characters in filenames).
+          git config --global core.quotePath false
+
+          BEFORE="${{ github.event.before }}"
+          AFTER="${{ github.event.after }}"
+
+          # Edge case: first push to a branch — BEFORE is all zeros.
+          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            BEFORE=$(git rev-parse $AFTER^ 2>/dev/null || echo "")
+          fi
+
+          if [ -z "$BEFORE" ]; then
+            CHANGED=$(git show --name-only --pretty=format: $AFTER)
+          else
+            CHANGED=$(git diff --name-only --diff-filter=AM "$BEFORE" "$AFTER")
+          fi
+
+          echo "All changed files in this push:"
+          echo "$CHANGED"
+
+          # Only top-level src/content/articles/fi/<slug>.md files
+          echo "$CHANGED" | grep -E '^src/content/articles/fi/[^/]+\.md$' > targets.txt || true
+
+          if [ ! -s targets.txt ]; then
+            echo "No FI articles added or modified."
+            echo "found=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo ""
+          echo "Targets to consider for translation:"
+          cat targets.txt
+          echo "found=true" >> $GITHUB_OUTPUT
+
+      - name: Translate each FI article
+        if: steps.detect.outputs.found == 'true'
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          while IFS= read -r filepath; do
+            [ -z "$filepath" ] && continue
+            echo ""
+            echo ">> Processing: $filepath"
+            node scripts/translate-article.mjs "$filepath"
+          done < targets.txt
+
+      - name: Commit translated EN files
+        if: steps.detect.outputs.found == 'true'
+        run: |
+          git config user.name "photoandmoto-publisher[bot]"
+          git config user.email "photoandmoto-publisher[bot]@users.noreply.github.com"
+
+          git add src/content/articles/en/
+
+          if git diff --staged --quiet; then
+            echo "Nothing to commit — translator skipped all files (EN already human-reviewed)."
+            exit 0
+          fi
+
+          git commit -m "chore(translate): auto-translate articles to EN"
+          git push origin ${{ github.ref_name }}

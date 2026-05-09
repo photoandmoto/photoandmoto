@@ -1,0 +1,99 @@
+name: Generate OG Images
+
+# Generates a 1200x630 social-card image per changed article.
+# Triggers on push to dev/main when article markdown changes. For each
+# changed article, runs scripts/generate-og-image.mjs to composite the
+# featured image with title + category + Photo & Moto wordmark, then
+# commits the resulting JPEGs back to public/og/.
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+    paths:
+      - 'src/content/articles/**'
+
+concurrency:
+  group: og-images-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    # Loop guard: skip our own commits.
+    if: "!startsWith(github.event.head_commit.message, 'chore(og):')"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Detect added/modified articles
+        id: detect
+        run: |
+          git config --global core.quotePath false
+
+          BEFORE="${{ github.event.before }}"
+          AFTER="${{ github.event.after }}"
+          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            BEFORE=$(git rev-parse $AFTER^ 2>/dev/null || echo "")
+          fi
+
+          if [ -z "$BEFORE" ]; then
+            CHANGED=$(git show --name-only --pretty=format: $AFTER)
+          else
+            CHANGED=$(git diff --name-only --diff-filter=AM "$BEFORE" "$AFTER")
+          fi
+
+          echo "$CHANGED" | grep -E '^src/content/articles/[^/]+/[^/]+\.md$' > targets.txt || true
+
+          if [ ! -s targets.txt ]; then
+            echo "No article files added or modified."
+            echo "found=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "Targets:"
+          cat targets.txt
+          echo "found=true" >> $GITHUB_OUTPUT
+
+      - name: Generate OG images
+        if: steps.detect.outputs.found == 'true'
+        run: |
+          while IFS= read -r filepath; do
+            [ -z "$filepath" ] && continue
+            echo ""
+            echo ">> Processing: $filepath"
+            node scripts/generate-og-image.mjs "$filepath"
+          done < targets.txt
+
+      - name: Commit OG images
+        if: steps.detect.outputs.found == 'true'
+        run: |
+          git config user.name "photoandmoto-publisher[bot]"
+          git config user.email "photoandmoto-publisher[bot]@users.noreply.github.com"
+
+          git add public/og/
+
+          if git diff --staged --quiet; then
+            echo "No OG image changes."
+            exit 0
+          fi
+
+          git commit -m "chore(og): regenerate OG images for changed articles"
+          git push origin ${{ github.ref_name }}
