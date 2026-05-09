@@ -44,6 +44,14 @@ collections:
     slug: '{{slug}}'
     summary: '{{title}} — {{date | date("YYYY-MM-DD")}} ({{category}})'
     sortable_fields: [date, title, category]
+    view_filters:
+      - { label: 'Piilotetut (luonnos)', field: draft, pattern: true }
+      - { label: 'Tarkistamattomat käännökset', field: auto_translated, pattern: true }
+    view_groups:
+      - { label: 'Kategoria', field: category }
+      - label: 'Julkaisuvuosi'
+        field: date
+        pattern: '\d{4}'
     i18n: true
     fields:
       - { name: title, label: Otsikko, widget: string, i18n: true }
@@ -70,6 +78,7 @@ collections:
       - { name: translated_from, label: 'Käännetty artikkelista (slug)', widget: hidden, required: false, i18n: true }
       - { name: translated_at, label: 'Käännetty (aikaleima)', widget: hidden, required: false, i18n: true }
       - { name: body, label: Sisältö, widget: markdown, i18n: true }
+      - { name: sources, label: 'Lähteet (valinnainen)', widget: text, required: false, i18n: true, hint: 'Lähteet, joista materiaalia on lainattu. Jokainen lähde omalla rivillä. URL-osoitteet muuttuvat automaattisesti linkeiksi.' }
 
   - name: categories
     label: Kategoriat

@@ -16,12 +16,28 @@ interface Props {
     language?: 'fi' | 'en';
     seo_description?: string;
     author_url?: string;
+    sources?: string | null;
   };
   lang: 'fi' | 'en';
 }
 
 const { frontmatter, lang } = Astro.props;
 const t = ui[lang];
+
+// Render sources field with HTML escaping + URL auto-linking. Renders only if
+// non-empty. set:html below requires a pre-escaped string.
+function renderSources(text: string): string {
+  const escaped = text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+  return escaped.replace(
+    /(https?:\/\/[^\s<]+)/g,
+    '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+  );
+}
+const sourcesHtml = frontmatter.sources ? renderSources(frontmatter.sources) : null;
 
 const formattedDate = new Intl.DateTimeFormat(lang === 'fi' ? 'fi-FI' : 'en-US', {
   year: 'numeric',
@@ -100,7 +116,16 @@ const articleJsonLd = {
       <div class="article-body">
         <slot />
       </div>
-      
+
+      {sourcesHtml && (
+        <aside class="article-sources">
+          <h3 class="article-sources__heading">
+            {lang === 'fi' ? 'Lähteet' : 'Sources'}
+          </h3>
+          <div class="article-sources__body" set:html={sourcesHtml} />
+        </aside>
+      )}
+
       <footer class="article-footer">
         <div class="author-info">
           <strong>{t['article.author']}:</strong> {frontmatter.author}
@@ -338,6 +363,37 @@ const articleJsonLd = {
     display: block;
   }
   
+  /* Sources block (Lähteet) — appears at the end of the body, before the footer */
+  .article-sources {
+    max-width: 760px;
+    margin: var(--space-5) auto 0;
+    padding: var(--space-3);
+    background: var(--bg-secondary);
+    border-left: 4px solid var(--brand-primary);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+  .article-sources__heading {
+    font-family: var(--font-headline);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-primary);
+    margin: 0 0 var(--space-2);
+  }
+  .article-sources__body {
+    white-space: pre-line;
+    line-height: 1.6;
+    word-break: break-word;
+  }
+  .article-sources__body a {
+    color: var(--brand-primary);
+    text-decoration: underline;
+  }
+  .article-sources__body a:hover {
+    text-decoration: none;
+  }
+
   /* Footer */
   .article-footer {
     margin-top: var(--space-6);

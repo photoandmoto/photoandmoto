@@ -47,7 +47,6 @@ h1, h2, h3, h4, h5, h6,
 header[role="banner"] {
   background: var(--pm-black) !important;
   color: #fff !important;
-  border-bottom: 2px solid var(--pm-orange) !important;
 }
 
 [class*="AppHeader"] a,
@@ -65,12 +64,6 @@ header[role="banner"] a:hover {
   color: var(--pm-orange) !important;
 }
 
-/* "View Live" link in top bar — make it stand out as orange */
-a[class*="ViewLive"],
-[class*="AppHeader"] a[href^="http"]:not([href*="github"]) {
-  color: var(--pm-orange) !important;
-}
-
 /* ---------------------------------------------------------------- */
 /* Sidebar — orange selected/hover states                            */
 /* ---------------------------------------------------------------- */
@@ -85,7 +78,6 @@ a[class*="ViewLive"],
 [class*="NavLink"][class*="active"],
 [class*="Sidebar"] a[aria-current="page"] {
   color: var(--pm-orange) !important;
-  border-left: 3px solid var(--pm-orange) !important;
   background: rgba(255, 153, 0, 0.05) !important;
 }
 

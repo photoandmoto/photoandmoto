@@ -28,6 +28,7 @@ const articlesCollection = defineCollection({
     auto_translated: z.boolean().nullish(),
     translated_from: z.string().nullish(),
     translated_at: z.string().nullish(),
+    sources: z.string().nullish(),
   }),
 });
 
