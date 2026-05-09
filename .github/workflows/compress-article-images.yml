@@ -1,0 +1,112 @@
+name: Compress Article Images
+
+# Runs when files in public/images/ are added or modified — Decap saves,
+# publish.js commits, or any manual image push. Sharp resizes oversized
+# images to MAX_WIDTH and re-encodes for size, then commits compressed
+# versions back to the same branch.
+#
+# Triggers on dev and main so staging and production both stay slim.
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+    paths:
+      - 'public/images/**'
+
+# Serialize per branch so two pushes don't race on the same file.
+concurrency:
+  group: image-compressor-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  compress:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    # Loop guard: this workflow's own commits must NOT re-trigger it.
+    # The compress-back commit message starts with "chore(images): compress" —
+    # if that prefix is the head commit, skip. If you change the message
+    # below, change this `if:` too.
+    if: "!startsWith(github.event.head_commit.message, 'chore(images): compress')"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Detect added/modified images
+        id: detect
+        run: |
+          # Output filenames as raw UTF-8 (Finnish characters in filenames).
+          git config --global core.quotePath false
+
+          BEFORE="${{ github.event.before }}"
+          AFTER="${{ github.event.after }}"
+
+          # Edge case: first push to a branch — BEFORE is all zeros.
+          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            BEFORE=$(git rev-parse $AFTER^ 2>/dev/null || echo "")
+          fi
+
+          if [ -z "$BEFORE" ]; then
+            CHANGED=$(git show --name-only --pretty=format: $AFTER)
+          else
+            # --diff-filter=AM = added or modified (skip deleted/renamed).
+            CHANGED=$(git diff --name-only --diff-filter=AM "$BEFORE" "$AFTER")
+          fi
+
+          echo "All changed files in this push:"
+          echo "$CHANGED"
+
+          # Only top-level public/images/<file>.<ext>. Subdirectories ignored
+          # so future folders like public/images/optimized/ don't get touched.
+          echo "$CHANGED" | grep -E '^public/images/[^/]+\.(jpg|jpeg|png|webp|JPG|JPEG|PNG|WEBP)$' > targets.txt || true
+
+          if [ ! -s targets.txt ]; then
+            echo "No image files added or modified."
+            echo "found=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo ""
+          echo "Targets to inspect:"
+          cat targets.txt
+          echo "found=true" >> $GITHUB_OUTPUT
+
+      - name: Compress images
+        if: steps.detect.outputs.found == 'true'
+        run: |
+          mapfile -t TARGETS < targets.txt
+          node scripts/compress-article-images.mjs "${TARGETS[@]}"
+
+      - name: Commit compressed images
+        if: steps.detect.outputs.found == 'true'
+        run: |
+          git config user.name "photoandmoto-publisher[bot]"
+          git config user.email "photoandmoto-publisher[bot]@users.noreply.github.com"
+
+          git add public/images/
+
+          if git diff --staged --quiet; then
+            echo "Nothing to commit — all images were already optimal."
+            exit 0
+          fi
+
+          # IMPORTANT: this prefix must match the loop guard's startsWith()
+          # check at the top of the job. If you change one, change the other.
+          git commit -m "chore(images): compress article images"
+          git push origin ${{ github.ref_name }}

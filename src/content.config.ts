@@ -10,7 +10,10 @@ const articlesCollection = defineCollection({
     subtitle: z.string().nullish(),
     author: z.string().default('Photo & Moto'),
     date: z.date(),
-    category: z.enum(['MXGP', 'Enduro', 'Speedway', 'Historical', 'Technical', 'Interview']),
+    // Was z.enum(...). Now data-driven via the `categories` collection so editors
+    // can add new categories from Decap without a code change. Validation is at
+    // the Decap UI layer (relation widget restricts picks to existing entries).
+    category: z.string(),
     tags: z.array(z.string()),
     featured_image: z.string().nullish(),
     card_image: z.string().nullish(),
@@ -25,6 +28,7 @@ const articlesCollection = defineCollection({
     auto_translated: z.boolean().nullish(),
     translated_from: z.string().nullish(),
     translated_at: z.string().nullish(),
+    sources: z.string().nullish(),
   }),
 });
 
@@ -51,7 +55,16 @@ const galleriesCollection = defineCollection({
   }),
 });
 
+const categoriesCollection = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: './src/content/categories' }),
+  schema: z.object({
+    name: z.string(),
+    label: z.string(),
+  }),
+});
+
 export const collections = {
   articles: articlesCollection,
   galleries: galleriesCollection,
+  categories: categoriesCollection,
 };

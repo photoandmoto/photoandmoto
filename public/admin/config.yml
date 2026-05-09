@@ -44,6 +44,14 @@ collections:
     slug: '{{slug}}'
     summary: '{{title}} — {{date | date("YYYY-MM-DD")}} ({{category}})'
     sortable_fields: [date, title, category]
+    view_filters:
+      - { label: 'Piilotetut (luonnos)', field: draft, pattern: true }
+      - { label: 'Tarkistamattomat käännökset', field: auto_translated, pattern: true }
+    view_groups:
+      - { label: 'Kategoria', field: category }
+      - label: 'Julkaisuvuosi'
+        field: date
+        pattern: '\d{4}'
     i18n: true
     fields:
       - { name: title, label: Otsikko, widget: string, i18n: true }
@@ -52,23 +60,38 @@ collections:
       - { name: date, label: Päivämäärä, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true, i18n: duplicate }
       - name: category
         label: Kategoria
-        widget: select
+        widget: relation
+        collection: categories
+        value_field: name
+        search_fields: [name, label]
+        display_fields: [label]
         i18n: duplicate
-        options:
-          - { label: 'MXGP', value: MXGP }
-          - { label: 'Enduro', value: Enduro }
-          - { label: 'Speedway', value: Speedway }
-          - { label: 'Historiallinen', value: Historical }
-          - { label: 'Tekninen', value: Technical }
-          - { label: 'Haastattelu', value: Interview }
+        hint: 'Jos sopivaa kategoriaa ei löydy, lisää uusi vasemman sivupalkin Kategoriat-osiosta.'
       - { name: tags, label: Avainsanat, widget: list, default: [], required: false, i18n: true }
       - { name: featured_image, label: 'Pääkuva (hero)', widget: image, required: false, i18n: duplicate }
       - { name: card_image, label: 'Korttikuva (lista- ja etusivut)', widget: image, required: false, i18n: duplicate }
       - { name: show_hero, label: 'Näytä pääkuva otsikon yläpuolella', widget: boolean, default: true, required: false, i18n: duplicate }
       - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
-      - { name: draft, label: 'Luonnos (älä julkaise sivustolle)', widget: boolean, default: false, required: false, i18n: duplicate }
+      - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
       - { name: seo_description, label: 'SEO-kuvaus (max 160 merkkiä)', widget: string, required: false, pattern: ['^.{0,160}$', 'Korkeintaan 160 merkkiä'], i18n: true }
       - { name: auto_translated, label: 'Automaattisesti käännetty — käännä pois tarkistuksen jälkeen', widget: boolean, default: false, required: false, i18n: true }
       - { name: translated_from, label: 'Käännetty artikkelista (slug)', widget: hidden, required: false, i18n: true }
       - { name: translated_at, label: 'Käännetty (aikaleima)', widget: hidden, required: false, i18n: true }
       - { name: body, label: Sisältö, widget: markdown, i18n: true }
+      - { name: sources, label: 'Lähteet (valinnainen)', widget: text, required: false, i18n: true, hint: 'Lähteet, joista materiaalia on lainattu. Jokainen lähde omalla rivillä. URL-osoitteet muuttuvat automaattisesti linkeiksi.' }
+
+  - name: categories
+    label: Kategoriat
+    label_singular: Kategoria
+    description: '⚠️ VAROITUS: Ennen kategorian poistamista, varmista että MIKÄÄN artikkeli ei käytä sitä. Jos poistat käytössä olevan kategorian, sitä käyttävät artikkelit jäävät rikkinäiseen tilaan (kategoriakenttä viittaa olemattomaan arvoon). Tarkista käyttö ennen poistoa: avaa artikkelilista ja varmista ettei yksikään artikkeli ole valitulla kategorialla. Vasta sitten poista.'
+    folder: src/content/categories
+    create: true
+    delete: true
+    extension: json
+    format: json
+    slug: '{{slug}}'
+    identifier_field: label
+    summary: '{{label}} ({{name}}) — TARKISTA KÄYTTÖ ENNEN POISTOA'
+    fields:
+      - { name: name, label: 'Tunniste (englanniksi, ei välilyöntejä)', widget: string, hint: '⚠️ ÄLÄ MUUTA TÄTÄ olemassa olevalle kategorialle — kaikki sitä käyttävät artikkelit lakkaavat näkymästä. Uudelle kategorialle: tämä arvo tallennetaan artikkelien tiedostoihin (esim. MXGP, Speedway, Historical).' }
+      - { name: label, label: 'Näytettävä nimi', widget: string, hint: 'Tämä näkyy Decapin pudotusvalikossa, esim. Historiallinen, Tekninen. Tämän voit muuttaa milloin vain — se ei riko mitään.' }
