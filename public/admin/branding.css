@@ -1,0 +1,160 @@
+/*
+ * Photo & Moto branding for Decap CMS chrome.
+ *
+ * Loaded by /admin/index.html. Targets Decap's UI (sidebar, top bar, buttons,
+ * login screen) — NOT the editor content (that's preview.css) and NOT the
+ * editor inputs (those have their own rules in index.html).
+ *
+ * Decap renders with emotion (hashed class names like css-1a2b3c). We use
+ * a mix of element selectors and [class*="..."] partial-match selectors to
+ * stay version-tolerant. !important is needed because emotion sets inline
+ * styles that would otherwise win.
+ */
+
+:root {
+  --pm-orange: #ff9900;
+  --pm-orange-hover: #e68800;
+  --pm-black: #000000;
+  --pm-text: #1D1D1F;
+  --pm-text-muted: #6E6E73;
+  --pm-bg: #F9F9F9;
+}
+
+/* ---------------------------------------------------------------- */
+/* Global font + background                                          */
+/* ---------------------------------------------------------------- */
+
+html, body {
+  font-family: 'Montserrat', system-ui, sans-serif !important;
+  background: var(--pm-bg) !important;
+}
+
+h1, h2, h3, h4, h5, h6,
+[class*="MainView"] h1,
+[class*="MainView"] h2,
+[class*="MainView"] h3 {
+  font-family: 'Montserrat', system-ui, sans-serif !important;
+  color: var(--pm-text);
+}
+
+/* ---------------------------------------------------------------- */
+/* Top bar — black with orange Photo & Moto accent (matches live)   */
+/* ---------------------------------------------------------------- */
+
+[class*="AppHeader"],
+[class*="MainView__header"],
+[class*="cms-app-header"],
+header[role="banner"] {
+  background: var(--pm-black) !important;
+  color: #fff !important;
+  border-bottom: 2px solid var(--pm-orange) !important;
+}
+
+[class*="AppHeader"] a,
+[class*="AppHeader"] button,
+[class*="MainView__header"] a,
+[class*="MainView__header"] button,
+header[role="banner"] a,
+header[role="banner"] button {
+  color: #fff !important;
+}
+
+[class*="AppHeader"] a:hover,
+[class*="MainView__header"] a:hover,
+header[role="banner"] a:hover {
+  color: var(--pm-orange) !important;
+}
+
+/* "View Live" link in top bar — make it stand out as orange */
+a[class*="ViewLive"],
+[class*="AppHeader"] a[href^="http"]:not([href*="github"]) {
+  color: var(--pm-orange) !important;
+}
+
+/* ---------------------------------------------------------------- */
+/* Sidebar — orange selected/hover states                            */
+/* ---------------------------------------------------------------- */
+
+[class*="StyledNavLink"]:hover,
+[class*="NavLink"]:hover,
+[class*="Sidebar"] a:hover {
+  color: var(--pm-orange) !important;
+}
+
+[class*="StyledNavLink"][class*="active"],
+[class*="NavLink"][class*="active"],
+[class*="Sidebar"] a[aria-current="page"] {
+  color: var(--pm-orange) !important;
+  border-left: 3px solid var(--pm-orange) !important;
+  background: rgba(255, 153, 0, 0.05) !important;
+}
+
+/* ---------------------------------------------------------------- */
+/* Primary action buttons (Publish, Save, Login with GitHub)         */
+/* ---------------------------------------------------------------- */
+
+button[type="submit"],
+[class*="cms-button-primary"],
+[class*="Button-primary"],
+[class*="PublishButton"],
+[class*="ActionButton"] button[class*="primary"] {
+  background: var(--pm-orange) !important;
+  border-color: var(--pm-orange) !important;
+  color: #fff !important;
+  font-family: 'Montserrat', system-ui, sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.3px;
+}
+
+button[type="submit"]:hover,
+[class*="cms-button-primary"]:hover,
+[class*="Button-primary"]:hover,
+[class*="PublishButton"]:hover {
+  background: var(--pm-orange-hover) !important;
+  border-color: var(--pm-orange-hover) !important;
+}
+
+/* Login screen "Login with GitHub" button — branded orange */
+[class*="GitHubAuthenticationPage"] button,
+[class*="AuthenticationPage"] button {
+  background: var(--pm-orange) !important;
+  border-color: var(--pm-orange) !important;
+  color: #fff !important;
+}
+[class*="GitHubAuthenticationPage"] button:hover,
+[class*="AuthenticationPage"] button:hover {
+  background: var(--pm-orange-hover) !important;
+  border-color: var(--pm-orange-hover) !important;
+}
+
+/* ---------------------------------------------------------------- */
+/* Field labels — Montserrat, restrained                             */
+/* ---------------------------------------------------------------- */
+
+label,
+[class*="FieldLabel"],
+[class*="ControlPaneLabel"] {
+  font-family: 'Montserrat', system-ui, sans-serif !important;
+  font-weight: 600 !important;
+  color: var(--pm-text-muted) !important;
+  letter-spacing: 0.3px;
+}
+
+/* ---------------------------------------------------------------- */
+/* Status pill ("Published", "Changes Saved")                        */
+/* ---------------------------------------------------------------- */
+
+[class*="StatusBadge"][class*="published"],
+[class*="cms-status-badge"][class*="published"] {
+  background: rgba(255, 153, 0, 0.1) !important;
+  color: var(--pm-orange) !important;
+  border: 1px solid var(--pm-orange) !important;
+}
+
+/* ---------------------------------------------------------------- */
+/* Tag chips and pills (e.g. avainsanat list)                        */
+/* ---------------------------------------------------------------- */
+
+[class*="ListItem"][class*="dragging"] {
+  border-color: var(--pm-orange) !important;
+}
