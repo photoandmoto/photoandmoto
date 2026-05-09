@@ -21,7 +21,10 @@ import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import yaml from 'js-yaml';
 
-const MODEL = 'gemini-2.5-pro';
+// Flash, not Pro — translation is mechanical and Flash is fast + cheap.
+// Pro requires thinking mode (can't be disabled), which ate the output
+// budget on long articles in earlier runs.
+const MODEL = 'gemini-2.5-flash';
 const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
 
 // ---------------------------------------------------------------------------
