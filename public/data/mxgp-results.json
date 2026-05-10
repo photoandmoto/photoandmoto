@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-05-03",
+  "lastUpdated": "2026-05-10",
   "seasonComplete": false,
   "totalRounds": 19,
   "latestRace": {
@@ -680,52 +680,52 @@
   "highlights": {
     "fi": {
       "mxgp_quali": [
-        "Lucas Coenen nappasi paalupaikan lauantain MXGP-aika-ajossa.",
-        "Kova kilpailu nähtiin vaikeissa olosuhteissa, nopeimmat ajoivat vahvasti."
+        "Lucas Coenen nappasi paalupaikan MXGP-lauantain karsinnassa.",
+        "Tim Gajser osoitti vahvuutta vaikeissa olosuhteissa."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominoi ensimmäistä MXGP-erää ylivoimaisella voitolla.",
-        "Tim Gajser hallitsi toista erää ja varmisti vahvan suorituksen.",
-        "Jeffrey Herlings kruunattiin Trentinon MXGP:n kokonaisvoittajaksi."
+        "Jeffrey Herlings dominoi ensimmäistä MXGP-erää.",
+        "Tim Gajser hallitsi toista MXGP-erää upeasti.",
+        "Jeffrey Herlings vei Trentinon MXGP-kokonaisvoiton."
       ],
       "mx2_quali": [
-        "Sacha Coenen oli nopein MX2-luokan lauantain aika-ajossa.",
-        "Guillem Farres ja Simon Längenfelder taistelivat tiukasti kärkisijoista."
+        "Sacha Coenen oli nopein MX2-lauantain karsinnassa.",
+        "Guillem Farres näytti vauhtiaan karsintalähdössä."
       ],
       "mx2_race": [
-        "Sacha Coenen oli pysäyttämätön voittaen molemmat MX2-erät.",
-        "Guillem Farres taisteli hienosti toiseksi MX2-kokonaiskilpailussa.",
-        "Sacha Coenen vei Trentinon MX2-GP:n voiton murskaavalla suorituksella."
+        "Sacha Coenen oli pysäyttämätön molemmissa MX2-erissä.",
+        "Guillem Farres taisteli tiukasti toisessa MX2-erässä.",
+        "Sacha Coenen vei Trentinon MX2-kokonaisvoiton ylivoimaisesti."
       ],
       "standings": [
-        "Lucas Coenen johtaa MXGP-sarjaa vahvasti.",
-        "Jeffrey Herlings pysyy toisena sarjapisteissä.",
-        "Tom Vialle pitää kolmatta sijaa MXGP-sarjassa."
+        "Lucas Coenen piti MXGP-kärkisijansa.",
+        "Jeffrey Herlings pysyi toisena MXGP-sarjassa.",
+        "Tom Vialle piti kolmannen sijan MXGP-pisteissä."
       ]
     },
     "en": {
       "mxgp_quali": [
-        "Lucas Coenen claimed pole position in Saturday's MXGP qualifying.",
-        "Fierce competition unfolded in challenging conditions, fastest riders performed strongly."
+        "Lucas Coenen claimed pole position in MXGP Saturday qualifying.",
+        "Tim Gajser showed strength in challenging conditions."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominated the first MXGP moto with a commanding win.",
-        "Tim Gajser controlled the second moto, securing a strong performance.",
-        "Jeffrey Herlings was crowned the overall MXGP winner in Trentino."
+        "Jeffrey Herlings dominated the first MXGP race.",
+        "Tim Gajser masterfully controlled the second MXGP race.",
+        "Jeffrey Herlings claimed the Trentino MXGP overall victory."
       ],
       "mx2_quali": [
-        "Sacha Coenen set the fastest time in MX2 Saturday qualifying.",
-        "Guillem Farres and Simon Längenfelder battled fiercely for top spots."
+        "Sacha Coenen was fastest in MX2 Saturday qualifying.",
+        "Guillem Farres showed his speed in the qualifying heat."
       ],
       "mx2_race": [
-        "Sacha Coenen was unstoppable, winning both MX2 motos.",
-        "Guillem Farres charged hard to secure second overall in MX2.",
-        "Sacha Coenen claimed the MX2 GP victory in Trentino with dominance."
+        "Sacha Coenen was unstoppable in both MX2 races.",
+        "Guillem Farres battled hard in the second MX2 race.",
+        "Sacha Coenen took the Trentino MX2 overall win dominantly."
       ],
       "standings": [
-        "Lucas Coenen holds a strong lead in the MXGP standings.",
-        "Jeffrey Herlings remains in second place in the MXGP championship.",
-        "Tom Vialle maintains his third position in the MXGP series."
+        "Lucas Coenen held firm at the top of MXGP standings.",
+        "Jeffrey Herlings maintained second place in MXGP.",
+        "Tom Vialle held his third position in MXGP points."
       ]
     }
   },
