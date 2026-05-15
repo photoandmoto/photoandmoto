@@ -1,6 +1,8 @@
 # Photo & Moto — Deployment & Operations Guide
 
-Operational reference for setting up environments, managing secrets, recovering from incidents, and routine ops. For the day-to-day workflow (adding articles, galleries, publishing photos) see `README.md`.
+Operational reference for the Photo & Moto site: how it's hosted, how content
+is edited and published, how to set up an environment from scratch, manage
+secrets, and recover from incidents. This document is self-contained.
 
 ---
 
@@ -8,14 +10,18 @@ Operational reference for setting up environments, managing secrets, recovering 
 
 | Concern | Provider | Purpose |
 |---|---|---|
-| Source of truth | **GitHub** (`photoandmoto/photoandmoto`) | All code, all gallery image files, all article content |
+| Source of truth | **GitHub** (`photoandmoto/photoandmoto`) | All code, gallery image files, article content |
 | Static site hosting | **Cloudflare Pages** (2 projects) | Builds Astro on push, serves the result |
-| Server-side endpoints | **Cloudflare Pages Functions** (Workers runtime) | `/api/mystery/*` for community features |
+| Article editing | **Decap CMS** at `/admin/` | Git-based CMS for articles, GitHub-OAuth login |
+| Mystery photos + galleries admin | **Custom admin** at `/fi/yllapito` | Photo identification, gallery management |
+| Server-side endpoints | **Cloudflare Pages Functions** (Workers runtime) | `/api/mystery/*`, `/oauth/*`, `/api/articles/*` |
 | Database | **Cloudflare D1** (2 databases) | Mystery photos table, comments table |
-| Image processing | **GitHub Actions** + Sharp | Thumbnails, display-size renditions, watermark, manifest update |
+| Automation | **GitHub Actions** | Image processing, translation, OG cards, link checks |
 | Worker → Repo writes | **GitHub App** (`Photoandmoto Publisher`) | JWT-signed atomic commits from the publish pipeline |
 
-Two environments share this stack: **production** (`main` branch) and **staging** (`dev` branch). Each has its own Pages project, its own D1 database, and its own copy of the secrets — but the same GitHub App is used by both (it commits to whichever branch the worker detects via `CF_PAGES_BRANCH`).
+Two environments share this stack: **production** (`main` branch) and
+**staging** (`dev` branch). Each has its own Pages project, its own D1
+database, and its own copy of the secrets.
 
 ---
 
@@ -26,13 +32,81 @@ Two environments share this stack: **production** (`main` branch) and **staging*
 | Production | `main` | `photoandmoto` | www.photoandmoto.fi | `photoandmoto-community` |
 | Staging | `dev` | `photoandmoto-staging` | photoandmoto-staging.pages.dev | `photoandmoto-community-dev` |
 
-**Working rule:** all changes go to `dev` first, get verified on the staging URL, then a PR `dev → main` promotes them. Direct pushes to `main` are reserved for documentation-only changes or hotfixes.
+**Working rule:** all changes go to `dev` first, get verified on the staging
+URL, then a PR `dev → main` promotes them. Direct pushes to `main` are
+reserved for documentation-only changes or hotfixes.
+
+---
+
+## Content management
+
+The site has **two separate admin systems** by deliberate design:
+
+### Articles — Decap CMS at `/admin/`
+
+Articles (the Aikakone / Time Machine content) are edited in **Decap CMS**,
+a git-based CMS served as static files from `public/admin/`.
+
+- **URL:** `https://www.photoandmoto.fi/admin/`
+- **Login:** GitHub OAuth. The editor must have write access to the repo.
+- **Where edits go:** Decap commits straight to the `dev` branch. Cloudflare
+  rebuilds staging automatically. To reach production, promote `dev → main`.
+- **Collections:**
+  - **Artikkelit** — browse and edit all articles, create blank ones
+  - **+ Uusi MXGP-juttu** / **+ Uusi historiallinen tarina** — Quick Add
+    templates: pre-filled category, tags, body skeleton, and
+    `auto_translated: true` on the EN tab
+  - **Kategoriat** — article categories (data-driven; add new ones here)
+- **Bilingual:** Decap uses `i18n: multiple_folders`. One entry has FI and EN
+  tabs; files are written to `src/content/articles/fi/<slug>.md` and
+  `src/content/articles/en/<slug>.md` with the same slug.
+- **Local testing:** `local_backend: true` is set in `public/admin/config.yml`.
+  Run `npx decap-server` + `npm run dev`, then open
+  `http://localhost:4321/admin/index.html` — no OAuth needed.
+
+### Mystery photos + galleries — custom admin at `/fi/yllapito`
+
+The "Tunnista kuva" photo-identification flow and gallery management remain in
+the original custom admin.
+
+- **URL:** `https://www.photoandmoto.fi/fi/yllapito`
+- **Login:** `UPLOAD_PASSWORD` (single shared password)
+- Backed by `functions/api/mystery/*` and Cloudflare D1.
+
+### Article frontmatter reference
+
+Articles are Markdown with YAML frontmatter, validated by Zod in
+`src/content.config.ts`:
+
+| Field | Type | Notes |
+|---|---|---|
+| `title` | string, required | |
+| `subtitle` | string, optional | |
+| `author` | string | defaults to `Photo & Moto` |
+| `date` | date, required | `YYYY-MM-DD` |
+| `category` | string | must match a `name` in the categories collection |
+| `tags` | string array | |
+| `featured_image` | string, optional | `/images/<file>` path |
+| `card_image` | string, optional | overrides featured_image on list/cards |
+| `show_hero` | boolean | default `true` |
+| `image_caption` | string, optional | |
+| `language` | `fi` \| `en`, optional | derived from folder; field is legacy |
+| `draft` | boolean | default `false`; `true` hides the article from the site |
+| `seo_description` | string ≤160, optional | |
+| `auto_translated` | boolean, optional | `true` = EN was machine-translated, awaiting review |
+| `translated_from` | string, optional | set by the translation Action |
+| `translated_at` | string, optional | ISO timestamp, set by the translation Action |
+| `sources` | string, optional | "Lähteet" block; URLs auto-link on render |
+
+Decap writes `null` for empty optional fields — the schema accepts that via
+`.nullish()`. Booleans coerce `null` to their default via `z.preprocess()`.
 
 ---
 
 ## Setting up a new environment from scratch
 
-If you ever need to reproduce production (disaster recovery, fork a clone, set up a third environment), here's the full sequence.
+If you ever need to reproduce production (disaster recovery, fork a clone, set
+up a third environment), here's the full sequence.
 
 ### 1. Cloudflare Pages project
 
@@ -55,62 +129,114 @@ If you ever need to reproduce production (disaster recovery, fork a clone, set u
    - Pages project → **Settings** → **Functions** → **D1 database bindings**
    - Variable name: `DB`
    - Database: select the one you just created
-5. Schema bootstrap is handled by `functions/api/mystery/init.js` — first hit to any mystery endpoint will create tables. No manual SQL needed for a fresh setup. (Reference schema is in `README.md` if you want to verify or run it manually.)
+5. Schema bootstrap is handled by `functions/api/mystery/init.js` — first hit
+   to any mystery endpoint creates the tables. No manual SQL needed. To inspect
+   the schema later, run `PRAGMA table_info(photos)` in the D1 console.
 
 ### 3. Pages project secrets
 
-In Pages project → **Settings** → **Environment variables** → **Production** (and **Preview** if you want them on PR previews too):
+In Pages project → **Settings** → **Environment variables** → **Production**
+(and **Preview** if you want them on PR previews too):
 
 | Secret | Required | What it is |
 |---|---|---|
-| `UPLOAD_PASSWORD` | yes | Plain-text password for the Tunnista kuva admin login. Pick something strong; this is the only thing protecting the admin endpoints. |
-| `GEMINI_API_KEY` | optional | Google AI Studio key, used for the AI-suggestion fallback when admin asks Gemini to identify a photo. Site works without it — that one button just becomes inactive. |
+| `UPLOAD_PASSWORD` | yes | Password for the `/fi/yllapito` admin login (mystery photos + galleries). |
 | `GITHUB_APP_ID` | yes | Numeric ID of the `Photoandmoto Publisher` GitHub App. |
 | `GITHUB_APP_INSTALLATION_ID` | yes | Numeric installation ID for that App on the `photoandmoto` repo. |
-| `GITHUB_APP_PRIVATE_KEY` | yes | Full PEM contents of the App's private key, including the `-----BEGIN/END-----` lines. Paste as-is — Cloudflare handles the multi-line value. |
+| `GITHUB_APP_PRIVATE_KEY` | yes | Full PEM contents of the App's private key, including the `-----BEGIN/END-----` lines. |
+| `GEMINI_API_KEY` | optional | Google AI Studio key for the AI photo-identification fallback in the mystery flow. (The article-translation Action uses a separate copy — see step 6.) |
+| `OAUTH_GITHUB_CLIENT_ID` | yes (prod) | GitHub OAuth App client ID — powers Decap login. |
+| `OAUTH_GITHUB_CLIENT_SECRET` | yes (prod) | GitHub OAuth App client secret. **Encrypt this.** |
+| `OAUTH_REDIRECT_URI` | yes (prod) | `https://www.photoandmoto.fi/oauth/callback` |
 
-All secrets must be marked **Encrypt** in the dashboard. After adding/changing any secret, the next deployment picks it up; existing running deployments keep using the old values until a new build finishes.
+All secrets must be marked **Encrypt** in the dashboard. After adding/changing
+any secret, the next deployment picks it up; running deployments keep using the
+old values until a new build finishes.
 
-### 4. GitHub App (one-time setup; reused across environments)
+The `OAUTH_*` secrets are production-only — Decap's OAuth callback URL is
+registered for the production domain. Staging Decap testing uses
+`local_backend` instead (see "Content management" above).
 
-If the App `Photoandmoto Publisher` already exists, skip to "Get the credentials" below. To create it from scratch:
+### 4. GitHub App — `Photoandmoto Publisher` (for the publish pipeline)
+
+This App lets Cloudflare Workers commit to the repo (mystery photo publishing,
+gallery derivative generation). If it already exists, skip to "Get the
+credentials". To create it from scratch:
 
 1. GitHub → **Settings** → **Developer settings** → **GitHub Apps** → **New GitHub App**
 2. Name: `Photoandmoto Publisher`
-3. Homepage URL: anything (e.g. `https://www.photoandmoto.fi`)
-4. Webhook: **uncheck "Active"** — we don't need webhooks
-5. Repository permissions:
-   - **Contents**: Read and write
-   - **Metadata**: Read-only (auto-included)
+3. Homepage URL: `https://www.photoandmoto.fi`
+4. Webhook: **uncheck "Active"**
+5. Repository permissions: **Contents** Read and write; **Metadata** Read-only
 6. Where can this App be installed: **Only on this account**
-7. Create the App
-8. Generate a private key — downloads a `.pem` file. Keep it safe; this is the credential the Worker uses to sign JWTs.
-9. Install the App on the `photoandmoto/photoandmoto` repo (App settings → **Install App** → pick the org → **Only select repositories**)
+7. Create the App, generate a private key (downloads a `.pem`)
+8. Install the App on the `photoandmoto/photoandmoto` repo
 
-**Get the credentials:**
+**Get the credentials** → `GITHUB_APP_ID` (App settings page),
+`GITHUB_APP_INSTALLATION_ID` (in the install URL `/installations/<NUMBER>`),
+`GITHUB_APP_PRIVATE_KEY` (the `.pem` contents).
 
-- App ID: shown on the App's settings page
-- Installation ID: visible in the URL after you install (`/installations/<NUMBER>`), or via the API
-- Private key: the `.pem` file you downloaded
+### 5. GitHub OAuth App — for Decap CMS login
 
-These three become `GITHUB_APP_ID`, `GITHUB_APP_INSTALLATION_ID`, `GITHUB_APP_PRIVATE_KEY`.
+This is **separate** from the GitHub App above. GitHub Apps and OAuth Apps are
+different things; the OAuth App authenticates the human editor logging into
+Decap.
 
-### 5. Custom domain (production only)
+1. GitHub → **Settings** → **Developer settings** → **OAuth Apps** → **New OAuth App**
+2. Application name: `Photo & Moto — Decap CMS`
+3. Homepage URL: `https://www.photoandmoto.fi`
+4. Authorization callback URL: `https://www.photoandmoto.fi/oauth/callback`
+   (exact — no trailing slash)
+5. Register, copy the **Client ID**, generate a **Client Secret**
+6. These become `OAUTH_GITHUB_CLIENT_ID` and `OAUTH_GITHUB_CLIENT_SECRET`
+
+The OAuth proxy itself runs as Cloudflare Pages Functions at
+`functions/oauth/auth.js` and `functions/oauth/callback.js`.
+
+### 6. GitHub repo secrets — for GitHub Actions
+
+The translation Action runs on GitHub's infrastructure, so it needs the Gemini
+key as a **repo secret** (separate from the Cloudflare copy):
+
+1. GitHub → repo `photoandmoto/photoandmoto` → **Settings** → **Secrets and variables** → **Actions**
+2. **New repository secret** → name `GEMINI_API_KEY` → paste the Google AI
+   Studio key
+
+### 7. Custom domain (production only)
 
 1. Pages project → **Custom domains** → **Set up a custom domain**
 2. Enter `www.photoandmoto.fi`
-3. If the domain is in Cloudflare, DNS is auto-configured. If not, follow the on-screen registrar instructions.
+3. If the domain is in Cloudflare, DNS is auto-configured. Otherwise follow the
+   on-screen registrar instructions.
 4. SSL provisioning is automatic once DNS resolves.
 
-### 6. Verify
+### 8. Verify
 
 - Visit the URL → site renders
-- Hit `/api/mystery/featured` → returns JSON (proves Pages Functions + D1 binding work)
-- Log in to Tunnista kuva with `UPLOAD_PASSWORD` → admin UI appears
-- Upload a photo → row appears in D1
-- Publish the photo → GitHub Action runs → photo appears in gallery after rebuild
+- Hit `/api/mystery/featured` → returns JSON (Pages Functions + D1 binding work)
+- Log in to `/fi/yllapito` with `UPLOAD_PASSWORD` → admin UI appears
+- Visit `/admin/` → Decap loads; "Login with GitHub" completes; collections show
+- In Decap, edit an article → a commit lands on `dev` authored by your user
 
-If any step fails, see "Troubleshooting" below.
+---
+
+## GitHub Actions reference
+
+All workflows live in `.github/workflows/`. They run on push to `dev` and
+`main`, scoped by path filters.
+
+| Workflow | Trigger path | What it does |
+|---|---|---|
+| `translate-article.yml` | `src/content/articles/fi/**` | For each changed FI article, runs `scripts/translate-article.mjs` (Gemini 2.5 Flash). Translates to EN if the EN file is missing or `auto_translated: true`; skips human-reviewed translations. Commits `en/<slug>.md`. |
+| `compress-article-images.yml` | `public/images/**` | Resizes oversized images to ≤1600px wide, re-encodes JPEG/WebP at quality 82. Commits compressed versions. |
+| `generate-og-images.yml` | `src/content/articles/**` | Composites a 1200×630 branded social card per article (`scripts/generate-og-image.mjs`, Sharp + Montserrat). Commits to `public/og/`. |
+| `check-links.yml` | `src/content/articles/**` | Scans changed article markdown for broken external links. Fails the run (visible warning) if any are dead. Doesn't block deploys. |
+| `process-gallery-image.yml` | `public/galleries/**` | Generates thumb + display renditions for new gallery images, updates the manifest. |
+| `mxgp-scraper.yml` | scheduled | Refreshes MXGP results/standings data. |
+
+**Loop guards:** Actions that commit back use a commit-message prefix or a
+path-filter mismatch so their own commits don't re-trigger them. If you change
+a workflow's commit message, update its loop guard to match.
 
 ---
 
@@ -118,20 +244,46 @@ If any step fails, see "Troubleshooting" below.
 
 ### Deploying changes
 
-Push to a branch — Pages deploys automatically. Build logs are in **Workers & Pages** → project → **Deployments** → click any deployment.
+Push to a branch — Pages deploys automatically. Build logs are in
+**Workers & Pages** → project → **Deployments**.
 
-For schema-coupled changes (new D1 column, new endpoint that depends on one), **migrate the D1 schema BEFORE merging the PR.** If code deploys first and tries to query a missing column, mystery endpoints will start failing. Pattern that's worked well:
+For schema-coupled D1 changes, **migrate the D1 schema BEFORE merging the PR.**
+If code deploys first and queries a missing column, mystery endpoints fail.
+Pattern: run `ALTER TABLE` in the D1 console, verify with
+`PRAGMA table_info(<table>)`, then merge.
 
-1. Run `ALTER TABLE` in Cloudflare D1 console for the live database
-2. Verify with `PRAGMA table_info(<table>)`
-3. Then merge the PR
-4. Cloudflare auto-deploys the new code, which now matches the schema
+### Editing and publishing articles
+
+1. Open `https://www.photoandmoto.fi/admin/`, log in with GitHub.
+2. Create or edit an article. For new articles, use a Quick Add template or
+   the blank **Artikkelit → New**.
+3. **Watch the `Piilota sivustolta` toggle** — if it's ON (`draft: true`), the
+   article is excluded from the build and won't appear on the site. Leave it
+   OFF for normal publishing.
+4. To auto-translate: fill the FI tab, put a placeholder in the EN tab, turn
+   the `Automaattisesti käännetty` toggle ON, Publish. The translation Action
+   replaces the EN content within ~1–2 min. Review the EN, turn the toggle OFF,
+   Publish again to lock it.
+5. Decap commits to `dev` → staging rebuilds. Verify on
+   `photoandmoto-staging.pages.dev`.
+6. Promote to production: PR `dev → main`.
+
+**Verifying what's actually committed:** the Decap UI and live pages can show
+stale/cached content. The authoritative check is
+`git show origin/dev:src/content/articles/<lang>/<slug>.md`.
+
+### Managing categories
+
+Categories are a Decap collection (`src/content/categories/*.json`). To add
+one: Decap → **Kategoriat** → New. To retire one: first reassign every article
+using it, verify nothing references it, then delete the JSON file. The
+collection's `name` field is the value stored in articles — never change it on
+an in-use category.
 
 ### Inspecting / editing D1
 
-Cloudflare dashboard → **Workers & Pages** → **D1** → select database → **Console**. Standard SQLite syntax. Read queries are free; writes count toward the D1 quota.
-
-Useful queries:
+Cloudflare dashboard → **Workers & Pages** → **D1** → select database →
+**Console**. Standard SQLite. Read queries are free; writes count toward quota.
 
 ```sql
 -- Health check: how many photos in each state
@@ -141,50 +293,45 @@ SELECT status, COUNT(*) FROM photos GROUP BY status;
 SELECT id, filename, year_estimate, people FROM photos
 WHERE status = 'identified' AND published_to_gallery_at IS NULL;
 
--- Mystery photos with thumbs (drives the landing-page block)
-SELECT COUNT(*) FROM photos
-WHERE thumb_data IS NOT NULL
-  AND status != 'identified'
-  AND published_to_gallery_at IS NULL;
-
 -- Recent comments
 SELECT * FROM comments ORDER BY created_at DESC LIMIT 20;
 ```
 
 ### Rotating a secret
 
-1. Cloudflare Pages project → **Settings** → **Environment variables** → click the secret → **Edit**
-2. Paste the new value → **Save**
-3. **Trigger a redeploy** (Deployments tab → **Retry deployment** on the latest one) — running deployments don't pick up secret changes until the next build.
+1. Cloudflare Pages project → **Settings** → **Environment variables** → edit the secret → **Save**
+2. **Trigger a redeploy** (Deployments → **Retry deployment** on the latest) — running deployments don't pick up secret changes until the next build.
 
-For `GITHUB_APP_PRIVATE_KEY`: generate a new key in the GitHub App settings, paste the full PEM, then delete the old key in GitHub. Don't delete the old key first — there's a window where deployed code still uses it.
+For `GITHUB_APP_PRIVATE_KEY`: generate the new key in GitHub App settings,
+paste the full PEM, then delete the old key — in that order (deployed code
+still uses the old key until the next build).
 
-For `UPLOAD_PASSWORD`: change in Cloudflare, redeploy, communicate the new password out of band. There's no password-reset flow for the admin user.
+For `OAUTH_GITHUB_CLIENT_SECRET`: regenerate in the GitHub OAuth App, update
+the Cloudflare secret, redeploy. Decap logins fail until the redeploy finishes.
 
 ### Pushing a hotfix to production
 
-When `dev` is dirty (has unfinished work) but you need to fix something live:
+When `dev` is dirty but you need to fix something live:
 
 ```bash
-git checkout main
-git pull
+git checkout main && git pull
 git checkout -b hotfix/<short-name>
 # ...make the fix...
 git commit -am "hotfix: <description>"
 git push origin hotfix/<short-name>
-# Open PR from hotfix/<short-name> → main, review, merge
+# Open PR hotfix/<short-name> → main, review, merge
 git checkout main && git pull
-# Optional but recommended: bring the fix into dev too
-git checkout dev && git merge main && git push
+git checkout dev && git merge main && git push   # bring the fix into dev too
 ```
-
-This avoids polluting `dev` with mid-progress code if the fix needs to ship now.
 
 ---
 
 ## SEO operations
 
-The site is fully SEO-instrumented (titles, descriptions, canonical, hreflang, OG, Twitter, JSON-LD Organization + WebSite + Article, GA4, sitemap). For implementation details see `README.md` § SEO. This section covers the operational side: where things live, how to monitor, what to do when GSC complains.
+The site is fully SEO-instrumented (titles, descriptions, canonical, hreflang,
+OG, Twitter, JSON-LD Organization + WebSite + Article, GA4, sitemap). New
+articles get all of it automatically. Per-article social cards are generated
+by `generate-og-images.yml` and referenced via `ArticleLayout.astro`.
 
 ### Where things live
 
@@ -194,23 +341,19 @@ The site is fully SEO-instrumented (titles, descriptions, canonical, hreflang, O
 | robots.txt | `public/robots.txt` | Static — allows all, points to sitemap |
 | Root redirect | `public/_redirects` | Cloudflare Pages 301: `/` → `/fi` |
 | GA4 measurement ID | `G-9Y0PEJY0XG` (in `src/layouts/BaseLayout.astro`) | Hardcoded; site-wide |
-| GSC property | `photoandmoto.fi` (Domain property, covers all subdomains + protocols) | Verified owners: `atvilkman`, Lars Lönneberg |
+| OG cards | `public/og/<slug>-<lang>.jpg` | Generated by the OG-images Action |
+| GSC property | `photoandmoto.fi` (Domain property) | Verified owners: `atvilkman`, Lars Lönneberg |
 
 ### What to check periodically
 
-- **GSC Performance** (weekly) — top queries, click-through rate, average position. The Queries tab tells you what content topics are working and what to write next.
-- **GSC Indexing → Pages** (monthly) — Indexed count should trend up. Spikes in "Not indexed" are usually fine after deploys (Google revalidates), but investigate if numbers stay elevated for >2 weeks.
-- **GSC Enhancements → Articles** (after publishing new articles) — confirms Article rich-result eligibility was detected.
+- **GSC Performance** (weekly) — top queries, CTR, average position.
+- **GSC Indexing → Pages** (monthly) — indexed count should trend up.
+- **GSC Enhancements → Articles** (after publishing) — confirms rich-result eligibility.
 
 ### When GSC reports "Discovered – currently not indexed"
 
-This is normal post-deploy / post-migration behavior. Google has the URLs from the sitemap but hasn't crawled them yet. To accelerate:
-
-1. GSC → top search bar → paste the URL → wait for inspection
-2. Click **Request indexing**
-3. ~10 URLs/day limit per property
-
-Prioritize article pages (richest schema) over gallery indexes.
+Normal post-deploy behavior. To accelerate: GSC → paste the URL → inspect →
+**Request indexing** (~10 URLs/day limit). Prioritize article pages.
 
 ### When GSC reports "Redirect error" / "robots.txt 404"
 
@@ -218,55 +361,42 @@ Usually stale. Verify with curl first:
 
 ```powershell
 curl.exe -sIL "https://www.photoandmoto.fi/<path>" | Select-String -Pattern "^HTTP|^Location"
-curl.exe -sI "https://photoandmoto.fi/robots.txt" | Select-String -Pattern "^HTTP|^Location"
 ```
 
-If curl shows a clean redirect chain (e.g. `308 → 200` or `301 → 200`), the GSC alert is just outdated. Click **Validate Fix** in the report — Google re-crawls within 1–14 days and clears it.
-
-### Submitting a fresh sitemap
-
-Should never be needed (Google re-fetches automatically), but if the sitemap is removed and re-added:
-
-1. GSC left sidebar → **Sitemaps**
-2. Enter `sitemap-index.xml` → **Submit**
-3. Wait ~1 day, status should be `Success`
+If curl shows a clean redirect chain, click **Validate Fix** in GSC.
 
 ### Apex domain redirect
 
-`photoandmoto.fi` (no www) is hosted at Domainkeskus and uses a server-side .htaccess 301 to `https://www.photoandmoto.fi`. If apex starts returning 404 or showing the Domainkeskus parking page, contact Domainkeskus support (reference ticket #129612, Joel) — DNS misconfiguration on their end has happened before.
-
-### Adding new pages or articles
-
-Zero SEO work required. New articles automatically get full Article schema, sitemap inclusion, hreflang, OG/Twitter, GA4. Just write the markdown with the standard frontmatter (see `README.md` § SEO for the field reference) and push. Within ~24 hours of deploy, Google discovers the URL via the updated sitemap and queues it for crawling.
-
-For faster indexing of important new articles, manually submit via GSC URL Inspection → Request Indexing.
+`photoandmoto.fi` (no www) is hosted at Domainkeskus and uses a server-side
+.htaccess 301 to `https://www.photoandmoto.fi`. If apex starts 404ing or shows
+the Domainkeskus parking page, contact Domainkeskus support (reference ticket
+#129612, Joel).
 
 ---
 
 ## Backup and restore
 
-### What is and isn't backed up automatically
-
 | Asset | Backup status | How |
 |---|---|---|
-| Code | ✅ | Git history on GitHub |
-| Gallery images, articles, manifests | ✅ | Same Git history |
-| D1 mystery photos table | ⚠️ | **Not backed up automatically.** Cloudflare D1 has time-travel (point-in-time recovery within 30 days), but no exported snapshots. |
-| D1 comments table | ⚠️ | Same as above |
-| Pages secrets | ❌ | Stored only in Cloudflare. Keep the GitHub App `.pem` and admin password in your password manager. |
+| Code, gallery images, articles | ✅ | Git history on GitHub |
+| D1 mystery photos table | ⚠️ | Not backed up automatically. D1 time-travel gives 30-day point-in-time recovery, no exported snapshots. |
+| D1 comments table | ⚠️ | Same |
+| Pages secrets | ❌ | Stored only in Cloudflare. Keep the GitHub App `.pem`, OAuth secret, and `UPLOAD_PASSWORD` in a password manager. |
 
-### Manual D1 export (recommended periodically)
+### Manual D1 export (recommended monthly)
 
 ```bash
 # Requires wrangler CLI installed and authenticated
 wrangler d1 export photoandmoto-community --output photos-backup.sql
 ```
 
-Run this monthly or before any large schema migration. Store the `.sql` file outside the repo (it contains all base64 image data and could be very large — gigabytes once a real archive accumulates).
+Store the `.sql` outside the repo — it contains base64 image data and can be
+large.
 
 ### Restoring D1 from time-travel
 
-Cloudflare dashboard → **Workers & Pages** → **D1** → database → **Time travel** → pick a timestamp → **Restore**. Available for 30 days from the point in time. This is your "I just deleted everything" recovery option.
+Cloudflare dashboard → **D1** → database → **Time travel** → pick a timestamp →
+**Restore**. Available for 30 days.
 
 ---
 
@@ -276,42 +406,69 @@ Cloudflare dashboard → **Workers & Pages** → **D1** → database → **Time 
 
 Open the deployment → **Build log**. Common causes:
 
-- **Missing image referenced in an article frontmatter** → the article's `featured_image` path doesn't exist in `src/assets/`
-- **Invalid JSON in a gallery manifest** → linter complains about a missing comma or trailing comma in `src/content/galleries/<slug>.json`
-- **Sharp action did something unexpected** → check the Action's run log on GitHub
-- **Schema mismatch** → an endpoint is querying a column that doesn't exist yet on this environment's D1
+- **Article fails schema validation** — a frontmatter field doesn't match the
+  Zod schema in `src/content.config.ts`. The error names the file and field.
+- **Missing image referenced in an article** — `featured_image` path doesn't
+  exist under `public/images/`.
+- **Invalid JSON in a gallery manifest** — missing/trailing comma in
+  `src/content/galleries/<slug>.json`.
+- **D1 schema mismatch** — an endpoint queries a column that doesn't exist yet.
+
+### Decap CMS won't load or login fails
+
+- **`/admin/` 404 locally** — Astro dev doesn't auto-resolve directory
+  indexes; use `/admin/index.html`. Production (`/admin/`) is fine.
+- **OAuth login fails** — check the callback URL in the GitHub OAuth App is
+  exactly `https://www.photoandmoto.fi/oauth/callback`, and that
+  `OAUTH_GITHUB_CLIENT_ID/SECRET` are set on the production Pages project. The
+  popup error page reports the specific failure (state mismatch, token
+  exchange, etc.).
+- **Decap shows stale state / wrong toggle values** — clear browser
+  localStorage for the admin origin; Decap caches pending edits across sessions.
+
+### An article saved in Decap but doesn't appear on the site
+
+Most likely `draft: true` (the `Piilota sivustolta` toggle was ON). Astro
+excludes drafts from `getStaticPaths()`, so no page is generated and Cloudflare
+keeps serving the previous deployment's cached page — a silent un-publish.
+Verify with `git show origin/dev:src/content/articles/<lang>/<slug>.md`.
+
+### Auto-translation Action failed
+
+Check the Action log. Known causes:
+
+- **Truncated / non-JSON Gemini response** — the model ran out of output
+  budget. The script uses `gemini-2.5-flash` with `thinkingBudget: 0` and
+  `maxOutputTokens: 32768` to avoid this; a genuinely huge article could still
+  hit it.
+- **Auth error** — `GEMINI_API_KEY` repo secret missing or invalid.
+- Re-trigger by re-saving the FI article in Decap.
 
 ### Site loads but mystery endpoints 500
 
-Almost always one of:
-
-- Missing or wrong D1 binding (`DB` variable name, correct database selected)
-- Missing or expired GitHub App secret
-- Schema not yet bootstrapped — hit `/api/mystery/init` once manually, or just wait for the next mystery endpoint call
-
-Cloudflare Pages → project → **Functions** → **Real-time logs** shows runtime errors with stack traces.
-
-### Publish pipeline fails midway
-
-The pipeline is two steps: (1) Worker commits the original image, (2) GitHub Action generates derivatives.
-
-- **If step 1 fails:** the photo stays in D1, nothing is committed. Safe to retry.
-- **If step 1 succeeds but step 2 fails:** the original image is in the repo but no thumb/display/manifest entry. Site won't break (the gallery template handles missing entries) but the photo won't appear. Manual fix: run `npm run generate-gallery <slug> -- --add <filename>` locally and push.
-- **If step 2 starts looping** (Action triggers itself): check the loop guard in `process-gallery-image.yml` — it should skip commits whose message matches `chore(gallery): process new image derivatives`. If the message format changed, the guard breaks.
+Almost always: missing/wrong D1 binding (`DB` variable name), missing GitHub
+App secret, or schema not yet bootstrapped (hit `/api/mystery/init` once).
+Cloudflare Pages → project → **Functions** → **Real-time logs** shows stack
+traces.
 
 ### Cloudflare Pages secret changed but Worker still uses old value
 
-Secrets only refresh on a new build. After updating, go to Deployments → **Retry deployment** on the latest one to force a rebuild.
+Secrets only refresh on a new build. Deployments → **Retry deployment** on the
+latest to force a rebuild.
 
 ---
 
 ## Backlog and known issues
 
-See the `## Backlog` section at the end of `README.md`. Items relevant to operations:
-
-- **D1 growth monitoring** — no automated alerting yet for table size or row count. Worth adding before any large bulk-import.
-- **Original-image archive strategy** — repo will eventually outgrow GitHub's recommended size. R2 / Backblaze / cold storage is a future decision, not urgent.
-- **Filename year quirk** — known bug in the publish flow where a typed year can end up as a different value in the resulting filename. Investigate before doing a curated publishing batch.
+- **Auto-delete propagation** — Decap article/category deletes only reach
+  `dev`; production needs a manual `dev → main` promote. A guarded
+  auto-promotion workflow is planned.
+- **`/yllapito` cleanup** — the obsolete article tabs (Lähetä artikkeli,
+  Hallitse artikkeleita) should be removed and replaced with a link to
+  `/admin/`.
+- **D1 growth monitoring** — no automated alerting for table size yet.
+- **Original-image archive strategy** — the repo will eventually outgrow
+  GitHub's recommended size; R2 / cold storage is a future decision.
 
 ---
 
