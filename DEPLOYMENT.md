@@ -460,12 +460,9 @@ latest to force a rebuild.
 
 ## Backlog and known issues
 
-- **Auto-delete propagation** — Decap article/category deletes only reach
-  `dev`; production needs a manual `dev → main` promote. A guarded
-  auto-promotion workflow is planned.
-- **`/yllapito` cleanup** — the obsolete article tabs (Lähetä artikkeli,
-  Hallitse artikkeleita) should be removed and replaced with a link to
-  `/admin/`.
+- **Decap migration** — a few items are still open (the `/yllapito` cleanup,
+  auto-delete propagation, removing the unused `functions/api/articles/*`
+  endpoints). See `DECAP-MIGRATION.md` § Open for the full list.
 - **D1 growth monitoring** — no automated alerting for table size yet.
 - **Original-image archive strategy** — the repo will eventually outgrow
   GitHub's recommended size; R2 / cold storage is a future decision.
