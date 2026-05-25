@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-05-24",
+  "lastUpdated": "2026-05-25",
   "seasonComplete": false,
   "totalRounds": 19,
   "latestRace": {
@@ -675,52 +675,52 @@
   "highlights": {
     "fi": {
       "mxgp_quali": [
-        "Jeffrey Herlings nappasi paalupaikan lauantain MXGP-aika-ajossa.",
-        "Lucas Coenen näytti vahvuutensa vaikeissakin olosuhteissa."
+        "Jeffrey Herlings nappasi paalupaikan lauantain MXGP-karsinnassa.",
+        "Lucas Coenen yllätti nopeudellaan vaikeissa olosuhteissa."
       ],
       "mxgp_race": [
         "Lucas Coenen dominoi molempia MXGP-eriä ja voitti GP:n.",
-        "Jeffrey Herlings taisteli vahvasti molemmissa erissä.",
-        "Lucas Coenen vei täydet pisteet ja GP-voiton."
+        "Jeffrey Herlings taisteli vahvasti sijoittuen toiseksi molemmissa erissä.",
+        "Kay de Wolf varmisti kolmannen sijan MXGP:n kokonaiskilpailussa."
       ],
       "mx2_quali": [
-        "Mathis Valin oli nopein MX2-lähdön aika-ajossa.",
-        "Liam Everts osoitti vauhtinsa toisella sijalla."
+        "Mathis Valin oli nopein MX2-luokan lauantain karsinnassa.",
+        "Liam Everts ajoi vahvasti ollen toinen karsinnassa."
       ],
       "mx2_race": [
-        "Guillem Farres voitti molemmat MX2-erät ja GP:n.",
-        "Camden McLellan ja Mathis Valin taistelivat tiukasti kärkisijoista.",
-        "Guillem Farres oli ylivoimainen MX2-voittaja."
+        "Guillem Farres dominoi MX2-eriä ja voitti GP:n ylivoimaisesti.",
+        "Camden McLellan ja Mathis Valin taistelivat tiukasti toisesta sijasta.",
+        "Farres varmisti täydet pisteet ja voiton MX2-luokassa."
       ],
       "standings": [
-        "Lucas Coenen johtaa MXGP-sarjaa 289 pisteellä.",
-        "Jeffrey Herlings on toisena 281 pisteellä.",
-        "Romain Febvre nousi uudeksi kolmanneksi 226 pisteellä."
+        "Lucas Coenen pitää MXGP-johtopaikkaa vahvana.",
+        "Jeffrey Herlings pysyi toisena MXGP-sarjassa.",
+        "Romain Febvre pysyi kolmantena MXGP-pisteissä."
       ]
     },
     "en": {
       "mxgp_quali": [
-        "Jeffrey Herlings claimed pole position in MXGP qualifying.",
-        "Lucas Coenen showed speed in challenging conditions."
+        "Jeffrey Herlings claimed pole position in Saturday's MXGP qualifying.",
+        "Lucas Coenen surprised with speed in challenging conditions."
       ],
       "mxgp_race": [
-        "Lucas Coenen dominated both MXGP motos to win the GP.",
-        "Jeffrey Herlings battled hard for strong results in both races.",
-        "Lucas Coenen secured a perfect score and the GP victory."
+        "Lucas Coenen dominated both MXGP motos, winning the GP overall.",
+        "Jeffrey Herlings battled strongly for second in both races.",
+        "Kay de Wolf secured third overall in the MXGP Grand Prix."
       ],
       "mx2_quali": [
-        "Mathis Valin topped the MX2 qualifying session.",
-        "Liam Everts showed his pace, securing second."
+        "Mathis Valin was fastest in the MX2 Saturday qualifying session.",
+        "Liam Everts rode strongly to take second in qualifying."
       ],
       "mx2_race": [
-        "Guillem Farres won both MX2 motos and the GP overall.",
-        "Camden McLellan and Mathis Valin fought closely for podiums.",
-        "Guillem Farres was the undisputed MX2 race winner."
+        "Guillem Farres dominated MX2 motos and won the GP overall.",
+        "Camden McLellan and Mathis Valin battled fiercely for second.",
+        "Farres claimed maximum points for a commanding MX2 victory."
       ],
       "standings": [
-        "Lucas Coenen leads the MXGP standings with 289 points.",
-        "Jeffrey Herlings holds firm in second place with 281 points.",
-        "Romain Febvre moved up to third overall with 226 points."
+        "Lucas Coenen held firm at the top of the MXGP standings.",
+        "Jeffrey Herlings maintained his second position in MXGP.",
+        "Romain Febvre held firm in third place in MXGP points."
       ]
     }
   },
