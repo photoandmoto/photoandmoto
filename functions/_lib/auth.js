@@ -330,6 +330,44 @@ export async function requireAuth(request, env, requiredPerm = null) {
   };
 }
 
+/**
+ * Dual-mode auth for the migration period: accepts EITHER a valid session
+ * cookie (preferred) OR the legacy UPLOAD_PASSWORD shared password.
+ *
+ * Use this in `functions/api/mystery/*` endpoints until Phase 6, when the
+ * legacy fallback is removed. After that, switch each call site to plain
+ * `requireAuth`.
+ *
+ * Returns one of:
+ *   { user, mode: 'session' }    — session cookie was valid, user is attributed
+ *   { user: null, mode: 'legacy' } — legacy password matched, no user known
+ *   { error, status }            — neither path passed; respond with error
+ *
+ * For session-mode, `requiredPerm` enforces a specific permission flag.
+ * For legacy-mode, permission isn't checked (legacy users had full access).
+ *
+ * @param {Request} request
+ * @param {object} env
+ * @param {string|null} requiredPerm  e.g. 'tarkista' — only enforced on session auth
+ * @param {string|null} legacyPassword  password value extracted from request body / form / query / header
+ */
+export async function requireAuthOrLegacyPassword(request, env, requiredPerm, legacyPassword) {
+  // 1. Try session cookie first (preferred)
+  const authResult = await requireAuth(request, env, requiredPerm);
+  if (authResult.user) {
+    return { user: authResult.user, mode: 'session' };
+  }
+
+  // 2. Fall back to legacy shared password
+  if (legacyPassword && env.UPLOAD_PASSWORD && legacyPassword === env.UPLOAD_PASSWORD) {
+    return { user: null, mode: 'legacy' };
+  }
+
+  // 3. Neither worked — use the session error message (more accurate than
+  //    "wrong password" since the most common case will be "no session")
+  return { error: authResult.error, status: authResult.status };
+}
+
 // ─── Password validation (NIST SP 800-63B style) ───────────────────────────
 
 /**

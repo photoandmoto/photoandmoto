@@ -85,21 +85,24 @@ const lang = 'fi';
         <div class="mp-header__right">
           
           <div id="adminActions" class="admin-actions" style="display:none;">
+            <span id="adminGreeting" class="admin-greeting"></span>
             <button id="adminLogout" class="admin-logout">Kirjaudu ulos</button>
           </div>
         </div>
       </div>
 
       <!-- Admin login panel (small, shown on demand) -->
-      <div id="adminPanel" class="admin-panel">
+      <div id="adminPanel" class="admin-panel" style="display:none;">
         <div id="adminAuth" class="admin-auth">
+          <input type="email" id="adminEmail" class="inp inp--email" placeholder="Sähköposti" autocomplete="username" />
           <div class="pw-wrap">
-            <input type="password" id="adminPw" class="inp inp--pw" placeholder="Salasana" />
+            <input type="password" id="adminPw" class="inp inp--pw" placeholder="Salasana" autocomplete="current-password" />
             <button type="button" class="pw-eye" id="pwEye" aria-label="Näytä salasana" tabindex="-1">👁</button>
             <div class="pw-caps" id="pwCaps" style="display:none;">⚠ Caps Lock päällä</div>
           </div>
           <button id="adminPwBtn" class="btn">Kirjaudu</button>
-          <span id="adminPwErr" class="err-msg" style="display:none;">Väärä salasana</span>
+          <span id="adminPwErr" class="err-msg" style="display:none;">Väärät kirjautumistiedot</span>
+          <a href="/fi/palauta-salasana/" class="admin-forgot-link">Unohditko salasanan?</a>
         </div>
       </div>
 
@@ -108,6 +111,7 @@ const lang = 'fi';
         <button type="button" class="admin-tab admin-tab--on" data-tab="tarkista">Tarkista</button>
         <button type="button" class="admin-tab" data-tab="laheta">Lähetä kuva</button>
         <button type="button" class="admin-tab" data-tab="hallitse">Hallitse galleriaa</button>
+        <button type="button" class="admin-tab" data-tab="kayttajat">Käyttäjät</button>
         <a href="/admin/" target="_blank" rel="noopener" class="admin-tab admin-tab--external" data-decap-link>Hallitse artikkeleita ↗</a>
       </div>
 
@@ -163,6 +167,75 @@ const lang = 'fi';
           <div id="hallitseGrid" class="hallitse-grid"></div>
         </div>
       </div>
+
+      <!-- Käyttäjät tab (Phase 5 — admin_iam permission required) -->
+      <div id="tabKayttajat" class="tab-content" style="display:none;">
+        <div class="kt-section">
+          <div class="kt-header">
+            <h3 class="upload-title">Käyttäjät</h3>
+            <button id="ktAddBtn" class="btn btn--submit">+ Lisää uusi käyttäjä</button>
+          </div>
+          <div id="ktTable" class="kt-table-wrap">
+            <div class="kt-loading">Ladataan…</div>
+          </div>
+          <details class="kt-audit">
+            <summary>Palautusloki (viimeisimmät 50 yritystä)</summary>
+            <div id="ktAuditList" class="kt-audit-list">
+              <div class="kt-loading">Ladataan…</div>
+            </div>
+          </details>
+        </div>
+
+        <!-- Käyttäjän luonti / muokkaus -modaali -->
+        <div id="ktUserModal" class="kt-modal" style="display:none;">
+          <div class="kt-modal__bg"></div>
+          <div class="kt-modal__panel">
+            <h3 id="ktModalTitle" class="kt-modal__title">Lisää käyttäjä</h3>
+            <div class="kt-modal__form">
+              <div class="kt-row">
+                <div class="kt-field">
+                  <label for="ktModalFirst">Etunimi</label>
+                  <input type="text" id="ktModalFirst" class="inp" maxlength="50" autocomplete="off" />
+                </div>
+                <div class="kt-field">
+                  <label for="ktModalLast">Sukunimi</label>
+                  <input type="text" id="ktModalLast" class="inp" maxlength="50" autocomplete="off" />
+                </div>
+              </div>
+              <div class="kt-field">
+                <label for="ktModalEmail">Sähköposti</label>
+                <input type="email" id="ktModalEmail" class="inp" autocomplete="off" />
+              </div>
+              <div class="kt-field">
+                <label for="ktModalRole">Rooli</label>
+                <select id="ktModalRole" class="inp">
+                  <option value="editor">Editor</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+              <fieldset class="kt-perms-set">
+                <legend>Oikeudet</legend>
+                <label class="kt-perm-check"><input type="checkbox" id="ktPerm_tarkista"> Tarkista <small>(mystery-kuvien tarkastus)</small></label>
+                <label class="kt-perm-check"><input type="checkbox" id="ktPerm_lahetakuva"> Lähetä kuva <small>(uusien tunnistettavien lataus)</small></label>
+                <label class="kt-perm-check"><input type="checkbox" id="ktPerm_hallitse_galleriaa"> Hallitse galleriaa <small>(galleriakuvien muokkaus)</small></label>
+                <label class="kt-perm-check"><input type="checkbox" id="ktPerm_hallitse_artikkeleita"> Hallitse artikkeleita <small>(Decap CMS — erillinen GitHub-kirjautuminen)</small></label>
+                <label class="kt-perm-check"><input type="checkbox" id="ktPerm_admin_iam"> <strong>Hallitse käyttäjiä</strong> <small>(tämä paneeli)</small></label>
+              </fieldset>
+            </div>
+            <div id="ktModalErr" class="err-msg" style="display:none; margin-top:10px;"></div>
+            <div id="ktModalLinkBox" class="kt-modal__link" style="display:none;">
+              <p><strong>Provisiointilinkki luotu — kopioi ja lähetä käyttäjälle:</strong></p>
+              <input type="text" id="ktModalLink" class="inp" readonly />
+              <button id="ktModalCopyLink" class="btn btn--ghost" type="button">📋 Kopioi linkki</button>
+              <p class="kt-modal__hint">Linkki vanhenee 7 päivässä. Käyttäjä asettaa avatessaan oman salasanansa + 3 palautuskysymystä.</p>
+            </div>
+            <div class="kt-modal__actions">
+              <button id="ktModalCancel" class="btn btn--ghost" type="button">Peruuta</button>
+              <button id="ktModalSave" class="btn btn--submit" type="button">Luo ja tee linkki</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- Modal overlay -->
       <div id="modal" class="overlay" style="display:none;">
         <div class="overlay-bg"></div>
@@ -194,7 +267,7 @@ const lang = 'fi';
 </BaseLayout>
 
 <script>
-let photos=[],adminPw=null,curFilter=null,curPhoto=null,adminLastVisit=null;
+let photos=[],adminPw=null,curFilter=null,curPhoto=null,adminLastVisit=null,currentUser=null;
 let cachedGalleries=null; // cached list from /api/mystery/galleries
 const voted=JSON.parse(localStorage.getItem('pm_v')||'{}');
 const grid=document.getElementById('grid');
@@ -902,53 +975,71 @@ if (_pwInp) {
   _pwInp.addEventListener('keyup', checkCaps);
 }
 
-// Admin login — on success: capture old lastVisit for this session's "new" badges,
-// then update lastVisit to NOW for the NEXT session.
+// Admin login — IAM (Phase 4b). Calls /api/auth/login. On success the
+// session cookie is set; adminPw becomes a sentinel string so existing
+// `if(adminPw)` checks throughout this page still work — actual auth on the
+// wire comes from the cookie.
 document.getElementById('adminPwBtn').addEventListener('click',async()=>{
+  const email=document.getElementById('adminEmail').value.trim();
   const pw=document.getElementById('adminPw').value;
-  if(await verifyPw(pw)){
-    adminPw=pw;
-    cachedGalleries=null; // ensure fresh fetch under new credentials
-    adminLastVisit=localStorage.getItem('pm_admin_lastVisit'); // previous login's timestamp
-    localStorage.setItem('pm_admin_lastVisit', new Date().toISOString()); // for next session
-    // UI transitions
-    document.getElementById('adminPanel').style.display='none';
-    document.getElementById('adminActions').style.display='flex';
-    document.getElementById('tabTarkista').style.display='';
-    document.getElementById('adminTabs').style.display='flex';
-    document.getElementById('mpSubCommunity').style.display='none';
-    document.getElementById('mpSubAdmin').style.display='block';
-    // Restore collapsed preference (default: collapsed)
-    if(localStorage.getItem('pm_ohje_expanded')==='1'){
-      document.getElementById('mpSubAdmin').classList.remove('mp-sub--collapsed');
+  const errEl=document.getElementById('adminPwErr');
+  if(!email || !pw){
+    errEl.textContent='Anna sähköposti ja salasana';
+    errEl.style.display='inline';
+    return;
+  }
+  try {
+    const r = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pw }),
+    });
+    if (!r.ok) {
+      errEl.textContent = r.status === 429 ? 'Liian monta yrittänyt. Yritä myöhemmin.' : 'Väärät kirjautumistiedot';
+      errEl.style.display='inline';
+      return;
     }
+    const data = await r.json();
+    currentUser = data.user;
+    adminPw = '__SESSION__'; // truthy sentinel for existing if(adminPw) checks
+    cachedGalleries=null;
+    adminLastVisit=localStorage.getItem('pm_admin_lastVisit');
+    localStorage.setItem('pm_admin_lastVisit', new Date().toISOString());
     document.getElementById('adminPw').value='';
-    document.getElementById('adminPwErr').style.display='none';
-    curFilter=null; // force default for admin
-    renderFilters();
-    load(); // reload with include=all to pick up identified photos
-  }else{
-    document.getElementById('adminPwErr').style.display='inline';
+    document.getElementById('adminEmail').value='';
+    errEl.style.display='none';
+    showAdminUI();
+  } catch {
+    errEl.textContent='Yhteysvirhe — yritä uudelleen';
+    errEl.style.display='inline';
   }
 });
 
-// Logout: revert to community view (but keep lastVisit in localStorage so next login remembers).
-document.getElementById('adminLogout').addEventListener('click',()=>{
+// Logout: call /api/auth/logout to destroy the server session, then revert UI
+// to community view. localStorage lastVisit is preserved so next login
+// remembers the user's last-seen timestamp for "new since" badges.
+document.getElementById('adminLogout').addEventListener('click',async()=>{
+  try { await fetch('/api/auth/logout', { method: 'POST' }); } catch {}
   adminPw=null;
+  currentUser=null;
   adminLastVisit=null;
   cachedGalleries=null;
   document.getElementById('adminActions').style.display='none';
   document.getElementById('adminTabs').style.display='none';
   document.getElementById('adminPanel').style.display='block';
+  document.getElementById('adminGreeting').textContent='';
   document.getElementById('tabTarkista').style.display='none';
   document.getElementById('tabLaheta').style.display='none';
   document.getElementById('tabHallitse').style.display='none';
+  document.getElementById('tabKayttajat').style.display='none';
   document.getElementById('mpSubAdmin').style.display='none';
   // Reset to Tarkista tab so re-login lands on the right place
   document.getElementById('tabTarkista').style.display='';
   document.getElementById('tabLaheta').style.display='none';
   document.getElementById('tabHallitse').style.display='none';
   document.querySelectorAll('.admin-tab').forEach(t=>t.classList.toggle('admin-tab--on',t.dataset.tab==='tarkista'));
+  // Restore all admin tab buttons (they may have been hidden by applyPermissions)
+  document.querySelectorAll('#adminTabs .admin-tab').forEach(t=>{t.style.display='';});
   curFilter=null;
   renderFilters();
   load(); // reload without include=all so identified photos drop out for community
@@ -962,7 +1053,9 @@ document.querySelectorAll('.admin-tab').forEach(t=>t.addEventListener('click',()
   document.getElementById('tabTarkista').style.display=tab==='tarkista'?'':'none';
   document.getElementById('tabLaheta').style.display=tab==='laheta'?'':'none';
   document.getElementById('tabHallitse').style.display=tab==='hallitse'?'':'none';
+  document.getElementById('tabKayttajat').style.display=tab==='kayttajat'?'':'none';
   if(tab==='hallitse' && adminPw){loadHallitseGalleries();}
+  if(tab==='kayttajat' && adminPw){ktLoadUsers();}
 }));
 
 // Ohje collapse/expand — remember the user's preference across logins
@@ -1109,6 +1202,87 @@ function getRootFieldType(comments, commentId){
 }
 renderFilters();
 load();
+
+// =====================================================================
+// IAM session bootstrap (Phase 4b)
+// =====================================================================
+// On page load, check whether a session cookie is already valid. If yes,
+// auto-login the user and apply their permissions. If no, reveal the login
+// panel for them to type credentials.
+
+function applyPermissions(user) {
+  const perms = user.permissions || {};
+  // Hide each tab the user doesn't have permission for
+  document.querySelectorAll('#adminTabs .admin-tab').forEach(t => {
+    const which = t.dataset.tab;
+    let visible;
+    if (which === 'tarkista')        visible = !!perms.tarkista;
+    else if (which === 'laheta')     visible = !!perms.lahetakuva;
+    else if (which === 'hallitse')   visible = !!perms.hallitse_galleriaa;
+    else if (which === 'kayttajat')  visible = !!perms.admin_iam;
+    else if (t.hasAttribute('data-decap-link')) visible = !!perms.hallitse_artikkeleita;
+    else visible = false;
+    t.style.display = visible ? '' : 'none';
+  });
+}
+
+function showFirstAvailableTab(user) {
+  const perms = user.permissions || {};
+  const candidates = [
+    { tab: 'tarkista',  content: 'tabTarkista',  has: !!perms.tarkista },
+    { tab: 'laheta',    content: 'tabLaheta',    has: !!perms.lahetakuva },
+    { tab: 'hallitse',  content: 'tabHallitse',  has: !!perms.hallitse_galleriaa },
+    { tab: 'kayttajat', content: 'tabKayttajat', has: !!perms.admin_iam },
+  ];
+  const first = candidates.find(c => c.has);
+  // Hide all tab content first
+  document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+  document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('admin-tab--on'));
+  if (first) {
+    document.getElementById(first.content).style.display = '';
+    const btn = document.querySelector(`[data-tab="${first.tab}"]`);
+    if (btn) btn.classList.add('admin-tab--on');
+  }
+  // Load gallery dropdown lazily if the user lands on hallitse
+  if (first && first.tab === 'hallitse') loadHallitseGalleries();
+  if (first && first.tab === 'kayttajat') ktLoadUsers();
+}
+
+function showAdminUI() {
+  document.getElementById('adminPanel').style.display='none';
+  document.getElementById('adminActions').style.display='flex';
+  document.getElementById('adminTabs').style.display='flex';
+  document.getElementById('mpSubCommunity').style.display='none';
+  document.getElementById('mpSubAdmin').style.display='block';
+  if (localStorage.getItem('pm_ohje_expanded')==='1') {
+    document.getElementById('mpSubAdmin').classList.remove('mp-sub--collapsed');
+  }
+  document.getElementById('adminGreeting').textContent = `Tervetuloa, ${currentUser.first_name}`;
+  applyPermissions(currentUser);
+  showFirstAvailableTab(currentUser);
+  curFilter = null;
+  renderFilters();
+  load(); // reload with include=all to pick up identified photos for admins
+}
+
+async function bootCheckSession() {
+  try {
+    const r = await fetch('/api/auth/me');
+    if (r.ok) {
+      const data = await r.json();
+      currentUser = data.user;
+      adminPw = '__SESSION__';
+      cachedGalleries = null;
+      adminLastVisit = localStorage.getItem('pm_admin_lastVisit');
+      localStorage.setItem('pm_admin_lastVisit', new Date().toISOString());
+      showAdminUI();
+      return;
+    }
+  } catch {}
+  // No session — reveal login panel
+  document.getElementById('adminPanel').style.display = '';
+}
+bootCheckSession();
 
   // Cancel reply button
   document.addEventListener('click',(e)=>{
@@ -1509,6 +1683,325 @@ function openDeleteGalleryPanel() {
   });
 
   document.getElementById('delGalleryPw').focus();
+}
+
+// =====================================================================
+// KÄYTTÄJÄT TAB (Phase 5 — admin_iam permission required)
+// =====================================================================
+
+let ktUsers = [];
+let ktAuditLoaded = false;
+let ktEditingUserId = null;
+
+async function ktLoadUsers() {
+  const c = document.getElementById('ktTable');
+  if (!c) return;
+  c.innerHTML = '<div class="kt-loading">Ladataan käyttäjiä…</div>';
+  try {
+    const r = await fetch('/api/auth/users');
+    if (!r.ok) {
+      c.innerHTML = '<div class="kt-error">Käyttäjälistan lataus epäonnistui</div>';
+      return;
+    }
+    const data = await r.json();
+    ktUsers = data.users || [];
+    ktRenderTable();
+  } catch {
+    c.innerHTML = '<div class="kt-error">Yhteysvirhe</div>';
+  }
+}
+
+function ktPermsBadges(p) {
+  const out = [];
+  if (p.tarkista) out.push('<span class="kt-badge" title="Tarkista">T</span>');
+  if (p.lahetakuva) out.push('<span class="kt-badge" title="Lähetä kuva">L</span>');
+  if (p.hallitse_galleriaa) out.push('<span class="kt-badge" title="Hallitse galleriaa">G</span>');
+  if (p.hallitse_artikkeleita) out.push('<span class="kt-badge" title="Hallitse artikkeleita">A</span>');
+  if (p.admin_iam) out.push('<span class="kt-badge kt-badge--admin" title="Hallitse käyttäjiä">I</span>');
+  return out.join(' ') || '<span class="kt-badge-empty">—</span>';
+}
+
+function ktRenderTable() {
+  const c = document.getElementById('ktTable');
+  if (!c) return;
+  if (ktUsers.length === 0) {
+    c.innerHTML = '<div class="kt-empty">Ei käyttäjiä.</div>';
+    return;
+  }
+  const rows = ktUsers.map(u => {
+    const status = u.is_active
+      ? '<span class="kt-status kt-status--active">✓ Aktiivinen</span>'
+      : '<span class="kt-status kt-status--inactive">⛔ Deaktivoitu</span>';
+    const lastLogin = u.last_login_at
+      ? new Date(u.last_login_at).toLocaleString('fi-FI', { dateStyle: 'short', timeStyle: 'short' })
+      : '—';
+    const actions = u.is_active
+      ? `<button class="kt-action" data-act="edit" data-uid="${u.id}">Muokkaa</button>
+         <button class="kt-action" data-act="link" data-uid="${u.id}">Uusi linkki</button>
+         <button class="kt-action kt-action--danger" data-act="deactivate" data-uid="${u.id}">Poista</button>`
+      : `<button class="kt-action" data-act="link" data-uid="${u.id}">Uusi linkki</button>`;
+    return `<tr data-uid="${u.id}">
+      <td><strong>${esc(u.first_name)} ${esc(u.last_name)}</strong></td>
+      <td class="kt-email">${esc(u.email)}</td>
+      <td><span class="kt-role kt-role--${esc(u.role)}">${esc(u.role)}</span></td>
+      <td class="kt-perms-cell">${ktPermsBadges(u.permissions || {})}</td>
+      <td>${status}</td>
+      <td class="kt-time">${lastLogin}</td>
+      <td class="kt-actions-cell">${actions}</td>
+    </tr>`;
+  }).join('');
+  c.innerHTML = `<table class="kt-table">
+    <thead><tr>
+      <th>Nimi</th><th>Sähköposti</th><th>Rooli</th><th>Oikeudet</th><th>Tila</th><th>Kirjautunut</th><th></th>
+    </tr></thead>
+    <tbody>${rows}</tbody>
+  </table>
+  <div class="kt-perms-legend">
+    <strong>Oikeudet:</strong>
+    <span><span class="kt-badge">T</span> Tarkista</span> ·
+    <span><span class="kt-badge">L</span> Lähetä kuva</span> ·
+    <span><span class="kt-badge">G</span> Hallitse galleriaa</span> ·
+    <span><span class="kt-badge">A</span> Hallitse artikkeleita</span> ·
+    <span><span class="kt-badge kt-badge--admin">I</span> Hallitse käyttäjiä</span>
+  </div>`;
+}
+
+function ktOpenCreateModal() {
+  ktEditingUserId = null;
+  document.getElementById('ktModalTitle').textContent = 'Lisää uusi käyttäjä';
+  document.getElementById('ktModalFirst').value = '';
+  document.getElementById('ktModalLast').value = '';
+  document.getElementById('ktModalEmail').value = '';
+  document.getElementById('ktModalEmail').disabled = false;
+  document.getElementById('ktModalRole').value = 'editor';
+  document.getElementById('ktPerm_tarkista').checked = true;
+  document.getElementById('ktPerm_lahetakuva').checked = true;
+  document.getElementById('ktPerm_hallitse_galleriaa').checked = false;
+  document.getElementById('ktPerm_hallitse_artikkeleita').checked = true;
+  document.getElementById('ktPerm_admin_iam').checked = false;
+  document.getElementById('ktModalLinkBox').style.display = 'none';
+  document.getElementById('ktModalErr').style.display = 'none';
+  document.getElementById('ktModalSave').disabled = false;
+  document.getElementById('ktModalSave').textContent = 'Luo ja tee linkki';
+  document.getElementById('ktModalSave').style.display = '';
+  document.getElementById('ktModalCancel').textContent = 'Peruuta';
+  document.getElementById('ktUserModal').style.display = 'flex';
+  setTimeout(() => document.getElementById('ktModalFirst').focus(), 50);
+}
+
+function ktOpenEditModal(uid) {
+  const u = ktUsers.find(x => x.id === uid);
+  if (!u) return;
+  ktEditingUserId = uid;
+  document.getElementById('ktModalTitle').textContent = `Muokkaa: ${u.first_name} ${u.last_name}`;
+  document.getElementById('ktModalFirst').value = u.first_name;
+  document.getElementById('ktModalLast').value = u.last_name;
+  document.getElementById('ktModalEmail').value = u.email;
+  document.getElementById('ktModalEmail').disabled = true;
+  document.getElementById('ktModalRole').value = u.role;
+  document.getElementById('ktPerm_tarkista').checked = !!u.permissions.tarkista;
+  document.getElementById('ktPerm_lahetakuva').checked = !!u.permissions.lahetakuva;
+  document.getElementById('ktPerm_hallitse_galleriaa').checked = !!u.permissions.hallitse_galleriaa;
+  document.getElementById('ktPerm_hallitse_artikkeleita').checked = !!u.permissions.hallitse_artikkeleita;
+  document.getElementById('ktPerm_admin_iam').checked = !!u.permissions.admin_iam;
+  document.getElementById('ktModalLinkBox').style.display = 'none';
+  document.getElementById('ktModalErr').style.display = 'none';
+  document.getElementById('ktModalSave').disabled = false;
+  document.getElementById('ktModalSave').textContent = 'Tallenna muutokset';
+  document.getElementById('ktModalSave').style.display = '';
+  document.getElementById('ktModalCancel').textContent = 'Peruuta';
+  document.getElementById('ktUserModal').style.display = 'flex';
+  setTimeout(() => document.getElementById('ktModalFirst').focus(), 50);
+}
+
+function ktCloseModal() {
+  document.getElementById('ktUserModal').style.display = 'none';
+  ktEditingUserId = null;
+}
+
+async function ktSubmitModal() {
+  const err = document.getElementById('ktModalErr');
+  err.style.display = 'none';
+  const saveBtn = document.getElementById('ktModalSave');
+
+  const firstName = document.getElementById('ktModalFirst').value.trim();
+  const lastName = document.getElementById('ktModalLast').value.trim();
+  if (!firstName || !lastName) {
+    err.textContent = 'Etunimi ja sukunimi vaaditaan';
+    err.style.display = 'block';
+    return;
+  }
+
+  const body = {
+    first_name: firstName,
+    last_name: lastName,
+    role: document.getElementById('ktModalRole').value,
+    permissions: {
+      tarkista: document.getElementById('ktPerm_tarkista').checked,
+      lahetakuva: document.getElementById('ktPerm_lahetakuva').checked,
+      hallitse_galleriaa: document.getElementById('ktPerm_hallitse_galleriaa').checked,
+      hallitse_artikkeleita: document.getElementById('ktPerm_hallitse_artikkeleita').checked,
+      admin_iam: document.getElementById('ktPerm_admin_iam').checked,
+    },
+  };
+
+  const originalText = saveBtn.textContent;
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Tallennetaan…';
+
+  try {
+    let r;
+    if (ktEditingUserId) {
+      r = await fetch(`/api/auth/users/${ktEditingUserId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+    } else {
+      body.email = document.getElementById('ktModalEmail').value.trim();
+      if (!body.email) {
+        err.textContent = 'Sähköposti vaaditaan';
+        err.style.display = 'block';
+        saveBtn.disabled = false;
+        saveBtn.textContent = originalText;
+        return;
+      }
+      r = await fetch('/api/auth/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+    }
+
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      err.textContent = data.error || (ktEditingUserId ? 'Tallennus epäonnistui' : 'Käyttäjän luonti epäonnistui');
+      err.style.display = 'block';
+      saveBtn.disabled = false;
+      saveBtn.textContent = originalText;
+      return;
+    }
+
+    if (ktEditingUserId) {
+      ktCloseModal();
+      await ktLoadUsers();
+    } else {
+      // Show the provisioning link; keep the modal open so admin can copy it
+      document.getElementById('ktModalLink').value = data.provisioning_link || '';
+      document.getElementById('ktModalLinkBox').style.display = 'block';
+      saveBtn.style.display = 'none';
+      document.getElementById('ktModalCancel').textContent = 'Sulje';
+      await ktLoadUsers();
+    }
+  } catch {
+    err.textContent = 'Yhteysvirhe — yritä uudelleen';
+    err.style.display = 'block';
+    saveBtn.disabled = false;
+    saveBtn.textContent = originalText;
+  }
+}
+
+async function ktRegenerateLink(uid) {
+  const u = ktUsers.find(x => x.id === uid);
+  if (!u) return;
+  const msg = u.is_active
+    ? `Luo uusi provisiointilinkki käyttäjälle ${u.first_name} ${u.last_name}?\n\nNykyinen salasana ja palautuskysymykset POISTETAAN. Käyttäjän pitää avata linkki ja asettaa salasana uudelleen.`
+    : `Reaktivoi käyttäjä ${u.first_name} ${u.last_name} luomalla uusi provisiointilinkki?`;
+  if (!confirm(msg)) return;
+  try {
+    const r = await fetch(`/api/auth/users/${uid}/regenerate-link`, { method: 'POST' });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      alert(data.error || 'Linkin luonti epäonnistui');
+      return;
+    }
+    window.prompt(`Uusi provisiointilinkki käyttäjälle ${u.first_name} ${u.last_name} (kopioi alta):`, data.provisioning_link || '');
+    await ktLoadUsers();
+  } catch {
+    alert('Yhteysvirhe');
+  }
+}
+
+async function ktDeactivate(uid) {
+  const u = ktUsers.find(x => x.id === uid);
+  if (!u) return;
+  if (!confirm(`Deaktivoi käyttäjä ${u.first_name} ${u.last_name}?\n\nHänen istuntonsa lopetetaan välittömästi ja hän ei voi enää kirjautua sisään.`)) return;
+  try {
+    const r = await fetch(`/api/auth/users/${uid}/deactivate`, { method: 'POST' });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      alert(data.error || 'Deaktivointi epäonnistui');
+      return;
+    }
+    await ktLoadUsers();
+  } catch {
+    alert('Yhteysvirhe');
+  }
+}
+
+async function ktLoadAudit() {
+  const list = document.getElementById('ktAuditList');
+  if (!list) return;
+  list.innerHTML = '<div class="kt-loading">Ladataan…</div>';
+  try {
+    const r = await fetch('/api/auth/audit/recoveries');
+    if (!r.ok) {
+      list.innerHTML = '<div class="kt-empty">Lokia ei voitu ladata</div>';
+      return;
+    }
+    const data = await r.json();
+    const attempts = data.attempts || [];
+    if (attempts.length === 0) {
+      list.innerHTML = '<div class="kt-empty">Ei palautusyrityksiä lokissa.</div>';
+      return;
+    }
+    list.innerHTML = '<ul class="kt-audit-items">' + attempts.map(a => {
+      const cls = a.succeeded ? 'ok' : 'fail';
+      const icon = a.succeeded ? '✓' : '✗';
+      const t = new Date(a.attempted_at).toLocaleString('fi-FI');
+      return `<li class="kt-audit-item kt-audit-item--${cls}">
+        <span class="kt-audit-icon">${icon}</span>
+        <span class="kt-audit-email">${esc(a.email_attempted || '(tuntematon)')}</span>
+        <span class="kt-audit-ip">${esc(a.ip || '—')}</span>
+        <span class="kt-audit-time">${t}</span>
+      </li>`;
+    }).join('') + '</ul>';
+    ktAuditLoaded = true;
+  } catch {
+    list.innerHTML = '<div class="kt-empty">Yhteysvirhe</div>';
+  }
+}
+
+// Event listeners — elements always exist in the DOM (applyPermissions just
+// hides the tab button when admin_iam is missing). Bind unconditionally.
+if (document.getElementById('ktAddBtn')) {
+  document.getElementById('ktAddBtn').addEventListener('click', ktOpenCreateModal);
+  document.getElementById('ktModalCancel').addEventListener('click', ktCloseModal);
+  document.getElementById('ktModalSave').addEventListener('click', ktSubmitModal);
+  document.getElementById('ktTable').addEventListener('click', (e) => {
+    const btn = e.target.closest('.kt-action');
+    if (!btn) return;
+    const uid = parseInt(btn.dataset.uid, 10);
+    const act = btn.dataset.act;
+    if (act === 'edit') ktOpenEditModal(uid);
+    else if (act === 'link') ktRegenerateLink(uid);
+    else if (act === 'deactivate') ktDeactivate(uid);
+  });
+  const copyBtn = document.getElementById('ktModalCopyLink');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      const inp = document.getElementById('ktModalLink');
+      inp.select();
+      try { navigator.clipboard.writeText(inp.value); copyBtn.textContent = '✓ Kopioitu'; setTimeout(() => copyBtn.textContent = '📋 Kopioi linkki', 1500); } catch {}
+    });
+  }
+  // Audit log: lazy-load on first expand
+  const auditDetails = document.querySelector('.kt-audit');
+  if (auditDetails) {
+    auditDetails.addEventListener('toggle', () => {
+      if (auditDetails.open && !ktAuditLoaded) ktLoadAudit();
+    });
+  }
 }
 
 </script>
@@ -2345,5 +2838,91 @@ function openDeleteGalleryPanel() {
   .pw-eye:hover{opacity:1}
   .pw-eye--on{opacity:1;color:#ff9900}
   .pw-caps{position:absolute;top:100%;left:0;margin-top:4px;font-size:.78rem;color:#a06400;background:#fff8e6;border:1px solid #ffd89a;padding:4px 8px;border-radius:6px;font-weight:600;white-space:nowrap;z-index:10}
+
+  /* ===== IAM LOGIN ENHANCEMENTS (Phase 4b) ===== */
+  .admin-panel{max-width:560px}
+  .admin-auth .inp--email{flex:1 1 100%;max-width:none}
+  .admin-forgot-link{flex:1 1 100%;font-size:.85rem;color:#666;text-decoration:none;margin-top:2px}
+  .admin-forgot-link:hover{color:#ff9900;text-decoration:underline}
+  .admin-greeting{font-size:.9rem;color:#444;font-weight:500;margin-right:4px}
+  .admin-greeting:empty{display:none}
+
+  /* ===== KÄYTTÄJÄT TAB (Phase 5) ===== */
+  .kt-section{max-width:1100px}
+  .kt-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;gap:12px;flex-wrap:wrap}
+  .kt-table-wrap{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .kt-loading,.kt-empty,.kt-error{padding:32px;text-align:center;color:#888;font-size:.95rem}
+  .kt-error{color:#dc3545}
+  .kt-table{width:100%;border-collapse:collapse;font-size:.85rem}
+  .kt-table thead{background:#fafaf8;border-bottom:1px solid #eee}
+  .kt-table th{text-align:left;padding:10px 14px;font-weight:700;color:#666;font-size:.74rem;text-transform:uppercase;letter-spacing:.5px}
+  .kt-table td{padding:10px 14px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+  .kt-table tr:last-child td{border-bottom:none}
+  .kt-table tr:hover{background:#fafaf8}
+  .kt-email{font-family:'SF Mono',Consolas,monospace;font-size:.78rem;color:#666}
+  .kt-time{font-size:.76rem;color:#999;white-space:nowrap}
+  .kt-role{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+  .kt-role--admin{background:#fff3e0;color:#a06400}
+  .kt-role--editor{background:#e3f2fd;color:#1565c0}
+  .kt-status{font-size:.78rem;font-weight:600;white-space:nowrap}
+  .kt-status--active{color:#2e7d32}
+  .kt-status--inactive{color:#888}
+  .kt-perms-cell{font-size:.78rem;white-space:nowrap}
+  .kt-badge{display:inline-block;background:#e8e8e8;color:#444;font-size:.66rem;font-weight:800;padding:2px 6px;border-radius:4px;margin:0 1px;font-family:'SF Mono',Consolas,monospace}
+  .kt-badge--admin{background:#fff3e0;color:#a06400}
+  .kt-badge-empty{color:#bbb;font-style:italic;font-size:.78rem}
+  .kt-actions-cell{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+  .kt-action{background:none;border:1px solid #ddd;color:#555;font-size:.72rem;font-weight:600;padding:4px 10px;border-radius:4px;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
+  .kt-action:hover{border-color:#ff9900;color:#ff9900;background:#fff8ee}
+  .kt-action--danger{color:#888}
+  .kt-action--danger:hover{border-color:#dc3545;color:#dc3545;background:#fde8e8}
+  .kt-perms-legend{padding:10px 14px;background:#fafaf8;border-top:1px solid #eee;font-size:.72rem;color:#888;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .kt-perms-legend strong{color:#555;font-weight:700;margin-right:4px}
+
+  /* Audit log */
+  .kt-audit{margin-top:20px;background:#fff;border-radius:8px;padding:0;border:1px solid #eee}
+  .kt-audit summary{padding:10px 14px;cursor:pointer;font-weight:600;color:#666;font-size:.85rem;list-style:none}
+  .kt-audit summary::-webkit-details-marker{display:none}
+  .kt-audit summary::before{content:'▸ ';color:#ff9900}
+  .kt-audit[open] summary::before{content:'▾ '}
+  .kt-audit-list{padding:0 14px 14px;font-size:.82rem}
+  .kt-audit-items{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:4px}
+  .kt-audit-item{display:flex;gap:10px;align-items:center;padding:6px 10px;border-radius:4px;background:#fafaf8;font-size:.78rem}
+  .kt-audit-item--ok{background:#e8f5e9}
+  .kt-audit-item--fail{background:#fff5f5}
+  .kt-audit-icon{font-weight:700}
+  .kt-audit-item--ok .kt-audit-icon{color:#2e7d32}
+  .kt-audit-item--fail .kt-audit-icon{color:#c0392b}
+  .kt-audit-email{flex:1;color:#333;font-family:'SF Mono',Consolas,monospace}
+  .kt-audit-ip{color:#888;font-size:.74rem;font-family:'SF Mono',Consolas,monospace}
+  .kt-audit-time{color:#aaa;font-size:.74rem;white-space:nowrap}
+
+  /* Modal */
+  .kt-modal{position:fixed;inset:0;z-index:1500;display:flex;align-items:center;justify-content:center;padding:16px}
+  .kt-modal__bg{position:absolute;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px)}
+  .kt-modal__panel{position:relative;background:#fff;border-radius:14px;padding:28px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+  .kt-modal__title{font-family:'DM Sans',sans-serif;font-size:1.2rem;font-weight:800;margin:0 0 18px;color:#222}
+  .kt-modal__form{display:flex;flex-direction:column;gap:12px}
+  .kt-row{display:flex;gap:10px}
+  .kt-row .kt-field{flex:1}
+  .kt-field label{display:block;font-size:.74rem;font-weight:700;color:#666;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+  .kt-perms-set{border:1px solid #eee;border-radius:8px;padding:10px 14px;margin-top:6px}
+  .kt-perms-set legend{font-size:.78rem;font-weight:700;color:#444;padding:0 6px}
+  .kt-perm-check{display:block;font-size:.85rem;color:#333;padding:5px 0;cursor:pointer}
+  .kt-perm-check input{margin-right:8px;vertical-align:middle}
+  .kt-perm-check small{color:#888;font-size:.78rem;margin-left:2px}
+  .kt-modal__link{margin-top:14px;padding:12px 14px;background:#fffaf2;border:1.5px solid #ffd89a;border-radius:8px}
+  .kt-modal__link p{margin:0 0 6px;font-size:.85rem;color:#a06400}
+  .kt-modal__link .inp{margin-bottom:6px;font-family:'SF Mono',Consolas,monospace;font-size:.78rem}
+  .kt-modal__hint{font-size:.74rem;color:#8a6d28;margin:6px 0 0!important}
+  .kt-modal__actions{display:flex;justify-content:flex-end;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid #f0f0f0}
+
+  @media(max-width:700px){
+    .kt-table thead{display:none}
+    .kt-table tr{display:block;padding:10px 14px;border-bottom:1px solid #eee}
+    .kt-table td{display:block;padding:3px 0;border:none}
+    .kt-table td.kt-actions-cell{padding-top:8px;justify-content:flex-start}
+    .kt-row{flex-direction:column}
+  }
 
 </style>

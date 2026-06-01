@@ -1,10 +1,25 @@
+// functions/api/mystery/upload.js
+//
+// Admin uploads a new mystery photo for community identification.
+//
+// Auth: session cookie with perm_lahetakuva OR legacy UPLOAD_PASSWORD (dual-mode
+// during the IAM migration window — Phase 6 removes the legacy path).
+
+import { requireAuthOrLegacyPassword } from '../../_lib/auth.js';
+
 export async function onRequestPost(context) {
   const { request, env } = context;
   const h = { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' };
   try {
     const fd = await request.formData();
-    if (!fd.get('password') || fd.get('password') !== env.UPLOAD_PASSWORD)
-      return new Response(JSON.stringify({ error: 'Väärä salasana' }), { status: 401, headers: h });
+
+    // Dual-mode auth
+    const legacyPassword = fd.get('password') || '';
+    const auth = await requireAuthOrLegacyPassword(request, env, 'lahetakuva', legacyPassword);
+    if (auth.error) {
+      return new Response(JSON.stringify({ error: auth.error }), { status: auth.status, headers: h });
+    }
+
     const file = fd.get('photo');
     if (!file || !file.size) return new Response(JSON.stringify({ error: 'Kuvaa ei löytynyt' }), { status: 400, headers: h });
     if (!['image/jpeg','image/png','image/webp'].includes(file.type))
@@ -25,14 +40,19 @@ export async function onRequestPost(context) {
     }
     if (!thumbData) thumbData = null;
 
-    // uploader_name is NOT NULL in schema; only admin can upload for now, so default to 'Ylläpito'.
+    // uploader_name: prefer the logged-in user's name (session mode); fall back to
+    // 'Ylläpito' for legacy mode (no user known).
+    const uploaderName = auth.user
+      ? `${auth.user.first_name} ${auth.user.last_name}`
+      : 'Ylläpito';
+
     const r = await env.DB.prepare(
       `INSERT INTO photos (filename,content_type,image_data,uploader_name,year_estimate,people,location_notes,notes,thumb_data) VALUES (?,?,?,?,?,?,?,?,?)`
     ).bind(
       file.name,
       file.type,
       btoa(bin),
-      'Ylläpito',
+      uploaderName,
       fd.get('year_estimate')||'',
       fd.get('people')||'',
       fd.get('location_notes')||'',

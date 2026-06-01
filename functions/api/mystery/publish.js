@@ -3,7 +3,7 @@
 // Triggered by admin clicking "Julkaise Galleriaan" in the Tunnista kuva modal.
 //
 // Steps:
-//   1. Auth (admin password)
+//   1. Auth (session cookie with perm_hallitse_galleriaa OR legacy UPLOAD_PASSWORD)
 //   2. Fetch photo + metadata from D1
 //   3. Decode base64 image -> binary
 //   4. Sanitize metadata into a filename (people-location-year.jpg)
@@ -24,6 +24,8 @@
 //     create_new: false,               // true when admin chose "Luo uusi galleria"
 //     filename_override: "..."         // optional, admin-edited filename without extension
 //   }
+
+import { requireAuthOrLegacyPassword } from '../../_lib/auth.js';
 
 // ---------------------------------------------------------------------------
 // Helpers — JSON responses
@@ -338,9 +340,10 @@ export async function onRequestPost({ request, env }) {
     return badRequest('Invalid JSON body');
   }
 
-  const password = body.password || request.headers.get('X-Admin-Password') || '';
-  if (!env.UPLOAD_PASSWORD) return serverError('UPLOAD_PASSWORD not configured');
-  if (password !== env.UPLOAD_PASSWORD) return unauthorized();
+  // Dual-mode auth: session cookie (perm_hallitse_galleriaa) OR legacy UPLOAD_PASSWORD.
+  const legacyPassword = body.password || request.headers.get('X-Admin-Password') || '';
+  const auth = await requireAuthOrLegacyPassword(request, env, 'hallitse_galleriaa', legacyPassword);
+  if (auth.error) return unauthorized(auth.error);
 
   if (!env.DB) return serverError('D1 binding (DB) missing');
   if (!env.GITHUB_APP_ID || !env.GITHUB_APP_INSTALLATION_ID || !env.GITHUB_APP_PRIVATE_KEY) {
