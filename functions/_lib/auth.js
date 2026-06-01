@@ -18,7 +18,7 @@
 
 // ─── Constants ──────────────────────────────────────────────────────────────
 
-export const PBKDF2_ITERATIONS = 200_000;
+export const PBKDF2_ITERATIONS = 100_000;
 export const SALT_LENGTH_BYTES = 16;
 export const HASH_LENGTH_BITS = 256;
 export const TOKEN_LENGTH_BYTES = 32;          // 256 bits → 43 base64url chars
@@ -29,6 +29,15 @@ export const RECOVERY_TOKEN_TTL_SECONDS = 15 * 60;               // 15 minutes
 export const SESSION_COOKIE_NAME = 'pm_session';
 export const PASSWORD_MIN_LENGTH = 12;
 export const PASSWORD_MAX_LENGTH = 128;
+
+// Static decoy hash + salt for timing-attack defence on missing-user paths.
+// 32 zero-bytes (hash) and 16 zero-bytes (salt), pre-encoded as base64.
+// Used like a real hash/salt pair — verifyPassword does ONE PBKDF2 against
+// it (returns false because no input will match all-zeros), and the timing
+// matches the real-user path exactly. Saves one PBKDF2 call vs. generating
+// the decoy on the fly, keeping us under the Cloudflare free-tier CPU budget.
+export const STATIC_DECOY_HASH = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=';
+export const STATIC_DECOY_SALT = 'AAAAAAAAAAAAAAAAAAAAAA==';
 
 // Top-50 most-leaked passwords (subset of SecLists' rockyou top-100).
 // Kept short for bundle size; sufficient to catch the laziest attempts.

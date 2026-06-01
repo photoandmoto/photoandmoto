@@ -12,28 +12,19 @@ import {
   getJsonBody,
   normalizeEmail,
   verifyPassword,
-  hashPassword,
   createSession,
   getSessionCookieHeader,
   getClientIp,
   jsonResponse,
   errorResponse,
   corsOptionsResponse,
+  STATIC_DECOY_HASH,
+  STATIC_DECOY_SALT,
 } from '../../_lib/auth.js';
 import { runInit } from './init.js';
 
 const MAX_FAILED_LOGINS_PER_HOUR = 5;
 const GENERIC_LOGIN_ERROR = 'Väärä sähköposti tai salasana';
-
-// Pre-computed throwaway hash for timing-attack defence when user doesn't
-// exist. Generated at module load (per-Worker-instance) — same shape as a
-// real hash, so verifyPassword takes the same time regardless of existence.
-let DECOY_HASH_CACHE = null;
-async function getDecoyHash() {
-  if (DECOY_HASH_CACHE) return DECOY_HASH_CACHE;
-  DECOY_HASH_CACHE = await hashPassword('this-password-is-never-used-by-anyone');
-  return DECOY_HASH_CACHE;
-}
 
 async function logAttempt(env, userId, email, ip, succeeded) {
   try {
@@ -89,24 +80,21 @@ export async function onRequestPost({ request, env }) {
 
   // No user: fake hash to even out timing, log failure, return generic error
   if (!user) {
-    const decoy = await getDecoyHash();
-    await verifyPassword(password, decoy.hash, decoy.salt);
+    await verifyPassword(password, STATIC_DECOY_HASH, STATIC_DECOY_SALT);
     await logAttempt(env, null, email, ip, false);
     return errorResponse(GENERIC_LOGIN_ERROR, 401);
   }
 
   // User exists but inactive: same generic response
   if (!user.is_active) {
-    const decoy = await getDecoyHash();
-    await verifyPassword(password, decoy.hash, decoy.salt);
+    await verifyPassword(password, STATIC_DECOY_HASH, STATIC_DECOY_SALT);
     await logAttempt(env, user.id, email, ip, false);
     return errorResponse(GENERIC_LOGIN_ERROR, 401);
   }
 
   // User exists but password not yet set (invite not accepted)
   if (!user.password_hash || !user.password_salt) {
-    const decoy = await getDecoyHash();
-    await verifyPassword(password, decoy.hash, decoy.salt);
+    await verifyPassword(password, STATIC_DECOY_HASH, STATIC_DECOY_SALT);
     await logAttempt(env, user.id, email, ip, false);
     return errorResponse(GENERIC_LOGIN_ERROR, 401);
   }
