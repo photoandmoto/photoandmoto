@@ -9,77 +9,15 @@ const lang = 'fi';
         <div class="mp-header__left">
           <h1 class="mp-title">Ylläpito</h1>
           <p class="mp-sub" id="mpSubCommunity" style="display:none;"></p>
-          <div class="mp-sub mp-sub--admin mp-sub--collapsed" id="mpSubAdmin" style="display:none;">
-            <button type="button" class="ohje-toggle" id="ohjeToggle">
-              <span class="ohje-toggle__label">Ohje</span>
-              <span class="ohje-toggle__icon">▸</span>
-            </button>
-            <div class="ohje-content">
-              <a href="/fi/julkaisijan-ohjeet/" class="ohje-fullguide" target="_blank" rel="noopener">
-                <span class="ohje-fullguide__icon">📖</span>
-                <span class="ohje-fullguide__text">
-                  <strong>Avaa täydellinen julkaisijan ohjekirja</strong>
-                  <small>Decap CMS, tunnistamattomat kuvat, galleriat, vianetsintä</small>
-                </span>
-                <span class="ohje-fullguide__arrow">↗</span>
-              </a>
-              <div class="ohje-section">
-                <span class="ohje-section__title">Tarkista-välilehti</span>
-                <div class="ohje-subsection">
-                  <span class="ohje-subsection__title">Yleistä</span>
-                  <ul class="ohje-list">
-                    <li>Klikkaa kuvaa → lue yhteisön ehdotukset</li>
-                    <li>Kirjoita viralliset tiedot per kenttä ja tallenna</li>
-                    <li>Kun vuosi, henkilöt ja paikka on täytetty → status muuttuu Tunnistetuksi</li>
-                    <li>Julkaise Galleriaan siirtää kuvan pysyvään galleriaan</li>
-                  </ul>
-                </div>
-                <div class="ohje-subsection">
-                  <span class="ohje-subsection__title">Julkaise olemassa olevaan galleriaan</span>
-                  <ul class="ohje-list">
-                    <li>Avaa Tunnistettu-kuva → klikkaa <strong>Julkaise Galleriaan</strong></li>
-                    <li>Valitse galleria pudotusvalikosta</li>
-                    <li>Tarkista kuvateksti (vakio: henkilöt + paikka + vuosi) ja muokkaa tarvittaessa</li>
-                    <li>Klikkaa <strong>Julkaise</strong> → kuva ilmestyy galleriaan ~2 minuutissa</li>
-                  </ul>
-                </div>
-                <div class="ohje-subsection">
-                  <span class="ohje-subsection__title">Luo uusi galleria</span>
-                  <ul class="ohje-list">
-                    <li>Avaa Tunnistettu-kuva → klikkaa <strong>Julkaise Galleriaan</strong></li>
-                    <li>Valitse pudotusvalikosta <strong>➕ Luo uusi galleria…</strong></li>
-                    <li>Anna gallerialle nimi alla olevien ohjeiden mukaisesti</li>
-                    <li>Tarkista kuvateksti ja klikkaa <strong>Julkaise</strong></li>
-                  </ul>
-                  <div class="ohje-naming">
-                    <span class="ohje-naming__title">Nimeämiskäytäntö</span>
-                    <p class="ohje-naming__intro">Galleriat järjestyvät indeksisivulla aakkosjärjestyksessä. Käytä näitä kaavoja, jotta uusi galleria asettuu loogiseen paikkaan olemassa olevien rinnalle:</p>
-                    <ul class="ohje-list">
-                      <li><strong>Vuosikymmen-galleria:</strong> <em>Suomi 60s</em>, <em>International 60s</em> — käytä kaksinumeroista vuosikymmentä, jotta järjestys pysyy yhtenäisenä olemassa olevien kanssa</li>
-                      <li><strong>Tapahtuma- tai paikkagalleria:</strong> <em>Hyvinkää Scramble 2026</em>, <em>Orimattila SM 1984</em> — paikka ensin, sitten tapahtuma ja vuosi</li>
-                      <li><strong>Erikoiskategoria:</strong> <em>Enduro 70s</em>, <em>Black White 60s</em> — laji + vuosikymmen</li>
-                    </ul>
-                    <p class="ohje-naming__hint"><strong>Vinkki:</strong> Kirjoita nimi suomeksi ja luonnollisilla välilyönneillä — ä/ö/å muunnetaan automaattisesti URL-osoitteen muotoon (esim. "Hyvinkää" → <code>hyvinkaa</code>).</p>
-                  </div>
-                </div>
-                <div class="ohje-subsection">
-                  <span class="ohje-subsection__title">Suodattimet</span>
-                  <ul class="ohje-list">
-                    <li><strong>Tarkistettavaa</strong> — kuvia, joihin on tullut uusia ehdotuksia tai jotka on ladattu edellisen kirjautumisen jälkeen</li>
-                    <li><strong>Kesken</strong> — osittain täytetyt tai tyhjät kuvat, ei uutta aktiviteettia</li>
-                    <li><strong>Valmiit</strong> — tunnistetut kuvat, valmiina julkaistavaksi galleriaan</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="ohje-section">
-                <span class="ohje-section__title">Lähetä kuva -välilehti</span>
-                <ul class="ohje-list">
-                  <li>Valitse kuvatiedosto (JPEG, PNG, WEBP, max 5 MB)</li>
-                  <li>Täytä tiedot, jotka jo tiedät — tyhjät kentät aukeavat yhteisön ehdotettavaksi</li>
-                  <li>Lataa kuva → näkyy heti yhteisölle</li>
-                </ul>
-              </div>
-            </div>
+          <div class="mp-sub mp-sub--admin" id="mpSubAdmin" style="display:none;">
+            <a href="/fi/julkaisijan-ohjeet/" class="ohje-fullguide" target="_blank" rel="noopener">
+              <span class="ohje-fullguide__icon">📖</span>
+              <span class="ohje-fullguide__text">
+                <strong>Avaa täydellinen julkaisijan ohjekirja</strong>
+                <small>Decap CMS, tunnistamattomat kuvat, galleriat, vianetsintä</small>
+              </span>
+              <span class="ohje-fullguide__arrow">↗</span>
+            </a>
           </div>
         </div>
         <div class="mp-header__right">
@@ -111,8 +49,9 @@ const lang = 'fi';
         <button type="button" class="admin-tab admin-tab--on" data-tab="tarkista">Tarkista</button>
         <button type="button" class="admin-tab" data-tab="laheta">Lähetä kuva</button>
         <button type="button" class="admin-tab" data-tab="hallitse">Hallitse galleriaa</button>
-        <button type="button" class="admin-tab" data-tab="kayttajat">Käyttäjät</button>
         <a href="/admin/" target="_blank" rel="noopener" class="admin-tab admin-tab--external" data-decap-link>Hallitse artikkeleita ↗</a>
+        <span class="admin-tabs__sep" aria-hidden="true"></span>
+        <button type="button" class="admin-tab admin-tab--iam" data-tab="kayttajat">Käyttäjät</button>
       </div>
 
       <!-- Tarkista tab: filters + grid (community sees filters too) -->
@@ -1058,12 +997,7 @@ document.querySelectorAll('.admin-tab').forEach(t=>t.addEventListener('click',()
   if(tab==='kayttajat' && adminPw){ktLoadUsers();}
 }));
 
-// Ohje collapse/expand — remember the user's preference across logins
-document.getElementById('ohjeToggle').addEventListener('click',()=>{
-  const card=document.getElementById('mpSubAdmin');
-  const nowCollapsed=card.classList.toggle('mp-sub--collapsed');
-  localStorage.setItem('pm_ohje_expanded', nowCollapsed ? '0' : '1');
-});
+// Ohje is now a simple link — no collapse toggle needed
 
 // =====================================================================
 // THUMBNAIL GENERATION (browser-side, before upload)
@@ -1254,9 +1188,6 @@ function showAdminUI() {
   document.getElementById('adminTabs').style.display='flex';
   document.getElementById('mpSubCommunity').style.display='none';
   document.getElementById('mpSubAdmin').style.display='block';
-  if (localStorage.getItem('pm_ohje_expanded')==='1') {
-    document.getElementById('mpSubAdmin').classList.remove('mp-sub--collapsed');
-  }
   document.getElementById('adminGreeting').textContent = `Tervetuloa, ${currentUser.first_name}`;
   applyPermissions(currentUser);
   showFirstAvailableTab(currentUser);
@@ -2016,58 +1947,14 @@ if (document.getElementById('ktAddBtn')) {
 .mp-title{font-family:var(--font-headline);font-size:2.2rem;font-weight:900;margin:0 0 6px;color:#111;letter-spacing:-.5px}
 .mp-sub{font-size:.95rem;color:#666;margin:0;line-height:1.6}
 
-/* Admin-only ohje card — collapsible, replaces the community intro */
+/* Admin-only ohje card — simple link, no collapse */
 .mp-sub--admin{
-  background:#fff;
-  border-radius:12px;
+  background:transparent;
   padding:0;
-  border:1px solid #eee;
-  box-shadow:0 1px 4px rgba(0,0,0,.04);
+  border:none;
+  box-shadow:none;
   max-width:720px;
   margin-top:8px;
-  overflow:hidden;
-}
-.ohje-toggle{
-  width:100%;
-  background:none;
-  border:none;
-  padding:12px 18px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  cursor:pointer;
-  font-family:'DM Sans',sans-serif;
-  text-align:left;
-  transition:background .15s;
-}
-.ohje-toggle:hover{background:rgba(255,153,0,.04)}
-.ohje-toggle__label{
-  font-family:var(--font-headline);
-  font-size:.9rem;
-  color:#ff9900;
-  text-transform:uppercase;
-  letter-spacing:.8px;
-  font-weight:800;
-}
-.ohje-toggle__icon{
-  color:#ff9900;
-  font-weight:700;
-  font-size:1rem;
-  transition:transform .2s;
-  display:inline-block;
-}
-.mp-sub--admin:not(.mp-sub--collapsed) .ohje-toggle__icon{
-  transform:rotate(90deg);
-}
-.ohje-content{
-  padding:0 18px 16px;
-  overflow:hidden;
-  transition:max-height .25s ease, padding .25s ease;
-}
-.mp-sub--collapsed .ohje-content{
-  max-height:0;
-  padding-top:0;
-  padding-bottom:0;
 }
 
 /* Full-manual link at the top of the OHJE block */
@@ -2245,6 +2132,8 @@ if (document.getElementById('ktAddBtn')) {
   gap:4px;
   margin-bottom:24px;
   border-bottom:2px solid #e5e5e5;
+  align-items:center;
+  flex-wrap:wrap;
 }
 .admin-tab{
   background:none;
@@ -2262,6 +2151,30 @@ if (document.getElementById('ktAddBtn')) {
 }
 .admin-tab:hover{color:#555}
 .admin-tab--on{color:#222;border-bottom-color:#ff9900}
+/* Separator between editor tabs and admin-only tabs */
+.admin-tabs__sep{
+  flex:1 1 auto;
+  display:block;
+  min-width:24px;
+}
+/* Admin-only IAM tab — visually distinct from editor tabs */
+.admin-tab--iam{
+  color:#a06400;
+  background:#fff8e6;
+  border:1px solid #f0d27a;
+  border-bottom-width:1px;
+  border-radius:8px 8px 0 0;
+  padding:8px 16px;
+  font-size:.82rem;
+  margin-bottom:-1px;
+}
+.admin-tab--iam:hover{color:#a06400;background:#fff2d0;border-color:#ff9900}
+.admin-tab--iam.admin-tab--on{
+  background:#fff;
+  color:#a06400;
+  border-color:#ff9900;
+  border-bottom-color:#fff;
+}
 
 /* ===== BUTTONS ===== */
 .btn{font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:700;padding:11px 24px;border-radius:10px;border:none;background:#ff9900;color:#000;cursor:pointer;transition:all .2s ease;letter-spacing:.2px}
