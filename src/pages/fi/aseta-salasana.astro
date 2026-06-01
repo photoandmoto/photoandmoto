@@ -1,0 +1,562 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const lang = 'fi';
+const title = 'Aseta salasana';
+const description = 'Aseta salasana ja palautuskysymykset Photo & Moto -ylläpitoon.';
+---
+
+<BaseLayout title={title} lang={lang} description={description} noindex={true}>
+  <section class="authpage">
+    <div class="container authpage-container">
+      <div class="authpage-card">
+
+        <!-- Loading state — shown while validating the token -->
+        <div id="state-loading" class="auth-state">
+          <h1>Tarkistetaan linkkiä…</h1>
+          <p class="auth-muted">Hetki, varmistamme että kutsulinkkisi on voimassa.</p>
+        </div>
+
+        <!-- Invalid token state -->
+        <div id="state-invalid" class="auth-state" hidden>
+          <h1>Linkki ei kelpaa</h1>
+          <p id="invalid-reason" class="auth-error-text">Tämä linkki on vanhentunut, käytetty tai virheellinen.</p>
+          <p class="auth-muted">
+            Pyydä ylläpitäjältäsi (<a href="mailto:photoandmoto@gmail.com">photoandmoto@gmail.com</a>)
+            uusi provisiointilinkki.
+          </p>
+          <p style="margin-top: 1.5rem;">
+            <a href="/fi/yllapito/" class="auth-secondary">← Takaisin ylläpitoon</a>
+          </p>
+        </div>
+
+        <!-- Form state -->
+        <form id="state-form" class="auth-state" hidden novalidate>
+          <h1>Tervetuloa, <span id="greet-name">käyttäjä</span>!</h1>
+          <p class="auth-muted">
+            Aseta salasana ja kolme palautuskysymystä, niin pääset kirjautumaan
+            Photo & Moto -ylläpitoon.
+          </p>
+
+          <!-- Email read-only -->
+          <div class="auth-field">
+            <label>Sähköposti</label>
+            <input type="email" id="emailDisplay" disabled />
+          </div>
+
+          <!-- Password section -->
+          <fieldset class="auth-section">
+            <legend>Salasana</legend>
+
+            <div class="auth-field">
+              <label for="password">Salasana</label>
+              <div class="auth-pw-wrap">
+                <input type="password" id="password" autocomplete="new-password" />
+                <button type="button" class="auth-pw-toggle" data-target="password" aria-label="Näytä salasana">👁</button>
+              </div>
+              <ul class="auth-rules" id="pwRules" aria-live="polite">
+                <li data-rule="length">Vähintään 12 merkkiä</li>
+                <li data-rule="types">Vähintään 3 eri tyyppistä merkkiä (pieni, iso, numero, erikoismerkki)</li>
+                <li data-rule="notself">Ei sisällä sähköpostiasi tai nimeäsi</li>
+              </ul>
+            </div>
+
+            <div class="auth-field">
+              <label for="passwordConfirm">Vahvista salasana</label>
+              <div class="auth-pw-wrap">
+                <input type="password" id="passwordConfirm" autocomplete="new-password" />
+                <button type="button" class="auth-pw-toggle" data-target="passwordConfirm" aria-label="Näytä salasana">👁</button>
+              </div>
+              <p class="auth-rules" id="pwMatchRule" aria-live="polite">
+                <span data-rule="match">Salasanat täsmäävät</span>
+              </p>
+            </div>
+          </fieldset>
+
+          <!-- Security questions section -->
+          <fieldset class="auth-section">
+            <legend>Palautuskysymykset</legend>
+            <p class="auth-help">
+              Aseta kolme henkilökohtaista kysymystä ja vastausta. Jos unohdat
+              salasanasi, sinun tulee tietää <strong>vähintään kaksi kolmesta</strong>
+              vastauksesta palauttaaksesi tilisi.
+            </p>
+            <details class="auth-tips">
+              <summary>Vinkkejä hyviin kysymyksiin</summary>
+              <ul>
+                <li>Lemmikin nimi varhaislapsuudesta</li>
+                <li>Ensimmäisen ala-asteen opettajasi sukunimi</li>
+                <li>Lempireseptisi pääraaka-aine</li>
+                <li>Vanhempiesi ensimmäisen yhteisen asunnon katu</li>
+              </ul>
+              <p>
+                <strong>Vältä:</strong> nimet jotka näkyvät somessa, julkiset tiedot,
+                kuukauden nimi, väri, lemmieläin joka näkyy Instagramissa.
+              </p>
+            </details>
+
+            <div class="auth-qa" data-index="1">
+              <div class="auth-field">
+                <label for="q1">Kysymys 1</label>
+                <input type="text" id="q1" maxlength="200" autocomplete="off" />
+              </div>
+              <div class="auth-field">
+                <label for="a1">Vastaus 1</label>
+                <input type="text" id="a1" maxlength="200" autocomplete="off" />
+              </div>
+            </div>
+
+            <div class="auth-qa" data-index="2">
+              <div class="auth-field">
+                <label for="q2">Kysymys 2</label>
+                <input type="text" id="q2" maxlength="200" autocomplete="off" />
+              </div>
+              <div class="auth-field">
+                <label for="a2">Vastaus 2</label>
+                <input type="text" id="a2" maxlength="200" autocomplete="off" />
+              </div>
+            </div>
+
+            <div class="auth-qa" data-index="3">
+              <div class="auth-field">
+                <label for="q3">Kysymys 3</label>
+                <input type="text" id="q3" maxlength="200" autocomplete="off" />
+              </div>
+              <div class="auth-field">
+                <label for="a3">Vastaus 3</label>
+                <input type="text" id="a3" maxlength="200" autocomplete="off" />
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Submit -->
+          <div id="formError" class="auth-error-text" hidden></div>
+
+          <button type="submit" id="submitBtn" class="auth-primary" disabled>
+            Tallenna ja kirjaudu sisään
+          </button>
+        </form>
+
+        <!-- Submitting state -->
+        <div id="state-submitting" class="auth-state" hidden>
+          <h1>Tallennetaan…</h1>
+          <p class="auth-muted">Hetki, kirjaudumme sinut sisään.</p>
+        </div>
+
+        <!-- Success state -->
+        <div id="state-success" class="auth-state" hidden>
+          <h1>Tervetuloa! 🎉</h1>
+          <p class="auth-muted">Tilisi on aktivoitu. Ohjaamme sinut ylläpitoon…</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+  (function () {
+    const $ = (id) => document.getElementById(id);
+    const showState = (which) => {
+      ['state-loading', 'state-invalid', 'state-form', 'state-submitting', 'state-success']
+        .forEach(s => $(s).hidden = (s !== which));
+    };
+
+    // 1. Read the token from the URL
+    const url = new URL(window.location.href);
+    const token = url.searchParams.get('token');
+    if (!token) {
+      $('invalid-reason').textContent = 'Linkistä puuttuu token-parametri.';
+      showState('state-invalid');
+      return;
+    }
+
+    // 2. Validate the token via API
+    let userContext = null;
+    fetch(`/api/auth/validate-token?token=${encodeURIComponent(token)}`, {
+      credentials: 'include',
+    })
+      .then(async (res) => {
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.valid) {
+          $('invalid-reason').textContent = data.error || 'Linkki on vanhentunut tai virheellinen.';
+          showState('state-invalid');
+          return;
+        }
+        // Token valid — populate the form and show it
+        userContext = data.user;
+        $('greet-name').textContent = data.user.first_name || 'käyttäjä';
+        $('emailDisplay').value = data.user.email || '';
+        showState('state-form');
+        // Focus the first interactive field
+        setTimeout(() => $('password').focus(), 50);
+      })
+      .catch(() => {
+        $('invalid-reason').textContent = 'Yhteysvirhe — kokeile uudelleen.';
+        showState('state-invalid');
+      });
+
+    // 3. Password rule live-validation
+    const pwRulesEl = $('pwRules');
+    const matchRuleEl = $('pwMatchRule');
+    const submitBtn = $('submitBtn');
+
+    function evaluatePw(pw) {
+      const lengthOk = pw.length >= 12 && pw.length <= 128;
+      let types = 0;
+      if (/[a-zäöå]/.test(pw)) types++;
+      if (/[A-ZÄÖÅ]/.test(pw)) types++;
+      if (/[0-9]/.test(pw)) types++;
+      if (/[^a-zA-Z0-9äöåÄÖÅ]/.test(pw)) types++;
+      const typesOk = types >= 3;
+
+      let notSelf = true;
+      if (userContext && pw.length >= 4) {
+        const lower = pw.toLowerCase();
+        const blockTerms = [
+          (userContext.email || '').split('@')[0].toLowerCase(),
+          (userContext.first_name || '').toLowerCase(),
+          (userContext.last_name || '').toLowerCase(),
+          'photoandmoto',
+        ].filter(t => t && t.length >= 4);
+        notSelf = !blockTerms.some(term => lower.includes(term));
+      }
+
+      return { lengthOk, typesOk, notSelf, allOk: lengthOk && typesOk && notSelf };
+    }
+
+    function paintRules(state) {
+      pwRulesEl.querySelector('[data-rule="length"]').classList.toggle('ok', state.lengthOk);
+      pwRulesEl.querySelector('[data-rule="length"]').classList.toggle('bad', !state.lengthOk);
+      pwRulesEl.querySelector('[data-rule="types"]').classList.toggle('ok', state.typesOk);
+      pwRulesEl.querySelector('[data-rule="types"]').classList.toggle('bad', !state.typesOk);
+      pwRulesEl.querySelector('[data-rule="notself"]').classList.toggle('ok', state.notSelf);
+      pwRulesEl.querySelector('[data-rule="notself"]').classList.toggle('bad', !state.notSelf);
+    }
+
+    function paintMatch(matches, hasContent) {
+      const span = matchRuleEl.querySelector('[data-rule="match"]');
+      if (!hasContent) {
+        span.classList.remove('ok', 'bad');
+        return;
+      }
+      span.classList.toggle('ok', matches);
+      span.classList.toggle('bad', !matches);
+    }
+
+    function checkFormReady() {
+      const pw = $('password').value;
+      const pw2 = $('passwordConfirm').value;
+      const state = evaluatePw(pw);
+      const matches = pw === pw2 && pw.length > 0;
+      const questionsOk = [1, 2, 3].every(i => {
+        const q = $(`q${i}`).value.trim();
+        const a = $(`a${i}`).value.trim();
+        return q.length >= 8 && q.length <= 200 && a.length >= 2 && a.length <= 200;
+      });
+      submitBtn.disabled = !(state.allOk && matches && questionsOk);
+    }
+
+    $('password').addEventListener('input', () => {
+      paintRules(evaluatePw($('password').value));
+      const pw = $('password').value;
+      const pw2 = $('passwordConfirm').value;
+      paintMatch(pw === pw2, pw2.length > 0);
+      checkFormReady();
+    });
+    $('passwordConfirm').addEventListener('input', () => {
+      const pw = $('password').value;
+      const pw2 = $('passwordConfirm').value;
+      paintMatch(pw === pw2, pw2.length > 0);
+      checkFormReady();
+    });
+    ['q1', 'a1', 'q2', 'a2', 'q3', 'a3'].forEach(id => {
+      $(id).addEventListener('input', checkFormReady);
+    });
+
+    // 4. Show / hide password toggles
+    document.querySelectorAll('.auth-pw-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = $(btn.dataset.target);
+        if (!target) return;
+        target.type = target.type === 'password' ? 'text' : 'password';
+        btn.classList.toggle('on');
+      });
+    });
+
+    // 5. Submit
+    $('state-form').addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      $('formError').hidden = true;
+
+      const body = {
+        token: token,
+        password: $('password').value,
+        security_questions: [1, 2, 3].map(i => ({
+          question: $(`q${i}`).value.trim(),
+          answer: $(`a${i}`).value.trim(),
+        })),
+      };
+
+      showState('state-submitting');
+      try {
+        const res = await fetch('/api/auth/accept-invite', {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.success) {
+          $('formError').textContent = data.error || 'Tallennus epäonnistui — yritä uudelleen.';
+          $('formError').hidden = false;
+          showState('state-form');
+          return;
+        }
+        // Success — short flash, then redirect
+        showState('state-success');
+        setTimeout(() => { window.location.href = '/fi/yllapito/'; }, 1500);
+      } catch {
+        $('formError').textContent = 'Yhteysvirhe — kokeile uudelleen.';
+        $('formError').hidden = false;
+        showState('state-form');
+      }
+    });
+  })();
+</script>
+
+<style>
+  /* ─── Page chrome ─── */
+  .authpage {
+    padding: 2rem 0 4rem;
+    background: #fafaf9;
+    min-height: 70vh;
+  }
+  .authpage-container {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  .authpage-card {
+    background: #fff;
+    padding: 2.5rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+  .auth-state h1 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #222;
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.02em;
+  }
+  .auth-muted {
+    color: #666;
+    line-height: 1.55;
+    margin: 0 0 1rem;
+  }
+  .auth-error-text {
+    color: #b03030;
+    line-height: 1.5;
+    margin: 0 0 0.75rem;
+  }
+  .auth-help {
+    color: #555;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0 0 1rem;
+  }
+
+  /* ─── Form sections ─── */
+  .auth-section {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .auth-section legend {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #222;
+    padding: 0 0.5rem;
+  }
+
+  /* ─── Inputs ─── */
+  .auth-field {
+    margin: 0.75rem 0;
+  }
+  .auth-field label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 0.3rem;
+  }
+  .auth-field input[type="email"],
+  .auth-field input[type="password"],
+  .auth-field input[type="text"] {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    box-sizing: border-box;
+    font-family: inherit;
+  }
+  .auth-field input[disabled] {
+    background: #f5f5f4;
+    color: #888;
+    cursor: not-allowed;
+  }
+  .auth-field input:focus {
+    outline: none;
+    border-color: #ff9900;
+    box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.15);
+  }
+
+  .auth-pw-wrap {
+    position: relative;
+  }
+  .auth-pw-toggle {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 4px 8px;
+    color: #888;
+    opacity: 0.6;
+  }
+  .auth-pw-toggle:hover,
+  .auth-pw-toggle.on {
+    opacity: 1;
+    color: #ff9900;
+  }
+
+  /* ─── Rule indicators (live password validation) ─── */
+  .auth-rules {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+    font-size: 0.8rem;
+    line-height: 1.55;
+  }
+  .auth-rules li,
+  .auth-rules span[data-rule] {
+    color: #888;
+    padding-left: 1.3rem;
+    position: relative;
+  }
+  .auth-rules li::before,
+  .auth-rules span[data-rule]::before {
+    content: '○';
+    position: absolute;
+    left: 0;
+    color: #ccc;
+  }
+  .auth-rules li.ok,
+  .auth-rules span[data-rule].ok {
+    color: #2c8a4a;
+  }
+  .auth-rules li.ok::before,
+  .auth-rules span[data-rule].ok::before {
+    content: '✓';
+    color: #2c8a4a;
+  }
+  .auth-rules li.bad,
+  .auth-rules span[data-rule].bad {
+    color: #b03030;
+  }
+  .auth-rules li.bad::before,
+  .auth-rules span[data-rule].bad::before {
+    content: '✗';
+    color: #b03030;
+  }
+
+  /* ─── Tips disclosure ─── */
+  .auth-tips {
+    background: #fff8e6;
+    border: 1px solid #f0d27a;
+    border-radius: 6px;
+    padding: 0.5rem 0.85rem;
+    margin: 0 0 1rem;
+    font-size: 0.85rem;
+  }
+  .auth-tips summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: #5a4400;
+    padding: 0.2rem 0;
+  }
+  .auth-tips ul {
+    margin: 0.5rem 0;
+    padding-left: 1.2rem;
+    color: #5a4400;
+  }
+  .auth-tips li {
+    margin: 0.2rem 0;
+  }
+  .auth-tips p {
+    margin: 0.5rem 0 0;
+    color: #5a4400;
+  }
+
+  /* ─── Q/A pair grouping ─── */
+  .auth-qa {
+    background: #fafafa;
+    border-radius: 6px;
+    padding: 0.5rem 0.85rem;
+    margin: 0.75rem 0;
+  }
+
+  /* ─── Buttons ─── */
+  .auth-primary {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    background: #ff9900;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 1rem;
+    font-family: inherit;
+    transition: background .15s ease;
+  }
+  .auth-primary:hover:not(:disabled) {
+    background: #e68a00;
+  }
+  .auth-primary:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+  .auth-secondary {
+    color: #ff9900;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .auth-secondary:hover {
+    text-decoration: underline;
+  }
+
+  /* ─── Mobile ─── */
+  @media (max-width: 600px) {
+    .authpage-card {
+      padding: 1.5rem 1.25rem;
+    }
+    .auth-section {
+      padding: 1rem;
+    }
+    .auth-state h1 {
+      font-size: 1.4rem;
+    }
+  }
+</style>

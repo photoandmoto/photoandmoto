@@ -13,7 +13,7 @@ import {
   getJsonBody,
   normalizeEmail,
   verifyAnswer,
-  hashAnswer,
+  verifyPassword,
   generateToken,
   getClientIp,
   jsonResponse,
@@ -21,6 +21,8 @@ import {
   corsOptionsResponse,
   MIN_CORRECT_ANSWERS_FOR_RECOVERY,
   RECOVERY_TOKEN_TTL_SECONDS,
+  STATIC_DECOY_HASH,
+  STATIC_DECOY_SALT,
 } from '../../../_lib/auth.js';
 import { runInit } from '../init.js';
 
@@ -74,13 +76,15 @@ export async function onRequestPost({ request, env }) {
      FROM users WHERE email = ?`
   ).bind(email).first();
 
-  // Non-existent / inactive / never-set: do fake hashes to even timing, log fail
+  // Non-existent / inactive / never-set: ONE fake PBKDF2 to even timing, log fail.
+  // (Real-user path also does a single PBKDF2 average — most users get the first
+  // answer right, and verifyAnswer short-circuits on mismatch in constant-time.)
   if (!user || !user.is_active || !user.password_hash ||
       !user.security_a1_hash || !user.security_a2_hash || !user.security_a3_hash) {
-    // Three fake PBKDF2 hashes so response time matches the real path
-    for (let i = 0; i < 3; i++) {
-      await hashAnswer(typeof answers[i] === 'string' ? answers[i] : 'x');
-    }
+    await verifyPassword(
+      typeof answers[0] === 'string' ? answers[0] : 'x',
+      STATIC_DECOY_HASH, STATIC_DECOY_SALT
+    );
     await logAttempt(env, user?.id || null, email, ip, false);
     return errorResponse(GENERIC_RECOVERY_ERROR, 401);
   }
