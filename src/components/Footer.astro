@@ -14,7 +14,7 @@ const currentYear = new Date().getFullYear();
   <div class="container footer-container">
     <div class="footer-content">
       <div class="footer-brand">
-        <h3 class="footer-logo">Photo & Moto</h3>
+        <img class="footer-logo-img" src="/images/logo-footer.png" alt="Photo & Moto" width="512" height="486" />
         <p class="footer-tagline">
           Every frame tells a story
         </p>
@@ -61,18 +61,28 @@ const currentYear = new Date().getFullYear();
     grid-template-columns: 1fr auto;
     gap: var(--space-6);
     margin-bottom: var(--space-6);
+    align-items: start;
   }
   
-  .footer-logo {
-    font-family: var(--font-headline);
-    font-size: 1.75rem;
-    color: var(--brand-primary);
-    margin-bottom: var(--space-2);
+  .footer-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
   }
-  
+
+  .footer-logo-img {
+    height: 80px;
+    width: auto;
+    flex-shrink: 0;
+  }
+
   .footer-tagline {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.95rem;
+    font-family: var(--font-headline);
+    color: var(--brand-primary);
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
   }
   
   .footer-links h4 {
