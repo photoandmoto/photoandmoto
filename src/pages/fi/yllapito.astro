@@ -486,7 +486,31 @@ function renderAdminForm(p){
       if(msg){msg.textContent='✗ Virhe — yritä uudelleen';msg.className='ab-save-msg ab-save-msg--err';}
     }
   });
-  el.querySelector('#afPublish').addEventListener('click',()=>openPublishPanel(p));
+  el.querySelector('#afPublish').addEventListener('click',async()=>{
+    // BUGFIX: If admin typed new values in Tarkista form but didn't click
+    // Tallenna first, p.year_estimate etc. would still be the stale D1 value
+    // and the publish panel composed the filename from that — leading to
+    // filenames like "... 1980.jpg" when the admin actually typed 2026.
+    // Auto-save any unsaved changes before opening the publish panel, then
+    // refresh p in-memory so the publish panel sees the fresh values.
+    const formYear=el.querySelector('#ab_year_estimate').value;
+    const formPeople=el.querySelector('#ab_people').value;
+    const formLocation=el.querySelector('#ab_location_notes').value;
+    const formNotes=el.querySelector('#ab_notes').value;
+    const dirty=formYear!==(p.year_estimate||'') ||
+                formPeople!==(p.people||'') ||
+                formLocation!==(p.location_notes||'') ||
+                formNotes!==(p.notes||'');
+    if(dirty){
+      const saveOk=await adminAction('update_meta',{photo_id:p.id,year_estimate:formYear,people:formPeople,location_notes:formLocation,notes:formNotes});
+      if(!saveOk){return;} // adminAction already shows error alert
+      p.year_estimate=formYear;
+      p.people=formPeople;
+      p.location_notes=formLocation;
+      p.notes=formNotes;
+    }
+    openPublishPanel(p);
+  });
   el.querySelector('#abDel').addEventListener('click',async()=>{
     if(!confirm('Poistetaanko kuva pysyvästi?'))return;
     const ok=await adminAction('delete_photo',{photo_id:p.id});
