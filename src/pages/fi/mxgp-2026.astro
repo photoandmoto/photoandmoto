@@ -227,11 +227,11 @@ function daysUntil(dateStr: string): number | null {
                 <h3 class="result-section-title">Lähtö 1 (sunnuntai)</h3>
                 <div class="table-wrap">
                   <table class="result-table result-table--compact">
-                    <thead><tr><th>Sija</th><th>Kuljettaja</th><th>Merkki</th><th>Pist.</th></tr></thead>
+                    <thead><tr><th>Sija</th><th>Kuljettaja</th><th>Merkki</th><th>Aika</th></tr></thead>
                     <tbody>
                       {race.mxgp.race1.map((r: any) => (
                         <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
-                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td class="pts">{r.pts}</td>
+                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td>{r.time || '—'}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -242,11 +242,11 @@ function daysUntil(dateStr: string): number | null {
                 <h3 class="result-section-title">Lähtö 2 (sunnuntai)</h3>
                 <div class="table-wrap">
                   <table class="result-table result-table--compact">
-                    <thead><tr><th>Sija</th><th>Kuljettaja</th><th>Merkki</th><th>Pist.</th></tr></thead>
+                    <thead><tr><th>Sija</th><th>Kuljettaja</th><th>Merkki</th><th>Aika</th></tr></thead>
                     <tbody>
                       {race.mxgp.race2.map((r: any) => (
                         <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
-                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td class="pts">{r.pts}</td>
+                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td>{r.time || '—'}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -295,11 +295,11 @@ function daysUntil(dateStr: string): number | null {
                 <h3 class="result-section-title">Lähtö 1 (sunnuntai)</h3>
                 <div class="table-wrap">
                   <table class="result-table result-table--compact">
-                    <thead><tr><th>Sija</th><th>Kuljettaja</th><th>Merkki</th><th>Pist.</th></tr></thead>
+                    <thead><tr><th>Sija</th><th>Kuljettaja</th><th>Merkki</th><th>Aika</th></tr></thead>
                     <tbody>
                       {race.mx2.race1.map((r: any) => (
                         <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
-                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td class="pts">{r.pts}</td>
+                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td>{r.time || '—'}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -310,11 +310,11 @@ function daysUntil(dateStr: string): number | null {
                 <h3 class="result-section-title">Lähtö 2 (sunnuntai)</h3>
                 <div class="table-wrap">
                   <table class="result-table result-table--compact">
-                    <thead><tr><th>Sija</th><th>Kuljettaja</th><th>Merkki</th><th>Pist.</th></tr></thead>
+                    <thead><tr><th>Sija</th><th>Kuljettaja</th><th>Merkki</th><th>Aika</th></tr></thead>
                     <tbody>
                       {race.mx2.race2.map((r: any) => (
                         <tr class={r.pos <= 3 ? `podium podium--${r.pos}` : ''}>
-                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td class="pts">{r.pts}</td>
+                          <td class="pos">{r.pos}</td><td class="rider">{r.rider}</td><td>{r.bike}</td><td>{r.time || '—'}</td>
                         </tr>
                       ))}
                     </tbody>
