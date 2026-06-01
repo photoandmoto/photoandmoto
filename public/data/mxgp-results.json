@@ -675,52 +675,54 @@
   "highlights": {
     "fi": {
       "mxgp_quali": [
-        "Romain Febvre nappasi paalupaikan lauantain karsinnoissa.",
-        "Lucas Coenen osoitti vahvuutensa vaikeissa olosuhteissa."
+        "Romain Febvre nappasi paalupaikan lauantain aika-ajossa.",
+        "Lucas Coenen osoitti vahvuutensa vaikeissa olosuhteissa nopeimpana.",
+        "Jeffrey Herlings oli neljäs, yllättäen kärkikahinoissa."
       ],
       "mxgp_race": [
-        "Lucas Coenen dominoi molempia MXGP-eriä.",
-        "Jeffrey Herlings teki vahvan nousun toisessa erässä.",
-        "Lucas Coenen vei nimiinsä Saksan GP:n kokonaiskilpailun."
+        "Lucas Coenen dominoi molempia MXGP-eriä voittaen selvästi.",
+        "Andrea Adamo taisteli vahvasti nousten toiseksi kokonaiskilpailussa.",
+        "Romain Febvre varmisti kolmossijan voittamalla toisen erän."
       ],
       "mx2_quali": [
-        "Camden McLellan oli nopein MX2-karsinnassa.",
-        "Janis Martins Reisulis näytti vauhtiaan karsinnoissa."
+        "Camden McLellan otti paalupaikan MX2-aika-ajossa.",
+        "Janis Martins Reisulis oli toinen, osoittaen vauhtiaan."
       ],
       "mx2_race": [
-        "Mathis Valin ja Sacha Coenen taistelivat voitosta.",
-        "Mathis Valin voitti toisen erän ja kokonaiskilpailun.",
-        "Sacha Coenen ja Mathis Valin jakoivat pisteet tiukassa kisassa."
+        "Mathis Valin ja Sacha Coenen jakoivat erävoitot tiukassa kilpailussa.",
+        "Mathis Valin vei kokonaiskilpailun niukalla erolla Sacha Coeneniin.",
+        "Camden McLellan varmisti kolmossijan kokonaiskilpailussa."
       ],
       "standings": [
-        "Lucas Coenen jatkaa MXGP-sarjan kärjessä.",
-        "Jeffrey Herlings pysyi toisena MXGP-pisteissä.",
-        "Romain Febvre piti kolmannen sijansa MXGP-sarjassa."
+        "Lucas Coenen johtaa MXGP-sarjaa vakuuttavasti.",
+        "Jeffrey Herlings pysyi toisena pisteissä.",
+        "Romain Febvre piti kolmannen sijan sarjapisteissä."
       ]
     },
     "en": {
       "mxgp_quali": [
         "Romain Febvre claimed pole position in Saturday qualifying.",
-        "Lucas Coenen showed his strength in difficult conditions."
+        "Lucas Coenen showed strength in difficult conditions as fastest.",
+        "Jeffrey Herlings was fourth, surprisingly in the top fight."
       ],
       "mxgp_race": [
-        "Lucas Coenen dominated both MXGP motos.",
-        "Jeffrey Herlings made a strong comeback in moto two.",
-        "Lucas Coenen claimed the overall German GP victory."
+        "Lucas Coenen dominated both MXGP motos, winning clearly.",
+        "Andrea Adamo battled strongly, rising to second overall.",
+        "Romain Febvre secured third overall by winning the second moto."
       ],
       "mx2_quali": [
-        "Camden McLellan was fastest in MX2 qualifying.",
-        "Janis Martins Reisulis showed his pace in qualifying."
+        "Camden McLellan took pole in MX2 qualifying.",
+        "Janis Martins Reisulis was second, showing his speed."
       ],
       "mx2_race": [
-        "Mathis Valin and Sacha Coenen battled for the win.",
-        "Mathis Valin won moto two and the overall.",
-        "Sacha Coenen and Mathis Valin shared points in a tight battle."
+        "Mathis Valin and Sacha Coenen split moto wins in tight racing.",
+        "Mathis Valin took the overall win by a narrow margin over Sacha Coenen.",
+        "Camden McLellan secured third place in the overall standings."
       ],
       "standings": [
-        "Lucas Coenen holds firm at the top of MXGP standings.",
-        "Jeffrey Herlings held firm in second place in MXGP.",
-        "Romain Febvre held firm in third place in MXGP."
+        "Lucas Coenen leads the MXGP series convincingly.",
+        "Jeffrey Herlings held firm in second place.",
+        "Romain Febvre held firm in third place in the standings."
       ]
     }
   },
