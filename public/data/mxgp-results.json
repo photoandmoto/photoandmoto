@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-05-31",
+  "lastUpdated": "2026-06-01",
   "seasonComplete": false,
   "totalRounds": 19,
   "latestRace": {
@@ -675,52 +675,52 @@
   "highlights": {
     "fi": {
       "mxgp_quali": [
-        "Romain Febvre nappasi paalupaikan lauantain aika-ajossa.",
-        "Kukaan ei yllättänyt kärkiviisikossa, kaikki odotetusti."
+        "Romain Febvre nappasi paalupaikan lauantain karsinnoissa.",
+        "Lucas Coenen osoitti vahvuutensa vaikeissa olosuhteissa."
       ],
       "mxgp_race": [
-        "Lucas Coenen dominoi molempia MXGP-eriä ja voitti GP:n.",
-        "Jeffrey Herlings taisteli vahvasti toisessa erässä toiseksi.",
-        "Lucas Coenen vei kokonaisvoiton ylivoimaisesti Saksassa."
+        "Lucas Coenen dominoi molempia MXGP-eriä.",
+        "Jeffrey Herlings teki vahvan nousun toisessa erässä.",
+        "Lucas Coenen vei nimiinsä Saksan GP:n kokonaiskilpailun."
       ],
       "mx2_quali": [
-        "Camden McLellan oli nopein MX2-luokan aika-ajossa.",
-        "Janis Martins Reisulis varmisti toisen lähtöpaikan."
+        "Camden McLellan oli nopein MX2-karsinnassa.",
+        "Janis Martins Reisulis näytti vauhtiaan karsinnoissa."
       ],
       "mx2_race": [
-        "Mathis Valin ja Sacha Coenen jakoivat erävoitot MX2-luokassa.",
-        "Sacha Coenen ja Mathis Valin päätyivät tasapisteisiin GP:n kärjessä.",
-        "Mathis Valin vei GP-voiton parempien erätulosten turvin."
+        "Mathis Valin ja Sacha Coenen taistelivat voitosta.",
+        "Mathis Valin voitti toisen erän ja kokonaiskilpailun.",
+        "Sacha Coenen ja Mathis Valin jakoivat pisteet tiukassa kisassa."
       ],
       "standings": [
-        "Lucas Coenen jatkaa MXGP-sarjan johdossa.",
-        "Jeffrey Herlings pysyi toisena MXGP-sarjassa.",
-        "Romain Febvre piti kolmannen sijan MXGP-sarjassa."
+        "Lucas Coenen jatkaa MXGP-sarjan kärjessä.",
+        "Jeffrey Herlings pysyi toisena MXGP-pisteissä.",
+        "Romain Febvre piti kolmannen sijansa MXGP-sarjassa."
       ]
     },
     "en": {
       "mxgp_quali": [
         "Romain Febvre claimed pole position in Saturday qualifying.",
-        "No major surprises in the top five qualifying positions."
+        "Lucas Coenen showed his strength in difficult conditions."
       ],
       "mxgp_race": [
-        "Lucas Coenen dominated both MXGP motos to win the GP.",
-        "Jeffrey Herlings charged to second in the second moto.",
-        "Lucas Coenen secured the overall victory in Germany."
+        "Lucas Coenen dominated both MXGP motos.",
+        "Jeffrey Herlings made a strong comeback in moto two.",
+        "Lucas Coenen claimed the overall German GP victory."
       ],
       "mx2_quali": [
-        "Camden McLellan set the fastest lap in MX2 qualifying.",
-        "Janis Martins Reisulis secured the second gate pick."
+        "Camden McLellan was fastest in MX2 qualifying.",
+        "Janis Martins Reisulis showed his pace in qualifying."
       ],
       "mx2_race": [
-        "Mathis Valin and Sacha Coenen split moto wins in MX2.",
-        "Sacha Coenen and Mathis Valin tied on points for the GP win.",
-        "Mathis Valin took the MX2 GP overall win on countback."
+        "Mathis Valin and Sacha Coenen battled for the win.",
+        "Mathis Valin won moto two and the overall.",
+        "Sacha Coenen and Mathis Valin shared points in a tight battle."
       ],
       "standings": [
-        "Lucas Coenen held firm at the top of the MXGP standings.",
+        "Lucas Coenen holds firm at the top of MXGP standings.",
         "Jeffrey Herlings held firm in second place in MXGP.",
-        "Romain Febvre held firm in third position in MXGP."
+        "Romain Febvre held firm in third place in MXGP."
       ]
     }
   },
