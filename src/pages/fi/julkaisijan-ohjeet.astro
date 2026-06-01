@@ -1,0 +1,183 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { Content } from '../../../JULKAISIJAN_OHJEET.md';
+
+const lang = 'fi';
+const title = 'Julkaisijan ohjeet';
+const description = 'Photo & Moto -sivuston sisällöntuottajan ja ylläpitäjän käsikirja.';
+---
+
+<BaseLayout title={title} lang={lang} description={description} noindex={true}>
+  <section class="docpage">
+    <div class="container docpage-container">
+      <div class="docpage-prose">
+        <Content />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Layout — wide enough for tables, narrow enough for comfortable reading */
+  .docpage {
+    padding: 2rem 0 4rem;
+    background: #fafaf9;
+  }
+  .docpage-container {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 0 1.25rem;
+  }
+  .docpage-prose {
+    background: #fff;
+    padding: 2.5rem 3rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Typography — match the article reading experience */
+  .docpage-prose :global(h1) {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #222;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+  }
+  .docpage-prose :global(h2) {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #222;
+    margin: 2.5rem 0 0.75rem;
+    padding-top: 1.25rem;
+    border-top: 2px solid #ff9900;
+    letter-spacing: -0.01em;
+  }
+  .docpage-prose :global(h2:first-child) {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+  }
+  .docpage-prose :global(h3) {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+    margin: 1.75rem 0 0.5rem;
+  }
+  .docpage-prose :global(h4) {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #444;
+    margin: 1.25rem 0 0.35rem;
+  }
+  .docpage-prose :global(p) {
+    line-height: 1.65;
+    color: #333;
+    margin: 0 0 1rem;
+  }
+  .docpage-prose :global(a) {
+    color: #ff9900;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  .docpage-prose :global(a:hover) {
+    color: #e68a00;
+  }
+  .docpage-prose :global(strong) {
+    color: #222;
+    font-weight: 700;
+  }
+  .docpage-prose :global(code) {
+    background: #f4f4f3;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 0.85em;
+    color: #c0392b;
+  }
+  .docpage-prose :global(pre) {
+    background: #f4f4f3;
+    padding: 1rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  .docpage-prose :global(pre code) {
+    background: transparent;
+    padding: 0;
+    color: #333;
+  }
+  .docpage-prose :global(ul),
+  .docpage-prose :global(ol) {
+    margin: 0 0 1rem;
+    padding-left: 1.5rem;
+  }
+  .docpage-prose :global(li) {
+    margin: 0.35rem 0;
+    line-height: 1.6;
+  }
+  .docpage-prose :global(hr) {
+    border: none;
+    border-top: 2px solid #eee;
+    margin: 2.5rem 0;
+  }
+  .docpage-prose :global(blockquote) {
+    border-left: 4px solid #ff9900;
+    margin: 1.25rem 0;
+    padding: 0.5rem 0 0.5rem 1.25rem;
+    background: #fff8e6;
+    border-radius: 0 6px 6px 0;
+    color: #5a4400;
+  }
+  .docpage-prose :global(blockquote p) {
+    margin: 0;
+  }
+  .docpage-prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0 1.5rem;
+    font-size: 0.92rem;
+  }
+  .docpage-prose :global(th),
+  .docpage-prose :global(td) {
+    text-align: left;
+    padding: 0.6rem 0.85rem;
+    border-bottom: 1px solid #eee;
+    vertical-align: top;
+  }
+  .docpage-prose :global(th) {
+    background: #f8f8f7;
+    font-weight: 700;
+    color: #444;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  .docpage-prose :global(em) {
+    color: #666;
+  }
+
+  /* Mobile */
+  @media (max-width: 720px) {
+    .docpage-prose {
+      padding: 1.5rem 1.25rem;
+    }
+    .docpage-prose :global(h1) {
+      font-size: 1.75rem;
+    }
+    .docpage-prose :global(h2) {
+      font-size: 1.3rem;
+    }
+    .docpage-prose :global(table) {
+      font-size: 0.85rem;
+    }
+    .docpage-prose :global(th),
+    .docpage-prose :global(td) {
+      padding: 0.5rem 0.5rem;
+    }
+  }
+</style>
