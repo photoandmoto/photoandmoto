@@ -18,10 +18,11 @@ julkaisun yhteydessä.
 
 1. [Yleistä](#yleistä)
 2. [Artikkelien kirjoittaminen — Decap CMS](#artikkelien-kirjoittaminen--decap-cms)
-3. [Tunnistamattomat kuvat — yllapito](#tunnistamattomat-kuvat--yllapito)
-4. [Galleriat — Hallitse galleriaa](#galleriat--hallitse-galleriaa)
-5. [Yleisimmät tilanteet](#yleisimmät-tilanteet)
-6. [Vianetsintä](#vianetsintä)
+3. [Käyttäjätilit ja oikeudet — IAM](#käyttäjätilit-ja-oikeudet--iam)
+4. [Tunnistamattomat kuvat — yllapito](#tunnistamattomat-kuvat--yllapito)
+5. [Galleriat — Hallitse galleriaa](#galleriat--hallitse-galleriaa)
+6. [Yleisimmät tilanteet](#yleisimmät-tilanteet)
+7. [Vianetsintä](#vianetsintä)
 
 ---
 
@@ -225,18 +226,182 @@ englanninkielinen versio poistetaan samalla kerralla.
 
 ---
 
-## Tunnistamattomat kuvat — yllapito
+## Käyttäjätilit ja oikeudet — IAM
 
-Tämä osio koskee ylläpitäjiä — sisällöntuottajat voivat ohittaa tämän.
+Tämä osio koskee `yllapito`-työkaluja (Tunnista kuva, Hallitse galleriaa,
+Käyttäjät). Decap CMS käyttää erillistä GitHub-pohjaista kirjautumista —
+ks. yllä oleva [Artikkelien kirjoittaminen](#artikkelien-kirjoittaminen--decap-cms).
+
+Photo & Moton ylläpitojohtoinen autentikointi perustuu **henkilökohtaisiin
+käyttäjätileihin**. Jokaisella työkaluja käyttävällä on oma
+sähköpostiosoite + salasana, ja ylläpitotyökalujen välilehdet näkyvät
+yksilöllisten oikeuksien mukaan. Vanha jaettu salasana on poistettu
+käytöstä.
 
 ### Kirjautuminen
 
 1. Avaa osoite: **<https://www.photoandmoto.fi/fi/yllapito>**
-2. Syötä salasana (`UPLOAD_PASSWORD`)
-3. Sisäänkirjautumisen jälkeen näet ylläpitäjän välilehdet:
-   - **Tarkista** — yhteisön ehdotusten tarkistus ja kuvien tunnistus
-   - **Lähetä kuva** — uuden tunnistamattoman kuvan lähettäminen
-   - **Hallitse galleriaa** — julkaistujen gallerioiden hallinta
+2. Syötä sähköposti ja salasana
+3. Kirjaudu sisään — näet vain ne välilehdet joihin sinulla on oikeudet
+
+Istunto pysyy voimassa 30 päivää selaimen evästeen kautta. Voit kirjautua ulos
+yläpalkin **Kirjaudu ulos** -painikkeesta milloin tahansa.
+
+### Salasanan unohtaminen
+
+Jos olet unohtanut salasanasi, käytä **Unohditko salasanan?** -linkkiä
+kirjautumissivulla, tai mene suoraan osoitteeseen
+[/fi/palauta-salasana/](/fi/palauta-salasana/).
+
+Palautusprosessi:
+
+1. Syötä sähköpostiosoitteesi
+2. Vastaa **3 turvakysymyksestä vähintään 2** oikein (kysymykset olet itse
+   asettanut tiliä ottaessa)
+3. Aseta uusi salasana
+4. Kirjaudu sisään uudella salasanalla
+
+Jos et muista turvakysymystesi vastauksia, työkalun ylläpitäjä voi luoda
+sinulle **uuden provisiointilinkin**, jolla pääset asettamaan salasanan ja
+turvakysymykset uudelleen.
+
+> **Huom!** Palautusyrityksistä jää jälki ylläpidon **Palautuslokiin** — sekä
+> onnistuneet että epäonnistuneet yritykset, IP-osoitteineen. Tämä estää
+> väärinkäyttöä: jos näet lokissa yrittämistä joita et tehnyt itse,
+> ota yhteyttä ylläpitäjään.
+
+### Oikeudet
+
+Jokaisella käyttäjällä on **rooli** (Editor tai Admin) ja **viisi erillistä
+oikeutta**, jotka määrittelevät mitä työkaluja hän näkee. Oikeudet ovat
+riippumattomia roolista — admin voi olla luonteeltaan rajoitettu ja editor
+voi saada laajat oikeudet.
+
+| Tunnus | Oikeus | Mitä mahdollistaa |
+|---|---|---|
+| **T** | Tarkista | Yhteisön ehdotusten tarkistus ja kuvien tunnistaminen (Tarkista-välilehti) |
+| **L** | Lähetä kuva | Uusien tunnistettavien kuvien lataaminen (Lähetä kuva -välilehti) |
+| **G** | Hallitse galleriaa | Julkaistujen gallerioiden hallinta: kuvatekstit, siirrot, poistot, gallerian uudelleennimeäminen (Hallitse galleriaa -välilehti) |
+| **A** | Hallitse artikkeleita | Pääsy Decap CMS:ään (Hallitse artikkeleita ↗ -linkki avaa erillisen GitHub-kirjautumisen) |
+| **I** | Hallitse käyttäjiä | Tämän IAM-paneelin käyttö: uusien käyttäjien luonti, oikeuksien muokkaus, deaktivointi (Käyttäjät-välilehti) |
+
+Tunnukset T/L/G/A/I näkyvät väribadgeina Käyttäjät-listassa.
+
+### Käyttäjien hallinta
+
+*Tämä osio koskee vain käyttäjiä, joilla on **I** (Hallitse käyttäjiä) -oikeus.*
+
+Käyttäjät-välilehti näkyy työkalun oikealla puolella, eroteltuna muista
+välilehdistä. Siellä näet taulukon kaikista käyttäjistä: nimi, sähköposti,
+rooli, oikeudet badgeina, aktiivisuusstatus, viimeisin kirjautumisaika sekä
+toiminnot.
+
+#### Uuden käyttäjän luominen
+
+1. Klikkaa **+ Lisää uusi käyttäjä** -painiketta
+2. Täytä etunimi, sukunimi, sähköpostiosoite
+3. Valitse rooli (Editor on yleensä oikea valinta uusille toimittajille)
+4. Valitse oikeudet ruksaamalla kohdat. Oletukset uudelle editorille:
+   - ☑ Tarkista
+   - ☑ Lähetä kuva
+   - ☑ Hallitse artikkeleita
+   - ☐ Hallitse galleriaa (anna vain kokeneille)
+   - ☐ Hallitse käyttäjiä (admin-tasoinen oikeus)
+5. Klikkaa **Luo ja tee linkki**
+6. **Kopioi näyttöön ilmestyvä provisiointilinkki** ja lähetä se käyttäjälle
+   (sähköpostilla, viestillä, miten vain)
+
+> **Huom!** Linkki näytetään vain kerran. Jos suljet ikkunan ennen kopioimista,
+> sinun on luotava uusi linkki **Uusi linkki** -painikkeella käyttäjän riviltä.
+
+#### Provisiointilinkit
+
+Provisiointilinkki on **kertakäyttöinen, 7 päivää voimassa oleva** URL,
+jolla käyttäjä aktivoi tilinsä. Linkin muoto:
+
+`https://www.photoandmoto.fi/fi/aseta-salasana?token=<satunnaisesti-luotu-tunnus>`
+
+Kun käyttäjä avaa linkin:
+
+1. Hän näkee `aseta-salasana`-sivun jossa hän asettaa:
+   - Vahvan salasanan (vähintään 12 merkkiä, sekä isoja että pieniä kirjaimia,
+     numeroita ja erikoismerkkejä)
+   - **3 turvakysymystä** ja vastaukset niihin (käytetään salasanan
+     palauttamisessa)
+2. Vahvistaa asetukset
+3. Saa onnistumisilmoituksen ja voi kirjautua sisään
+
+Linkki katoaa käytöstä heti kun käyttäjä vahvistaa asetuksensa. Jos linkki
+ehtii vanheta (7 päivää) tai käyttäjä hukkaa sen, luo uusi:
+
+#### Uuden linkin luominen olemassa olevalle käyttäjälle
+
+Käyttäjät-taulukosta klikkaa kyseisen rivin **Uusi linkki** -painiketta.
+Vahvistus-ikkuna kertoo selvästi, että **käyttäjän nykyinen salasana ja
+turvakysymykset poistetaan** — hänen on asetettava ne uudelleen avatessaan
+linkin. Tämä on tarkoituksellinen turvatoimenpide: linkin uudelleenluonti
+voidaan tehdä myös tilanteissa, joissa epäillään tilin väärinkäyttöä.
+
+Deaktivoidulle käyttäjälle uuden linkin luominen toimii samalla tavalla, mutta
+se myös **reaktivoi tilin** automaattisesti.
+
+#### Käyttäjän tietojen muokkaaminen
+
+Klikkaa **Muokkaa**-painiketta käyttäjän riviltä. Voit muuttaa:
+
+- Etunimi, sukunimi
+- Rooli
+- Oikeudet (T/L/G/A/I)
+
+Sähköpostiosoitetta ei voi muuttaa jälkikäteen — jos käyttäjällä vaihtuu
+sähköposti, deaktivoi vanha tili ja luo uusi.
+
+#### Käyttäjän deaktivointi
+
+Klikkaa **Poista**-painiketta käyttäjän riviltä. "Poista" on hieman
+harhaanjohtava nimi — tili **deaktivoidaan**, ei poisteta tietokannasta:
+
+- Käyttäjän istunto lopetetaan välittömästi
+- Hän ei voi enää kirjautua sisään
+- Historia (esim. kenen lisäämä mikäkin kuva on) säilyy
+- Reaktivointi on mahdollista luomalla uusi provisiointilinkki **Uusi linkki**
+  -painikkeesta (sama painike toimii myös deaktivoiduille käyttäjille)
+
+Viimeisen aktiivisen admin-IAM-käyttäjän deaktivointi on estetty — muuten
+ylläpitojärjestelmä lukittuisi.
+
+### Palautusloki
+
+Käyttäjät-välilehden alaosassa on kokoontaitettava **Palautusloki
+(viimeisimmät 50 yritystä)** -osio. Se kirjaa kaikki salasanan
+palautusyritykset:
+
+- ✓ (vihreä) = onnistunut palautus
+- ✗ (punainen) = epäonnistunut yritys (väärät turvakysymysvastaukset,
+  vanhentunut tunnus tms.)
+
+Jokaisesta merkinnästä näkyy sähköpostiosoite (jos syötetty), IP-osoite ja
+yrityksen ajankohta. Mikäli näet tunnistamattomia yrityksiä tai paljon
+epäonnistuneita peräkkäin — etenkin osoitteille jotka eivät kuulu omille
+käyttäjillesi — tämä voi olla merkki kohdistuneesta hyökkäyksestä. Ota
+yhteyttä kehittäjään tilanteessa, jossa lokissa näkyy epäilyttävää toimintaa.
+
+---
+
+## Tunnistamattomat kuvat — yllapito
+
+Tämä osio koskee ylläpitäjiä — sisällöntuottajat voivat ohittaa tämän.
+Kirjautuminen ja oikeudet on kuvattu yllä osiossa
+[Käyttäjätilit ja oikeudet](#käyttäjätilit-ja-oikeudet--iam) — tässä keskitytään
+työkalun välilehtien käyttöön.
+
+Näkyvät välilehdet oikeuksien mukaan:
+
+- **Tarkista** (oikeus T) — yhteisön ehdotusten tarkistus ja kuvien tunnistus
+- **Lähetä kuva** (oikeus L) — uuden tunnistamattoman kuvan lähettäminen
+- **Hallitse galleriaa** (oikeus G) — julkaistujen gallerioiden hallinta
+- **Käyttäjät** (oikeus I) — IAM-paneeli (ks. yllä)
+- **Hallitse artikkeleita ↗** (oikeus A) — linkki Decap CMS:ään
 
 ### Uuden tunnistamattoman kuvan lähettäminen
 
@@ -375,6 +540,20 @@ Suomenkielinen versio on muokkauksesi lähteenä, joten käännöstä ei lähtö
 Jos Automaattisesti käännetty olisi ollut päällä, suomenkielisen artikkelin
 seuraava tallennus olisi kirjoittanut englanninkielisen version yli.
 
+### "En pääse kirjautumaan — olen unohtanut salasanan"
+
+Käytä [/fi/palauta-salasana/](/fi/palauta-salasana/) ja vastaa
+turvakysymyksiisi (2 / 3 riittää oikein). Jos et muista vastauksiakaan,
+pyydä ylläpitäjää luomaan sinulle uusi provisiointilinkki Käyttäjät-taulukon
+**Uusi linkki** -painikkeella. Tämä nollaa tilisi salasanan ja
+turvakysymykset; asetat ne uudelleen linkin avatessa.
+
+### "Joku väärä kirjautui sisään minun tililläni"
+
+Vaihda salasana välittömästi (palauta-salasana-linkki tai pyydä admin-IAM
+-oikeuksilla varustettua kollegaa luomaan uusi provisiointilinkki). Ilmoita
+kehittäjälle, jolloin hän voi tarkistaa Palautuslokin ja istunnot.
+
 ### "Vahingossa poistin artikkelin — voiko palauttaa?"
 
 Kyllä, mutta se vaatii kehittäjän apua. Sano hänelle:
@@ -469,4 +648,4 @@ kerro kehittäjälle.
 
 ---
 
-*Viimeksi päivitetty: kesäkuu 2026*
+*Viimeksi päivitetty: kesäkuu 2026 (lisätty IAM-osio)*

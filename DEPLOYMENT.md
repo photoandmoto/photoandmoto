@@ -70,7 +70,11 @@ The "Tunnista kuva" photo-identification flow and gallery management remain in
 the original custom admin.
 
 - **URL:** `https://www.photoandmoto.fi/fi/yllapito`
-- **Login:** `UPLOAD_PASSWORD` (single shared password)
+- **Login:** per-user IAM — each editor has their own email + password + 5
+  permission flags. See § Identity & access management (IAM) below for the
+  full breakdown. A legacy `UPLOAD_PASSWORD` shared-password fallback is
+  still accepted on `/api/mystery/*` during the rollout window and will be
+  removed in a follow-up.
 - Backed by `functions/api/mystery/*` and Cloudflare D1.
 
 ### Article frontmatter reference
@@ -140,7 +144,7 @@ In Pages project → **Settings** → **Environment variables** → **Production
 
 | Secret | Required | What it is |
 |---|---|---|
-| `UPLOAD_PASSWORD` | yes | Password for the `/fi/yllapito` admin login (mystery photos + galleries). |
+| `UPLOAD_PASSWORD` | yes (transitional) | Legacy shared password for `/api/mystery/*` endpoints. Still accepted alongside IAM session cookies during the rollout window. Will be removed in a follow-up. |
 | `GITHUB_APP_ID` | yes | Numeric ID of the `Photoandmoto Publisher` GitHub App. |
 | `GITHUB_APP_INSTALLATION_ID` | yes | Numeric installation ID for that App on the `photoandmoto` repo. |
 | `GITHUB_APP_PRIVATE_KEY` | yes | Full PEM contents of the App's private key, including the `-----BEGIN/END-----` lines. |
@@ -148,6 +152,10 @@ In Pages project → **Settings** → **Environment variables** → **Production
 | `OAUTH_GITHUB_CLIENT_ID` | yes (prod) | GitHub OAuth App client ID — powers Decap login. |
 | `OAUTH_GITHUB_CLIENT_SECRET` | yes (prod) | GitHub OAuth App client secret. **Encrypt this.** |
 | `OAUTH_REDIRECT_URI` | yes (prod) | `https://www.photoandmoto.fi/oauth/callback` |
+| `SUPER_ADMIN_EMAIL` | one-shot | Email of the first IAM superadmin to seed. Used only once per environment. Remove after seeding. |
+| `SUPER_ADMIN_FIRST_NAME` | one-shot | First name for the seeded superadmin. Remove after seeding. |
+| `SUPER_ADMIN_LAST_NAME` | one-shot | Last name for the seeded superadmin. Remove after seeding. |
+| `SUPER_ADMIN_SEED_SECRET` | one-shot, recommended | Defence-in-depth shared secret. If set, `POST /api/auth/seed-superadmin` requires `{ seed_secret: "..." }` in the body. Remove after seeding. |
 
 All secrets must be marked **Encrypt** in the dashboard. After adding/changing
 any secret, the next deployment picks it up; running deployments keep using the
@@ -214,9 +222,99 @@ key as a **repo secret** (separate from the Cloudflare copy):
 
 - Visit the URL → site renders
 - Hit `/api/mystery/featured` → returns JSON (Pages Functions + D1 binding work)
-- Log in to `/fi/yllapito` with `UPLOAD_PASSWORD` → admin UI appears
+- Visit `/fi/yllapito` → the new login form (email + password) is shown
 - Visit `/admin/` → Decap loads; "Login with GitHub" completes; collections show
 - In Decap, edit an article → a commit lands on `dev` authored by your user
+
+For a brand-new environment, no IAM users exist yet — you must seed the
+first superadmin before login works. See § Identity & access management (IAM)
+below.
+
+---
+
+## Identity & access management (IAM)
+
+The `/fi/yllapito` admin is gated by a per-user IAM system. Each editor has
+an email + password and a set of permission flags (`tarkista`, `lahetakuva`,
+`hallitse_galleriaa`, `hallitse_artikkeleita`, `admin_iam`). Login returns a
+signed 30-day session cookie. Schema (`users`, `provisioning_tokens`,
+`recovery_attempts`) is bootstrapped lazily by `functions/api/auth/init.js` on
+the first auth API hit.
+
+Design rationale is in [IAM_DESIGN.md](IAM_DESIGN.md). User-facing manual
+(login flow, recovery, Käyttäjät tab walkthrough) is in
+[JULKAISIJAN_OHJEET.md](JULKAISIJAN_OHJEET.md) § Käyttäjätilit ja oikeudet.
+
+### Bootstrapping the first super-admin (new environments only)
+
+A fresh environment has zero users in `users`. The site loads fine for the
+public, but nobody can log into `/fi/yllapito`. One-time bootstrap:
+
+1. Set 4 env vars on the Pages project (Production environment):
+   - `SUPER_ADMIN_EMAIL` (e.g. `photoandmoto@gmail.com`)
+   - `SUPER_ADMIN_FIRST_NAME`
+   - `SUPER_ADMIN_LAST_NAME`
+   - `SUPER_ADMIN_SEED_SECRET` — generate a random GUID, save it for step 3
+2. Trigger a redeploy (Deployments → latest → ⋯ → Retry deployment), wait
+   ~2 min for env vars to activate
+3. POST to the seed endpoint with the secret:
+   ```powershell
+   $body = '{"seed_secret":"<your-guid>"}'
+   Invoke-RestMethod -Uri "https://www.photoandmoto.fi/api/auth/seed-superadmin" `
+     -Method Post -Body $body -ContentType "application/json"
+   ```
+   Response includes `success: true`, `user.id: 1`, and a one-time
+   `provisioning_link`. Copy that link.
+4. Open the link in your browser → set password + 3 security questions on
+   `/fi/aseta-salasana` → submit
+5. Verify login works: `POST /api/auth/login` with email + password should
+   return `{ success: true, user: {...} }`
+6. **Remove all 4 `SUPER_ADMIN_*` env vars** from the Pages project. The
+   endpoint is already self-locked by the no-prior-users check, but removing
+   the vars is hygiene.
+
+The seed endpoint is idempotent: it refuses to run if any user exists. To
+re-seed from scratch, you must first delete all rows from `users` in D1.
+
+### Routine user management
+
+Day-to-day user CRUD lives in the Käyttäjät tab on `/fi/yllapito` (visible to
+users with `admin_iam`). The endpoints under `functions/api/auth/` are
+session-authenticated; no separate admin password.
+
+- **Add user:** + Lisää uusi käyttäjä → fill form → a one-time 7-day
+  provisioning link is shown. Send it to the user out-of-band (email, Slack,
+  whatever). They activate by setting password + security questions on
+  `/fi/aseta-salasana`.
+- **Edit user:** Muokkaa — changes name, role, permissions. Email is locked
+  (immutable after creation).
+- **Regenerate provisioning link:** Uusi linkki — invalidates any previous
+  link, clears the user's password + security questions, generates a new
+  7-day link. Use when a user forgets their security answers or you suspect
+  account compromise. Also reactivates a deactivated user.
+- **Deactivate user:** Poista — ends the user's session immediately, prevents
+  future login. Does not delete the row (history preserved). The last active
+  `admin_iam` user is protected from deactivation to prevent lockout.
+- **Audit log:** the Käyttäjät tab includes a `Palautusloki` (recovery
+  attempts) section, lazy-loaded on expand. Shows the last 50 attempts —
+  email tried, IP, timestamp, success/fail. Watch for clusters of failed
+  attempts from unfamiliar IPs.
+
+### Removing the legacy `UPLOAD_PASSWORD` fallback
+
+During the IAM rollout, `/api/mystery/*` endpoints accept either a session
+cookie OR the legacy `UPLOAD_PASSWORD`. Once IAM has been stable in
+production for 24–48h, remove the fallback:
+
+1. Delete `functions/api/mystery/verify.js`
+2. In `functions/api/mystery/{upload,admin,publish,gallery-manage,galleries}.js`,
+   replace `requireAuthOrLegacyPassword` with `requireAuth`
+3. Remove `requireAuthOrLegacyPassword` from `functions/_lib/auth.js`
+4. Remove the `verifyPw()` helper from `src/pages/fi/yllapito.astro` (dead code)
+5. After the change deploys, remove `UPLOAD_PASSWORD` env var from both
+   environments
+
+A shared draft of this is tracked in IAM Phase 7.
 
 ---
 
@@ -381,6 +479,7 @@ the Domainkeskus parking page, contact Domainkeskus support (reference ticket
 | Code, gallery images, articles | ✅ | Git history on GitHub |
 | D1 mystery photos table | ⚠️ | Not backed up automatically. D1 time-travel gives 30-day point-in-time recovery, no exported snapshots. |
 | D1 comments table | ⚠️ | Same |
+| D1 users + provisioning_tokens + recovery_attempts tables (IAM) | ⚠️ | Same. Password hashes are bcrypt'd so an export is sensitive but not directly usable. |
 | Pages secrets | ❌ | Stored only in Cloudflare. Keep the GitHub App `.pem`, OAuth secret, and `UPLOAD_PASSWORD` in a password manager. |
 
 ### Manual D1 export (recommended monthly)

@@ -74,8 +74,39 @@ served from `public/admin/`.
 The community photo-identification flow and gallery management run in the
 original custom admin.
 
-- **URL:** `https://www.photoandmoto.fi/fi/yllapito` — `UPLOAD_PASSWORD` login
+- **URL:** `https://www.photoandmoto.fi/fi/yllapito` — personal-account login
+  (email + password, see [Authentication & access control](#authentication--access-control) below)
 - Backed by `functions/api/mystery/*` and Cloudflare D1
+
+---
+
+## Authentication & access control
+
+The custom admin (`/fi/yllapito`) is gated by a per-user IAM system. Decap
+CMS at `/admin/` uses GitHub OAuth and is independent.
+
+- **Login:** email + password at `/fi/yllapito`, returns a 30-day session cookie
+- **Password recovery:** 3 security questions (2 of 3 correct to reset),
+  at `/fi/palauta-salasana`
+- **5 per-user permission flags** control which yllapito tabs render:
+  `tarkista`, `lahetakuva`, `hallitse_galleriaa`, `hallitse_artikkeleita`,
+  `admin_iam`. A user can have any combination; role (Editor/Admin) is
+  cosmetic
+- **Provisioning:** new users are created from the Käyttäjät tab (requires
+  `admin_iam`) and activate via a one-time, 7-day link to `/fi/aseta-salasana`
+- **Audit:** the Käyttäjät tab includes a recovery-attempt log (last 50
+  attempts, success/fail, IP, timestamp)
+- Backend lives in `functions/api/auth/*`; auth lib + schema bootstrap in
+  `functions/_lib/auth.js` and `functions/api/auth/init.js`
+
+The full design rationale is in [IAM_DESIGN.md](IAM_DESIGN.md). The
+user-facing manual section is in [JULKAISIJAN_OHJEET.md](JULKAISIJAN_OHJEET.md)
+§ Käyttäjätilit ja oikeudet. Operational details (env vars, seed flow,
+backup) are in [DEPLOYMENT.md](DEPLOYMENT.md).
+
+Mystery endpoints still accept a legacy `UPLOAD_PASSWORD` as a dual-mode
+fallback during the rollout window. This will be removed in a follow-up
+commit once IAM has been stable in production for 24–48h.
 
 ---
 
