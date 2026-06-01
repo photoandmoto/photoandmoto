@@ -16,6 +16,7 @@ const alternatePath = getAlternateLangPath(currentPath, alternateLang);
   <a 
     href={alternatePath}
     class="lang-link" data-no-newtab
+    data-set-lang-pref={alternateLang}
     aria-label={`Switch to ${languages[alternateLang]}`}
   >
     <span class="lang-current">{lang.toUpperCase()}</span>
