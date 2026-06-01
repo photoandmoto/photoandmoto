@@ -1,11 +1,9 @@
-# Decap CMS Migration
+# Decap CMS Migration — archived
 
-Record of the migration from the custom article admin to Decap CMS — what
-shipped, what was deliberately skipped, and what's still open.
-
-For how the system works **today**, see `DEPLOYMENT.md` § Content management.
-This document is the migration history; once the remaining items are done it
-becomes an archive.
+**Status: complete.** All three open items below shipped in the second
+migration session (June 1, 2026). This document is now a historical record
+of what was done and why. For how the system works today, see
+`DEPLOYMENT.md` § Content management and `README.md` § Editing content.
 
 ---
 
@@ -95,21 +93,68 @@ in normal use. The fallback would have been dead code. Skipped.
 
 ## Open — still to do
 
-1. **Wire `/yllapito` to Decap.** Remove the obsolete `Lähetä artikkeli` and
-   `Hallitse artikkeleita` tabs from `src/pages/fi/yllapito.astro` (article CRUD
-   is Decap's job now). Add a `Hallitse artikkeleita` entry that links to
-   `/admin/`. Leave the mystery/galleries tabs untouched.
+All items closed in session 2 (June 1, 2026). See `## Completed in session 2`
+below.
 
-2. **Auto-deletion workflow with guardrails.** Decap article/category deletes
-   currently reach `dev`/staging only; production needs a manual `dev → main`
-   promote. Build a guarded auto-promotion so deletes propagate to production
-   safely (confirmation step or delayed PR auto-merge). Applies to both article
-   and category deletions.
+---
 
-3. **Cleanup of `functions/api/articles/*`.** `list.js`, `get.js`, `delete.js`
-   are unused now that Decap owns article CRUD (~600 lines). `publish.js` stays
-   — its `mode=production` path still backs the `/yllapito` promote button.
-   Remove the three dead files once #1 is done.
+## Completed in session 2
+
+### 1. Wired `/yllapito` to Decap — done
+
+Removed the obsolete `Lähetä artikkeli` and `Hallitse artikkeleita` tabs from
+`src/pages/fi/yllapito.astro`. Replaced with a single link-style tab
+(`Hallitse artikkeleita ↗`) that opens Decap at `/admin/` in a new window. The
+mystery/galleries tabs are untouched, as planned.
+
+Commit: `7a40f15` (plus `9401a67` for an unrelated guard that surfaced during
+the cleanup).
+
+### 2. Auto-deletion workflow with guardrails — done
+
+The approach landed simpler than the original plan. Instead of building a
+GitHub Action to auto-promote `dev → main` for content edits, we switched
+Decap's commit target directly to `main` (`branch: dev` → `branch: main` in
+`public/admin/config.yml`). Editor saves go straight to production in ~2
+minutes. Decap's built-in preview pane is the review step.
+
+Rationale: the two-step `dev → main` gate exists for code review, where
+staging is the smoke-test. For content, Decap already provides a preview
+before save, so the gate adds nothing for editors and just adds friction.
+Code changes by developers still follow the `dev → PR → main` flow.
+
+Decap's built-in delete-confirmation dialog ("Haluatko varmasti poistaa
+tämän julkaistun artikkelin?" once the Finnish locale was added) is the
+guardrail against accidental deletes. Recovery for a bad delete is
+`git revert <hash>` — ~30 seconds for the developer, faster than any
+automated grace-period system would be to operate.
+
+A custom Finnish locale was registered inline in `public/admin/index.html`,
+because Decap ships 33 locales and `fi` is not one of them. Covers the full
+editor-facing key tree (auth, app, collection, editor, mediaLibrary, ui)
+verified against Decap's English source. Missing keys fall back to English.
+
+Commits: `2c6e1a3` (branch switch) and `5e66558` (Finnish locale, correct
+structure — the first attempt `34b600d` had the wrong key nesting and was
+superseded).
+
+### 3. Cleanup of `functions/api/articles/*` and dead `/yllapito` code — done
+
+Removed in three commits:
+
+- `4cfbc87` — ~1,600 lines of dead `art*` / `hart*` JavaScript from
+  `src/pages/fi/yllapito.astro` (article-form handlers, edit mode, markdown
+  toolbar, SEO autofill, docx import, preview wiring, review gate, article
+  list, filter UI, promote/delete handlers)
+- `e79b210` — the entire `functions/api/articles/` folder: `list.js`,
+  `get.js`, `delete.js`, `publish.js` (~1,750 lines)
+- `c424f7c` — ~300 lines of matching dead CSS (`.art-*` and `.hart-*` rules)
+
+`functions/api/mystery/publish.js` is unaffected — that one backs the
+`Julkaise Galleriaan` button for mystery photos and is unrelated to articles.
+
+Total net cleanup: ~3,500 lines of dead code removed, ~260 lines of Finnish
+locale added.
 
 ---
 

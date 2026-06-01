@@ -15,6 +15,14 @@ const lang = 'fi';
               <span class="ohje-toggle__icon">▸</span>
             </button>
             <div class="ohje-content">
+              <a href="/fi/julkaisijan-ohjeet/" class="ohje-fullguide" target="_blank" rel="noopener">
+                <span class="ohje-fullguide__icon">📖</span>
+                <span class="ohje-fullguide__text">
+                  <strong>Avaa täydellinen julkaisijan ohjekirja</strong>
+                  <small>Decap CMS, tunnistamattomat kuvat, galleriat, vianetsintä</small>
+                </span>
+                <span class="ohje-fullguide__arrow">↗</span>
+              </a>
               <div class="ohje-section">
                 <span class="ohje-section__title">Tarkista-välilehti</span>
                 <div class="ohje-subsection">
@@ -1568,6 +1576,55 @@ function openDeleteGalleryPanel() {
   padding-top:0;
   padding-bottom:0;
 }
+
+/* Full-manual link at the top of the OHJE block */
+.ohje-fullguide{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:12px 14px;
+  margin:0 0 16px;
+  background:#fff8e6;
+  border:1px solid #f0d27a;
+  border-radius:8px;
+  text-decoration:none;
+  color:#5a4400;
+  transition:all .15s ease;
+}
+.ohje-fullguide:hover{
+  background:#fff2d0;
+  border-color:#ff9900;
+  transform:translateY(-1px);
+  box-shadow:0 2px 8px rgba(255,153,0,.15);
+}
+.ohje-fullguide__icon{
+  font-size:1.5rem;
+  flex:0 0 auto;
+}
+.ohje-fullguide__text{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  flex:1 1 auto;
+  min-width:0;
+}
+.ohje-fullguide__text strong{
+  font-size:.95rem;
+  color:#5a4400;
+  line-height:1.3;
+}
+.ohje-fullguide__text small{
+  font-size:.78rem;
+  color:#8a6d28;
+  line-height:1.3;
+}
+.ohje-fullguide__arrow{
+  font-size:1.1rem;
+  font-weight:700;
+  color:#ff9900;
+  flex:0 0 auto;
+}
+
 .ohje-section{margin-bottom:10px}
 .ohje-section:last-child{margin-bottom:0}
 .ohje-section__title{
