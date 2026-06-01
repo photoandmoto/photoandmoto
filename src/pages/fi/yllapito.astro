@@ -85,21 +85,24 @@ const lang = 'fi';
         <div class="mp-header__right">
           
           <div id="adminActions" class="admin-actions" style="display:none;">
+            <span id="adminGreeting" class="admin-greeting"></span>
             <button id="adminLogout" class="admin-logout">Kirjaudu ulos</button>
           </div>
         </div>
       </div>
 
       <!-- Admin login panel (small, shown on demand) -->
-      <div id="adminPanel" class="admin-panel">
+      <div id="adminPanel" class="admin-panel" style="display:none;">
         <div id="adminAuth" class="admin-auth">
+          <input type="email" id="adminEmail" class="inp inp--email" placeholder="Sähköposti" autocomplete="username" />
           <div class="pw-wrap">
-            <input type="password" id="adminPw" class="inp inp--pw" placeholder="Salasana" />
+            <input type="password" id="adminPw" class="inp inp--pw" placeholder="Salasana" autocomplete="current-password" />
             <button type="button" class="pw-eye" id="pwEye" aria-label="Näytä salasana" tabindex="-1">👁</button>
             <div class="pw-caps" id="pwCaps" style="display:none;">⚠ Caps Lock päällä</div>
           </div>
           <button id="adminPwBtn" class="btn">Kirjaudu</button>
-          <span id="adminPwErr" class="err-msg" style="display:none;">Väärä salasana</span>
+          <span id="adminPwErr" class="err-msg" style="display:none;">Väärät kirjautumistiedot</span>
+          <a href="/fi/palauta-salasana/" class="admin-forgot-link">Unohditko salasanan?</a>
         </div>
       </div>
 
@@ -194,7 +197,7 @@ const lang = 'fi';
 </BaseLayout>
 
 <script>
-let photos=[],adminPw=null,curFilter=null,curPhoto=null,adminLastVisit=null;
+let photos=[],adminPw=null,curFilter=null,curPhoto=null,adminLastVisit=null,currentUser=null;
 let cachedGalleries=null; // cached list from /api/mystery/galleries
 const voted=JSON.parse(localStorage.getItem('pm_v')||'{}');
 const grid=document.getElementById('grid');
@@ -902,44 +905,59 @@ if (_pwInp) {
   _pwInp.addEventListener('keyup', checkCaps);
 }
 
-// Admin login — on success: capture old lastVisit for this session's "new" badges,
-// then update lastVisit to NOW for the NEXT session.
+// Admin login — IAM (Phase 4b). Calls /api/auth/login. On success the
+// session cookie is set; adminPw becomes a sentinel string so existing
+// `if(adminPw)` checks throughout this page still work — actual auth on the
+// wire comes from the cookie.
 document.getElementById('adminPwBtn').addEventListener('click',async()=>{
+  const email=document.getElementById('adminEmail').value.trim();
   const pw=document.getElementById('adminPw').value;
-  if(await verifyPw(pw)){
-    adminPw=pw;
-    cachedGalleries=null; // ensure fresh fetch under new credentials
-    adminLastVisit=localStorage.getItem('pm_admin_lastVisit'); // previous login's timestamp
-    localStorage.setItem('pm_admin_lastVisit', new Date().toISOString()); // for next session
-    // UI transitions
-    document.getElementById('adminPanel').style.display='none';
-    document.getElementById('adminActions').style.display='flex';
-    document.getElementById('tabTarkista').style.display='';
-    document.getElementById('adminTabs').style.display='flex';
-    document.getElementById('mpSubCommunity').style.display='none';
-    document.getElementById('mpSubAdmin').style.display='block';
-    // Restore collapsed preference (default: collapsed)
-    if(localStorage.getItem('pm_ohje_expanded')==='1'){
-      document.getElementById('mpSubAdmin').classList.remove('mp-sub--collapsed');
+  const errEl=document.getElementById('adminPwErr');
+  if(!email || !pw){
+    errEl.textContent='Anna sähköposti ja salasana';
+    errEl.style.display='inline';
+    return;
+  }
+  try {
+    const r = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pw }),
+    });
+    if (!r.ok) {
+      errEl.textContent = r.status === 429 ? 'Liian monta yrittänyt. Yritä myöhemmin.' : 'Väärät kirjautumistiedot';
+      errEl.style.display='inline';
+      return;
     }
+    const data = await r.json();
+    currentUser = data.user;
+    adminPw = '__SESSION__'; // truthy sentinel for existing if(adminPw) checks
+    cachedGalleries=null;
+    adminLastVisit=localStorage.getItem('pm_admin_lastVisit');
+    localStorage.setItem('pm_admin_lastVisit', new Date().toISOString());
     document.getElementById('adminPw').value='';
-    document.getElementById('adminPwErr').style.display='none';
-    curFilter=null; // force default for admin
-    renderFilters();
-    load(); // reload with include=all to pick up identified photos
-  }else{
-    document.getElementById('adminPwErr').style.display='inline';
+    document.getElementById('adminEmail').value='';
+    errEl.style.display='none';
+    showAdminUI();
+  } catch {
+    errEl.textContent='Yhteysvirhe — yritä uudelleen';
+    errEl.style.display='inline';
   }
 });
 
-// Logout: revert to community view (but keep lastVisit in localStorage so next login remembers).
-document.getElementById('adminLogout').addEventListener('click',()=>{
+// Logout: call /api/auth/logout to destroy the server session, then revert UI
+// to community view. localStorage lastVisit is preserved so next login
+// remembers the user's last-seen timestamp for "new since" badges.
+document.getElementById('adminLogout').addEventListener('click',async()=>{
+  try { await fetch('/api/auth/logout', { method: 'POST' }); } catch {}
   adminPw=null;
+  currentUser=null;
   adminLastVisit=null;
   cachedGalleries=null;
   document.getElementById('adminActions').style.display='none';
   document.getElementById('adminTabs').style.display='none';
   document.getElementById('adminPanel').style.display='block';
+  document.getElementById('adminGreeting').textContent='';
   document.getElementById('tabTarkista').style.display='none';
   document.getElementById('tabLaheta').style.display='none';
   document.getElementById('tabHallitse').style.display='none';
@@ -949,6 +967,8 @@ document.getElementById('adminLogout').addEventListener('click',()=>{
   document.getElementById('tabLaheta').style.display='none';
   document.getElementById('tabHallitse').style.display='none';
   document.querySelectorAll('.admin-tab').forEach(t=>t.classList.toggle('admin-tab--on',t.dataset.tab==='tarkista'));
+  // Restore all admin tab buttons (they may have been hidden by applyPermissions)
+  document.querySelectorAll('#adminTabs .admin-tab').forEach(t=>{t.style.display='';});
   curFilter=null;
   renderFilters();
   load(); // reload without include=all so identified photos drop out for community
@@ -1109,6 +1129,84 @@ function getRootFieldType(comments, commentId){
 }
 renderFilters();
 load();
+
+// =====================================================================
+// IAM session bootstrap (Phase 4b)
+// =====================================================================
+// On page load, check whether a session cookie is already valid. If yes,
+// auto-login the user and apply their permissions. If no, reveal the login
+// panel for them to type credentials.
+
+function applyPermissions(user) {
+  const perms = user.permissions || {};
+  // Hide each tab the user doesn't have permission for
+  document.querySelectorAll('#adminTabs .admin-tab').forEach(t => {
+    const which = t.dataset.tab;
+    let visible;
+    if (which === 'tarkista')        visible = !!perms.tarkista;
+    else if (which === 'laheta')     visible = !!perms.lahetakuva;
+    else if (which === 'hallitse')   visible = !!perms.hallitse_galleriaa;
+    else if (t.hasAttribute('data-decap-link')) visible = !!perms.hallitse_artikkeleita;
+    else visible = false;
+    t.style.display = visible ? '' : 'none';
+  });
+}
+
+function showFirstAvailableTab(user) {
+  const perms = user.permissions || {};
+  const candidates = [
+    { tab: 'tarkista',  content: 'tabTarkista',  has: !!perms.tarkista },
+    { tab: 'laheta',    content: 'tabLaheta',    has: !!perms.lahetakuva },
+    { tab: 'hallitse',  content: 'tabHallitse',  has: !!perms.hallitse_galleriaa },
+  ];
+  const first = candidates.find(c => c.has);
+  // Hide all tab content first
+  document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+  document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('admin-tab--on'));
+  if (first) {
+    document.getElementById(first.content).style.display = '';
+    const btn = document.querySelector(`[data-tab="${first.tab}"]`);
+    if (btn) btn.classList.add('admin-tab--on');
+  }
+  // Load gallery dropdown lazily if the user lands on hallitse
+  if (first && first.tab === 'hallitse') loadHallitseGalleries();
+}
+
+function showAdminUI() {
+  document.getElementById('adminPanel').style.display='none';
+  document.getElementById('adminActions').style.display='flex';
+  document.getElementById('adminTabs').style.display='flex';
+  document.getElementById('mpSubCommunity').style.display='none';
+  document.getElementById('mpSubAdmin').style.display='block';
+  if (localStorage.getItem('pm_ohje_expanded')==='1') {
+    document.getElementById('mpSubAdmin').classList.remove('mp-sub--collapsed');
+  }
+  document.getElementById('adminGreeting').textContent = `Tervetuloa, ${currentUser.first_name}`;
+  applyPermissions(currentUser);
+  showFirstAvailableTab(currentUser);
+  curFilter = null;
+  renderFilters();
+  load(); // reload with include=all to pick up identified photos for admins
+}
+
+async function bootCheckSession() {
+  try {
+    const r = await fetch('/api/auth/me');
+    if (r.ok) {
+      const data = await r.json();
+      currentUser = data.user;
+      adminPw = '__SESSION__';
+      cachedGalleries = null;
+      adminLastVisit = localStorage.getItem('pm_admin_lastVisit');
+      localStorage.setItem('pm_admin_lastVisit', new Date().toISOString());
+      showAdminUI();
+      return;
+    }
+  } catch {}
+  // No session — reveal login panel
+  document.getElementById('adminPanel').style.display = '';
+}
+bootCheckSession();
 
   // Cancel reply button
   document.addEventListener('click',(e)=>{
@@ -2345,5 +2443,13 @@ function openDeleteGalleryPanel() {
   .pw-eye:hover{opacity:1}
   .pw-eye--on{opacity:1;color:#ff9900}
   .pw-caps{position:absolute;top:100%;left:0;margin-top:4px;font-size:.78rem;color:#a06400;background:#fff8e6;border:1px solid #ffd89a;padding:4px 8px;border-radius:6px;font-weight:600;white-space:nowrap;z-index:10}
+
+  /* ===== IAM LOGIN ENHANCEMENTS (Phase 4b) ===== */
+  .admin-panel{max-width:560px}
+  .admin-auth .inp--email{flex:1 1 100%;max-width:none}
+  .admin-forgot-link{flex:1 1 100%;font-size:.85rem;color:#666;text-decoration:none;margin-top:2px}
+  .admin-forgot-link:hover{color:#ff9900;text-decoration:underline}
+  .admin-greeting{font-size:.9rem;color:#444;font-weight:500;margin-right:4px}
+  .admin-greeting:empty{display:none}
 
 </style>

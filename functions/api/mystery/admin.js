@@ -1,11 +1,40 @@
+// functions/api/mystery/admin.js
+//
+// Admin actions on mystery photos / comments (review + curate workflow).
+//
+// Auth: session cookie OR legacy UPLOAD_PASSWORD (dual-mode during the IAM
+// migration window). Per-action permission requirements (session-mode only):
+//   update_meta, set_status, delete_comment → perm_tarkista
+//   delete_photo                              → perm_tarkista
+// Legacy mode bypasses per-permission checks (legacy users had full access).
+
+import { requireAuthOrLegacyPassword } from '../../_lib/auth.js';
+
+const ACTION_PERMISSIONS = {
+  update_meta: 'tarkista',
+  set_status: 'tarkista',
+  delete_photo: 'tarkista',
+  delete_comment: 'tarkista',
+};
+
 export async function onRequestPost(context) {
   const { request, env } = context;
   const h = { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' };
   try {
     const body = await request.json();
-    if (!body.password || body.password !== env.UPLOAD_PASSWORD)
-      return new Response(JSON.stringify({ error: 'Väärä salasana' }), { status: 401, headers: h });
-    switch (body.action) {
+    const action = body.action;
+    const requiredPerm = ACTION_PERMISSIONS[action];
+    if (!requiredPerm) {
+      return new Response(JSON.stringify({ error: 'Tuntematon' }), { status: 400, headers: h });
+    }
+
+    // Dual-mode auth (session OR legacy password)
+    const auth = await requireAuthOrLegacyPassword(request, env, requiredPerm, body.password);
+    if (auth.error) {
+      return new Response(JSON.stringify({ error: auth.error }), { status: auth.status, headers: h });
+    }
+
+    switch (action) {
       case 'update_meta': {
         const { photo_id, year_estimate, people, location_notes, notes } = body;
         // Derive status from core fields (notes is optional). Don't resurrect archived photos.
@@ -40,8 +69,6 @@ export async function onRequestPost(context) {
         await env.DB.prepare('DELETE FROM comments WHERE id=?').bind(body.comment_id).run();
         return new Response(JSON.stringify({ success: true }), { headers: h });
       }
-      default:
-        return new Response(JSON.stringify({ error: 'Tuntematon' }), { status: 400, headers: h });
     }
   } catch (err) {
     return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: h });

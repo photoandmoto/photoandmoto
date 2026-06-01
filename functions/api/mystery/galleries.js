@@ -7,12 +7,16 @@
 // with whatever exists in the repo — including galleries created via earlier
 // publish flows.
 //
-// Auth: requires admin password (passed via header X-Admin-Password OR ?password= query).
+// Auth: session cookie with perm_hallitse_galleriaa OR legacy admin password
+// (passed via header X-Admin-Password OR ?password= query). Dual-mode during
+// the IAM migration window.
 //
 // Caching: the GitHub Contents API call is cached for 60 seconds per branch
 // using the Cloudflare Workers `caches.default` API. This keeps the dropdown
 // fast (it's opened many times during admin sessions) while still picking up
 // newly created galleries within ~1 minute.
+
+import { requireAuthOrLegacyPassword } from '../../_lib/auth.js';
 
 const ALLOWED_BRANCHES = new Set(['dev', 'main']);
 
@@ -27,14 +31,15 @@ export async function onRequestPost(context) {
 async function handleRequest(context) {
   const { request, env } = context;
 
-  // ---- Auth check ----
+  // ---- Dual-mode auth ----
   const url = new URL(request.url);
   const headerPw = request.headers.get('X-Admin-Password') || '';
   const queryPw = url.searchParams.get('password') || '';
-  const submitted = headerPw || queryPw;
+  const legacyPassword = headerPw || queryPw;
 
-  if (!env.UPLOAD_PASSWORD || submitted !== env.UPLOAD_PASSWORD) {
-    return json({ error: 'Unauthorized' }, 401);
+  const auth = await requireAuthOrLegacyPassword(request, env, 'hallitse_galleriaa', legacyPassword);
+  if (auth.error) {
+    return json({ error: auth.error }, auth.status);
   }
 
   // ---- Determine branch ----

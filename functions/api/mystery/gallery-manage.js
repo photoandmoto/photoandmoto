@@ -4,6 +4,9 @@
 //
 // POST body: { password, action, gallery_slug, ...action-specific fields }
 //
+// Auth: session cookie with perm_hallitse_galleriaa OR legacy UPLOAD_PASSWORD
+// (dual-mode during the IAM migration window).
+//
 // Actions:
 //   list_gallery_photos  — list all photos in a gallery (from manifest)
 //   delete_photo         — remove original + thumb + display + manifest entry
@@ -11,6 +14,8 @@
 //   delete_gallery       — delete the gallery manifest (unpublishes the gallery)
 //   rename_gallery       — update the gallery title field in the manifest
 //   move_photo           — atomically move a photo (original + thumb + display + manifests) to another gallery
+
+import { requireAuthOrLegacyPassword } from '../../_lib/auth.js';
 
 // ---------------------------------------------------------------------------
 // Helpers — JSON responses
@@ -420,8 +425,10 @@ export async function onRequestPost({ request, env }) {
   try { body = await request.json(); }
   catch { return badRequest('Invalid JSON'); }
 
-  if (!env.UPLOAD_PASSWORD) return serverError('UPLOAD_PASSWORD not configured');
-  if ((body.password || '') !== env.UPLOAD_PASSWORD) return unauthorized();
+  if (!env.UPLOAD_PASSWORD && !request.headers.get('cookie')) return serverError('UPLOAD_PASSWORD not configured');
+  // Dual-mode auth: session cookie (perm_hallitse_galleriaa) OR legacy UPLOAD_PASSWORD.
+  const auth = await requireAuthOrLegacyPassword(request, env, 'hallitse_galleriaa', body.password || '');
+  if (auth.error) return jsonResponse({ error: auth.error }, auth.status);
   if (!env.GITHUB_APP_ID || !env.GITHUB_APP_INSTALLATION_ID || !env.GITHUB_APP_PRIVATE_KEY)
     return serverError('GitHub App secrets missing');
 
