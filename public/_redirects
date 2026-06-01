@@ -1,1 +1,2 @@
-/  /fi  301
+# Root path redirect is handled by functions/index.js
+# (geo + cookie + bot-aware — see that file's header comment)

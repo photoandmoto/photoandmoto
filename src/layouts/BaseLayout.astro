@@ -169,5 +169,23 @@ const otherLang = lang === 'fi' ? 'en' : 'fi';
     });
   })();
 </script>
+<script is:inline>
+  // Persist the current page's language as `lang_pref` cookie so that
+  // functions/index.js (the root redirect) honors the user's effective
+  // preference on the next visit to /.
+  //
+  // We write this on every page render, which means:
+  //   - Geo-redirected to /en/, fine with it → cookie sticks as 'en'
+  //   - Geo-redirected to /en/ but clicks FI in the toggle → next page
+  //     renders with lang=fi, cookie flips to 'fi'
+  //   - Types a deep link like /fi/aikakone/<slug> → cookie set to 'fi'
+  // Cookie lives 1 year, scoped to root path, SameSite=Lax (sent on top-level
+  // navigations — including the redirect chain from /).
+  (function () {
+    var lang = document.documentElement.lang;
+    if (lang !== 'fi' && lang !== 'en') return;
+    document.cookie = 'lang_pref=' + lang + '; path=/; max-age=31536000; samesite=lax';
+  })();
+</script>
 </body>
 </html>
