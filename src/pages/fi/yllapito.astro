@@ -1483,7 +1483,9 @@ artClearForm = function() {
   }
 };
 
-artUpdateSlugPreview();
+// Initial paint of the slug URL preview — only runs if the article form exists
+// (it doesn't anymore, since article CRUD moved to Decap at /admin/).
+document.getElementById('artTitle') && artUpdateSlugPreview();
 
 // =====================================================================
 // PRE-PUBLISH PREVIEW — postMessage to iframe, blob URLs, review gate
