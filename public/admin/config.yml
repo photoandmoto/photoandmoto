@@ -4,7 +4,7 @@
 backend:
   name: github
   repo: photoandmoto/photoandmoto
-  branch: dev
+  branch: main
   base_url: https://www.photoandmoto.fi
   auth_endpoint: oauth/auth
 
@@ -13,7 +13,10 @@ backend:
 # of committing to GitHub — useful for config/iteration without OAuth.
 local_backend: true
 
-# Direct commits to the `dev` branch. No PR-based editorial workflow.
+# Direct commits to the `main` branch (production). No PR-based editorial
+# workflow — editor saves → commits to main → Cloudflare rebuilds production
+# in ~2 min. Decap's built-in preview pane is the review step. Code changes
+# by developers still go through `dev` with a manual `dev → main` PR.
 publish_mode: simple
 
 site_url: https://www.photoandmoto.fi
