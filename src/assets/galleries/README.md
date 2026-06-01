@@ -1,87 +1,110 @@
-# How to Add Photos to Galleries
+# Adding Photos to Galleries
 
-## Quick Start
+> Note: gallery image files live in **`public/galleries/<slug>/`** — not in
+> this `src/assets/galleries/` folder. This README is just the how-to.
 
-Each gallery folder corresponds to a gallery on your site:
+There are two ways photos get into a gallery:
 
-- `international-i/` → International I
-- `international-ii/` → International II  
-- `international-iii/` → International III
-- `suomi-i/` → Suomi I
-- `suomi-ii/` → Suomi II
-- `enduro/` → Enduro
-- `scramble/` → Scramble
-- `black-white/` → Black & White
+1. **Via the admin** — the `/fi/yllapito` "Julkaise Galleriaan" flow publishes
+   an identified mystery photo into a gallery automatically. See the gallery
+   publishing pipeline in the root `README.md`.
+2. **Manually / bulk import** — for adding a folder of photos at once. That's
+   what this guide covers.
 
-## Adding Photos
+## Current galleries
 
-### Step 1: Copy Photos to Folder
+Each gallery is a folder under `public/galleries/`:
+
+| Folder | Gallery |
+|---|---|
+| `international-70s/` | International 70s |
+| `international-80s/` | International 80s |
+| `international-90s/` | International 90s |
+| `suomi-70s/` | Suomi 70s |
+| `suomi-80s/` | Suomi 80s |
+| `suomi-90s/` | Suomi 90s |
+| `hyvinkaa-scramble/` | Hyvinkää Scramble |
+
+The category (`international`, `finland`, `enduro`, `scramble`, `black-white`)
+is derived from the slug automatically.
+
+## Adding photos manually
+
+### 1. Copy photos into the gallery folder
 
 ```bash
-# Example: Adding to International I
-cp ~/Downloads/my-photos/*.jpg src/assets/galleries/international-i/
+# Example: adding to International 70s
+cp ~/Downloads/my-photos/*.jpg public/galleries/international-70s/
 ```
 
-### Step 2: Generate Manifest
+For a brand-new gallery, just create the folder:
+`mkdir -p public/galleries/my-new-gallery`.
+
+### 2. Generate thumbnails, display versions, and manifest
 
 ```bash
-npm run generate-gallery international-i
+npm run generate-gallery international-70s
 ```
 
-This creates: `src/content/galleries/international-i.json`
+This runs `scripts/generate-gallery-manifest.mjs`, which:
 
-### Step 3: Preview
+- Generates a **600px thumbnail** per photo (no watermark) → `thumbs/`
+- Generates a **1400px display version** per photo (with `© Photo & Moto`
+  watermark) → `display/`
+- Writes/updates the manifest at
+  `src/content/galleries/international-70s.json`
+
+### 3. Preview
 
 ```bash
 npm run dev
 ```
 
-Visit: `http://localhost:4321/fi/galleria/international-i`
+Visit `http://localhost:4321/fi/galleria/international-70s`.
 
-### Step 4: Deploy
+### 4. Deploy
 
 ```bash
-git add .
-git commit -m "Add photos to International I"
+git add public/galleries/international-70s src/content/galleries/international-70s.json
+git commit -m "Add photos to International 70s"
 git push
 ```
 
-## Image Guidelines
+## Image guidelines
 
 - **Format:** JPG, PNG, or WebP
-- **Size:** 1200-2000px wide (will be auto-optimized)
-- **File names:** Use descriptive names (e.g., `mxgp-start-2026.jpg`)
-- **Quantity:** 50-150 photos per gallery works well
+- **Size:** 1200–2000px wide works well (display version is capped at 1400px)
+- **File names:** descriptive — the filename becomes the default caption
+  (underscores become spaces). A year in the filename (e.g. `... 1978.jpg`) is
+  used for chronological sorting.
 
-## Tips
+## Editing captions
 
-- Start with your best 10-15 photos per gallery
-- Add captions by editing the generated JSON file
-- Photos are displayed in alphabetical order by filename
-- Rename files with numbers to control order: `01-start.jpg`, `02-jump.jpg`, etc.
-
-## Example Gallery JSON
-
-After running the generator, you can edit captions:
+After generating, captions can be edited directly in
+`src/content/galleries/<slug>.json`. Manifest shape:
 
 ```json
 {
-  "title": "International I",
-  "slug": "international-i",
-  "description": "Photo gallery: International I",
-  "cover_image": "photo-001.jpg",
+  "title": "International 70s",
+  "slug": "international-70s",
+  "description": "Photo gallery: International 70s",
+  "cover_image": "thumbs/photo-001_thumb.jpg",
   "images": [
     {
       "filename": "photo-001.jpg",
-      "caption": "Add your caption here",
-      "photographer": "Matti Tarkkonen",
-      "date": "2024-06-15",
-      "width": 1920,
-      "height": 1280
+      "thumb": "thumbs/photo-001_thumb.jpg",
+      "display": "display/photo-001_display.jpg",
+      "caption": "Edit your caption here",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 933
     }
   ],
   "category": "international"
 }
 ```
 
-**That's it! Repeat for each of your 8 galleries.**
+Images are sorted by year (parsed from the caption/filename), then
+alphabetically. To force a specific order, prefix filenames with numbers
+(`01-start.jpg`, `02-jump.jpg`).

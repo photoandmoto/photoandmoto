@@ -100,8 +100,7 @@ const lang = 'fi';
         <button type="button" class="admin-tab admin-tab--on" data-tab="tarkista">Tarkista</button>
         <button type="button" class="admin-tab" data-tab="laheta">Lähetä kuva</button>
         <button type="button" class="admin-tab" data-tab="hallitse">Hallitse galleriaa</button>
-        <button type="button" class="admin-tab" data-tab="laheta-artikkeli">Lähetä artikkeli</button>
-        <button type="button" class="admin-tab" data-tab="hallitse-artikkeleita">Hallitse artikkeleita</button>
+        <a href="/admin/" target="_blank" rel="noopener" class="admin-tab admin-tab--external" data-decap-link>Hallitse artikkeleita ↗</a>
       </div>
 
       <!-- Tarkista tab: filters + grid (community sees filters too) -->
@@ -133,157 +132,6 @@ const lang = 'fi';
       </div>
 
       <!-- Hallitse galleriaa tab (admin only) -->
-      <div id="tabLahetaArtikkeli" class="tab-content" style="display:none;">
-        <div class="art-split">
-        <div class="art-split__left">
-        <div class="art-form">
-          <h3 class="art-form__title">Uusi artikkeli</h3>
-          <p class="art-form__hint">Julkaise testiympäristöön -painike vie artikkelin staging-sivulle (~2 min) tarkistettavaksi. Voit julkaista uudestaan niin monta kertaa kuin haluat. Tuotantoon vienti tehdään erikseen Hallitse artikkeleita -välilehdellä.</p>
-
-          <div class="art-row">
-            <label class="art-field art-field--full">
-              <span>Otsikko *</span>
-              <input id="artTitle" type="text" maxlength="200" placeholder="Esim. Hyvinkään scramble 1976" />
-            </label>
-          </div>
-
-          <div class="art-row">
-            <label class="art-field art-field--full">
-              <span>Alaotsikko</span>
-              <input id="artSubtitle" type="text" maxlength="200" placeholder="Lyhyt alaotsikko (näkyy listauksessa ja artikkelissa)" />
-            </label>
-          </div>
-
-          <div class="art-row">
-            <label class="art-field">
-              <span>Päiväys *</span>
-              <input id="artDate" type="date" />
-            </label>
-            <label class="art-field">
-              <span>Kategoria *</span>
-              <select id="artCategory">
-                <option value="Historical">Historical</option>
-                <option value="MXGP">MXGP</option>
-                <option value="Speedway">Speedway</option>
-                <option value="">Muu (kirjoita alle)…</option>
-              </select>
-            </label>
-            <input type="hidden" id="artLanguage" value="fi" />
-          </div>
-
-          <div class="art-row" id="artCategoryCustomRow" style="display:none;">
-            <label class="art-field art-field--full">
-              <span>Mukautettu kategoria</span>
-              <input id="artCategoryCustom" type="text" maxlength="60" placeholder="Esim. Endurance" />
-            </label>
-          </div>
-
-          <div class="art-row">
-            <label class="art-field art-field--full">
-              <span>Tagit (pilkulla erotettuna)</span>
-              <input id="artTags" type="text" maxlength="200" placeholder="motocross, hyvinkää, 1976" />
-            </label>
-          </div>
-
-          <div class="art-row">
-            <label class="art-field art-field--full">
-              <span>Kirjoittaja</span>
-              <input id="artAuthor" type="text" maxlength="80" placeholder="Photo & Moto" />
-              <small class="art-hint">Jos tyhjä, käytetään oletusta &laquo;Photo &amp; Moto&raquo;.</small>
-            </label>
-          </div>
-
-          <div class="art-row">
-            <label class="art-field art-field--full">
-              <span>Slug (URL-osa)</span>
-              <input id="artSlug" type="text" maxlength="80" placeholder="luodaan automaattisesti otsikosta" />
-              <small class="art-hint" id="artSlugPreview">URL: /<em>fi</em>/aikakone/<em>(otsikosta)</em>/</small>
-            </label>
-          </div>
-
-          <div class="art-row">
-            <label class="art-field art-field--full">
-              <span>Pääkuva (hero) — valinnainen</span>
-              <input id="artHero" type="file" accept="image/jpeg,image/png,image/webp" />
-              <small class="art-hint">Kuva resize-pakataan 1600px / 80% JPEG -laatuun selaimessa ennen lähetystä.</small>
-            </label>
-          </div>
-
-          <div class="art-row">
-            <label class="art-field">
-              <span>
-                <input id="artShowHero" type="checkbox" />
-                Näytä pääkuva artikkelin yläosassa
-              </span>
-            </label>
-          </div>
-
-          <div class="art-row">
-            <div class="art-field art-field--full">
-              <span>Sisäkkäiset kuvat</span>
-              <div id="artInlineImages" class="art-inline-list"></div>
-              <button type="button" id="artAddInline" class="art-btn art-btn--add">+ Lisää kuva</button>
-              <small class="art-hint">Käytä rungossa <code>[[image:1]]</code>, <code>[[image:2]]</code> jne. Kuvat tallentuvat <code>/images/&lt;slug&gt;-&lt;numero&gt;.jpg</code></small>
-            </div>
-          </div>
-
-          <div class="art-row">
-            <label class="art-field art-field--full">
-              <span>Runko (Markdown) *</span>
-              <div class="art-import-bar">
-                <button type="button" id="artImportFile" class="art-import-btn">📄 Lataa tiedosto (.txt / .docx)</button>
-                <input type="file" id="artImportFileInput" accept=".txt,.docx,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none;" />
-                <span class="art-import-hint">tai liitä teksti Wordista / Google Docsista suoraan alle — muotoilut ja kuvat tulevat mukana, linkit poistetaan automaattisesti</span>
-                <span id="artImportStatus" class="art-import-status" aria-live="polite"></span>
-              </div>
-              <div class="md-toolbar" role="toolbar" aria-label="Markdown-työkalut">
-                <button type="button" class="md-tool md-tool--block" data-md-action="h2" title="Väliotsikko (## H2)">Väliotsikko</button>
-                <button type="button" class="md-tool md-tool--block" data-md-action="h3" title="Alaotsikko (### H3)">Alaotsikko</button>
-                <button type="button" class="md-tool md-tool--block" data-md-action="quote" title="Lainaus (&gt; ...)">Lainaus</button>
-                <span class="md-toolbar__sep" aria-hidden="true"></span>
-                <button type="button" class="md-tool md-tool--bold" data-md-action="bold" title="Lihavointi (**teksti**)">B</button>
-                <button type="button" class="md-tool md-tool--italic" data-md-action="italic" title="Kursivointi (*teksti*)">I</button>
-                <button type="button" class="md-tool" data-md-action="link" title="Linkki ([teksti](url))">Linkki</button>
-              </div>
-              <textarea id="artBody" rows="18" placeholder="Tämä on ensimmäinen kappale.&#10;&#10;[[image:1]]&#10;&#10;Toinen kappale jatkaa tarinaa.&#10;&#10;## Väliotsikko&#10;&#10;Lisää tekstiä..."></textarea>
-              <small class="art-hint">Markdown tukee otsikoita (## H2), listoja, lainauksia (&gt; ...) ja taulukoita. Linkit: <code>[teksti](https://...)</code></small>
-            </label>
-          </div>
-
-          <div class="art-row">
-            <label class="art-field art-field--full">
-              <span>SEO-kuvaus <small id="artSeoCount" class="art-seo-count">0 / 160</small></span>
-              <input id="artSeoDescription" type="text" maxlength="160" placeholder="Täyttyy automaattisesti rungosta — voit muokata" />
-              <small id="artSeoHint" class="art-hint art-seo-hint">↺ Auto-täytetty rungosta. Käsin muokattu kuvaus säilyy ennallaan.</small>
-            </label>
-          </div>
-
-          <div class="art-review-gate">
-            <label class="art-review-gate__label">
-              <input id="artReviewed" type="checkbox" />
-              <span>Olen tarkistanut esikatselun ja artikkeli on valmis julkaistavaksi testiympäristöön</span>
-            </label>
-          </div>
-
-          <div class="art-actions">
-            <button type="button" id="artSaveDraft" class="art-btn art-btn--draft" disabled>Julkaise testiympäristöön</button>
-            <button type="button" id="artClearForm" class="art-btn art-btn--clear">Tyhjennä lomake</button>
-            <span id="artStatus" class="art-status"></span>
-          </div>
-          <p class="art-prod-note">Tuotantoon julkaisu tapahtuu Hallitse artikkeleita -välilehdellä, kun olet tarkistanut artikkelin testiympäristössä.</p>
-
-          <div id="artResult" class="art-result" style="display:none;"></div>
-        </div>
-        </div>
-        <div class="art-split__right">
-          <div class="art-preview-bar">
-            <span class="art-preview-bar__label">Esikatselu</span>
-            <span class="art-preview-bar__hint">Päivittyy reaaliajassa kirjoittaessasi</span>
-          </div>
-          <iframe id="artPreview" class="art-preview-frame" src="/fi/yllapito-preview/" title="Esikatselu" loading="lazy"></iframe>
-        </div>
-        </div>
-      </div>
       <div id="tabHallitse" class="tab-content" style="display:none;">
         <div class="hallitse-section">
           <h3 class="upload-title">Hallitse galleriaa</h3>
@@ -307,28 +155,6 @@ const lang = 'fi';
           <div id="hallitseGrid" class="hallitse-grid"></div>
         </div>
       </div>
-
-      <!-- Hallitse artikkeleita tab (admin only) -->
-      <div id="tabHallitseArtikkeleita" class="tab-content" style="display:none;">
-        <div class="hallitse-section">
-          <h3 class="upload-title">Hallitse artikkeleita</h3>
-          <div class="hart-top">
-            <div class="hart-branch-row">
-              <span class="hart-branch-label">Ympäristö:</span>
-              <button type="button" id="hartBranchDraft" class="hart-branch-btn hart-branch-btn--on">Luonnokset (dev)</button>
-              <button type="button" id="hartBranchProd" class="hart-branch-btn">Tuotanto (main)</button>
-              <button type="button" id="hartReload" class="btn btn--ghost hart-reload">↻ Päivitä</button>
-            </div>
-          </div>
-          <div id="hartMsg" class="upload-msg" style="margin-top:8px;"></div>
-          <div class="hart-search-row" id="hartSearchRow" style="display:none;">
-            <input type="text" id="hartSearch" class="inp" placeholder="Hae otsikkoa, slugia, kategoriaa..." style="max-width:340px;" />
-            <span id="hartSearchCount" class="hallitse-search-count"></span>
-          </div>
-          <div id="hartList" class="hart-list"></div>
-        </div>
-      </div>
-
       <!-- Modal overlay -->
       <div id="modal" class="overlay" style="display:none;">
         <div class="overlay-bg"></div>
@@ -1084,16 +910,12 @@ document.getElementById('adminLogout').addEventListener('click',()=>{
   document.getElementById('adminPanel').style.display='block';
   document.getElementById('tabTarkista').style.display='none';
   document.getElementById('tabLaheta').style.display='none';
-  document.getElementById('tabLahetaArtikkeli').style.display='none';
   document.getElementById('tabHallitse').style.display='none';
-  document.getElementById('tabHallitseArtikkeleita').style.display='none';
   document.getElementById('mpSubAdmin').style.display='none';
   // Reset to Tarkista tab so re-login lands on the right place
   document.getElementById('tabTarkista').style.display='';
   document.getElementById('tabLaheta').style.display='none';
-  document.getElementById('tabLahetaArtikkeli').style.display='none';
   document.getElementById('tabHallitse').style.display='none';
-  document.getElementById('tabHallitseArtikkeleita').style.display='none';
   document.querySelectorAll('.admin-tab').forEach(t=>t.classList.toggle('admin-tab--on',t.dataset.tab==='tarkista'));
   curFilter=null;
   renderFilters();
@@ -1219,29 +1041,31 @@ function artRenderInlineRows(){
   });
 }
 
-document.getElementById('artAddInline').addEventListener('click', () => {
+document.getElementById('artAddInline') && document.getElementById('artAddInline').addEventListener('click', () => {
   artInlineCounter += 1;
   artInlineRows.push({ num: artInlineCounter, file: null, caption: '' });
   artRenderInlineRows();
 });
 
-document.getElementById('artTitle').addEventListener('input', artUpdateSlugPreview);
-document.getElementById('artSlug').addEventListener('input', () => {
+document.getElementById('artTitle') && document.getElementById('artTitle').addEventListener('input', artUpdateSlugPreview);
+document.getElementById('artSlug') && document.getElementById('artSlug').addEventListener('input', () => {
   // Any keystroke in the slug field counts as a manual edit — autofill stops
   // overwriting from now on. Empty value also counts (publisher cleared it).
   artSlugManuallyEdited = true;
   artUpdateSlugPreview();
 });
-document.getElementById('artLanguage').addEventListener('change', artUpdateSlugPreview);
+document.getElementById('artLanguage') && document.getElementById('artLanguage').addEventListener('change', artUpdateSlugPreview);
 
-document.getElementById('artCategory').addEventListener('change', (e) => {
+document.getElementById('artCategory') && document.getElementById('artCategory').addEventListener('change', (e) => {
   document.getElementById('artCategoryCustomRow').style.display = e.target.value === '' ? '' : 'none';
 });
 
 (function(){
+  const dateEl = document.getElementById('artDate');
+  if (!dateEl) return;
   const d = new Date();
   const iso = d.toISOString().slice(0,10);
-  document.getElementById('artDate').value = iso;
+  dateEl.value = iso;
 })();
 
 async function artResizeImage(file){
@@ -1495,7 +1319,7 @@ function artClearForm(){
   artPushPreview();
 }
 
-document.getElementById('artSaveDraft').addEventListener('click', artSubmitDraft);
+document.getElementById('artSaveDraft') && document.getElementById('artSaveDraft').addEventListener('click', artSubmitDraft);
 document.getElementById('artClearForm') && document.getElementById('artClearForm').addEventListener('click', artClearForm);
 
 // =====================================================================
@@ -1659,7 +1483,9 @@ artClearForm = function() {
   }
 };
 
-artUpdateSlugPreview();
+// Initial paint of the slug URL preview — only runs if the article form exists
+// (it doesn't anymore, since article CRUD moved to Decap at /admin/).
+document.getElementById('artTitle') && artUpdateSlugPreview();
 
 // =====================================================================
 // PRE-PUBLISH PREVIEW — postMessage to iframe, blob URLs, review gate
@@ -2312,14 +2138,12 @@ artSubmitDraft = async function(){
 // Tab switching (Tarkista / Lähetä)
 document.querySelectorAll('.admin-tab').forEach(t=>t.addEventListener('click',()=>{
   const tab=t.dataset.tab;
+  if(!tab)return; // Skip elements without data-tab (e.g. the Decap admin link)
   document.querySelectorAll('.admin-tab').forEach(x=>x.classList.toggle('admin-tab--on',x===t));
   document.getElementById('tabTarkista').style.display=tab==='tarkista'?'':'none';
   document.getElementById('tabLaheta').style.display=tab==='laheta'?'':'none';
-  document.getElementById('tabLahetaArtikkeli').style.display=tab==='laheta-artikkeli'?'':'none';
   document.getElementById('tabHallitse').style.display=tab==='hallitse'?'':'none';
-  document.getElementById('tabHallitseArtikkeleita').style.display=tab==='hallitse-artikkeleita'?'':'none';
   if(tab==='hallitse' && adminPw){loadHallitseGalleries();}
-  if(tab==='hallitse-artikkeleita' && adminPw){loadHartArticles();}
 }));
 
 // Ohje collapse/expand — remember the user's preference across logins
