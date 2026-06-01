@@ -102,6 +102,25 @@ export async function runInit(env) {
   await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_recovery_ip ON recovery_attempts(ip, attempted_at)`).run();
   await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_recovery_email ON recovery_attempts(email_attempted, attempted_at)`).run();
 
+  // ─── login_attempts ──────────────────────────────────────────
+  // Rate-limiting source of truth for login attempts. Same shape as
+  // recovery_attempts. user_id is nullable to log attempts on emails that
+  // don't exist (without leaking existence).
+  await env.DB.prepare(`
+    CREATE TABLE IF NOT EXISTS login_attempts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER,
+      email_attempted TEXT,
+      ip TEXT,
+      succeeded INTEGER DEFAULT 0,
+      attempted_at TEXT DEFAULT (datetime('now')),
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+    )
+  `).run();
+
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_login_ip ON login_attempts(ip, attempted_at)`).run();
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_login_email ON login_attempts(email_attempted, attempted_at)`).run();
+
   return { success: true };
 }
 

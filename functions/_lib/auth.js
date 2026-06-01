@@ -393,6 +393,83 @@ export function validateName(name, label = 'Nimi') {
   return null;
 }
 
+// ─── Security questions ─────────────────────────────────────────────────────
+
+export const SECURITY_QUESTION_MIN_LENGTH = 8;
+export const SECURITY_QUESTION_MAX_LENGTH = 200;
+export const SECURITY_ANSWER_MIN_LENGTH = 2;
+export const SECURITY_ANSWER_MAX_LENGTH = 200;
+export const MIN_CORRECT_ANSWERS_FOR_RECOVERY = 2;
+
+export function validateSecurityQuestion(question) {
+  if (typeof question !== 'string') return 'Kysymys puuttuu';
+  const trimmed = question.trim();
+  if (trimmed.length < SECURITY_QUESTION_MIN_LENGTH) {
+    return `Kysymyksen tulee olla vähintään ${SECURITY_QUESTION_MIN_LENGTH} merkkiä`;
+  }
+  if (trimmed.length > SECURITY_QUESTION_MAX_LENGTH) {
+    return `Kysymys saa olla enintään ${SECURITY_QUESTION_MAX_LENGTH} merkkiä`;
+  }
+  return null;
+}
+
+export function validateSecurityAnswer(answer) {
+  if (typeof answer !== 'string') return 'Vastaus puuttuu';
+  const trimmed = answer.trim();
+  if (trimmed.length < SECURITY_ANSWER_MIN_LENGTH) {
+    return `Vastauksen tulee olla vähintään ${SECURITY_ANSWER_MIN_LENGTH} merkkiä`;
+  }
+  if (trimmed.length > SECURITY_ANSWER_MAX_LENGTH) {
+    return `Vastaus saa olla enintään ${SECURITY_ANSWER_MAX_LENGTH} merkkiä`;
+  }
+  return null;
+}
+
+// Decoy questions returned by recovery/start when the email doesn't exist —
+// prevents account enumeration. Picked deterministically from the email so
+// the attacker sees the same decoys on retry.
+const DECOY_QUESTIONS = [
+  'Mikä oli ensimmäisen lemmikkisi nimi?',
+  'Missä kaupungissa kävit ala-asteen?',
+  'Mikä on äitisi tyttönimi?',
+  'Mikä oli ensimmäinen autosi merkki?',
+  'Mikä oli lempiaineesi koulussa?',
+  'Mikä on suosikkikirjasi?',
+  'Missä vietit ensimmäisen lomasi?',
+  'Mikä on lempiruokasi?',
+  'Mikä oli ensimmäisen koulusi nimi?',
+  'Missä syntyivät vanhempasi?',
+  'Mikä oli lapsuutesi paras ystävä?',
+  'Mikä oli ensimmäisen työpaikkasi nimi?',
+];
+
+export async function getDecoyQuestions(email) {
+  const hash = await sha256Hex(`decoy:${normalizeEmail(email)}`);
+  const indices = [];
+  for (let i = 0; indices.length < 3 && i < hash.length - 1; i += 2) {
+    const byte = parseInt(hash.slice(i, i + 2), 16);
+    const idx = byte % DECOY_QUESTIONS.length;
+    if (!indices.includes(idx)) indices.push(idx);
+  }
+  return indices.map(i => DECOY_QUESTIONS[i]);
+}
+
+// ─── Body parsing ───────────────────────────────────────────────────────────
+
+/**
+ * Safely parse a JSON body. Returns `null` on parse error or empty body.
+ * Use to avoid try/catch noise in every endpoint.
+ */
+export async function getJsonBody(request) {
+  try {
+    const text = await request.text();
+    if (!text || !text.trim()) return null;
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
+}
+
 // ─── Response helpers ───────────────────────────────────────────────────────
 
 export const CORS_HEADERS = {
