@@ -169,21 +169,5 @@ const otherLang = lang === 'fi' ? 'en' : 'fi';
     });
   })();
 </script>
-<script is:inline>
-  // Set lang_pref cookie ONLY when the user explicitly clicks the FI/EN
-  // language toggle. Passive geo-redirects do NOT set the cookie — they
-  // should re-evaluate per visit so VPN flips, mobile carrier weirdness,
-  // travel, etc. naturally fix themselves.
-  //
-  // Cookie: 1 year, path=/, SameSite=Lax (sent on top-level navigations
-  // including the redirect chain from /).
-  document.addEventListener('click', function (e) {
-    var link = e.target.closest && e.target.closest('a[data-set-lang-pref]');
-    if (!link) return;
-    var lang = link.getAttribute('data-set-lang-pref');
-    if (lang !== 'fi' && lang !== 'en') return;
-    document.cookie = 'lang_pref=' + lang + '; path=/; max-age=31536000; samesite=lax';
-  });
-</script>
 </body>
 </html>
