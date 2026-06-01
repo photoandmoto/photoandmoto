@@ -304,7 +304,23 @@ def parse_table_from_html(table_html):
         except ValueError:
             continue
 
-        if len(clean) >= 6:
+        # mxgpresults.com tables have variable column counts:
+        #   Qualifying (6 cols): Pos | # | Rider | Bike | Nat | Time
+        #   Race 1 / Race 2 (7 cols): Pos | # | Rider | Bike | Nat | Time | Points
+        #   Overall / GP Classification (6 cols): Pos | # | Rider | Bike | Nat | Points
+        if len(clean) >= 7:
+            # Race 1 / Race 2 — capture BOTH time and points
+            entry["num"] = clean[1].replace("#", "")
+            entry["rider"] = clean[2]
+            entry["bike"] = clean[3]
+            entry["nat"] = clean[4]
+            entry["time"] = clean[5]
+            try:
+                entry["pts"] = int(clean[6])
+            except ValueError:
+                pass
+        elif len(clean) >= 6:
+            # Qualifying (Time) or Overall (Points) — one trailing value column
             entry["num"] = clean[1].replace("#", "")
             entry["rider"] = clean[2]
             entry["bike"] = clean[3]
