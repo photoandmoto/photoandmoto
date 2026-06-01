@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import CookieConsent from '../components/CookieConsent.astro';
 import '../styles/brand.css';
 import '../styles/global.css';
 import '../styles/components.css';
@@ -135,14 +136,8 @@ const otherLang = lang === 'fi' ? 'en' : 'fi';
     ]
   })} />
 
-  <!-- Google Analytics (GA4) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9Y0PEJY0XG"></script>
-  <script is:inline>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-9Y0PEJY0XG');
-  </script>
+  <!-- Google Analytics (GA4) is loaded by CookieConsent.astro only after
+       the user explicitly consents to analytics. See that component. -->
 </head>
 <body>
   <slot name="pre-header" />
@@ -153,6 +148,7 @@ const otherLang = lang === 'fi' ? 'en' : 'fi';
   </main>
 
   <Footer lang={lang} />
+  <CookieConsent lang={lang} />
 <script is:inline>
   // Open every link in a new tab, except those marked data-no-newtab.
   // Runs once on page load.

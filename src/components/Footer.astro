@@ -33,6 +33,7 @@ const currentYear = new Date().getFullYear();
           {lang === 'fi' && <li><a href="/fi/podcast">Podcast</a></li>}
           {lang === 'fi' && <li><a href="/fi/tunnistamatta">Tunnista kuva</a></li>}
           <li><a href={lang === 'fi' ? '/fi/tietosuojaseloste' : '/en/privacy-policy'}>{lang === 'fi' ? 'Tietosuojaseloste' : 'Privacy Policy'}</a></li>
+          <li><a href="#" data-pm-cookie-open data-no-newtab>{lang === 'fi' ? 'Evästeasetukset' : 'Cookie settings'}</a></li>
         </ul>
       </div>
     </div>
