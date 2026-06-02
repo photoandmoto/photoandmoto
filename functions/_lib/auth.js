@@ -23,7 +23,8 @@ export const SALT_LENGTH_BYTES = 16;
 export const HASH_LENGTH_BITS = 256;
 export const TOKEN_LENGTH_BYTES = 32;          // 256 bits → 43 base64url chars
 export const SESSION_LENGTH_BYTES = 32;        // ditto
-export const SESSION_MAX_AGE_SECONDS = 30 * 24 * 60 * 60;        // 30 days
+export const SESSION_MAX_AGE_SECONDS = 30 * 24 * 60 * 60;        // 30 days (absolute cap)
+export const SESSION_IDLE_TIMEOUT_SECONDS = 4 * 60 * 60;         // 4 hours (inactivity logout — mirrored as the '-4 hours' literal in requireAuth's query)
 export const PROVISIONING_TOKEN_TTL_SECONDS = 48 * 60 * 60;      // 48 hours
 export const RECOVERY_TOKEN_TTL_SECONDS = 15 * 60;               // 15 minutes
 export const SESSION_COOKIE_NAME = 'pm_session';
@@ -293,6 +294,8 @@ export async function requireAuth(request, env, requiredPerm = null) {
      INNER JOIN users u ON u.id = s.user_id
      WHERE s.id = ?
        AND s.expires_at > datetime('now')
+       AND s.last_seen_at IS NOT NULL
+       AND s.last_seen_at > datetime('now', '-4 hours')
        AND u.is_active = 1`
   ).bind(sessionHash).first();
 
