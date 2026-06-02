@@ -125,14 +125,18 @@ const categoryKey = category ? category.toLowerCase().replace(/[^a-z0-9]/g, '') 
     z-index: 2;
   }
 
-  /* Category color mapping */
+  /* Category color mapping.
+     Chip text is small bold (~11.5px) so WCAG AA needs 4.5:1. With white text,
+     mx2/speedway/enduro/technical/interview all fell below (3.4–3.9:1). Black
+     text on these same bright backgrounds clears 4.5:1 (5.3–6.1:1) while keeping
+     the vivid palette — matching how the mxgp chip already works. */
   .chip--mxgp     { background: #FF9900; color: #000; }
-  .chip--mx2      { background: #D85A30; }
+  .chip--mx2      { background: #D85A30; color: #000; }
   .chip--historical { background: #5F5E5A; }
-  .chip--speedway { background: #378ADD; }
-  .chip--enduro   { background: #639922; }
-  .chip--technical { background: #7F77DD; }
-  .chip--interview { background: #D4537E; }
+  .chip--speedway { background: #378ADD; color: #000; }
+  .chip--enduro   { background: #639922; color: #000; }
+  .chip--technical { background: #7F77DD; color: #000; }
+  .chip--interview { background: #D4537E; color: #000; }
 
   /* Large card gets larger chip */
   .acard--lg .chip {
