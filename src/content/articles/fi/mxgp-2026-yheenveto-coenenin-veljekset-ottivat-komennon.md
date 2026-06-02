@@ -149,3 +149,4 @@ Juuri siinä kohtaa kaudesta tulee kiinnostava.
 | 9    | Karlis Alberts Reisulis | Yamaha    | LAT | 188     | \-132       |
 | 10   | Julius Mikula           | KTM       | CZE | 144     | \-176       |
 
+
