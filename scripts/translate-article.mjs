@@ -64,28 +64,15 @@ RULES:
 9. Match the source tone — informal, anecdotal, knowledgeable about motorsport history.
 10. Translate ONLY the content. Do NOT add disclaimers, notes, or commentary about the translation process.`;
 
-// Split into two schemas so each Gemini call stays small. The article body
-// is the only large field; bundling it with the metadata in one response was
-// what blew the output-token budget (truncated JSON dropped the required
-// `title`, producing a malformed EN file). Translating metadata and body in
-// separate calls keeps each well under the cap.
-//
-// `tags` is deliberately NOT translated by the model. Per SYSTEM_PROMPT rule 8
-// the site's tags are proper nouns / sport terms (MXGP, MX2, Motocross) that
-// stay as-is anyway, and asking Gemini for them triggered a degenerate
-// repetition loop that consumed the entire output budget (MAX_TOKENS, 90k+
-// chars of repeated tags). We reuse the Finnish tags verbatim instead.
-const META_SCHEMA = {
-  type: 'object',
-  properties: {
-    title: { type: 'string' },
-    subtitle: { type: 'string' },
-    seo_description: { type: 'string' },
-    image_caption: { type: 'string' },
-  },
-  required: ['title'],
-};
-
+// The article body is the only large field; it gets its own schema'd call.
+// Metadata fields (title/subtitle/seo/caption) are each a single short line
+// and are translated INDIVIDUALLY as plain text (see translateField), NOT via
+// a JSON metadata schema. Reason: asking the model for a JSON object of
+// metadata fields repeatedly triggered a degenerate repetition loop — first on
+// `tags`, then on `subtitle` — where the model concatenated the body and the
+// Finnish source over and over until it hit the token cap and produced
+// unparseable JSON. A one-field-at-a-time plain-string translation cannot loop
+// across fields, cannot drop a required key, and cannot emit invalid JSON.
 const BODY_SCHEMA = {
   type: 'object',
   properties: {
@@ -93,25 +80,6 @@ const BODY_SCHEMA = {
   },
   required: ['body'],
 };
-
-function buildMetaPrompt(fm, glossary) {
-  const fields = {
-    title: fm.title || '',
-    subtitle: fm.subtitle || null,
-    seo_description: fm.seo_description || null,
-    image_caption: fm.image_caption || null,
-  };
-
-  let glossarySection = '';
-  if (glossary && glossary.trim()) {
-    glossarySection = `\n\nSITE-SPECIFIC GLOSSARY (overrides — apply these exact substitutions):\n${glossary.trim()}\n`;
-  }
-
-  return `Translate ONLY these Finnish article metadata fields to English. Do NOT translate or output the article body. Do NOT output tags. Return JSON matching the response schema.${glossarySection}
-
-SOURCE METADATA FIELDS (Finnish):
-${JSON.stringify(fields, null, 2)}`;
-}
 
 function buildBodyPrompt(body, glossary) {
   let glossarySection = '';
@@ -201,9 +169,81 @@ async function callGeminiWithRetry(systemPrompt, userPrompt, apiKey, responseSch
   throw lastErr;
 }
 
-// ---------------------------------------------------------------------------
-// Main
-// ---------------------------------------------------------------------------
+// Plain-text Gemini call (no JSON schema). Used for translating single short
+// metadata fields. Returns the model's text output, trimmed. Marks transient
+// failures retryable just like callGemini so the retry wrapper can ride them.
+async function callGeminiText(systemPrompt, userPrompt, apiKey, maxTokens) {
+  const url = `${ENDPOINT}?key=${encodeURIComponent(apiKey)}`;
+  const body = {
+    systemInstruction: { parts: [{ text: systemPrompt }] },
+    contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
+    generationConfig: {
+      temperature: 0.3,
+      thinkingConfig: { thinkingBudget: 0 },
+      maxOutputTokens: maxTokens,
+    },
+  };
+
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    const err = new Error(`Gemini API ${res.status}: ${text}`);
+    if (res.status === 429 || res.status >= 500) err.retryable = true;
+    throw err;
+  }
+
+  const data = await res.json();
+  const candidate = data.candidates && data.candidates[0];
+  if (!candidate) throw new Error(`Gemini returned no candidates: ${JSON.stringify(data)}`);
+  const finishReason = candidate.finishReason || 'unknown';
+  const text = candidate.content && candidate.content.parts && candidate.content.parts[0] && candidate.content.parts[0].text;
+  if (!text) throw new Error(`Gemini returned no text. finishReason=${finishReason}`);
+  return text.trim();
+}
+
+// Translate one short metadata field as plain text, with retry. Empty/whitespace
+// input short-circuits to null (no API call). The model is told to return ONLY
+// the translated line, nothing else — and because there's a single short field
+// and no JSON structure, the cross-field repetition loop cannot occur. Capped
+// tight (256 tokens) so any anomaly fails in milliseconds.
+async function translateField(value, fieldName, apiKey, glossary) {
+  const src = (value == null ? '' : String(value)).trim();
+  if (!src) return null;
+
+  let glossarySection = '';
+  if (glossary && glossary.trim()) {
+    glossarySection = `\n\nSITE-SPECIFIC GLOSSARY (overrides — apply these exact substitutions):\n${glossary.trim()}\n`;
+  }
+
+  const prompt = `Translate this single Finnish article ${fieldName} to English. Return ONLY the translated text on one line, with no quotes, no labels, no JSON, no commentary, and do not repeat or append anything else.${glossarySection}
+
+FINNISH ${fieldName.toUpperCase()}:
+${src}`;
+
+  const MAX_ATTEMPTS = 3;
+  let lastErr;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const out = await callGeminiText(SYSTEM_PROMPT, prompt, apiKey, 256);
+      // Collapse any stray newlines a model might emit into a single line.
+      const oneLine = out.replace(/\s*\n+\s*/g, ' ').trim();
+      if (!oneLine) throw new Error(`empty translation for ${fieldName}`);
+      return oneLine;
+    } catch (e) {
+      lastErr = e;
+      if (!e.retryable || attempt === MAX_ATTEMPTS) throw e;
+      const delayMs = 2000 * attempt;
+      console.log(`${fieldName}: transient failure (${e.message.slice(0, 80)}...). Retry ${attempt}/${MAX_ATTEMPTS - 1} in ${delayMs}ms.`);
+      await new Promise((r) => setTimeout(r, delayMs));
+    }
+  }
+  throw lastErr;
+}
 
 // Decision: translate if EN file is missing OR has auto_translated === true.
 // Otherwise the EN file is a human-reviewed translation (or pre-existing
@@ -261,27 +301,27 @@ async function main() {
     console.log('No glossary file found, proceeding without overrides.');
   }
 
-  // Translate in two separate calls so the large body never shares an output
-  // budget with the metadata. Both calls go through the retry wrapper to ride
-  // out transient Gemini failures (503/429/MAX_TOKENS).
-  // Call 1: metadata (title/subtitle/seo/caption) — tiny, capped at 1024 tokens
-  //   so a runaway response dies in seconds instead of burning the full budget.
-  // Call 2: body — the only large field, alone in its response, full budget.
-  const metaPrompt = buildMetaPrompt(fiFrontmatter, glossary);
-  console.log('Gemini call 1/2: metadata');
-  const meta = await callGeminiWithRetry(SYSTEM_PROMPT, metaPrompt, apiKey, META_SCHEMA, 1024, 'metadata');
+  // Translate metadata fields INDIVIDUALLY as plain text (title/subtitle/seo/
+  // caption). Each is one short line; doing them one at a time eliminates the
+  // cross-field repetition loop that previously corrupted the metadata JSON.
+  console.log('Translating metadata fields');
+  const metaTitle = await translateField(fiFrontmatter.title, 'title', apiKey, glossary);
+  const metaSubtitle = await translateField(fiFrontmatter.subtitle, 'subtitle', apiKey, glossary);
+  const metaSeo = await translateField(fiFrontmatter.seo_description, 'SEO description', apiKey, glossary);
+  const metaCaption = await translateField(fiFrontmatter.image_caption, 'image caption', apiKey, glossary);
 
+  // Body is large — schema'd call with full budget, through the retry wrapper.
   const bodyPrompt = buildBodyPrompt(fiBody, glossary);
-  console.log('Gemini call 2/2: body');
+  console.log('Translating body');
   const bodyResult = await callGeminiWithRetry(SYSTEM_PROMPT, bodyPrompt, apiKey, BODY_SCHEMA, 32768, 'body');
 
   // Merge into the shape the rest of main() expects. Tags are NOT model-
-  // translated (see META_SCHEMA note) — reuse the Finnish tags verbatim.
+  // translated (proper nouns / sport terms) — reuse the Finnish tags verbatim.
   const translated = {
-    title: meta.title,
-    subtitle: meta.subtitle,
-    seo_description: meta.seo_description,
-    image_caption: meta.image_caption,
+    title: metaTitle,
+    subtitle: metaSubtitle,
+    seo_description: metaSeo,
+    image_caption: metaCaption,
     tags: Array.isArray(fiFrontmatter.tags) ? fiFrontmatter.tags : [],
     body: bodyResult.body,
   };
