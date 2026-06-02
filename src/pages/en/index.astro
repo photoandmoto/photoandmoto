@@ -50,9 +50,7 @@ const galleryItems = featuredGalleries.map(g => ({
   {/* ===== Typographic hero band ===== */}
   <section class="hero-band">
     <div class="container">
-      <div class="hero-band__row">
-        <h1 class="hero-band__title">Speed and life through the lens – Every frame tells a story</h1>
-      </div>
+      <h1 class="hero-band__title">Speed and life through the lens</h1>
     </div>
   </section>
 
@@ -148,26 +146,21 @@ const galleryItems = featuredGalleries.map(g => ({
 </BaseLayout>
 
 <style>
-  /* ===== Typographic hero band ===== */
+  /* ===== Typographic hero band =====
+     Supporting tagline under the masthead — deliberately smaller and lighter
+     than the PHOTO & MOTO logo so the logo stays the dominant element. */
   .hero-band {
     background: #0e0e0e;
-    padding: var(--space-3) 0;
-  }
-
-  .hero-band__row {
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-3);
-    flex-wrap: wrap;
+    padding: var(--space-4) 0;
   }
 
   .hero-band__title {
     font-family: var(--font-headline);
-    font-size: 1.4rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.75);
-    letter-spacing: 0.5px;
-    line-height: 1;
+    font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.82);
+    letter-spacing: 0;
+    line-height: 1.15;
     margin: 0;
   }
 
@@ -347,9 +340,6 @@ const galleryItems = featuredGalleries.map(g => ({
     }
     .section-heading {
       font-size: 1.4rem;
-    }
-    .hero-band__title {
-      font-size: 1.1rem;
     }
   }
 </style>
