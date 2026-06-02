@@ -137,7 +137,8 @@ const t = STRINGS[lang] || STRINGS.fi;
   font-family: var(--font-headline, 'Bebas Neue', sans-serif);
   font-size: .9rem;
   font-weight: 800;
-  color: #ff9900;
+  /* #9C5700 (~5:1 on the #f4f3f1 panel) instead of bright #ff9900 (~1.9:1). */
+  color: #9C5700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   margin-bottom: 8px;
@@ -160,7 +161,8 @@ const t = STRINGS[lang] || STRINGS.fi;
 .mhb-trustline {
   font-family: 'DM Sans', sans-serif;
   font-size: .82rem;
-  color: #999;
+  /* #6B6B6B (~4.8:1 on #f4f3f1) instead of #999 (~2.6:1) for AA. */
+  color: #6B6B6B;
   margin: 4px 0 0;
   line-height: 1.4;
   font-style: italic;
@@ -215,13 +217,15 @@ const t = STRINGS[lang] || STRINGS.fi;
   font-family: 'DM Sans', sans-serif;
   font-size: .9rem;
   font-weight: 600;
-  color: #a06400;
+  /* #8A4E00 (~6:1 on #f4f3f1) instead of #a06400 (~4.4:1, just under AA). */
+  color: #8A4E00;
 }
 .mhb-cta {
   font-family: 'DM Sans', sans-serif;
   font-size: .95rem;
   font-weight: 800;
-  color: #ff9900;
+  /* #9C5700 (~5:1 on #f4f3f1) instead of bright #ff9900 (~1.9:1). */
+  color: #9C5700;
   text-transform: uppercase;
   letter-spacing: .5px;
   transition: color .2s ease;

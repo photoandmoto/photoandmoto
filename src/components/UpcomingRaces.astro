@@ -45,7 +45,7 @@ function formatDate(dateStr: string) {
 // Category color map — matches chip colors elsewhere
 const CAT_COLORS: Record<string, string> = {
   MXGP: '#FF9900',
-  MotoGP: '#E10600',
+  MotoGP: '#FF1801',
   AMA: '#E24B4A',
   SM: '#1D9E75',
   SML: '#378ADD',
@@ -114,7 +114,8 @@ const CAT_COLORS: Record<string, string> = {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: var(--brand-primary);
+    /* #A85D00 (~5:1 on white) instead of bright --brand-primary (~2:1) for AA. */
+    color: #A85D00;
     text-decoration: none;
     white-space: nowrap;
   }
@@ -186,7 +187,10 @@ const CAT_COLORS: Record<string, string> = {
     font-family: var(--font-headline);
     font-size: 0.65rem;
     font-weight: 800;
-    color: #fff;
+    /* Black text on the bright category backgrounds clears AA 4.5:1 for all
+       categories (white text failed on most). MotoGP's red was lightened in
+       CAT_COLORS so black passes there too. */
+    color: #000;
     padding: 2px 7px;
     border-radius: 10px;
     text-transform: uppercase;

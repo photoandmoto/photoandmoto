@@ -411,14 +411,22 @@ const mobileFlatItems = [
       display: block;
       max-height: 0;
       overflow: hidden;
+      /* Closed: hide from the accessibility tree + tab order. Without this the
+         links stay focusable while aria-hidden="true", which fails the
+         "aria-hidden contains focusable descendants" audit. visibility:hidden
+         removes them from focus; it's delayed on close so it doesn't clip the
+         slide-up animation, and instant on open. */
+      visibility: hidden;
       background: #000;
       border-top: 1px solid rgba(255,255,255,0.1);
-      transition: max-height 0.3s ease;
+      transition: max-height 0.3s ease, visibility 0s linear 0.3s;
     }
 
     .mobile-nav.mobile-nav-open {
       max-height: calc(100vh - 80px);
       overflow-y: auto;
+      visibility: visible;
+      transition: max-height 0.3s ease, visibility 0s linear 0s;
     }
 
     .mobile-nav ul {
