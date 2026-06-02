@@ -81,7 +81,6 @@ const galleryItems = featuredGalleries.map(g => ({
   {/* ===== Typographic hero band ===== */}
   <section class="hero-band">
     <div class="container">
-      <span class="hero-band__rule" aria-hidden="true"></span>
       <h1 class="hero-band__title">Vauhtia ja elämää linssin läpi</h1>
     </div>
   </section>
@@ -188,35 +187,22 @@ const galleryItems = featuredGalleries.map(g => ({
 </BaseLayout>
 
 <style>
-  /* ===== Typographic hero band — "magazine cover" moment =====
-     Restraint + scale: a short thick orange rule (the masthead signature)
-     over one big, heavy, near-white statement on black. No grey whisper,
-     no competing English line — it states rather than murmurs. White on
-     #0e0e0e is ~19:1, well past AA. */
+  /* ===== Typographic hero band =====
+     Supporting tagline under the masthead — deliberately smaller and lighter
+     than the PHOTO & MOTO logo so the logo stays the dominant element. */
   .hero-band {
     background: #0e0e0e;
-    padding: var(--space-8) 0;
-  }
-
-  .hero-band__rule {
-    display: block;
-    width: 64px;
-    height: 6px;
-    background: var(--brand-primary);
-    border-radius: 2px;
-    margin-bottom: var(--space-3);
+    padding: var(--space-4) 0;
   }
 
   .hero-band__title {
     font-family: var(--font-headline);
-    font-size: clamp(2.2rem, 6vw, 4rem);
-    font-weight: 900;
-    color: #FFFFFF;
-    letter-spacing: -0.5px;
-    line-height: 1.02;
+    font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.82);
+    letter-spacing: 0;
+    line-height: 1.15;
     margin: 0;
-    max-width: 18ch;
-    text-transform: uppercase;
   }
 
   /* Section shared */
