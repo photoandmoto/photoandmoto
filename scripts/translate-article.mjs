@@ -64,7 +64,12 @@ RULES:
 9. Match the source tone — informal, anecdotal, knowledgeable about motorsport history.
 10. Translate ONLY the content. Do NOT add disclaimers, notes, or commentary about the translation process.`;
 
-const RESPONSE_SCHEMA = {
+// Split into two schemas so each Gemini call stays small. The article body
+// is the only large field; bundling it with the metadata in one response was
+// what blew the output-token budget (truncated JSON dropped the required
+// `title`, producing a malformed EN file). Translating metadata and body in
+// separate calls keeps each well under the cap.
+const META_SCHEMA = {
   type: 'object',
   properties: {
     title: { type: 'string' },
@@ -72,19 +77,25 @@ const RESPONSE_SCHEMA = {
     seo_description: { type: 'string' },
     image_caption: { type: 'string' },
     tags: { type: 'array', items: { type: 'string' } },
-    body: { type: 'string' },
   },
-  required: ['title', 'body'],
+  required: ['title'],
 };
 
-function buildUserPrompt(fm, body, glossary) {
+const BODY_SCHEMA = {
+  type: 'object',
+  properties: {
+    body: { type: 'string' },
+  },
+  required: ['body'],
+};
+
+function buildMetaPrompt(fm, glossary) {
   const fields = {
     title: fm.title || '',
     subtitle: fm.subtitle || null,
     seo_description: fm.seo_description || null,
     image_caption: fm.image_caption || null,
     tags: Array.isArray(fm.tags) ? fm.tags : [],
-    body,
   };
 
   let glossarySection = '';
@@ -92,20 +103,32 @@ function buildUserPrompt(fm, body, glossary) {
     glossarySection = `\n\nSITE-SPECIFIC GLOSSARY (overrides — apply these exact substitutions):\n${glossary.trim()}\n`;
   }
 
-  return `Translate this Finnish article to English. Return JSON matching the response schema.${glossarySection}
+  return `Translate ONLY these Finnish article metadata fields to English. Do NOT translate or output the article body. Return JSON matching the response schema.${glossarySection}
 
-SOURCE FIELDS (Finnish):
+SOURCE METADATA FIELDS (Finnish):
 ${JSON.stringify(fields, null, 2)}`;
 }
 
-async function callGemini(systemPrompt, userPrompt, apiKey) {
+function buildBodyPrompt(body, glossary) {
+  let glossarySection = '';
+  if (glossary && glossary.trim()) {
+    glossarySection = `\n\nSITE-SPECIFIC GLOSSARY (overrides — apply these exact substitutions):\n${glossary.trim()}\n`;
+  }
+
+  return `Translate this Finnish article body to English. Preserve all markdown structure exactly. Return JSON matching the response schema (a single "body" field containing the full translated markdown).${glossarySection}
+
+SOURCE BODY (Finnish markdown):
+${JSON.stringify({ body }, null, 2)}`;
+}
+
+async function callGemini(systemPrompt, userPrompt, apiKey, responseSchema) {
   const url = `${ENDPOINT}?key=${encodeURIComponent(apiKey)}`;
   const body = {
     systemInstruction: { parts: [{ text: systemPrompt }] },
     contents: [{ role: 'user', parts: [{ text: userPrompt }] }],
     generationConfig: {
       responseMimeType: 'application/json',
-      responseSchema: RESPONSE_SCHEMA,
+      responseSchema,
       temperature: 0.3,
       // Gemini 2.5 Pro reasons internally with "thinking" tokens that count
       // against the output budget. Translation is mechanical — no thinking
@@ -207,9 +230,45 @@ async function main() {
     console.log('No glossary file found, proceeding without overrides.');
   }
 
-  // Translate
-  const userPrompt = buildUserPrompt(fiFrontmatter, fiBody, glossary);
-  const translated = await callGemini(SYSTEM_PROMPT, userPrompt, apiKey);
+  // Translate in two separate calls so the large body never shares an output
+  // budget with the metadata. Call 1: metadata (title/subtitle/seo/tags) — tiny.
+  // Call 2: body — the only large field, now alone in its response.
+  const metaPrompt = buildMetaPrompt(fiFrontmatter, glossary);
+  console.log('Gemini call 1/2: metadata');
+  const meta = await callGemini(SYSTEM_PROMPT, metaPrompt, apiKey, META_SCHEMA);
+
+  const bodyPrompt = buildBodyPrompt(fiBody, glossary);
+  console.log('Gemini call 2/2: body');
+  const bodyResult = await callGemini(SYSTEM_PROMPT, bodyPrompt, apiKey, BODY_SCHEMA);
+
+  // Merge into the shape the rest of main() expects.
+  const translated = {
+    title: meta.title,
+    subtitle: meta.subtitle,
+    seo_description: meta.seo_description,
+    image_caption: meta.image_caption,
+    tags: meta.tags,
+    body: bodyResult.body,
+  };
+
+  // Guard: a truncated Gemini response (finishReason=MAX_TOKENS) can drop
+  // schema-required fields. js-yaml then silently omits the missing key,
+  // producing an EN file with no `title:` that fails Astro's content schema
+  // and breaks the Cloudflare build one stage later. Fail HERE instead so
+  // the Action surfaces the problem and no malformed EN file is committed.
+  if (!translated.title || !String(translated.title).trim()) {
+    throw new Error(
+      `Translation returned an empty title for ${slug} — likely a truncated ` +
+      `Gemini response (check finishReason above; MAX_TOKENS means the output ` +
+      `budget was exceeded). Aborting so no malformed EN file is committed.`
+    );
+  }
+  if (!translated.body || !String(translated.body).trim()) {
+    throw new Error(
+      `Translation returned an empty body for ${slug} — likely a truncated ` +
+      `Gemini response. Aborting so no malformed EN file is committed.`
+    );
+  }
 
   // Build EN frontmatter — preserve immutable fields, replace translated ones,
   // set machine-translation metadata.
