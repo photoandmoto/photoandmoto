@@ -81,9 +81,8 @@ const galleryItems = featuredGalleries.map(g => ({
   {/* ===== Typographic hero band ===== */}
   <section class="hero-band">
     <div class="container">
-      <div class="hero-band__row">
-        <h1 class="hero-band__title">Vauhtia ja elämää linssin läpi – Every frame tells a story</h1>
-      </div>
+      <span class="hero-band__rule" aria-hidden="true"></span>
+      <h1 class="hero-band__title">Vauhtia ja elämää linssin läpi</h1>
     </div>
   </section>
 
@@ -189,36 +188,35 @@ const galleryItems = featuredGalleries.map(g => ({
 </BaseLayout>
 
 <style>
-  /* ===== Typographic hero band ===== */
+  /* ===== Typographic hero band — "magazine cover" moment =====
+     Restraint + scale: a short thick orange rule (the masthead signature)
+     over one big, heavy, near-white statement on black. No grey whisper,
+     no competing English line — it states rather than murmurs. White on
+     #0e0e0e is ~19:1, well past AA. */
   .hero-band {
     background: #0e0e0e;
-    padding: var(--space-3) 0;
+    padding: var(--space-8) 0;
   }
 
-  .hero-band__row {
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-3);
-    flex-wrap: wrap;
+  .hero-band__rule {
+    display: block;
+    width: 64px;
+    height: 6px;
+    background: var(--brand-primary);
+    border-radius: 2px;
+    margin-bottom: var(--space-3);
   }
 
   .hero-band__title {
     font-family: var(--font-headline);
-    font-size: 1.4rem;
-    font-weight: 500;
-    color: rgba(255, 255, 255, 0.75);
-    letter-spacing: 0.5px;
-    line-height: 1;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    font-weight: 900;
+    color: #FFFFFF;
+    letter-spacing: -0.5px;
+    line-height: 1.02;
     margin: 0;
-  }
-
-  .hero-band__subtitle {
-    font-family: var(--font-headline);
-    font-size: 1.05rem;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.55);
-    letter-spacing: 0.5px;
-    margin: 0;
+    max-width: 18ch;
+    text-transform: uppercase;
   }
 
   /* Section shared */
@@ -408,11 +406,8 @@ const galleryItems = featuredGalleries.map(g => ({
     .section-heading {
       font-size: 1.4rem;
     }
-    .hero-band__title {
-      font-size: 1.1rem;
-    }
-    .hero-band__subtitle {
-      font-size: 0.9rem;
+    .hero-band {
+      padding: var(--space-6) 0;
     }
   }
 </style>
