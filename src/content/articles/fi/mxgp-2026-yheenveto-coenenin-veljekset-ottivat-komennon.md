@@ -1,5 +1,5 @@
 ---
-title: MXGP 2026 Yheenveto - Coenenin veljekset ottivat komennon
+title: MXGP 2026 Yhteenveto - Coenenin veljekset ottivat komennon
 subtitle: Kauden 2026 MXGP-sarja on siirtynyt avaavan tunnusteluvaiheen yli
   todelliseen mestaruustaisteluun.
 author: Photo & Moto
