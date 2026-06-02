@@ -150,3 +150,4 @@ Juuri siinä kohtaa kaudesta tulee kiinnostava.
 | 10   | Julius Mikula           | KTM       | CZE | 144     | \-176       |
 
 
+
