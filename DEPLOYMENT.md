@@ -325,7 +325,7 @@ All workflows live in `.github/workflows/`. They run on push to `dev` and
 
 | Workflow | Trigger path | What it does |
 |---|---|---|
-| `translate-article.yml` | `src/content/articles/fi/**` | For each changed FI article, runs `scripts/translate-article.mjs` (Gemini 2.5 Flash). Translates to EN if the EN file is missing or `auto_translated: true`; skips human-reviewed translations. Commits `en/<slug>.md`. |
+| `translate-article.yml` | `src/content/articles/fi/**` | For each changed FI article, runs `scripts/translate-article.mjs` (Gemini 2.5 Flash). Translates to EN if the EN file is missing or `auto_translated: true`; skips human-reviewed translations. Metadata fields (title/subtitle/SEO/caption) are translated individually as plain text; the body is a separate JSON call; FI `tags` are reused verbatim. Transient Gemini failures (503/429/truncation) auto-retry. Commits `en/<slug>.md`. |
 | `compress-article-images.yml` | `public/images/**` | Resizes oversized images to ≤1600px wide, re-encodes JPEG/WebP at quality 82. Commits compressed versions. |
 | `generate-og-images.yml` | `src/content/articles/**` | Composites a 1200×630 branded social card per article (`scripts/generate-og-image.mjs`, Sharp + Montserrat). Commits to `public/og/`. |
 | `check-links.yml` | `src/content/articles/**` | Scans changed article markdown for broken external links. Fails the run (visible warning) if any are dead. Doesn't block deploys. |
@@ -534,14 +534,32 @@ Verify with `git show origin/dev:src/content/articles/<lang>/<slug>.md`.
 
 ### Auto-translation Action failed
 
-Check the Action log. Known causes:
+The translator (`scripts/translate-article.mjs`) makes **separate Gemini calls
+per piece**: each metadata field (title, subtitle, SEO description, image
+caption) is translated individually as plain text, and the article body is a
+single JSON call of its own. FI `tags` are not sent to the model — they're
+reused verbatim. This structure is deliberate: earlier single-call designs hit
+a degenerate repetition loop (the model looping on `tags`, then `subtitle`,
+concatenating the body until it exhausted the token budget) that produced
+malformed EN files and broke the Cloudflare build.
 
-- **Truncated / non-JSON Gemini response** — the model ran out of output
-  budget. The script uses `gemini-2.5-flash` with `thinkingBudget: 0` and
-  `maxOutputTokens: 32768` to avoid this; a genuinely huge article could still
-  hit it.
-- **Auth error** — `GEMINI_API_KEY` repo secret missing or invalid.
-- Re-trigger by re-saving the FI article in Decap.
+Guards in the script abort with a non-zero exit — failing the **Action**, not a
+later build — if the title or body comes back empty, so a bad translation never
+commits a broken EN file. Check the Action log; known causes:
+
+- **Gemini 503 / 429 (overloaded or rate-limited)** — transient. The script
+  auto-retries up to 3× with backoff, so a brief spike usually self-heals. If
+  all retries fail, just re-trigger.
+- **`MAX_TOKENS` / non-JSON response** — output budget exhausted, historically
+  the repetition loop above. The per-field metadata design prevents the common
+  cases; a genuinely enormous body could still hit the body call's 32768-token
+  cap. Retrying or shortening the article resolves it.
+- **Auth error** — `GEMINI_API_KEY` repo secret missing or invalid (this is a
+  GitHub repo secret, separate from the Cloudflare copy — see § Setting up a
+  new environment, step 6).
+- **Re-trigger** by re-saving the FI article in Decap, or push a no-op change
+  to the FI file. On success the log reads `Translating metadata fields` →
+  `Translating body` → `Wrote …`.
 
 ### Site loads but mystery endpoints 500
 
