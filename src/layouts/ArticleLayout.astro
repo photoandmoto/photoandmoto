@@ -170,8 +170,14 @@ const articleJsonLd = {
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: var(--brand-primary);
+    /* AA-amber (#A85D00 ~5:1) instead of bright #ff9900 (~2:1). */
+    color: #A85D00;
     margin-bottom: var(--space-3);
+    transition: color var(--transition-fast);
+  }
+  .back-link:hover {
+    color: var(--brand-secondary);
+    text-decoration: underline;
   }
   
   .article-meta-top {
@@ -323,6 +329,21 @@ const articleJsonLd = {
     font-style: italic;
     color: var(--text-secondary);
   }
+
+  /* Inline links in article body. These had no dedicated rule and fell back to
+     the global orange (#ff9900, ~2:1 on white — fails AA) with no underline, so
+     readers couldn't reliably tell text was a link. Now: AA-amber + underline
+     (color alone is insufficient per WCAG 1.4.1), with clear hover/focus. */
+  .article-body :global(a) {
+    color: #A85D00;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color var(--transition-fast);
+  }
+  .article-body :global(a:hover) {
+    color: var(--brand-secondary);
+    text-decoration-thickness: 2px;
+  }
   
   /* Images in article */
   /* Tables */
@@ -427,7 +448,8 @@ const articleJsonLd = {
   
   .tag {
     font-size: 0.85rem;
-    color: var(--brand-primary);
+    /* AA-amber for the #tag labels (decorative, but keep legible). */
+    color: #A85D00;
     font-weight: 600;
   }
   

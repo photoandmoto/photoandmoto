@@ -58,6 +58,32 @@ a:hover {
   color: var(--brand-secondary);
 }
 
+/* ---------------------------------------------------------------------------
+   Keyboard focus indicator (WCAG 2.4.7 Focus Visible / 2.4.11 Focus Appearance)
+   :focus-visible shows the ring only for keyboard navigation, not mouse clicks,
+   so it doesn't add visual noise for pointer users. #A85D00 has >=4:1 contrast
+   against both the light body (#fff) and the dark header/footer (#000), so one
+   amber ring is clearly visible everywhere. Applies site-wide to every
+   interactive element without per-component rules.
+--------------------------------------------------------------------------- */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #A85D00;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Belt-and-braces: never leave a focused element with no indicator. */
+a:focus-visible,
+button:focus-visible {
+  text-decoration: none;
+}
+
 img {
   max-width: 100%;
   height: auto;
