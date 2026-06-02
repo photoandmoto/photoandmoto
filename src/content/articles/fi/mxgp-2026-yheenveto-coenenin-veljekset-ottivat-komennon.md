@@ -34,7 +34,7 @@ Tulos oli merkittävä, koska Herlingsiä pidetään yhä yhtenä maailman kovim
 
 MX2-luokassa Simon Längenfelder vei kokonaisvoiton ja jakoi erävoitot Sacha Coenenin kanssa. Sacha näytti jälleen lähtönopeutensa ja aggressiivisuutensa, mutta Längenfelderin tasaisuus ratkaisi viikonlopun. Sardinian viesti oli selkeä: Sacha pystyy voittamaan eriä, mutta Längenfelder oli edelleen erittäin vaikea voittaa koko GP:n mittakaavassa.
 
-## Trentino
+## Italia
 
 ### Herlings vastasi, Sacha Coenen nousi uudelle tasolle
 
