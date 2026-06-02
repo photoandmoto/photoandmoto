@@ -69,6 +69,12 @@ RULES:
 // what blew the output-token budget (truncated JSON dropped the required
 // `title`, producing a malformed EN file). Translating metadata and body in
 // separate calls keeps each well under the cap.
+//
+// `tags` is deliberately NOT translated by the model. Per SYSTEM_PROMPT rule 8
+// the site's tags are proper nouns / sport terms (MXGP, MX2, Motocross) that
+// stay as-is anyway, and asking Gemini for them triggered a degenerate
+// repetition loop that consumed the entire output budget (MAX_TOKENS, 90k+
+// chars of repeated tags). We reuse the Finnish tags verbatim instead.
 const META_SCHEMA = {
   type: 'object',
   properties: {
@@ -76,7 +82,6 @@ const META_SCHEMA = {
     subtitle: { type: 'string' },
     seo_description: { type: 'string' },
     image_caption: { type: 'string' },
-    tags: { type: 'array', items: { type: 'string' } },
   },
   required: ['title'],
 };
@@ -95,7 +100,6 @@ function buildMetaPrompt(fm, glossary) {
     subtitle: fm.subtitle || null,
     seo_description: fm.seo_description || null,
     image_caption: fm.image_caption || null,
-    tags: Array.isArray(fm.tags) ? fm.tags : [],
   };
 
   let glossarySection = '';
@@ -103,7 +107,7 @@ function buildMetaPrompt(fm, glossary) {
     glossarySection = `\n\nSITE-SPECIFIC GLOSSARY (overrides — apply these exact substitutions):\n${glossary.trim()}\n`;
   }
 
-  return `Translate ONLY these Finnish article metadata fields to English. Do NOT translate or output the article body. Return JSON matching the response schema.${glossarySection}
+  return `Translate ONLY these Finnish article metadata fields to English. Do NOT translate or output the article body. Do NOT output tags. Return JSON matching the response schema.${glossarySection}
 
 SOURCE METADATA FIELDS (Finnish):
 ${JSON.stringify(fields, null, 2)}`;
@@ -121,7 +125,7 @@ SOURCE BODY (Finnish markdown):
 ${JSON.stringify({ body }, null, 2)}`;
 }
 
-async function callGemini(systemPrompt, userPrompt, apiKey, responseSchema) {
+async function callGemini(systemPrompt, userPrompt, apiKey, responseSchema, maxTokens) {
   const url = `${ENDPOINT}?key=${encodeURIComponent(apiKey)}`;
   const body = {
     systemInstruction: { parts: [{ text: systemPrompt }] },
@@ -134,7 +138,7 @@ async function callGemini(systemPrompt, userPrompt, apiKey, responseSchema) {
       // against the output budget. Translation is mechanical — no thinking
       // needed. Disabling it gives the full budget to actual output.
       thinkingConfig: { thinkingBudget: 0 },
-      maxOutputTokens: 32768,
+      maxOutputTokens: maxTokens,
     },
   };
 
@@ -146,7 +150,10 @@ async function callGemini(systemPrompt, userPrompt, apiKey, responseSchema) {
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`Gemini API ${res.status}: ${text}`);
+    const err = new Error(`Gemini API ${res.status}: ${text}`);
+    // 429 (rate limit), 500/503 (overloaded/unavailable) are transient.
+    if (res.status === 429 || res.status >= 500) err.retryable = true;
+    throw err;
   }
 
   const data = await res.json();
@@ -165,9 +172,33 @@ async function callGemini(systemPrompt, userPrompt, apiKey, responseSchema) {
   try {
     parsed = JSON.parse(text);
   } catch (e) {
-    throw new Error(`Gemini returned non-JSON (length=${text.length}, finishReason=${finishReason}). First 500 chars: ${text.slice(0, 500)}\n\nLast 500 chars: ${text.slice(-500)}`);
+    const err = new Error(`Gemini returned non-JSON (length=${text.length}, finishReason=${finishReason}). First 500 chars: ${text.slice(0, 500)}\n\nLast 500 chars: ${text.slice(-500)}`);
+    // MAX_TOKENS truncation yields unparseable JSON; a retry may complete.
+    if (finishReason === 'MAX_TOKENS') err.retryable = true;
+    throw err;
   }
   return parsed;
+}
+
+// Retry wrapper: transient Gemini failures (503 overloaded, 429 rate-limit,
+// MAX_TOKENS truncation) are common and self-clearing. Retry a few times with
+// exponential backoff before giving up, so a momentary spike doesn't fail the
+// whole Action and leave the article untranslated.
+async function callGeminiWithRetry(systemPrompt, userPrompt, apiKey, responseSchema, maxTokens, label) {
+  const MAX_ATTEMPTS = 3;
+  let lastErr;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      return await callGemini(systemPrompt, userPrompt, apiKey, responseSchema, maxTokens);
+    } catch (e) {
+      lastErr = e;
+      if (!e.retryable || attempt === MAX_ATTEMPTS) throw e;
+      const delayMs = 2000 * attempt; // 2s, 4s
+      console.log(`${label}: transient failure (${e.message.slice(0, 80)}...). Retry ${attempt}/${MAX_ATTEMPTS - 1} in ${delayMs}ms.`);
+      await new Promise((r) => setTimeout(r, delayMs));
+    }
+  }
+  throw lastErr;
 }
 
 // ---------------------------------------------------------------------------
@@ -231,23 +262,27 @@ async function main() {
   }
 
   // Translate in two separate calls so the large body never shares an output
-  // budget with the metadata. Call 1: metadata (title/subtitle/seo/tags) — tiny.
-  // Call 2: body — the only large field, now alone in its response.
+  // budget with the metadata. Both calls go through the retry wrapper to ride
+  // out transient Gemini failures (503/429/MAX_TOKENS).
+  // Call 1: metadata (title/subtitle/seo/caption) — tiny, capped at 1024 tokens
+  //   so a runaway response dies in seconds instead of burning the full budget.
+  // Call 2: body — the only large field, alone in its response, full budget.
   const metaPrompt = buildMetaPrompt(fiFrontmatter, glossary);
   console.log('Gemini call 1/2: metadata');
-  const meta = await callGemini(SYSTEM_PROMPT, metaPrompt, apiKey, META_SCHEMA);
+  const meta = await callGeminiWithRetry(SYSTEM_PROMPT, metaPrompt, apiKey, META_SCHEMA, 1024, 'metadata');
 
   const bodyPrompt = buildBodyPrompt(fiBody, glossary);
   console.log('Gemini call 2/2: body');
-  const bodyResult = await callGemini(SYSTEM_PROMPT, bodyPrompt, apiKey, BODY_SCHEMA);
+  const bodyResult = await callGeminiWithRetry(SYSTEM_PROMPT, bodyPrompt, apiKey, BODY_SCHEMA, 32768, 'body');
 
-  // Merge into the shape the rest of main() expects.
+  // Merge into the shape the rest of main() expects. Tags are NOT model-
+  // translated (see META_SCHEMA note) — reuse the Finnish tags verbatim.
   const translated = {
     title: meta.title,
     subtitle: meta.subtitle,
     seo_description: meta.seo_description,
     image_caption: meta.image_caption,
-    tags: meta.tags,
+    tags: Array.isArray(fiFrontmatter.tags) ? fiFrontmatter.tags : [],
     body: bodyResult.body,
   };
 
