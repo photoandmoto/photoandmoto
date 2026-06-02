@@ -1,6 +1,7 @@
 ---
 title: MXGP 2026 Summary - The Coenen Brothers Took Command
-subtitle: The 2026 MXGP series has moved beyond the opening exploratory phase into a true championship battle.
+subtitle: The 2026 MXGP series has moved beyond the opening exploratory phase
+  into a true championship battle.
 author: Photo & Moto
 date: 2026-06-02T00:00:00.000Z
 category: MXGP
@@ -9,12 +10,13 @@ tags:
   - MX2
   - Motocross
 featured_image: /images/mxgp-2025.jpg
+card_image: null
 show_hero: true
-language: en
 draft: false
 auto_translated: true
 translated_from: mxgp-2026-yheenveto-coenenin-veljekset-ottivat-komennon
-translated_at: "2026-06-02T08:30:12.580Z"
+language: en
+translated_at: 2026-06-02T08:30:12.580Z
 ---
 
 > Lucas Coenen leads the MXGP class. Jeffrey Herlings is still close enough to be a real threat, but the German GP gave Coenen his strongest position of the season so far. In the MX2 class, Sacha Coenen joined his brother as the red plate holder, making the Coenen name the hottest topic of the season. This is no longer cautious early-season point-scoring. Now we'll see who can truly withstand the championship pressure.
