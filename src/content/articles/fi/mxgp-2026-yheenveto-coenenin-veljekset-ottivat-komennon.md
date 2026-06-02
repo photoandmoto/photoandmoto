@@ -21,7 +21,9 @@ sources: Tämä yhteenveto on koostettu useasta julkisesta lähteestä
 ---
 > Lucas Coenen johtaa MXGP-luokkaa. Jeffrey Herlings on yhä tarpeeksi lähellä ollakseen todellinen uhka, mutta Saksan GP antoi Coenenille hänen tähänastisen kautensa vahvimman aseman. MX2-luokassa Sacha Coenen nousi veljensä rinnalle punaisen kilven haltijaksi, mikä teki Coenenin nimestä kauden kuumimman puheenaiheen. Tämä ei ole enää alkukauden varovaista pisteiden keräilyä. Nyt nähdään, ketkä todella kestävät mestaruuspaineen.
 
-#### Sardinia: Lucas Coenen iski ensimmäisen painavan merkin
+## Sardinia
+
+### Lucas Coenen iski ensimmäisen painavan merkin
 
 Riola Sardo ei ole koskaan vain yksi osakilpailu muiden joukossa. Sardinian syvä hiekka paljastaa armotta heikot lähdöt, väärän rytmin, puutteellisen fyysisen valmiuden ja kaluston, joka ei toimi jatkuvan rasituksen alla.
 
@@ -148,6 +150,3 @@ Juuri siinä kohtaa kaudesta tulee kiinnostava.
 | 8    | Valerio Lata            | Honda     | ITA | 189     | \-131       |
 | 9    | Karlis Alberts Reisulis | Yamaha    | LAT | 188     | \-132       |
 | 10   | Julius Mikula           | KTM       | CZE | 144     | \-176       |
-
-
-
