@@ -42,7 +42,7 @@ const articles = (await getCollection('articles', (entry) =>
                 <a href={`/fi/aikakone/${article.id.replace(/^fi\//, '')}`}>
                   <div class="article-card__image-wrap">
                     <img
-                      src={article.data.featured_image}
+                      src={article.data.card_image || article.data.featured_image}
                       alt={article.data.title}
                       class="article-card__image"
                       loading="lazy"
@@ -187,3 +187,4 @@ const articles = (await getCollection('articles', (entry) =>
     }
   }
 </style>
+
