@@ -28,9 +28,9 @@ Viime sunnuntaina ajettiin Espoon Kolmperän radalla 80-kuutioisten toiseksi vii
 
 Pisteissä toisena oleva Rauman Ville-Veikko Saarnio on 45 pisteen päässä takana ja kun erävoitosta saa 20 pistettä, niin Antti on jo tavoittamattomissa.
 
-Harvon on kukaan ollut 80-kuutioisten Suomen cupissa niin ylivoimainen kuin Antti on ollut tällä kaudella. Hän on voittanut tähän mennessä ajetuista kahdeksasta erästä viisi, ollut kahdesti toinen ja kerran viides, silloinkin tekniikkamurheiden takia.
+Harvoin on kukaan ollut 80-kuutioisten Suomen cupissa niin ylivoimainen kuin Antti on ollut tällä kaudella. Hän on voittanut tähän mennessä ajetuista kahdeksasta erästä viisi, ollut kahdesti toinen ja kerran viides, silloinkin tekniikkamurheiden takia.
 
-> – Kyllä noi kisat on menneet ihan hyvin. Ainut huono tulos on tuo viides sija Alastarolta. Silloin katosi pyörästä kolmosvaihde ja oli aina vaihdettava kakkoselta suoraan neloselle, jutustelee rauhallisen tuntuinen Antti.
+> Kyllä noi kisat on menneet ihan hyvin. Ainut huono tulos on tuo viides sija Alastarolta. Silloin katosi pyörästä kolmosvaihde ja oli aina vaihdettava kakkoselta suoraan neloselle, jutustelee rauhallisen tuntuinen Antti.
 
 Motocrossin 80-kuutioisissa kilpailevat 12–16-vuotiaat, jotka aloittavat C/C-luokassa ja kun ns. nousupisteitä on tarpeeksi nousevat he C/B-luokkaan. Kun siinä tulee menestystä tarpeeksi, nousevat he C/A-luokkaan, jossa ajetaan Suomen cupin pisteistä.
 
