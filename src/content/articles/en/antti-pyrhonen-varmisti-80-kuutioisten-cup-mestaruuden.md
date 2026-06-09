@@ -1,18 +1,23 @@
 ---
 title: Antti Pyrhönen secured the 80cc Cup Championship
-subtitle: Hyvinkää Motor Club is about to have another young motocross rider uphold the town's motocross reputation, as 14-year-old Antti Pyrhönen secured the 80cc Finnish Cup championship, even with one round still to be raced.
+subtitle: Hyvinkää Motor Club is about to have another young motocross rider
+  uphold the town's motocross reputation, as 14-year-old Antti Pyrhönen secured
+  the 80cc Finnish Cup championship, even with one round still to be raced.
 author: Tavu
 date: 2026-06-09T00:00:00.000Z
 category: Historical
 tags: []
+featured_image: null
 card_image: /images/antti-pyrhonen-1993.jpg
 show_hero: false
-language: en
 draft: false
-seo_description: Last Sunday, the penultimate Finnish Cup race for 80cc bikes was held at Espoo's Kolmperä track, where Antti Pyrhönen from Hyvinkää rode a consistent…
+seo_description: Last Sunday, the penultimate Finnish Cup race for 80cc bikes
+  was held at Espoo's Kolmperä track, where Antti Pyrhönen from Hyvinkää rode a
+  consistent…
 auto_translated: true
 translated_from: antti-pyrhonen-varmisti-80-kuutioisten-cup-mestaruuden
-translated_at: "2026-06-09T20:09:42.727Z"
+language: en
+translated_at: 2026-06-09T20:09:42.727Z
 ---
 
 ## Last Sunday, the penultimate Finnish Cup race for 80cc bikes was held at the Kolmperä track in Espoo
