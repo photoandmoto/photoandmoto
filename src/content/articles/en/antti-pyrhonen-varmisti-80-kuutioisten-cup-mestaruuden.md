@@ -1,23 +1,23 @@
 ---
 title: Antti Pyrhönen secured the 80cc Cup Championship
-subtitle: Hyvinkää Motor Club is about to gain another young motocross rider to uphold the town's motocross reputation, as 14-year-old Antti Pyrhönen secured the 80cc Finnish Cup championship, even with one round still to be ridden.
+subtitle: Hyvinkää Motor Club is about to have another young motocross rider uphold the town's motocross reputation, as 14-year-old Antti Pyrhönen secured the 80cc Finnish Cup championship, even with one round still to be raced.
 author: Tavu
 date: 2026-06-09T00:00:00.000Z
 category: Historical
 tags: []
-card_image: "/images/antti-pyrhonen-1993.jpg"
+card_image: /images/antti-pyrhonen-1993.jpg
 show_hero: false
 language: en
 draft: false
-seo_description: Last Sunday, the penultimate Finnish Cup round for 80cc bikes was held at Espoo's Kolmperä track, where Hyvinkää's Antti Pyrhönen rode a consistent…
+seo_description: Last Sunday, the penultimate Finnish Cup race for 80cc bikes was held at Espoo's Kolmperä track, where Antti Pyrhönen from Hyvinkää rode a consistent…
 auto_translated: true
 translated_from: antti-pyrhonen-varmisti-80-kuutioisten-cup-mestaruuden
-translated_at: "2026-06-09T19:32:53.546Z"
+translated_at: "2026-06-09T20:09:42.727Z"
 ---
 
-## Last Sunday, the penultimate Finnish Cup round for 80cc bikes was held at Espoo's Kolmperä track
+## Last Sunday, the penultimate Finnish Cup race for 80cc bikes was held at the Kolmperä track in Espoo
 
-Hyvinkää's Antti Pyrhönen consistently rode to second place in both heats. The intense points tally resulted in Antti being the sure cup champion, even if he doesn't start in the final round at all.
+Antti Pyrhönen from Hyvinkää rode consistently to second place in both heats. The intense points tally resulted in Antti being the confirmed cup champion, even if he doesn't start in the final race at all.
 
 ![Antti Pyrhönen is next heading for the 125cc class.](/images/antti-pyrhonen-1993.jpg "Antti Pyrhönen")
 
@@ -27,13 +27,13 @@ Rarely has anyone been as dominant in the 80cc Finnish Cup as Antti has been thi
 
 > – Yes, those races have gone quite well. The only bad result is that fifth place from Alastaro. Back then, the third gear disappeared from the bike, and I always had to shift directly from second to fourth, Antti, who seems calm, chats.
 
-Motocross 80cc competitors are 12–16-year-olds who start in the C/C class, and when they have enough so-called promotion points, they move up to the C/B class. When they achieve enough success there, they move up to the C/A class, where they compete for Finnish Cup points.
+Motocross 80cc competitors are 12–16-year-olds who start in the C/C class and, when they have enough so-called promotion points, move up to the C/B class. When they achieve enough success there, they move up to the C/A class, where they compete for Finnish Cup points.
 
 ## Antti yearns for the saddle of a 125cc bike
 
-However, few young 80cc riders stay in the small class until they are 16; more often, the B 125cc class awaits them after turning 14, and so it is for Antti.
+Few young 80cc riders, however, stay in the small class until they are 16; more often, the B 125cc class awaits them after turning 14, and so it is for Antti.
 
-> – Next Sunday would be the last Finnish Cup round in Ruskeasanta, but I'm not sure if I'll ride there, as I'm already itching to get on a bigger bike, Antti says determinedly.
+> – Next Sunday would be the last Finnish Cup race in Ruskeasanta, but I'm not sure if I'll ride there, as I'm already eager to get on a bigger bike, Antti says determinedly.
 
 Antti has already practised a few times on a 125cc bike, and the bike fits Antti well.
 
@@ -48,4 +48,3 @@ Antti's friends grin that "Ana" is quite a wizard at riding a bicycle on its bac
 Other Hyvinkää 80cc riders have also done well in the cup. Last Sunday, Antti Palmgren took his first heat win and is an excellent sixth in points. Behind Palmgren, in seventh place in points, is the third Hyvinkää rider, Jukka Pirinen.
 
 > Nowadays, Antti Pyrhönen serves as the team manager for the [Kawasaki Racing Team MXGP](https://racing.kawasaki.eu/en/racing/motocross/kawasaki_racing_team) team. The team is heading into its sixth season under the leadership of former GP winner Pyrhönen and team owner, former Formula 1 world champion Kimi Räikkönen, aiming to bring even more success to the "Team Green" brand.
-
