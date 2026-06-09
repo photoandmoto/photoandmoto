@@ -51,3 +51,4 @@ Antin kaverit virnistelevät, että ”Ana” on melkoinen taituri ajamaan polku
 Myös muut Hyvinkään kasikymppisten (80 cc) ajajat ovat pärjänneet cupissa hyvin. Viime sunnuntaina otti Antti Palmgren ensimmäisen erävoittonsa ja hän on pisteissä hienosti kuudentena. Palmgrenin takana seitsemäntenä on pisteissä kolmas hyvinkääläinen Jukka Pirinen.
 
 > Nykyään Antti Pyrhönen toimii [Kawasaki Racing Team MXGP](https://racing.kawasaki.eu/en/racing/motocross/kawasaki_racing_team) -tallin päällikkönä. Talli lähtee jo kuudenteen kauteensa entisen GP-voittaja Pyrhösen ja tallin omistajan, entisen Formula 1 -maailmanmestari Kimi Räikkösen johdolla, tavoitteenaan tuoda "Team Green" -merkille entistäkin enemmän menestystä.
+
