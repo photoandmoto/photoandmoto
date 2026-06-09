@@ -27,7 +27,7 @@ const articlesCollection = defineCollection({
     seo_description: z.string().max(160).nullish(),
     auto_translated: z.boolean().nullish(),
     translated_from: z.string().nullish(),
-    translated_at: z.string().nullish(),
+    translated_at: z.preprocess((v) => v instanceof Date ? v.toISOString() : v, z.string().nullish()),
     sources: z.string().nullish(),
   }),
 });
@@ -68,3 +68,4 @@ export const collections = {
   galleries: galleriesCollection,
   categories: categoriesCollection,
 };
+
