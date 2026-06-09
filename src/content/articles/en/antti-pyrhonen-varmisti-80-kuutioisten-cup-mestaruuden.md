@@ -5,6 +5,7 @@ author: Tavu
 date: 2026-06-09T00:00:00.000Z
 category: Historical
 tags: []
+card_image: "/images/antti-pyrhonen-1993.jpg"
 show_hero: false
 language: en
 draft: false
@@ -47,3 +48,4 @@ Antti's friends grin that "Ana" is quite a wizard at riding a bicycle on its bac
 Other Hyvinkää 80cc riders have also done well in the cup. Last Sunday, Antti Palmgren took his first heat win and is an excellent sixth in points. Behind Palmgren, in seventh place in points, is the third Hyvinkää rider, Jukka Pirinen.
 
 > Nowadays, Antti Pyrhönen serves as the team manager for the [Kawasaki Racing Team MXGP](https://racing.kawasaki.eu/en/racing/motocross/kawasaki_racing_team) team. The team is heading into its sixth season under the leadership of former GP winner Pyrhönen and team owner, former Formula 1 world champion Kimi Räikkönen, aiming to bring even more success to the "Team Green" brand.
+
