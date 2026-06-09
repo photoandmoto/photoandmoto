@@ -256,6 +256,53 @@ DEPLOYMENT.md           Deployment + operations guide
 
 ---
 
+## Design
+
+The visual identity is bold, photo-first, and deliberately high-contrast — a
+motorsport-magazine feel. Design tokens (colours, type scale, spacing, radii,
+shadows) live in `src/styles/brand.css`; shared component styles in
+`components.css`; base/reset and the global link + focus rules in `global.css`.
+
+### Brand
+
+- **Primary:** `--brand-primary` `#ff9900` (orange) — used for the logo, fills,
+  borders, and large headings. **Not** for small text on light backgrounds
+  (see Accessibility below).
+- **Secondary:** black `#000` / near-black `#0e0e0e` for dark bands and the header.
+- **Type:** Montserrat throughout (`--font-headline` / `--font-body`),
+  JetBrains Mono for monospace. Headings and nav are uppercase.
+
+### Masthead and hero
+
+The header is a sticky black bar. `PHOTO & MOTO` (orange, weight 900) is the
+dominant element and grows to `2.6rem` on wide screens (≥ 1100px), held at
+`2.2rem` below that so it never crowds the desktop nav. The homepage hero band
+beneath it carries a single short tagline (`Vauhtia ja elämää linssin läpi` /
+`Speed and life through the lens`) sized and weighted to sit *under* the logo,
+not compete with it — the logo always wins the eye first. Both language
+homepages mirror this; the header is a shared component so masthead changes
+apply site-wide.
+
+### Accessibility conventions
+
+The site targets WCAG 2 AA. A few standing rules — follow these when adding
+UI so the Lighthouse Accessibility score (currently 100) doesn't regress:
+
+- **Contrast ≥ 4.5:1** for normal text, ≥ 3:1 for large text and focus rings.
+  Bright `#ff9900` fails on light backgrounds (~2:1), so small orange text
+  uses the darker amber **`#A85D00`** (~5:1 on white) instead. Category chips
+  on bright fills use **black** text, not white, to clear the threshold.
+- **Keyboard focus:** a global `:focus-visible` amber ring (`#A85D00`,
+  visible on both light and dark backgrounds) is defined once in `global.css`
+  and applies to every interactive element. Don't suppress outlines per-component.
+- **Links are not signalled by colour alone** (WCAG 1.4.1): in-article body
+  links are underlined as well as coloured.
+- Interactive elements have visible hover **and** focus states; `aria-hidden`
+  containers (e.g. the closed mobile nav) keep their descendants out of the
+  tab order.
+
+---
+
 ## Tech stack
 
 - **Framework:** Astro 6 (static output), TypeScript strict mode
