@@ -1,5 +1,5 @@
 ---
-title: Katsaus 33 vuoden taakse vuoteen 1993
+title: Katsaus kolmen vuosikymmenen taakse
 subtitle: Hyvinkään Moottorikerho on saamassa jälleen yhden nuoren motocrossarin
   vaalimaan paikkakunnan motocrossmainetta, kun 14-vuotias Antti Pyrhönen
   varmisti 80-kuutioisten Suomen cupin mestaruuden, vaikka yksi osakilpailu on
