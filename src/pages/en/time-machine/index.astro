@@ -39,7 +39,7 @@ const articles = (await getCollection('articles', (entry) =>
               <article class="article-card">
                 <a href={`/en/time-machine/${article.id.replace(/^en\//, '')}`}>
                   <div class="article-card__image-wrap">
-                    <img src={article.data.featured_image} alt={article.data.title} class="article-card__image" loading="lazy" />
+                    <img src={article.data.card_image || article.data.featured_image} alt={article.data.title} class="article-card__image" loading="lazy" />
                   </div>
                   <div class="article-card__content">
                     <div class="article-card__meta">
@@ -117,3 +117,4 @@ const articles = (await getCollection('articles', (entry) =>
   @media (max-width: 768px) { .articles-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 480px) { .articles-grid { grid-template-columns: 1fr; } }
 </style>
+
