@@ -12,7 +12,7 @@ tags:
 featured_image: /images/antti-pyrhonen-1993.jpg
 show_hero: true
 image_caption: Antti Pyrhönen lähtee seuraavaksi 125-kuutioisten sarviin.
-draft: false
+draft: true
 auto_translated: false
 ---
 ## Antti Pyrhönen varmisti jo cup-mestaruuden

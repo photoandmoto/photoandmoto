@@ -4,7 +4,8 @@ date: 2026-06-09
 category: Historical
 tags: []
 featured_image: /images/antti-pyrhonen-1993.jpg
+card_image: null
 show_hero: true
-draft: false
+draft: true
 auto_translated: false
 ---
