@@ -85,7 +85,7 @@ collections:
       - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
       - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
       - { name: seo_description, label: 'SEO-kuvaus (max 160 merkkiä)', widget: string, required: false, pattern: ['^.{0,160}$', 'Korkeintaan 160 merkkiä'], i18n: true }
-      - { name: auto_translated, label: 'Automaattisesti käännetty — käännä pois tarkistuksen jälkeen', widget: boolean, default: false, required: false, i18n: true }
+      - { name: auto_translated, label: 'Automaattisesti käännetty — käännä pois tarkistuksen jälkeen', widget: boolean, default: false, required: false, i18n: duplicate }
       - { name: translated_from, label: 'Käännetty artikkelista (slug)', widget: hidden, required: false, i18n: true }
       - { name: translated_at, label: 'Käännetty (aikaleima)', widget: hidden, required: false, i18n: true }
       - { name: body, label: Sisältö, widget: markdown, i18n: true }
@@ -124,7 +124,7 @@ collections:
       - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
       - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
       - { name: seo_description, label: 'SEO-kuvaus (max 160 merkkiä)', widget: string, required: false, pattern: ['^.{0,160}$', 'Korkeintaan 160 merkkiä'], i18n: true }
-      - { name: auto_translated, label: 'Automaattisesti käännetty — käännä pois tarkistuksen jälkeen', widget: boolean, default: true, required: false, i18n: true }
+      - { name: auto_translated, label: 'Automaattisesti käännetty — käännä pois tarkistuksen jälkeen', widget: boolean, default: true, required: false, i18n: duplicate }
       - { name: translated_from, widget: hidden, required: false, i18n: true }
       - { name: translated_at, widget: hidden, required: false, i18n: true }
       - name: body
@@ -176,7 +176,7 @@ collections:
       - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
       - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
       - { name: seo_description, label: 'SEO-kuvaus (max 160 merkkiä)', widget: string, required: false, pattern: ['^.{0,160}$', 'Korkeintaan 160 merkkiä'], i18n: true }
-      - { name: auto_translated, label: 'Automaattisesti käännetty — käännä pois tarkistuksen jälkeen', widget: boolean, default: true, required: false, i18n: true }
+      - { name: auto_translated, label: 'Automaattisesti käännetty — käännä pois tarkistuksen jälkeen', widget: boolean, default: true, required: false, i18n: duplicate }
       - { name: translated_from, widget: hidden, required: false, i18n: true }
       - { name: translated_at, widget: hidden, required: false, i18n: true }
       - name: body
