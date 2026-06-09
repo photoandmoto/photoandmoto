@@ -1,7 +1,9 @@
 ---
-title: Katsaus 33 vuoden taakse
-subtitle: "Tämä artikkeli on julkaistu Hyvinkään Sanomissa keskiviikkona 9.
-  kesäkuuta 1993. "
+title: Katsaus 33 vuoden taakse vuoteen 1993
+subtitle: Hyvinkään Moottorikerho on saamassa jälleen yhden nuoren motocrossarin
+  vaalimaan paikkakunnan motocrossmainetta, kun 14-vuotias Antti Pyrhönen
+  varmisti 80-kuutioisten Suomen cupin mestaruuden, vaikka yksi osakilpailu on
+  vielä ajamatta.
 author: Tavu
 date: 2026-06-09
 category: Historical
@@ -12,7 +14,10 @@ tags:
 featured_image: /images/antti-pyrhonen-1993.jpg
 show_hero: true
 image_caption: Antti Pyrhönen lähtee seuraavaksi 125-kuutioisten sarviin.
-draft: true
+draft: false
+seo_description: Antti Pyrhönen varmisti jo cup-mestaruuden Hyvinkään
+  Moottorikerho on saamassa jälleen yhden nuoren motocrossarin vaalimaan
+  paikkakunnan…
 auto_translated: false
 ---
 ## Antti Pyrhönen varmisti jo cup-mestaruuden
@@ -47,4 +52,4 @@ Antin kaverit virnistelevät, että ”Ana” on melkoinen taituri ajamaan polku
 
 Myös muut Hyvinkään kasikymppisten (80 cc) ajajat ovat pärjänneet cupissa hyvin. Viime sunnuntaina otti Antti Palmgren ensimmäisen erävoittonsa ja hän on pisteissä hienosti kuudentena. Palmgrenin takana seitsemäntenä on pisteissä kolmas hyvinkääläinen Jukka Pirinen
 
-Nykyään Antti Pyrhönen toimii [Kawasaki Racing Team MXGP -tallin päällikkönä](https://racing.kawasaki.eu/en/racing/motocross/kawasaki_racing_team). Talli lähtee jo kuudenteen kauteensa entisen GP-voittaja Pyrhösen ja tallin omistajan, entisen Formula 1 -maailmanmestari Kimi Räikkösen johdolla, tavoitteenaan tuoda "TeamGreen" -merkille entistäkin enemmän menestystä.
+> Tämä artikkeli on julkaistu Hyvinkään Sanomissa keskivkiviikkona kun 14-vuotias Antti Pyrhönen varmisti 80-kuutioisten Suomen cupin. Nykyään Antti Pyrhönen toimii [Kawasaki Racing Team MXGP -tallin päällikkönä](https://racing.kawasaki.eu/en/racing/motocross/kawasaki_racing_team). Talli lähtee jo kuudenteen kauteensa entisen GP-voittaja Pyrhösen ja tallin omistajan, entisen Formula 1 -maailmanmestari Kimi Räikkösen johdolla, tavoitteenaan tuoda "TeamGreen" -merkille entistäkin enemmän menestystä.

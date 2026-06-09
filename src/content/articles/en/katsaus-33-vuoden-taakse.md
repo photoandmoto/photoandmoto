@@ -6,6 +6,6 @@ tags: []
 featured_image: /images/antti-pyrhonen-1993.jpg
 card_image: null
 show_hero: true
-draft: true
+draft: false
 auto_translated: false
 ---
