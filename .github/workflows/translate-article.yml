@@ -109,4 +109,18 @@ jobs:
           fi
 
           git commit -m "chore(translate): auto-translate articles to EN"
-          git push origin ${{ github.ref_name }}
+
+          # Retry with rebase if the branch moved during this workflow
+          for i in 1 2 3; do
+            if git push origin HEAD:${{ github.ref_name }}; then
+              echo "Push succeeded on attempt $i"
+              exit 0
+            fi
+
+            echo "Push failed on attempt $i, rebasing on origin/${{ github.ref_name }}..."
+            git fetch origin ${{ github.ref_name }}
+            git rebase origin/${{ github.ref_name }}
+          done
+
+          echo "Push failed after 3 attempts"
+          exit 1
