@@ -18,7 +18,7 @@ draft: false
 seo_description: Antti Pyrhönen varmisti jo cup-mestaruuden Hyvinkään
   Moottorikerho on saamassa jälleen yhden nuoren motocrossarin vaalimaan
   paikkakunnan…
-auto_translated: false
+auto_translated: true
 ---
 ## Antti Pyrhönen varmisti jo cup-mestaruuden
 
