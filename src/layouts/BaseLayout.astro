@@ -140,8 +140,9 @@ const otherLang = lang === 'fi' ? 'en' : 'fi';
        the user explicitly consents to analytics. See that component. -->
 </head>
 <body>
-  <slot name="pre-header" />
-  <Header lang={lang} currentPath={Astro.url.pathname} />
+  <Header lang={lang} currentPath={Astro.url.pathname}>
+    <slot name="ticker" slot="ticker" />
+  </Header>
 
   <main>
     <slot />
