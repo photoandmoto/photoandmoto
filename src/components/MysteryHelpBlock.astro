@@ -176,7 +176,8 @@ const t = STRINGS[lang] || STRINGS.fi;
 }
 .mhb-thumbs {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(6, minmax(0, 160px));
+  justify-content: center;
   gap: 12px;
   margin-bottom: 24px;
   align-items: start;
