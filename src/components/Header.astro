@@ -61,7 +61,7 @@ const mobileFlatItems = [
 
 <header class="site-header">
 
-  <!-- BAND 1: sticky ticker strip -->
+  <!-- BAND 1: ticker strip -->
   <div class="header-ticker-strip">
     <div class="container ticker-strip-inner">
       <div class="ticker-slot">
@@ -70,13 +70,14 @@ const mobileFlatItems = [
     </div>
   </div>
 
-  <!-- BAND 2: sticky logo row -->
+  <!-- BAND 2: logo row -->
   <div class="header-logo-row">
-    <div class="container">
+    <div class="container logo-row-inner">
       <a href={`/${lang}`} class="logo" aria-label="Photo & Moto home"
          data-no-newtab>
         <span class="logo-text">Photo &amp; Moto</span>
       </a>
+      <p class="logo-tagline">{t['hero.tagline']}</p>
     </div>
   </div>
 
@@ -219,22 +220,14 @@ const mobileFlatItems = [
 
 <style>
   /* ── Site header shell ─────────────────────────────────────────── */
-  /* `display: contents` removes the <header>'s own box from the layout so the
-     three bands become flow children of <body>. Their sticky containing block
-     is then the full page height — without this, sticky only holds while the
-     short .site-header box is in view, so the bands scroll away immediately. */
+  /* `display: contents` removes the <header>'s own box so the three bands lay
+     out as plain flow children of <body>. */
   .site-header {
     display: contents;
   }
 
-  /* ── BAND 1: sticky ticker strip ──────────────────────────────── */
-  /* Fixed 44px height so BAND 2's sticky `top: 44px` lands flush against this
-     strip's bottom edge. The TrendingTicker content (~42px) fits inside it. */
+  /* ── BAND 1: ticker strip ─────────────────────────────────────── */
   .header-ticker-strip {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    height: 44px;
     background: #0a0a0a;
     border-bottom: 1px solid rgba(255,255,255,0.08);
   }
@@ -263,14 +256,17 @@ const mobileFlatItems = [
     border-bottom: none;
   }
 
-  /* ── BAND 2: sticky logo row ───────────────────────────────────── */
+  /* ── BAND 2: logo row ──────────────────────────────────────────── */
   .header-logo-row {
-    position: sticky;
-    top: 44px; /* flush below band 1 */
-    z-index: 999;
     background: #000;
     padding: 14px 0 10px;
     border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .logo-row-inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
   }
 
   .logo {
@@ -289,11 +285,26 @@ const mobileFlatItems = [
     text-transform: uppercase;
   }
 
-  /* ── BAND 3: sticky nav row ────────────────────────────────────── */
+  .logo-tagline {
+    font-family: var(--font-headline);
+    font-size: clamp(0.95rem, 1.4vw, 1.2rem);
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+    line-height: 1;
+    letter-spacing: 0.3px;
+    /* Hide on small screens where logo alone fills the row */
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .logo-tagline {
+      display: block;
+    }
+  }
+
+  /* ── BAND 3: nav row ───────────────────────────────────────────── */
   .header-nav-row {
-    position: sticky;
-    top: 120px; /* sits below band 1 (44px) + band 2 logo (~76px) */
-    z-index: 998;
     background: #000;
     border-top: 1px solid rgba(255,255,255,0.08);
     border-bottom: 2px solid var(--brand-primary);
@@ -449,14 +460,7 @@ const mobileFlatItems = [
     .logo-text { font-size: 1.8rem; }
 
     .header-logo-row {
-      /* top stays 44px — band 1 height is fixed across breakpoints */
       padding: 10px 0 8px;
-    }
-
-    /* The logo band is shorter here (smaller font + reduced padding), so band 3
-       sticks closer to it than the desktop top:120px would allow. */
-    .header-nav-row {
-      top: 88px;
     }
 
     .mobile-nav {
