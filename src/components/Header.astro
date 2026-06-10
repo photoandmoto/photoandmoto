@@ -72,12 +72,11 @@ const mobileFlatItems = [
 
   <!-- BAND 2: logo row -->
   <div class="header-logo-row">
-    <div class="container logo-row-inner">
+    <div class="container">
       <a href={`/${lang}`} class="logo" aria-label="Photo & Moto home"
          data-no-newtab>
         <span class="logo-text">Photo &amp; Moto</span>
       </a>
-      <p class="logo-tagline">{t['hero.tagline']}</p>
     </div>
   </div>
 
@@ -256,17 +255,23 @@ const mobileFlatItems = [
     border-bottom: none;
   }
 
+  /* TrendingTicker's inner wrapper is itself a .container, which would double
+     the horizontal gutter and push the ticker content right of the logo and
+     nav. Strip its container padding/max-width so band 1 lines up to the same
+     left edge as bands 2 and 3 — the outer .container already supplies the
+     gutter. */
+  .ticker-slot :global(.ticker .container) {
+    max-width: none;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
   /* ── BAND 2: logo row ──────────────────────────────────────────── */
   .header-logo-row {
     background: #000;
     padding: 14px 0 10px;
     border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .logo-row-inner {
-    display: flex;
-    align-items: center;
-    gap: 32px;
   }
 
   .logo {
@@ -283,24 +288,6 @@ const mobileFlatItems = [
     letter-spacing: 0.5px;
     line-height: 1;
     text-transform: uppercase;
-  }
-
-  .logo-tagline {
-    font-family: var(--font-headline);
-    font-size: clamp(0.95rem, 1.4vw, 1.2rem);
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.75);
-    margin: 0;
-    line-height: 1;
-    letter-spacing: 0.3px;
-    /* Hide on small screens where logo alone fills the row */
-    display: none;
-  }
-
-  @media (min-width: 640px) {
-    .logo-tagline {
-      display: block;
-    }
   }
 
   /* ── BAND 3: nav row ───────────────────────────────────────────── */
