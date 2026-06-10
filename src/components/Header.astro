@@ -247,16 +247,27 @@ const mobileFlatItems = [
 
 <style>
   /* ── Site header shell ─────────────────────────────────────────── */
+  /* `display: contents` removes the <header>'s own box from the layout so the
+     three bands become flow children of <body>. Their sticky containing block
+     is then the full page height — without this, sticky only holds while the
+     short .site-header box is in view, so the bands scroll away immediately. */
   .site-header {
-    position: static;
-    background: #000;
+    display: contents;
+    /* Shared height of BAND 1; BAND 2 sticks at this offset. Defined here so
+       both bands (DOM children of .site-header) inherit it — custom properties
+       still inherit through a `display: contents` element. */
+    --ticker-h: 44px;
   }
 
   /* ── BAND 1: sticky ticker strip ──────────────────────────────── */
+  /* Fixed height so BAND 2's sticky `top` offset (var(--ticker-h)) lands
+     flush against this strip's bottom edge — no gap, no overlap — at every
+     breakpoint. The TrendingTicker content (~42px) fits inside this height. */
   .header-ticker-strip {
     position: sticky;
     top: 0;
     z-index: 1000;
+    height: var(--ticker-h);
     background: #0a0a0a;
     border-bottom: 1px solid rgba(255,255,255,0.08);
   }
@@ -265,7 +276,7 @@ const mobileFlatItems = [
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-height: 38px;
+    height: 100%;
     padding-top: 0;
     padding-bottom: 0;
     gap: 16px;
@@ -309,7 +320,7 @@ const mobileFlatItems = [
   /* ── BAND 2: sticky logo row ───────────────────────────────────── */
   .header-logo-row {
     position: sticky;
-    top: 38px; /* height of band 1 */
+    top: var(--ticker-h); /* flush below band 1 */
     z-index: 999;
     background: #000;
     padding: 14px 0 10px;
@@ -490,7 +501,7 @@ const mobileFlatItems = [
     .logo-text { font-size: 1.8rem; }
 
     .header-logo-row {
-      top: 38px; /* keep same — band 1 height unchanged on mobile */
+      /* top stays var(--ticker-h) — band 1 height is fixed across breakpoints */
       padding: 10px 0 8px;
     }
 
