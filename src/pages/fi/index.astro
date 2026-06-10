@@ -76,14 +76,8 @@ const galleryItems = featuredGalleries.map(g => ({
   lang={lang}
   description="Motocrossin ja moottoripyöräurheilun kuvia, tarinoita ja tuloksia 1960-luvulta nykypäivään. MXGP 2026, Aikakone-arkisto ja valokuvagalleria."
 >
+  <h1 class="sr-only">Photo & Moto — Vauhtia ja elämää linssin läpi</h1>
   <TrendingTicker label="Nyt luetuimmat" items={tickerItems} slot="ticker" />
-
-  {/* ===== Typographic hero band ===== */}
-  <section class="hero-band">
-    <div class="container">
-      <h1 class="hero-band__title">Vauhtia ja elämää linssin läpi</h1>
-    </div>
-  </section>
 
   {/* ===== Featured grid (articles) ===== */}
   {bigCard && (
@@ -187,24 +181,6 @@ const galleryItems = featuredGalleries.map(g => ({
 </BaseLayout>
 
 <style>
-  /* ===== Typographic hero band =====
-     Supporting tagline under the masthead — deliberately smaller and lighter
-     than the PHOTO & MOTO logo so the logo stays the dominant element. */
-  .hero-band {
-    background: #0e0e0e;
-    padding: var(--space-4) 0;
-  }
-
-  .hero-band__title {
-    font-family: var(--font-headline);
-    font-size: clamp(1.3rem, 2.4vw, 1.9rem);
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.82);
-    letter-spacing: 0;
-    line-height: 1.15;
-    margin: 0;
-  }
-
   /* Section shared */
   .section-header-row {
     display: flex;
@@ -391,9 +367,6 @@ const galleryItems = featuredGalleries.map(g => ({
     }
     .section-heading {
       font-size: 1.4rem;
-    }
-    .hero-band {
-      padding: var(--space-6) 0;
     }
   }
 </style>

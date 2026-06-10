@@ -25,9 +25,6 @@ export const ui = {
     'hero.subtitle': 'Sukella moottoriurheilun historian havinaan',
     'hero.cta': 'Tutustu galleriaan',
     'latest.title': 'Uusimmat artikkelit',
-    'social.facebook':  'https://www.facebook.com/photoandmoto',
-    'social.youtube':   'https://www.youtube.com/@photoandmoto',
-    'social.instagram': 'https://www.instagram.com/photoandmoto',
   },
   en: {
     'nav.home': 'Home',
@@ -48,8 +45,5 @@ export const ui = {
     'hero.subtitle': 'Dive into the roar of motorsport history',
     'hero.cta': 'Explore Gallery',
     'latest.title': 'Latest Articles',
-    'social.facebook':  'https://www.facebook.com/photoandmoto',
-    'social.youtube':   'https://www.youtube.com/@photoandmoto',
-    'social.instagram': 'https://www.instagram.com/photoandmoto',
   },
 } as const;
