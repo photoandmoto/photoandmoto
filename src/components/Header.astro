@@ -60,82 +60,110 @@ const mobileFlatItems = [
 ---
 
 <header class="site-header">
-  <div class="container header-container">
-    <a href={`/${lang}`} class="logo">
-      <span class="logo-text">Photo & Moto</span>
-    </a>
 
-    <!-- Desktop nav -->
-    <nav class="main-nav desktop-nav">
-      <ul>
-        {navItems.map(item => (
-          <li>
-            <a
-              href={item.href}
-              class:list={['nav-link', { active: currentPath === item.href || (item.href !== `/${lang}` && currentPath.startsWith(item.href)) }]}
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
-        {showMore && (
-        <li class="nav-dropdown">
-          <button class:list={['nav-link', 'nav-drop-btn', { active: isMoreActive }]}>
-            {moreLabel} <span class="drop-arrow">▾</span>
-          </button>
-          <div class="nav-drop-menu">
-            {moreItems.map(item => (
-              <a href={item.href} class:list={['nav-drop-item', { active: currentPath.startsWith(item.href) }]}>
-                {item.label}
-              </a>
-            ))}
-          </div>
-        </li>
-        )}
-        <li>
-          <a
-            href={contactItem.href}
-            class:list={['nav-link', { active: currentPath === contactItem.href || currentPath.startsWith(contactItem.href) }]}
-          >
-            {contactItem.label}
-          </a>
-        </li>
-      </ul>
-    </nav>
-
-    <div class="header-right">
-      <a
-        href={searchHref}
-        class:list={['search-icon-link', { active: currentPath.startsWith(searchHref) }]}
-        target="_blank"
-        rel="noopener"
-        aria-label={searchLabel}
-        title={searchLabel}
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="7"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-      </a>
-
-      <LanguageSwitcher lang={lang} currentPath={currentPath} />
-
-      <!-- Hamburger button (mobile only) -->
-      <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileNav">
-        <span class="hamburger-bar"></span>
-        <span class="hamburger-bar"></span>
-        <span class="hamburger-bar"></span>
-      </button>
+  <!-- BAND 1: ticker strip -->
+  <div class="header-ticker-strip">
+    <div class="container ticker-strip-inner">
+      <div class="ticker-slot">
+        <slot name="ticker" />
+      </div>
     </div>
   </div>
 
-  <!-- Mobile nav panel -->
+  <!-- BAND 2: logo row -->
+  <div class="header-logo-row">
+    <div class="container">
+      <a href={`/${lang}`} class="logo" aria-label="Photo & Moto home"
+         data-no-newtab>
+        <span class="logo-text">Photo &amp; Moto</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- BAND 3: scrolling nav row -->
+  <div class="header-nav-row">
+    <div class="container nav-row-inner">
+
+      <!-- Desktop nav — exactly as before -->
+      <nav class="main-nav desktop-nav">
+        <ul>
+          {navItems.map(item => (
+            <li>
+              <a
+                href={item.href}
+                data-no-newtab
+                class:list={['nav-link', { active: currentPath === item.href || (item.href !== `/${lang}` && currentPath.startsWith(item.href)) }]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))}
+          {showMore && (
+            <li class="nav-dropdown">
+              <button class:list={['nav-link', 'nav-drop-btn', { active: isMoreActive }]}>
+                {moreLabel} <span class="drop-arrow">▾</span>
+              </button>
+              <div class="nav-drop-menu">
+                {moreItems.map(item => (
+                  <a href={item.href} data-no-newtab
+                     class:list={['nav-drop-item', { active: currentPath.startsWith(item.href) }]}>
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+            </li>
+          )}
+          <li>
+            <a
+              href={contactItem.href}
+              data-no-newtab
+              class:list={['nav-link', { active: currentPath === contactItem.href || currentPath.startsWith(contactItem.href) }]}
+            >
+              {contactItem.label}
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Right side: search + language + hamburger -->
+      <div class="header-right">
+        <a
+          href={searchHref}
+          class:list={['search-icon-link', { active: currentPath.startsWith(searchHref) }]}
+          target="_blank"
+          rel="noopener"
+          aria-label={searchLabel}
+          title={searchLabel}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+               viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+               aria-hidden="true">
+            <circle cx="11" cy="11" r="7" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </a>
+        <LanguageSwitcher lang={lang} currentPath={currentPath} />
+        <button class="hamburger" id="hamburgerBtn"
+                aria-label="Toggle menu" aria-expanded="false"
+                aria-controls="mobileNav">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mobile nav panel — exactly as before -->
   <nav class="mobile-nav" id="mobileNav" aria-hidden="true">
     <ul>
       {mobileFlatItems.map(item => (
         <li>
           <a
             href={item.href}
+            data-no-newtab
             class:list={['mobile-nav-link', { active: currentPath === item.href || (item.href !== `/${lang}` && currentPath.startsWith(item.href)) }]}
           >
             {item.label}
@@ -144,6 +172,7 @@ const mobileFlatItems = [
       ))}
     </ul>
   </nav>
+
 </header>
 
 <script>
@@ -189,40 +218,71 @@ const mobileFlatItems = [
 </script>
 
 <style>
+  /* ── Site header shell ─────────────────────────────────────────── */
+  /* `display: contents` removes the <header>'s own box so the three bands lay
+     out as plain flow children of <body>. */
   .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background: #000000;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
+    display: contents;
   }
 
-  .header-container {
+  /* ── BAND 1: ticker strip ─────────────────────────────────────── */
+  .header-ticker-strip {
+    background: #0a0a0a;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .ticker-strip-inner {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding-top: var(--space-3);
-    padding-bottom: var(--space-3);
-    gap: var(--space-3);
+    justify-content: flex-start;
+    height: 100%;
+    padding-top: 0;
+    padding-bottom: 0;
+    gap: 16px;
+  }
+
+  .ticker-slot {
+    flex: 1;
+    min-width: 0;
+    /* TrendingTicker renders its own .ticker wrapper inside here.
+       Override its background/border so it blends into band 1. */
+  }
+
+  /* TrendingTicker renders a .ticker div — strip its own bg and border
+     since band 1 provides the background. */
+  .ticker-slot :global(.ticker) {
+    background: transparent;
+    border-bottom: none;
+  }
+
+  /* TrendingTicker's inner wrapper is itself a .container, which would double
+     the horizontal gutter and push the ticker content right of the logo and
+     nav. Strip its container padding/max-width so band 1 lines up to the same
+     left edge as bands 2 and 3 — the outer .container already supplies the
+     gutter. */
+  .ticker-slot :global(.ticker .container) {
+    max-width: none;
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* ── BAND 2: logo row ──────────────────────────────────────────── */
+  .header-logo-row {
+    background: #000;
+    padding: 14px 0 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
   }
 
   .logo {
     text-decoration: none;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 12px;
-    flex-shrink: 0;
-  }
-
-  .logo-icon {
-    height: 52px;
-    width: auto;
   }
 
   .logo-text {
     font-family: var(--font-headline);
-    font-size: 2.2rem;
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
     font-weight: 900;
     color: var(--brand-primary);
     letter-spacing: 0.5px;
@@ -230,21 +290,24 @@ const mobileFlatItems = [
     text-transform: uppercase;
   }
 
-  /* On wide screens there's slack in the header row, so the logo grows to
-     assert itself as the dominant masthead element. Held at 2.2rem below this
-     width to avoid crowding the desktop nav items. */
-  @media (min-width: 1100px) {
-    .logo-text {
-      font-size: 2.6rem;
-    }
+  /* ── BAND 3: nav row ───────────────────────────────────────────── */
+  .header-nav-row {
+    background: #000;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 2px solid var(--brand-primary);
   }
 
-  .header-right {
+  .nav-row-inner {
     display: flex;
     align-items: center;
-    gap: var(--space-2);
+    justify-content: space-between;
+    min-height: 46px;
+    padding-top: 0;
+    padding-bottom: 0;
+    gap: var(--space-3);
   }
 
+  /* ── Nav links (unchanged from original) ──────────────────────── */
   .main-nav ul {
     display: flex;
     gap: var(--space-4);
@@ -267,17 +330,12 @@ const mobileFlatItems = [
     text-decoration: none;
   }
 
-  .nav-link:hover {
-    background: var(--brand-primary);
-    color: black;
-  }
-
+  .nav-link:hover,
   .nav-link.active {
     background: var(--brand-primary);
     color: black;
   }
 
-  /* Search icon (desktop) */
   .search-icon-link {
     display: inline-flex;
     align-items: center;
@@ -290,20 +348,14 @@ const mobileFlatItems = [
     text-decoration: none;
   }
 
-  .search-icon-link:hover {
-    background: var(--brand-primary);
-    color: black;
-  }
-
+  .search-icon-link:hover,
   .search-icon-link.active {
     background: var(--brand-primary);
     color: black;
   }
 
-  /* Dropdown (desktop) */
-  .nav-dropdown {
-    position: relative;
-  }
+  /* ── Dropdown (unchanged) ──────────────────────────────────────── */
+  .nav-dropdown { position: relative; }
 
   .nav-drop-btn {
     background: none;
@@ -314,9 +366,7 @@ const mobileFlatItems = [
     gap: 4px;
   }
 
-  .drop-arrow {
-    font-size: 0.7rem;
-  }
+  .drop-arrow { font-size: 0.7rem; }
 
   .nav-drop-menu {
     display: none;
@@ -330,12 +380,10 @@ const mobileFlatItems = [
     min-width: 180px;
     padding: 6px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    z-index: 100;
   }
 
-  .nav-drop-open {
-    display: flex;
-    flex-direction: column;
-  }
+  .nav-drop-open { display: flex; flex-direction: column; }
 
   .nav-drop-item {
     font-family: var(--font-headline);
@@ -350,16 +398,17 @@ const mobileFlatItems = [
     transition: all var(--transition-fast);
   }
 
-  .nav-drop-item:hover {
-    background: var(--brand-primary);
-    color: black;
+  .nav-drop-item:hover { background: var(--brand-primary); color: black; }
+  .nav-drop-item.active { color: var(--brand-primary); }
+
+  /* ── Header right (search + lang + hamburger) ──────────────────── */
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
   }
 
-  .nav-drop-item.active {
-    color: var(--brand-primary);
-  }
-
-  /* Hamburger button — hidden on desktop */
+  /* ── Hamburger (mobile only) ───────────────────────────────────── */
   .hamburger {
     display: none;
     background: none;
@@ -383,48 +432,28 @@ const mobileFlatItems = [
     transform-origin: center;
   }
 
-  .hamburger-open .hamburger-bar:nth-child(1) {
-    transform: translateY(10px) rotate(45deg);
-  }
-  .hamburger-open .hamburger-bar:nth-child(2) {
-    opacity: 0;
-  }
-  .hamburger-open .hamburger-bar:nth-child(3) {
-    transform: translateY(-10px) rotate(-45deg);
-  }
+  .hamburger-open .hamburger-bar:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+  .hamburger-open .hamburger-bar:nth-child(2) { opacity: 0; }
+  .hamburger-open .hamburger-bar:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
 
-  /* Mobile nav panel — hidden by default */
-  .mobile-nav {
-    display: none;
-  }
+  /* ── Mobile nav panel ──────────────────────────────────────────── */
+  .mobile-nav { display: none; }
 
-  /* Mobile breakpoint */
+  /* ── Mobile breakpoint ─────────────────────────────────────────── */
   @media (max-width: 768px) {
-    .desktop-nav {
-      display: none;
-    }
+    .desktop-nav { display: none; }
+    .hamburger { display: flex; }
 
-    .hamburger {
-      display: flex;
-    }
+    .logo-text { font-size: 1.8rem; }
 
-    .logo-icon {
-      height: 38px;
-    }
-
-    .logo-text {
-      font-size: 1.5rem;
+    .header-logo-row {
+      padding: 10px 0 8px;
     }
 
     .mobile-nav {
       display: block;
       max-height: 0;
       overflow: hidden;
-      /* Closed: hide from the accessibility tree + tab order. Without this the
-         links stay focusable while aria-hidden="true", which fails the
-         "aria-hidden contains focusable descendants" audit. visibility:hidden
-         removes them from focus; it's delayed on close so it doesn't clip the
-         slide-up animation, and instant on open. */
       visibility: hidden;
       background: #000;
       border-top: 1px solid rgba(255,255,255,0.1);
@@ -460,27 +489,15 @@ const mobileFlatItems = [
       transition: background 0.15s, color 0.15s;
     }
 
-    .mobile-nav-link:last-child {
-      border-bottom: none;
-    }
+    .mobile-nav-link:last-child { border-bottom: none; }
 
     .mobile-nav-link:hover,
-    .mobile-nav-link:focus {
-      background: rgba(255,153,0,0.1);
-    }
+    .mobile-nav-link:focus { background: rgba(255,153,0,0.1); }
 
-    .mobile-nav-link.active {
-      background: var(--brand-primary);
-      color: black;
-    }
+    .mobile-nav-link.active { background: var(--brand-primary); color: black; }
   }
 
   @media (max-width: 480px) {
-    .logo-text {
-      font-size: 1.25rem;
-    }
-    .logo-icon {
-      height: 32px;
-    }
+    .logo-text { font-size: 1.4rem; }
   }
 </style>

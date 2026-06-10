@@ -8,6 +8,9 @@ import MysteryHelpBlock from '../../components/MysteryHelpBlock.astro';
 import { getCollection } from 'astro:content';
 import { ui } from '../../i18n/ui';
 
+const fmt = (d: Date) =>
+  d.toLocaleDateString('fi-FI', { day: 'numeric', month: 'numeric', year: 'numeric' });
+
 const lang = 'fi';
 const t = ui[lang];
 
@@ -18,12 +21,9 @@ const articles = (await getCollection('articles', (entry) =>
 const slugFor = (a: any) => `/fi/aikakone/${a.id.replace(/^fi\//, '')}`;
 const imgFor = (a: any) => a.data.card_image || a.data.featured_image;
 
-// Featured grid: 1 big + 2 stacked
-const bigCard = articles[0];
-const stackedCards = articles.slice(1, 3);
-
-// Secondary row: 4 cards
-const secondaryCards = articles.slice(3, 7);
+// Featured grid: 2 equal hero cards + 4 secondary
+const heroCards = articles.slice(0, 2);
+const secondaryCards = articles.slice(2, 6);
 
 // Ticker: latest 5 article titles
 const tickerItems = articles.slice(0, 5).map(a => ({
@@ -76,17 +76,11 @@ const galleryItems = featuredGalleries.map(g => ({
   lang={lang}
   description="Motocrossin ja moottoripyöräurheilun kuvia, tarinoita ja tuloksia 1960-luvulta nykypäivään. MXGP 2026, Aikakone-arkisto ja valokuvagalleria."
 >
-  <TrendingTicker label="Nyt luetuimmat" items={tickerItems} slot="pre-header" />
-
-  {/* ===== Typographic hero band ===== */}
-  <section class="hero-band">
-    <div class="container">
-      <h1 class="hero-band__title">Vauhtia ja elämää linssin läpi</h1>
-    </div>
-  </section>
+  <h1 class="sr-only">Photo & Moto — Vauhtia ja elämää linssin läpi</h1>
+  <TrendingTicker label="Nyt luetuimmat" items={tickerItems} slot="ticker" />
 
   {/* ===== Featured grid (articles) ===== */}
-  {bigCard && (
+  {heroCards.length > 0 && (
     <section class="section featured-grid-section">
       <div class="container">
         <div class="section-header-row">
@@ -94,27 +88,16 @@ const galleryItems = featuredGalleries.map(g => ({
           <a href="/fi/aikakone" class="section-all-link">Kaikki artikkelit →</a>
         </div>
         <div class="hero-split">
-          <div class="hero-split__big">
+          {heroCards.map(a => (
             <ArticleCard
-              href={slugFor(bigCard)}
-              image={imgFor(bigCard)}
-              category={bigCard.data.category}
-              title={bigCard.data.title}
-              subtitle={bigCard.data.subtitle}
+              href={slugFor(a)}
+              image={imgFor(a)}
+              category={a.data.category}
+              title={a.data.title}
+              subtitle={fmt(a.data.date)}
               size="lg"
             />
-          </div>
-          <div class="hero-split__stack">
-            {stackedCards.map(a => (
-              <ArticleCard
-                href={slugFor(a)}
-                image={imgFor(a)}
-                category={a.data.category}
-                title={a.data.title}
-                size="md"
-              />
-            ))}
-          </div>
+          ))}
         </div>
 
         {secondaryCards.length > 0 && (
@@ -187,24 +170,6 @@ const galleryItems = featuredGalleries.map(g => ({
 </BaseLayout>
 
 <style>
-  /* ===== Typographic hero band =====
-     Supporting tagline under the masthead — deliberately smaller and lighter
-     than the PHOTO & MOTO logo so the logo stays the dominant element. */
-  .hero-band {
-    background: #0e0e0e;
-    padding: var(--space-4) 0;
-  }
-
-  .hero-band__title {
-    font-family: var(--font-headline);
-    font-size: clamp(1.3rem, 2.4vw, 1.9rem);
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.82);
-    letter-spacing: 0;
-    line-height: 1.15;
-    margin: 0;
-  }
-
   /* Section shared */
   .section-header-row {
     display: flex;
@@ -243,31 +208,18 @@ const galleryItems = featuredGalleries.map(g => ({
   /* ===== Shared: 1 big + N stacked layout (hero-split) ===== */
   .hero-split {
     display: grid;
-    grid-template-columns: 1.6fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: var(--space-3);
     align-items: stretch;
+  }
+
+  .hero-split > article {
+    min-height: 420px;
   }
 
   /* Variant for 1 big + 3 stacked (Galleria, Podcast) — wider right column */
   .hero-split--1-3 {
     grid-template-columns: 1.3fr 1fr;
-  }
-
-  .hero-split__big {
-    display: flex;
-    min-height: 380px;
-  }
-  .hero-split__big > article {
-    width: 100%;
-  }
-
-  .hero-split__stack {
-    display: grid;
-    grid-template-rows: repeat(auto-fit, minmax(0, 1fr));
-    gap: var(--space-3);
-  }
-  .hero-split__stack > article {
-    min-height: 0;
   }
 
   /* Articles section */
@@ -358,12 +310,8 @@ const galleryItems = featuredGalleries.map(g => ({
     .hero-split {
       grid-template-columns: 1fr;
     }
-    .hero-split__big {
+    .hero-split > article {
       min-height: 320px;
-    }
-    .hero-split__stack {
-      grid-template-rows: auto;
-      grid-template-columns: repeat(3, 1fr);
     }
     .secondary-row {
       grid-template-columns: repeat(2, 1fr);
@@ -376,24 +324,12 @@ const galleryItems = featuredGalleries.map(g => ({
     }
   }
 
-  @media (max-width: 640px) {
-    .hero-split__stack {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
   @media (max-width: 540px) {
-    .hero-split__stack {
-      grid-template-columns: 1fr;
-    }
     .secondary-row {
       grid-template-columns: 1fr;
     }
     .section-heading {
       font-size: 1.4rem;
-    }
-    .hero-band {
-      padding: var(--space-6) 0;
     }
   }
 </style>
