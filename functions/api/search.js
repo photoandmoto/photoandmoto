@@ -9,7 +9,7 @@ export async function onRequestPost(context) {
   };
 
   try {
-    const { query, siteData, lang } = await request.json();
+    const { query, lang } = await request.json();
     if (!query || query.length < 2) {
       return new Response(JSON.stringify({ error: 'Query too short' }), { status: 400, headers: corsHeaders });
     }
@@ -25,8 +25,23 @@ export async function onRequestPost(context) {
       ? 'PAKOLLINEN SÄÄNTÖ: Vastaa AINA SUOMEKSI. Käyttäjä kysyy suomeksi ja odottaa vastausta suomeksi. Älä koskaan vaihda englantiin, vaikka lähdeaineisto olisi englanniksi. Käännä kaikki sisältö suomeksi.'
       : 'MANDATORY RULE: Always answer in ENGLISH. The user is asking in English and expects an English response.';
     
+    // Load site index internally from static assets to prevent client-side data injection & API abuse
+    let siteData = '[]';
+    try {
+      if (env.ASSETS) {
+        const assetResponse = await env.ASSETS.fetch(new URL('/data/site-index.json', request.url));
+        if (assetResponse.ok) {
+          siteData = await assetResponse.text();
+        } else {
+          console.error(`Failed to load site data internally: HTTP ${assetResponse.status}`);
+        }
+      }
+    } catch (e) {
+      console.error('Failed to load site data internally:', e);
+    }
+
     // Trim data to stay within token limits
-    const trimmedData = siteData ? siteData.substring(0, 80000) : '[]';
+    const trimmedData = siteData.substring(0, 80000);
     
     const prompt = `You are the AI search assistant for Photo & Moto, a Finnish motorsport photography and history website.
 
