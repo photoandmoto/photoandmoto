@@ -3,7 +3,7 @@
 Photo & Moto -sivuston sisällöntuottajan ja ylläpitäjän käsikirja.
 
 Tämä dokumentti on **ainoa virallinen ohje** sisällön julkaisemiseen sivustolle.
-Se kattaa kaksi erillistä järjestelmää: artikkelien kirjoittamisen Decap CMS:llä
+Se kattaa kaksi erillistä järjestelmää: artikkelien kirjoittamisen Sveltia CMS:llä
 ja vanhojen valokuvien tunnistamisen sekä gallerioiden hallinnan
 yllapito-sivulla.
 
@@ -17,7 +17,7 @@ julkaisun yhteydessä.
 ## Sisältö
 
 1. [Yleistä](#yleistä)
-2. [Artikkelien kirjoittaminen — Decap CMS](#artikkelien-kirjoittaminen--decap-cms)
+2. [Artikkelien kirjoittaminen — Sveltia CMS](#artikkelien-kirjoittaminen--sveltia-cms)
 3. [Käyttäjätilit ja oikeudet — IAM](#käyttäjätilit-ja-oikeudet--iam)
 4. [Tunnistamattomat kuvat — yllapito](#tunnistamattomat-kuvat--yllapito)
 5. [Galleriat — Hallitse galleriaa](#galleriat--hallitse-galleriaa)
@@ -33,26 +33,26 @@ hoitavat aivan eri asioita:
 
 | Järjestelmä | Mitä tehdään | Kuka käyttää |
 |---|---|---|
-| **Decap CMS** osoitteessa `/admin/` | Artikkelien kirjoittaminen ja julkaisu | Sisällöntuottajat (toimittajat) |
+| **Sveltia CMS** osoitteessa `/admin/` | Artikkelien kirjoittaminen ja julkaisu | Sisällöntuottajat (toimittajat) |
 | **Ylläpito** osoitteessa `/fi/yllapito` | Vanhojen kuvien tunnistus, gallerioiden hallinta | Ylläpitäjät |
 
-Sisällöntuottajat tarvitsevat lähinnä vain Decap CMS:n. Ylläpitäjät käyttävät
+Sisällöntuottajat tarvitsevat lähinnä vain Sveltia CMS:n. Ylläpitäjät käyttävät
 molempia. Tämä käsikirja kuvaa molemmat — voit hyppiä omaan osioosi.
 
 ### Tärkeintä tietää
 
-- **Tallennus julkaisee suoraan tuotantoon.** Decap CMS:ssä tehty muutos
+- **Tallennus julkaisee suoraan tuotantoon.** Sveltia CMS:ssä tehty muutos
   ilmestyy `www.photoandmoto.fi`-sivulle noin kahdessa minuutissa. Ei
   tarvitse painaa "julkaise" erikseen — tallennus riittää.
-- **Esikatselu Decapin sisällä on luotettava.** Näet artikkelin sellaisena kuin
+- **Esikatselu Sveltian sisällä on luotettava.** Näet artikkelin sellaisena kuin
   se tulee näkymään sivustolla ennen tallennusta.
-- **Poistot ovat lopullisia.** Decap kysyy varmistuksen ennen poistoa, mutta
+- **Poistot ovat lopullisia.** Sveltia kysyy varmistuksen ennen poistoa, mutta
   poiston jälkeen artikkeli häviää sivustolta ~2 minuutissa. Palauttaminen
   vaatii kehittäjän apua (`git revert`).
 
 ---
 
-## Artikkelien kirjoittaminen — Decap CMS
+## Artikkelien kirjoittaminen — Sveltia CMS
 
 ### Kirjautuminen
 
@@ -78,7 +78,7 @@ Sisäänkirjautumisen jälkeen näkyvissä on:
 #### Pikalisäys-pohjat (suositeltu tapa)
 
 Pikalisäys-pohjat säästävät aikaa, koska kategoria, tagit ja sisältörunko on
-valmiiksi täytetty. Lisäksi automaattinen käännös on oletuksena käytössä.
+valmiiksi täytetty.
 
 **MXGP-jutun pohja sisältää:**
 
@@ -117,52 +117,43 @@ MXGP- tai historiajuttuun.
 | **Pääkuvan kuvateksti** | Pienellä pääkuvan alle |
 | **Piilota sivustolta** | Luonnostila — artikkeli ei näy julkisesti |
 | **SEO-kuvaus** | Hakukoneille (maks. 160 merkkiä) |
-| **Automaattisesti käännetty** | Käänteinen toggle, ks. seuraava osio |
 | **Sisältö** | Itse artikkelin teksti markdown-muodossa |
 | **Lähteet** | Valinnainen lista — yksi lähde per rivi, URL-osoitteet muuttuvat linkeiksi |
 
-### Automaattinen käännös FI → EN
+### Käännös suomesta englanniksi
 
-Photo & Moto on kaksikielinen — jokaisesta artikkelista pitäisi periaatteessa
-olla sekä suomenkielinen että englanninkielinen versio. Tämä hoituu
-automaattisesti.
+Photo & Moto on kaksikielinen — useimmista artikkeleista on hyvä olla sekä
+suomen- että englanninkielinen versio. Käännös tehdään **käsin Sveltian
+editorissa**; automaattista käännöstä ei enää ole.
 
 #### Miten se toimii
 
-Jokaisessa artikkelissa on **Automaattisesti käännetty** -valintaruutu.
-
-| Tila | Mitä tapahtuu kun tallennat suomenkielisen artikkelin |
-|---|---|
-| ☑ valittu | Gemini-tekoäly kääntää artikkelin englanniksi automaattisesti |
-| ☐ ei valittu | Englanninkielistä versiota ei kosketa |
+Sveltiassa artikkelin suomen- (FI) ja englanninkielinen (EN) versio ovat
+muokattavissa rinnakkain — vaihdat kielten välillä editorin yläosan
+kielivalinnasta. Et täytä molempia kerralla: kirjoitat ensin suomenkielisen
+version ja luot englanninkielisen erikseen.
 
 #### Käytännön työnkulku
 
-**Uudelle artikkelille (pikalisäys-pohjasta):**
+**Uuden artikkelin kääntäminen:**
 
-1. Kirjoita artikkeli suomeksi (Automaattisesti käännetty on jo valittu)
-2. Tallenna
-3. Odota ~2 minuuttia — englanninkielinen versio syntyy automaattisesti
-4. Avaa artikkeli uudelleen, klikkaa **EN**-välilehteä yläosassa
-5. Lue käännös, korjaa mahdolliset kömpelyydet
-6. **Poista valinta** Automaattisesti käännetty -ruudusta (tärkeää!)
-7. Tallenna
+1. Kirjoita ja tallenna artikkeli suomeksi (FI)
+2. Vaihda **EN**-kieleen editorin yläosasta
+3. Käännä teksti **Geminin avulla**: kopioi suomenkielinen sisältö Geminiin,
+   pyydä käännös englanniksi, ja liitä tulos vastaaviin EN-kenttiin (otsikko,
+   alaotsikko, SEO-kuvaus, kuvateksti, sisältö)
+4. Lue käännös läpi ja korjaa mahdolliset kömpelyydet
+5. Tallenna
 
-Kohdan 6 jälkeen tulevaisuuden suomenkielisen artikkelin muokkaukset eivät
-enää kirjoita ylitsesi käännöstä.
+Englanninkielinen versio tallentuu omaan tiedostoonsa
+(`src/content/articles/en/<slug>.md`). Suomenkielisen artikkelin myöhemmät
+muokkaukset eivät kosketa englanninkielistä versiota — jos haluat käännöksen
+pysyvän ajan tasalla, päivitä EN-versio itse samalla tavalla.
 
-**Uudelle artikkelille (Artikkelit-kokoelma, tyhjästä):**
+#### Kun artikkeli halutaan vain suomeksi
 
-Sama kuin yllä, mutta sinun on **valittava ruutu itse** ensimmäisellä
-tallennuksella jos haluat käännöksen. Oletuksena se on pois päältä.
-
-#### Milloin et halua automaattista käännöstä
-
-- Artikkeli on niin paikallinen aihe, että englanninkielistä versiota ei
-  tarvita
-- Artikkeli on jo manuaalisesti käännetty englanniksi ja haluat suojella sitä
-
-Jätä ruutu valitsematta. Englanninkielistä tiedostoa ei luoda.
+Jätä englanninkielinen versio yksinkertaisesti luomatta. Tällöin artikkeli ei
+näy `/en/aikakone/`-listassa.
 
 ### Kuvien lisääminen tekstiin
 
@@ -183,19 +174,19 @@ pakkautuvat (GitHub Action tekee sen taustalla noin minuutissa).
 
 ### Tallentaminen ja julkaisu
 
-**Decapissa ei ole erillistä "julkaise" -nappia.** Tallenna = julkaise.
+**Sveltiassa ei ole erillistä "julkaise" -nappia.** Tallenna = julkaise.
 Painikkeen nimi on yksinkertaisesti **Tallenna**.
 
 Kun tallennat:
 
-1. Decap commitoi muutoksen Git-tietovarastoon (näet "Muutokset tallennettu")
+1. Sveltia commitoi muutoksen Git-tietovarastoon (näet "Muutokset tallennettu")
 2. Cloudflare havaitsee muutoksen ja rakentaa sivuston uudelleen
 3. Noin 2 minuutin kuluttua artikkeli näkyy osoitteessa `www.photoandmoto.fi`
 
 Voit tarkistaa tilan:
 
 - **GitHub Actions:** <https://github.com/photoandmoto/photoandmoto/actions>
-  (vihreä rasti = käännös onnistui, build pyörii)
+  (vihreä rasti = taustatyöt, esim. kuvien pakkaus, onnistuivat)
 - **Cloudflare deployments:** näet uusimman julkaisun statuksen sivuston
   rakentamisen ajan
 
@@ -229,8 +220,8 @@ englanninkielinen versio poistetaan samalla kerralla.
 ## Käyttäjätilit ja oikeudet — IAM
 
 Tämä osio koskee `yllapito`-työkaluja (Tunnista kuva, Hallitse galleriaa,
-Käyttäjät). Decap CMS käyttää erillistä GitHub-pohjaista kirjautumista —
-ks. yllä oleva [Artikkelien kirjoittaminen](#artikkelien-kirjoittaminen--decap-cms).
+Käyttäjät). Sveltia CMS käyttää erillistä GitHub-pohjaista kirjautumista —
+ks. yllä oleva [Artikkelien kirjoittaminen](#artikkelien-kirjoittaminen--sveltia-cms).
 
 Photo & Moton ylläpitojohtoinen autentikointi perustuu **henkilökohtaisiin
 käyttäjätileihin**. Jokaisella työkaluja käyttävällä on oma
@@ -282,7 +273,7 @@ voi saada laajat oikeudet.
 | **T** | Tarkista | Yhteisön ehdotusten tarkistus ja kuvien tunnistaminen (Tarkista-välilehti) |
 | **L** | Lähetä kuva | Uusien tunnistettavien kuvien lataaminen (Lähetä kuva -välilehti) |
 | **G** | Hallitse galleriaa | Julkaistujen gallerioiden hallinta: kuvatekstit, siirrot, poistot, gallerian uudelleennimeäminen (Hallitse galleriaa -välilehti) |
-| **A** | Hallitse artikkeleita | Pääsy Decap CMS:ään (Hallitse artikkeleita ↗ -linkki avaa erillisen GitHub-kirjautumisen) |
+| **A** | Hallitse artikkeleita | Pääsy Sveltia CMS:ään (Hallitse artikkeleita ↗ -linkki avaa erillisen GitHub-kirjautumisen) |
 | **I** | Hallitse käyttäjiä | Tämän IAM-paneelin käyttö: uusien käyttäjien luonti, oikeuksien muokkaus, deaktivointi (Käyttäjät-välilehti) |
 
 Tunnukset T/L/G/A/I näkyvät väribadgeina Käyttäjät-listassa.
@@ -401,7 +392,7 @@ Näkyvät välilehdet oikeuksien mukaan:
 - **Lähetä kuva** (oikeus L) — uuden tunnistamattoman kuvan lähettäminen
 - **Hallitse galleriaa** (oikeus G) — julkaistujen gallerioiden hallinta
 - **Käyttäjät** (oikeus I) — IAM-paneeli (ks. yllä)
-- **Hallitse artikkeleita ↗** (oikeus A) — linkki Decap CMS:ään
+- **Hallitse artikkeleita ↗** (oikeus A) — linkki Sveltia CMS:ään
 
 ### Uuden tunnistamattoman kuvan lähettäminen
 
@@ -513,32 +504,28 @@ Nämä vaativat toistaiseksi manuaalista git-työtä — ota yhteyttä kehittäj
 4. Pohja on jo valmiina — täytä omat tiedot
 5. Lisää pääkuva (vedä kuva pääkuva-kenttään tai valitse mediakirjastosta)
 6. Tallenna
-7. Odota 2 min, avaa **EN**-välilehti, tarkista käännös
-8. Poista **Automaattisesti käännetty** -valinta englanninkielisestä versiosta
+7. Vaihda **EN**-kieleen ja käännä teksti Geminin avulla (ks. [Käännös
+   suomesta englanniksi](#käännös-suomesta-englanniksi))
+8. Lue käännös läpi ja korjaa kömpelyydet
 9. Tallenna
 
 ### "Haluan että artikkeli näkyy vain suomeksi"
 
-Älä valitse **Automaattisesti käännetty** -ruutua. Englanninkielistä tiedostoa
-ei luoda eikä artikkeli näy `/en/aikakone/`-listassa.
+Jätä englanninkielinen versio luomatta. Englanninkielistä tiedostoa ei synny
+eikä artikkeli näy `/en/aikakone/`-listassa.
 
-Voit myös myöhemmin manuaalisesti poistaa englanninkielisen version, jos
-sellainen on jo luotu — avaa artikkeli, vaihda EN-välilehdelle, klikkaa
-**Poista artikkeli**.
+Jos englanninkielinen versio on jo luotu ja haluat poistaa sen — avaa
+artikkeli, vaihda EN-kieleen, klikkaa **Poista artikkeli**.
 
 ### "Haluan korjata vain englanninkielistä versiota"
 
-Suomenkielinen versio on muokkauksesi lähteenä, joten käännöstä ei lähtökohtaisesti tarvita.
-
 1. Avaa artikkeli muokattavaksi
-2. **Tarkista että Automaattisesti käännetty -valinta on POIS PÄÄLTÄ**
-   englanninkielisessä versiossa
-3. Vaihda **EN**-välilehdelle
-4. Tee muutokset
-5. Tallenna
+2. Vaihda **EN**-kieleen
+3. Tee muutokset
+4. Tallenna
 
-Jos Automaattisesti käännetty olisi ollut päällä, suomenkielisen artikkelin
-seuraava tallennus olisi kirjoittanut englanninkielisen version yli.
+Englanninkielinen versio on oma tiedostonsa, joten muutokset koskevat vain
+sitä. Suomenkielinen versio säilyy ennallaan.
 
 ### "En pääse kirjautumaan — olen unohtanut salasanan"
 
@@ -583,7 +570,7 @@ sekunnin työ.
 
 ## Vianetsintä
 
-### Decap ei lataudu
+### Sveltia ei lataudu
 
 - Hard-refresh selaimessa: **Ctrl+Shift+R**
 - Tarkista että GitHub-tunnuksellasi on pääsy `photoandmoto`-organisaatioon
@@ -606,15 +593,12 @@ Tarkista vaiheittain:
 3. **Mene osoitteeseen suoraan** — `https://www.photoandmoto.fi/fi/aikakone/<slug>/`
 4. **Selaimen välimuisti** — Ctrl+Shift+R refreshaa kovaa
 
-### "Englanninkielistä käännöstä ei syntynyt"
+### "Englanninkielistä versiota ei ole"
 
-Tarkista:
-
-1. **Onko Automaattisesti käännetty valittu?** Avaa artikkeli, tarkista ruutu
-2. **GitHub Actions** — <https://github.com/photoandmoto/photoandmoto/actions/workflows/translate-article.yml>
-   - Vihreä rasti = käännös onnistui
-   - Punainen X = käännös epäonnistui, klikkaa avataksesi lokin
-3. Jos rasti on vihreä mutta käännöstä ei näy, hard-refresh selain
+Käännös tehdään käsin — automaattista käännöstä ei enää ole. Jos
+englanninkielistä versiota ei näy, sitä ei ole vielä luotu. Avaa artikkeli,
+vaihda **EN**-kieleen ja käännä teksti Geminin avulla (ks. [Käännös suomesta
+englanniksi](#käännös-suomesta-englanniksi)), ja tallenna.
 
 ### "Kuva on liian iso (yli 5 MB)"
 
@@ -648,4 +632,4 @@ kerro kehittäjälle.
 
 ---
 
-*Viimeksi päivitetty: kesäkuu 2026 (lisätty IAM-osio)*
+*Viimeksi päivitetty: kesäkuu 2026 (siirrytty Sveltia CMS:ään; käännös tehdään käsin)*

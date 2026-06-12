@@ -25,9 +25,6 @@ const articlesCollection = defineCollection({
     language: z.enum(['fi', 'en']).optional(),
     draft: z.preprocess((v) => v ?? false, z.boolean()),
     seo_description: z.string().max(160).nullish(),
-    auto_translated: z.boolean().nullish(),
-    translated_from: z.string().nullish(),
-    translated_at: z.preprocess((v) => v instanceof Date ? v.toISOString() : v, z.string().nullish()),
     sources: z.string().nullish(),
   }),
 });

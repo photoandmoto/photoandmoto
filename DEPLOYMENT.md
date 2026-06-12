@@ -12,7 +12,7 @@ secrets, and recover from incidents. This document is self-contained.
 |---|---|---|
 | Source of truth | **GitHub** (`photoandmoto/photoandmoto`) | All code, gallery image files, article content |
 | Static site hosting | **Cloudflare Pages** (2 projects) | Builds Astro on push, serves the result |
-| Article editing | **Decap CMS** at `/admin/` | Git-based CMS for articles, GitHub-OAuth login |
+| Article editing | **Sveltia CMS** at `/admin/` | Git-based CMS for articles, GitHub-OAuth login |
 | Mystery photos + galleries admin | **Custom admin** at `/fi/yllapito` | Photo identification, gallery management |
 | Server-side endpoints | **Cloudflare Pages Functions** (Workers runtime) | `/api/mystery/*`, `/oauth/*`, `/api/articles/*` |
 | Database | **Cloudflare D1** (2 databases) | Mystery photos table, comments table |
@@ -42,27 +42,27 @@ reserved for documentation-only changes or hotfixes.
 
 The site has **two separate admin systems** by deliberate design:
 
-### Articles — Decap CMS at `/admin/`
+### Articles — Sveltia CMS at `/admin/`
 
-Articles (the Aikakone / Time Machine content) are edited in **Decap CMS**,
+Articles (the Aikakone / Time Machine content) are edited in **Sveltia CMS**,
 a git-based CMS served as static files from `public/admin/`.
 
 - **URL:** `https://www.photoandmoto.fi/admin/`
 - **Login:** GitHub OAuth. The editor must have write access to the repo.
-- **Where edits go:** Decap commits straight to the `dev` branch. Cloudflare
+- **Where edits go:** Sveltia commits straight to the `dev` branch. Cloudflare
   rebuilds staging automatically. To reach production, promote `dev → main`.
 - **Collections:**
   - **Artikkelit** — browse and edit all articles, create blank ones
   - **+ Uusi MXGP-juttu** / **+ Uusi historiallinen tarina** — Quick Add
-    templates: pre-filled category, tags, body skeleton, and
-    `auto_translated: true` on the EN tab
+    templates: pre-filled category, tags, and body skeleton
   - **Kategoriat** — article categories (data-driven; add new ones here)
-- **Bilingual:** Decap uses `i18n: multiple_folders`. One entry has FI and EN
+- **Bilingual:** Sveltia uses `i18n: multiple_folders`. One entry has FI and EN
   tabs; files are written to `src/content/articles/fi/<slug>.md` and
   `src/content/articles/en/<slug>.md` with the same slug.
 - **Local testing:** `local_backend: true` is set in `public/admin/config.yml`.
-  Run `npx decap-server` + `npm run dev`, then open
-  `http://localhost:4321/admin/index.html` — no OAuth needed.
+  Run `npm run dev`, open `http://localhost:4321/admin/`, and choose **Work
+  with Local Repository** (Chromium browsers) to edit files on disk — no OAuth
+  and no proxy process needed.
 
 ### Mystery photos + galleries — custom admin at `/fi/yllapito`
 
@@ -97,13 +97,10 @@ Articles are Markdown with YAML frontmatter, validated by Zod in
 | `language` | `fi` \| `en`, optional | derived from folder; field is legacy |
 | `draft` | boolean | default `false`; `true` hides the article from the site |
 | `seo_description` | string ≤160, optional | |
-| `auto_translated` | boolean, optional | `true` = EN was machine-translated, awaiting review |
-| `translated_from` | string, optional | set by the translation Action |
-| `translated_at` | string, optional | ISO timestamp, set by the translation Action |
 | `sources` | string, optional | "Lähteet" block; URLs auto-link on render |
 
-Decap writes `null` for empty optional fields — the schema accepts that via
-`.nullish()`. Booleans coerce `null` to their default via `z.preprocess()`.
+The CMS may write `null` for empty optional fields — the schema accepts that
+via `.nullish()`. Booleans coerce `null` to their default via `z.preprocess()`.
 
 ---
 
@@ -148,8 +145,8 @@ In Pages project → **Settings** → **Environment variables** → **Production
 | `GITHUB_APP_ID` | yes | Numeric ID of the `Photoandmoto Publisher` GitHub App. |
 | `GITHUB_APP_INSTALLATION_ID` | yes | Numeric installation ID for that App on the `photoandmoto` repo. |
 | `GITHUB_APP_PRIVATE_KEY` | yes | Full PEM contents of the App's private key, including the `-----BEGIN/END-----` lines. |
-| `GEMINI_API_KEY` | optional | Google AI Studio key for the AI photo-identification fallback in the mystery flow. (The article-translation Action uses a separate copy — see step 6.) |
-| `OAUTH_GITHUB_CLIENT_ID` | yes (prod) | GitHub OAuth App client ID — powers Decap login. |
+| `GEMINI_API_KEY` | optional | Google AI Studio key for the AI photo-identification fallback in the mystery flow. (The MXGP scraper Action uses a separate copy — see step 6.) |
+| `OAUTH_GITHUB_CLIENT_ID` | yes (prod) | GitHub OAuth App client ID — powers Sveltia login. |
 | `OAUTH_GITHUB_CLIENT_SECRET` | yes (prod) | GitHub OAuth App client secret. **Encrypt this.** |
 | `OAUTH_REDIRECT_URI` | yes (prod) | `https://www.photoandmoto.fi/oauth/callback` |
 | `SUPER_ADMIN_EMAIL` | one-shot | Email of the first IAM superadmin to seed. Used only once per environment. Remove after seeding. |
@@ -161,8 +158,8 @@ All secrets must be marked **Encrypt** in the dashboard. After adding/changing
 any secret, the next deployment picks it up; running deployments keep using the
 old values until a new build finishes.
 
-The `OAUTH_*` secrets are production-only — Decap's OAuth callback URL is
-registered for the production domain. Staging Decap testing uses
+The `OAUTH_*` secrets are production-only — Sveltia's OAuth callback URL is
+registered for the production domain. Staging Sveltia testing uses
 `local_backend` instead (see "Content management" above).
 
 ### 4. GitHub App — `Photoandmoto Publisher` (for the publish pipeline)
@@ -184,14 +181,14 @@ credentials". To create it from scratch:
 `GITHUB_APP_INSTALLATION_ID` (in the install URL `/installations/<NUMBER>`),
 `GITHUB_APP_PRIVATE_KEY` (the `.pem` contents).
 
-### 5. GitHub OAuth App — for Decap CMS login
+### 5. GitHub OAuth App — for Sveltia CMS login
 
 This is **separate** from the GitHub App above. GitHub Apps and OAuth Apps are
 different things; the OAuth App authenticates the human editor logging into
-Decap.
+Sveltia.
 
 1. GitHub → **Settings** → **Developer settings** → **OAuth Apps** → **New OAuth App**
-2. Application name: `Photo & Moto — Decap CMS`
+2. Application name: `Photo & Moto — Sveltia CMS`
 3. Homepage URL: `https://www.photoandmoto.fi`
 4. Authorization callback URL: `https://www.photoandmoto.fi/oauth/callback`
    (exact — no trailing slash)
@@ -203,7 +200,7 @@ The OAuth proxy itself runs as Cloudflare Pages Functions at
 
 ### 6. GitHub repo secrets — for GitHub Actions
 
-The translation Action runs on GitHub's infrastructure, so it needs the Gemini
+The MXGP scraper Action runs on GitHub's infrastructure, so it needs the Gemini
 key as a **repo secret** (separate from the Cloudflare copy):
 
 1. GitHub → repo `photoandmoto/photoandmoto` → **Settings** → **Secrets and variables** → **Actions**
@@ -223,8 +220,8 @@ key as a **repo secret** (separate from the Cloudflare copy):
 - Visit the URL → site renders
 - Hit `/api/mystery/featured` → returns JSON (Pages Functions + D1 binding work)
 - Visit `/fi/yllapito` → the new login form (email + password) is shown
-- Visit `/admin/` → Decap loads; "Login with GitHub" completes; collections show
-- In Decap, edit an article → a commit lands on `dev` authored by your user
+- Visit `/admin/` → Sveltia loads; "Login with GitHub" completes; collections show
+- In Sveltia, edit an article → a commit lands on `dev` authored by your user
 
 For a brand-new environment, no IAM users exist yet — you must seed the
 first superadmin before login works. See § Identity & access management (IAM)
@@ -325,7 +322,6 @@ All workflows live in `.github/workflows/`. They run on push to `dev` and
 
 | Workflow | Trigger path | What it does |
 |---|---|---|
-| `translate-article.yml` | `src/content/articles/fi/**` | For each changed FI article, runs `scripts/translate-article.mjs` (Gemini 2.5 Flash). Translates to EN if the EN file is missing or `auto_translated: true`; skips human-reviewed translations. Metadata fields (title/subtitle/SEO/caption) are translated individually as plain text; the body is a separate JSON call; FI `tags` are reused verbatim. Transient Gemini failures (503/429/truncation) auto-retry. Commits `en/<slug>.md`. |
 | `compress-article-images.yml` | `public/images/**` | Resizes oversized images to ≤1600px wide, re-encodes JPEG/WebP at quality 82. Commits compressed versions. |
 | `generate-og-images.yml` | `src/content/articles/**` | Composites a 1200×630 branded social card per article (`scripts/generate-og-image.mjs`, Sharp + Montserrat). Commits to `public/og/`. |
 | `check-links.yml` | `src/content/articles/**` | Scans changed article markdown for broken external links. Fails the run (visible warning) if any are dead. Doesn't block deploys. |
@@ -358,22 +354,21 @@ Pattern: run `ALTER TABLE` in the D1 console, verify with
 3. **Watch the `Piilota sivustolta` toggle** — if it's ON (`draft: true`), the
    article is excluded from the build and won't appear on the site. Leave it
    OFF for normal publishing.
-4. To auto-translate: fill the FI tab, put a placeholder in the EN tab, turn
-   the `Automaattisesti käännetty` toggle ON, Publish. The translation Action
-   replaces the EN content within ~1–2 min. Review the EN, turn the toggle OFF,
-   Publish again to lock it.
-5. Decap commits to `dev` → staging rebuilds. Verify on
+4. To create the English version: fill the FI locale, switch to the EN locale,
+   and translate the content by hand with Gemini (paste the FI text into
+   Gemini, paste the result into the matching EN fields), review, and save.
+5. Sveltia commits to `dev` → staging rebuilds. Verify on
    `photoandmoto-staging.pages.dev`.
 6. Promote to production: PR `dev → main`.
 
-**Verifying what's actually committed:** the Decap UI and live pages can show
+**Verifying what's actually committed:** the Sveltia UI and live pages can show
 stale/cached content. The authoritative check is
 `git show origin/dev:src/content/articles/<lang>/<slug>.md`.
 
 ### Managing categories
 
-Categories are a Decap collection (`src/content/categories/*.json`). To add
-one: Decap → **Kategoriat** → New. To retire one: first reassign every article
+Categories are a Sveltia collection (`src/content/categories/*.json`). To add
+one: Sveltia → **Kategoriat** → New. To retire one: first reassign every article
 using it, verify nothing references it, then delete the JSON file. The
 collection's `name` field is the value stored in articles — never change it on
 an in-use category.
@@ -405,7 +400,7 @@ paste the full PEM, then delete the old key — in that order (deployed code
 still uses the old key until the next build).
 
 For `OAUTH_GITHUB_CLIENT_SECRET`: regenerate in the GitHub OAuth App, update
-the Cloudflare secret, redeploy. Decap logins fail until the redeploy finishes.
+the Cloudflare secret, redeploy. Sveltia logins fail until the redeploy finishes.
 
 ### Pushing a hotfix to production
 
@@ -513,7 +508,7 @@ Open the deployment → **Build log**. Common causes:
   `src/content/galleries/<slug>.json`.
 - **D1 schema mismatch** — an endpoint queries a column that doesn't exist yet.
 
-### Decap CMS won't load or login fails
+### Sveltia CMS won't load or login fails
 
 - **`/admin/` 404 locally** — Astro dev doesn't auto-resolve directory
   indexes; use `/admin/index.html`. Production (`/admin/`) is fine.
@@ -522,44 +517,22 @@ Open the deployment → **Build log**. Common causes:
   `OAUTH_GITHUB_CLIENT_ID/SECRET` are set on the production Pages project. The
   popup error page reports the specific failure (state mismatch, token
   exchange, etc.).
-- **Decap shows stale state / wrong toggle values** — clear browser
-  localStorage for the admin origin; Decap caches pending edits across sessions.
+- **Sveltia shows stale state / wrong values** — clear browser
+  localStorage for the admin origin; Sveltia caches pending edits across sessions.
 
-### An article saved in Decap but doesn't appear on the site
+### An article saved in Sveltia but doesn't appear on the site
 
 Most likely `draft: true` (the `Piilota sivustolta` toggle was ON). Astro
 excludes drafts from `getStaticPaths()`, so no page is generated and Cloudflare
 keeps serving the previous deployment's cached page — a silent un-publish.
 Verify with `git show origin/dev:src/content/articles/<lang>/<slug>.md`.
 
-### Auto-translation Action failed
+### English translation is missing for an article
 
-The translator (`scripts/translate-article.mjs`) makes **separate Gemini calls
-per piece**: each metadata field (title, subtitle, SEO description, image
-caption) is translated individually as plain text, and the article body is a
-single JSON call of its own. FI `tags` are not sent to the model — they're
-reused verbatim. This structure is deliberate: earlier single-call designs hit
-a degenerate repetition loop (the model looping on `tags`, then `subtitle`,
-concatenating the body until it exhausted the token budget) that produced
-malformed EN files and broke the Cloudflare build.
-
-Guards in the script abort with a non-zero exit — failing the **Action**, not a
-later build — if the title or body comes back empty, so a bad translation never
-commits a broken EN file. Check the Action log; known causes:
-
-- **Gemini 503 / 429 (overloaded or rate-limited)** — transient. The script
-  auto-retries up to 3× with backoff, so a brief spike usually self-heals. If
-  all retries fail, just re-trigger.
-- **`MAX_TOKENS` / non-JSON response** — output budget exhausted, historically
-  the repetition loop above. The per-field metadata design prevents the common
-  cases; a genuinely enormous body could still hit the body call's 32768-token
-  cap. Retrying or shortening the article resolves it.
-- **Auth error** — `GEMINI_API_KEY` repo secret missing or invalid (this is a
-  GitHub repo secret, separate from the Cloudflare copy — see § Setting up a
-  new environment, step 6).
-- **Re-trigger** by re-saving the FI article in Decap, or push a no-op change
-  to the FI file. On success the log reads `Translating metadata fields` →
-  `Translating body` → `Wrote …`.
+Translation is now **manual** — there is no auto-translation Action. If an
+article has no English version, an editor simply hasn't created one yet: open
+the article in Sveltia, switch to the EN locale, translate the fields by hand
+(with Gemini), and save. There is nothing server-side to fail or re-trigger.
 
 ### Site loads but mystery endpoints 500
 
