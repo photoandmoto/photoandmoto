@@ -57,7 +57,6 @@ collections:
     sortable_fields: [date, title, category]
     view_filters:
       - { label: 'Piilotetut (luonnos)', field: draft, pattern: true }
-      - { label: 'Tarkistamattomat käännökset', field: auto_translated, pattern: true }
     view_groups:
       - { label: 'Kategoria', field: category }
       - label: 'Julkaisuvuosi'
@@ -85,9 +84,6 @@ collections:
       - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
       - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
       - { name: seo_description, label: 'SEO-kuvaus (max 160 merkkiä)', widget: string, required: false, pattern: ['^.{0,160}$', 'Korkeintaan 160 merkkiä'], i18n: true }
-      - { name: auto_translated, label: 'Automaattisesti käännetty — käännä pois tarkistuksen jälkeen', widget: boolean, default: false, required: false, i18n: duplicate }
-      - { name: translated_from, label: 'Käännetty artikkelista (slug)', widget: hidden, required: false, i18n: true }
-      - { name: translated_at, label: 'Käännetty (aikaleima)', widget: hidden, required: false, i18n: true }
       - { name: body, label: Sisältö, widget: markdown, i18n: true }
       - { name: sources, label: 'Lähteet (valinnainen)', widget: text, required: false, i18n: true, hint: 'Lähteet, joista materiaalia on lainattu. Jokainen lähde omalla rivillä. URL-osoitteet muuttuvat automaattisesti linkeiksi.' }
 
@@ -95,8 +91,8 @@ collections:
   # Shadow collections: pre-filled article templates.
   # Both write to src/content/articles/ — same folder as Artikkelit above.
   # The list view shows all articles (Decap can't filter it). The create
-  # flow applies the template's defaults: pre-filled category, body skeleton,
-  # and auto_translated: true so the EN tab is auto-translated on save.
+  # flow applies the template's defaults: pre-filled category and body
+  # skeleton.
   # ============================================================
 
   - name: articles_template_mxgp
@@ -124,9 +120,6 @@ collections:
       - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
       - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
       - { name: seo_description, label: 'SEO-kuvaus (max 160 merkkiä)', widget: string, required: false, pattern: ['^.{0,160}$', 'Korkeintaan 160 merkkiä'], i18n: true }
-      - { name: auto_translated, label: 'Automaattisesti käännetty — käännä pois tarkistuksen jälkeen', widget: boolean, default: true, required: false, i18n: duplicate }
-      - { name: translated_from, widget: hidden, required: false, i18n: true }
-      - { name: translated_at, widget: hidden, required: false, i18n: true }
       - name: body
         label: Sisältö
         widget: markdown
@@ -176,9 +169,6 @@ collections:
       - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
       - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
       - { name: seo_description, label: 'SEO-kuvaus (max 160 merkkiä)', widget: string, required: false, pattern: ['^.{0,160}$', 'Korkeintaan 160 merkkiä'], i18n: true }
-      - { name: auto_translated, label: 'Automaattisesti käännetty — käännä pois tarkistuksen jälkeen', widget: boolean, default: true, required: false, i18n: duplicate }
-      - { name: translated_from, widget: hidden, required: false, i18n: true }
-      - { name: translated_at, widget: hidden, required: false, i18n: true }
       - name: body
         label: Sisältö
         widget: markdown
