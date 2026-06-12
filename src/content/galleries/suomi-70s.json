@@ -5,6 +5,16 @@
   "cover_image": "thumbs/A.Vilkman tarkkana uudella Hondalla 1979_thumb.jpg",
   "images": [
     {
+      "filename": "Vas. Matti Tarkkonen, Göte Liljegren, Anssi Oksanen ja Heikki Mikkola. Hyvinkää 2016.jpg",
+      "thumb": "thumbs/Vas. Matti Tarkkonen, Göte Liljegren, Anssi Oksanen ja Heikki Mikkola. Hyvinkää 2016_thumb.jpg",
+      "display": "display/Vas. Matti Tarkkonen, Göte Liljegren, Anssi Oksanen ja Heikki Mikkola. Hyvinkää 2016_display.jpg",
+      "caption": "HyMK:n Dream Team 1970-luvulla. Vas. Matti Tarkkonen, Göte Liljegren, Anssi Oksanen ja Heikki Mikkola. Hyvinkää 2016",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 1001
+    },
+    {
       "filename": "Arto Vilkmanin Finnpyörän valmistama minicross 50cc Zundapp 1972.jpg",
       "thumb": "thumbs/Arto Vilkmanin Finnpyörän valmistama minicross 50cc Zundapp 1972_thumb.jpg",
       "display": "display/Arto Vilkmanin Finnpyörän valmistama minicross 50cc Zundapp 1972_display.jpg",
@@ -133,6 +143,16 @@
       "date": "",
       "width": 1400,
       "height": 1731
+    },
+    {
+      "filename": "HyMK:n valmennusryhmä Hyvinkää, Sveitsin uimala 1978.jpg",
+      "thumb": "thumbs/HyMK:n valmennusryhmä Hyvinkää, Sveitsin uimala 1978_thumb.jpg",
+      "display": "display/HyMK:n valmennusryhmä Hyvinkää, Sveitsin uimala 1978_display.jpg",
+      "caption": "HyMK:n valmennusryhmä Hyvinkää, Sveitsin uimala 1978",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 858
     },
     {
       "filename": "Hyvin hyppää Salo SM-125 1978.JPG",
@@ -473,16 +493,6 @@
       "date": "",
       "width": 1400,
       "height": 932
-    },
-    {
-      "filename": "Vas. Matti Tarkkonen, Göte Liljegren, Anssi Oksanen ja Heikki Mikkola. Hyvinkää 2016.jpg",
-      "thumb": "thumbs/Vas. Matti Tarkkonen, Göte Liljegren, Anssi Oksanen ja Heikki Mikkola. Hyvinkää 2016_thumb.jpg",
-      "display": "display/Vas. Matti Tarkkonen, Göte Liljegren, Anssi Oksanen ja Heikki Mikkola. Hyvinkää 2016_display.jpg",
-      "caption": "HyMK:n Dream Team 1970-luvulla. Vas. Matti Tarkkonen, Göte Liljegren, Anssi Oksanen ja Heikki Mikkola. Hyvinkää 2016",
-      "photographer": "",
-      "date": "",
-      "width": 1400,
-      "height": 1001
     },
     {
       "filename": "Arto Nyqvist.jpg",
