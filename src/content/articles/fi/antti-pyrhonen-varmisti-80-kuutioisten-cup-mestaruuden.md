@@ -1,21 +1,19 @@
 ---
 title: Antti Pyrhönen varmisti 80-kuutioisten cup mestaruuden 33 vuotta sitten
-subtitle: Silloinen lehtitiartikkeli kertoi tästä saavutuksesta erittäin
-  kuvaavasti seuraava
+subtitle: Silloinen lehtitiartikkeli kertoi tästä saavutuksesta erittäin kuvaavasti seuraavasti
 author: Tavu
 date: 2026-06-09
 category: Historical
 tags: []
 card_image: /images/antti-pyrhonen-1993.jpg
 show_hero: false
+image_caption: ''
 draft: false
-seo_description: Viime sunnuntaina ajettiin Espoon Kolmperän radalla
-  80-kuutioisten toiseksi viimeinen Suomen Cupin osakilpailu Hyvinkään Antti
-  Pyrhönen kaasutti tasaisen…
+seo_description: Viime sunnuntaina ajettiin Espoon Kolmperän radalla 80-kuutioisten toiseksi viimeinen Suomen Cupin osakilpailu Hyvinkään Antti Pyrhönen kaasutti tasaisen…
+sources: Tämä artikkeli on julkaistu Hyvinkään Sanomissa keskiviikkona 9. kesäkuuta 1993.
 auto_translated: true
-sources: Tämä artikkeli on julkaistu Hyvinkään Sanomissa keskiviikkona 9.
-  kesäkuuta 1993.
 ---
+
 Hyvinkään Moottorikerho on saamassa jälleen yhden nuoren motocrossarin vaalimaan paikkakunnan motocrossmainetta, kun 14-vuotias Antti Pyrhönen varmisti 80-kuutioisten Suomen cupin mestaruuden, vaikka yksi osakilpailu on vielä ajamatta.
 
 Hyvinkään Antti Pyrhönen kaasutti tasaisen varmasti molemmissa erissä kakkoseksi. Kiivas pisteiden ynnäys tuotti tuloksen, että Antti on varma cupin mestari, vaikkei starttaisi viimeiseen osakilpailuun lainkaan.
