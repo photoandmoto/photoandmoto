@@ -23,12 +23,10 @@ npm run preview    # preview the build locally
 
 Node.js 20+ required.
 
-To test the Decap CMS locally (no GitHub OAuth needed):
-
-```bash
-npx decap-server   # second terminal
-# then open http://localhost:4321/admin/index.html
-```
+To test Sveltia CMS locally (no GitHub OAuth needed): `local_backend: true` is
+set in `public/admin/config.yml`, so with the dev server running, open
+`http://localhost:4321/admin/` and choose **Work with Local Repository**
+(Chromium browsers) to edit files on disk — no proxy process required.
 
 ---
 
@@ -51,21 +49,21 @@ Bilingual public site (`/fi/...` and `/en/...`):
 
 The site has **two separate admin systems**, by deliberate design.
 
-### Articles — Decap CMS at `/admin/`
+### Articles — Sveltia CMS at `/admin/`
 
-Articles (the Aikakone content) are edited in **Decap CMS**, a git-based CMS
+Articles (the Aikakone content) are edited in **Sveltia CMS**, a git-based CMS
 served from `public/admin/`.
 
 - **URL:** `https://www.photoandmoto.fi/admin/` — login with GitHub
 - Commits go directly to the `main` branch — editor saves auto-deploy to
-  production in ~2 minutes. Decap's built-in preview pane is the review step;
+  production in ~2 minutes. Sveltia's built-in preview pane is the review step;
   there is no manual `dev → main` promote for content edits.
 - Bilingual: one entry, FI + EN tabs, written to
   `src/content/articles/{fi,en}/<slug>.md`
 - **Quick Add templates** for MXGP and historical articles, with pre-filled
   category, tags, and a body skeleton
-- A **Gemini-powered GitHub Action** auto-translates Finnish articles to
-  English when an article is flagged `auto_translated: true`
+- Editors translate Finnish articles to English **by hand in the Sveltia
+  editor** (FI and EN locales side by side), using Gemini
 - Article frontmatter reference and the full workflow are in
   [DEPLOYMENT.md § Content management](DEPLOYMENT.md)
 
@@ -82,7 +80,7 @@ original custom admin.
 
 ## Authentication & access control
 
-The custom admin (`/fi/yllapito`) is gated by a per-user IAM system. Decap
+The custom admin (`/fi/yllapito`) is gated by a per-user IAM system. Sveltia
 CMS at `/admin/` uses GitHub OAuth and is independent.
 
 - **Login:** email + password at `/fi/yllapito`, returns a 30-day session cookie
@@ -207,7 +205,6 @@ All workflows are in `.github/workflows/` and documented in
 
 | Workflow | Purpose |
 |---|---|
-| `translate-article.yml` | Gemini FI → EN article translation |
 | `compress-article-images.yml` | Resize/re-encode oversized article images |
 | `generate-og-images.yml` | Per-article 1200×630 branded social cards |
 | `check-links.yml` | Scan article markdown for broken external links |
@@ -222,9 +219,9 @@ All workflows are in `.github/workflows/` and documented in
 .github/workflows/      GitHub Actions
 functions/
   api/mystery/          Mystery-photo + gallery endpoints, D1-backed
-  oauth/                GitHub OAuth proxy for Decap login
+  oauth/                GitHub OAuth proxy for Sveltia login
 public/
-  admin/                Decap CMS — config.yml, preview.js, branding.css
+  admin/                Sveltia CMS — config.yml, branding.css
   images/               Article images
   galleries/<slug>/     Gallery images + generated thumbs/ and display/
   og/                   Auto-generated social cards
@@ -233,11 +230,9 @@ scripts/
   generate-gallery-manifest.mjs   Sharp pipeline + gallery manifest
   generate-site-index.mjs         Search index builder
   generate-llms.mjs               llms.txt generator
-  translate-article.mjs           Gemini translation
   generate-og-image.mjs           OG card compositor
   check-links.mjs                 Link checker
   compress-article-images.mjs     Image compressor
-  translation-glossary.md         Terms Gemini must not translate
 src/
   content/
     articles/{fi,en}/   Markdown articles
@@ -307,13 +302,13 @@ UI so the Lighthouse Accessibility score (currently 100) doesn't regress:
 
 - **Framework:** Astro 6 (static output), TypeScript strict mode
 - **Content:** Astro content collections, Zod-validated
-- **CMS:** Decap CMS (git-based) for articles
+- **CMS:** Sveltia CMS (git-based) for articles
 - **Gallery viewer:** PhotoSwipe 5
 - **Image processing:** Sharp (libvips)
 - **Search:** Pagefind (static index)
 - **Server-side:** Cloudflare Pages Functions (Workers runtime)
 - **Database:** Cloudflare D1 (edge SQLite) — mystery photos + comments
-- **Auth:** GitHub OAuth (Decap login); GitHub App + in-Worker JWT (publish pipeline)
+- **Auth:** GitHub OAuth (Sveltia login); GitHub App + in-Worker JWT (publish pipeline)
 - **CI/CD:** GitHub Actions + Cloudflare Pages auto-deploy
 - **Languages:** Finnish (`fi`), English (`en`)
 
