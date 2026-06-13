@@ -9,7 +9,7 @@ featured_image: /images/hiljaisuus-pauhun-jalkeen-1.jpg
 card_image: /images/hiljaisuus-pauhun-jalkeen-hero.jpg
 show_hero: true
 image_caption: ''
-draft: false
+draft: true
 seo_description: ''
 sources: ''
 ---
@@ -23,6 +23,8 @@ MXGP:n Trentinon osakilpailu tarjosi yhden kauden 2026 dramaattisimmista viikonl
 > Kukaan ei odottanut tätä tulosta — en edes minä," voittaja sanoi palkintojenjakoseremonian jälkeen.
 
 ## Rata
+
+![](/images/antti-pyrhonen-1993.jpg)
 
 Pietramuratan rata vastasi mainettaan yhtenä kalenterin teknisimmistä radoista. Syvät urat muodostuivat jo ensimmäisessä erässä, mikä pakotti kuljettajat etsimään uusia ajolinjoja koko kilpailun ajan.
 
