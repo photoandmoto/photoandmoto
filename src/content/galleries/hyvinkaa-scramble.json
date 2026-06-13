@@ -95,6 +95,16 @@
       "height": 931
     },
     {
+      "filename": "Katsojia Hyvinkää Scramble 2012.jpg",
+      "thumb": "thumbs/Katsojia Hyvinkää Scramble 2012_thumb.jpg",
+      "display": "display/Katsojia Hyvinkää Scramble 2012_display.jpg",
+      "caption": "Katsojia Hyvinkää Scramble 2012",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 489
+    },
+    {
       "filename": "Hessu scramblessa 2013.JPG",
       "thumb": "thumbs/Hessu scramblessa 2013_thumb.jpg",
       "display": "display/Hessu scramblessa 2013_display.jpg",
@@ -113,16 +123,6 @@
       "date": "",
       "width": 1200,
       "height": 1600
-    },
-    {
-      "filename": "_T2A9289.JPG",
-      "thumb": "thumbs/_T2A9289_thumb.jpg",
-      "display": "display/_T2A9289_display.jpg",
-      "caption": "Liekö Raisu?",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 933
     },
     {
       "filename": "_T2A9308.JPG",
@@ -363,6 +363,16 @@
       "date": "",
       "width": 1400,
       "height": 2104
+    },
+    {
+      "filename": "_T2A9289.JPG",
+      "thumb": "thumbs/_T2A9289_thumb.jpg",
+      "display": "display/_T2A9289_display.jpg",
+      "caption": "Liekö Raisu?",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 933
     },
     {
       "filename": "DSC09502.JPG",
