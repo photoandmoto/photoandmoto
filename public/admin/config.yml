@@ -4,7 +4,7 @@
 backend:
   name: github
   repo: photoandmoto/photoandmoto
-  branch: main
+  branch: dev
   base_url: https://www.photoandmoto.fi
   auth_endpoint: oauth/auth
 

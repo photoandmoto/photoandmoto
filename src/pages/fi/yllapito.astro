@@ -50,6 +50,7 @@ const lang = 'fi';
         <button type="button" class="admin-tab" data-tab="laheta">Lähetä kuva</button>
         <button type="button" class="admin-tab" data-tab="hallitse">Hallitse galleriaa</button>
         <a href="/admin/" target="_blank" rel="noopener" class="admin-tab admin-tab--external" data-decap-link>Hallitse artikkeleita ↗</a>
+        <button type="button" class="admin-tab" data-tab="julkaise">Julkaise</button>
         <span class="admin-tabs__sep" aria-hidden="true"></span>
         <button type="button" class="admin-tab admin-tab--iam" data-tab="kayttajat">Käyttäjät</button>
       </div>
@@ -104,6 +105,43 @@ const lang = 'fi';
             <span id="hallitseSearchCount" class="hallitse-search-count"></span>
           </div>
           <div id="hallitseGrid" class="hallitse-grid"></div>
+        </div>
+      </div>
+
+      <!-- Julkaise tab (admin only — hallitse_artikkeleita permission) -->
+      <div id="tabJulkaise" class="tab-content" style="display:none;">
+        <div class="upload-section julkaise-section">
+          <h3 class="upload-title">Julkaise</h3>
+          <p class="upload-hint">Sveltia CMS tallentaa artikkelit automaattisesti. Vie ne ensin esikatseluun, tarkista tulos, ja julkaise sitten tuotantoon.</p>
+
+          <div class="julkaise-step">
+            <div class="julkaise-step__num">1</div>
+            <div class="julkaise-step__body">
+              <h4 class="julkaise-step__title">Julkaise esikatseluun</h4>
+              <p class="julkaise-step__desc">Käynnistää esikatselusivuston rakentamisen osoitteessa photoandmoto-staging.pages.dev.</p>
+              <button type="button" id="deployStagingBtn" class="btn">Julkaise esikatseluun</button>
+            </div>
+          </div>
+
+          <div class="julkaise-step">
+            <div class="julkaise-step__num">2</div>
+            <div class="julkaise-step__body">
+              <h4 class="julkaise-step__title">Esikatsele</h4>
+              <p class="julkaise-step__desc">Avaa esikatselusivuston uuteen välilehteen. <strong>Odota 2–3 minuuttia ennen esikatselua</strong>, jotta sivusto ehtii rakentua.</p>
+              <a href="https://photoandmoto-staging.pages.dev" target="_blank" rel="noopener" class="btn btn--ghost">Esikatsele ↗</a>
+            </div>
+          </div>
+
+          <div class="julkaise-step">
+            <div class="julkaise-step__num">3</div>
+            <div class="julkaise-step__body">
+              <h4 class="julkaise-step__title">Julkaise tuotantoon</h4>
+              <p class="julkaise-step__desc">Julkaisee sisällön osoitteessa www.photoandmoto.fi. Tee tämä vasta kun olet tarkistanut esikatselun.</p>
+              <button type="button" id="deployProdBtn" class="btn">Julkaise tuotantoon</button>
+            </div>
+          </div>
+
+          <div id="deployMsg" class="upload-msg julkaise-msg" aria-live="polite"></div>
         </div>
       </div>
 
@@ -970,6 +1008,7 @@ document.getElementById('adminLogout').addEventListener('click',async()=>{
   document.getElementById('tabTarkista').style.display='none';
   document.getElementById('tabLaheta').style.display='none';
   document.getElementById('tabHallitse').style.display='none';
+  document.getElementById('tabJulkaise').style.display='none';
   document.getElementById('tabKayttajat').style.display='none';
   document.getElementById('mpSubAdmin').style.display='none';
   // Reset to Tarkista tab so re-login lands on the right place
@@ -992,10 +1031,52 @@ document.querySelectorAll('.admin-tab').forEach(t=>t.addEventListener('click',()
   document.getElementById('tabTarkista').style.display=tab==='tarkista'?'':'none';
   document.getElementById('tabLaheta').style.display=tab==='laheta'?'':'none';
   document.getElementById('tabHallitse').style.display=tab==='hallitse'?'':'none';
+  document.getElementById('tabJulkaise').style.display=tab==='julkaise'?'':'none';
   document.getElementById('tabKayttajat').style.display=tab==='kayttajat'?'':'none';
   if(tab==='hallitse' && adminPw){loadHallitseGalleries();}
   if(tab==='kayttajat' && adminPw){ktLoadUsers();}
 }));
+
+// =====================================================================
+// JULKAISE TAB — trigger staging / production deploy hooks via /api/deploy
+// =====================================================================
+// /api/deploy is gated server-side by the pm_session cookie (the
+// hallitse_artikkeleita permission), sent automatically on this same-origin
+// fetch — no secret is held in the browser.
+async function triggerDeploy(target, btn){
+  if(!btn) return;
+  const msg=document.getElementById('deployMsg');
+  const orig=btn.textContent;
+  btn.disabled=true;btn.textContent='Käynnistetään…';
+  if(msg){msg.innerHTML='<span class="u-load">Käynnistetään…</span>';}
+  try{
+    const r=await fetch('/api/deploy',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({target}),
+    });
+    const data=await r.json().catch(()=>({}));
+    if(r.ok && data.ok===true){
+      const okText=target==='production'
+        ?'✓ Julkaisu käynnistetty — valmis noin 2-3 minuutissa'
+        :'✓ Esikatselu käynnistetty — valmis noin 2-3 minuutissa';
+      if(msg){msg.innerHTML=`<span class="u-ok">${okText}</span>`;}
+    }else{
+      if(msg){msg.innerHTML='<span class="u-err">✗ Virhe — yritä uudelleen</span>';}
+    }
+  }catch(e){
+    if(msg){msg.innerHTML='<span class="u-err">✗ Virhe — yritä uudelleen</span>';}
+  }finally{
+    btn.disabled=false;btn.textContent=orig;
+  }
+}
+const _deployStagingBtn=document.getElementById('deployStagingBtn');
+if(_deployStagingBtn)_deployStagingBtn.addEventListener('click',()=>triggerDeploy('staging',_deployStagingBtn));
+const _deployProdBtn=document.getElementById('deployProdBtn');
+if(_deployProdBtn)_deployProdBtn.addEventListener('click',()=>{
+  if(!confirm('Oletko varma? Artikkeli julkaistaan osoitteessa www.photoandmoto.fi'))return;
+  triggerDeploy('production',_deployProdBtn);
+});
 
 // Ohje is now a simple link — no collapse toggle needed
 
@@ -1153,6 +1234,7 @@ function applyPermissions(user) {
     if (which === 'tarkista')        visible = !!perms.tarkista;
     else if (which === 'laheta')     visible = !!perms.lahetakuva;
     else if (which === 'hallitse')   visible = !!perms.hallitse_galleriaa;
+    else if (which === 'julkaise')   visible = !!perms.hallitse_artikkeleita;
     else if (which === 'kayttajat')  visible = !!perms.admin_iam;
     else if (t.hasAttribute('data-decap-link')) visible = !!perms.hallitse_artikkeleita;
     else visible = false;
@@ -1166,6 +1248,7 @@ function showFirstAvailableTab(user) {
     { tab: 'tarkista',  content: 'tabTarkista',  has: !!perms.tarkista },
     { tab: 'laheta',    content: 'tabLaheta',    has: !!perms.lahetakuva },
     { tab: 'hallitse',  content: 'tabHallitse',  has: !!perms.hallitse_galleriaa },
+    { tab: 'julkaise',  content: 'tabJulkaise',  has: !!perms.hallitse_artikkeleita },
     { tab: 'kayttajat', content: 'tabKayttajat', has: !!perms.admin_iam },
   ];
   const first = candidates.find(c => c.has);
@@ -2220,6 +2303,16 @@ if (document.getElementById('ktAddBtn')) {
 .uf--full{grid-column:1/-1}
 .upload-msg{flex:0 0 auto}
 .u-ok{color:#1a8a5c;font-weight:700;font-size:.88rem}.u-err{color:#dc3545;font-weight:700;font-size:.88rem}.u-load{color:#ff9900;font-weight:700;font-size:.88rem}
+
+/* ===== JULKAISE TAB ===== */
+.julkaise-section{max-width:640px}
+.julkaise-step{display:flex;gap:14px;align-items:flex-start;padding:18px 0;border-top:1px solid #eee}
+.julkaise-step:first-of-type{border-top:none;padding-top:4px}
+.julkaise-step__num{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:#ff9900;color:#000;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif}
+.julkaise-step__body{flex:1 1 auto}
+.julkaise-step__title{font-family:var(--font-headline);font-size:1rem;font-weight:800;margin:2px 0 4px;color:#111}
+.julkaise-step__desc{font-size:.85rem;color:#777;margin:0 0 12px;line-height:1.5}
+.julkaise-msg{display:block;margin-top:20px;min-height:1.3em}
 
 /* ===== FILTERS ===== */
 .filters{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
