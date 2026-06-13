@@ -9,7 +9,7 @@ featured_image: /images/hiljaisuus-pauhun-jalkeen-1.jpg
 card_image: /images/hiljaisuus-pauhun-jalkeen-hero.jpg
 show_hero: true
 image_caption: ''
-draft: true
+draft: false
 seo_description: ''
 sources: ''
 ---
