@@ -241,21 +241,6 @@ const articleJsonLd = {
     line-height: 1.75;
   }
   
-  /* Drop cap on the article's first body paragraph only. Never on
-     blockquotes — drop cap is an article-opener flourish, not a
-     quote-styling thing, and the leading-`“` edge case (quote glyph
-     gets included in ::first-letter) makes it look broken on quotes. */
-  .article-body :global(> p:first-of-type::first-letter) {
-    float: left;
-    font-family: var(--font-headline);
-    font-size: 4.5rem;
-    line-height: 0.8;
-    padding-right: 8px;
-    padding-top: 6px;
-    color: var(--text-primary);
-    font-weight: bold;
-  }
-  
   .article-body :global(p) {
     margin-bottom: var(--space-3);
   }
