@@ -1038,37 +1038,73 @@ document.querySelectorAll('.admin-tab').forEach(t=>t.addEventListener('click',()
 }));
 
 // =====================================================================
-// JULKAISE TAB — trigger staging / production deploy hooks via /api/deploy
+// JULKAISE TAB — staging / production deploy with spinner + countdown
 // =====================================================================
-// /api/deploy is gated server-side by the pm_session cookie (the
-// hallitse_artikkeleita permission), sent automatically on this same-origin
-// fetch — no secret is held in the browser.
+// /api/deploy is gated by the pm_session cookie (hallitse_artikkeleita).
+// Each button runs its own 3-minute countdown after a successful trigger;
+// re-clicking resets it. If the session looks stale on the first POST (the
+// cookie occasionally isn't attached right after the Sveltia round-trip), we
+// re-validate via /api/auth/me and retry once — so it works without a manual
+// page refresh.
+const JK_COUNTDOWN_SECONDS = 180;
+const jkTimers = { staging: null, production: null };
+
+function jkFmt(s){ const m=Math.floor(s/60); return m+':'+String(s%60).padStart(2,'0'); }
+
+function jkStopCountdown(target, btn){
+  if(jkTimers[target]){ clearInterval(jkTimers[target]); jkTimers[target]=null; }
+  if(btn){ btn.disabled=false; if(btn.dataset.jkLabel) btn.textContent=btn.dataset.jkLabel; }
+}
+
+function jkStartCountdown(target, btn){
+  if(!btn.dataset.jkLabel) btn.dataset.jkLabel=btn.textContent;
+  if(jkTimers[target]){ clearInterval(jkTimers[target]); jkTimers[target]=null; } // reset on re-click
+  let remaining=JK_COUNTDOWN_SECONDS;
+  btn.disabled=true;
+  const render=()=>{ btn.innerHTML='<span class="jk-spinner" aria-hidden="true"></span><span class="jk-count">'+jkFmt(remaining)+'</span>'; };
+  render();
+  jkTimers[target]=setInterval(()=>{
+    remaining-=1;
+    if(remaining<=0){
+      clearInterval(jkTimers[target]); jkTimers[target]=null;
+      btn.disabled=false; btn.textContent=btn.dataset.jkLabel;
+      const msg=document.getElementById('deployMsg');
+      if(msg) msg.innerHTML='<span class="u-ok">✓ Valmis — tarkista tulos. Jos sivu ei ole vielä päivittynyt, odota hetki ja päivitä selain.</span>';
+    } else {
+      render();
+    }
+  },1000);
+}
+
+// POST /api/deploy with one self-healing retry if the session looks stale.
+async function jkDeployRequest(target){
+  const opts={ method:'POST', credentials:'same-origin', headers:{'Content-Type':'application/json'}, body:JSON.stringify({target}) };
+  let r=await fetch('/api/deploy', opts);
+  if(r.status===401 || r.status===403){
+    try{ const me=await fetch('/api/auth/me',{credentials:'same-origin'}); if(me.ok){ r=await fetch('/api/deploy', opts); } }catch{}
+  }
+  return r;
+}
+
 async function triggerDeploy(target, btn){
   if(!btn) return;
   const msg=document.getElementById('deployMsg');
-  const orig=btn.textContent;
-  btn.disabled=true;btn.textContent='Käynnistetään…';
-  if(msg){msg.innerHTML='<span class="u-load">Käynnistetään…</span>';}
+  jkStartCountdown(target, btn);          // spinner + 3:00, resets if already running
+  if(msg) msg.innerHTML='<span class="u-load">Rakennetaan… älä sulje sivua.</span>';
+  let ok=false, authFail=false;
   try{
-    const r=await fetch('/api/deploy',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({target}),
-    });
+    const r=await jkDeployRequest(target);
     const data=await r.json().catch(()=>({}));
-    if(r.ok && data.ok===true){
-      const okText=target==='production'
-        ?'✓ Julkaisu käynnistetty — valmis noin 2-3 minuutissa'
-        :'✓ Esikatselu käynnistetty — valmis noin 2-3 minuutissa';
-      if(msg){msg.innerHTML=`<span class="u-ok">${okText}</span>`;}
-    }else{
-      if(msg){msg.innerHTML='<span class="u-err">✗ Virhe — yritä uudelleen</span>';}
-    }
-  }catch(e){
-    if(msg){msg.innerHTML='<span class="u-err">✗ Virhe — yritä uudelleen</span>';}
-  }finally{
-    btn.disabled=false;btn.textContent=orig;
+    ok = r.ok && data.ok===true;
+    authFail = (r.status===401 || r.status===403);
+  }catch(e){ ok=false; }
+  if(!ok){
+    jkStopCountdown(target, btn);
+    if(msg) msg.innerHTML = authFail
+      ? '<span class="u-err">✗ Istunto vanhentunut — kirjaudu uudelleen ja yritä uudelleen.</span>'
+      : '<span class="u-err">✗ Virhe — yritä uudelleen</span>';
   }
+  // On success the countdown keeps running and shows the valmis message at 0:00.
 }
 const _deployStagingBtn=document.getElementById('deployStagingBtn');
 if(_deployStagingBtn)_deployStagingBtn.addEventListener('click',()=>triggerDeploy('staging',_deployStagingBtn));
@@ -2313,6 +2349,9 @@ if (document.getElementById('ktAddBtn')) {
 .julkaise-step__title{font-family:var(--font-headline);font-size:1rem;font-weight:800;margin:2px 0 4px;color:#111}
 .julkaise-step__desc{font-size:.85rem;color:#777;margin:0 0 12px;line-height:1.5}
 .julkaise-msg{display:block;margin-top:20px;min-height:1.3em}
+.jk-spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(0,0,0,.3);border-top-color:#000;border-radius:50%;animation:jk-spin .7s linear infinite;vertical-align:-2px;margin-right:7px}
+.jk-count{font-variant-numeric:tabular-nums}
+@keyframes jk-spin{to{transform:rotate(360deg)}}
 
 /* ===== FILTERS ===== */
 .filters{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}

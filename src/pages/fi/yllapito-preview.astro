@@ -264,20 +264,6 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     word-break: break-word;
   }
 
-  /* Drop cap on the article's first body paragraph only. Never on
-     blockquotes — drop cap is an article-opener flourish, not a
-     quote-styling thing. */
-  #prevArticle .article-body > p:first-of-type::first-letter {
-    float: left;
-    font-family: var(--font-headline);
-    font-size: 4.5rem;
-    line-height: 0.8;
-    padding-right: 8px;
-    padding-top: 6px;
-    color: var(--text-primary);
-    font-weight: bold;
-  }
-
   /* Lists need breathing room after the last item (mirrors ArticleLayout) */
   #prevArticle .article-body ul,
   #prevArticle .article-body ol {
