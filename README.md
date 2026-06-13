@@ -55,9 +55,10 @@ Articles (the Aikakone content) are edited in **Sveltia CMS**, a git-based CMS
 served from `public/admin/`.
 
 - **URL:** `https://www.photoandmoto.fi/admin/` — login with GitHub
-- Commits go directly to the `main` branch — editor saves auto-deploy to
-  production in ~2 minutes. Sveltia's built-in preview pane is the review step;
-  there is no manual `dev → main` promote for content edits.
+- Commits go to the `dev` branch — staging rebuilds automatically. Editors
+  preview on staging, then promote to production (`dev → main`) from the
+  **Julkaise** tab in `/fi/yllapito`. Sveltia's built-in preview pane is a
+  quick in-editor review step.
 - Bilingual: one entry, FI + EN tabs, written to
   `src/content/articles/{fi,en}/<slug>.md`
 - **Quick Add templates** for MXGP and historical articles, with pre-filled
