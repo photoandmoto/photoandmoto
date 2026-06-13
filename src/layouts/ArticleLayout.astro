@@ -369,14 +369,38 @@ const articleJsonLd = {
      tables with <thead> now use the dedicated thead/th rules above. */
 
   .article-body :global(img) {
-    width: 60%;
-    max-width: 500px;
+    max-width: 400px;
+    width: 100%;
     height: auto;
     border-radius: var(--radius-md);
     margin: var(--space-4) auto;
     display: block;
   }
-  
+
+  /* Body images with a markdown title -> <figure> + <figcaption> (built by the
+     rehypeFigureFromTitle plugin in astro.config.mjs). Slotted content, so the
+     selectors must be :global. */
+  .article-body :global(.article-figure) {
+    max-width: 400px;
+    margin: var(--space-4) auto;
+    display: block;
+  }
+  .article-body :global(.article-figure img) {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-md);
+    display: block;
+    margin: 0;
+  }
+  .article-body :global(.article-figure figcaption) {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    text-align: center;
+    padding-top: 6px;
+    line-height: 1.4;
+  }
+
   /* Sources block (Lähteet) — appears at the end of the body, before the footer */
   .article-sources {
     max-width: 760px;
