@@ -10,13 +10,13 @@ card_image: /images/hiljaisuus-pauhun-jalkeen-hero.jpg
 show_hero: true
 image_caption: ''
 draft: false
-seo_description: ''
+seo_description: The MXGP Trentino round delivered one of the most dramatic weekends of the 2026 season
 sources: ''
 ---
 
 ## Kilpailu oli kova mutta reilu
 
-MXGP:n Trentinon osakilpailu tarjosi yhden kauden 2026 dramaattisimmista viikonlopuista. Lauantain märät olosuhteet väistyivät sunnuntaina täydellisen kilpailusään tieltä, ja kuljettajat ottivat siitä kaiken irti![](/images/hero-bg.jpg "KIlpailu oli veristä")
+MXGP:n Trentinon osakilpailu tarjosi yhden kauden 2026 dramaattisimmistat viikonlopuista. Lauantain märät olosuhteet väistyivät sunnuntaina täydellisen kilpailusään tieltä, ja kuljettajat ottivat siitä kaiken irti![](/images/hero-bg.jpg "KIlpailu oli veristä")
 
 .
 
@@ -28,6 +28,6 @@ Pietramuratan rata vastasi mainettaan yhtenä kalenterin teknisimmistä radoista
 
 ## Tilanne kuuden osakilpailun jälkeen
 
-![](/images/antti-pyrhonen-1993.jpg "Kisan kovin kuski oli kova ")
+![](/images/antti-pyrhonen-1993.jpg "Kisan kovin kuski oli kova")
 
 Jeffrey Herlings piti pistejohdon hallussaan keskivaiheen kaatumisesta huolimatta ja rajoitti vahingot kolmanteen sijaan. Hänen lähimmät kilpailijansa eivät onnistuneet hyödyntämään tilannetta.
