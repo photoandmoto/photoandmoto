@@ -131,7 +131,27 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     inlineImageMap = data.inline_images || {};
     const md = replaceImagePlaceholders(data.body || '');
     const html = window.marked ? window.marked.parse(md) : ('<pre>' + escapeHtml(md) + '</pre>');
-    document.getElementById('prevBody').innerHTML = html;
+    const prevBody = document.getElementById('prevBody');
+    prevBody.innerHTML = html;
+    // Mirror the live render (rehypeFigureFromTitle in astro.config.mjs): wrap
+    // images that have a title into <figure class="article-figure"> + caption.
+    prevBody.querySelectorAll('img[title]').forEach((img) => {
+      const cap = img.getAttribute('title');
+      if (!cap) return;
+      img.removeAttribute('title');
+      const fig = document.createElement('figure');
+      fig.className = 'article-figure';
+      const figcap = document.createElement('figcaption');
+      figcap.textContent = cap;
+      const p = img.parentElement;
+      if (p && p.tagName === 'P' && p.children.length === 1 && p.textContent.trim() === '') {
+        p.replaceWith(fig);
+      } else {
+        img.replaceWith(fig);
+      }
+      fig.appendChild(img);
+      fig.appendChild(figcap);
+    });
   }
 
   // Listen for the parent form's updates
@@ -376,12 +396,34 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
      <thead>+<tbody> table orange. Removed in both files. */
 
   #prevArticle .article-body img {
-    width: 60%;
-    max-width: 500px;
+    max-width: 400px;
+    width: 100%;
     height: auto;
     border-radius: var(--radius-md, 8px);
     margin: var(--space-4, 2rem) auto;
     display: block;
+  }
+
+  #prevArticle .article-body .article-figure {
+    max-width: 100%;
+    margin: var(--space-4, 2rem) auto var(--space-2, 1rem);
+    display: block;
+  }
+  #prevArticle .article-body .article-figure img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-md, 8px);
+    display: block;
+    margin: 0;
+  }
+  #prevArticle .article-body .article-figure figcaption {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    text-align: center;
+    padding-top: 6px;
+    line-height: 1.4;
   }
 
   /* Footer */

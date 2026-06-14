@@ -381,12 +381,13 @@ const articleJsonLd = {
      rehypeFigureFromTitle plugin in astro.config.mjs). Slotted content, so the
      selectors must be :global. */
   .article-body :global(.article-figure) {
-    max-width: 560px;
+    max-width: 100%;
     margin: var(--space-4) auto var(--space-2);
     display: block;
   }
   .article-body :global(.article-figure img) {
     width: 100%;
+    max-width: 100%;
     height: auto;
     border-radius: var(--radius-md);
     display: block;

@@ -83,7 +83,7 @@ collections:
       - { name: show_hero, label: 'Näytä pääkuva otsikon yläpuolella', widget: boolean, default: true, required: false, i18n: duplicate }
       - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
       - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
-      - { name: seo_description, label: 'SEO-kuvaus (50–160 merkkiä)', widget: string, required: true, pattern: ['^.{50,160}$', 'Kirjoita 50–160 merkkiä'], hint: '50–160 merkkiä. Tiivistä artikkelin ydin — tämä näkyy Google-hakutuloksissa.', i18n: true }
+      - { name: seo_description, label: 'SEO-kuvaus (50–160 merkkiä)', widget: string, required: [fi, en], pattern: ['^.{50,160}$', 'Kirjoita 50–160 merkkiä'], hint: '50–160 merkkiä. Tiivistä artikkelin ydin — tämä näkyy Google-hakutuloksissa.', i18n: true }
       - { name: body, label: Sisältö, widget: markdown, i18n: true }
       - { name: sources, label: 'Lähteet (valinnainen)', widget: text, required: false, i18n: true, hint: 'Lähteet, joista materiaalia on lainattu. Jokainen lähde omalla rivillä. URL-osoitteet muuttuvat automaattisesti linkeiksi.' }
 
@@ -119,7 +119,7 @@ collections:
       - { name: show_hero, label: 'Näytä pääkuva otsikon yläpuolella', widget: boolean, default: true, required: false, i18n: duplicate }
       - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
       - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
-      - { name: seo_description, label: 'SEO-kuvaus (50–160 merkkiä)', widget: string, required: true, pattern: ['^.{50,160}$', 'Kirjoita 50–160 merkkiä'], hint: '50–160 merkkiä. Tiivistä artikkelin ydin — tämä näkyy Google-hakutuloksissa.', i18n: true }
+      - { name: seo_description, label: 'SEO-kuvaus (50–160 merkkiä)', widget: string, required: [fi, en], pattern: ['^.{50,160}$', 'Kirjoita 50–160 merkkiä'], hint: '50–160 merkkiä. Tiivistä artikkelin ydin — tämä näkyy Google-hakutuloksissa.', i18n: true }
       - name: body
         label: Sisältö
         widget: markdown
@@ -168,7 +168,7 @@ collections:
       - { name: show_hero, label: 'Näytä pääkuva otsikon yläpuolella', widget: boolean, default: true, required: false, i18n: duplicate }
       - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
       - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
-      - { name: seo_description, label: 'SEO-kuvaus (50–160 merkkiä)', widget: string, required: true, pattern: ['^.{50,160}$', 'Kirjoita 50–160 merkkiä'], hint: '50–160 merkkiä. Tiivistä artikkelin ydin — tämä näkyy Google-hakutuloksissa.', i18n: true }
+      - { name: seo_description, label: 'SEO-kuvaus (50–160 merkkiä)', widget: string, required: [fi, en], pattern: ['^.{50,160}$', 'Kirjoita 50–160 merkkiä'], hint: '50–160 merkkiä. Tiivistä artikkelin ydin — tämä näkyy Google-hakutuloksissa.', i18n: true }
       - name: body
         label: Sisältö
         widget: markdown
