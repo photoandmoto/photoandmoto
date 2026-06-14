@@ -1,0 +1,100 @@
+name: Auto-promote article deletions
+
+# When an article file is DELETED on `dev` — e.g. an editor deletes an article
+# in Sveltia, which commits the removal to `dev` — promote `dev → main` so the
+# deletion reaches production automatically. No manual "Julkaise tuotantoon"
+# needed for deletions.
+#
+# Only DELETIONS trigger this. Article creates/edits are still promoted manually
+# via the Julkaise tab. Like the Julkaise button, the promotion is a full
+# `dev → main` merge (so any other pending dev changes go live too) using the
+# "Photoandmoto Publisher" GitHub App — the same mechanism as
+# functions/api/deploy.js (the merges API), which is allowed to push to main.
+#
+# Required repo Actions secrets (NOT the same as the Cloudflare env vars; the
+# `GITHUB_` prefix is reserved, so these use the PUBLISHER_ prefix):
+#   PUBLISHER_APP_ID           — the Photoandmoto Publisher GitHub App id
+#   PUBLISHER_APP_PRIVATE_KEY  — that App's PEM private key
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'src/content/articles/**'
+
+# Serialize so two quick deletions don't race two merges into main.
+concurrency:
+  group: auto-promote-deletions
+  cancel-in-progress: false
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+          # Full history so we can diff the pushed range for deletions.
+          fetch-depth: 0
+
+      - name: Detect article deletions in this push
+        id: detect
+        run: |
+          # Raw UTF-8 filenames (Finnish slugs) instead of quoted/escaped paths.
+          git config --global core.quotePath false
+
+          BEFORE="${{ github.event.before }}"
+          AFTER="${{ github.event.after }}"
+
+          # First push to the branch: BEFORE is all zeros — fall back to parent.
+          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            BEFORE=$(git rev-parse "$AFTER^" 2>/dev/null || echo "")
+          fi
+
+          if [ -z "$BEFORE" ]; then
+            echo "No previous commit to diff against; skipping."
+            echo "deleted=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          DELETED=$(git diff --name-only --diff-filter=D "$BEFORE" "$AFTER" -- src/content/articles/ || true)
+
+          echo "-- Deleted article files in this push --"
+          echo "$DELETED"
+          echo "-- end --"
+
+          if [ -n "$DELETED" ]; then
+            echo "deleted=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No article deletions in this push — nothing to promote."
+            echo "deleted=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate GitHub App token
+        if: steps.detect.outputs.deleted == 'true'
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.PUBLISHER_APP_ID }}
+          private-key: ${{ secrets.PUBLISHER_APP_PRIVATE_KEY }}
+
+      - name: Promote dev -> main
+        if: steps.detect.outputs.deleted == 'true'
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          echo "Article deletion detected on dev — promoting dev -> main."
+          # GitHub Merge API: 201 = merged, 204 = already up to date (both ok);
+          # 409 = merge conflict -> fail so it surfaces for manual handling.
+          if gh api --method POST "repos/${{ github.repository }}/merges" \
+              -f base="main" -f head="dev" \
+              -f commit_message="Auto-promote: article deletion (dev -> main)"; then
+            echo "Promotion accepted — production will rebuild in ~2-3 min."
+          else
+            echo "::error::dev -> main merge failed (likely a conflict). Promote manually via Julkaise tuotantoon and resolve."
+            exit 1
+          fi
