@@ -18,8 +18,6 @@ sources: ''
 
 MXGP:n Trentinon osakilpailu tarjosi yhden kauden 2026 dramaattisimmistat viikonlopuista. Lauantain märät olosuhteet väistyivät sunnuntaina täydellisen kilpailusään tieltä, ja kuljettajat ottivat siitä kaiken irti![](/images/hero-bg.jpg "KIlpailu oli veristä")
 
-.
-
 > "Kukaan ei odottanut tätä tulosta – en edes minä", voittaja totesi palkintojenjakoseremonian jälkeen.
 
 ## Rataolosuhteet olivat hyvät
