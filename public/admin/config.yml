@@ -41,6 +41,11 @@ i18n:
   structure: multiple_folders
   locales: [fi, en]
   default_locale: fi
+  # New entries start in Finnish only. The editor enables English per entry
+  # from the ⋯ menu (top-right of the editor) when a translation is wanted.
+  # The default locale (fi) is always enabled and can't be disabled, so an
+  # entry can be FI-only or FI+EN (EN-only is not possible).
+  initial_locales: default
 
 collections:
   - name: articles
@@ -64,7 +69,7 @@ collections:
         pattern: '\d{4}'
     i18n: true
     fields:
-      - { name: title, label: Otsikko, widget: string, i18n: true }
+      - { name: title, label: Otsikko, widget: string, required: [fi], i18n: true }
       - { name: subtitle, label: Alaotsikko, widget: string, required: false, i18n: true }
       - { name: author, label: Kirjoittaja, widget: string, default: 'Photo & Moto', i18n: duplicate }
       - { name: date, label: Päivämäärä, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true, i18n: duplicate }
@@ -83,8 +88,8 @@ collections:
       - { name: show_hero, label: 'Näytä pääkuva otsikon yläpuolella', widget: boolean, default: true, required: false, i18n: duplicate }
       - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
       - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
-      - { name: seo_description, label: 'SEO-kuvaus (50–160 merkkiä)', widget: string, required: [fi, en], pattern: ['^.{50,160}$', 'Kirjoita 50–160 merkkiä'], hint: '50–160 merkkiä. Tiivistä artikkelin ydin — tämä näkyy Google-hakutuloksissa.', i18n: true }
-      - { name: body, label: Sisältö, widget: markdown, i18n: true }
+      - { name: seo_description, label: 'SEO-kuvaus (50–160 merkkiä)', widget: string, required: [fi], pattern: ['^.{50,160}$', 'Kirjoita 50–160 merkkiä'], hint: '50–160 merkkiä. Tiivistä artikkelin ydin — tämä näkyy Google-hakutuloksissa.', i18n: true }
+      - { name: body, label: Sisältö, widget: markdown, required: [fi], i18n: true }
       - { name: sources, label: 'Lähteet (valinnainen)', widget: text, required: false, i18n: true, hint: 'Lähteet, joista materiaalia on lainattu. Jokainen lähde omalla rivillä. URL-osoitteet muuttuvat automaattisesti linkeiksi.' }
 
   # ============================================================
@@ -108,7 +113,7 @@ collections:
     summary: '{{title}} — {{date | date("YYYY-MM-DD")}}'
     i18n: true
     fields:
-      - { name: title, label: Otsikko, widget: string, i18n: true }
+      - { name: title, label: Otsikko, widget: string, required: [fi], i18n: true }
       - { name: subtitle, label: Alaotsikko, widget: string, required: false, i18n: true }
       - { name: author, label: Kirjoittaja, widget: string, default: 'Photo & Moto', i18n: duplicate }
       - { name: date, label: Päivämäärä, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true, i18n: duplicate }
@@ -119,10 +124,11 @@ collections:
       - { name: show_hero, label: 'Näytä pääkuva otsikon yläpuolella', widget: boolean, default: true, required: false, i18n: duplicate }
       - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
       - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
-      - { name: seo_description, label: 'SEO-kuvaus (50–160 merkkiä)', widget: string, required: [fi, en], pattern: ['^.{50,160}$', 'Kirjoita 50–160 merkkiä'], hint: '50–160 merkkiä. Tiivistä artikkelin ydin — tämä näkyy Google-hakutuloksissa.', i18n: true }
+      - { name: seo_description, label: 'SEO-kuvaus (50–160 merkkiä)', widget: string, required: [fi], pattern: ['^.{50,160}$', 'Kirjoita 50–160 merkkiä'], hint: '50–160 merkkiä. Tiivistä artikkelin ydin — tämä näkyy Google-hakutuloksissa.', i18n: true }
       - name: body
         label: Sisältö
         widget: markdown
+        required: [fi]
         i18n: true
         default: |
           [Avauskappale: mistä kilpailusta on kyse, missä, milloin, ketkä avainnimet]
@@ -157,7 +163,7 @@ collections:
     summary: '{{title}} — {{date | date("YYYY-MM-DD")}}'
     i18n: true
     fields:
-      - { name: title, label: Otsikko, widget: string, i18n: true }
+      - { name: title, label: Otsikko, widget: string, required: [fi], i18n: true }
       - { name: subtitle, label: Alaotsikko, widget: string, required: false, i18n: true }
       - { name: author, label: Kirjoittaja, widget: string, default: 'Photo & Moto', i18n: duplicate }
       - { name: date, label: Päivämäärä, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true, i18n: duplicate }
@@ -168,10 +174,11 @@ collections:
       - { name: show_hero, label: 'Näytä pääkuva otsikon yläpuolella', widget: boolean, default: true, required: false, i18n: duplicate }
       - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
       - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
-      - { name: seo_description, label: 'SEO-kuvaus (50–160 merkkiä)', widget: string, required: [fi, en], pattern: ['^.{50,160}$', 'Kirjoita 50–160 merkkiä'], hint: '50–160 merkkiä. Tiivistä artikkelin ydin — tämä näkyy Google-hakutuloksissa.', i18n: true }
+      - { name: seo_description, label: 'SEO-kuvaus (50–160 merkkiä)', widget: string, required: [fi], pattern: ['^.{50,160}$', 'Kirjoita 50–160 merkkiä'], hint: '50–160 merkkiä. Tiivistä artikkelin ydin — tämä näkyy Google-hakutuloksissa.', i18n: true }
       - name: body
         label: Sisältö
         widget: markdown
+        required: [fi]
         i18n: true
         default: |
           [Avauskappale: mistä ajanjaksosta on kyse ja miksi tarina on kertomisen arvoinen]
