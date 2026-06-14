@@ -1,5 +1,5 @@
 ---
-title: 'Test: MXGP Trentino 2026 — A Weekend to Remember'
+title: 'Test: MXGP Trentino 2026 — A weekend that will be remembered well'
 subtitle: Sand, speed and a surprise winner in the Italian mountains. The bikes were faster than the bucks
 author: Photo & Moto
 date: 2026-06-13

@@ -1,5 +1,5 @@
 ---
-title: 'Testi: MXGP Trentino 2026 — Viikonloppu, joka jää mieleen'
+title: 'Testi: MXGP Trentino 2026 — Viikonloppu, joka jää mieleen hyvin'
 subtitle: Hiekkaa, nopeutta ja yllätysvoittaja Italian vuoristossa. Pyörät olivat nopeampia kuin pukit
 author: Photo & Moto
 date: 2026-06-13
