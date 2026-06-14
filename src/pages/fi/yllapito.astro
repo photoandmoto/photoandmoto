@@ -113,13 +113,13 @@ const lang = 'fi';
         <div class="upload-section julkaise-section">
           <h3 class="upload-title">Julkaise</h3>
           <p class="upload-hint">Sveltia CMS tallentaa artikkelit automaattisesti. Vie ne ensin esikatseluun, tarkista tulos, ja julkaise sitten tuotantoon.</p>
-          <p class="julkaise-note">⏱ Odota noin minuutti Sveltia-tallennuksen jälkeen ennen kuin käynnistät esikatselun tai julkaisun.</p>
 
           <div class="julkaise-step">
             <div class="julkaise-step__num">1</div>
             <div class="julkaise-step__body">
               <h4 class="julkaise-step__title">Julkaise esikatseluun</h4>
               <p class="julkaise-step__desc">Käynnistää esikatselusivuston rakentamisen osoitteessa photoandmoto-staging.pages.dev.</p>
+              <p class="julkaise-warn">⚠️ Odota 2 minuuttia Sveltia-tallennuksen jälkeen ennen kuin painat tätä painiketta.</p>
               <button type="button" id="deployStagingBtn" class="btn">Julkaise esikatseluun</button>
             </div>
           </div>
@@ -138,6 +138,7 @@ const lang = 'fi';
             <div class="julkaise-step__body">
               <h4 class="julkaise-step__title">Julkaise tuotantoon</h4>
               <p class="julkaise-step__desc">Julkaisee sisällön osoitteessa www.photoandmoto.fi. Tee tämä vasta kun olet tarkistanut esikatselun.</p>
+              <p class="julkaise-warn">⚠️ Odota 2 minuuttia Sveltia-tallennuksen jälkeen ennen kuin painat tätä painiketta.</p>
               <button type="button" id="deployProdBtn" class="btn">Julkaise tuotantoon</button>
             </div>
           </div>
@@ -2343,7 +2344,7 @@ if (document.getElementById('ktAddBtn')) {
 
 /* ===== JULKAISE TAB ===== */
 .julkaise-section{max-width:640px}
-.julkaise-note{background:#f3f4f6;border:1px solid #e3e5e9;border-radius:8px;padding:9px 13px;font-size:.82rem;color:#555;line-height:1.45;margin:0 0 18px}
+.julkaise-warn{background:#fff8e6;border:1px solid #ffdf85;border-left:3px solid #ff9900;border-radius:8px;padding:8px 12px;font-size:.82rem;color:#5a4010;line-height:1.45;margin:0 0 10px}
 .julkaise-step{display:flex;gap:14px;align-items:flex-start;padding:18px 0;border-top:1px solid #eee}
 .julkaise-step:first-of-type{border-top:none;padding-top:4px}
 .julkaise-step__num{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:#ff9900;color:#000;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif}
