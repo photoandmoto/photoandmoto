@@ -16,18 +16,16 @@ sources: ''
 
 ## The competition was tough but fair
 
-The MXGP Trentino round offered one of the most dramatic weekends of the 2026 season. Saturday's wet conditions gave way to perfect racing weather on Sunday, and the riders made the most of it![](/images/hero-bg.jpg "The competition was bloody")
-
-.
+The MXGP Trentino round provided one of the most dramatic weekends of the 2026 season. Saturday's wet conditions gave way to perfect racing weather on Sunday, and the riders made the most of it![](/images/hero-bg.jpg "The competition was fierce")
 
 > "No one expected this result – not even me," the winner stated after the awards ceremony.
 
 ## Track conditions were good
 
-The Pietramurata track lived up to its reputation as one of the most technical tracks on the calendar. Deep ruts formed early in the first moto, forcing riders to search for new lines throughout the race.
+The Pietramurata track lived up to its reputation as one of the most technical circuits on the calendar. Deep ruts formed early in the first moto, forcing riders to search for new racing lines throughout the race.
 
 ## Situation after six rounds
 
 ![](/images/antti-pyrhonen-1993.jpg "The toughest rider of the race was tough")
 
-Jeffrey Herlings maintained his points lead despite a mid-race crash and limited the damage to a third-place finish. His closest rivals failed to take advantage of the situation.
+Jeffrey Herlings barely held onto his points lead despite a mid-race crash, limiting the damage to a third-place finish. His closest rivals failed to take advantage of the situation.

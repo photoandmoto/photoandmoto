@@ -28,4 +28,4 @@ Pietramuratan rata vastasi mainettaan yhtenä kalenterin teknisimmistä radoista
 
 ![](/images/antti-pyrhonen-1993.jpg "Kisan kovin kuski oli kova")
 
-Jeffrey Herlings piti pistejohdon hallussaan keskivaiheen kaatumisesta huolimatta ja rajoitti vahingot kolmanteen sijaan. Hänen lähimmät kilpailijansa eivät onnistuneet hyödyntämään tilannetta.
+Jeffrey Herlings piti nipin napin pistejohdon hallussaan keskivaiheen kaatumisesta huolimatta ja rajoitti vahingot kolmanteen sijaan. Hänen lähimmät kilpailijansa eivät onnistuneet hyödyntämään tilannetta.
