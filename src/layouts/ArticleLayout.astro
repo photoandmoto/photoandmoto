@@ -212,7 +212,7 @@ const articleJsonLd = {
   .article-hero {
     margin-bottom: var(--space-6);
     border-radius: var(--radius-md);
-    max-width: 60%;
+    max-width: 100%;
     margin-left: auto;
     margin-right: auto;
     overflow: hidden;
@@ -221,6 +221,8 @@ const articleJsonLd = {
   .article-hero img {
     width: 100%;
     height: auto;
+    max-height: 600px;
+    object-fit: cover;
     display: block;
   }
   
@@ -369,14 +371,43 @@ const articleJsonLd = {
      tables with <thead> now use the dedicated thead/th rules above. */
 
   .article-body :global(img) {
-    width: 60%;
-    max-width: 500px;
+    max-width: 100%;
+    width: 100%;
+    max-height: 600px;
     height: auto;
-    border-radius: var(--radius-md);
+    object-fit: contain;
+    display: block;
     margin: var(--space-4) auto;
+    border-radius: var(--radius-md);
+  }
+
+  /* Body images with a markdown title -> <figure> + <figcaption> (built by the
+     rehypeFigureFromTitle plugin in astro.config.mjs). Slotted content, so the
+     selectors must be :global. */
+  .article-body :global(.article-figure) {
+    max-width: 100%;
+    margin: var(--space-4) auto var(--space-2);
     display: block;
   }
-  
+  .article-body :global(.article-figure img) {
+    width: 100%;
+    max-width: 100%;
+    max-height: 600px;
+    height: auto;
+    object-fit: contain;
+    border-radius: var(--radius-md);
+    display: block;
+    margin: 0;
+  }
+  .article-body :global(.article-figure figcaption) {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    text-align: center;
+    padding-top: 6px;
+    line-height: 1.4;
+  }
+
   /* Sources block (Lähteet) — appears at the end of the body, before the footer */
   .article-sources {
     max-width: 760px;
