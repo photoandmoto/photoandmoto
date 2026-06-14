@@ -113,6 +113,7 @@ const lang = 'fi';
         <div class="upload-section julkaise-section">
           <h3 class="upload-title">Julkaise</h3>
           <p class="upload-hint">Sveltia CMS tallentaa artikkelit automaattisesti. Vie ne ensin esikatseluun, tarkista tulos, ja julkaise sitten tuotantoon.</p>
+          <p class="julkaise-note">⏱ Odota noin minuutti Sveltia-tallennuksen jälkeen ennen kuin käynnistät esikatselun tai julkaisun.</p>
 
           <div class="julkaise-step">
             <div class="julkaise-step__num">1</div>
@@ -2342,6 +2343,7 @@ if (document.getElementById('ktAddBtn')) {
 
 /* ===== JULKAISE TAB ===== */
 .julkaise-section{max-width:640px}
+.julkaise-note{background:#f3f4f6;border:1px solid #e3e5e9;border-radius:8px;padding:9px 13px;font-size:.82rem;color:#555;line-height:1.45;margin:0 0 18px}
 .julkaise-step{display:flex;gap:14px;align-items:flex-start;padding:18px 0;border-top:1px solid #eee}
 .julkaise-step:first-of-type{border-top:none;padding-top:4px}
 .julkaise-step__num{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:#ff9900;color:#000;font-weight:800;font-size:.9rem;display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif}
