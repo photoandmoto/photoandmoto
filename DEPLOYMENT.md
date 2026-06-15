@@ -57,8 +57,13 @@ a git-based CMS served as static files from `public/admin/`.
     templates: pre-filled category, tags, and body skeleton
   - **Kategoriat** — article categories (data-driven; add new ones here)
 - **Bilingual:** Sveltia uses `i18n: multiple_folders`. One entry has FI and EN
-  tabs; files are written to `src/content/articles/fi/<slug>.md` and
+  locales; files are written to `src/content/articles/fi/<slug>.md` and
   `src/content/articles/en/<slug>.md` with the same slug.
+- **FI required, EN optional:** new entries start FI-only (`initial_locales:
+  default`). The editor enables English per entry from the ⋯ menu (top-right of
+  the editor) when a translation is wanted. Required fields (`title`, `body`,
+  `seo_description`) use `required: [fi]`, so an article can be published FI-only
+  or FI+EN. FI is the always-on default locale, so EN-only isn't possible.
 - **Local testing:** `local_backend: true` is set in `public/admin/config.yml`.
   Run `npm run dev`, open `http://localhost:4321/admin/`, and choose **Work
   with Local Repository** (Chromium browsers) to edit files on disk — no OAuth
@@ -146,6 +151,7 @@ In Pages project → **Settings** → **Environment variables** → **Production
 | `GITHUB_APP_INSTALLATION_ID` | yes | Numeric installation ID for that App on the `photoandmoto` repo. |
 | `GITHUB_APP_PRIVATE_KEY` | yes | Full PEM contents of the App's private key, including the `-----BEGIN/END-----` lines. |
 | `GEMINI_API_KEY` | optional | Google AI Studio key for the AI photo-identification fallback in the mystery flow. (The MXGP scraper Action uses a separate copy — see step 6.) |
+| `DEPLOY_HOOK_STAGING` | yes (for Julkaise) | Cloudflare Pages deploy-hook URL for the staging project (branch `dev`). Powers the **Julkaise esikatseluun** button (`functions/api/deploy.js`). Production publish uses the GitHub App, not a hook. |
 | `OAUTH_GITHUB_CLIENT_ID` | yes (prod) | GitHub OAuth App client ID — powers Sveltia login. |
 | `OAUTH_GITHUB_CLIENT_SECRET` | yes (prod) | GitHub OAuth App client secret. **Encrypt this.** |
 | `OAUTH_REDIRECT_URI` | yes (prod) | `https://www.photoandmoto.fi/oauth/callback` |
@@ -206,6 +212,11 @@ key as a **repo secret** (separate from the Cloudflare copy):
 1. GitHub → repo `photoandmoto/photoandmoto` → **Settings** → **Secrets and variables** → **Actions**
 2. **New repository secret** → name `GEMINI_API_KEY` → paste the Google AI
    Studio key
+3. For the `auto-promote-deletions` Action, add the `Photoandmoto Publisher`
+   App credentials as **repo Actions secrets** (the `GITHUB_` prefix is reserved
+   for Actions secrets, so these differ from the Cloudflare names):
+   - `PUBLISHER_APP_ID` — same value as the Cloudflare `GITHUB_APP_ID`
+   - `PUBLISHER_APP_PRIVATE_KEY` — same PEM as `GITHUB_APP_PRIVATE_KEY`
 
 ### 7. Custom domain (production only)
 
@@ -326,6 +337,7 @@ All workflows live in `.github/workflows/`. They run on push to `dev` and
 | `generate-og-images.yml` | `src/content/articles/**` | Composites a 1200×630 branded social card per article (`scripts/generate-og-image.mjs`, Sharp + Montserrat). Commits to `public/og/`. |
 | `check-links.yml` | `src/content/articles/**` | Scans changed article markdown for broken external links. Fails the run (visible warning) if any are dead. Doesn't block deploys. |
 | `process-gallery-image.yml` | `public/galleries/**` | Generates thumb + display renditions for new gallery images, updates the manifest. |
+| `auto-promote-deletions.yml` | `src/content/articles/**` (push to `dev`) | If a push to `dev` deletes article files, merges `dev → main` via the Publisher GitHub App so the deletion reaches production automatically. |
 | `mxgp-scraper.yml` | scheduled | Refreshes MXGP results/standings data. |
 
 **Loop guards:** Actions that commit back use a commit-message prefix or a
@@ -357,9 +369,16 @@ Pattern: run `ALTER TABLE` in the D1 console, verify with
 4. To create the English version: fill the FI locale, switch to the EN locale,
    and translate the content by hand with Gemini (paste the FI text into
    Gemini, paste the result into the matching EN fields), review, and save.
-5. Sveltia commits to `dev` → staging rebuilds. Verify on
-   `photoandmoto-staging.pages.dev`.
-6. Promote to production: PR `dev → main`.
+5. Sveltia commits to `dev` → staging rebuilds automatically.
+6. **Preview and publish from the Julkaise tab** in `/fi/yllapito` (editors):
+   - **Julkaise esikatseluun** — triggers a staging rebuild; preview at
+     `photoandmoto-staging.pages.dev`.
+   - **Julkaise tuotantoon** — merges `dev → main` via the Publisher GitHub App
+     (`functions/api/deploy.js`), publishing to production (www). Developers can
+     also promote with a manual `dev → main` PR.
+   - **Deletions auto-publish:** deleting an article in Sveltia triggers the
+     `auto-promote-deletions` Action, which merges `dev → main` automatically —
+     no Julkaise tuotantoon needed.
 
 **Verifying what's actually committed:** the Sveltia UI and live pages can show
 stale/cached content. The authoritative check is
