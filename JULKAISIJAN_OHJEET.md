@@ -41,14 +41,20 @@ molempia. Tämä käsikirja kuvaa molemmat — voit hyppiä omaan osioosi.
 
 ### Tärkeintä tietää
 
-- **Tallennus julkaisee suoraan tuotantoon.** Sveltia CMS:ssä tehty muutos
-  ilmestyy `www.photoandmoto.fi`-sivulle noin kahdessa minuutissa. Ei
-  tarvitse painaa "julkaise" erikseen — tallennus riittää.
-- **Esikatselu Sveltian sisällä on luotettava.** Näet artikkelin sellaisena kuin
-  se tulee näkymään sivustolla ennen tallennusta.
-- **Poistot ovat lopullisia.** Sveltia kysyy varmistuksen ennen poistoa, mutta
-  poiston jälkeen artikkeli häviää sivustolta ~2 minuutissa. Palauttaminen
-  vaatii kehittäjän apua (`git revert`).
+- **Tallennus menee ensin esikatseluun, ei suoraan tuotantoon.** Sveltia-
+  tallennus vie artikkelin `dev`-haaraan, josta se näkyy esikatselusivustolla
+  (`photoandmoto-staging.pages.dev`) noin parissa minuutissa. Tuotantoon
+  (`www.photoandmoto.fi`) artikkeli julkaistaan erikseen **Julkaise**-
+  välilehdeltä (ks. [Tallentaminen ja julkaisu](#tallentaminen-ja-julkaisu)).
+- **Suomeksi pakollinen, englanniksi vapaaehtoinen.** Artikkelin voi julkaista
+  pelkästään suomeksi tai suomeksi + englanniksi (ks.
+  [Käännös suomesta englanniksi](#käännös-suomesta-englanniksi)).
+- **Esikatselu Sveltian sisällä on luotettava.** Näet artikkelin suunnilleen
+  sellaisena kuin se näkyy sivustolla jo ennen tallennusta.
+- **Poistot ovat lopullisia.** Sveltia kysyy varmistuksen ennen poistoa, ja
+  poisto viedään tuotantoon automaattisesti (ks.
+  [Artikkelin poistaminen](#artikkelin-poistaminen)). Palauttaminen vaatii
+  kehittäjän apua (`git revert`).
 
 ---
 
@@ -174,14 +180,26 @@ pakkautuvat (GitHub Action tekee sen taustalla noin minuutissa).
 
 ### Tallentaminen ja julkaisu
 
-**Sveltiassa ei ole erillistä "julkaise" -nappia.** Tallenna = julkaise.
-Painikkeen nimi on yksinkertaisesti **Tallenna**.
+Julkaiseminen on kaksivaiheinen: **tallenna Sveltiassa → vie esikatseluun →
+julkaise tuotantoon.**
 
-Kun tallennat:
+**1. Tallenna Sveltiassa.** Sveltiassa ei ole erillistä julkaise-nappia —
+**Tallenna** riittää. Tallennus commitoi muutoksen `dev`-haaraan. Muutos ei
+vielä näy tuotannossa (`www.photoandmoto.fi`).
 
-1. Sveltia commitoi muutoksen Git-tietovarastoon (näet "Muutokset tallennettu")
-2. Cloudflare havaitsee muutoksen ja rakentaa sivuston uudelleen
-3. Noin 2 minuutin kuluttua artikkeli näkyy osoitteessa `www.photoandmoto.fi`
+**2. Vie esikatseluun ja tarkista.** Avaa `/fi/yllapito` ja sen **Julkaise**-
+välilehti:
+
+- **Julkaise esikatseluun** — rakentaa esikatselusivuston. Odota ~2 minuuttia.
+- **Esikatsele** — avaa `photoandmoto-staging.pages.dev` ja tarkista, että
+  artikkeli näyttää oikealta.
+
+**3. Julkaise tuotantoon.** Kun esikatselu on kunnossa, paina **Julkaise
+tuotantoon** ja vahvista. Sisältö ilmestyy `www.photoandmoto.fi`-sivulle noin
+2–3 minuutissa.
+
+> ⏱ Paina Julkaise-painikkeita vasta noin 2 minuuttia Sveltia-tallennuksen
+> jälkeen, jotta tallennus on ehtinyt mennä perille.
 
 Voit tarkistaa tilan:
 
@@ -197,8 +215,9 @@ Voit tarkistaa tilan:
 3. Tee muutokset
 4. **Tallenna**
 
-Muutokset menevät heti tuotantoon. Jos haluat tehdä useita muutoksia
-peräkkäin ilman että jokainen tallennus laukaisee buildin, voit valita
+Muutokset tallentuvat `dev`-haaraan ja näkyvät esikatselussa; vie ne tuotantoon
+**Julkaise**-välilehdeltä kuten yllä. Jos haluat tehdä useita muutoksia
+peräkkäin ilman että jokainen tallennus laukaisee esikatselubuildin, voit valita
 **Piilota sivustolta** -ruudun, tehdä muutokset, ja poistaa valinnan kun
 olet valmis.
 
@@ -209,8 +228,11 @@ olet valmis.
 3. Vahvista poisto ("Haluatko varmasti poistaa tämän julkaistun artikkelin?")
 4. Klikkaa **OK**
 
-Artikkeli häviää sivustolta noin 2 minuutissa. Sekä suomen- että
-englanninkielinen versio poistetaan samalla kerralla.
+Poisto tallentuu `dev`-haaraan, ja **artikkelin poisto viedään tuotantoon
+automaattisesti** — erillinen GitHub Action huomaa poiston ja vie sen `main`-
+haaraan, joten poistolle ei tarvita Julkaise tuotantoon -painiketta. Artikkeli
+häviää `www.photoandmoto.fi`-sivulta noin 2–3 minuutissa, sekä suomen- että
+englanninkielinen versio kerralla.
 
 > ⚠️ **Poisto on lopullinen.** Palautus on mahdollinen vain `git revert`
 > -komennolla, joka vaatii kehittäjän apua. Tarkista kahdesti ennen poistoa.
@@ -632,4 +654,4 @@ kerro kehittäjälle.
 
 ---
 
-*Viimeksi päivitetty: kesäkuu 2026 (siirrytty Sveltia CMS:ään; käännös tehdään käsin)*
+*Viimeksi päivitetty: kesäkuu 2026 (Sveltia CMS; tallenna → esikatselu → Julkaise tuotantoon; poistot automaattisesti tuotantoon; FI pakollinen, EN vapaaehtoinen)*

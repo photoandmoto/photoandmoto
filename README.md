@@ -56,11 +56,11 @@ served from `public/admin/`.
 
 - **URL:** `https://www.photoandmoto.fi/admin/` — login with GitHub
 - Commits go to the `dev` branch — staging rebuilds automatically. Editors
-  preview on staging, then promote to production (`dev → main`) from the
-  **Julkaise** tab in `/fi/yllapito`. Sveltia's built-in preview pane is a
-  quick in-editor review step.
-- Bilingual: one entry, FI + EN tabs, written to
-  `src/content/articles/{fi,en}/<slug>.md`
+  preview on staging, then promote to production from the **Julkaise** tab in
+  `/fi/yllapito` (Julkaise esikatseluun → Esikatsele → Julkaise tuotantoon, a
+  `dev → main` App merge). Deleting an article auto-promotes to production.
+- Bilingual: **FI required, EN optional** per article (enable EN per entry from
+  the editor's ⋯ menu); written to `src/content/articles/{fi,en}/<slug>.md`
 - **Quick Add templates** for MXGP and historical articles, with pre-filled
   category, tags, and a body skeleton
 - Editors translate Finnish articles to English **by hand in the Sveltia
@@ -210,6 +210,7 @@ All workflows are in `.github/workflows/` and documented in
 | `generate-og-images.yml` | Per-article 1200×630 branded social cards |
 | `check-links.yml` | Scan article markdown for broken external links |
 | `process-gallery-image.yml` | Gallery thumbnail/display derivative generation |
+| `auto-promote-deletions.yml` | Auto-merge `dev → main` when an article is deleted |
 | `mxgp-scraper.yml` | Refresh MXGP results data |
 
 ---
@@ -322,7 +323,7 @@ Automatic via Cloudflare Pages. Two environments:
 | Branch | Cloudflare project | URL | D1 database |
 |---|---|---|---|
 | `main` | photoandmoto | www.photoandmoto.fi | photoandmoto-community |
-| `dev` | photoandmoto-staging | photoandmoto-staging.pages.dev | photoandmoto-community-dev |
+| `dev` | photoandmoto-staging | photoandmoto-staging.pages.dev | photoandmoto-community (shared with prod) |
 
 Working rule: changes go to `dev` first → verified on staging → PR `dev → main`
 promotes to production. Full setup, secrets, and troubleshooting are in
