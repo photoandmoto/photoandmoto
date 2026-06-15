@@ -20,8 +20,11 @@ secrets, and recover from incidents. This document is self-contained.
 | Worker → Repo writes | **GitHub App** (`Photoandmoto Publisher`) | JWT-signed atomic commits from the publish pipeline |
 
 Two environments share this stack: **production** (`main` branch) and
-**staging** (`dev` branch). Each has its own Pages project, its own D1
-database, and its own copy of the secrets.
+**staging** (`dev` branch). Each has its own Pages project and its own copy of
+the secrets, but **both bind the `DB` D1 binding to the same database**
+(`photoandmoto-community`). So the IAM users — and the mystery photos/comments —
+are shared: an editor logs in to staging and production with one account, and
+staging actions write to the same data as production.
 
 ---
 
@@ -30,7 +33,7 @@ database, and its own copy of the secrets.
 | Environment | Branch | Cloudflare Pages project | URL | D1 database |
 |---|---|---|---|---|
 | Production | `main` | `photoandmoto` | www.photoandmoto.fi | `photoandmoto-community` |
-| Staging | `dev` | `photoandmoto-staging` | photoandmoto-staging.pages.dev | `photoandmoto-community-dev` |
+| Staging | `dev` | `photoandmoto-staging` | photoandmoto-staging.pages.dev | `photoandmoto-community` (shared with prod) |
 
 **Working rule:** all changes go to `dev` first, get verified on the staging
 URL, then a PR `dev → main` promotes them. Direct pushes to `main` are
@@ -548,10 +551,10 @@ Verify with `git show origin/dev:src/content/articles/<lang>/<slug>.md`.
 
 ### English translation is missing for an article
 
-Translation is now **manual** — there is no auto-translation Action. If an
-article has no English version, an editor simply hasn't created one yet: open
-the article in Sveltia, switch to the EN locale, translate the fields by hand
-(with Gemini), and save. There is nothing server-side to fail or re-trigger.
+Translation is **manual**. If an article has no English version, an editor
+simply hasn't created one yet: open the article in Sveltia, enable the EN locale
+(⋯ menu), translate the fields by hand (with Gemini), and save. There is nothing
+server-side that produces translations.
 
 ### Site loads but mystery endpoints 500
 
@@ -569,9 +572,6 @@ latest to force a rebuild.
 
 ## Backlog and known issues
 
-- **Decap migration** — a few items are still open (the `/yllapito` cleanup,
-  auto-delete propagation, removing the unused `functions/api/articles/*`
-  endpoints). See `DECAP-MIGRATION.md` § Open for the full list.
 - **D1 growth monitoring** — no automated alerting for table size yet.
 - **Original-image archive strategy** — the repo will eventually outgrow
   GitHub's recommended size; R2 / cold storage is a future decision.

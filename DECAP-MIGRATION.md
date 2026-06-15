@@ -1,5 +1,9 @@
 # Decap CMS Migration — archived
 
+> **Archived — migration complete. See [DEPLOYMENT.md](DEPLOYMENT.md) for current setup.**
+> (The site has since moved from Decap CMS to **Sveltia CMS**; this document is
+> kept only as a record of the original Decap migration.)
+
 **Status: complete.** All three open items below shipped in the second
 migration session (June 1, 2026). This document is now a historical record
 of what was done and why. For how the system works today, see
