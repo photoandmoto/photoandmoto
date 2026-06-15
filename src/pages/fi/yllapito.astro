@@ -144,6 +144,20 @@ const lang = 'fi';
           </div>
 
           <div id="deployMsg" class="upload-msg julkaise-msg" aria-live="polite"></div>
+
+          <div class="gemini-key">
+            <h4 class="julkaise-step__title">Gemini-avain (käännöksiin)</h4>
+            <p class="julkaise-step__desc">Tekoälyavain artikkelien kääntämiseen Sveltia-editorissa.</p>
+            <button type="button" id="geminiKeyBtn" class="btn btn--ghost">Näytä Gemini-avain</button>
+            <div id="geminiKeyBox" class="gemini-key__box" style="display:none;">
+              <div class="gemini-key__row">
+                <input type="text" id="geminiKeyField" class="inp" readonly />
+                <button type="button" id="geminiKeyCopy" class="btn btn--ghost">📋 Kopioi</button>
+              </div>
+              <p class="julkaise-step__desc">Liitä tämä Sveltia-editorin asetuksiin (文A → Google Gemini → API-avain)</p>
+            </div>
+            <div id="geminiKeyMsg" class="upload-msg"></div>
+          </div>
         </div>
       </div>
 
@@ -1114,6 +1128,45 @@ const _deployProdBtn=document.getElementById('deployProdBtn');
 if(_deployProdBtn)_deployProdBtn.addEventListener('click',()=>{
   if(!confirm('Oletko varma? Artikkeli julkaistaan osoitteessa www.photoandmoto.fi'))return;
   triggerDeploy('production',_deployProdBtn);
+});
+
+// Gemini key helper — fetch the key from the auth-gated endpoint and reveal it.
+// The key is never in this page's HTML; /api/gemini-key returns it only to a
+// logged-in editor (requireAuth), sent over this same-origin credentialed fetch.
+const _geminiBtn = document.getElementById('geminiKeyBtn');
+if (_geminiBtn) _geminiBtn.addEventListener('click', async () => {
+  const box = document.getElementById('geminiKeyBox');
+  const field = document.getElementById('geminiKeyField');
+  const msg = document.getElementById('geminiKeyMsg');
+  if (box.style.display !== 'none') { box.style.display = 'none'; _geminiBtn.textContent = 'Näytä Gemini-avain'; return; }
+  if (field.value) { box.style.display = ''; _geminiBtn.textContent = 'Piilota avain'; return; }
+  _geminiBtn.disabled = true; _geminiBtn.textContent = 'Haetaan…'; if (msg) msg.innerHTML = '';
+  try {
+    const r = await fetch('/api/gemini-key', { credentials: 'same-origin' });
+    const data = await r.json().catch(() => ({}));
+    if (r.ok && data.key) {
+      field.value = data.key;
+      box.style.display = '';
+      _geminiBtn.textContent = 'Piilota avain';
+    } else {
+      if (msg) msg.innerHTML = '<span class="u-err">✗ Avaimen haku epäonnistui — kirjaudu uudelleen ja yritä uudelleen.</span>';
+      _geminiBtn.textContent = 'Näytä Gemini-avain';
+    }
+  } catch (e) {
+    if (msg) msg.innerHTML = '<span class="u-err">✗ Avaimen haku epäonnistui</span>';
+    _geminiBtn.textContent = 'Näytä Gemini-avain';
+  } finally {
+    _geminiBtn.disabled = false;
+  }
+});
+const _geminiCopy = document.getElementById('geminiKeyCopy');
+if (_geminiCopy) _geminiCopy.addEventListener('click', () => {
+  const field = document.getElementById('geminiKeyField');
+  field.select();
+  if (navigator.clipboard) { navigator.clipboard.writeText(field.value).catch(() => {}); }
+  else { try { document.execCommand('copy'); } catch (e) {} }
+  _geminiCopy.textContent = 'Kopioitu';
+  setTimeout(() => { _geminiCopy.textContent = '📋 Kopioi'; }, 1500);
 });
 
 // Ohje is now a simple link — no collapse toggle needed
@@ -2354,6 +2407,10 @@ if (document.getElementById('ktAddBtn')) {
 .julkaise-msg{display:block;margin-top:20px;min-height:1.3em}
 .jk-spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(0,0,0,.3);border-top-color:#000;border-radius:50%;animation:jk-spin .7s linear infinite;vertical-align:-2px;margin-right:7px}
 .jk-count{font-variant-numeric:tabular-nums}
+.gemini-key{margin-top:24px;padding-top:18px;border-top:1px solid #eee;max-width:640px}
+.gemini-key__box{margin-top:10px}
+.gemini-key__row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
+.gemini-key__row .inp{flex:1;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.82rem}
 @keyframes jk-spin{to{transform:rotate(360deg)}}
 
 /* ===== FILTERS ===== */
