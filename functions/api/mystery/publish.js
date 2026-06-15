@@ -381,7 +381,14 @@ export async function onRequestPost({ request, env }) {
   // ---- 3. Build filename + image bytes ----
   let filename;
   if (body.filename_override && typeof body.filename_override === 'string') {
-    const cleaned = body.filename_override.trim().replace(/\.(jpg|jpeg|png|webp)$/i, '');
+    // Sanitize the override the same way buildFilename does — otherwise an
+    // editor-supplied name could reintroduce Windows/git-illegal characters
+    // (e.g. a colon), producing files that can't be checked out on Windows.
+    const cleaned = body.filename_override.trim()
+      .replace(/\.(jpg|jpeg|png|webp)$/i, '')   // drop any extension
+      .replace(/[\\/:*?"<>|]/g, '')             // strip Windows/git-illegal chars
+      .replace(/\s+/g, ' ')
+      .trim();
     filename = cleaned ? `${cleaned}.jpg` : buildFilename(photo.people, photo.location_notes, photo.year_estimate);
   } else {
     filename = buildFilename(photo.people, photo.location_notes, photo.year_estimate);
