@@ -147,6 +147,13 @@
     "category": "SM"
   },
   {
+    "date": "2026-05-09",
+    "title": "SM Trial (MP-taito)",
+    "location": "Kirkkonummi",
+    "description": "",
+    "category": "Trial"
+  },
+  {
     "date": "2026-05-10",
     "title": "Motocross: SM-Motocross",
     "location": "Tampere",
@@ -245,11 +252,25 @@
     "category": "MotoGP"
   },
   {
+    "date": "2026-06-13",
+    "title": "SM Trial (Ries)",
+    "location": "Hausjärvi",
+    "description": "",
+    "category": "Trial"
+  },
+  {
     "date": "2026-06-14",
     "title": "Motocross: EMX65 / EMX85 & WOMEN'S (Heinola)",
     "location": "Heinola",
     "description": "EMX65 / EMX85 & WOMEN'S - Heinolan Moottorikerho ry",
     "category": "Motocross"
+  },
+  {
+    "date": "2026-06-14",
+    "title": "SM Joukkue Trial (Ries)",
+    "location": "Hausjärvi",
+    "description": "",
+    "category": "Trial"
   },
   {
     "date": "2026-06-21",
@@ -441,6 +462,13 @@
     "category": "MotoGP"
   },
   {
+    "date": "2026-08-30",
+    "title": "SM Trial (VMK)",
+    "location": "Vantaa",
+    "description": "",
+    "category": "Trial"
+  },
+  {
     "date": "2026-09-05",
     "title": "SML Enduro Sipoo 2026 – Enduro",
     "location": "Sipoo",
@@ -466,7 +494,7 @@
     "title": "SM TRIAL TEMK 2026",
     "location": "Tervakoski",
     "description": "Tervakosken Moottorikerho ry",
-    "category": "SM"
+    "category": "Trial"
   },
   {
     "date": "2026-09-13",
@@ -502,6 +530,13 @@
     "location": "Misano World Circuit, Italy",
     "description": "Round 14",
     "category": "MotoGP"
+  },
+  {
+    "date": "2026-09-19",
+    "title": "SM Trial (Samk)",
+    "location": "Salo",
+    "description": "",
+    "category": "Trial"
   },
   {
     "date": "2026-09-20",
@@ -544,6 +579,13 @@
     "location": "Kitee Race & Event",
     "description": "",
     "category": "SM"
+  },
+  {
+    "date": "2026-10-03",
+    "title": "PM Trial (Pohjoismaiden mestaruuskilpailut)",
+    "location": "Norja",
+    "description": "Ajetaan Norjassa 3.–4. lokakuuta 2026",
+    "category": "Trial"
   },
   {
     "date": "2026-10-04",
