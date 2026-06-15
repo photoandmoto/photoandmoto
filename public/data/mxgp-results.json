@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-06-14",
+  "lastUpdated": "2026-06-15",
   "seasonComplete": false,
   "totalRounds": 19,
   "latestRace": {
@@ -680,52 +680,52 @@
   "highlights": {
     "fi": {
       "mxgp_quali": [
-        "Lucas Coenen nappasi paalupaikan lauantain karsinnassa.",
-        "Jeffrey Herlings ja Romain Febvre olivat myös vahvoja karsinnan kärjessä."
+        "Lucas Coenen nappasi paalupaikan lauantain MXGP-aika-ajossa.",
+        "Jeffrey Herlings osoitti nopeutensa toisella sijallaan aika-ajossa."
       ],
       "mxgp_race": [
-        "Lucas Coenen dominoi molempia MXGP-eriä voittaen ylivoimaisesti.",
-        "Kay de Wolf ja Romain Febvre taistelivat tiukasti palkintokorokepaikoista.",
-        "Lucas Coenen vei Latvian GP:n kokonaisvoiton murskaavasti."
+        "Lucas Coenen dominoi molempia MXGP-eriä ja voitti GP:n.",
+        "Kay de Wolf taisteli vahvasti sijoittuen toiseksi GP:ssä.",
+        "Romain Febvre nousi kolmanneksi GP:n kokonaiskilpailussa."
       ],
       "mx2_quali": [
-        "Sacha Coenen oli nopein MX2-luokan lauantain karsinnassa.",
-        "Valerio Lata ja Simon Längenfelder seurasivat tiiviisti Coeneniä karsinnassa."
+        "Sacha Coenen oli nopein MX2-luokan aika-ajossa.",
+        "Valerio Lata varmisti toisen lähtöruudun aika-ajossa."
       ],
       "mx2_race": [
-        "Sacha Coenen oli pysäyttämätön MX2-luokassa, voittaen molemmat erät.",
-        "Camden McLellan taisteli vahvasti ja nousi toiseksi kokonaiskilpailussa.",
-        "Sacha Coenen vei Latvian MX2 GP:n kokonaisvoiton selvästi."
+        "Sacha Coenen oli pysäyttämätön voittaen molemmat MX2-erät ja GP:n.",
+        "Camden McLellan taisteli tiukasti ja varmisti toisen sijan GP:ssä.",
+        "Mathis Valin nousi palkintokorokkeelle kolmannella sijalla GP:ssä."
       ],
       "standings": [
-        "Lucas Coenen johtaa MXGP-sarjaa vankasti.",
-        "Jeffrey Herlings pysyi toisena MXGP-pisteissä.",
-        "Romain Febvre piti kolmannen sijansa MXGP-sarjassa."
+        "Lucas Coenen vahvisti asemiaan MXGP-sarjan johdossa.",
+        "Jeffrey Herlings pysyi toisena MXGP-sarjan pisteissä.",
+        "Romain Febvre piti kolmannen sijan MXGP-sarjan kokonaispisteissä."
       ]
     },
     "en": {
       "mxgp_quali": [
-        "Lucas Coenen claimed pole position in Saturday's qualifying.",
-        "Jeffrey Herlings and Romain Febvre showed strong pace in qualifying."
+        "Lucas Coenen claimed pole position in Saturday's MXGP qualifying.",
+        "Jeffrey Herlings showed his speed securing second in qualifying."
       ],
       "mxgp_race": [
-        "Lucas Coenen dominated both MXGP motos, taking a clear victory.",
-        "Kay de Wolf and Romain Febvre battled fiercely for podium spots.",
-        "Lucas Coenen claimed the overall MXGP victory in Latvia decisively."
+        "Lucas Coenen dominated both MXGP motos, winning the GP overall.",
+        "Kay de Wolf battled hard to finish second in the GP.",
+        "Romain Febvre charged to third overall in the GP."
       ],
       "mx2_quali": [
-        "Sacha Coenen was fastest in MX2 Saturday qualifying.",
-        "Valerio Lata and Simon Längenfelder followed Coenen closely in qualifying."
+        "Sacha Coenen was the fastest rider in MX2 qualifying.",
+        "Valerio Lata secured the second gate pick in qualifying."
       ],
       "mx2_race": [
-        "Sacha Coenen was unstoppable in MX2, winning both motos.",
-        "Camden McLellan charged hard, moving up to second overall.",
-        "Sacha Coenen took the overall MX2 GP win in Latvia convincingly."
+        "Sacha Coenen was unstoppable, winning both MX2 motos and the GP.",
+        "Camden McLellan battled hard for a strong second place overall.",
+        "Mathis Valin surged to a podium finish in third overall."
       ],
       "standings": [
-        "Lucas Coenen holds a strong lead in the MXGP standings.",
-        "Jeffrey Herlings maintained his second position in MXGP points.",
-        "Romain Febvre held firm in third place in the MXGP championship."
+        "Lucas Coenen held firm at the top of the MXGP standings.",
+        "Jeffrey Herlings held firm in second place in the MXGP standings.",
+        "Romain Febvre held firm in third place in the MXGP standings."
       ]
     }
   },
