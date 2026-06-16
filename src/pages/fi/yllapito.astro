@@ -9,16 +9,6 @@ const lang = 'fi';
         <div class="mp-header__left">
           <h1 class="mp-title">Toimitus</h1>
           <p class="mp-sub" id="mpSubCommunity" style="display:none;"></p>
-          <div class="mp-sub mp-sub--admin" id="mpSubAdmin" style="display:none;">
-            <a href="/fi/julkaisijan-ohjeet/" class="ohje-fullguide" target="_blank" rel="noopener">
-              <span class="ohje-fullguide__icon">📖</span>
-              <span class="ohje-fullguide__text">
-                <strong>Avaa täydellinen julkaisijan ohjekirja</strong>
-                <small>Sveltia CMS, tunnistamattomat kuvat, galleriat, vianetsintä</small>
-              </span>
-              <span class="ohje-fullguide__arrow">↗</span>
-            </a>
-          </div>
         </div>
         <div class="mp-header__right">
           
@@ -60,6 +50,11 @@ const lang = 'fi';
           <span class="adm-card__sub">Lähetä uusia tunnistettavia kuvia</span>
           <span class="adm-card__arrow">→</span>
         </button>
+        <a href="/fi/julkaisijan-ohjeet/" target="_blank" rel="noopener" class="adm-card">
+          <span class="adm-card__title">Julkaisijan Ohjekirja</span>
+          <span class="adm-card__sub">Sveltia CMS, tunnistamattomat kuvat, galleriat, vianetsintä</span>
+          <span class="adm-card__arrow">↗</span>
+        </a>
         <button type="button" class="adm-card" data-section="hallitse" data-perm="hallitse_galleriaa">
           <span class="adm-card__title">Hallitse galleriaa</span>
           <span class="adm-card__sub">Muokkaa ja järjestä galleriakuvia</span>
@@ -1061,7 +1056,6 @@ document.getElementById('adminLogout').addEventListener('click',async()=>{
   document.getElementById('tabHallitse').style.display='none';
   document.getElementById('tabJulkaise').style.display='none';
   document.getElementById('tabKayttajat').style.display='none';
-  document.getElementById('mpSubAdmin').style.display='none';
   curFilter=null;
   renderFilters();
   load(); // reload without include=all so identified photos drop out for community
@@ -1334,10 +1328,11 @@ load();
 
 function applyPermissions(user) {
   const perms = user.permissions || {};
-  // Show each card only if the user has its required permission (data-perm).
+  // Show each card if it requires no permission (data-perm absent — e.g. the
+  // Julkaisijan Ohjekirja link) or the user holds the required permission.
   document.querySelectorAll('#adminCards .adm-card').forEach(card => {
     const need = card.dataset.perm;
-    card.style.display = (need && perms[need]) ? '' : 'none';
+    card.style.display = (!need || perms[need]) ? '' : 'none';
   });
 }
 
@@ -1390,10 +1385,10 @@ function showAdminUI() {
   document.getElementById('adminActions').style.display='flex';
   document.getElementById('adminToToimitus').style.display='';
   document.getElementById('mpSubCommunity').style.display='none';
-  document.getElementById('mpSubAdmin').style.display='block';
   document.getElementById('adminGreeting').textContent = `Tervetuloa, ${currentUser.first_name}`;
   applyPermissions(currentUser);
   showCards();
+  // (Julkaisijan Ohjekirja is now a card in the grid — no separate banner.)
   curFilter = null;
   renderFilters();
   load(); // reload with include=all to pick up identified photos for admins
@@ -2155,63 +2150,8 @@ if (document.getElementById('ktAddBtn')) {
 .mp-title{font-family:var(--font-headline);font-size:2.2rem;font-weight:900;margin:0 0 6px;color:#111;letter-spacing:-.5px}
 .mp-sub{font-size:.95rem;color:#666;margin:0;line-height:1.6}
 
-/* Admin-only ohje card — simple link, no collapse */
-.mp-sub--admin{
-  background:transparent;
-  padding:0;
-  border:none;
-  box-shadow:none;
-  max-width:720px;
-  margin-top:8px;
-}
-
-/* Full-manual link at the top of the OHJE block */
-.ohje-fullguide{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  padding:12px 14px;
-  margin:0 0 16px;
-  background:#fff8e6;
-  border:1px solid #f0d27a;
-  border-radius:8px;
-  text-decoration:none;
-  color:#5a4400;
-  transition:all .15s ease;
-}
-.ohje-fullguide:hover{
-  background:#fff2d0;
-  border-color:#ff9900;
-  transform:translateY(-1px);
-  box-shadow:0 2px 8px rgba(255,153,0,.15);
-}
-.ohje-fullguide__icon{
-  font-size:1.5rem;
-  flex:0 0 auto;
-}
-.ohje-fullguide__text{
-  display:flex;
-  flex-direction:column;
-  gap:2px;
-  flex:1 1 auto;
-  min-width:0;
-}
-.ohje-fullguide__text strong{
-  font-size:.95rem;
-  color:#5a4400;
-  line-height:1.3;
-}
-.ohje-fullguide__text small{
-  font-size:.78rem;
-  color:#8a6d28;
-  line-height:1.3;
-}
-.ohje-fullguide__arrow{
-  font-size:1.1rem;
-  font-weight:700;
-  color:#ff9900;
-  flex:0 0 auto;
-}
+/* (Removed: .mp-sub--admin + .ohje-fullguide banner — Julkaisijan Ohjekirja is
+   now a standard card in the grid.) */
 
 .ohje-section{margin-bottom:10px}
 .ohje-section:last-child{margin-bottom:0}

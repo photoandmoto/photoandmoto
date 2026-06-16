@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const lang = 'fi';
+---
+<BaseLayout
+  title="Avustajan Ohjekirja"
+  lang={lang}
+  description="Avustajien opas — näin kirjaudut, kirjoitat artikkelin, luot pikauutisen ja lähetät sisältöä Photo & Moto -sivustolle."
+>
+  <article class="ohje">
+    <div class="container ohje-wrap">
+      <header class="ohje-head">
+        <h1 class="ohje-title">Avustajan Ohjekirja</h1>
+        <p class="ohje-lede">Photo &amp; Moto — Avustajien opas</p>
+      </header>
+
+      <section class="ohje-sec">
+        <h2>1. Kirjautuminen</h2>
+        <p>
+          Kirjaudu sisään osoitteessa <a href="/fi/toimitus">www.photoandmoto.fi/fi/toimitus</a>
+          sähköpostiosoitteellasi ja salasanallasi. Jos unohdit salasanasi, klikkaa
+          <em>"Unohditko salasanan?"</em> -linkkiä kirjautumissivulla.
+        </p>
+        <p>
+          Istunto vanhenee 30 minuutin käyttämättömyyden jälkeen. Saat varoituksen
+          5 minuuttia ennen uloskirjautumista.
+        </p>
+      </section>
+
+      <section class="ohje-sec">
+        <h2>2. Kirjoita artikkeli</h2>
+        <p>Klikkaa <strong>Avustajat → Kirjoita artikkeli</strong>.</p>
+        <h3>Pakolliset kentät</h3>
+        <ul>
+          <li><strong>Otsikko</strong> — vähintään 5 merkkiä</li>
+          <li><strong>Kategoria</strong> — valitse listasta</li>
+          <li><strong>Pääkuva</strong> — JPG, PNG tai WebP</li>
+          <li><strong>Sisältö</strong> — Markdown-muotoilu tuettu</li>
+        </ul>
+        <h3>Valinnaiset kentät</h3>
+        <ul>
+          <li>Alaotsikko</li>
+          <li>Avainsanat (pilkulla eroteltuna)</li>
+          <li>Korttikuva (käytetään listasivuilla)</li>
+          <li>Pääkuvan kuvateksti</li>
+          <li>Lisäkuvat tekstiin</li>
+          <li>Lähteet (yksi per rivi)</li>
+        </ul>
+        <p>Kirjoittajatietosi haetaan automaattisesti — et voi muuttaa niitä.</p>
+      </section>
+
+      <section class="ohje-sec">
+        <h2>3. Luo pikauutinen</h2>
+        <p>Klikkaa <strong>Avustajat → Luo pikauutinen</strong>.</p>
+        <p>
+          Täytä tapahtuman tiedot kenttiin — tekoäly kirjoittaa lyhyen uutistekstin
+          puolestasi.
+        </p>
+        <h3>Pakolliset kentät</h3>
+        <ul>
+          <li>Aihe</li>
+          <li>Kategoria</li>
+          <li>Tapahtumapäivä</li>
+          <li>Paikka</li>
+          <li>Positiiviset tapahtumat</li>
+          <li>Tulokset</li>
+        </ul>
+        <h3>Valinnaiset kentät</h3>
+        <ul>
+          <li>Sää</li>
+          <li>Negatiiviset tapahtumat</li>
+          <li>Muuta</li>
+          <li>Pääkuva</li>
+        </ul>
+        <p>Voit luoda enintään 3 pikauutista tunnissa.</p>
+      </section>
+
+      <section class="ohje-sec">
+        <h2>4. Kuvat</h2>
+        <ul>
+          <li>Tuetut formaatit: JPG, PNG, WebP</li>
+          <li>Suositeltu koko: vähintään 1200 × 800 pikseliä</li>
+          <li>Tiedostokoko: mieluiten alle 5 MB</li>
+          <li>Varmista, että sinulla on oikeus käyttää lähettämiäsi kuvia</li>
+        </ul>
+      </section>
+
+      <section class="ohje-sec">
+        <h2>5. Toimitusprosessi</h2>
+        <p>Kaikki lähetykset menevät toimitukselle tarkistettavaksi ennen julkaisua:</p>
+        <ol>
+          <li>Lähetät artikkelin tai pikauutisen</li>
+          <li>Toimitus saa ilmoituksen sähköpostitse</li>
+          <li>Toimitus tarkistaa sisällön ja tekee tarvittavat muokkaukset</li>
+          <li>Hyväksytty sisältö julkaistaan sivustolla</li>
+        </ol>
+        <p>Et saa erillistä ilmoitusta julkaisusta — seuraa sivustoa.</p>
+      </section>
+
+      <section class="ohje-sec">
+        <h2>6. Yhteystiedot</h2>
+        <p>
+          Ongelmatilanteissa ota yhteyttä toimitukseen:
+          <a href="mailto:photoandmoto@gmail.com">photoandmoto@gmail.com</a>
+        </p>
+      </section>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .ohje { padding: var(--space-5, 3rem) 0; }
+  .ohje-wrap { max-width: 760px; }
+  .ohje-head { margin-bottom: 32px; padding-bottom: 18px; border-bottom: 2px solid var(--brand-primary, #ff9900); }
+  .ohje-title { font-family: var(--font-headline); font-size: 2.2rem; font-weight: 900; margin: 0 0 4px; color: #111; }
+  .ohje-lede { color: var(--text-secondary); margin: 0; font-size: 1rem; }
+
+  .ohje-sec { margin-bottom: 32px; }
+  .ohje-sec h2 {
+    font-family: var(--font-headline); font-size: 1.4rem; font-weight: 800; color: #111;
+    margin: 0 0 12px;
+  }
+  .ohje-sec h3 {
+    font-size: .82rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
+    color: #888; margin: 18px 0 8px;
+  }
+  .ohje-sec p { line-height: 1.65; margin: 0 0 12px; color: var(--text-primary, #222); }
+  .ohje-sec ul, .ohje-sec ol { margin: 0 0 12px; padding-left: 22px; line-height: 1.65; color: var(--text-primary, #222); }
+  .ohje-sec li { margin-bottom: 5px; }
+  .ohje-sec a { color: var(--brand-primary, #ff9900); font-weight: 600; }
+  .ohje-sec a:hover { text-decoration: underline; }
+</style>
