@@ -5,6 +5,7 @@ const lang = 'fi';
 <BaseLayout title="Avustajat" lang={lang} description="Avustajat — kirjoita artikkeli tai luo pikauutinen Photo & Moto -sivustolle.">
   <section class="yk">
     <div class="container">
+      <a class="adm-toplink" href="/fi/toimitus">← Toimituskeskus</a>
       <h1 class="yk-title">Avustajat ✍</h1>
       <p class="yk-intro">
         Lähetä oma juttusi tai kuvasi Photo & Moto -sivustolle. Toimitus tarkistaa
@@ -46,12 +47,24 @@ const lang = 'fi';
           <button id="yk-logout-2" class="btn btn--ghost">Kirjaudu ulos</button>
         </div>
 
-        <div class="yk-tabs" role="tablist">
-          <button id="yk-tab-article" class="yk-tab yk-tab--active" type="button" data-panel="yk-panel-article">Kirjoita artikkeli</button>
-          <button id="yk-tab-flash" class="yk-tab" type="button" data-panel="yk-panel-flash">Luo pikauutinen</button>
+        <div id="yk-cards" class="adm-cards">
+          <button type="button" class="adm-card" data-section="article">
+            <span class="adm-card__title">Kirjoita artikkeli</span>
+            <span class="adm-card__sub">Kirjoita ja lähetä artikkeli toimitukselle</span>
+            <span class="adm-card__arrow">→</span>
+          </button>
+          <button type="button" class="adm-card" data-section="flash">
+            <span class="adm-card__title">Luo pikauutinen</span>
+            <span class="adm-card__sub">Luo tekoälyavusteinen lyhyt uutinen avainsanoilla</span>
+            <span class="adm-card__arrow">→</span>
+          </button>
         </div>
 
-        <div id="yk-panel-article" class="yk-panel">
+        <p id="yk-cards-noperm" class="yk-notice" style="display:none;">Sinulla ei ole käyttöoikeutta. Ota yhteyttä toimitukseen.</p>
+
+        <a id="yk-back" class="adm-back" href="#" style="display:none;">← Avustajat</a>
+
+        <div id="yk-panel-article" class="yk-panel" hidden>
         <form id="yk-form" class="yk-form">
           <label class="yk-field"><span>Otsikko *</span><input name="title" class="inp" minlength="5" required /></label>
           <label class="yk-field"><span>Alaotsikko</span><input name="subtitle" class="inp" /></label>
@@ -133,6 +146,7 @@ const lang = 'fi';
     const greet = $('yk-greet');
     if (greet) greet.textContent = `Tervetuloa, ${user?.first_name || ''}`.trim();
     resetFlash(); // never carry a previous success state across boots
+    ykShowCards(); // always land on the card grid, not an open form
   }
 
   // Populate category dropdowns (article + pikauutinen).
@@ -143,15 +157,26 @@ const lang = 'fi';
   const flashCatSel = $('yk-flash-cat');
   if (flashCatSel) flashCatSel.innerHTML = catOptions;
 
-  // Tab switching (Kirjoita artikkeli / Luo pikauutinen).
-  document.querySelectorAll('.yk-tab').forEach((tab) => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.yk-tab').forEach((t) => t.classList.remove('yk-tab--active'));
-      tab.classList.add('yk-tab--active');
-      const target = tab.getAttribute('data-panel');
-      document.querySelectorAll('.yk-panel').forEach((p) => { p.hidden = p.id !== target; });
-    });
+  // Card navigation — open a form panel, show the "← Avustajat" back link.
+  const YK_PANELS = { article: 'yk-panel-article', flash: 'yk-panel-flash' };
+  function ykShowCards() {
+    document.querySelectorAll('#yk-form-wrap .yk-panel').forEach((p) => { p.hidden = true; });
+    const back = $('yk-back'); if (back) back.style.display = 'none';
+    const cards = $('yk-cards'); if (cards) cards.style.display = '';
+  }
+  function ykOpenSection(section) {
+    const id = YK_PANELS[section];
+    if (!id) return;
+    $('yk-cards').style.display = 'none';
+    document.querySelectorAll('#yk-form-wrap .yk-panel').forEach((p) => { p.hidden = p.id !== id; });
+    const back = $('yk-back'); if (back) back.style.display = '';
+    if (section === 'flash') resetFlash();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  document.querySelectorAll('#yk-cards .adm-card').forEach((card) => {
+    card.addEventListener('click', () => ykOpenSection(card.dataset.section));
   });
+  $('yk-back')?.addEventListener('click', (e) => { e.preventDefault(); ykShowCards(); });
 
   // Session boot — decide which view to show. Gate is the default (visible), so
   // a failure here never blanks the page.
@@ -355,16 +380,28 @@ const lang = 'fi';
   .yk-msg--ok { color: #1a8a5c; }
   .yk-msg--err { color: #dc3545; }
 
-  /* Tabs */
-  .yk-tabs { display: flex; gap: 4px; border-bottom: 2px solid #e5e5e5; margin-bottom: 20px; }
-  .yk-tab {
-    font-family: var(--font-headline); font-size: .9rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: .5px;
-    background: none; border: none; cursor: pointer; padding: 10px 14px;
-    color: #999; border-bottom: 2px solid transparent; margin-bottom: -2px;
+  /* Card navigation (replaces tabs) — mirrors the Toimituskeskus card style. */
+  .adm-toplink { display: inline-block; font-size: .82rem; color: #888; text-decoration: none; margin: 0 0 10px; }
+  .adm-toplink:hover { color: var(--brand-primary, #ff9900); }
+
+  .adm-cards { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: 760px; }
+  @media (min-width: 640px) { .adm-cards { grid-template-columns: 1fr 1fr; } }
+  .adm-card {
+    position: relative; display: block; width: 100%; text-align: left; text-decoration: none;
+    background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 22px 22px 26px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04); cursor: pointer; font: inherit; color: inherit;
+    transition: transform .12s, box-shadow .12s, border-color .12s;
   }
-  .yk-tab:hover { color: #555; }
-  .yk-tab--active { color: var(--brand-primary, #ff9900); border-bottom-color: var(--brand-primary, #ff9900); }
+  .adm-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.1); border-color: var(--brand-primary, #ff9900); }
+  .adm-card__title { display: block; font-family: var(--font-headline); font-size: 1.3rem; font-weight: 800; margin: 0 0 6px; color: #111; }
+  .adm-card__sub { display: block; font-size: .9rem; color: #666; line-height: 1.45; }
+  .adm-card__arrow { position: absolute; right: 18px; bottom: 14px; font-size: 1.3rem; color: var(--brand-primary, #ff9900); font-weight: 900; }
+  .adm-back {
+    display: inline-block; font-size: .85rem; font-weight: 700; color: #888; text-decoration: none;
+    margin: 0 0 16px; cursor: pointer;
+  }
+  .adm-back:hover { color: var(--brand-primary, #ff9900); }
+
   .yk-panel[hidden] { display: none; }
 
   /* Pikauutinen success screen */

@@ -29,6 +29,9 @@ const lang = 'fi';
         </div>
       </div>
 
+      <!-- Back to Toimituskeskus (shown when logged in). -->
+      <a id="adminToToimitus" class="adm-toplink" href="/fi/toimitus" style="display:none;">← Toimituskeskus</a>
+
       <!-- Admin login panel (small, shown on demand) -->
       <div id="adminPanel" class="admin-panel" style="display:none;">
         <div id="adminAuth" class="admin-auth">
@@ -44,16 +47,44 @@ const lang = 'fi';
         </div>
       </div>
 
-      <!-- Admin tabs (visible only when logged in) -->
-      <div id="adminTabs" class="admin-tabs" style="display:none;">
-        <button type="button" class="admin-tab admin-tab--on" data-tab="tarkista">Tarkista</button>
-        <button type="button" class="admin-tab" data-tab="laheta">Lähetä kuva</button>
-        <button type="button" class="admin-tab" data-tab="hallitse">Hallitse galleriaa</button>
-        <a href="/admin/" target="_blank" rel="noopener" class="admin-tab admin-tab--external" data-decap-link>Hallitse artikkeleita ↗</a>
-        <button type="button" class="admin-tab" data-tab="julkaise">Julkaise</button>
-        <span class="admin-tabs__sep" aria-hidden="true"></span>
-        <button type="button" class="admin-tab admin-tab--iam" data-tab="kayttajat">Käyttäjät</button>
+      <!-- Card navigation (visible only when logged in). Each card requires a
+           permission and is shown only if the user has it. -->
+      <div id="adminCards" class="adm-cards" style="display:none;">
+        <button type="button" class="adm-card" data-section="tarkista" data-perm="tarkista">
+          <span class="adm-card__title">Tarkista</span>
+          <span class="adm-card__sub">Tarkista mystery-kuvat ja merkitse tunnistetut</span>
+          <span class="adm-card__arrow">→</span>
+        </button>
+        <button type="button" class="adm-card" data-section="laheta" data-perm="lahetakuva">
+          <span class="adm-card__title">Lähetä kuva</span>
+          <span class="adm-card__sub">Lähetä uusia tunnistettavia kuvia</span>
+          <span class="adm-card__arrow">→</span>
+        </button>
+        <button type="button" class="adm-card" data-section="hallitse" data-perm="hallitse_galleriaa">
+          <span class="adm-card__title">Hallitse galleriaa</span>
+          <span class="adm-card__sub">Muokkaa ja järjestä galleriakuvia</span>
+          <span class="adm-card__arrow">→</span>
+        </button>
+        <a href="/admin/" target="_blank" rel="noopener" class="adm-card" data-decap-link data-perm="hallitse_artikkeleita">
+          <span class="adm-card__title">Hallitse artikkeleita</span>
+          <span class="adm-card__sub">Hallitse artikkeleita Sveltia CMS:ssä</span>
+          <span class="adm-card__arrow">↗</span>
+        </a>
+        <button type="button" class="adm-card" data-section="julkaise" data-perm="hallitse_artikkeleita">
+          <span class="adm-card__title">Julkaise</span>
+          <span class="adm-card__sub">Julkaise sisältö esikatselu- tai tuotantoympäristöön</span>
+          <span class="adm-card__arrow">→</span>
+        </button>
+        <button type="button" class="adm-card" data-section="kayttajat" data-perm="admin_iam">
+          <span class="adm-card__title">Käyttäjät</span>
+          <span class="adm-card__sub">Hallitse käyttäjiä ja käyttöoikeuksia</span>
+          <span class="adm-card__arrow">→</span>
+        </button>
       </div>
+      <p id="adminNoperm" class="adm-noperm" style="display:none;">Sinulla ei ole käyttöoikeutta. Ota yhteyttä toimitukseen.</p>
+
+      <!-- Back to the card grid (shown inside a section). -->
+      <a id="adminBack" class="adm-back" href="#" style="display:none;">← Toimitus</a>
 
       <!-- Tarkista tab: filters + grid (community sees filters too) -->
       <div id="tabTarkista" class="tab-content" style="display:none;">
@@ -1019,7 +1050,10 @@ document.getElementById('adminLogout').addEventListener('click',async()=>{
   adminLastVisit=null;
   cachedGalleries=null;
   document.getElementById('adminActions').style.display='none';
-  document.getElementById('adminTabs').style.display='none';
+  document.getElementById('adminToToimitus').style.display='none';
+  document.getElementById('adminCards').style.display='none';
+  document.getElementById('adminNoperm').style.display='none';
+  document.getElementById('adminBack').style.display='none';
   document.getElementById('adminPanel').style.display='block';
   document.getElementById('adminGreeting').textContent='';
   document.getElementById('tabTarkista').style.display='none';
@@ -1028,31 +1062,12 @@ document.getElementById('adminLogout').addEventListener('click',async()=>{
   document.getElementById('tabJulkaise').style.display='none';
   document.getElementById('tabKayttajat').style.display='none';
   document.getElementById('mpSubAdmin').style.display='none';
-  // Reset to Tarkista tab so re-login lands on the right place
-  document.getElementById('tabTarkista').style.display='';
-  document.getElementById('tabLaheta').style.display='none';
-  document.getElementById('tabHallitse').style.display='none';
-  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.toggle('admin-tab--on',t.dataset.tab==='tarkista'));
-  // Restore all admin tab buttons (they may have been hidden by applyPermissions)
-  document.querySelectorAll('#adminTabs .admin-tab').forEach(t=>{t.style.display='';});
   curFilter=null;
   renderFilters();
   load(); // reload without include=all so identified photos drop out for community
 });
 
-// Tab switching (Tarkista / Lähetä)
-document.querySelectorAll('.admin-tab').forEach(t=>t.addEventListener('click',()=>{
-  const tab=t.dataset.tab;
-  if(!tab)return; // Skip elements without data-tab (e.g. the Decap admin link)
-  document.querySelectorAll('.admin-tab').forEach(x=>x.classList.toggle('admin-tab--on',x===t));
-  document.getElementById('tabTarkista').style.display=tab==='tarkista'?'':'none';
-  document.getElementById('tabLaheta').style.display=tab==='laheta'?'':'none';
-  document.getElementById('tabHallitse').style.display=tab==='hallitse'?'':'none';
-  document.getElementById('tabJulkaise').style.display=tab==='julkaise'?'':'none';
-  document.getElementById('tabKayttajat').style.display=tab==='kayttajat'?'':'none';
-  if(tab==='hallitse' && adminPw){loadHallitseGalleries();}
-  if(tab==='kayttajat' && adminPw){ktLoadUsers();}
-}));
+// Tab switching removed — replaced by card navigation (showCards / openSection).
 
 // =====================================================================
 // JULKAISE TAB — staging / production deploy with spinner + countdown
@@ -1319,53 +1334,66 @@ load();
 
 function applyPermissions(user) {
   const perms = user.permissions || {};
-  // Hide each tab the user doesn't have permission for
-  document.querySelectorAll('#adminTabs .admin-tab').forEach(t => {
-    const which = t.dataset.tab;
-    let visible;
-    if (which === 'tarkista')        visible = !!perms.tarkista;
-    else if (which === 'laheta')     visible = !!perms.lahetakuva;
-    else if (which === 'hallitse')   visible = !!perms.hallitse_galleriaa;
-    else if (which === 'julkaise')   visible = !!perms.hallitse_artikkeleita;
-    else if (which === 'kayttajat')  visible = !!perms.admin_iam;
-    else if (t.hasAttribute('data-decap-link')) visible = !!perms.hallitse_artikkeleita;
-    else visible = false;
-    t.style.display = visible ? '' : 'none';
+  // Show each card only if the user has its required permission (data-perm).
+  document.querySelectorAll('#adminCards .adm-card').forEach(card => {
+    const need = card.dataset.perm;
+    card.style.display = (need && perms[need]) ? '' : 'none';
   });
 }
 
-function showFirstAvailableTab(user) {
-  const perms = user.permissions || {};
-  const candidates = [
-    { tab: 'tarkista',  content: 'tabTarkista',  has: !!perms.tarkista },
-    { tab: 'laheta',    content: 'tabLaheta',    has: !!perms.lahetakuva },
-    { tab: 'hallitse',  content: 'tabHallitse',  has: !!perms.hallitse_galleriaa },
-    { tab: 'julkaise',  content: 'tabJulkaise',  has: !!perms.hallitse_artikkeleita },
-    { tab: 'kayttajat', content: 'tabKayttajat', has: !!perms.admin_iam },
-  ];
-  const first = candidates.find(c => c.has);
-  // Hide all tab content first
+// Section key → content element id.
+const ADM_SECTIONS = {
+  tarkista:  'tabTarkista',
+  laheta:    'tabLaheta',
+  hallitse:  'tabHallitse',
+  julkaise:  'tabJulkaise',
+  kayttajat: 'tabKayttajat',
+};
+
+// Landing view after login: the card grid (or a no-permission notice). Hides
+// all section content and the back link.
+function showCards() {
   document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-  document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('admin-tab--on'));
-  if (first) {
-    document.getElementById(first.content).style.display = '';
-    const btn = document.querySelector(`[data-tab="${first.tab}"]`);
-    if (btn) btn.classList.add('admin-tab--on');
-  }
-  // Load gallery dropdown lazily if the user lands on hallitse
-  if (first && first.tab === 'hallitse') loadHallitseGalleries();
-  if (first && first.tab === 'kayttajat') ktLoadUsers();
+  document.getElementById('adminBack').style.display = 'none';
+  const perms = (currentUser && currentUser.permissions) || {};
+  const hasAny = !!(perms.tarkista || perms.lahetakuva || perms.hallitse_galleriaa
+    || perms.hallitse_artikkeleita || perms.admin_iam);
+  document.getElementById('adminCards').style.display = hasAny ? '' : 'none';
+  document.getElementById('adminNoperm').style.display = hasAny ? 'none' : '';
 }
+
+// Open one section's content; hide the card grid; show the "← Toimitus" back link.
+function openSection(section) {
+  const id = ADM_SECTIONS[section];
+  if (!id) return;
+  document.getElementById('adminCards').style.display = 'none';
+  document.getElementById('adminNoperm').style.display = 'none';
+  document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+  document.getElementById(id).style.display = '';
+  document.getElementById('adminBack').style.display = '';
+  if (section === 'hallitse') loadHallitseGalleries();
+  if (section === 'kayttajat') ktLoadUsers();
+  if (section === 'tarkista') { curFilter = null; renderFilters(); }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Card → open its section. Cards without data-section (the Sveltia link) are
+// real anchors and navigate normally.
+document.querySelectorAll('#adminCards .adm-card[data-section]').forEach(card => {
+  card.addEventListener('click', () => openSection(card.dataset.section));
+});
+// Back link → return to the card grid.
+document.getElementById('adminBack').addEventListener('click', (e) => { e.preventDefault(); showCards(); });
 
 function showAdminUI() {
   document.getElementById('adminPanel').style.display='none';
   document.getElementById('adminActions').style.display='flex';
-  document.getElementById('adminTabs').style.display='flex';
+  document.getElementById('adminToToimitus').style.display='';
   document.getElementById('mpSubCommunity').style.display='none';
   document.getElementById('mpSubAdmin').style.display='block';
   document.getElementById('adminGreeting').textContent = `Tervetuloa, ${currentUser.first_name}`;
   applyPermissions(currentUser);
-  showFirstAvailableTab(currentUser);
+  showCards();
   curFilter = null;
   renderFilters();
   load(); // reload with include=all to pick up identified photos for admins
@@ -2306,55 +2334,8 @@ if (document.getElementById('ktAddBtn')) {
 }
 .admin-logout:hover{border-color:#dc3545;color:#dc3545}
 
-/* Admin tabs */
-.admin-tabs{
-  display:flex;
-  gap:4px;
-  margin-bottom:24px;
-  border-bottom:2px solid #e5e5e5;
-  align-items:center;
-  flex-wrap:wrap;
-}
-.admin-tab{
-  background:none;
-  border:none;
-  padding:10px 20px;
-  font-family:'DM Sans',sans-serif;
-  font-size:.9rem;
-  font-weight:700;
-  color:#999;
-  cursor:pointer;
-  border-bottom:3px solid transparent;
-  margin-bottom:-2px;
-  transition:all .15s;
-  letter-spacing:.2px;
-}
-.admin-tab:hover{color:#555}
-.admin-tab--on{color:#222;border-bottom-color:#ff9900}
-/* Separator between editor tabs and admin-only tabs */
-.admin-tabs__sep{
-  flex:1 1 auto;
-  display:block;
-  min-width:24px;
-}
-/* Admin-only IAM tab — visually distinct from editor tabs */
-.admin-tab--iam{
-  color:#a06400;
-  background:#fff8e6;
-  border:1px solid #f0d27a;
-  border-bottom-width:1px;
-  border-radius:8px 8px 0 0;
-  padding:8px 16px;
-  font-size:.82rem;
-  margin-bottom:-1px;
-}
-.admin-tab--iam:hover{color:#a06400;background:#fff2d0;border-color:#ff9900}
-.admin-tab--iam.admin-tab--on{
-  background:#fff;
-  color:#a06400;
-  border-color:#ff9900;
-  border-bottom-color:#fff;
-}
+/* (Admin tab-bar styles removed — navigation is now card-based; see the
+   .adm-cards / .adm-card rules at the end of this file.) */
 
 /* ===== BUTTONS ===== */
 .btn{font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:700;padding:11px 24px;border-radius:10px;border:none;background:#ff9900;color:#000;cursor:pointer;transition:all .2s ease;letter-spacing:.2px}
@@ -3043,3 +3024,34 @@ if (document.getElementById('ktAddBtn')) {
 <script>
   import '../../scripts/idle-timeout.js';
 </script>
+
+<style>
+  /* Card-based admin navigation (replaces the old tab bar). Mirrors the
+     Toimituskeskus card style. */
+  .adm-toplink { display: inline-block; font-size: .82rem; color: #888; text-decoration: none; margin: 4px 0 18px; }
+  .adm-toplink:hover { color: var(--brand-primary, #ff9900); }
+
+  .adm-cards { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: 760px; }
+  @media (min-width: 640px) { .adm-cards { grid-template-columns: 1fr 1fr; } }
+
+  .adm-card {
+    position: relative; display: block; width: 100%; text-align: left; text-decoration: none;
+    background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 22px 22px 26px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04); cursor: pointer; font: inherit; color: inherit;
+    transition: transform .12s, box-shadow .12s, border-color .12s;
+  }
+  .adm-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.1); border-color: var(--brand-primary, #ff9900); }
+  .adm-card__title { display: block; font-family: var(--font-headline); font-size: 1.3rem; font-weight: 800; margin: 0 0 6px; color: #111; }
+  .adm-card__sub { display: block; font-size: .9rem; color: #666; line-height: 1.45; }
+  .adm-card__arrow { position: absolute; right: 18px; bottom: 14px; font-size: 1.3rem; color: var(--brand-primary, #ff9900); font-weight: 900; }
+
+  .adm-noperm {
+    max-width: 640px; background: #fff8e6; border: 1px solid #ffdf85; border-left: 3px solid #ff9900;
+    border-radius: 10px; padding: 16px 18px; color: #5a4010;
+  }
+  .adm-back {
+    display: inline-block; font-size: .85rem; font-weight: 700; color: #888; text-decoration: none;
+    margin: 0 0 16px; cursor: pointer;
+  }
+  .adm-back:hover { color: var(--brand-primary, #ff9900); }
+</style>
