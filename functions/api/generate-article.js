@@ -233,6 +233,9 @@ Muuta: ${f.muuta || 'ei tietoa'}
    numeroita, tapahtumia tai yksityiskohtia, joita ei ole annettu.
    Jos jokin kenttä on "ei tietoa", älä mainitse sitä äläkä keksi
    sisältöä sen tilalle.
+   ÄLÄ KOSKAAN keksi syytä keskeyttämiselle tai kaatumiselle.
+   Jos lähdetiedoissa sanotaan 'kaatui', kirjoita 'kaatui'.
+   Jos syy ei ole tiedossa, älä mainitse sitä.
 
 2. Muunna ranskalaiset viivat luontevaksi, virtaavaksi
    uutistekstiksi. Älä luettele tietoja — kerro tarina kuten

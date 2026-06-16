@@ -2,12 +2,12 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 const lang = 'fi';
 ---
-<BaseLayout title="Ylläpito" lang={lang} description="Photo & Moto hallintapaneeli.">
+<BaseLayout title="Toimitus" lang={lang} description="Photo & Moto hallintapaneeli.">
   <section class="mp">
     <div class="container">
       <div class="mp-header">
         <div class="mp-header__left">
-          <h1 class="mp-title">Ylläpito</h1>
+          <h1 class="mp-title">Toimitus</h1>
           <p class="mp-sub" id="mpSubCommunity" style="display:none;"></p>
           <div class="mp-sub mp-sub--admin" id="mpSubAdmin" style="display:none;">
             <a href="/fi/julkaisijan-ohjeet/" class="ohje-fullguide" target="_blank" rel="noopener">
@@ -522,7 +522,7 @@ function renderAdminForm(p){
   el.innerHTML=`
     <div class="form-card form-card--admin">
       <div class="form-card__header form-card__header--admin">
-        <h3>Ylläpito</h3>
+        <h3>Toimitus</h3>
         <span class="form-card__sub">Tarkista ehdotukset ja kirjoita viralliset tiedot</span>
       </div>
       <div id="afStatus" class="af-status"></div>
@@ -3038,3 +3038,8 @@ if (document.getElementById('ktAddBtn')) {
   }
 
 </style>
+
+<!-- Idle auto-logout (gated page). -->
+<script>
+  import '../../scripts/idle-timeout.js';
+</script>

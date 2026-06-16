@@ -37,23 +37,26 @@ const items = await Promise.all(
         <p class="pk-empty">Ei vielä pikauutisia. Palaa pian uudelleen!</p>
       ) : (
         <div class="pk-list">
-          {items.map((item) => (
-            <article class="pk-card">
-              {item.data.photo && (
-                <div class="pk-card__media">
-                  <img src={item.data.photo} alt={item.data.title} loading="lazy" />
-                </div>
-              )}
-              <div class="pk-card__body">
-                <div class="pk-card__meta">
-                  <time datetime={item.data.date.toISOString().slice(0, 10)}>{fmt(item.data.date)}</time>
-                  <span class="pk-card__dot">·</span>
-                  <span class="pk-card__author">{item.data.author}</span>
-                </div>
-                <h2 class="pk-card__title">{item.data.title}</h2>
-                <div class="pk-card__text">
-                  <item.Content />
-                </div>
+          {items.map((item, i) => (
+            <article class="pk-card" data-expanded={i === 0 ? 'true' : 'false'}>
+              <button type="button" class="pk-card__head" aria-expanded={i === 0 ? 'true' : 'false'}>
+                {item.data.photo ? (
+                  <span class="pk-card__thumb"><img src={item.data.photo} alt={item.data.title} loading="lazy" /></span>
+                ) : (
+                  <span class="pk-card__thumb pk-card__thumb--empty" aria-hidden="true">📰</span>
+                )}
+                <span class="pk-card__headtext">
+                  <span class="pk-card__meta">
+                    <time datetime={item.data.date.toISOString().slice(0, 10)}>{fmt(item.data.date)}</time>
+                    <span class="pk-card__dot">·</span>
+                    <span class="pk-card__author">{item.data.author}</span>
+                  </span>
+                  <span class="pk-card__title">{item.data.title}</span>
+                </span>
+                <span class="pk-card__chev" aria-hidden="true">▾</span>
+              </button>
+              <div class="pk-card__panel">
+                <div class="pk-card__text"><item.Content /></div>
               </div>
             </article>
           ))}
@@ -63,6 +66,18 @@ const items = await Promise.all(
   </section>
 </BaseLayout>
 
+<script>
+  // Collapsible cards — click/tap the header to expand/collapse the body.
+  document.querySelectorAll('.pk-card__head').forEach((head) => {
+    head.addEventListener('click', () => {
+      const card = head.closest('.pk-card');
+      const open = card.getAttribute('data-expanded') === 'true';
+      card.setAttribute('data-expanded', open ? 'false' : 'true');
+      head.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+  });
+</script>
+
 <style>
   .pk { padding: var(--space-5, 3rem) 0; }
   .pk-head { margin-bottom: 28px; }
@@ -71,32 +86,43 @@ const items = await Promise.all(
   .pk-empty { color: var(--text-secondary); font-size: 1rem; }
 
   /* Single column on mobile, two columns on desktop (≥768px). */
-  .pk-list { display: grid; grid-template-columns: 1fr; gap: 18px; max-width: 1100px; }
+  .pk-list { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: 1100px; align-items: start; }
   @media (min-width: 768px) { .pk-list { grid-template-columns: 1fr 1fr; } }
 
   .pk-card {
-    display: flex; gap: 18px;
     background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,.04);
   }
-  .pk-card__media { flex: 0 0 180px; }
-  .pk-card__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .pk-card__body { flex: 1; min-width: 0; padding: 18px 20px; }
+
+  /* Header — always visible, click/tap toggles expansion. */
+  .pk-card__head {
+    width: 100%; display: flex; align-items: center; gap: 14px; text-align: left;
+    background: none; border: none; cursor: pointer; padding: 14px; font: inherit; color: inherit;
+  }
+  .pk-card__thumb {
+    flex: 0 0 64px; width: 64px; height: 64px; border-radius: 8px; overflow: hidden;
+    background: #f0f0f0; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+  }
+  .pk-card__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; aspect-ratio: 1 / 1; }
+  .pk-card__headtext { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
 
   .pk-card__meta {
     display: flex; align-items: center; gap: 8px;
-    font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px;
-    color: #999; margin-bottom: 6px;
+    font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #999;
   }
   .pk-card__dot { color: #ccc; }
+  .pk-card__title { font-family: var(--font-headline); font-size: 1.05rem; font-weight: 800; line-height: 1.25; color: #111; }
 
-  .pk-card__title { font-family: var(--font-headline); font-size: 1.2rem; font-weight: 800; margin: 0 0 8px; line-height: 1.25; }
-  .pk-card__text { color: var(--text-primary, #222); line-height: 1.55; font-size: .96rem; }
+  .pk-card__chev { flex: 0 0 auto; color: #bbb; font-size: 1rem; transition: transform .2s ease; }
+  .pk-card[data-expanded="true"] .pk-card__chev { transform: rotate(180deg); color: var(--brand-primary, #ff9900); }
+
+  /* Collapsible body — smooth height animation via grid-template-rows. */
+  .pk-card__panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .28s ease; }
+  .pk-card[data-expanded="true"] .pk-card__panel { grid-template-rows: 1fr; }
+  .pk-card__text {
+    overflow: hidden; min-height: 0; padding: 4px 14px 16px;
+    color: var(--text-primary, #222); line-height: 1.55; font-size: .96rem;
+  }
   .pk-card__text :global(p) { margin: 0 0 .5em; }
   .pk-card__text :global(p:last-child) { margin-bottom: 0; }
-
-  @media (max-width: 560px) {
-    .pk-card { flex-direction: column; gap: 0; }
-    .pk-card__media { flex: none; aspect-ratio: 16 / 9; }
-  }
 </style>

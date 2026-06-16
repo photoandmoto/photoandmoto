@@ -2,10 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 const lang = 'fi';
 ---
-<BaseLayout title="Yleinen Kynä" lang={lang} description="Lähetä oma artikkelisi ja kuvasi Photo & Moto -sivustolle.">
+<BaseLayout title="Avustajat" lang={lang} description="Avustajat — kirjoita artikkeli tai luo pikauutinen Photo & Moto -sivustolle.">
   <section class="yk">
     <div class="container">
-      <h1 class="yk-title">Yleinen Kynä ✍</h1>
+      <h1 class="yk-title">Avustajat ✍</h1>
       <p class="yk-intro">
         Lähetä oma juttusi tai kuvasi Photo & Moto -sivustolle. Toimitus tarkistaa
         jokaisen lähetyksen ennen julkaisua.
@@ -98,7 +98,10 @@ const lang = 'fi';
               <p id="yk-flash-pbody"></p>
             </div>
             <p id="yk-flash-note" class="yk-card__sub" style="display:none;"></p>
-            <button id="yk-flash-again" class="btn btn--ghost" type="button">Luo uusi pikauutinen</button>
+            <div class="yk-flash-actions">
+              <button id="yk-flash-again" class="btn btn--submit" type="button">Luo uusi pikauutinen</button>
+              <button id="yk-flash-clear2" class="btn btn--ghost" type="button">Tyhjennä</button>
+            </div>
           </div>
         </div>
       </div>
@@ -301,8 +304,9 @@ const lang = 'fi';
     const msg = $('yk-flash-msg'); if (msg) msg.style.display = 'none';
   }
 
-  // "Luo uusi pikauutinen" — back to the empty form.
+  // "Luo uusi pikauutinen" + "Tyhjennä" (success screen) — back to the empty form.
   $('yk-flash-again')?.addEventListener('click', resetFlash);
+  $('yk-flash-clear2')?.addEventListener('click', resetFlash);
 
   // Logout (both buttons).
   async function logout() {
@@ -311,6 +315,11 @@ const lang = 'fi';
   }
   $('yk-logout-1')?.addEventListener('click', logout);
   $('yk-logout-2')?.addEventListener('click', logout);
+</script>
+
+<!-- Idle auto-logout (gated page). -->
+<script>
+  import '../../scripts/idle-timeout.js';
 </script>
 
 <style>
