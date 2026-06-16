@@ -156,10 +156,8 @@ contract check. When adding or changing a field, update all three:
 | Component | Location | Purpose |
 |---|---|---|
 | Yleinen Kynä page | `src/pages/fi/yleinen-kyna.astro` | Login/request gate + submission form |
-| Submission handler | `functions/api/submit-article.js` | Validates form, uploads photos to R2, commits draft via GitHub App, sends email |
+| Submission handler | `functions/api/submit-article.js` | Validates form, commits draft + photos (to `public/images/`) via GitHub App, sends email |
 | Access request handler | `functions/api/request-access.js` | Sends access request email via Resend |
-| R2 bucket | Cloudflare dashboard | `photoandmoto-uploads` — photo storage |
-| R2 binding | Cloudflare Pages settings | Variable name `UPLOADS` on both production and staging |
 | Resend API key | Cloudflare Pages settings | `RESEND_API_KEY` on both environments |
 | D1 schema migration | D1 console | `ALTER TABLE users ADD COLUMN perm_laheta_artikkeli INTEGER NOT NULL DEFAULT 0` |
 
@@ -168,7 +166,9 @@ contract check. When adding or changing a field, update all three:
 | Secret | Environment | Notes |
 |---|---|---|
 | `RESEND_API_KEY` | Production + Staging | Resend API key for email notifications |
-| `UPLOADS` (R2 binding) | Production + Staging | R2 bucket binding for photo uploads |
+
+(No R2 binding needed — submitted photos are committed straight into the repo at
+`public/images/`, the same store Sveltia's media library and the static build use.)
 
 ### Navigation change
 
@@ -199,12 +199,11 @@ Yleinen Kynä ✍  →  /fi/yleinen-kyna
 1. **D1 migration** — `ALTER TABLE users ADD COLUMN perm_laheta_artikkeli INTEGER NOT NULL DEFAULT 0`
 2. **IAM Käyttäjät UI** — expose `perm_laheta_artikkeli` checkbox in user management
 3. **`src/pages/fi/yleinen-kyna.astro`** — page with login gate, access request form, submission form
-4. **`functions/api/submit-article.js`** — form handler, R2 upload, GitHub App commit, Resend email
+4. **`functions/api/submit-article.js`** — form handler, commits draft + photos (`public/images/`) via GitHub App, Resend email
 5. **`functions/api/request-access.js`** — access request email handler
-6. **Cloudflare R2 bucket** — create `photoandmoto-uploads`, bind as `UPLOADS`
-7. **Resend setup** — verify photoandmoto.fi sending domain, add `RESEND_API_KEY`
-8. **Header navigation** — add Yleinen Kynä to Muuta dropdown
-9. **DEPLOYMENT.md update** — document new role, R2 setup, Resend setup
+6. **Resend setup** — verify photoandmoto.fi sending domain, add `RESEND_API_KEY`
+7. **Header navigation** — add Yleinen Kynä to Muuta dropdown
+8. **DEPLOYMENT.md update** — document new role, Resend setup
 
 ---
 

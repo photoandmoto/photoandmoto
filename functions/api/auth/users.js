@@ -21,7 +21,7 @@ import { runInit } from './init.js';
 const VALID_ROLES = ['admin', 'editor'];
 const VALID_PERMS = [
   'tarkista', 'lahetakuva', 'hallitse_galleriaa',
-  'hallitse_artikkeleita', 'admin_iam',
+  'hallitse_artikkeleita', 'admin_iam', 'laheta_artikkeli',
 ];
 
 function rowToUser(row) {
@@ -37,6 +37,7 @@ function rowToUser(row) {
       hallitse_galleriaa: !!row.perm_hallitse_galleriaa,
       hallitse_artikkeleita: !!row.perm_hallitse_artikkeleita,
       admin_iam: !!row.perm_admin_iam,
+      laheta_artikkeli: !!row.perm_laheta_artikkeli,
     },
     is_active: !!row.is_active,
     has_password: !!row.has_password,
@@ -57,7 +58,7 @@ export async function onRequestGet({ request, env }) {
   const { results } = await env.DB.prepare(`
     SELECT id, first_name, last_name, email, role,
            perm_tarkista, perm_lahetakuva, perm_hallitse_galleriaa,
-           perm_hallitse_artikkeleita, perm_admin_iam,
+           perm_hallitse_artikkeleita, perm_admin_iam, perm_laheta_artikkeli,
            is_active,
            (password_hash IS NOT NULL) AS has_password,
            created_at, last_login_at, last_recovery_at
@@ -113,17 +114,17 @@ export async function onRequestPost({ request, env }) {
     INSERT INTO users (
       first_name, last_name, email, role,
       perm_tarkista, perm_lahetakuva, perm_hallitse_galleriaa,
-      perm_hallitse_artikkeleita, perm_admin_iam,
+      perm_hallitse_artikkeleita, perm_admin_iam, perm_laheta_artikkeli,
       created_by, is_active
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
   `).bind(
     body.first_name.trim(),
     body.last_name.trim(),
     email,
     body.role,
     permFlags.tarkista, permFlags.lahetakuva, permFlags.hallitse_galleriaa,
-    permFlags.hallitse_artikkeleita, permFlags.admin_iam,
+    permFlags.hallitse_artikkeleita, permFlags.admin_iam, permFlags.laheta_artikkeli,
     auth.user.id
   ).run();
 
@@ -147,7 +148,7 @@ export async function onRequestPost({ request, env }) {
   const userRow = await env.DB.prepare(`
     SELECT id, first_name, last_name, email, role,
            perm_tarkista, perm_lahetakuva, perm_hallitse_galleriaa,
-           perm_hallitse_artikkeleita, perm_admin_iam,
+           perm_hallitse_artikkeleita, perm_admin_iam, perm_laheta_artikkeli,
            is_active,
            (password_hash IS NOT NULL) AS has_password,
            created_at, last_login_at, last_recovery_at

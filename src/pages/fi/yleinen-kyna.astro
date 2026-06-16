@@ -1,0 +1,245 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const lang = 'fi';
+---
+<BaseLayout title="Yleinen Kynä" lang={lang} description="Lähetä oma artikkelisi ja kuvasi Photo & Moto -sivustolle.">
+  <section class="yk">
+    <div class="container">
+      <h1 class="yk-title">Yleinen Kynä ✍</h1>
+      <p class="yk-intro">
+        Lähetä oma juttusi tai kuvasi Photo & Moto -sivustolle. Toimitus tarkistaa
+        jokaisen lähetyksen ennen julkaisua.
+      </p>
+
+      <!-- Gate (default state — visible so the page never renders blank). -->
+      <div id="yk-gate" class="yk-gate">
+        <div class="yk-card">
+          <h2 class="yk-card__title">Kirjaudu sisään</h2>
+          <p class="yk-card__sub">Onko sinulla jo tunnukset?</p>
+          <input id="yk-login-email" class="inp" type="email" placeholder="Sähköposti" autocomplete="username" />
+          <input id="yk-login-pw" class="inp" type="password" placeholder="Salasana" autocomplete="current-password" />
+          <button id="yk-login-btn" class="btn">Kirjaudu</button>
+          <p id="yk-login-err" class="yk-err" style="display:none;"></p>
+          <a href="/fi/palauta-salasana/" class="yk-link">Unohditko salasanan?</a>
+        </div>
+
+        <div class="yk-card">
+          <h2 class="yk-card__title">Pyydä käyttöoikeutta</h2>
+          <p class="yk-card__sub">Ei vielä tunnuksia? Pyydä oikeus lähettää artikkeleita — toimitus luo sinulle tunnukset.</p>
+          <input id="yk-req-name" class="inp" type="text" placeholder="Nimi" />
+          <input id="yk-req-email" class="inp" type="email" placeholder="Sähköposti" />
+          <button id="yk-req-btn" class="btn btn--ghost">Pyydä käyttöoikeutta</button>
+          <p id="yk-req-msg" class="yk-msg" style="display:none;"></p>
+        </div>
+      </div>
+
+      <!-- Logged in, but no submission permission. -->
+      <div id="yk-noperm" class="yk-notice" style="display:none;">
+        <p>Olet kirjautunut sisään, mutta tunnuksellasi ei ole vielä artikkelien lähetysoikeutta. Ota yhteyttä toimitukseen.</p>
+        <button id="yk-logout-1" class="btn btn--ghost">Kirjaudu ulos</button>
+      </div>
+
+      <!-- Submission form (logged in + perm_laheta_artikkeli). -->
+      <div id="yk-form-wrap" class="yk-form-wrap" style="display:none;">
+        <div class="yk-form-head">
+          <span id="yk-greet" class="yk-greet"></span>
+          <button id="yk-logout-2" class="btn btn--ghost">Kirjaudu ulos</button>
+        </div>
+        <form id="yk-form" class="yk-form">
+          <label class="yk-field"><span>Otsikko *</span><input name="title" class="inp" minlength="5" required /></label>
+          <label class="yk-field"><span>Alaotsikko</span><input name="subtitle" class="inp" /></label>
+          <label class="yk-field"><span>Kategoria *</span><select id="yk-cat" name="category" class="inp" required></select></label>
+          <label class="yk-field"><span>Avainsanat (pilkulla erotettuna)</span><input name="tags" class="inp" placeholder="esim. motocross, MXGP, Hyvinkää" /></label>
+          <label class="yk-field"><span>Pääkuva *</span><input name="featured_image" class="inp" type="file" accept="image/jpeg,image/png,image/webp" required /></label>
+          <label class="yk-field"><span>Korttikuva (valinnainen)</span><input name="card_image" class="inp" type="file" accept="image/jpeg,image/png,image/webp" /></label>
+          <label class="yk-field"><span>Pääkuvan kuvateksti</span><input name="image_caption" class="inp" /></label>
+          <label class="yk-field"><span>Lisäkuvat tekstiin (valinnainen, useita)</span><input name="body_images" class="inp" type="file" accept="image/jpeg,image/png,image/webp" multiple /></label>
+          <label class="yk-field"><span>Sisältö * (Markdown)</span><textarea name="body" class="inp yk-textarea" rows="14" required></textarea></label>
+          <label class="yk-field"><span>Lähteet (valinnainen, yksi per rivi)</span><textarea name="sources" class="inp" rows="3"></textarea></label>
+          <p class="yk-card__sub">Toimitus tarkistaa ja julkaisee artikkelin. Lähetys tallentuu luonnoksena.</p>
+          <button id="yk-submit-btn" class="btn btn--submit" type="submit">Lähetä artikkeli</button>
+          <p id="yk-submit-msg" class="yk-msg" style="display:none;"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Categories — hardcoded fallback (no /api/categories endpoint). Value = the
+  // `name` stored in frontmatter; label = the Finnish display name.
+  const YK_CATEGORIES = [
+    { name: 'MXGP', label: 'MXGP' },
+    { name: 'Speedway', label: 'Speedway' },
+    { name: 'Historical', label: 'Historiallinen' },
+    { name: 'Enduro', label: 'Enduro' },
+    { name: 'Interview', label: 'Haastattelu' },
+    { name: 'Technical', label: 'Tekninen' },
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const gate = $('yk-gate');
+  const noperm = $('yk-noperm');
+  const formWrap = $('yk-form-wrap');
+
+  function showGate() { gate.style.display = ''; noperm.style.display = 'none'; formWrap.style.display = 'none'; }
+  function showNoperm() { gate.style.display = 'none'; noperm.style.display = ''; formWrap.style.display = 'none'; }
+  function showForm(user) {
+    gate.style.display = 'none'; noperm.style.display = 'none'; formWrap.style.display = '';
+    const greet = $('yk-greet');
+    if (greet) greet.textContent = `Tervetuloa, ${user?.first_name || ''}`.trim();
+  }
+
+  // Populate category dropdown.
+  const catSel = $('yk-cat');
+  if (catSel) {
+    catSel.innerHTML = '<option value="">— valitse kategoria —</option>' +
+      YK_CATEGORIES.map((c) => `<option value="${c.name}">${c.label}</option>`).join('');
+  }
+
+  // Session boot — decide which view to show. Gate is the default (visible), so
+  // a failure here never blanks the page.
+  async function boot() {
+    try {
+      const r = await fetch('/api/auth/me', { credentials: 'same-origin' });
+      if (!r.ok) { showGate(); return; }
+      const data = await r.json();
+      const user = data.user;
+      if (user && user.permissions && user.permissions.laheta_artikkeli) showForm(user);
+      else showNoperm();
+    } catch {
+      showGate();
+    }
+  }
+  boot();
+
+  // Login.
+  $('yk-login-btn')?.addEventListener('click', async () => {
+    const email = $('yk-login-email').value.trim();
+    const pw = $('yk-login-pw').value;
+    const err = $('yk-login-err');
+    err.style.display = 'none';
+    if (!email || !pw) { err.textContent = 'Anna sähköposti ja salasana.'; err.style.display = 'block'; return; }
+    try {
+      const r = await fetch('/api/auth/login', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pw }),
+      });
+      if (!r.ok) {
+        err.textContent = r.status === 429 ? 'Liian monta yritystä. Yritä myöhemmin.' : 'Väärät kirjautumistiedot.';
+        err.style.display = 'block';
+        return;
+      }
+      await boot(); // session cookie now set → re-evaluate view
+    } catch {
+      err.textContent = 'Yhteysvirhe — yritä uudelleen.'; err.style.display = 'block';
+    }
+  });
+
+  // Access request.
+  $('yk-req-btn')?.addEventListener('click', async () => {
+    const name = $('yk-req-name').value.trim();
+    const email = $('yk-req-email').value.trim();
+    const msg = $('yk-req-msg');
+    const btn = $('yk-req-btn');
+    msg.style.display = 'none';
+    if (name.length < 2 || !email) { msg.className = 'yk-msg yk-msg--err'; msg.textContent = 'Anna nimi ja sähköposti.'; msg.style.display = 'block'; return; }
+    btn.disabled = true;
+    try {
+      const r = await fetch('/api/request-access', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email }),
+      });
+      const data = await r.json().catch(() => ({}));
+      if (r.ok && data.ok) {
+        msg.className = 'yk-msg yk-msg--ok';
+        msg.textContent = '✓ Pyyntö lähetetty. Toimitus on sinuun yhteydessä.';
+      } else {
+        msg.className = 'yk-msg yk-msg--err';
+        msg.textContent = '✗ ' + (data.error || 'Lähetys epäonnistui — yritä uudelleen.');
+      }
+      msg.style.display = 'block';
+    } catch {
+      msg.className = 'yk-msg yk-msg--err'; msg.textContent = '✗ Yhteysvirhe — yritä uudelleen.'; msg.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  // Submit article.
+  $('yk-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const msg = $('yk-submit-msg');
+    const btn = $('yk-submit-btn');
+    msg.style.display = 'none';
+    btn.disabled = true; const orig = btn.textContent; btn.textContent = 'Lähetetään…';
+    try {
+      const fd = new FormData(e.target);
+      const r = await fetch('/api/submit-article', { method: 'POST', credentials: 'same-origin', body: fd });
+      const data = await r.json().catch(() => ({}));
+      if (r.ok && data.ok) {
+        msg.className = 'yk-msg yk-msg--ok';
+        msg.textContent = '✓ Kiitos! Artikkeli lähetettiin toimitukselle tarkistettavaksi.'
+          + (data.email_warning ? ' (Huom: ' + data.email_warning + ')' : '');
+        msg.style.display = 'block';
+        e.target.reset();
+      } else if (r.status === 401 || r.status === 403) {
+        msg.className = 'yk-msg yk-msg--err';
+        msg.textContent = '✗ Istunto vanhentunut tai ei oikeutta — kirjaudu uudelleen.';
+        msg.style.display = 'block';
+      } else {
+        msg.className = 'yk-msg yk-msg--err';
+        msg.textContent = '✗ ' + (data.error || 'Lähetys epäonnistui — yritä uudelleen.');
+        msg.style.display = 'block';
+      }
+    } catch {
+      msg.className = 'yk-msg yk-msg--err'; msg.textContent = '✗ Yhteysvirhe — yritä uudelleen.'; msg.style.display = 'block';
+    } finally {
+      btn.disabled = false; btn.textContent = orig;
+    }
+  });
+
+  // Logout (both buttons).
+  async function logout() {
+    try { await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' }); } catch {}
+    showGate();
+  }
+  $('yk-logout-1')?.addEventListener('click', logout);
+  $('yk-logout-2')?.addEventListener('click', logout);
+</script>
+
+<style>
+  .yk { padding: var(--space-5, 3rem) 0; }
+  .yk-title { font-family: var(--font-headline); font-size: 2rem; font-weight: 900; margin: 0 0 8px; }
+  .yk-intro { color: var(--text-secondary); max-width: 640px; margin: 0 0 28px; line-height: 1.5; }
+
+  .yk-gate { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 760px; }
+  @media (max-width: 640px) { .yk-gate { grid-template-columns: 1fr; } }
+  .yk-card {
+    background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px;
+    display: flex; flex-direction: column; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  }
+  .yk-card__title { font-family: var(--font-headline); font-size: 1.15rem; font-weight: 800; margin: 0; }
+  .yk-card__sub { font-size: .85rem; color: var(--text-secondary); margin: 0; line-height: 1.45; }
+  .yk-link { font-size: .82rem; color: var(--text-secondary); }
+  .yk-err { color: #dc3545; font-size: .85rem; font-weight: 600; margin: 0; }
+
+  .yk-notice {
+    max-width: 640px; background: #fff8e6; border: 1px solid #ffdf85; border-left: 3px solid #ff9900;
+    border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; color: #5a4010;
+  }
+
+  .yk-form-wrap { max-width: 680px; }
+  .yk-form-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .yk-greet { font-weight: 700; }
+  .yk-form { display: flex; flex-direction: column; gap: 14px; }
+  .yk-field { display: flex; flex-direction: column; gap: 5px; }
+  .yk-field > span { font-size: .78rem; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: .5px; }
+  .yk-textarea { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: .85rem; line-height: 1.5; resize: vertical; }
+
+  .yk-msg { font-size: .9rem; font-weight: 600; margin: 0; }
+  .yk-msg--ok { color: #1a8a5c; }
+  .yk-msg--err { color: #dc3545; }
+</style>
