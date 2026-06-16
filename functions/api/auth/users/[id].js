@@ -24,7 +24,7 @@ import { runInit } from '../init.js';
 const VALID_ROLES = ['admin', 'editor'];
 const VALID_PERMS = [
   'tarkista', 'lahetakuva', 'hallitse_galleriaa',
-  'hallitse_artikkeleita', 'admin_iam',
+  'hallitse_artikkeleita', 'admin_iam', 'laheta_artikkeli',
 ];
 
 async function countActiveAdmins(env, excludingUserId = null) {
@@ -50,7 +50,7 @@ export async function onRequestPatch({ request, env, params }) {
   const target = await env.DB.prepare(
     `SELECT id, first_name, last_name, role,
             perm_tarkista, perm_lahetakuva, perm_hallitse_galleriaa,
-            perm_hallitse_artikkeleita, perm_admin_iam,
+            perm_hallitse_artikkeleita, perm_admin_iam, perm_laheta_artikkeli,
             is_active
      FROM users WHERE id = ?`
   ).bind(userId).first();
@@ -77,6 +77,8 @@ export async function onRequestPatch({ request, env, params }) {
       ? (body.permissions.hallitse_artikkeleita ? 1 : 0) : target.perm_hallitse_artikkeleita,
     perm_admin_iam: body.permissions?.admin_iam !== undefined
       ? (body.permissions.admin_iam ? 1 : 0) : target.perm_admin_iam,
+    perm_laheta_artikkeli: body.permissions?.laheta_artikkeli !== undefined
+      ? (body.permissions.laheta_artikkeli ? 1 : 0) : target.perm_laheta_artikkeli,
     is_active: body.is_active !== undefined
       ? (body.is_active ? 1 : 0) : target.is_active,
   };
@@ -125,14 +127,14 @@ export async function onRequestPatch({ request, env, params }) {
       first_name = ?, last_name = ?, role = ?,
       perm_tarkista = ?, perm_lahetakuva = ?,
       perm_hallitse_galleriaa = ?, perm_hallitse_artikkeleita = ?,
-      perm_admin_iam = ?,
+      perm_admin_iam = ?, perm_laheta_artikkeli = ?,
       is_active = ?
     WHERE id = ?
   `).bind(
     merged.first_name, merged.last_name, merged.role,
     merged.perm_tarkista, merged.perm_lahetakuva,
     merged.perm_hallitse_galleriaa, merged.perm_hallitse_artikkeleita,
-    merged.perm_admin_iam,
+    merged.perm_admin_iam, merged.perm_laheta_artikkeli,
     merged.is_active,
     userId
   ).run();
@@ -146,7 +148,7 @@ export async function onRequestPatch({ request, env, params }) {
   const updated = await env.DB.prepare(`
     SELECT id, first_name, last_name, email, role,
            perm_tarkista, perm_lahetakuva, perm_hallitse_galleriaa,
-           perm_hallitse_artikkeleita, perm_admin_iam,
+           perm_hallitse_artikkeleita, perm_admin_iam, perm_laheta_artikkeli,
            is_active,
            (password_hash IS NOT NULL) AS has_password,
            created_at, last_login_at, last_recovery_at
@@ -167,6 +169,7 @@ export async function onRequestPatch({ request, env, params }) {
         hallitse_galleriaa: !!updated.perm_hallitse_galleriaa,
         hallitse_artikkeleita: !!updated.perm_hallitse_artikkeleita,
         admin_iam: !!updated.perm_admin_iam,
+        laheta_artikkeli: !!updated.perm_laheta_artikkeli,
       },
       is_active: !!updated.is_active,
       has_password: !!updated.has_password,

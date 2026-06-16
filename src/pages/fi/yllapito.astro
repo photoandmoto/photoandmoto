@@ -213,6 +213,7 @@ const lang = 'fi';
                 <label class="kt-perm-check"><input type="checkbox" id="ktPerm_hallitse_galleriaa"> Hallitse galleriaa <small>(galleriakuvien muokkaus)</small></label>
                 <label class="kt-perm-check"><input type="checkbox" id="ktPerm_hallitse_artikkeleita"> Hallitse artikkeleita <small>(Sveltia CMS — erillinen GitHub-kirjautuminen)</small></label>
                 <label class="kt-perm-check"><input type="checkbox" id="ktPerm_admin_iam"> <strong>Hallitse käyttäjiä</strong> <small>(tämä paneeli)</small></label>
+                <label class="kt-perm-check"><input type="checkbox" id="ktPerm_laheta_artikkeli"> Yleinen Kynä <small>(artikkelin lähetyslomake — contributor-rooli)</small></label>
               </fieldset>
             </div>
             <div id="ktModalErr" class="err-msg" style="display:none; margin-top:10px;"></div>
@@ -1823,6 +1824,7 @@ function ktPermsBadges(p) {
   if (p.hallitse_galleriaa) out.push('<span class="kt-badge" title="Hallitse galleriaa">G</span>');
   if (p.hallitse_artikkeleita) out.push('<span class="kt-badge" title="Hallitse artikkeleita">A</span>');
   if (p.admin_iam) out.push('<span class="kt-badge kt-badge--admin" title="Hallitse käyttäjiä">I</span>');
+  if (p.laheta_artikkeli) out.push('<span class="kt-badge kt-badge--contributor" title="Yleinen Kynä">YK</span>');
   return out.join(' ') || '<span class="kt-badge-empty">—</span>';
 }
 
@@ -1867,7 +1869,8 @@ function ktRenderTable() {
     <span><span class="kt-badge">L</span> Lähetä kuva</span> ·
     <span><span class="kt-badge">G</span> Hallitse galleriaa</span> ·
     <span><span class="kt-badge">A</span> Hallitse artikkeleita</span> ·
-    <span><span class="kt-badge kt-badge--admin">I</span> Hallitse käyttäjiä</span>
+    <span><span class="kt-badge kt-badge--admin">I</span> Hallitse käyttäjiä</span> ·
+    <span><span class="kt-badge kt-badge--contributor">YK</span> Yleinen Kynä</span>
   </div>`;
 }
 
@@ -1884,6 +1887,7 @@ function ktOpenCreateModal() {
   document.getElementById('ktPerm_hallitse_galleriaa').checked = false;
   document.getElementById('ktPerm_hallitse_artikkeleita').checked = true;
   document.getElementById('ktPerm_admin_iam').checked = false;
+  document.getElementById('ktPerm_laheta_artikkeli').checked = false;
   document.getElementById('ktModalLinkBox').style.display = 'none';
   document.getElementById('ktModalErr').style.display = 'none';
   document.getElementById('ktModalSave').disabled = false;
@@ -1909,6 +1913,7 @@ function ktOpenEditModal(uid) {
   document.getElementById('ktPerm_hallitse_galleriaa').checked = !!u.permissions.hallitse_galleriaa;
   document.getElementById('ktPerm_hallitse_artikkeleita').checked = !!u.permissions.hallitse_artikkeleita;
   document.getElementById('ktPerm_admin_iam').checked = !!u.permissions.admin_iam;
+  document.getElementById('ktPerm_laheta_artikkeli').checked = !!u.permissions.laheta_artikkeli;
   document.getElementById('ktModalLinkBox').style.display = 'none';
   document.getElementById('ktModalErr').style.display = 'none';
   document.getElementById('ktModalSave').disabled = false;
@@ -1947,6 +1952,7 @@ async function ktSubmitModal() {
       hallitse_galleriaa: document.getElementById('ktPerm_hallitse_galleriaa').checked,
       hallitse_artikkeleita: document.getElementById('ktPerm_hallitse_artikkeleita').checked,
       admin_iam: document.getElementById('ktPerm_admin_iam').checked,
+      laheta_artikkeli: document.getElementById('ktPerm_laheta_artikkeli').checked,
     },
   };
 
@@ -2983,6 +2989,7 @@ if (document.getElementById('ktAddBtn')) {
   .kt-action--danger:hover{border-color:#dc3545;color:#dc3545;background:#fde8e8}
   .kt-perms-legend{padding:10px 14px;background:#fafaf8;border-top:1px solid #eee;font-size:.72rem;color:#888;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
   .kt-perms-legend strong{color:#555;font-weight:700;margin-right:4px}
+  .kt-badge--contributor{background:#e8f5e9;color:#2e7d32}
 
   /* Audit log */
   .kt-audit{margin-top:20px;background:#fff;border-radius:8px;padding:0;border:1px solid #eee}

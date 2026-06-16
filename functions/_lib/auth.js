@@ -288,7 +288,7 @@ export async function requireAuth(request, env, requiredPerm = null) {
        s.expires_at  AS session_expires_at,
        u.first_name, u.last_name, u.email, u.role,
        u.perm_tarkista, u.perm_lahetakuva, u.perm_hallitse_galleriaa,
-       u.perm_hallitse_artikkeleita, u.perm_admin_iam,
+       u.perm_hallitse_artikkeleita, u.perm_admin_iam, u.perm_laheta_artikkeli,
        u.is_active
      FROM sessions s
      INNER JOIN users u ON u.id = s.user_id
@@ -327,6 +327,7 @@ export async function requireAuth(request, env, requiredPerm = null) {
         hallitse_galleriaa: !!row.perm_hallitse_galleriaa,
         hallitse_artikkeleita: !!row.perm_hallitse_artikkeleita,
         admin_iam: !!row.perm_admin_iam,
+        laheta_artikkeli: !!row.perm_laheta_artikkeli,
       },
     },
     sessionRow: row,
