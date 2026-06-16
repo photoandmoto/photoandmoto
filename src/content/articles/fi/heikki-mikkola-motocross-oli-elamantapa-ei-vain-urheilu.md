@@ -1,18 +1,25 @@
 ---
-title: "Heikki Mikkola: \"Motocross oli elämäntapa, ei vain urheilu\""
-subtitle: "Legendaarinen nelinkertainen maailmanmestari muistelee uransa huippuhetkiä"
-author: "Arto T Vilkman"
+title: 'Heikki Mikkola: "Motocross oli elämäntapa, ei vain urheilu"'
+subtitle: Legendaarinen nelinkertainen maailmanmestari muistelee uransa huippuhetkiä
+author: Arto T Vilkman
 date: 2026-06-16
-category: "Interview"
-tags: ["Heikki Mikkola","motocross","historia","MXGP","1970-luku"]
-featured_image: "/images/heikki-mikkola-motocross-oli-elamantapa-ei-vain-urheilu-heikki-mikkola-hyvinkaa-sma.jpg"
-card_image: "/images/heikki-mikkola-motocross-oli-elamantapa-ei-vain-urheilu-mxgp-1-50.jpg"
-image_caption: "Hessu matkalla mestaruuteen"
-language: "fi"
+category: Interview
+tags:
+  - Heikki Mikkola
+  - motocross
+  - historia
+  - MXGP
+  - 1970-luku
+featured_image: /images/heikki-mikkola-motocross-oli-elamantapa-ei-vain-urheilu-heikki-mikkola-hyvinkaa-sma.jpg
+card_image: /images/heikki-mikkola-motocross-oli-elamantapa-ei-vain-urheilu-mxgp-1-50.jpg
 show_hero: true
-draft: true
-seo_description: null
-sources: "Haastattelu tehty Helsinki, kesäkuu 2026\r\nKuvat: Photo & Moto arkisto"
+image_caption: Hessu matkalla mestaruuteen
+draft: false
+seo_description: Istumme Heikki Mikkolan kanssa hänen kotonaan Helsingissä.
+sources: "Haastattelu tehty Helsinki, kesäkuu 2026\r
+
+  Kuvat: Photo & Moto arkisto"
+language: fi
 ---
 
 Istumme Heikki Mikkolan kanssa hänen kotonaan Helsingissä. Seinällä 
@@ -53,4 +60,4 @@ Kyllä, innolla. Coenen-veljekset ovat hämmästyttäviä. Laji on
 kehittynyt valtavasti — moottorit, renkaat, radat — mutta 
 se sama hulluus on tallella. Se ilahduttaa minua.
 
-![](/images/heikki-mikkola-motocross-oli-elamantapa-ei-vain-urheilu-minicrioss-race-is-on.png)
+![mtocross lähtö](/images/heikki-mikkola-motocross-oli-elamantapa-ei-vain-urheilu-minicrioss-race-is-on.png "Kilpailu on tiukkaa mutta asiallista")
