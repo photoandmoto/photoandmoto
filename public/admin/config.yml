@@ -93,6 +93,43 @@ collections:
       - { name: sources, label: 'Lähteet (valinnainen)', widget: text, required: false, i18n: true, hint: 'Lähteet, joista materiaalia on lainattu. Jokainen lähde omalla rivillä. URL-osoitteet muuttuvat automaattisesti linkeiksi.' }
 
   # ============================================================
+  # Pikauutiset — short AI-assisted news flashes (Yleinen Kynä Phase 2).
+  # FI only (no i18n). The 2–3 sentence text is the markdown BODY (content area),
+  # same as articles. `author` and `source` are hidden/read-only — written by
+  # generate-article.js and never changed by the editor. Light editorial flow:
+  # read, toggle "Piilota sivustolta" off, publish straight to production.
+  # ============================================================
+  - name: pikauutiset
+    label: Pikauutiset
+    label_singular: Pikauutinen
+    description: 'AI-avusteiset lyhyet uutissalamat. Tarkista teksti, poista "Piilota sivustolta" -valinta ja julkaise tuotantoon.'
+    folder: src/content/pikauutiset
+    create: true
+    delete: true
+    extension: md
+    format: yaml-frontmatter
+    slug: '{{fields.date}}-{{slug}}'
+    summary: '{{title}} — {{date | date("YYYY-MM-DD")}}'
+    sortable_fields: [date, title]
+    view_filters:
+      - { label: 'Piilotetut (luonnos)', field: draft, pattern: true }
+    fields:
+      - { name: title, label: Otsikko, widget: string }
+      - { name: date, label: Tapahtumapäivä, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true }
+      - name: category
+        label: Kategoria
+        widget: relation
+        collection: categories
+        value_field: name
+        search_fields: [name, label]
+        display_fields: [label]
+      - { name: author, label: Kirjoittaja, widget: hidden }
+      - { name: source, label: Lähde, widget: hidden, default: ai_generated }
+      - { name: photo, label: 'Pääkuva (valinnainen)', widget: image, required: false }
+      - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false }
+      - { name: body, label: Teksti, widget: markdown }
+
+  # ============================================================
   # Shadow collections: pre-filled article templates.
   # Both write to src/content/articles/ — same folder as Artikkelit above.
   # The list view shows all articles (Decap can't filter it). The create
