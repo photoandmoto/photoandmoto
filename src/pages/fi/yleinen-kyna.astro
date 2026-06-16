@@ -23,15 +23,6 @@ const lang = 'fi';
           <p id="yk-login-err" class="yk-err" style="display:none;"></p>
           <a href="/fi/palauta-salasana/" class="yk-link">Unohditko salasanan?</a>
         </div>
-
-        <div class="yk-card">
-          <h2 class="yk-card__title">Pyydä käyttöoikeutta</h2>
-          <p class="yk-card__sub">Ei vielä tunnuksia? Pyydä oikeus lähettää artikkeleita — toimitus luo sinulle tunnukset.</p>
-          <input id="yk-req-name" class="inp" type="text" placeholder="Nimi" />
-          <input id="yk-req-email" class="inp" type="email" placeholder="Sähköposti" />
-          <button id="yk-req-btn" class="btn btn--ghost">Pyydä käyttöoikeutta</button>
-          <p id="yk-req-msg" class="yk-msg" style="display:none;"></p>
-        </div>
       </div>
 
       <!-- Logged in, but no submission permission. -->
@@ -223,37 +214,6 @@ const lang = 'fi';
     }
   });
 
-  // Access request.
-  $('yk-req-btn')?.addEventListener('click', async () => {
-    const name = $('yk-req-name').value.trim();
-    const email = $('yk-req-email').value.trim();
-    const msg = $('yk-req-msg');
-    const btn = $('yk-req-btn');
-    msg.style.display = 'none';
-    if (name.length < 2 || !email) { msg.className = 'yk-msg yk-msg--err'; msg.textContent = 'Anna nimi ja sähköposti.'; msg.style.display = 'block'; return; }
-    btn.disabled = true;
-    try {
-      const r = await fetch('/api/request-access', {
-        method: 'POST', credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email }),
-      });
-      const data = await r.json().catch(() => ({}));
-      if (r.ok && data.ok) {
-        msg.className = 'yk-msg yk-msg--ok';
-        msg.textContent = '✓ Pyyntö lähetetty. Toimitus on sinuun yhteydessä.';
-      } else {
-        msg.className = 'yk-msg yk-msg--err';
-        msg.textContent = '✗ ' + (data.error || 'Lähetys epäonnistui — yritä uudelleen.');
-      }
-      msg.style.display = 'block';
-    } catch {
-      msg.className = 'yk-msg yk-msg--err'; msg.textContent = '✗ Yhteysvirhe — yritä uudelleen.'; msg.style.display = 'block';
-    } finally {
-      btn.disabled = false;
-    }
-  });
-
   // Submit article.
   $('yk-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -357,8 +317,7 @@ const lang = 'fi';
   .yk-title { font-family: var(--font-headline); font-size: 2rem; font-weight: 900; margin: 0 0 8px; }
   .yk-intro { color: var(--text-secondary); max-width: 640px; margin: 0 0 28px; line-height: 1.5; }
 
-  .yk-gate { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 760px; }
-  @media (max-width: 640px) { .yk-gate { grid-template-columns: 1fr; } }
+  .yk-gate { display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 420px; }
   .yk-card {
     background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px;
     display: flex; flex-direction: column; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.04);

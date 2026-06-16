@@ -1,7 +1,8 @@
 // functions/api/auth/login.js
 //
 // Email + password login. Returns a session cookie on success.
-// Rate-limited (5 failed attempts per IP+email per hour, via login_attempts).
+// Rate-limited via login_attempts (per IP or email, last hour): 5 on production
+// (main), 50 on staging/dev — see maxFailedLogins().
 //
 // Security notes:
 // - Generic error message on all failures (no account enumeration)
@@ -23,7 +24,14 @@ import {
 } from '../../_lib/auth.js';
 import { runInit } from './init.js';
 
-const MAX_FAILED_LOGINS_PER_HOUR = 5;
+// Failed-login rate limit (per IP or email, last hour). Production (main) stays
+// strict; staging/dev get a far more permissive limit so testing isn't blocked
+// by the limiter. Gated on CF_PAGES_BRANCH: only the production branch is strict.
+const MAX_FAILED_LOGINS_PROD = 5;
+const MAX_FAILED_LOGINS_NONPROD = 50;
+function maxFailedLogins(env) {
+  return (env.CF_PAGES_BRANCH || '') === 'main' ? MAX_FAILED_LOGINS_PROD : MAX_FAILED_LOGINS_NONPROD;
+}
 const GENERIC_LOGIN_ERROR = 'Väärä sähköposti tai salasana';
 
 async function logAttempt(env, userId, email, ip, succeeded) {
@@ -44,7 +52,7 @@ async function isRateLimited(env, email, ip) {
        AND attempted_at > datetime('now', '-1 hour')
        AND (email_attempted = ? OR ip = ?)`
   ).bind(email, ip).first();
-  return (row?.n ?? 0) >= MAX_FAILED_LOGINS_PER_HOUR;
+  return (row?.n ?? 0) >= maxFailedLogins(env);
 }
 
 export async function onRequestPost({ request, env }) {
