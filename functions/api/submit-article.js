@@ -4,11 +4,12 @@
 // an article + photos. Flow:
 //   1. requireAuth(..., 'laheta_artikkeli')
 //   2. Parse multipart form, validate
-//   3. Upload photos to R2 (env.UPLOADS) with sanitized filenames
-//   4. Build a draft .md (draft: true; author from IAM session; seo_description null)
-//   5. Commit it to src/content/articles/fi/<slug>.md on the target branch
-//      (dev on staging, main on production) via the Photoandmoto Publisher App
-//   6. Email the editor via Resend
+//   3. Build a draft .md (draft: true; author from IAM session; seo_description null)
+//   4. Commit the .md AND the photos (public/images/<filename>) to the target
+//      branch (dev on staging, main on production) in one Photoandmoto Publisher
+//      App commit — images live in the repo so Sveltia's media library and the
+//      static build both resolve /images/<file> directly (no R2).
+//   5. Email the editor via Resend
 //
 // Hard rules (YLEINEN_KYNA.md): author is ALWAYS the IAM session name (never the
 // form); draft is ALWAYS true; photo filenames are sanitized (no colons, spaces
@@ -187,14 +188,12 @@ function buildMarkdown(fm, body) {
   return L.join('\n');
 }
 
-// Upload one File to R2 under public /images/<slug>-<name>; returns the public path.
-async function uploadPhoto(env, slug, file) {
+// Prepare one File for committing to the repo at public/images/<slug>-<name>.
+// Bytes are read later, at commit time. Returns the repo path + public URL path.
+function prepareImage(slug, file) {
   if (file.size > MAX_FILE_BYTES) throw new Error(`Kuva on liian suuri (max 10 MB): ${file.name}`);
   const safe = `${slug}-${sanitizeImageName(file.name)}`;
-  await env.UPLOADS.put(safe, await file.arrayBuffer(), {
-    httpMetadata: { contentType: file.type || 'image/jpeg' },
-  });
-  return `/images/${safe}`;
+  return { repoPath: `public/images/${safe}`, publicPath: `/images/${safe}`, file };
 }
 
 // ---------------------------------------------------------------------------
@@ -206,7 +205,6 @@ export async function onRequestPost({ request, env }) {
     const auth = await requireAuth(request, env, 'laheta_artikkeli');
     if (auth.error) return fail(auth.error, auth.status);
 
-    if (!env.UPLOADS) return fail('Kuvavarastoa (R2) ei ole määritetty', 500);
     if (!env.GITHUB_APP_ID || !env.GITHUB_APP_INSTALLATION_ID || !env.GITHUB_APP_PRIVATE_KEY) {
       return fail('GitHub App -asetukset puuttuvat', 500);
     }
@@ -259,16 +257,24 @@ export async function onRequestPost({ request, env }) {
       return fail('GitHubin tarkistus epäonnistui', 502);
     }
 
-    // 4. Upload photos to R2.
+    // 4. Collect the photos to commit into the repo (public/images/).
     let featuredPath, cardPath = null;
     const bodyImagePaths = [];
+    const images = []; // { repoPath, publicPath, file } — committed alongside the .md
     try {
-      featuredPath = await uploadPhoto(env, slug, featured);
-      if (card && typeof card !== 'string' && card.size > 0) cardPath = await uploadPhoto(env, slug, card);
-      for (const img of bodyImages) bodyImagePaths.push(await uploadPhoto(env, slug, img));
+      const f = prepareImage(slug, featured);
+      featuredPath = f.publicPath; images.push(f);
+      if (card && typeof card !== 'string' && card.size > 0) {
+        const c = prepareImage(slug, card);
+        cardPath = c.publicPath; images.push(c);
+      }
+      for (const img of bodyImages) {
+        const b = prepareImage(slug, img);
+        bodyImagePaths.push(b.publicPath); images.push(b);
+      }
     } catch (e) {
-      console.error('R2 upload failed:', e);
-      return fail(e.message || 'Kuvien lataus epäonnistui', 400);
+      console.error('image prepare failed:', e);
+      return fail(e.message || 'Kuvien käsittely epäonnistui', 400);
     }
 
     // 5. Build the draft markdown (append any body images for the editor to place).
@@ -286,10 +292,19 @@ export async function onRequestPost({ request, env }) {
     try {
       const headSha = await getBranchHead(token, branch);
       const baseTree = (await getCommit(token, headSha)).tree.sha;
+
+      const treeItems = [];
+      // Image blobs first (base64 of the raw bytes).
+      for (const img of images) {
+        const bytes = new Uint8Array(await img.file.arrayBuffer());
+        const imgBlob = await createBlob(token, bytesToBase64(bytes));
+        treeItems.push({ path: img.repoPath, mode: '100644', type: 'blob', sha: imgBlob.sha });
+      }
+      // Then the article markdown.
       const blob = await createBlob(token, utf8ToBase64(md));
-      const tree = await createTree(token, baseTree, [
-        { path: `src/content/articles/fi/${slug}.md`, mode: '100644', type: 'blob', sha: blob.sha },
-      ]);
+      treeItems.push({ path: `src/content/articles/fi/${slug}.md`, mode: '100644', type: 'blob', sha: blob.sha });
+
+      const tree = await createTree(token, baseTree, treeItems);
       const commit = await createCommit(token, `Yleinen Kynä: new draft "${title}" (${author})`, tree.sha, headSha);
       const upd = await updateBranch(token, branch, commit.sha);
       commitSha = upd.object?.sha || commit.sha;
