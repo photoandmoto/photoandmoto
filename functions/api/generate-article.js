@@ -212,24 +212,61 @@ function prepareImage(prefix, file) {
 // Gemini
 // ---------------------------------------------------------------------------
 function buildPrompt(f) {
-  return `Olet suomalainen moottoriurheilutoimittaja. Kirjoita lyhyt pikauutinen
-photoandmoto.fi-sivustolle seuraavista tiedoista.
+  return `Olet kokenut suomalainen moottoriurheilutoimittaja, joka kirjoittaa
+photoandmoto.fi-sivustolle. Tehtäväsi on muuntaa alla olevat
+ranskalaisin viivoin annetut tiedot sujuvaksi, ammattimaiseksi
+pikauutiseksi — kuin kokenut sanomalehtitoimittaja sen kirjoittaisi.
 
+═══ LÄHDETIEDOT ═══
 Aihe: ${f.aihe}
 Kategoria: ${f.category}
 Päivämäärä: ${f.paivays}
 Paikka: ${f.paikka}
-Sää: ${f.saa || '-'}
+Sää: ${f.saa || 'ei tietoa'}
 Positiiviset tapahtumat: ${f.positiiviset}
-Negatiiviset tapahtumat: ${f.negatiiviset || '-'}
+Negatiiviset tapahtumat: ${f.negatiiviset || 'ei tietoa'}
 Tulokset: ${f.tulokset}
-Muuta: ${f.muuta || '-'}
+Muuta: ${f.muuta || 'ei tietoa'}
 
-Kirjoita pikauutinen suomeksi. Rakenne:
-- Otsikko (max 80 merkkiä) — ytimekäs ja informatiivinen
-- Teksti (2-3 lausetta) — tiivis uutisteksti, kaikki oleelliset tiedot
+═══ KIRJOITUSOHJEET ═══
+1. KÄYTÄ VAIN annettuja tietoja. ÄLÄ KOSKAAN keksi nimiä, tuloksia,
+   numeroita, tapahtumia tai yksityiskohtia, joita ei ole annettu.
+   Jos jokin kenttä on "ei tietoa", älä mainitse sitä äläkä keksi
+   sisältöä sen tilalle.
 
-Palauta AINOASTAAN JSON-muodossa, ei muuta tekstiä:
+2. Muunna ranskalaiset viivat luontevaksi, virtaavaksi
+   uutistekstiksi. Älä luettele tietoja — kerro tarina kuten
+   ammattitoimittaja: aloita tärkeimmästä, sido faktat yhteen
+   sujuviksi virkkeiksi.
+
+3. SISÄLLYTÄ TULOKSET tekstiin luonnollisesti (esim. kärkikolmikko).
+
+4. SUOMEN KIELI: käytä virheetöntä suomea ja oikeita sijamuotoja.
+   Henkilönnimet taivutetaan oikein:
+   - "jätti Nicke Bomin taakseen" (EI "Nicke Bom")
+   - "Niemisen vauhti riitti" (EI "Nieminen vauhti")
+   Tarkista genetiivi, partitiivi ja muut sijamuodot huolellisesti.
+
+5. SÄVY kategorian mukaan:
+   - Kilpailuraportti / MXGP: napakka, faktapohjainen uutissävy
+   - Historiallinen: kunnioittava, taustoittava
+   - Haastattelu: henkilökeskeinen
+   Pidä sävy asiallisena. Vältä liiallista värittämistä tai
+   omia mielipiteitä — raportoi, älä kommentoi.
+
+6. PITUUS: tiivis, 2-4 virkettä, korkeintaan 450 merkkiä.
+   Mahduta kaikki oleellinen tähän tilaan. Älä katkaise kesken.
+
+7. Teksti on pelkkää leipätekstiä — ÄLÄ käytä väliotsikoita,
+   ranskalaisia viivoja tai Markdown-muotoilua bodyssä.
+
+═══ OTSIKKO ═══
+- Korkeintaan 80 merkkiä
+- Ytimekäs ja informatiivinen — kertoo uutisen ytimen
+- Sisällytä paikka tai päähenkilö jos se on olennaista
+
+═══ PALAUTUSMUOTO ═══
+Palauta AINOASTAAN validi JSON, ei mitään muuta tekstiä:
 {
   "title": "",
   "body": ""
@@ -421,13 +458,16 @@ export async function onRequestPost({ request, env }) {
     let emailWarning = null;
     if (env.RESEND_API_KEY) {
       try {
+        const sveltiaCmsUrl = (env.CF_PAGES_BRANCH === 'main' || !env.CF_PAGES_BRANCH)
+          ? 'https://www.photoandmoto.fi/admin/#/collections/pikauutiset'
+          : 'https://photoandmoto-staging.pages.dev/admin/#/collections/pikauutiset';
         const text =
 `Otsikko: ${title}
 Lähettäjä: ${author}
 Kategoria: ${category}
 Lähetetty: ${new Date().toISOString()}
 
-Avaa Sveltia: https://www.photoandmoto.fi/admin/#/collections/pikauutiset`;
+Avaa Sveltia: ${sveltiaCmsUrl}`;
         const res = await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },

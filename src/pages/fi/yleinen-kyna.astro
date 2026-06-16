@@ -83,7 +83,10 @@ const lang = 'fi';
             <label class="yk-field"><span>Tulokset *</span><textarea name="tulokset" class="inp" rows="3" required placeholder="top 3 tai tuloslista"></textarea></label>
             <label class="yk-field"><span>Muuta</span><textarea name="muuta" class="inp" rows="2" placeholder="valinnainen"></textarea></label>
             <label class="yk-field"><span>Pääkuva (valinnainen)</span><input name="photo" class="inp" type="file" accept="image/jpeg,image/png,image/webp" /></label>
-            <button id="yk-flash-btn" class="btn btn--submit" type="submit">Luo pikauutinen</button>
+            <div class="yk-flash-actions">
+              <button id="yk-flash-btn" class="btn btn--submit" type="submit">Luo pikauutinen</button>
+              <button id="yk-flash-clear" class="btn btn--ghost" type="reset">Tyhjennä</button>
+            </div>
             <p id="yk-flash-msg" class="yk-msg" style="display:none;"></p>
           </form>
 
@@ -126,6 +129,7 @@ const lang = 'fi';
     gate.style.display = 'none'; noperm.style.display = 'none'; formWrap.style.display = '';
     const greet = $('yk-greet');
     if (greet) greet.textContent = `Tervetuloa, ${user?.first_name || ''}`.trim();
+    resetFlash(); // never carry a previous success state across boots
   }
 
   // Populate category dropdowns (article + pikauutinen).
@@ -284,14 +288,21 @@ const lang = 'fi';
     }
   });
 
-  // "Luo uusi pikauutinen" — reset back to the empty form.
-  $('yk-flash-again')?.addEventListener('click', () => {
+  // Reset the pikauutinen tab to a clean, empty form — clears the generated
+  // draft preview so it never persists. Used by "Luo uusi pikauutinen" and on
+  // every session boot.
+  function resetFlash() {
     const form = $('yk-flash-form');
-    form.reset();
-    form.style.display = '';
-    $('yk-flash-success').style.display = 'none';
-    $('yk-flash-msg').style.display = 'none';
-  });
+    if (form) { form.reset(); form.style.display = ''; }
+    const succ = $('yk-flash-success'); if (succ) succ.style.display = 'none';
+    const pt = $('yk-flash-ptitle'); if (pt) pt.textContent = '';
+    const pb = $('yk-flash-pbody'); if (pb) pb.textContent = '';
+    const note = $('yk-flash-note'); if (note) { note.textContent = ''; note.style.display = 'none'; }
+    const msg = $('yk-flash-msg'); if (msg) msg.style.display = 'none';
+  }
+
+  // "Luo uusi pikauutinen" — back to the empty form.
+  $('yk-flash-again')?.addEventListener('click', resetFlash);
 
   // Logout (both buttons).
   async function logout() {
@@ -355,4 +366,5 @@ const lang = 'fi';
   }
   .yk-flash-preview h4 { font-family: var(--font-headline); font-size: 1.1rem; font-weight: 800; margin: 0 0 8px; }
   .yk-flash-preview p { margin: 0; line-height: 1.55; color: #333; }
+  .yk-flash-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 </style>

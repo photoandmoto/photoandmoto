@@ -70,7 +70,9 @@ const items = await Promise.all(
   .pk-intro { color: var(--text-secondary); margin: 0; line-height: 1.5; }
   .pk-empty { color: var(--text-secondary); font-size: 1rem; }
 
-  .pk-list { display: flex; flex-direction: column; gap: 18px; max-width: 760px; }
+  /* Single column on mobile, two columns on desktop (≥768px). */
+  .pk-list { display: grid; grid-template-columns: 1fr; gap: 18px; max-width: 1100px; }
+  @media (min-width: 768px) { .pk-list { grid-template-columns: 1fr 1fr; } }
 
   .pk-card {
     display: flex; gap: 18px;
