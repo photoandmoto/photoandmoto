@@ -2972,7 +2972,7 @@ if (document.getElementById('ktAddBtn')) {
   .adm-toplink { display: inline-block; font-size: .82rem; color: #888; text-decoration: none; margin: 4px 0 18px; }
   .adm-toplink:hover { color: var(--brand-primary, #ff9900); }
 
-  .adm-cards { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: 760px; }
+  .adm-cards { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: 860px; margin-left: auto; margin-right: auto; }
   @media (min-width: 640px) { .adm-cards { grid-template-columns: 1fr 1fr; } }
 
   .adm-card {
@@ -2996,7 +2996,9 @@ if (document.getElementById('ktAddBtn')) {
   }
   .adm-back:hover { color: var(--brand-primary, #ff9900); }
 
-  /* Centered content column (consistent across gated pages). */
-  .container { max-width: 860px; }
-  .adm-cards, .admin-panel { margin-left: auto; margin-right: auto; }
+  /* 860px centered column for the login card (.admin-panel) + permission card
+     grid (.adm-cards, centered above) ONLY. Tool sections (Tarkista, Lähetä
+     kuva, Hallitse galleriaa, Julkaise, Käyttäjät) keep the full container
+     width — their grids, tables and image layouts need the room. */
+  .admin-panel { margin-left: auto; margin-right: auto; }
 </style>
