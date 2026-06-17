@@ -161,7 +161,7 @@ const lang = 'fi';
               <button type="button" id="deployProdBtn" class="btn">Julkaise tuotantoon</button>
             </div>
 
-            <div class="julkaise-card">
+            <div class="julkaise-card" id="geminiKeyCard">
               <h4 class="julkaise-card__title">Gemini-avain (käännöksiin)</h4>
               <p class="julkaise-card__desc">Tekoälyavain artikkelien kääntämiseen Sveltia-editorissa.</p>
               <button type="button" id="geminiKeyBtn" class="btn btn--ghost">Näytä Gemini-avain</button>
@@ -223,6 +223,7 @@ const lang = 'fi';
                 <select id="ktModalRole" class="inp">
                   <option value="editor">Editor</option>
                   <option value="admin">Admin</option>
+                  <option value="avustaja">Avustaja</option>
                 </select>
               </div>
               <fieldset class="kt-perms-set">
@@ -232,7 +233,8 @@ const lang = 'fi';
                 <label class="kt-perm-check"><input type="checkbox" id="ktPerm_hallitse_galleriaa"> Hallitse galleriaa <small>(galleriakuvien muokkaus)</small></label>
                 <label class="kt-perm-check"><input type="checkbox" id="ktPerm_hallitse_artikkeleita"> Hallitse artikkeleita <small>(Sveltia CMS — erillinen GitHub-kirjautuminen)</small></label>
                 <label class="kt-perm-check"><input type="checkbox" id="ktPerm_admin_iam"> <strong>Hallitse käyttäjiä</strong> <small>(tämä paneeli)</small></label>
-                <label class="kt-perm-check"><input type="checkbox" id="ktPerm_laheta_artikkeli"> Yleinen Kynä <small>(artikkelin lähetyslomake — contributor-rooli)</small></label>
+                <label class="kt-perm-check"><input type="checkbox" id="ktPerm_laheta_artikkeli"> Avustajat <small>(artikkelin lähetyslomake — contributor-rooli)</small></label>
+                <label class="kt-perm-check"><input type="checkbox" id="ktPerm_nahta_gemini_avain"> Näytä Gemini-avain <small>(Gemini API-avain Sveltia-kääntäjälle)</small></label>
               </fieldset>
             </div>
             <div id="ktModalErr" class="err-msg" style="display:none; margin-top:10px;"></div>
@@ -1327,6 +1329,10 @@ function applyPermissions(user) {
     const need = card.dataset.perm;
     card.style.display = (!need || perms[need]) ? '' : 'none';
   });
+  // Gemini-avain card (Julkaise section) is gated by its own permission —
+  // hidden entirely unless the user has perm_nahta_gemini_avain.
+  const gk = document.getElementById('geminiKeyCard');
+  if (gk) gk.style.display = perms.nahta_gemini_avain ? '' : 'none';
 }
 
 // Section key → content element id.
@@ -1840,7 +1846,7 @@ function ktPermsBadges(p) {
   if (p.hallitse_galleriaa) out.push('<span class="kt-badge" title="Hallitse galleriaa">G</span>');
   if (p.hallitse_artikkeleita) out.push('<span class="kt-badge" title="Hallitse artikkeleita">A</span>');
   if (p.admin_iam) out.push('<span class="kt-badge kt-badge--admin" title="Hallitse käyttäjiä">I</span>');
-  if (p.laheta_artikkeli) out.push('<span class="kt-badge kt-badge--contributor" title="Yleinen Kynä">YK</span>');
+  if (p.laheta_artikkeli) out.push('<span class="kt-badge kt-badge--contributor" title="Avustajat">YK</span>');
   return out.join(' ') || '<span class="kt-badge-empty">—</span>';
 }
 
@@ -1886,9 +1892,32 @@ function ktRenderTable() {
     <span><span class="kt-badge">G</span> Hallitse galleriaa</span> ·
     <span><span class="kt-badge">A</span> Hallitse artikkeleita</span> ·
     <span><span class="kt-badge kt-badge--admin">I</span> Hallitse käyttäjiä</span> ·
-    <span><span class="kt-badge kt-badge--contributor">YK</span> Yleinen Kynä</span>
+    <span><span class="kt-badge kt-badge--contributor">YK</span> Avustajat</span>
   </div>`;
 }
+
+// Default permission ticks per role. Gemini-avain is always off by default,
+// including for Admin (granted explicitly when needed).
+const KT_ROLE_DEFAULTS = {
+  admin:    { tarkista: 1, lahetakuva: 1, hallitse_galleriaa: 1, hallitse_artikkeleita: 1, admin_iam: 1, laheta_artikkeli: 1, nahta_gemini_avain: 0 },
+  editor:   { tarkista: 1, lahetakuva: 1, hallitse_galleriaa: 0, hallitse_artikkeleita: 1, admin_iam: 0, laheta_artikkeli: 0, nahta_gemini_avain: 0 },
+  avustaja: { tarkista: 0, lahetakuva: 0, hallitse_galleriaa: 0, hallitse_artikkeleita: 0, admin_iam: 0, laheta_artikkeli: 1, nahta_gemini_avain: 0 },
+};
+function ktApplyRoleDefaults(role) {
+  const d = KT_ROLE_DEFAULTS[role] || KT_ROLE_DEFAULTS.editor;
+  document.getElementById('ktPerm_tarkista').checked = !!d.tarkista;
+  document.getElementById('ktPerm_lahetakuva').checked = !!d.lahetakuva;
+  document.getElementById('ktPerm_hallitse_galleriaa').checked = !!d.hallitse_galleriaa;
+  document.getElementById('ktPerm_hallitse_artikkeleita').checked = !!d.hallitse_artikkeleita;
+  document.getElementById('ktPerm_admin_iam').checked = !!d.admin_iam;
+  document.getElementById('ktPerm_laheta_artikkeli').checked = !!d.laheta_artikkeli;
+  document.getElementById('ktPerm_nahta_gemini_avain').checked = !!d.nahta_gemini_avain;
+}
+// Changing the role in the CREATE modal re-applies that role's default ticks.
+// In edit mode we leave the loaded permissions untouched.
+document.getElementById('ktModalRole')?.addEventListener('change', (e) => {
+  if (ktEditingUserId === null) ktApplyRoleDefaults(e.target.value);
+});
 
 function ktOpenCreateModal() {
   ktEditingUserId = null;
@@ -1898,12 +1927,7 @@ function ktOpenCreateModal() {
   document.getElementById('ktModalEmail').value = '';
   document.getElementById('ktModalEmail').disabled = false;
   document.getElementById('ktModalRole').value = 'editor';
-  document.getElementById('ktPerm_tarkista').checked = true;
-  document.getElementById('ktPerm_lahetakuva').checked = true;
-  document.getElementById('ktPerm_hallitse_galleriaa').checked = false;
-  document.getElementById('ktPerm_hallitse_artikkeleita').checked = true;
-  document.getElementById('ktPerm_admin_iam').checked = false;
-  document.getElementById('ktPerm_laheta_artikkeli').checked = false;
+  ktApplyRoleDefaults('editor');
   document.getElementById('ktModalLinkBox').style.display = 'none';
   document.getElementById('ktModalErr').style.display = 'none';
   document.getElementById('ktModalSave').disabled = false;
@@ -1930,6 +1954,7 @@ function ktOpenEditModal(uid) {
   document.getElementById('ktPerm_hallitse_artikkeleita').checked = !!u.permissions.hallitse_artikkeleita;
   document.getElementById('ktPerm_admin_iam').checked = !!u.permissions.admin_iam;
   document.getElementById('ktPerm_laheta_artikkeli').checked = !!u.permissions.laheta_artikkeli;
+  document.getElementById('ktPerm_nahta_gemini_avain').checked = !!u.permissions.nahta_gemini_avain;
   document.getElementById('ktModalLinkBox').style.display = 'none';
   document.getElementById('ktModalErr').style.display = 'none';
   document.getElementById('ktModalSave').disabled = false;
@@ -1969,6 +1994,7 @@ async function ktSubmitModal() {
       hallitse_artikkeleita: document.getElementById('ktPerm_hallitse_artikkeleita').checked,
       admin_iam: document.getElementById('ktPerm_admin_iam').checked,
       laheta_artikkeli: document.getElementById('ktPerm_laheta_artikkeli').checked,
+      nahta_gemini_avain: document.getElementById('ktPerm_nahta_gemini_avain').checked,
     },
   };
 
@@ -2897,6 +2923,7 @@ if (document.getElementById('ktAddBtn')) {
   .kt-role{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
   .kt-role--admin{background:#fff3e0;color:#a06400}
   .kt-role--editor{background:#e3f2fd;color:#1565c0}
+  .kt-role--avustaja{background:#e8f5e9;color:#2e7d32}
   .kt-status{font-size:.78rem;font-weight:600;white-space:nowrap}
   .kt-status--active{color:#2e7d32}
   .kt-status--inactive{color:#888}

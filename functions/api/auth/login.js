@@ -82,6 +82,7 @@ export async function onRequestPost({ request, env }) {
     `SELECT id, first_name, last_name, email, role,
             perm_tarkista, perm_lahetakuva, perm_hallitse_galleriaa,
             perm_hallitse_artikkeleita, perm_admin_iam, perm_laheta_artikkeli,
+            perm_nahta_gemini_avain,
             password_hash, password_salt, is_active
      FROM users WHERE email = ?`
   ).bind(email).first();
@@ -137,6 +138,7 @@ export async function onRequestPost({ request, env }) {
           hallitse_artikkeleita: !!user.perm_hallitse_artikkeleita,
           admin_iam: !!user.perm_admin_iam,
           laheta_artikkeli: !!user.perm_laheta_artikkeli,
+          nahta_gemini_avain: !!user.perm_nahta_gemini_avain,
         },
       },
     },

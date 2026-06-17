@@ -22,6 +22,16 @@ const lang = 'fi';
           <p id="tk-err" class="tk-err" style="display:none;"></p>
           <a href="/fi/palauta-salasana/" class="tk-link">Unohditko salasanan?</a>
         </div>
+
+        <div class="tk-card tk-card--request">
+          <h2 class="tk-card__title">Pyydä käyttöoikeutta</h2>
+          <p class="tk-card__sub">Haluatko kirjoittaa Photo &amp; Motoon? Pyydä Avustaja-oikeudet — lähetämme sinulle vahvistuslinkin sähköpostitse.</p>
+          <input id="tk-req-name" class="inp" type="text" placeholder="Nimi" maxlength="100" autocomplete="off" />
+          <input id="tk-req-email" class="inp" type="email" placeholder="Sähköposti" autocomplete="off" />
+          <textarea id="tk-req-reason" class="inp tk-req-reason" rows="4" maxlength="500" placeholder="Miksi haluat kirjoittaa Photo & Motoon?"></textarea>
+          <button id="tk-req-btn" class="btn btn--ghost">Lähetä pyyntö</button>
+          <p id="tk-req-msg" class="tk-msg" style="display:none;"></p>
+        </div>
       </div>
 
       <!-- Logged-in hub (links shown by permission). -->
@@ -119,6 +129,41 @@ const lang = 'fi';
     showGate();
   });
 
+  // Access request (Pyydä käyttöoikeutta) — sends a verification link by email.
+  $('tk-req-btn')?.addEventListener('click', async () => {
+    const name = $('tk-req-name').value.trim();
+    const email = $('tk-req-email').value.trim();
+    const reason = $('tk-req-reason').value.trim();
+    const msg = $('tk-req-msg');
+    const btn = $('tk-req-btn');
+    msg.style.display = 'none';
+    if (name.length < 2) { msg.className = 'tk-msg tk-msg--err'; msg.textContent = 'Anna nimesi.'; msg.style.display = 'block'; return; }
+    if (!email) { msg.className = 'tk-msg tk-msg--err'; msg.textContent = 'Anna sähköpostiosoite.'; msg.style.display = 'block'; return; }
+    if (!reason) { msg.className = 'tk-msg tk-msg--err'; msg.textContent = 'Kerro miksi haluat kirjoittaa.'; msg.style.display = 'block'; return; }
+    btn.disabled = true;
+    try {
+      const r = await fetch('/api/request-access', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, reason }),
+      });
+      const data = await r.json().catch(() => ({}));
+      if (r.ok && data.ok) {
+        msg.className = 'tk-msg tk-msg--ok';
+        msg.textContent = 'Tarkista sähköpostisi — lähetimme sinulle vahvistuslinkin.';
+        $('tk-req-name').value = ''; $('tk-req-email').value = ''; $('tk-req-reason').value = '';
+      } else {
+        msg.className = 'tk-msg tk-msg--err';
+        msg.textContent = data.error || 'Pyynnön lähetys epäonnistui — yritä uudelleen.';
+      }
+      msg.style.display = 'block';
+    } catch {
+      msg.className = 'tk-msg tk-msg--err'; msg.textContent = 'Yhteysvirhe — yritä uudelleen.'; msg.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
   // Password eye toggle + Caps Lock warning (login form).
   (function () {
     const pw = $('tk-pw'); if (!pw) return;
@@ -145,7 +190,12 @@ const lang = 'fi';
   .tk { padding: var(--space-5, 3rem) 0; }
   .tk-title { font-family: var(--font-headline); font-size: 2rem; font-weight: 900; margin: 0 0 24px; }
 
-  .tk-gate { max-width: 420px; }
+  .tk-gate { display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 760px; }
+  @media (min-width: 640px) { .tk-gate { grid-template-columns: 1fr 1fr; align-items: start; } }
+  .tk-msg { font-size: .85rem; font-weight: 600; margin: 0; line-height: 1.4; }
+  .tk-msg--ok { color: #1a8a5c; }
+  .tk-msg--err { color: #dc3545; }
+  .tk-req-reason { resize: vertical; min-height: 80px; font-family: inherit; }
   .tk-card {
     background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px;
     display: flex; flex-direction: column; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.04);

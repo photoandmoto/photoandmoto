@@ -21,10 +21,11 @@ import {
 } from '../../../_lib/auth.js';
 import { runInit } from '../init.js';
 
-const VALID_ROLES = ['admin', 'editor'];
+const VALID_ROLES = ['admin', 'editor', 'avustaja'];
 const VALID_PERMS = [
   'tarkista', 'lahetakuva', 'hallitse_galleriaa',
   'hallitse_artikkeleita', 'admin_iam', 'laheta_artikkeli',
+  'nahta_gemini_avain',
 ];
 
 async function countActiveAdmins(env, excludingUserId = null) {
@@ -51,6 +52,7 @@ export async function onRequestPatch({ request, env, params }) {
     `SELECT id, first_name, last_name, role,
             perm_tarkista, perm_lahetakuva, perm_hallitse_galleriaa,
             perm_hallitse_artikkeleita, perm_admin_iam, perm_laheta_artikkeli,
+            perm_nahta_gemini_avain,
             is_active
      FROM users WHERE id = ?`
   ).bind(userId).first();
@@ -79,6 +81,8 @@ export async function onRequestPatch({ request, env, params }) {
       ? (body.permissions.admin_iam ? 1 : 0) : target.perm_admin_iam,
     perm_laheta_artikkeli: body.permissions?.laheta_artikkeli !== undefined
       ? (body.permissions.laheta_artikkeli ? 1 : 0) : target.perm_laheta_artikkeli,
+    perm_nahta_gemini_avain: body.permissions?.nahta_gemini_avain !== undefined
+      ? (body.permissions.nahta_gemini_avain ? 1 : 0) : target.perm_nahta_gemini_avain,
     is_active: body.is_active !== undefined
       ? (body.is_active ? 1 : 0) : target.is_active,
   };
@@ -128,6 +132,7 @@ export async function onRequestPatch({ request, env, params }) {
       perm_tarkista = ?, perm_lahetakuva = ?,
       perm_hallitse_galleriaa = ?, perm_hallitse_artikkeleita = ?,
       perm_admin_iam = ?, perm_laheta_artikkeli = ?,
+      perm_nahta_gemini_avain = ?,
       is_active = ?
     WHERE id = ?
   `).bind(
@@ -135,6 +140,7 @@ export async function onRequestPatch({ request, env, params }) {
     merged.perm_tarkista, merged.perm_lahetakuva,
     merged.perm_hallitse_galleriaa, merged.perm_hallitse_artikkeleita,
     merged.perm_admin_iam, merged.perm_laheta_artikkeli,
+    merged.perm_nahta_gemini_avain,
     merged.is_active,
     userId
   ).run();
@@ -149,6 +155,7 @@ export async function onRequestPatch({ request, env, params }) {
     SELECT id, first_name, last_name, email, role,
            perm_tarkista, perm_lahetakuva, perm_hallitse_galleriaa,
            perm_hallitse_artikkeleita, perm_admin_iam, perm_laheta_artikkeli,
+           perm_nahta_gemini_avain,
            is_active,
            (password_hash IS NOT NULL) AS has_password,
            created_at, last_login_at, last_recovery_at
@@ -170,6 +177,7 @@ export async function onRequestPatch({ request, env, params }) {
         hallitse_artikkeleita: !!updated.perm_hallitse_artikkeleita,
         admin_iam: !!updated.perm_admin_iam,
         laheta_artikkeli: !!updated.perm_laheta_artikkeli,
+        nahta_gemini_avain: !!updated.perm_nahta_gemini_avain,
       },
       is_active: !!updated.is_active,
       has_password: !!updated.has_password,

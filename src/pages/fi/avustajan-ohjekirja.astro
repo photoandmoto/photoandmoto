@@ -9,7 +9,7 @@ const lang = 'fi';
 >
   <article class="ohje">
     <div class="container ohje-wrap">
-      <a href="#" class="ohje-back" id="ohje-back">← Takaisin</a>
+      <a href="#" class="ohje-back" onclick="history.back(); return false;">← Takaisin</a>
       <header class="ohje-head">
         <h1 class="ohje-title">Avustajan Ohjekirja</h1>
         <p class="ohje-lede">Photo &amp; Moto — Avustajien opas</p>
@@ -108,14 +108,6 @@ const lang = 'fi';
     </div>
   </article>
 </BaseLayout>
-
-<script>
-  // "← Takaisin" — one step back in browser history.
-  document.getElementById('ohje-back')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    history.back();
-  });
-</script>
 
 <style>
   .ohje { padding: var(--space-5, 3rem) 0; }

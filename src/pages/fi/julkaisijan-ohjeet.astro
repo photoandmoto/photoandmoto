@@ -10,21 +10,13 @@ const description = 'Photo & Moto -sivuston sisällöntuottajan ja ylläpitäjä
 <BaseLayout title={title} lang={lang} description={description} noindex={true}>
   <section class="docpage">
     <div class="container docpage-container">
-      <a href="#" class="docpage-back" id="docpage-back">← Takaisin</a>
+      <a href="#" class="docpage-back" onclick="history.back(); return false;">← Takaisin</a>
       <div class="docpage-prose">
         <Content />
       </div>
     </div>
   </section>
 </BaseLayout>
-
-<script>
-  // "← Takaisin" — one step back in browser history.
-  document.getElementById('docpage-back')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    history.back();
-  });
-</script>
 
 <style>
   /* Layout — wide enough for tables, narrow enough for comfortable reading */
