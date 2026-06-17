@@ -20,13 +20,14 @@
 ### GitHub — Text Only ✅ Mostly compliant
 - Articles, pikauutiset, categories all in GitHub as markdown ✅
 - Sveltia commits directly to repo ✅
-- GAP: Contributor-submitted images (Phase 1) committed to
-  `public/images/` in repo — violates images-bypass-GitHub rule.
-  Low volume now but will grow.
+- GAP: Contributor-submitted images (Phase 1) AND pikauutinen photos
+  (Phase 2) are committed to `public/images/` in repo — violates the
+  images-bypass-GitHub rule. Low volume now but will grow.
 
 ### Cloudflare R2 — Images ⚠️ Partially compliant
 - R2 bucket `photoandmoto-uploads` exists ✅
-- Pikauutiset photos go to R2 ✅
+- GAP: No images in R2 yet — pikauutinen photos currently commit to
+  the repo (`public/images/`), same as contributor images
 - GAP: Sveltia NOT configured to use R2 as media library —
   editorial image uploads still commit to repo
 - GAP: No custom subdomain connected to R2
@@ -115,7 +116,8 @@ Current risk: contributor images in `public/images/` — monitor.
 - Free tier: 10 GB
 - Average optimized image: ~150 KB
 - Capacity: ~65,000 images on free tier
-- Current usage: minimal (pikauutiset photos only)
+- Current usage: none yet (no images in R2 — pikauutinen and
+  contributor photos currently commit to `public/images/`)
 - Risk level: Low for foreseeable future
 
 ---
