@@ -77,6 +77,15 @@ original custom admin.
   (email + password, see [Authentication & access control](#authentication--access-control) below)
 - Backed by `functions/api/mystery/*` and Cloudflare D1
 
+### Contributor & editorial system — Avustajat / Toimituskeskus
+
+`/fi/toimitus` (Toimituskeskus) is the entry point for the contributor +
+editorial layer: **Avustajat** (`/fi/yleinen-kyna` — article + AI pikauutinen
+submission) and **Toimitus** (`/fi/yllapito`, the custom admin above), plus the
+public `/fi/pikauutiset` feed. Built on the same IAM/D1/GitHub App stack.
+**See `YLEINEN_KYNA.md` for the full design and `INFRASTRUCTURE.md` for the
+storage roadmap.**
+
 ---
 
 ## Authentication & access control
