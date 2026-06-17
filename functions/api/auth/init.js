@@ -17,13 +17,15 @@ export async function runInit(env) {
       first_name TEXT NOT NULL,
       last_name TEXT NOT NULL,
       email TEXT UNIQUE NOT NULL,
-      role TEXT NOT NULL CHECK (role IN ('admin', 'editor')),
+      role TEXT NOT NULL CHECK (role IN ('admin', 'editor', 'avustaja')),
 
       perm_tarkista INTEGER DEFAULT 0,
       perm_lahetakuva INTEGER DEFAULT 0,
       perm_hallitse_galleriaa INTEGER DEFAULT 0,
       perm_hallitse_artikkeleita INTEGER DEFAULT 0,
       perm_admin_iam INTEGER DEFAULT 0,
+      perm_laheta_artikkeli INTEGER NOT NULL DEFAULT 0,
+      perm_nahta_gemini_avain INTEGER NOT NULL DEFAULT 0,
 
       password_hash TEXT,
       password_salt TEXT,
@@ -37,9 +39,7 @@ export async function runInit(env) {
       created_by INTEGER,
       last_login_at TEXT,
       last_recovery_at TEXT,
-      is_active INTEGER DEFAULT 1,
-
-      FOREIGN KEY (created_by) REFERENCES users(id)
+      is_active INTEGER DEFAULT 1
     )
   `).run();
 
