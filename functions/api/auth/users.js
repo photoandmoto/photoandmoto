@@ -161,7 +161,7 @@ Sinut on kutsuttu Photo & Moto -sivuston avustajaksi.
 Aktivoi tilisi klikkaamalla alla olevaa linkkiä:
 ${provisioningLink}
 
-Linkki vanhenee 72 tunnin kuluttua.
+Linkki vanhenee 24 tunnin kuluttua.
 
 Jos et odottanut tätä viestiä, voit jättää sen huomiotta.`;
     try {
