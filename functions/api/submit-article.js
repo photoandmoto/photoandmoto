@@ -322,13 +322,16 @@ export async function onRequestPost({ request, env }) {
     let emailWarning = null;
     if (env.RESEND_API_KEY) {
       try {
+        const sveltiaCmsUrl = (env.CF_PAGES_BRANCH === 'main' || !env.CF_PAGES_BRANCH)
+          ? 'https://www.photoandmoto.fi/admin/'
+          : 'https://photoandmoto-staging.pages.dev/admin/';
         const text =
 `Otsikko: ${title}
 Lähettäjä: ${author}
 Kategoria: ${category}
 Lähetetty: ${new Date().toISOString()}
 
-Avaa Sveltia: https://www.photoandmoto.fi/admin/`;
+Avaa Sveltia: ${sveltiaCmsUrl}`;
         const res = await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: { 'Authorization': `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },

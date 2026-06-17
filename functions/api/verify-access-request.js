@@ -35,13 +35,15 @@ export async function onRequestGet({ request, env }) {
   // Notify the editor (non-fatal — the request is already verified in D1).
   let emailWarning = false;
   if (env.RESEND_API_KEY) {
+    const isProd = env.CF_PAGES_BRANCH === 'main';
+    const baseUrl = isProd ? 'https://www.photoandmoto.fi' : 'https://photoandmoto-staging.pages.dev';
     const text =
 `Nimi: ${row.name}
 Sähköposti: ${row.email}
 Syy: ${row.reason}
 Lähetetty: ${new Date().toISOString()}
 
-Luo käyttäjätili: https://www.photoandmoto.fi/fi/toimitus
+Luo käyttäjätili: ${baseUrl}/fi/toimitus
 (Kirjaudu → Toimitus → Käyttäjät → Luo uusi käyttäjä, valitse rooli Avustaja)`;
     try {
       const res = await fetch('https://api.resend.com/emails', {

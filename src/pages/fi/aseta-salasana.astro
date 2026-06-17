@@ -313,9 +313,15 @@ const description = 'Aseta salasana ja palautuskysymykset Photo & Moto -ylläpit
           showState('state-form');
           return;
         }
-        // Success — short flash, then redirect
+        // Success — short flash, then redirect. Contributor-only accounts
+        // (laheta_artikkeli, no editor/admin perms) go to /fi/toimitus; everyone
+        // with editor/admin permissions goes to /fi/yllapito.
         showState('state-success');
-        setTimeout(() => { window.location.href = '/fi/yllapito/'; }, 1500);
+        const p = (data.user && data.user.permissions) || {};
+        const isEditorOrAdmin = !!(p.admin_iam || p.tarkista || p.lahetakuva
+          || p.hallitse_galleriaa || p.hallitse_artikkeleita);
+        const dest = (p.laheta_artikkeli && !isEditorOrAdmin) ? '/fi/toimitus' : '/fi/yllapito/';
+        setTimeout(() => { window.location.href = dest; }, 1500);
       } catch {
         $('formError').textContent = 'Yhteysvirhe — kokeile uudelleen.';
         $('formError').hidden = false;

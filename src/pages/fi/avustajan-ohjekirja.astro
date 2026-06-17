@@ -9,7 +9,7 @@ const lang = 'fi';
 >
   <article class="ohje">
     <div class="container ohje-wrap">
-      <a href="#" class="ohje-back" onclick="history.back(); return false;">← Takaisin</a>
+      <button type="button" class="ohje-back" data-back>← Takaisin</button>
       <header class="ohje-head">
         <h1 class="ohje-title">Avustajan Ohjekirja</h1>
         <p class="ohje-lede">Photo &amp; Moto — Avustajien opas</p>
@@ -109,10 +109,21 @@ const lang = 'fi';
   </article>
 </BaseLayout>
 
+<script>
+  // "← Takaisin" — one step back; fall back to the hub if there's no history
+  // (e.g. the page was opened in a new tab).
+  document.querySelectorAll('[data-back]').forEach((el) => {
+    el.addEventListener('click', () => {
+      if (window.history.length > 1) window.history.back();
+      else window.location.href = '/fi/toimitus';
+    });
+  });
+</script>
+
 <style>
   .ohje { padding: var(--space-5, 3rem) 0; }
   .ohje-wrap { max-width: 860px; margin: 0 auto; }
-  .ohje-back { display: inline-block; font-size: .85rem; font-weight: 700; color: #888; text-decoration: none; margin: 0 0 14px; cursor: pointer; }
+  .ohje-back { display: inline-block; font-size: .85rem; font-weight: 700; color: #888; text-decoration: none; margin: 0 0 14px; cursor: pointer; background: none; border: none; padding: 0; font-family: inherit; }
   .ohje-back:hover { color: var(--brand-primary, #ff9900); }
   .ohje-head { margin-bottom: 32px; padding-bottom: 18px; border-bottom: 2px solid var(--brand-primary, #ff9900); }
   .ohje-title { font-family: var(--font-headline); font-size: 2.2rem; font-weight: 900; margin: 0 0 4px; color: #111; }

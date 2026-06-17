@@ -149,6 +149,38 @@ export async function onRequestPost({ request, env }) {
   const url = new URL(request.url);
   const provisioningLink = `${url.protocol}//${url.host}/fi/aseta-salasana?token=${rawToken}`;
 
+  // ── Auto-email the activation link to the new user (non-fatal). If Resend is
+  //    not configured or the send fails, we still return the link below so the
+  //    admin can copy and send it manually. ──
+  if (env.RESEND_API_KEY) {
+    const text =
+`Hei ${body.first_name.trim()},
+
+Sinut on kutsuttu Photo & Moto -sivuston avustajaksi.
+
+Aktivoi tilisi klikkaamalla alla olevaa linkkiä:
+${provisioningLink}
+
+Linkki vanhenee 72 tunnin kuluttua.
+
+Jos et odottanut tätä viestiä, voit jättää sen huomiotta.`;
+    try {
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from: 'Photo & Moto <noreply@photoandmoto.fi>',
+          to: [email],
+          subject: 'Tervetuloa Photo & Moto — aktivoi tilisi',
+          text,
+        }),
+      });
+      if (!res.ok) console.error('provisioning email failed (non-fatal):', res.status, await res.text().catch(() => ''));
+    } catch (e) {
+      console.error('provisioning email threw (non-fatal):', e);
+    }
+  }
+
   // ── Fetch the user back for response shape consistency ──
   const userRow = await env.DB.prepare(`
     SELECT id, first_name, last_name, email, role,

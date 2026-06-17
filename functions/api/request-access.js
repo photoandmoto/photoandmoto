@@ -81,8 +81,11 @@ export async function onRequestPost({ request, env }) {
     return errorResponse('Pyynnön tallennus epäonnistui — yritä myöhemmin uudelleen', 500);
   }
 
-  const url = new URL(request.url);
-  const verifyUrl = `${url.protocol}//${url.host}/fi/vahvista-pyynto?token=${token}`;
+  // Canonical, environment-aware base URL (not the raw request host, which may
+  // be a per-deploy preview domain) so the verification link is always clean.
+  const isProd = env.CF_PAGES_BRANCH === 'main';
+  const baseUrl = isProd ? 'https://www.photoandmoto.fi' : 'https://photoandmoto-staging.pages.dev';
+  const verifyUrl = `${baseUrl}/fi/vahvista-pyynto?token=${token}`;
   const text =
 `Hei ${name},
 
