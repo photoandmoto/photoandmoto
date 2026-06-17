@@ -1,476 +1,348 @@
-# Yleinen Kynä — Community Article Submission
+# Avustajat & Toimitus — Contributor + Editorial System
 
-**Photo & Moto — Concept Design v2.0**
-**Status: Phase 1 complete and accepted on staging (dev). Pending promotion to production. Phase 2 planned.**
+**Photo & Moto — Design & State v3.0**
+**Status: Phase 1 (article submission) and Phase 2 (AI pikauutiset) complete and accepted on staging (`dev`). Pending promotion to production (`main`).**
+
+> Historical note: this feature was originally named **"Yleinen Kynä"**. It is now
+> **"Avustajat"** (contributors) and sits under a new **"Toimituskeskus"** hub. The
+> filename `YLEINEN_KYNA.md` and the route `/fi/yleinen-kyna` are kept for
+> continuity.
 
 ---
 
 ## Purpose
 
-Enable community members — photographers, racers, fans — to submit articles and
-photos directly to photoandmoto.fi through a structured Finnish-language form,
-without requiring CMS access. All submissions go through editorial review before
-publication.
+Let community members — photographers, racers, fans — contribute to
+photoandmoto.fi through structured Finnish-language forms, without CMS access.
+Two content streams:
+
+1. **Kirjoita artikkeli** — a full article (Phase 1).
+2. **Luo pikauutinen** — a short AI-assisted news flash generated from keywords (Phase 2).
+
+All submissions are drafts that go through editorial review before publishing.
 
 ---
 
-## Name & Entry Point
+## Key Changes from v2.0
 
-**Yleinen Kynä** (The Community Pen) — a dedicated page accessible from the
-**Muuta** dropdown in the main navigation.
-
-- **URL:** `www.photoandmoto.fi/fi/yleinen-kyna`
-- **Nav item:** Muuta → Yleinen Kynä ✍
+- **"Yleinen Kynä" page → "Avustajat"** (`/fi/yleinen-kyna`).
+- **"Ylläpito" → "Toimitus"** (`/fi/yllapito`).
+- **New "Toimituskeskus" landing page** (`/fi/toimitus`) — the single entry point
+  for both editorial staff and contributors.
+- **Muuta dropdown** now shows **"Toimituskeskus"** only (not Avustajat or
+  Toimitus directly).
+- **Card-based navigation** replaces tabs on both the Avustajat and Toimitus pages.
+- **"Pyydä käyttöoikeutta"** access-request flow on Toimituskeskus, with
+  email verification (D1 `access_requests` table).
+- **Auto-provisioning email** sent to a new user when their account is created.
+- **New IAM role `avustaja`** (alongside `admin`, `editor`).
+- **New permission `perm_nahta_gemini_avain`** (gates the Gemini-avain card).
+- **All email links are environment-aware** (staging vs production).
+- **Idle auto-logout (30 min)** on all gated pages, with a 5-minute warning.
+- **Pikauutiset page**: collapsible cards, two-column desktop layout, first-sentence
+  preview, all collapsed by default.
+- **Gemini prompt hardened**: anti-hallucination (no invented incidents),
+  negative events verbatim, Finnish grammar guidance, category-driven tone.
+- **12 categories** in all dropdowns, matching the Sveltia `categories` collection.
+- **Avustajan Ohjekirja** public help page (`/fi/avustajan-ohjekirja`).
+- **Julkaisijan Ohjekirja** card inside Toimitus.
+- **Photo storage** (corrected): contributor article images **and** pikauutiset
+  photos are committed to **`public/images/`** in the repo (not R2).
 
 ---
 
-## User Roles
+## Entry Points & Navigation
 
-| Role | Access | IAM flag |
+```
+Main nav (FI): Etusivu | Pikauutiset | Galleria | Aikakone | Muuta ▾ | Yhteystiedot
+Muuta ▾ : … | Tunnista kuva | Toimituskeskus
+EN nav  : unchanged (no Toimituskeskus / Avustajat / Toimitus)
+```
+
+- **`/fi/toimitus`** — Toimituskeskus. Login + access-request gate; after login,
+  permission-aware cards link to Toimitus and/or Avustajat.
+- **`/fi/yleinen-kyna`** — Avustajat (contributor tools).
+- **`/fi/yllapito`** — Toimitus (editorial/admin tools).
+- **`/fi/pikauutiset`** — public pikauutiset feed.
+- **`/fi/avustajan-ohjekirja`** — public contributor guide.
+
+---
+
+## User Roles & Permissions
+
+| Role | Typical permissions |
+|---|---|
+| `admin` | All editorial permissions + `admin_iam` (user management) |
+| `editor` | `tarkista`, `lahetakuva`, `hallitse_artikkeleita` (defaults; adjustable) |
+| `avustaja` | `laheta_artikkeli` only (contributor) |
+
+**Permission flags** (D1 `users.perm_*`, surfaced as `permissions.*` by `requireAuth`):
+
+| Flag | Grants |
+|---|---|
+| `tarkista` | Mystery-photo review |
+| `lahetakuva` | Upload mystery photos |
+| `hallitse_galleriaa` | Gallery management |
+| `hallitse_artikkeleita` | Sveltia CMS + Julkaise |
+| `admin_iam` | User management (Käyttäjät) |
+| `laheta_artikkeli` | Avustajat submission forms |
+| `nahta_gemini_avain` | See the Gemini-avain card (off by default for everyone, incl. admin) |
+
+**Role default ticks on user creation** (`KT_ROLE_DEFAULTS` in `yllapito.astro`):
+- Admin → all except `nahta_gemini_avain`
+- Editor → `tarkista`, `lahetakuva`, `hallitse_artikkeleita`
+- Avustaja → `laheta_artikkeli` only
+
+---
+
+## Page-by-Page
+
+### Toimituskeskus — `/fi/toimitus`
+- **Unauthenticated:** two cards — **Kirjaudu sisään** (login) and **Pyydä
+  käyttöoikeutta** (access request form).
+- **Authenticated:** permission-aware cards (no auto-redirect):
+  - **Toimitus** card → `/fi/yllapito` — shown if the user has *any* of
+    `tarkista / lahetakuva / hallitse_galleriaa / hallitse_artikkeleita / admin_iam`.
+  - **Avustajat** card → `/fi/yleinen-kyna` — shown if `laheta_artikkeli`.
+  - Neither → "Sinulla ei ole käyttöoikeutta. Ota yhteyttä toimitukseen."
+- Password field has an eye toggle + Caps Lock warning; credentials cleared after login.
+
+### Avustajat — `/fi/yleinen-kyna`
+- Login gate (login card only — the access-request card lives on Toimituskeskus).
+- After login (with `laheta_artikkeli`): card grid → **Kirjoita artikkeli** /
+  **Luo pikauutinen** / **Avustajan Ohjekirja**. "← Avustajat" returns to the grid.
+- **Kirjoita artikkeli** form → `POST /api/submit-article`.
+- **Luo pikauutinen** form → `POST /api/generate-article` (Gemini).
+- "Tyhjennä" clears a form and stays on it; only the back link returns to the grid.
+
+### Toimitus — `/fi/yllapito`
+- Login gate (`admin-panel`), then a permission-aware **card grid**:
+  Tarkista · Lähetä kuva · Hallitse galleriaa · Hallitse artikkeleita (Sveltia ↗) ·
+  Julkaise · Käyttäjät · **Julkaisijan Ohjekirja** (last). "← Toimitus" returns to the grid;
+  "← Toimituskeskus" link at the top.
+- Each card opens its section in place. Cards appear only if the user has the
+  matching permission (the Ohjekirja card is always shown).
+- **Julkaise** section is a 2×2 card grid: Julkaise esikatseluun · Esikatsele ·
+  Julkaise tuotantoon · **Gemini-avain** (gated by `nahta_gemini_avain`).
+- **Käyttäjät** modal: role dropdown (Editor/Admin/Avustaja), permission checkboxes
+  (incl. "Avustajat" and "Näytä Gemini-avain"), role-based default ticks on create.
+
+### Pikauutiset — `/fi/pikauutiset`
+- Public, FI only. Latest 10 published items, newest first (older archived in git).
+- **Collapsible cards**, all **collapsed by default** (state in-memory, never persisted).
+  Collapsed shows the square thumbnail + title + date + author + **first sentence**;
+  expanding reveals the full body. Two columns on desktop, one on mobile.
+- Subtitle: "Lyhyet uutiset moottoriurheilun maailmasta."
+
+### Avustajan Ohjekirja — `/fi/avustajan-ohjekirja`
+- Public contributor guide (login, article form, pikauutinen form, image rules,
+  editorial process, contact). "← Takaisin" button (see Known issues).
+
+---
+
+## Access Request Flow — "Pyydä käyttöoikeutta"
+
+Two-step, double-opt-in, so the editor inbox isn't notified until the requester
+confirms their email.
+
+1. **Request** (`POST /api/request-access`): validates name/email/reason,
+   generates a 32-byte token, stores it in D1 `access_requests`
+   (`verified = 0`, `expires_at = now + 24h`), and emails the **requester** a
+   verification link. Same-origin check + 3/IP/hour rate limit. **No editor email yet.**
+2. **Verify** (`GET /api/verify-access-request?token=…`): on a valid, unexpired,
+   unverified token → marks `verified = 1` and emails the **editor**
+   (`photoandmoto@gmail.com`) with the details + a link to create the account
+   as an Avustaja. Idempotent (a second click says "already verified").
+3. **Landing page** `/fi/vahvista-pyynto?token=…` calls the verify endpoint and
+   shows confirmed / expired-or-invalid.
+
+The editor then creates the account in Toimitus → Käyttäjät → role **Avustaja**,
+which triggers the auto-provisioning email.
+
+---
+
+## Account Provisioning
+
+- Creating a user (`POST /api/auth/users`) generates a one-time provisioning token
+  (TTL **24 hours**, `PROVISIONING_TOKEN_TTL_SECONDS = 86400`) and a link to
+  `/fi/aseta-salasana?token=…`.
+- An **activation email is sent automatically** to the new user (subject
+  "Tervetuloa Photo & Moto — aktivoi tilisi"). Non-fatal: if Resend is
+  unconfigured or fails, the link is still returned in the API response for the
+  admin to copy manually.
+- On `/fi/aseta-salasana`, the user sets a password + 3 recovery questions.
+  After activation the redirect is role-aware: contributor-only accounts
+  (`laheta_artikkeli`, no editor/admin perms) → `/fi/toimitus`; editors/admins →
+  `/fi/yllapito`.
+
+---
+
+## Content Model
+
+### Articles — `src/content/articles/fi/<slug>.md`
+Written by `submit-article.js` (and by editors in Sveltia). Frontmatter conforms
+to the Zod schema in `src/content.config.ts`: `title`, `subtitle?`, `author`
+(from IAM session), `date`, `category`, `tags`, `featured_image`, `card_image?`,
+`show_hero`, `image_caption?`, `language`, `draft` (always `true` on submit),
+`seo_description?` (editor-only), `sources?`. Body is the markdown content area.
+
+### Pikauutiset — `src/content/pikauutiset/<date>-<slug>.md`
+Written by `generate-article.js`. Lean, FI-only collection. Frontmatter: `title`
+(Gemini), `date` (event date), `author` (IAM session), `category`, `photo?`,
+`draft` (always `true`), `source` (always `"ai_generated"`). The 2–3 sentence text
+is the **markdown body** (content area), same convention as articles — not a
+frontmatter field. Sveltia: `author`/`source` hidden, body is a markdown widget.
+
+### Categories — 12 (from `src/content/categories/`)
+Enduro · Haastattelu (Interview) · Henkilökuva (Profile) · Historiallinen
+(Historical) · Ice speedway · Maarata (Long Track) · Motocross · MXGP · Scramble ·
+Speedway · Tekninen (Technical) · Trail. The Avustajat dropdowns and the backend
+`ALLOWED_CATEGORIES` / `CATEGORY_LABELS` all match this list (stored `name`,
+displayed Finnish `label`).
+
+---
+
+## Photo Storage
+
+- **Contributor article images** (Phase 1) and **pikauutiset photos** (Phase 2)
+  are both committed to **`public/images/`** in the GitHub repo, in the same App
+  commit as the `.md`. Filenames are sanitized (ASCII, no colons, spaces → hyphens),
+  10 MB max, JPG/PNG/WebP.
+- This is the corrected behavior — R2 is **not** used for these uploads. (The
+  earlier R2 serving function was removed because Sveltia's media library resolves
+  images from the repo.) See `INFRASTRUCTURE.md` for the planned future R2 move.
+
+---
+
+## Emails (Resend, env-aware)
+
+All links use `baseUrl = (env.CF_PAGES_BRANCH === 'main') ? 'https://www.photoandmoto.fi'
+: 'https://photoandmoto-staging.pages.dev'`.
+
+| Trigger | To | Subject |
 |---|---|---|
-| admin | All Ylläpito tabs + user management | `perm_admin_iam` |
-| editor | Tarkista, Lähetä kuva, Hallitse galleriaa, Hallitse artikkeleita, Julkaise | `perm_hallitse_artikkeleita` |
-| contributor | Yleinen Kynä submission form only | `perm_laheta_artikkeli` (new) |
+| Access request (step 1) | requester | Vahvista käyttöoikeuspyyntösi — Photo & Moto |
+| Request verified (step 2) | editor | Uusi Avustaja-käyttöoikeuspyyntö — [name] |
+| New article submitted | editor | Uusi artikkeli odottaa tarkistusta — [title] |
+| New pikauutinen submitted | editor | Uusi pikauutinen odottaa tarkistusta — [title] |
+| User created | new user | Tervetuloa Photo & Moto — aktivoi tilisi |
+
+`RESEND_API_KEY` must be set on each environment; sends are non-fatal where the
+underlying record is already saved.
 
 ---
 
-## Page Flow
+## AI / Gemini (pikauutiset)
 
-### First visit — no account
-
-1. Visitor clicks **Yleinen Kynä** in the Muuta dropdown
-2. Page shows two options:
-   - **Kirjaudu sisään** — has credentials → login form → submission form
-   - **Pyydä käyttöoikeutta** — no account yet → fills name + email → request sent
-3. Access request email fires to `photoandmoto@gmail.com`
-4. Editor reviews request → creates account in Käyttäjät tab → sends provisioning link
-5. Contributor activates account at `/fi/aseta-salasana` → sets password
-
-### Returning contributor — has account
-
-1. Clicks **Yleinen Kynä** → **Kirjaudu sisään**
-2. Logs in with email + password
-3. Lands directly on the Finnish submission form
-4. Fills in form → uploads photos → clicks **Lähetä artikkeli**
-5. System commits draft to GitHub, uploads photos to R2
-6. Editor receives email notification
-
-### Editor flow
-
-1. Receives email: "Uusi artikkeli odottaa tarkistusta — [title]"
-2. Opens Sveltia at `photoandmoto.fi/admin/`
-3. Finds draft article (`draft: true`, Piilota sivustolta ON)
-4. Reviews content, edits if needed
-5. Fills in `seo_description` (not exposed to contributor)
-6. Decides whether to enable EN locale and translate via Gemini
-7. Toggles Piilota sivustolta OFF
-8. Saves in Sveltia → commits to dev
-9. Julkaise esikatseluun → preview on staging
-10. Julkaise tuotantoon → article live on production
+- Model `gemini-2.5-flash-lite`, `responseMimeType: application/json`, strict
+  `{title, body}` parse; non-empty validation; title ≤80, body ≤450–500 chars.
+- Rate limit: 3 generations per IP per hour.
+- Hardened prompt (`buildPrompt` in `generate-article.js`):
+  - Use only given facts; if sparse, write only what's known — no invented details.
+  - **Never** invent crash/DNF reasons, accidents, illness, injuries, substance
+    use or other personal incidents not in the input.
+  - Negative events included **verbatim** ("kaatui" stays "kaatui").
+  - Correct Finnish grammar / case inflection of names.
+  - Category drives tone; plain body (no markdown/headings).
 
 ---
 
-## Email Notifications
+## Security
 
-### Access request → editor
-
-```
-From: noreply@photoandmoto.fi
-To: photoandmoto@gmail.com
-Subject: Uusi käyttöoikeuspyyntö — Yleinen Kynä
-
-Nimi: [name]
-Sähköposti: [email]
-Lähetetty: [timestamp]
-
-Luo käyttäjätili: https://www.photoandmoto.fi/fi/yllapito
-```
-
-### New submission → editor
-
-```
-From: noreply@photoandmoto.fi
-To: photoandmoto@gmail.com
-Subject: Uusi artikkeli odottaa tarkistusta — [title]
-
-Otsikko: [title]
-Lähettäjä: [contributor first name last name]
-Kategoria: [category]
-Lähetetty: [timestamp]
-
-Avaa Sveltia: https://www.photoandmoto.fi/admin/
-```
+- IAM sessions via `requireAuth` (`pm_session` cookie; 4-hour idle DB check).
+- **Idle auto-logout** (`src/scripts/idle-timeout.js`): 30-min timeout, 5-min
+  warning banner, resets on activity; imported on Toimituskeskus, Avustajat,
+  Toimitus.
+- Login rate limit: 5 failed/hour on production, 50 on staging/dev.
+- Access-request and pikauutinen generation: 3/IP/hour each.
+- Author is always taken from the IAM session, never the form. `draft: true` and
+  `source: ai_generated` are hardcoded server-side.
 
 ---
 
-## Submission Form Fields
+## What Was Built
 
-| Form field (Finnish UI) | Frontmatter key | Required | Notes |
-|---|---|---|---|
-| Otsikko | `title` | ✅ | Min 5 chars |
-| Alaotsikko | `subtitle` | ❌ | Optional |
-| Kirjoittaja | `author` | auto | Auto-filled from IAM name — contributor cannot change |
-| Päivämäärä | `date` | auto | Auto-set to submission date |
-| Kategoria | `category` | ✅ | Dropdown from categories collection |
-| Avainsanat | `tags` | ❌ | Comma-separated input |
-| Pääkuva | `featured_image` | ✅ | Upload → R2 → `/images/<file>` path |
-| Korttikuva | `card_image` | ❌ | Optional — hero used as fallback on cards |
-| Pääkuvan kuvateksti | `image_caption` | ❌ | Optional |
-| Lisäkuvat (body) | embedded in body | ❌ | Multiple uploads → R2 → markdown image syntax |
-| Sisältö | `body` | ✅ | Markdown textarea |
-| Lähteet | `sources` | ❌ | One per line, URLs auto-link |
-| — | `draft` | auto | Always `true` — editor controls publication |
-| — | `seo_description` | editor only | Not shown to contributor — editor fills before publishing |
-| — | `show_hero` | auto | Always `true` |
+### Phase 1 — Article submission ✅
+- Avustajat page with login gate + card navigation + article form.
+- `functions/api/submit-article.js` — validate, commit draft `.md` + images to
+  `public/images/` via the GitHub App, Resend editor email.
+- `functions/api/request-access.js` + `verify-access-request.js` — access flow.
+- IAM `perm_laheta_artikkeli`, role-aware UI.
 
----
+### Phase 2 — AI pikauutiset ✅
+- "Luo pikauutinen" card/form on Avustajat.
+- `functions/api/generate-article.js` — Gemini → validate → commit draft + photo
+  to `public/images/` → Resend editor email.
+- `pikauutiset` collection (`content.config.ts` + `config.yml`), collapsible
+  public page, `/fi/pikauutiset` in main nav.
 
-## Single Source of Truth
-
-`src/content.config.ts` is the canonical field schema. All writers must produce
-frontmatter that passes Zod validation at build time:
-
-```
-src/content.config.ts  (Zod schema — canonical truth)
-         ↓ enforces
-src/content/articles/fi/*.md
-         ↑ written by           ↑ written by            ↑ written by
-     Sveltia CMS          submit-article.js         future automation
-         ↑ read by
-     Astro build
-```
-
-A build failure = a writer drifted from the schema. The build is the automated
-contract check. When adding or changing a field, update all three:
-
-1. `src/content.config.ts`
-2. `public/admin/config.yml`
-3. `functions/api/submit-article.js`
+### Cross-cutting ✅
+- Toimituskeskus hub, page renames, card navigation, idle timeout, env-aware
+  emails, auto-provisioning email, 12-category alignment, Avustajan Ohjekirja,
+  `avustaja` role + `perm_nahta_gemini_avain` in IAM code and `init.js`.
 
 ---
 
-## Technical Architecture
+## Technical Components
 
-### New components needed
+| Component | Location |
+|---|---|
+| Toimituskeskus hub | `src/pages/fi/toimitus.astro` |
+| Avustajat page | `src/pages/fi/yleinen-kyna.astro` |
+| Toimitus (admin) | `src/pages/fi/yllapito.astro` |
+| Pikauutiset feed | `src/pages/fi/pikauutiset.astro` |
+| Avustajan Ohjekirja | `src/pages/fi/avustajan-ohjekirja.astro` |
+| Verification landing | `src/pages/fi/vahvista-pyynto.astro` |
+| Article handler | `functions/api/submit-article.js` |
+| Pikauutinen handler | `functions/api/generate-article.js` |
+| Access request | `functions/api/request-access.js` |
+| Access verify | `functions/api/verify-access-request.js` |
+| User CRUD | `functions/api/auth/users.js`, `functions/api/auth/users/[id].js` |
+| Auth lib / session | `functions/_lib/auth.js` |
+| Schema bootstrap | `functions/api/auth/init.js` |
+| Idle timeout | `src/scripts/idle-timeout.js` |
+| Content schema | `src/content.config.ts` |
+| CMS config | `public/admin/config.yml` |
 
-| Component | Location | Purpose |
-|---|---|---|
-| Yleinen Kynä page | `src/pages/fi/yleinen-kyna.astro` | Login/request gate + submission form |
-| Submission handler | `functions/api/submit-article.js` | Validates form, commits draft + photos (to `public/images/`) via GitHub App, sends email |
-| Access request handler | `functions/api/request-access.js` | Sends access request email via Resend |
-| Resend API key | Cloudflare Pages settings | `RESEND_API_KEY` on both environments |
-| D1 schema migration | D1 console | `ALTER TABLE users ADD COLUMN perm_laheta_artikkeli INTEGER NOT NULL DEFAULT 0` |
-
-### New Cloudflare secrets
-
-| Secret | Environment | Notes |
-|---|---|---|
-| `RESEND_API_KEY` | Production + Staging | Resend API key for email notifications |
-
-(No R2 binding needed — submitted photos are committed straight into the repo at
-`public/images/`, the same store Sveltia's media library and the static build use.)
-
-### Navigation change
-
-Add to the **Muuta** dropdown in `src/components/Header.astro`:
-
-```
-Yleinen Kynä ✍  →  /fi/yleinen-kyna
-```
+### Infrastructure / secrets
+- D1 (IAM + `access_requests`); staging binding `photoandmoto-community-dev`.
+- `RESEND_API_KEY`, `GEMINI_API_KEY`, `GITHUB_APP_*` per environment.
+- Staging deploys are **manual** ("Julkaise esikatseluun"); `dev → staging`,
+  `main → production`.
 
 ---
 
-## What's Already in Place ✅
+## Planned / Backlog
 
-- IAM login, session management, provisioning flow (`functions/api/auth/`)
-- `requireAuth` with permission checking (`functions/_lib/auth.js`)
-- GitHub App for committing (`GITHUB_APP_*` secrets)
-- Sveltia draft workflow (`draft: true`, Piilota sivustolta)
-- FI required / EN optional per article
-- Julkaise esikatseluun → Esikatsele → Julkaise tuotantoon pipeline
-- Auto-promote deletions GitHub Action
-- `content.config.ts` Zod schema as build-time validator
-- `/fi/aseta-salasana` password-setting page for new accounts
+### Phase 3 — Toimituspöytä (Editorial Kanban) — planned
+A board for the editor to track submissions through states (saapunut → työn alla
+→ julkaistu), built on the existing draft/publish pipeline. Not yet started.
 
----
+### Infrastructure
+- Sveltia → R2 media library; R2 custom subdomain; Astro `<Image />` for R2.
+  See `INFRASTRUCTURE.md`.
 
-## What Needs Building
-
-1. **D1 migration** — `ALTER TABLE users ADD COLUMN perm_laheta_artikkeli INTEGER NOT NULL DEFAULT 0`
-2. **IAM Käyttäjät UI** — expose `perm_laheta_artikkeli` checkbox in user management
-3. **`src/pages/fi/yleinen-kyna.astro`** — page with login gate, access request form, submission form
-4. **`functions/api/submit-article.js`** — form handler, commits draft + photos (`public/images/`) via GitHub App, Resend email
-5. **`functions/api/request-access.js`** — access request email handler
-6. **Resend setup** — verify photoandmoto.fi sending domain, add `RESEND_API_KEY`
-7. **Header navigation** — add Yleinen Kynä to Muuta dropdown
-8. **DEPLOYMENT.md update** — document new role, Resend setup
+### Smaller items
+- **Full UI centering** — done for the simple gated pages (860px column);
+  Toimitus tool sections intentionally use full width. Partial by design.
 
 ---
 
-## Critical Implementation Notes
+## Known Issues / Migration Notes
 
-- **D1 schema migration must happen before** any code referencing
-  `perm_laheta_artikkeli` deploys — follow the pattern in DEPLOYMENT.md
-- **R2 binding must be added to both** production and staging Pages projects
-- **`author` field must be sourced from IAM session, never from form input** —
-  prevents contributor from spoofing authorship
-- **`draft: true` must be hardcoded** in `submit-article.js` — contributor cannot
-  override publication state
-- **Photo filenames must be sanitized on upload** (no colons, spaces → hyphens) —
-  same rule as `functions/api/mystery/publish.js`
-- **Resend sending domain `photoandmoto.fi` must be verified** before emails work
-- **Access request form has no CAPTCHA in v1** — monitor for abuse, add
-  Turnstile if needed (already in the altumvista stack)
-- **No automatic account creation** — editor always approves manually
+- **`avustaja` role on the live DB:** the IAM code and `init.js` support
+  `avustaja`, but SQLite/D1 **cannot `ALTER` a CHECK constraint**. The existing
+  `users` table must be **rebuilt** (create new table with
+  `CHECK (role IN ('admin','editor','avustaja'))`, copy rows, drop, rename) on
+  each live D1 before `avustaja` users can be created. `init.js` only affects
+  freshly created databases. The users-table foreign key was removed from
+  `init.js` to make this rebuild straightforward.
+- **"← Takaisin" on ohjekirja pages:** reworked to a `<button>` + script handler
+  using `history.back()`, with a fallback to `/fi/toimitus` when there is no
+  history (e.g. opened in a new tab via `target="_blank"`). Verify on staging
+  after redeploy.
 
 ---
 
-## Effort Estimate
-
-2–3 sessions with CC
-
-## Priority
-
-Medium — implement after current backlog is fully resolved
-
----
-
-# Phase 2 — AI-Aided Pikauutinen (News Flash)
-
-## Purpose
-
-Enable selected contributors to generate short Finnish news flashes (pikauutiset)
-by filling in structured event keywords. Gemini generates a 2-3 sentence news
-flash from the keywords. Editor does a quick review and publishes directly to
-production — no staging step required for such short content.
-
-This is a lighter, faster content stream than Phase 1 articles — separate
-collection, separate page, separate pipeline.
-
----
-
-## Two Content Streams Under Yleinen Kynä
-
-| Stream | Tab | Output | Pipeline |
-|---|---|---|---|
-| Phase 1 | Kirjoita artikkeli | Full article — `src/content/articles/fi/` | Full editorial — Sveltia → staging → production |
-| Phase 2 | Luo pikauutinen | Short news flash — `src/content/pikauutiset/` | Light editorial — Sveltia → straight to production |
-
-Same page (`/fi/yleinen-kyna`), same permission (`perm_laheta_artikkeli`),
-two tabs. No separate IAM flag needed.
-
----
-
-## Pikauutinen Form Fields
-
-| Field (Finnish UI) | Passed to Gemini | Required | Notes |
-|---|---|---|---|
-| Aihe | `{topic}` | ✅ | e.g. "MXGP Italia 2026" |
-| Kategoria | `{category}` + tone | ✅ | Drives tone — no separate Sävy field |
-| Päivämäärä | `{date}` | ✅ | Event date — passed directly to frontmatter |
-| Paikka | `{location}` | ✅ | Track, city, country |
-| Sää | `{weather}` | ❌ | Weather conditions |
-| Positiiviset tapahtumat | `{positive_events}` | ✅ | Who led, podium, key moments |
-| Negatiiviset tapahtumat | `{negative_events}` | ❌ | Crashes, DNFs, illness |
-| Tulokset | `{results}` | ✅ | Top 3 or results list |
-| Muuta | `{other}` | ❌ | Anything else |
-| Pääkuva | — not sent to Gemini — | ❌ | Optional hero photo → R2 |
-
-**Category drives tone** — no separate Sävy field:
-- MXGP → Kilpailuraportti
-- Historical → Historiallinen
-- Haastattelu → Haastattelu
-- etc.
-
----
-
-## Field Mapping — Form → Gemini → Frontmatter
-
-| Yleinen Kynä input | Gemini prompt | Pikauutinen frontmatter |
-|---|---|---|
-| Aihe | `{topic}` | feeds into `title` |
-| Kategoria | `{category}` + tone instruction | `category` — passed directly |
-| Päivämäärä | `{date}` | `date` — passed directly |
-| Paikka | `{location}` | feeds into `title` + body |
-| Sää | `{weather}` | feeds into body only |
-| Positiiviset tapahtumat | `{positive_events}` | feeds into body |
-| Negatiiviset tapahtumat | `{negative_events}` | feeds into body |
-| Tulokset | `{results}` | feeds into body |
-| Muuta | `{other}` | feeds into body |
-| Pääkuva | — | `photo` → committed to R2 |
-| — | Gemini generates → `title` | `title` |
-| — | Gemini generates → `body` | `body` (2-3 sentences) |
-| IAM session | — | `author` — never from form or Gemini |
-| hardcoded | — | `draft: true` |
-| hardcoded | — | `source: ai_generated` |
-
----
-
-## Pikauutinen Frontmatter Schema (minimal)
-
-```yaml
-title:        # Generated by Gemini — max 80 chars
-body:         # Generated by Gemini — 2-3 sentences markdown
-date:         # From form — event date
-author:       # From IAM session — never from form or Gemini
-category:     # From form
-photo:        # Optional — R2 URL
-draft:        # Always true — hardcoded
-source:       # Always "ai_generated" — hardcoded
-```
-
-No `subtitle`, `card_image`, `seo_description`, `tags`, `sources`, `show_hero`
-— pikauutiset is a separate collection with its own lean Zod schema.
-
----
-
-## Backend Prompt Template
-
-Hardcoded in `generate-article.js` (not an env var — simpler to iterate):
-
-```
-Olet suomalainen moottoriurheilutoimittaja. Kirjoita lyhyt pikauutinen
-photoandmoto.fi-sivustolle seuraavista tiedoista.
-
-Aihe: {topic}
-Kategoria: {category}
-Päivämäärä: {date}
-Paikka: {location}
-Sää: {weather}
-Positiiviset tapahtumat: {positive_events}
-Negatiiviset tapahtumat: {negative_events}
-Tulokset: {results}
-Muuta: {other}
-
-Kirjoita pikauutinen suomeksi. Rakenne:
-- Otsikko (max 80 merkkiä) — ytimekäs ja informatiivinen
-- Teksti (2-3 lausetta) — tiivis uutisteksti, kaikki oleelliset tiedot
-
-Palauta AINOASTAAN JSON-muodossa, ei muuta tekstiä:
-{
-  "title": "",
-  "body": ""
-}
-```
-
----
-
-## Contributor Flow (Phase 2)
-
-1. Opens Yleinen Kynä → clicks **Luo pikauutinen** tab
-2. Fills structured keyword form
-3. Optionally uploads one hero photo
-4. Clicks **Luo pikauutinen**
-5. Backend calls Gemini → validates JSON → commits draft to
-   `src/content/pikauutiset/<date>-<slug>.md` on dev branch
-6. Editor receives Resend notification email with direct Sveltia link
-
-## Editor Flow (Phase 2 — light)
-
-1. Receives email: "Uusi pikauutinen odottaa tarkistusta — [title]"
-2. Opens Sveltia → Pikauutiset collection → opens draft
-3. Reads 2-3 sentences — quick check for accuracy and appropriateness
-4. If OK → toggles `draft: false` → saves
-5. Clicks **Julkaise tuotantoon** directly — no staging step needed
-6. Pikauutinen appears live on `/fi/pikauutiset` within ~2 minutes
-
-**No Julkaise esikatseluun step** — content is short enough that staging
-preview adds no value. Editor goes straight to production.
-
----
-
-## Site Presence — Pikauutiset
-
-### Dedicated page: `/fi/pikauutiset`
-- **FI only** — no EN equivalent
-- **Main nav:** Etusivu → **Pikauutiset** → Galleria → Aikakone → Muuta
-- Rolling display — latest 10 shown, older archived (kept in git, not deleted)
-- Each card: title, body (2-3 sentences), optional photo, timestamp, author
-- **No homepage section** — nav link drives traffic directly to the page
-
-### Nav change
-```
-FI nav: Etusivu | Pikauutiset | Galleria | Aikakone | Muuta ▾ | Yhteystiedot
-EN nav: unchanged
-```
-
----
-
-## Photo Storage — R2 (not repo)
-
-Pikauutinen photos go to R2 (`env.UPLOADS`), not the GitHub repo.
-Rationale: pikauutiset are ephemeral news items — committing photos to git
-would bloat the repo over time. R2 is the right store for ephemeral media.
-
-- `functions/images/[[path]].js` already serves R2 objects at `/images/<file>`
-- Sveltia does not need to preview pikauutinen photos (light editorial flow)
-- Repo stays lean — only `.md` text files committed for pikauutiset
-
----
-
-## New Technical Components (Phase 2 only)
-
-| Component | Location | Purpose |
-|---|---|---|
-| AI generation handler | `functions/api/generate-article.js` | Keyword form → Gemini → validate JSON → commit draft → Resend email |
-| Pikauutiset Zod schema | `src/content.config.ts` | Lean schema for pikauutiset collection |
-| Sveltia collection | `public/admin/config.yml` | Pikauutiset collection — minimal fields |
-| Pikauutiset page | `src/pages/fi/pikauutiset.astro` | Rolling page — latest 10 cards |
-| Phase 2 tab | `src/pages/fi/yleinen-kyna.astro` | "Luo pikauutinen" tab alongside Phase 1 |
-| Nav update | `src/components/Header.astro` | Add Pikauutiset to FI main nav |
-
-### New Cloudflare secrets needed
-
-| Secret | Environment | Notes |
-|---|---|---|
-| `GEMINI_API_KEY` | Production + Staging | Google Gemini API key |
-
-No new R2 buckets — `UPLOADS` binding from Phase 1 is reused.
-No new Resend setup — `RESEND_API_KEY` from Phase 1 is reused.
-No new IAM flags — `perm_laheta_artikkeli` covers both streams.
-
----
-
-## Content Provenance
-
-All pikauutiset have `source: ai_generated` hardcoded in frontmatter.
-All Phase 1 articles have `source: contributor` hardcoded.
-Editor-written articles have no `source` field (existing articles unchanged).
-
-This gives the editor full visibility in Sveltia on content origin.
-
----
-
-## Rate Limiting
-
-- Max 3 pikauutinen generations per contributor per hour (in-memory, Worker-level)
-- Prevents Gemini API abuse
-- Same pattern as request-access.js rate limiter
-
----
-
-## Critical Implementation Notes (Phase 2)
-
-- **Gemini response must be parsed as strict JSON** — if parsing fails, return
-  error to contributor, do not commit a broken draft
-- **`title` and `body` must be non-empty strings** — validate before committing
-- **`body` max ~500 chars** — if Gemini returns more, truncate or re-prompt
-- **`author` always from IAM session** — Gemini cannot set or override it
-- **`draft: true` hardcoded** — contributor cannot override publication state
-- **`source: ai_generated` hardcoded** — always set, never from form
-- **Photo filenames sanitized** — same rules as submit-article.js
-- **Photo optional** — if no photo uploaded, `photo: null` in frontmatter
-- **Single source of truth:** `src/content.config.ts` pikauutiset schema —
-  update `config.yml` and `generate-article.js` together if schema changes
-
----
-
-## Effort Estimate (Phase 2)
-
-2 sessions with CC — after Phase 1 is fully accepted and stable on production
-
-## Dependency
-
-Phase 2 requires Phase 1 to be fully built, tested, and promoted to production.
-Infrastructure reused from Phase 1: R2 (`UPLOADS`), Resend (`RESEND_API_KEY`),
-`perm_laheta_artikkeli` IAM flag, Yleinen Kynä page, GitHub App.
+*Last updated: June 2026 (v3.0)*
+*Owner: Arto T Vilkman*
