@@ -252,6 +252,11 @@ Muuta: ${f.muuta || 'ei tietoa'}
    joita ei ole annettu lähdetiedoissa. Tällainen sisältö voi olla
    loukkaavaa, herjaavaa tai vaarallista. Jos lähdetiedoissa ei mainita
    mitään erityistä tapahtumaa, älä keksi sellaista.
+   Jos negatiivisia tapahtumia on annettu, sisällytä ne tekstiin
+   TÄSMÄLLEEN annettujen tietojen mukaisesti ja luontevasti
+   tarinan osana. Älä lisää, muuta tai jätä pois mitään.
+   Esimerkiksi jos annettu tieto on 'kaatui', kirjoita 'kaatui' —
+   ei 'loukkaantui', 'joutui sairaalahoitoon' tai muuta.
 
 2. Muunna ranskalaiset viivat luontevaksi, virtaavaksi
    uutistekstiksi. Älä luettele tietoja — kerro tarina kuten

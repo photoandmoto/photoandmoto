@@ -14,11 +14,11 @@ const published = (await getCollection('pikauutiset', (e) => !e.data.draft))
 const latest = published.slice(0, 10);
 
 // First complete sentence of the body — shown in the collapsed card. Ends at
-// the first . ! or ? that is followed by whitespace, a capital letter, or end.
+// the first . ! or ? followed by a space or the end of the string.
 function extractFirstSentence(md: string) {
   const text = String(md || '').replace(/[#>*_`~]/g, '').replace(/\s+/g, ' ').trim();
   if (!text) return '';
-  const m = text.match(/^.*?[.!?](?=\s|[A-ZÅÄÖ]|$)/);
+  const m = text.match(/^.*?[.!?](?=\s|$)/);
   return (m ? m[0] : text).trim();
 }
 
@@ -95,8 +95,9 @@ const items = await Promise.all(
   .pk-intro { color: var(--text-secondary); margin: 0; line-height: 1.5; }
   .pk-empty { color: var(--text-secondary); font-size: 1rem; }
 
-  /* Single column on mobile, two columns on desktop (≥768px). */
-  .pk-list { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: 1100px; align-items: start; }
+  /* Single column on mobile, two columns on desktop (≥768px). Centered column. */
+  .container { max-width: 860px; }
+  .pk-list { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: 860px; margin-left: auto; margin-right: auto; align-items: start; }
   @media (min-width: 768px) { .pk-list { grid-template-columns: 1fr 1fr; } }
 
   .pk-card {
@@ -133,11 +134,12 @@ const items = await Promise.all(
   .pk-card__chev { flex: 0 0 auto; color: #bbb; font-size: 1rem; transition: transform .2s ease; }
   .pk-card[data-expanded="true"] .pk-card__chev { transform: rotate(180deg); color: var(--brand-primary, #ff9900); }
 
-  /* Collapsible body — smooth height animation via grid-template-rows. */
-  .pk-card__panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .28s ease; }
-  .pk-card[data-expanded="true"] .pk-card__panel { grid-template-rows: 1fr; }
+  /* Collapsible body — fully hidden when collapsed (max-height:0 + overflow),
+     so only the first-sentence preview shows; smooth animation when expanded. */
+  .pk-card__panel { overflow: hidden; max-height: 0; transition: max-height .3s ease; }
+  .pk-card[data-expanded="true"] .pk-card__panel { max-height: 600px; }
   .pk-card__text {
-    overflow: hidden; min-height: 0; padding: 4px 14px 16px;
+    padding: 4px 14px 16px;
     color: var(--text-primary, #222); line-height: 1.55; font-size: .96rem;
   }
   .pk-card__text :global(p) { margin: 0 0 .5em; }

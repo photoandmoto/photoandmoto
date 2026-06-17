@@ -17,9 +17,9 @@ const lang = 'fi';
         <div class="yk-card">
           <h2 class="yk-card__title">Kirjaudu sisään</h2>
           <p class="yk-card__sub">Onko sinulla jo tunnukset?</p>
-          <input id="yk-login-email" class="inp" type="email" placeholder="Sähköposti" autocomplete="username" />
+          <input id="yk-login-email" class="inp" type="email" placeholder="Sähköposti" autocomplete="off" />
           <div class="pw-wrap">
-            <input id="yk-login-pw" class="inp" type="password" placeholder="Salasana" autocomplete="current-password" />
+            <input id="yk-login-pw" class="inp" type="password" placeholder="Salasana" autocomplete="off" />
             <button type="button" class="pw-eye" id="yk-pw-eye" aria-label="Näytä salasana" tabindex="-1">👁</button>
           </div>
           <p class="pw-caps" id="yk-pw-caps" style="display:none;">Caps Lock on päällä</p>
@@ -221,6 +221,7 @@ const lang = 'fi';
         err.style.display = 'block';
         return;
       }
+      $('yk-login-email').value = ''; $('yk-login-pw').value = ''; // clear credentials after login
       await boot(); // session cookie now set → re-evaluate view
     } catch {
       err.textContent = 'Yhteysvirhe — yritä uudelleen.'; err.style.display = 'block';
@@ -307,16 +308,13 @@ const lang = 'fi';
     const msg = $('yk-flash-msg'); if (msg) msg.style.display = 'none';
   }
 
-  // Tyhjennä buttons clear their form and return to the Avustajat card grid
-  // (same behavior everywhere). "Luo uusi pikauutinen" stays on the cleared form.
-  function clearFlashToCards() { resetFlash(); ykShowCards(); }
-  $('yk-flash-clear')?.addEventListener('click', clearFlashToCards);   // pikauutinen form
-  $('yk-flash-clear2')?.addEventListener('click', clearFlashToCards);  // success screen
-  $('yk-flash-again')?.addEventListener('click', resetFlash);          // stays on form
-  $('yk-article-clear')?.addEventListener('click', () => {             // article form
+  // Tyhjennä clears the form and STAYS on it. Only "← Avustajat" returns to the grid.
+  $('yk-flash-clear')?.addEventListener('click', resetFlash);   // pikauutinen form → empty form
+  $('yk-flash-clear2')?.addEventListener('click', resetFlash);  // success screen → empty form
+  $('yk-flash-again')?.addEventListener('click', resetFlash);   // "Luo uusi" → empty form
+  $('yk-article-clear')?.addEventListener('click', () => {      // article form → cleared, stays
     const f = $('yk-form'); if (f) f.reset();
     const m = $('yk-submit-msg'); if (m) m.style.display = 'none';
-    ykShowCards();
   });
 
   // Password eye toggle + Caps Lock warning (login form).
@@ -424,4 +422,8 @@ const lang = 'fi';
   .yk-flash-preview h4 { font-family: var(--font-headline); font-size: 1.1rem; font-weight: 800; margin: 0 0 8px; }
   .yk-flash-preview p { margin: 0; line-height: 1.55; color: #333; }
   .yk-flash-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+  /* Centered content column (consistent across gated pages). */
+  .container { max-width: 860px; }
+  .yk-gate, .adm-cards, .yk-form-wrap, .yk-flash-success, .yk-notice { margin-left: auto; margin-right: auto; }
 </style>

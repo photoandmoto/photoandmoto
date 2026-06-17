@@ -10,12 +10,21 @@ const description = 'Photo & Moto -sivuston sisällöntuottajan ja ylläpitäjä
 <BaseLayout title={title} lang={lang} description={description} noindex={true}>
   <section class="docpage">
     <div class="container docpage-container">
+      <a href="#" class="docpage-back" id="docpage-back">← Takaisin</a>
       <div class="docpage-prose">
         <Content />
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  // "← Takaisin" — one step back in browser history.
+  document.getElementById('docpage-back')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    history.back();
+  });
+</script>
 
 <style>
   /* Layout — wide enough for tables, narrow enough for comfortable reading */
@@ -28,6 +37,16 @@ const description = 'Photo & Moto -sivuston sisällöntuottajan ja ylläpitäjä
     margin: 0 auto;
     padding: 0 1.25rem;
   }
+  .docpage-back {
+    display: inline-block;
+    font-size: .85rem;
+    font-weight: 700;
+    color: #888;
+    text-decoration: none;
+    margin: 0 0 14px;
+    cursor: pointer;
+  }
+  .docpage-back:hover { color: #ff9900; }
   .docpage-prose {
     background: #fff;
     padding: 2.5rem 3rem;
