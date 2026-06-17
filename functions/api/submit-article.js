@@ -23,7 +23,12 @@ const REPO_NAME = 'photoandmoto';
 const EDITOR_INBOX = 'photoandmoto@gmail.com';
 const FROM = 'Photo & Moto <noreply@photoandmoto.fi>';
 const MAX_FILE_BYTES = 10 * 1024 * 1024; // 10 MB per photo
-const ALLOWED_CATEGORIES = ['MXGP', 'Speedway', 'Historical', 'Enduro', 'Interview', 'Technical'];
+// Must match the categories collection (src/content/categories/) — the `name`
+// values, not the Finnish labels.
+const ALLOWED_CATEGORIES = [
+  'Enduro', 'Interview', 'Profile', 'Historical', 'Ice speedway', 'Long Track',
+  'Motocross', 'MXGP', 'Scramble', 'Speedway', 'Technical', 'Trail',
+];
 
 // ---------------------------------------------------------------------------
 // JSON responses

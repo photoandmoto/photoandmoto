@@ -31,13 +31,21 @@ const BODY_MAX = 500;
 // Category → Finnish label. The label drives Gemini's tone (no separate Sävy
 // field); the English `name` is what gets stored in frontmatter (matches the
 // categories collection + relation widget).
+// Category `name` (stored in frontmatter) → Finnish label (drives Gemini tone).
+// Must match the categories collection in src/content/categories/.
 const CATEGORY_LABELS = {
-  MXGP: 'MXGP',
-  Speedway: 'Speedway',
-  Historical: 'Historiallinen',
   Enduro: 'Enduro',
   Interview: 'Haastattelu',
+  Profile: 'Henkilökuva',
+  Historical: 'Historiallinen',
+  'Ice speedway': 'Ice speedway',
+  'Long Track': 'Maarata',
+  Motocross: 'Motocross',
+  MXGP: 'MXGP',
+  Scramble: 'Scramble',
+  Speedway: 'Speedway',
   Technical: 'Tekninen',
+  Trail: 'Trail',
 };
 const ALLOWED_CATEGORIES = Object.keys(CATEGORY_LABELS);
 
@@ -233,9 +241,17 @@ Muuta: ${f.muuta || 'ei tietoa'}
    numeroita, tapahtumia tai yksityiskohtia, joita ei ole annettu.
    Jos jokin kenttä on "ei tietoa", älä mainitse sitä äläkä keksi
    sisältöä sen tilalle.
+   Jos lähdetiedot ovat niukat, kirjoita vain siitä mitä tiedetään.
+   Älä täytä aukkoja keksityillä yksityiskohdilla.
    ÄLÄ KOSKAAN keksi syytä keskeyttämiselle tai kaatumiselle.
    Jos lähdetiedoissa sanotaan 'kaatui', kirjoita 'kaatui'.
    Jos syy ei ole tiedossa, älä mainitse sitä.
+   ÄLÄ KOSKAAN keksi tai viittaa henkilöiden tekemisiin,
+   onnettomuuksiin, sairaustapauksiin, vammautumisiin,
+   päihteidenkäyttöön tai muihin henkilökohtaisiin tapahtumiin,
+   joita ei ole annettu lähdetiedoissa. Tällainen sisältö voi olla
+   loukkaavaa, herjaavaa tai vaarallista. Jos lähdetiedoissa ei mainita
+   mitään erityistä tapahtumaa, älä keksi sellaista.
 
 2. Muunna ranskalaiset viivat luontevaksi, virtaavaksi
    uutistekstiksi. Älä luettele tietoja — kerro tarina kuten

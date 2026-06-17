@@ -18,7 +18,11 @@ const lang = 'fi';
           <h2 class="yk-card__title">Kirjaudu sisään</h2>
           <p class="yk-card__sub">Onko sinulla jo tunnukset?</p>
           <input id="yk-login-email" class="inp" type="email" placeholder="Sähköposti" autocomplete="username" />
-          <input id="yk-login-pw" class="inp" type="password" placeholder="Salasana" autocomplete="current-password" />
+          <div class="pw-wrap">
+            <input id="yk-login-pw" class="inp" type="password" placeholder="Salasana" autocomplete="current-password" />
+            <button type="button" class="pw-eye" id="yk-pw-eye" aria-label="Näytä salasana" tabindex="-1">👁</button>
+          </div>
+          <p class="pw-caps" id="yk-pw-caps" style="display:none;">Caps Lock on päällä</p>
           <button id="yk-login-btn" class="btn">Kirjaudu</button>
           <p id="yk-login-err" class="yk-err" style="display:none;"></p>
           <a href="/fi/palauta-salasana/" class="yk-link">Unohditko salasanan?</a>
@@ -73,7 +77,10 @@ const lang = 'fi';
           <label class="yk-field"><span>Sisältö * (Markdown)</span><textarea name="body" class="inp yk-textarea" rows="14" required></textarea></label>
           <label class="yk-field"><span>Lähteet (valinnainen, yksi per rivi)</span><textarea name="sources" class="inp" rows="3"></textarea></label>
           <p class="yk-card__sub">Toimitus tarkistaa ja julkaisee artikkelin. Lähetys tallentuu luonnoksena.</p>
-          <button id="yk-submit-btn" class="btn btn--submit" type="submit">Lähetä artikkeli</button>
+          <div class="yk-flash-actions">
+            <button id="yk-submit-btn" class="btn btn--submit" type="submit">Lähetä artikkeli</button>
+            <button id="yk-article-clear" class="btn btn--ghost" type="button">Tyhjennä</button>
+          </div>
           <p id="yk-submit-msg" class="yk-msg" style="display:none;"></p>
         </form>
         </div>
@@ -94,7 +101,7 @@ const lang = 'fi';
             <label class="yk-field"><span>Pääkuva (valinnainen)</span><input name="photo" class="inp" type="file" accept="image/jpeg,image/png,image/webp" /></label>
             <div class="yk-flash-actions">
               <button id="yk-flash-btn" class="btn btn--submit" type="submit">Luo pikauutinen</button>
-              <button id="yk-flash-clear" class="btn btn--ghost" type="reset">Tyhjennä</button>
+              <button id="yk-flash-clear" class="btn btn--ghost" type="button">Tyhjennä</button>
             </div>
             <p id="yk-flash-msg" class="yk-msg" style="display:none;"></p>
           </form>
@@ -122,12 +129,18 @@ const lang = 'fi';
   // Categories — hardcoded fallback (no /api/categories endpoint). Value = the
   // `name` stored in frontmatter; label = the Finnish display name.
   const YK_CATEGORIES = [
-    { name: 'MXGP', label: 'MXGP' },
-    { name: 'Speedway', label: 'Speedway' },
-    { name: 'Historical', label: 'Historiallinen' },
     { name: 'Enduro', label: 'Enduro' },
     { name: 'Interview', label: 'Haastattelu' },
+    { name: 'Profile', label: 'Henkilökuva' },
+    { name: 'Historical', label: 'Historiallinen' },
+    { name: 'Ice speedway', label: 'Ice speedway' },
+    { name: 'Long Track', label: 'Maarata' },
+    { name: 'Motocross', label: 'Motocross' },
+    { name: 'MXGP', label: 'MXGP' },
+    { name: 'Scramble', label: 'Scramble' },
+    { name: 'Speedway', label: 'Speedway' },
     { name: 'Technical', label: 'Tekninen' },
+    { name: 'Trail', label: 'Trail' },
   ];
 
   const $ = (id) => document.getElementById(id);
@@ -294,9 +307,33 @@ const lang = 'fi';
     const msg = $('yk-flash-msg'); if (msg) msg.style.display = 'none';
   }
 
-  // "Luo uusi pikauutinen" + "Tyhjennä" (success screen) — back to the empty form.
-  $('yk-flash-again')?.addEventListener('click', resetFlash);
-  $('yk-flash-clear2')?.addEventListener('click', resetFlash);
+  // Tyhjennä buttons clear their form and return to the Avustajat card grid
+  // (same behavior everywhere). "Luo uusi pikauutinen" stays on the cleared form.
+  function clearFlashToCards() { resetFlash(); ykShowCards(); }
+  $('yk-flash-clear')?.addEventListener('click', clearFlashToCards);   // pikauutinen form
+  $('yk-flash-clear2')?.addEventListener('click', clearFlashToCards);  // success screen
+  $('yk-flash-again')?.addEventListener('click', resetFlash);          // stays on form
+  $('yk-article-clear')?.addEventListener('click', () => {             // article form
+    const f = $('yk-form'); if (f) f.reset();
+    const m = $('yk-submit-msg'); if (m) m.style.display = 'none';
+    ykShowCards();
+  });
+
+  // Password eye toggle + Caps Lock warning (login form).
+  (function () {
+    const pw = $('yk-login-pw'); if (!pw) return;
+    const eye = $('yk-pw-eye');
+    eye?.addEventListener('click', () => {
+      const showing = pw.type === 'text';
+      pw.type = showing ? 'password' : 'text';
+      eye.classList.toggle('pw-eye--on', !showing);
+      pw.focus();
+    });
+    const caps = $('yk-pw-caps');
+    const check = (e) => { if (caps) caps.style.display = (e.getModifierState && e.getModifierState('CapsLock')) ? 'block' : 'none'; };
+    pw.addEventListener('keydown', check);
+    pw.addEventListener('keyup', check);
+  })();
 
   // Logout (both buttons).
   async function logout() {
@@ -326,6 +363,16 @@ const lang = 'fi';
   .yk-card__sub { font-size: .85rem; color: var(--text-secondary); margin: 0; line-height: 1.45; }
   .yk-link { font-size: .82rem; color: var(--text-secondary); }
   .yk-err { color: #dc3545; font-size: .85rem; font-weight: 600; margin: 0; }
+
+  /* Password field: eye toggle + Caps Lock warning */
+  .pw-wrap { position: relative; }
+  .pw-wrap .inp { width: 100%; padding-right: 42px; }
+  .pw-eye {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer; font-size: 1.05rem; line-height: 1; opacity: .55; padding: 4px;
+  }
+  .pw-eye--on, .pw-eye:hover { opacity: 1; }
+  .pw-caps { color: #b8860b; font-size: .8rem; font-weight: 600; margin: 0; }
 
   .yk-notice {
     max-width: 640px; background: #fff8e6; border: 1px solid #ffdf85; border-left: 3px solid #ff9900;

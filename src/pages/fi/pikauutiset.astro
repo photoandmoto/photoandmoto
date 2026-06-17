@@ -13,11 +13,20 @@ const published = (await getCollection('pikauutiset', (e) => !e.data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 const latest = published.slice(0, 10);
 
+// First complete sentence of the body — shown in the collapsed card. Ends at
+// the first . ! or ? that is followed by whitespace, a capital letter, or end.
+function extractFirstSentence(md: string) {
+  const text = String(md || '').replace(/[#>*_`~]/g, '').replace(/\s+/g, ' ').trim();
+  if (!text) return '';
+  const m = text.match(/^.*?[.!?](?=\s|[A-ZÅÄÖ]|$)/);
+  return (m ? m[0] : text).trim();
+}
+
 // Body (2–3 sentences) is the markdown content area — render each entry.
 const items = await Promise.all(
   latest.map(async (e) => {
     const { Content } = await render(e);
-    return { data: e.data, Content };
+    return { data: e.data, Content, firstSentence: extractFirstSentence(e.body || '') };
   })
 );
 ---
@@ -37,9 +46,9 @@ const items = await Promise.all(
         <p class="pk-empty">Ei vielä pikauutisia. Palaa pian uudelleen!</p>
       ) : (
         <div class="pk-list">
-          {items.map((item, i) => (
-            <article class="pk-card" data-expanded={i === 0 ? 'true' : 'false'}>
-              <button type="button" class="pk-card__head" aria-expanded={i === 0 ? 'true' : 'false'}>
+          {items.map((item) => (
+            <article class="pk-card" data-expanded="false">
+              <button type="button" class="pk-card__head" aria-expanded="false">
                 {item.data.photo ? (
                   <span class="pk-card__thumb"><img src={item.data.photo} alt={item.data.title} loading="lazy" /></span>
                 ) : (
@@ -52,6 +61,7 @@ const items = await Promise.all(
                     <span class="pk-card__author">{item.data.author}</span>
                   </span>
                   <span class="pk-card__title">{item.data.title}</span>
+                  {item.firstSentence && <span class="pk-card__preview">{item.firstSentence}</span>}
                 </span>
                 <span class="pk-card__chev" aria-hidden="true">▾</span>
               </button>
@@ -112,6 +122,13 @@ const items = await Promise.all(
   }
   .pk-card__dot { color: #ccc; }
   .pk-card__title { font-family: var(--font-headline); font-size: 1.05rem; font-weight: 800; line-height: 1.25; color: #111; }
+
+  /* First-sentence preview — collapsed only, hidden once expanded. */
+  .pk-card__preview {
+    display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    font-size: .88rem; color: #555; line-height: 1.45; margin-top: 2px;
+  }
+  .pk-card[data-expanded="true"] .pk-card__preview { display: none; }
 
   .pk-card__chev { flex: 0 0 auto; color: #bbb; font-size: 1rem; transition: transform .2s ease; }
   .pk-card[data-expanded="true"] .pk-card__chev { transform: rotate(180deg); color: var(--brand-primary, #ff9900); }

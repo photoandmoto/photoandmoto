@@ -29,7 +29,7 @@ const lang = 'fi';
           <div class="pw-wrap">
             <input type="password" id="adminPw" class="inp inp--pw" placeholder="Salasana" autocomplete="current-password" />
             <button type="button" class="pw-eye" id="pwEye" aria-label="Näytä salasana" tabindex="-1">👁</button>
-            <div class="pw-caps" id="pwCaps" style="display:none;">⚠ Caps Lock päällä</div>
+            <div class="pw-caps" id="pwCaps" style="display:none;">Caps Lock on päällä</div>
           </div>
           <button id="adminPwBtn" class="btn">Kirjaudu</button>
           <span id="adminPwErr" class="err-msg" style="display:none;">Väärät kirjautumistiedot</span>
@@ -50,11 +50,6 @@ const lang = 'fi';
           <span class="adm-card__sub">Lähetä uusia tunnistettavia kuvia</span>
           <span class="adm-card__arrow">→</span>
         </button>
-        <a href="/fi/julkaisijan-ohjeet/" target="_blank" rel="noopener" class="adm-card">
-          <span class="adm-card__title">Julkaisijan Ohjekirja</span>
-          <span class="adm-card__sub">Sveltia CMS, tunnistamattomat kuvat, galleriat, vianetsintä</span>
-          <span class="adm-card__arrow">↗</span>
-        </a>
         <button type="button" class="adm-card" data-section="hallitse" data-perm="hallitse_galleriaa">
           <span class="adm-card__title">Hallitse galleriaa</span>
           <span class="adm-card__sub">Muokkaa ja järjestä galleriakuvia</span>
@@ -75,6 +70,11 @@ const lang = 'fi';
           <span class="adm-card__sub">Hallitse käyttäjiä ja käyttöoikeuksia</span>
           <span class="adm-card__arrow">→</span>
         </button>
+        <a href="/fi/julkaisijan-ohjeet/" target="_blank" rel="noopener" class="adm-card">
+          <span class="adm-card__title">Julkaisijan Ohjekirja</span>
+          <span class="adm-card__sub">Sveltia CMS, tunnistamattomat kuvat, galleriat, vianetsintä</span>
+          <span class="adm-card__arrow">↗</span>
+        </a>
       </div>
       <p id="adminNoperm" class="adm-noperm" style="display:none;">Sinulla ei ole käyttöoikeutta. Ota yhteyttä toimitukseen.</p>
 
@@ -140,50 +140,43 @@ const lang = 'fi';
           <h3 class="upload-title">Julkaise</h3>
           <p class="upload-hint">Sveltia CMS tallentaa artikkelit automaattisesti. Vie ne ensin esikatseluun, tarkista tulos, ja julkaise sitten tuotantoon.</p>
 
-          <div class="julkaise-step">
-            <div class="julkaise-step__num">1</div>
-            <div class="julkaise-step__body">
-              <h4 class="julkaise-step__title">Julkaise esikatseluun</h4>
-              <p class="julkaise-step__desc">Käynnistää esikatselusivuston rakentamisen osoitteessa photoandmoto-staging.pages.dev.</p>
+          <div class="julkaise-grid">
+            <div class="julkaise-card">
+              <h4 class="julkaise-card__title">Julkaise esikatseluun</h4>
+              <p class="julkaise-card__desc">Käynnistää esikatselusivuston rakentamisen osoitteessa photoandmoto-staging.pages.dev.</p>
               <p class="julkaise-warn">⚠️ Odota 2 minuuttia Sveltia-tallennuksen jälkeen ennen kuin painat tätä painiketta.</p>
               <button type="button" id="deployStagingBtn" class="btn">Julkaise esikatseluun</button>
             </div>
-          </div>
 
-          <div class="julkaise-step">
-            <div class="julkaise-step__num">2</div>
-            <div class="julkaise-step__body">
-              <h4 class="julkaise-step__title">Esikatsele</h4>
-              <p class="julkaise-step__desc">Avaa esikatselusivuston uuteen välilehteen. <strong>Odota 2–3 minuuttia ennen esikatselua</strong>, jotta sivusto ehtii rakentua.</p>
+            <div class="julkaise-card">
+              <h4 class="julkaise-card__title">Esikatsele</h4>
+              <p class="julkaise-card__desc">Avaa esikatselusivuston uuteen välilehteen. <strong>Odota 2–3 minuuttia ennen esikatselua</strong>, jotta sivusto ehtii rakentua.</p>
               <a href="https://photoandmoto-staging.pages.dev" target="_blank" rel="noopener" class="btn btn--ghost">Esikatsele ↗</a>
             </div>
-          </div>
 
-          <div class="julkaise-step">
-            <div class="julkaise-step__num">3</div>
-            <div class="julkaise-step__body">
-              <h4 class="julkaise-step__title">Julkaise tuotantoon</h4>
-              <p class="julkaise-step__desc">Julkaisee sisällön osoitteessa www.photoandmoto.fi. Tee tämä vasta kun olet tarkistanut esikatselun.</p>
+            <div class="julkaise-card">
+              <h4 class="julkaise-card__title">Julkaise tuotantoon</h4>
+              <p class="julkaise-card__desc">Julkaisee sisällön osoitteessa www.photoandmoto.fi. Tee tämä vasta kun olet tarkistanut esikatselun.</p>
               <p class="julkaise-warn">⚠️ Odota 2 minuuttia Sveltia-tallennuksen jälkeen ennen kuin painat tätä painiketta.</p>
               <button type="button" id="deployProdBtn" class="btn">Julkaise tuotantoon</button>
+            </div>
+
+            <div class="julkaise-card">
+              <h4 class="julkaise-card__title">Gemini-avain (käännöksiin)</h4>
+              <p class="julkaise-card__desc">Tekoälyavain artikkelien kääntämiseen Sveltia-editorissa.</p>
+              <button type="button" id="geminiKeyBtn" class="btn btn--ghost">Näytä Gemini-avain</button>
+              <div id="geminiKeyBox" class="gemini-key__box" style="display:none;">
+                <div class="gemini-key__row">
+                  <input type="text" id="geminiKeyField" class="inp" readonly />
+                  <button type="button" id="geminiKeyCopy" class="btn btn--ghost">📋 Kopioi</button>
+                </div>
+                <p class="julkaise-card__desc">Liitä tämä Sveltia-editorin asetuksiin (文A → Google Gemini → API-avain)</p>
+              </div>
+              <div id="geminiKeyMsg" class="upload-msg"></div>
             </div>
           </div>
 
           <div id="deployMsg" class="upload-msg julkaise-msg" aria-live="polite"></div>
-
-          <div class="gemini-key">
-            <h4 class="julkaise-step__title">Gemini-avain (käännöksiin)</h4>
-            <p class="julkaise-step__desc">Tekoälyavain artikkelien kääntämiseen Sveltia-editorissa.</p>
-            <button type="button" id="geminiKeyBtn" class="btn btn--ghost">Näytä Gemini-avain</button>
-            <div id="geminiKeyBox" class="gemini-key__box" style="display:none;">
-              <div class="gemini-key__row">
-                <input type="text" id="geminiKeyField" class="inp" readonly />
-                <button type="button" id="geminiKeyCopy" class="btn btn--ghost">📋 Kopioi</button>
-              </div>
-              <p class="julkaise-step__desc">Liitä tämä Sveltia-editorin asetuksiin (文A → Google Gemini → API-avain)</p>
-            </div>
-            <div id="geminiKeyMsg" class="upload-msg"></div>
-          </div>
         </div>
       </div>
 
@@ -2338,6 +2331,14 @@ if (document.getElementById('ktAddBtn')) {
 .gemini-key__box{margin-top:10px}
 .gemini-key__row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
 .gemini-key__row .inp{flex:1;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.82rem}
+
+/* Julkaise — 2x2 card grid */
+.julkaise-grid{display:grid;grid-template-columns:1fr;gap:16px;max-width:760px;margin-top:8px}
+@media(min-width:640px){.julkaise-grid{grid-template-columns:1fr 1fr}}
+.julkaise-card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.04);display:flex;flex-direction:column;gap:10px}
+.julkaise-card__title{font-family:var(--font-headline);font-size:1.15rem;font-weight:800;margin:0;color:#111}
+.julkaise-card__desc{font-size:.85rem;color:#666;margin:0;line-height:1.5}
+.julkaise-card .btn{align-self:flex-start}
 @keyframes jk-spin{to{transform:rotate(360deg)}}
 
 /* ===== FILTERS ===== */

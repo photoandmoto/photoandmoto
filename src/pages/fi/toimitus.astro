@@ -13,7 +13,11 @@ const lang = 'fi';
           <h2 class="tk-card__title">Kirjaudu sisään</h2>
           <p class="tk-card__sub">Kirjaudu toimituksen ja avustajien työkaluihin.</p>
           <input id="tk-email" class="inp" type="email" placeholder="Sähköposti" autocomplete="username" />
-          <input id="tk-pw" class="inp" type="password" placeholder="Salasana" autocomplete="current-password" />
+          <div class="pw-wrap">
+            <input id="tk-pw" class="inp" type="password" placeholder="Salasana" autocomplete="current-password" />
+            <button type="button" class="pw-eye" id="tk-pw-eye" aria-label="Näytä salasana" tabindex="-1">👁</button>
+          </div>
+          <p class="pw-caps" id="tk-pw-caps" style="display:none;">Caps Lock on päällä</p>
           <button id="tk-login-btn" class="btn">Kirjaudu</button>
           <p id="tk-err" class="tk-err" style="display:none;"></p>
           <a href="/fi/palauta-salasana/" class="tk-link">Unohditko salasanan?</a>
@@ -109,6 +113,22 @@ const lang = 'fi';
     try { await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' }); } catch {}
     showGate();
   });
+
+  // Password eye toggle + Caps Lock warning (login form).
+  (function () {
+    const pw = $('tk-pw'); if (!pw) return;
+    const eye = $('tk-pw-eye');
+    eye?.addEventListener('click', () => {
+      const showing = pw.type === 'text';
+      pw.type = showing ? 'password' : 'text';
+      eye.classList.toggle('pw-eye--on', !showing);
+      pw.focus();
+    });
+    const caps = $('tk-pw-caps');
+    const check = (e) => { if (caps) caps.style.display = (e.getModifierState && e.getModifierState('CapsLock')) ? 'block' : 'none'; };
+    pw.addEventListener('keydown', check);
+    pw.addEventListener('keyup', check);
+  })();
 </script>
 
 <!-- Idle auto-logout (gated page). -->
@@ -129,6 +149,16 @@ const lang = 'fi';
   .tk-card__sub { font-size: .85rem; color: var(--text-secondary); margin: 0; line-height: 1.45; }
   .tk-link { font-size: .82rem; color: var(--text-secondary); }
   .tk-err { color: #dc3545; font-size: .85rem; font-weight: 600; margin: 0; }
+
+  /* Password field: eye toggle + Caps Lock warning */
+  .pw-wrap { position: relative; }
+  .pw-wrap .inp { width: 100%; padding-right: 42px; }
+  .pw-eye {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer; font-size: 1.05rem; line-height: 1; opacity: .55; padding: 4px;
+  }
+  .pw-eye--on, .pw-eye:hover { opacity: 1; }
+  .pw-caps { color: #b8860b; font-size: .8rem; font-weight: 600; margin: 0; }
 
   .tk-hub-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; max-width: 760px; }
   .tk-greet { font-weight: 700; }
