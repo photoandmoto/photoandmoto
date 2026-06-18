@@ -12,6 +12,110 @@ import {
 } from '../_lib/auth.js';
 
 const FROM = 'Photo & Moto <noreply@photoandmoto.fi>';
+const REPO_OWNER = 'photoandmoto';
+const REPO_NAME = 'photoandmoto';
+
+// ---------------------------------------------------------------------------
+// GitHub App auth helpers (same pattern as submit-article.js) — used to delete
+// the draft .md when a submission is rejected.
+// ---------------------------------------------------------------------------
+function base64ToBytes(b64) {
+  const bin = atob(b64);
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return bytes;
+}
+function bytesToBase64(bytes) {
+  const CHUNK = 0x8000;
+  let out = '';
+  for (let i = 0; i < bytes.length; i += CHUNK) out += String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK));
+  return btoa(out);
+}
+function bytesToBase64Url(bytes) {
+  return bytesToBase64(bytes).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function utf8ToBase64Url(str) { return bytesToBase64Url(new TextEncoder().encode(str)); }
+
+async function importPrivateKey(pemString) {
+  const pem = pemString
+    .replace(/-----BEGIN [A-Z ]+-----/g, '')
+    .replace(/-----END [A-Z ]+-----/g, '')
+    .replace(/\s+/g, '');
+  const der = base64ToBytes(pem);
+  try {
+    return await crypto.subtle.importKey('pkcs8', der, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign']);
+  } catch {
+    const pkcs8Header = new Uint8Array([
+      0x30, 0x82, 0x00, 0x00, 0x02, 0x01, 0x00, 0x30, 0x0d,
+      0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x01, 0x01,
+      0x05, 0x00, 0x04, 0x82, 0x00, 0x00,
+    ]);
+    const totalLen = pkcs8Header.length + der.length;
+    pkcs8Header[2] = ((totalLen - 4) >> 8) & 0xff;
+    pkcs8Header[3] = (totalLen - 4) & 0xff;
+    pkcs8Header[pkcs8Header.length - 2] = (der.length >> 8) & 0xff;
+    pkcs8Header[pkcs8Header.length - 1] = der.length & 0xff;
+    const wrapped = new Uint8Array(totalLen);
+    wrapped.set(pkcs8Header, 0);
+    wrapped.set(der, pkcs8Header.length);
+    return await crypto.subtle.importKey('pkcs8', wrapped, { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' }, false, ['sign']);
+  }
+}
+async function signAppJwt(appId, privateKeyPem) {
+  const now = Math.floor(Date.now() / 1000);
+  const header = { alg: 'RS256', typ: 'JWT' };
+  const payload = { iat: now - 60, exp: now + 8 * 60, iss: String(appId) };
+  const signingInput = `${utf8ToBase64Url(JSON.stringify(header))}.${utf8ToBase64Url(JSON.stringify(payload))}`;
+  const key = await importPrivateKey(privateKeyPem);
+  const sig = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', key, new TextEncoder().encode(signingInput));
+  return `${signingInput}.${bytesToBase64Url(new Uint8Array(sig))}`;
+}
+async function getInstallationToken(appJwt, installationId) {
+  const res = await fetch(`https://api.github.com/app/installations/${installationId}/access_tokens`, {
+    method: 'POST',
+    headers: { 'Authorization': `Bearer ${appJwt}`, 'Accept': 'application/vnd.github+json', 'User-Agent': 'photoandmoto-publisher' },
+  });
+  if (!res.ok) throw new Error(`Installation token request failed (${res.status}): ${await res.text()}`);
+  return (await res.json()).token;
+}
+function targetBranch(env) {
+  return (env.CF_PAGES_BRANCH || env.CF_PAGES_TARGET_BRANCH || '') === 'main' ? 'main' : 'dev';
+}
+
+// Delete a rejected submission's draft .md from the target branch via the
+// GitHub Contents API. Fully non-fatal: missing slug, missing file, missing
+// App config, or any API error is logged and swallowed.
+async function deleteRejectedDraft(env, type, slug) {
+  if (!slug) { console.warn('reject delete skipped: no github_slug'); return; }
+  if (!env.GITHUB_APP_ID || !env.GITHUB_APP_INSTALLATION_ID || !env.GITHUB_APP_PRIVATE_KEY) {
+    console.warn('reject delete skipped: GitHub App not configured'); return;
+  }
+  const dir = type === 'pikauutinen' ? 'src/content/pikauutiset' : 'src/content/articles/fi';
+  const path = `${dir}/${slug}.md`;
+  const branch = targetBranch(env);
+  const encodedPath = path.split('/').map(encodeURIComponent).join('/');
+  try {
+    const jwt = await signAppJwt(env.GITHUB_APP_ID, env.GITHUB_APP_PRIVATE_KEY);
+    const token = await getInstallationToken(jwt, env.GITHUB_APP_INSTALLATION_ID);
+    const ghHeaders = { 'Authorization': `Bearer ${token}`, 'Accept': 'application/vnd.github+json', 'User-Agent': 'photoandmoto-publisher' };
+
+    // 1. Get the file SHA.
+    const getRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${encodedPath}?ref=${encodeURIComponent(branch)}`, { headers: ghHeaders });
+    if (getRes.status === 404) { console.warn('reject delete: file not found', path); return; }
+    if (!getRes.ok) { console.error('reject delete: contents GET failed', getRes.status, await getRes.text().catch(() => '')); return; }
+    const fileSha = (await getRes.json()).sha;
+
+    // 2. Delete it.
+    const delRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${encodedPath}`, {
+      method: 'DELETE',
+      headers: { ...ghHeaders, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: `Hylätty: poista ${path}`, sha: fileSha, branch }),
+    });
+    if (!delRes.ok) console.error('reject delete: DELETE failed', delRes.status, await delRes.text().catch(() => ''));
+  } catch (e) {
+    console.error('reject delete threw (non-fatal):', e);
+  }
+}
 
 export async function onRequestGet({ request, env }) {
   const auth = await requireAuth(request, env, 'hallitse_artikkeleita');
@@ -46,7 +150,7 @@ export async function onRequestPost({ request, env }) {
   if (rejectionReason.length > 500) return errorResponse('Syy on liian pitkä (enintään 500 merkkiä)', 400);
 
   const row = await env.DB.prepare(
-    `SELECT id, type, status, title, author_name, author_email FROM submissions WHERE id = ?`
+    `SELECT id, type, status, title, author_name, author_email, github_slug FROM submissions WHERE id = ?`
   ).bind(id).first();
   if (!row) return errorResponse('Lähetystä ei löytynyt', 404);
 
@@ -55,6 +159,12 @@ export async function onRequestPost({ request, env }) {
      SET status = ?, reviewed_at = datetime('now'), reviewed_by = ?, rejection_reason = ?
      WHERE id = ?`
   ).bind(action, auth.user.id, action === 'hylatty' ? rejectionReason : null, id).run();
+
+  // On rejection, delete the draft .md from the repo (non-fatal, independent of
+  // the email and the D1 update which have already completed).
+  if (action === 'hylatty') {
+    await deleteRejectedDraft(env, row.type, row.github_slug);
+  }
 
   // On rejection, email the author (non-fatal — the status is already saved).
   let emailWarning = null;

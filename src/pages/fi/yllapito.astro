@@ -1412,10 +1412,9 @@ document.querySelectorAll('#adminCards .adm-card[data-section]').forEach(card =>
 document.getElementById('adminBack').addEventListener('click', (e) => { e.preventDefault(); showCards(); });
 
 // ── Hyväksynnät (Phase 3 editorial board) ──────────────────────────────
-// Unified horizontal rows; only unprocessed items shown (submissions with
-// status='odottaa', access requests with handled=0). A row offers: Käsitelty
-// checkbox (→ confirm → mark done), a context action, and Hylkää (→ reason →
-// reject + email). Acting reloads the lists, so handled rows drop off.
+// Horizontal rows; only unprocessed items shown (submissions status='odottaa',
+// access requests handled=0). Explicit action buttons only — no checkbox.
+// Hylkää opens an inline "Oletko varma?" confirm (reason required) before firing.
 let hyvSubmissions = [];
 let hyvRequests = [];
 const HYV_SVELTIA = {
@@ -1430,17 +1429,17 @@ function hyvFmtDate(s) {
   return isNaN(d.getTime()) ? hyvEsc(s) : d.toLocaleDateString('fi-FI', { day: 'numeric', month: 'numeric', year: 'numeric' });
 }
 
-// Inline reject + "mark done" confirm controls, shared by every row.
-function hyvControls() {
+// Inline "Oletko varma?" rejection confirm — shared by every row, hidden until
+// Hylkää is clicked.
+function hyvConfirm() {
   return `
-    <div class="hyv-reject" style="display:none;">
-      <input type="text" class="inp hyv-reason" maxlength="500" placeholder="Hylkäyksen syy (näkyy lähettäjälle)" />
-      <button type="button" class="btn btn--sm hyv-reject-confirm">Vahvista hylkäys</button>
-    </div>
     <div class="hyv-confirm" style="display:none;">
-      <span class="hyv-confirm__q">Hyväksy käsitelty?</span>
-      <button type="button" class="btn btn--sm hyv-confirm-yes">Kyllä</button>
-      <button type="button" class="btn btn--ghost btn--sm hyv-confirm-cancel">Peruuta</button>
+      <span class="hyv-confirm__q">Oletko varma?</span>
+      <textarea class="inp hyv-reason" rows="2" maxlength="500" placeholder="Hylkäyksen syy (näkyy lähettäjälle)"></textarea>
+      <div class="hyv-confirm__actions">
+        <button type="button" class="btn btn--sm hyv-reject-confirm">Vahvista hylkäys</button>
+        <button type="button" class="btn btn--ghost btn--sm hyv-reject-cancel">Peruuta</button>
+      </div>
     </div>`;
 }
 
@@ -1471,16 +1470,16 @@ function hyvRenderSubmissions(group) {
   if (!rows.length) { el.innerHTML = '<div class="hyv-empty">Ei käsiteltäviä lähetyksiä.</div>'; return; }
   el.innerHTML = rows.map(s => `
     <div class="hyv-row" data-kind="submission" data-id="${s.id}">
-      <label class="hyv-check"><input type="checkbox" class="hyv-done" /> Käsitelty</label>
       <div class="hyv-row__main">
         <span class="hyv-row__title">${hyvEsc(s.title)}</span>
         <span class="hyv-row__meta">${hyvEsc(s.author_name)} · ${hyvFmtDate(s.submitted_at)} · ${hyvEsc(s.category)}</span>
       </div>
       <div class="hyv-row__actions">
         <a href="${HYV_SVELTIA[group]}" target="_blank" rel="noopener" class="btn btn--ghost btn--sm">Käsittele Sveltiassa ↗</a>
+        <button type="button" class="btn btn--submit btn--sm hyv-publish">Merkitse julkaistuksi</button>
         <button type="button" class="btn btn--ghost btn--sm hyv-reject-btn">Hylkää</button>
       </div>
-      ${hyvControls()}
+      ${hyvConfirm()}
     </div>`).join('');
 }
 
@@ -1490,7 +1489,6 @@ function hyvRenderRequests() {
   if (!hyvRequests.length) { el.innerHTML = '<div class="hyv-empty">Ei käsiteltäviä pyyntöjä.</div>'; return; }
   el.innerHTML = hyvRequests.map(rq => `
     <div class="hyv-row" data-kind="request" data-id="${rq.id}">
-      <label class="hyv-check"><input type="checkbox" class="hyv-done" /> Käsitelty</label>
       <div class="hyv-row__main">
         <span class="hyv-row__title">${hyvEsc(rq.name)}</span>
         <span class="hyv-row__meta">${hyvEsc(rq.email)} · ${hyvFmtDate(rq.created_at)}</span>
@@ -1500,7 +1498,7 @@ function hyvRenderRequests() {
         <button type="button" class="btn btn--ghost btn--sm hyv-to-kayttajat">Käsittele → Käyttäjät</button>
         <button type="button" class="btn btn--ghost btn--sm hyv-reject-btn">Hylkää</button>
       </div>
-      ${hyvControls()}
+      ${hyvConfirm()}
     </div>`).join('');
 }
 
@@ -1526,19 +1524,19 @@ async function hyvPost(kind, id, action, reason) {
     if (msg) { msg.textContent = 'Yhteysvirhe — yritä uudelleen.'; msg.style.display = 'block'; }
   }
 }
-const hyvMarkDone = (kind, id) => hyvPost(kind, id, kind === 'request' ? 'handled' : 'julkaistu');
 const hyvReject = (kind, id, reason) => hyvPost(kind, id, kind === 'request' ? 'rejected' : 'hylatty', reason);
 
-// Click delegation: row action buttons + confirm/cancel/reject.
+// Click delegation: row action buttons + reject confirm/cancel.
 document.getElementById('tabHyvaksynnat')?.addEventListener('click', (e) => {
-  const row = e.target.closest('.hyv-row');
   if (e.target.closest('.hyv-to-kayttajat')) { openSection('kayttajat'); return; }
+  const row = e.target.closest('.hyv-row');
   if (!row) return;
   const kind = row.dataset.kind;
   const id = Number(row.dataset.id);
 
+  if (e.target.closest('.hyv-publish')) { hyvPost(kind, id, 'julkaistu'); return; }
   if (e.target.closest('.hyv-reject-btn')) {
-    const box = row.querySelector('.hyv-reject');
+    const box = row.querySelector('.hyv-confirm');
     if (box) box.style.display = (box.style.display === 'none' ? 'flex' : 'none');
     return;
   }
@@ -1549,21 +1547,11 @@ document.getElementById('tabHyvaksynnat')?.addEventListener('click', (e) => {
     hyvReject(kind, id, reason);
     return;
   }
-  if (e.target.closest('.hyv-confirm-yes')) { hyvMarkDone(kind, id); return; }
-  if (e.target.closest('.hyv-confirm-cancel')) {
-    const cb = row.querySelector('.hyv-done'); if (cb) cb.checked = false;
-    const c = row.querySelector('.hyv-confirm'); if (c) c.style.display = 'none';
+  if (e.target.closest('.hyv-reject-cancel')) {
+    const box = row.querySelector('.hyv-confirm');
+    if (box) { box.style.display = 'none'; const ta = box.querySelector('.hyv-reason'); if (ta) ta.value = ''; }
     return;
   }
-});
-
-// Käsitelty checkbox → show/hide the "Hyväksy käsitelty?" confirm.
-document.getElementById('tabHyvaksynnat')?.addEventListener('change', (e) => {
-  const cb = e.target.closest('.hyv-done');
-  if (!cb) return;
-  const row = cb.closest('.hyv-row');
-  const c = row?.querySelector('.hyv-confirm');
-  if (c) c.style.display = cb.checked ? 'flex' : 'none';
 });
 
 function showAdminUI() {
@@ -3223,16 +3211,21 @@ if (document.getElementById('ktAddBtn')) {
   .hyv-block__title { font-family: var(--font-headline); font-size: 1.15rem; font-weight: 800; margin: 0; color: #111; }
   .hyv-list { display: flex; flex-direction: column; gap: 8px; }
   .hyv-empty { color: #888; font-size: .9rem; padding: 6px 2px; }
+  /* One horizontal line: info (truncates) on the left, buttons on the right.
+     The reject confirm wraps to a full-width second line (flex 1 1 100%). */
   .hyv-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 12px 14px; }
-  .hyv-check { display: flex; align-items: center; gap: 6px; font-size: .78rem; font-weight: 600; color: #555; white-space: nowrap; cursor: pointer; flex: 0 0 auto; }
-  .hyv-row__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-  .hyv-row__title { font-weight: 700; color: #111; }
-  .hyv-row__meta { font-size: .78rem; color: #888; }
-  .hyv-row__reason-text { font-size: .82rem; color: #666; }
-  .hyv-row__actions { display: flex; gap: 8px; flex-wrap: wrap; flex: 0 0 auto; }
-  .hyv-reject { flex: 1 1 100%; display: flex; gap: 8px; margin-top: 8px; }
-  .hyv-reject .inp { flex: 1; }
-  .hyv-confirm { flex: 1 1 100%; display: flex; align-items: center; gap: 10px; margin-top: 8px; font-size: .85rem; }
-  .hyv-confirm__q { font-weight: 600; }
+  .hyv-row__main { flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .hyv-row__title { font-weight: 700; color: #111; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hyv-row__meta { font-size: .78rem; color: #888; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hyv-row__reason-text { font-size: .82rem; color: #666; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hyv-row__actions { display: flex; gap: 8px; flex-wrap: wrap; flex: 0 0 auto; margin-left: auto; }
+  .hyv-confirm { flex: 1 1 100%; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f0f0f0; font-size: .85rem; }
+  .hyv-confirm__q { font-weight: 700; color: #b32218; }
+  .hyv-confirm .inp { width: 100%; box-sizing: border-box; resize: vertical; }
+  .hyv-confirm__actions { display: flex; gap: 8px; }
   .btn--sm { padding: 6px 12px; font-size: .82rem; }
+
+  @media (max-width: 560px) {
+    .hyv-row__actions { margin-left: 0; width: 100%; }
+  }
 </style>

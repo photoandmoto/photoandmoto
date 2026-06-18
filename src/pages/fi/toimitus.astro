@@ -85,13 +85,24 @@ const lang = 'fi';
     $('tk-noperm').style.display = (hasToimitus || hasAvustajat) ? 'none' : 'block';
   }
 
+  // Avustaja-only accounts (laheta_artikkeli, no editorial/admin perms) skip the
+  // hub and go straight to the contributor page.
+  function isAvustajaOnly(user) {
+    const p = (user && user.permissions) || {};
+    const hasToimitus = !!(p.tarkista || p.lahetakuva || p.hallitse_galleriaa
+      || p.hallitse_artikkeleita || p.admin_iam);
+    return !!p.laheta_artikkeli && !hasToimitus;
+  }
+
   // Session boot — gate visible by default, so a failure never blanks the page.
   async function boot() {
     try {
       const r = await fetch('/api/auth/me', { credentials: 'same-origin' });
       if (!r.ok) { showGate(); return; }
       const data = await r.json();
-      if (data.user) showHub(data.user); else showGate();
+      if (!data.user) { showGate(); return; }
+      if (isAvustajaOnly(data.user)) { window.location.href = '/fi/yleinen-kyna'; return; }
+      showHub(data.user);
     } catch {
       showGate();
     }
