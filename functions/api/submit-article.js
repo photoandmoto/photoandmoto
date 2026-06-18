@@ -318,6 +318,17 @@ export async function onRequestPost({ request, env }) {
       return fail('Artikkelin tallennus epäonnistui', 502);
     }
 
+    // 6b. Track the submission for the Hyväksynnät editorial board (non-fatal).
+    try {
+      await env.DB.prepare(
+        `INSERT INTO submissions
+           (type, status, title, author_id, author_name, author_email, category, github_slug, submitted_at)
+         VALUES ('artikkeli', 'odottaa', ?, ?, ?, ?, ?, ?, datetime('now'))`
+      ).bind(title, auth.user.id, author, auth.user.email || null, category, slug).run();
+    } catch (e) {
+      console.error('submissions insert failed (non-fatal):', e);
+    }
+
     // 7. Notify the editor via Resend (non-fatal — the draft is already committed).
     let emailWarning = null;
     if (env.RESEND_API_KEY) {

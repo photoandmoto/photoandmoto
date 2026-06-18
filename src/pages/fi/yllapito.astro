@@ -70,6 +70,11 @@ const lang = 'fi';
           <span class="adm-card__sub">Hallitse käyttäjiä ja käyttöoikeuksia</span>
           <span class="adm-card__arrow">→</span>
         </button>
+        <button type="button" class="adm-card" data-section="hyvaksynnat" data-perm="hallitse_artikkeleita">
+          <span class="adm-card__title">Hyväksynnät</span>
+          <span class="adm-card__sub">Artikkelit, pikauutiset ja käyttöoikeuspyynnöt</span>
+          <span class="adm-card__arrow">→</span>
+        </button>
         <a href="/fi/julkaisijan-ohjeet/" target="_blank" rel="noopener" class="adm-card">
           <span class="adm-card__title">Julkaisijan Ohjekirja</span>
           <span class="adm-card__sub">Sveltia CMS, tunnistamattomat kuvat, galleriat, vianetsintä</span>
@@ -177,6 +182,53 @@ const lang = 'fi';
           </div>
 
           <div id="deployMsg" class="upload-msg julkaise-msg" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- Hyväksynnät tab (Phase 3 — hallitse_artikkeleita permission required) -->
+      <div id="tabHyvaksynnat" class="tab-content" style="display:none;">
+        <div class="hyv-section">
+          <h3 class="upload-title">Hyväksynnät</h3>
+          <p class="upload-hint">Tarkista avustajien lähetykset. Hyväksytyt julkaistaan Sveltiassa, hylätyistä lähettäjä saa sähköpostin.</p>
+
+          <!-- Artikkelit -->
+          <div class="hyv-block">
+            <div class="hyv-block__head">
+              <h4 class="hyv-block__title">Artikkelit</h4>
+              <a href="/admin/#/collections/articles" target="_blank" rel="noopener" class="btn btn--ghost btn--sm">Avaa Sveltiassa ↗</a>
+            </div>
+            <div class="hyv-tabs" data-group="artikkeli">
+              <button type="button" class="hyv-tab hyv-tab--on" data-status="odottaa">Odottaa</button>
+              <button type="button" class="hyv-tab" data-status="julkaistu">Julkaistu</button>
+              <button type="button" class="hyv-tab" data-status="hylatty">Hylätty</button>
+            </div>
+            <div id="hyvList-artikkeli" class="hyv-list"><div class="kt-loading">Ladataan…</div></div>
+          </div>
+
+          <!-- Pikauutiset -->
+          <div class="hyv-block">
+            <div class="hyv-block__head">
+              <h4 class="hyv-block__title">Pikauutiset</h4>
+              <a href="/admin/#/collections/pikauutiset" target="_blank" rel="noopener" class="btn btn--ghost btn--sm">Avaa Sveltiassa ↗</a>
+            </div>
+            <div class="hyv-tabs" data-group="pikauutinen">
+              <button type="button" class="hyv-tab hyv-tab--on" data-status="odottaa">Odottaa</button>
+              <button type="button" class="hyv-tab" data-status="julkaistu">Julkaistu</button>
+              <button type="button" class="hyv-tab" data-status="hylatty">Hylätty</button>
+            </div>
+            <div id="hyvList-pikauutinen" class="hyv-list"><div class="kt-loading">Ladataan…</div></div>
+          </div>
+
+          <!-- Käyttöoikeuspyynnöt -->
+          <div class="hyv-block">
+            <div class="hyv-block__head">
+              <h4 class="hyv-block__title">Käyttöoikeuspyynnöt</h4>
+            </div>
+            <p class="upload-hint">Vahvistetut käyttöoikeuspyynnöt käsitellään Käyttäjät-osiossa: luo uusi käyttäjä ja valitse rooli Avustaja.</p>
+            <button type="button" id="hyvToKayttajat" class="btn">Hallitse käyttöoikeuspyyntöjä → Käyttäjät</button>
+          </div>
+
+          <div id="hyvMsg" class="err-msg" style="display:none; margin-top:10px;"></div>
         </div>
       </div>
 
@@ -1337,11 +1389,12 @@ function applyPermissions(user) {
 
 // Section key → content element id.
 const ADM_SECTIONS = {
-  tarkista:  'tabTarkista',
-  laheta:    'tabLaheta',
-  hallitse:  'tabHallitse',
-  julkaise:  'tabJulkaise',
-  kayttajat: 'tabKayttajat',
+  tarkista:    'tabTarkista',
+  laheta:      'tabLaheta',
+  hallitse:    'tabHallitse',
+  julkaise:    'tabJulkaise',
+  hyvaksynnat: 'tabHyvaksynnat',
+  kayttajat:   'tabKayttajat',
 };
 
 // Landing view after login: the card grid (or a no-permission notice). Hides
@@ -1367,6 +1420,7 @@ function openSection(section) {
   document.getElementById('adminBack').style.display = '';
   if (section === 'hallitse') loadHallitseGalleries();
   if (section === 'kayttajat') ktLoadUsers();
+  if (section === 'hyvaksynnat') hyvLoadAll();
   if (section === 'tarkista') { curFilter = null; renderFilters(); }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -1378,6 +1432,124 @@ document.querySelectorAll('#adminCards .adm-card[data-section]').forEach(card =>
 });
 // Back link → return to the card grid.
 document.getElementById('adminBack').addEventListener('click', (e) => { e.preventDefault(); showCards(); });
+
+// ── Hyväksynnät (Phase 3 editorial board) ──────────────────────────────
+let hyvSubmissions = [];
+const hyvActiveStatus = { artikkeli: 'odottaa', pikauutinen: 'odottaa' };
+const HYV_STATUS_LABEL = { odottaa: 'Odottaa', julkaistu: 'Julkaistu', hylatty: 'Hylätty' };
+
+function hyvEsc(s) { const d = document.createElement('div'); d.textContent = (s == null ? '' : String(s)); return d.innerHTML; }
+function hyvFmtDate(s) {
+  if (!s) return '';
+  const d = new Date(s.includes('T') ? s : s.replace(' ', 'T') + 'Z');
+  return isNaN(d.getTime()) ? hyvEsc(s) : d.toLocaleDateString('fi-FI', { day: 'numeric', month: 'numeric', year: 'numeric' });
+}
+
+async function hyvLoadAll() {
+  const msg = document.getElementById('hyvMsg');
+  if (msg) msg.style.display = 'none';
+  ['artikkeli', 'pikauutinen'].forEach(g => {
+    const el = document.getElementById('hyvList-' + g);
+    if (el) el.innerHTML = '<div class="kt-loading">Ladataan…</div>';
+  });
+  try {
+    const r = await fetch('/api/submissions', { credentials: 'same-origin' });
+    if (!r.ok) throw new Error('load failed');
+    hyvSubmissions = (await r.json()).submissions || [];
+  } catch {
+    ['artikkeli', 'pikauutinen'].forEach(g => {
+      const el = document.getElementById('hyvList-' + g);
+      if (el) el.innerHTML = '<div class="hyv-empty">Lataus epäonnistui.</div>';
+    });
+    return;
+  }
+  hyvRender('artikkeli');
+  hyvRender('pikauutinen');
+}
+
+function hyvRender(group) {
+  const el = document.getElementById('hyvList-' + group);
+  if (!el) return;
+  const status = hyvActiveStatus[group];
+  const rows = hyvSubmissions.filter(s => s.type === group && s.status === status);
+  if (!rows.length) { el.innerHTML = '<div class="hyv-empty">Ei lähetyksiä tässä tilassa.</div>'; return; }
+  el.innerHTML = rows.map(s => {
+    let actions = '';
+    if (status === 'odottaa') {
+      actions =
+        `<div class="hyv-row__actions">
+           <button type="button" class="btn btn--submit btn--sm hyv-approve" data-id="${s.id}">Hyväksy</button>
+           <button type="button" class="btn btn--ghost btn--sm hyv-reject-btn" data-id="${s.id}">Hylkää</button>
+         </div>
+         <div class="hyv-reject" id="hyvReject-${s.id}" style="display:none;">
+           <input type="text" class="inp hyv-reason" id="hyvReason-${s.id}" maxlength="500" placeholder="Hylkäyksen syy (näkyy lähettäjälle)" />
+           <button type="button" class="btn btn--sm hyv-reject-confirm" data-id="${s.id}">Vahvista hylkäys</button>
+         </div>`;
+    } else if (status === 'hylatty' && s.rejection_reason) {
+      actions = `<div class="hyv-row__reason">Syy: ${hyvEsc(s.rejection_reason)}</div>`;
+    }
+    return `<div class="hyv-row" data-id="${s.id}">
+      <div class="hyv-row__main">
+        <span class="hyv-row__title">${hyvEsc(s.title)}</span>
+        <span class="hyv-row__meta">${hyvEsc(s.author_name)} · ${hyvFmtDate(s.submitted_at)} · ${hyvEsc(s.category)}</span>
+      </div>
+      <span class="kt-role hyv-badge hyv-badge--${hyvEsc(s.status)}">${HYV_STATUS_LABEL[s.status] || hyvEsc(s.status)}</span>
+      ${actions}
+    </div>`;
+  }).join('');
+}
+
+async function hyvAction(id, action, reason) {
+  const msg = document.getElementById('hyvMsg');
+  if (msg) msg.style.display = 'none';
+  try {
+    const r = await fetch('/api/submissions', {
+      method: 'POST', credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, action, rejection_reason: reason }),
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok || !data.success) {
+      if (msg) { msg.textContent = data.error || 'Toiminto epäonnistui.'; msg.style.display = 'block'; }
+      return;
+    }
+    if (data.email_warning && msg) { msg.textContent = 'Huom: ' + data.email_warning; msg.style.display = 'block'; }
+    await hyvLoadAll();
+  } catch {
+    if (msg) { msg.textContent = 'Yhteysvirhe — yritä uudelleen.'; msg.style.display = 'block'; }
+  }
+}
+
+// Delegated clicks within the Hyväksynnät section (tabs + row actions).
+document.getElementById('tabHyvaksynnat')?.addEventListener('click', (e) => {
+  const tab = e.target.closest('.hyv-tab');
+  if (tab) {
+    const wrap = tab.closest('.hyv-tabs');
+    const group = wrap.dataset.group;
+    hyvActiveStatus[group] = tab.dataset.status;
+    wrap.querySelectorAll('.hyv-tab').forEach(t => t.classList.toggle('hyv-tab--on', t === tab));
+    hyvRender(group);
+    return;
+  }
+  const approve = e.target.closest('.hyv-approve');
+  if (approve) { hyvAction(Number(approve.dataset.id), 'julkaistu'); return; }
+  const rejectBtn = e.target.closest('.hyv-reject-btn');
+  if (rejectBtn) {
+    const box = document.getElementById('hyvReject-' + rejectBtn.dataset.id);
+    if (box) box.style.display = (box.style.display === 'none' ? 'flex' : 'none');
+    return;
+  }
+  const confirmBtn = e.target.closest('.hyv-reject-confirm');
+  if (confirmBtn) {
+    const id = confirmBtn.dataset.id;
+    const reason = (document.getElementById('hyvReason-' + id)?.value || '').trim();
+    const msg = document.getElementById('hyvMsg');
+    if (!reason) { if (msg) { msg.textContent = 'Anna hylkäyksen syy.'; msg.style.display = 'block'; } return; }
+    hyvAction(Number(id), 'hylatty', reason);
+    return;
+  }
+});
+document.getElementById('hyvToKayttajat')?.addEventListener('click', () => openSection('kayttajat'));
 
 function showAdminUI() {
   document.getElementById('adminPanel').style.display='none';
@@ -3028,4 +3200,29 @@ if (document.getElementById('ktAddBtn')) {
      kuva, Hallitse galleriaa, Julkaise, Käyttäjät) keep the full container
      width — their grids, tables and image layouts need the room. */
   .admin-panel { margin-left: auto; margin-right: auto; }
+
+  /* Hyväksynnät (Phase 3 editorial board) */
+  .hyv-section { max-width: 860px; }
+  .hyv-block { margin: 0 0 28px; }
+  .hyv-block__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+  .hyv-block__title { font-family: var(--font-headline); font-size: 1.15rem; font-weight: 800; margin: 0; color: #111; }
+  .hyv-tabs { display: flex; gap: 4px; border-bottom: 2px solid #e5e5e5; margin-bottom: 12px; }
+  .hyv-tab { background: none; border: none; cursor: pointer; padding: 8px 14px; font-family: var(--font-headline); font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .4px; color: #999; border-bottom: 2px solid transparent; margin-bottom: -2px; }
+  .hyv-tab:hover { color: #555; }
+  .hyv-tab--on { color: var(--brand-primary, #ff9900); border-bottom-color: var(--brand-primary, #ff9900); }
+  .hyv-list { display: flex; flex-direction: column; gap: 8px; }
+  .hyv-empty { color: #888; font-size: .9rem; padding: 6px 2px; }
+  .hyv-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 12px 14px; }
+  .hyv-row__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .hyv-row__title { font-weight: 700; color: #111; }
+  .hyv-row__meta { font-size: .78rem; color: #888; }
+  .hyv-row__actions { display: flex; gap: 8px; }
+  .hyv-row__reason { flex: 1 1 100%; font-size: .82rem; color: #a06400; }
+  .hyv-reject { flex: 1 1 100%; display: flex; gap: 8px; margin-top: 8px; }
+  .hyv-reject .inp { flex: 1; }
+  .btn--sm { padding: 6px 12px; font-size: .82rem; }
+  .hyv-badge { white-space: nowrap; }
+  .hyv-badge--odottaa { background: #fff3e0; color: #a06400; }
+  .hyv-badge--julkaistu { background: #e8f5e9; color: #2e7d32; }
+  .hyv-badge--hylatty { background: #fdecea; color: #b32218; }
 </style>

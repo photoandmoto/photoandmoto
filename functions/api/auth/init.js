@@ -121,6 +121,31 @@ export async function runInit(env) {
   await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_login_ip ON login_attempts(ip, attempted_at)`).run();
   await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_login_email ON login_attempts(email_attempted, attempted_at)`).run();
 
+  // ─── submissions ──────────────────────────────────────────────────────
+  // Editorial board (Hyväksynnät, Phase 3): review state for contributor
+  // article / pikauutinen submissions. The .md lives in git; this row tracks
+  // its status. author_id is nullable and FK-free (consistent with the rest).
+  await env.DB.prepare(`
+    CREATE TABLE IF NOT EXISTS submissions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      type TEXT NOT NULL CHECK (type IN ('artikkeli', 'pikauutinen')),
+      status TEXT NOT NULL DEFAULT 'odottaa' CHECK (status IN ('odottaa', 'julkaistu', 'hylatty')),
+      title TEXT NOT NULL,
+      author_id INTEGER,
+      author_name TEXT,
+      author_email TEXT,
+      category TEXT,
+      github_slug TEXT,
+      submitted_at TEXT DEFAULT (datetime('now')),
+      reviewed_at TEXT,
+      reviewed_by INTEGER,
+      rejection_reason TEXT
+    )
+  `).run();
+
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_submissions_status ON submissions(status)`).run();
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_submissions_submitted ON submissions(submitted_at)`).run();
+
   return { success: true };
 }
 
