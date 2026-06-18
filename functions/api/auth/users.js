@@ -145,6 +145,20 @@ export async function onRequestPost({ request, env }) {
     VALUES (?, ?, 'initial_provision', ?, ?)
   `).bind(tokenHash, userId, expiresAt, auth.user.id).run();
 
+  // ── Auto-clear a matching access request (non-fatal) ──
+  // If this new user was provisioned in response to a verified, not-yet-handled
+  // access request (same email), mark that request handled so it drops off the
+  // Käyttöoikeuspyynnöt queue automatically — no manual "Merkitse käsitellyksi".
+  try {
+    await env.DB.prepare(`
+      UPDATE access_requests
+      SET handled = 1, handled_at = datetime('now')
+      WHERE lower(email) = ? AND COALESCE(handled, 0) = 0
+    `).bind(email).run();
+  } catch (e) {
+    console.error('access_request auto-clear failed (non-fatal):', e);
+  }
+
   // ── Build the link from the request origin ──
   const url = new URL(request.url);
   const provisioningLink = `${url.protocol}//${url.host}/fi/aseta-salasana?token=${rawToken}`;

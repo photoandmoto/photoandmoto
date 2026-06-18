@@ -191,18 +191,35 @@ const lang = 'fi';
           <h3 class="upload-title">Hyväksynnät</h3>
           <p class="upload-hint">Käsittele avustajien lähetykset ja vahvistetut käyttöoikeuspyynnöt. Vain käsittelemättömät näkyvät listalla.</p>
 
+          <div id="hyvReminder" class="hyv-reminder" style="display:none;"></div>
+
           <div class="hyv-block">
             <div class="hyv-block__head"><h4 class="hyv-block__title">Artikkelit</h4></div>
+            <ol class="hyv-instructions">
+              <li>Avaa artikkeli Sveltiassa ja lue se läpi</li>
+              <li>Palaa tänne ja klikkaa Hyväksy ja julkaise tai Hylkää</li>
+              <li>Muista julkaista muutokset Julkaise-osiossa</li>
+            </ol>
             <div id="hyvList-artikkeli" class="hyv-list"><div class="kt-loading">Ladataan…</div></div>
           </div>
 
           <div class="hyv-block">
             <div class="hyv-block__head"><h4 class="hyv-block__title">Pikauutiset</h4></div>
+            <ol class="hyv-instructions">
+              <li>Avaa pikauutinen Sveltiassa ja tarkista sisältö</li>
+              <li>Palaa tänne ja klikkaa Hyväksy ja julkaise tai Hylkää</li>
+              <li>Muista julkaista muutokset Julkaise-osiossa</li>
+            </ol>
             <div id="hyvList-pikauutinen" class="hyv-list"><div class="kt-loading">Ladataan…</div></div>
           </div>
 
           <div class="hyv-block">
             <div class="hyv-block__head"><h4 class="hyv-block__title">Käyttöoikeuspyynnöt</h4></div>
+            <ol class="hyv-instructions">
+              <li>Tarkista hakijan tiedot ja syy</li>
+              <li>Klikkaa Käsittele → Käyttäjät ja luo käyttäjätili</li>
+              <li>Hakija saa automaattisesti aktivointilinkin sähköpostitse</li>
+            </ol>
             <div id="hyvList-pyynnot" class="hyv-list"><div class="kt-loading">Ladataan…</div></div>
           </div>
 
@@ -1433,7 +1450,7 @@ function hyvFmtDate(s) {
 // Hylkää is clicked.
 function hyvConfirm() {
   return `
-    <div class="hyv-confirm" style="display:none;">
+    <div class="hyv-confirm hyv-confirm--reject" style="display:none;">
       <span class="hyv-confirm__q">Oletko varma?</span>
       <textarea class="inp hyv-reason" rows="2" maxlength="500" placeholder="Hylkäyksen syy (näkyy lähettäjälle)"></textarea>
       <div class="hyv-confirm__actions">
@@ -1443,9 +1460,37 @@ function hyvConfirm() {
     </div>`;
 }
 
+// Inline "Hyväksy ja julkaise" confirm — submissions only, hidden until the
+// approve button is clicked.
+function hyvApproveConfirm() {
+  return `
+    <div class="hyv-confirm hyv-confirm--approve" style="display:none;">
+      <span class="hyv-confirm__q hyv-confirm__q--ok">Oletko lukenut artikkelin Sveltiassa ja olet valmis hyväksymään sen?</span>
+      <div class="hyv-confirm__actions">
+        <button type="button" class="btn btn--submit btn--sm hyv-approve-confirm">Kyllä, hyväksy</button>
+        <button type="button" class="btn btn--ghost btn--sm hyv-approve-cancel">Peruuta</button>
+      </div>
+    </div>`;
+}
+
+// Reminder banner shown after an approve/reject so the editor remembers the
+// change still needs a manual publish. kind: 'approve' | 'reject'.
+function hyvShowReminder(kind) {
+  const el = document.getElementById('hyvReminder');
+  if (!el) return;
+  const text = kind === 'reject'
+    ? '🗑️ Hylätty ja poistettu. Muista julkaista muutokset Julkaise-osiossa.'
+    : '✅ Hyväksytty! Muista julkaista muutokset Julkaise-osiossa.';
+  el.innerHTML = `<span class="hyv-reminder__text">${text}</span>` +
+    `<button type="button" class="btn btn--submit btn--sm hyv-reminder__go">Siirry Julkaise-osioon →</button>`;
+  el.style.display = 'flex';
+}
+
 async function hyvLoadAll() {
   const msg = document.getElementById('hyvMsg');
   if (msg) msg.style.display = 'none';
+  const reminder = document.getElementById('hyvReminder');
+  if (reminder) reminder.style.display = 'none';
   ['artikkeli', 'pikauutinen', 'pyynnot'].forEach(g => {
     const el = document.getElementById('hyvList-' + g);
     if (el) el.innerHTML = '<div class="kt-loading">Ladataan…</div>';
@@ -1476,9 +1521,10 @@ function hyvRenderSubmissions(group) {
       </div>
       <div class="hyv-row__actions">
         <a href="${HYV_SVELTIA[group]}" target="_blank" rel="noopener" class="btn btn--ghost btn--sm">Käsittele Sveltiassa ↗</a>
-        <button type="button" class="btn btn--submit btn--sm hyv-publish">Merkitse julkaistuksi</button>
+        <button type="button" class="btn btn--submit btn--sm hyv-approve">Hyväksy ja julkaise</button>
         <button type="button" class="btn btn--ghost btn--sm hyv-reject-btn">Hylkää</button>
       </div>
+      ${hyvApproveConfirm()}
       ${hyvConfirm()}
     </div>`).join('');
 }
@@ -1520,24 +1566,63 @@ async function hyvPost(kind, id, action, reason) {
     }
     if (data.email_warning && msg) { msg.textContent = 'Huom: ' + data.email_warning; msg.style.display = 'block'; }
     await hyvLoadAll();
+    // Submission rejections delete the .md from dev → remind to publish.
+    // Access-request rejections touch no content, so no reminder.
+    if (kind === 'submission') hyvShowReminder('reject');
   } catch {
     if (msg) { msg.textContent = 'Yhteysvirhe — yritä uudelleen.'; msg.style.display = 'block'; }
   }
 }
 const hyvReject = (kind, id, reason) => hyvPost(kind, id, kind === 'request' ? 'rejected' : 'hylatty', reason);
 
+// "Hyväksy ja julkaise" — flips draft:false on dev + marks the submission
+// approved, then reminds the editor to publish to production.
+async function hyvApprove(id) {
+  const msg = document.getElementById('hyvMsg');
+  if (msg) msg.style.display = 'none';
+  try {
+    const r = await fetch('/api/submissions/approve', {
+      method: 'POST', credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok || !data.success) {
+      if (msg) { msg.textContent = data.error || 'Hyväksyntä epäonnistui.'; msg.style.display = 'block'; }
+      return;
+    }
+    if (data.email_warning && msg) { msg.textContent = 'Huom: ' + data.email_warning; msg.style.display = 'block'; }
+    await hyvLoadAll();
+    hyvShowReminder('approve');
+  } catch {
+    if (msg) { msg.textContent = 'Yhteysvirhe — yritä uudelleen.'; msg.style.display = 'block'; }
+  }
+}
+
 // Click delegation: row action buttons + reject confirm/cancel.
 document.getElementById('tabHyvaksynnat')?.addEventListener('click', (e) => {
   if (e.target.closest('.hyv-to-kayttajat')) { openSection('kayttajat'); return; }
+  if (e.target.closest('.hyv-reminder__go')) { openSection('julkaise'); return; }
   const row = e.target.closest('.hyv-row');
   if (!row) return;
   const kind = row.dataset.kind;
   const id = Number(row.dataset.id);
+  const approveBox = row.querySelector('.hyv-confirm--approve');
+  const rejectBox = row.querySelector('.hyv-confirm--reject');
 
-  if (e.target.closest('.hyv-publish')) { hyvPost(kind, id, 'julkaistu'); return; }
+  // Approve flow (submissions only).
+  if (e.target.closest('.hyv-approve')) {
+    if (rejectBox) rejectBox.style.display = 'none';
+    if (approveBox) approveBox.style.display = (approveBox.style.display === 'none' ? 'flex' : 'none');
+    return;
+  }
+  if (e.target.closest('.hyv-approve-confirm')) { hyvApprove(id); return; }
+  if (e.target.closest('.hyv-approve-cancel')) { if (approveBox) approveBox.style.display = 'none'; return; }
+
+  // Reject flow (submissions + access requests).
   if (e.target.closest('.hyv-reject-btn')) {
-    const box = row.querySelector('.hyv-confirm');
-    if (box) box.style.display = (box.style.display === 'none' ? 'flex' : 'none');
+    if (approveBox) approveBox.style.display = 'none';
+    if (rejectBox) rejectBox.style.display = (rejectBox.style.display === 'none' ? 'flex' : 'none');
     return;
   }
   if (e.target.closest('.hyv-reject-confirm')) {
@@ -1548,8 +1633,7 @@ document.getElementById('tabHyvaksynnat')?.addEventListener('click', (e) => {
     return;
   }
   if (e.target.closest('.hyv-reject-cancel')) {
-    const box = row.querySelector('.hyv-confirm');
-    if (box) { box.style.display = 'none'; const ta = box.querySelector('.hyv-reason'); if (ta) ta.value = ''; }
+    if (rejectBox) { rejectBox.style.display = 'none'; const ta = rejectBox.querySelector('.hyv-reason'); if (ta) ta.value = ''; }
     return;
   }
 });
@@ -3221,6 +3305,14 @@ if (document.getElementById('ktAddBtn')) {
   .hyv-row__actions { display: flex; gap: 8px; flex-wrap: wrap; flex: 0 0 auto; margin-left: auto; }
   .hyv-confirm { flex: 1 1 100%; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f0f0f0; font-size: .85rem; }
   .hyv-confirm__q { font-weight: 700; color: #b32218; }
+  .hyv-confirm__q--ok { color: #1a7d3c; }
+  /* Short workflow instructions under each block head */
+  .hyv-instructions { margin: 0 0 12px; padding-left: 1.25em; color: #9a9a9a; font-size: .8rem; line-height: 1.5; }
+  .hyv-instructions li { margin: 0; }
+  /* Post-action reminder banner (publish to production) */
+  .hyv-reminder { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 0 0 20px; padding: 12px 16px; background: #eef8f0; border: 1px solid #bfe3c8; border-radius: 10px; color: #1a5b30; font-size: .9rem; }
+  .hyv-reminder__text { flex: 1 1 auto; font-weight: 600; }
+  .hyv-reminder__go { flex: 0 0 auto; }
   .hyv-confirm .inp { width: 100%; box-sizing: border-box; resize: vertical; }
   .hyv-confirm__actions { display: flex; gap: 8px; }
   .btn--sm { padding: 6px 12px; font-size: .82rem; }

@@ -109,7 +109,9 @@ async function deleteRejectedDraft(env, type, slug) {
     const delRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${encodedPath}`, {
       method: 'DELETE',
       headers: { ...ghHeaders, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: `Hylätty: poista ${path}`, sha: fileSha, branch }),
+      // Prefix MUST stay "chore: reject submission" — auto-promote-deletions.yml
+      // matches it to SKIP promoting dev → main for rejection deletions.
+      body: JSON.stringify({ message: `chore: reject submission — ${slug}`, sha: fileSha, branch }),
     });
     if (!delRes.ok) console.error('reject delete: DELETE failed', delRes.status, await delRes.text().catch(() => ''));
   } catch (e) {
