@@ -4,8 +4,9 @@
 // `hallitse_artikkeleita` permission.
 //
 //   GET  /api/submissions   → all submissions, newest first
-//   POST /api/submissions   → { id, action: 'julkaistu' | 'hylatty', rejection_reason? }
-//        'hylatty' requires rejection_reason and emails the author (non-fatal).
+//   POST /api/submissions   → { id, action: 'hylatty', rejection_reason }
+//        Reject only — requires rejection_reason, deletes the draft .md, and
+//        emails the author (both non-fatal). Approval is POST /api/submissions/approve.
 
 import {
   requireAuth, getJsonBody, jsonResponse, errorResponse, corsOptionsResponse,
@@ -147,8 +148,9 @@ export async function onRequestPost({ request, env }) {
   const rejectionReason = (body.rejection_reason || '').toString().trim();
 
   if (!id || Number.isNaN(id)) return errorResponse('Virheellinen lähetyksen ID', 400);
-  if (action !== 'julkaistu' && action !== 'hylatty') return errorResponse('Virheellinen toiminto', 400);
-  if (action === 'hylatty' && !rejectionReason) return errorResponse('Hylkäyksen syy vaaditaan', 400);
+  // Approval moved to POST /api/submissions/approve — this endpoint only rejects.
+  if (action !== 'hylatty') return errorResponse('Virheellinen toiminto', 400);
+  if (!rejectionReason) return errorResponse('Hylkäyksen syy vaaditaan', 400);
   if (rejectionReason.length > 500) return errorResponse('Syy on liian pitkä (enintään 500 merkkiä)', 400);
 
   const row = await env.DB.prepare(
@@ -158,24 +160,21 @@ export async function onRequestPost({ request, env }) {
 
   await env.DB.prepare(
     `UPDATE submissions
-     SET status = ?, reviewed_at = datetime('now'), reviewed_by = ?, rejection_reason = ?
+     SET status = 'hylatty', reviewed_at = datetime('now'), reviewed_by = ?, rejection_reason = ?
      WHERE id = ?`
-  ).bind(action, auth.user.id, action === 'hylatty' ? rejectionReason : null, id).run();
+  ).bind(auth.user.id, rejectionReason, id).run();
 
-  // On rejection, delete the draft .md from the repo (non-fatal, independent of
-  // the email and the D1 update which have already completed).
-  if (action === 'hylatty') {
-    await deleteRejectedDraft(env, row.type, row.github_slug);
-  }
+  // Delete the draft .md from the repo (non-fatal, independent of the email and
+  // the D1 update which have already completed).
+  await deleteRejectedDraft(env, row.type, row.github_slug);
 
-  // On rejection, email the author (non-fatal — the status is already saved).
+  // Email the author (non-fatal — the status is already saved).
   let emailWarning = null;
-  if (action === 'hylatty') {
-    const typeLabel = row.type === 'pikauutinen' ? 'pikauutinen' : 'artikkeli';
-    if (env.RESEND_API_KEY && row.author_email) {
-      const isProd = env.CF_PAGES_BRANCH === 'main';
-      const baseUrl = isProd ? 'https://www.photoandmoto.fi' : 'https://photoandmoto-staging.pages.dev';
-      const text =
+  const typeLabel = row.type === 'pikauutinen' ? 'pikauutinen' : 'artikkeli';
+  if (env.RESEND_API_KEY && row.author_email) {
+    const isProd = env.CF_PAGES_BRANCH === 'main';
+    const baseUrl = isProd ? 'https://www.photoandmoto.fi' : 'https://photoandmoto-staging.pages.dev';
+    const text =
 `Hei ${row.author_name || ''},
 
 Kiitos lähetyksestäsi Photo & Moto -sivustolle. Valitettavasti lähettämääsi
@@ -191,30 +190,29 @@ Kiitos panoksestasi — toivomme näkevämme uuden version!
 
 Ystävällisin terveisin,
 Photo & Moto -toimitus`;
-      try {
-        const res = await fetch('https://api.resend.com/emails', {
-          method: 'POST',
-          headers: { 'Authorization': `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            from: FROM,
-            to: [row.author_email],
-            subject: `Lähettämäsi ${typeLabel} ei mennyt läpi — Photo & Moto`,
-            text,
-          }),
-        });
-        if (!res.ok) { emailWarning = 'Hylkäysviestin lähetys epäonnistui'; console.error('Resend error (reject):', res.status, await res.text().catch(() => '')); }
-      } catch (e) {
-        emailWarning = 'Hylkäysviestin lähetys epäonnistui';
-        console.error('reject email threw:', e);
-      }
-    } else if (!row.author_email) {
-      emailWarning = 'Lähettäjän sähköpostia ei tiedossa — viestiä ei lähetetty';
-    } else {
-      emailWarning = 'RESEND_API_KEY puuttuu — viestiä ei lähetetty';
+    try {
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from: FROM,
+          to: [row.author_email],
+          subject: `Lähettämäsi ${typeLabel} ei mennyt läpi — Photo & Moto`,
+          text,
+        }),
+      });
+      if (!res.ok) { emailWarning = 'Hylkäysviestin lähetys epäonnistui'; console.error('Resend error (reject):', res.status, await res.text().catch(() => '')); }
+    } catch (e) {
+      emailWarning = 'Hylkäysviestin lähetys epäonnistui';
+      console.error('reject email threw:', e);
     }
+  } else if (!row.author_email) {
+    emailWarning = 'Lähettäjän sähköpostia ei tiedossa — viestiä ei lähetetty';
+  } else {
+    emailWarning = 'RESEND_API_KEY puuttuu — viestiä ei lähetetty';
   }
 
-  return jsonResponse({ success: true, id, status: action, email_warning: emailWarning });
+  return jsonResponse({ success: true, id, status: 'hylatty', email_warning: emailWarning });
 }
 
 export async function onRequestOptions() {
