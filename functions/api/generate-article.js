@@ -284,6 +284,9 @@ Muuta: ${f.muuta || 'ei tietoa'}
 7. Teksti on pelkkää leipätekstiä — ÄLÄ käytä väliotsikoita,
    ranskalaisia viivoja tai Markdown-muotoilua bodyssä.
 
+8. OIKOLUKU: Tarkista ja korjaa ilmeiset suomen kielen
+   kirjoitusvirheet ennen vastauksen palauttamista.
+
 ═══ OTSIKKO ═══
 - Korkeintaan 80 merkkiä
 - Ytimekäs ja informatiivinen — kertoo uutisen ytimen

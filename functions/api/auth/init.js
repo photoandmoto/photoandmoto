@@ -146,6 +146,38 @@ export async function runInit(env) {
   await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_submissions_status ON submissions(status)`).run();
   await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_submissions_submitted ON submissions(submitted_at)`).run();
 
+  // ─── access_requests ──────────────────────────────────────────────────
+  // Avustaja access-request flow + Hyväksynnät handling. Created here for
+  // fresh environments (existing DBs already have the base columns from the
+  // manual migration). `handled`/`handled_at`/`rejection_reason` are added by
+  // the guarded ALTERs below for databases created before Phase 3.
+  await env.DB.prepare(`
+    CREATE TABLE IF NOT EXISTS access_requests (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      reason TEXT,
+      token TEXT,
+      verified INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT DEFAULT (datetime('now')),
+      expires_at TEXT,
+      handled INTEGER NOT NULL DEFAULT 0,
+      handled_at TEXT,
+      rejection_reason TEXT
+    )
+  `).run();
+
+  // SQLite can't ALTER ... ADD COLUMN IF NOT EXISTS, so add each missing column
+  // best-effort and ignore the "duplicate column name" error on existing DBs.
+  for (const colDef of ['handled INTEGER NOT NULL DEFAULT 0', 'handled_at TEXT', 'rejection_reason TEXT']) {
+    try {
+      await env.DB.prepare(`ALTER TABLE access_requests ADD COLUMN ${colDef}`).run();
+    } catch { /* column already exists */ }
+  }
+
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_access_requests_token ON access_requests(token)`).run();
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_access_requests_open ON access_requests(verified, handled)`).run();
+
   return { success: true };
 }
 
