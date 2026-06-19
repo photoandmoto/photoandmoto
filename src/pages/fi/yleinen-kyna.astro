@@ -140,7 +140,9 @@ const lang = 'fi';
               <span>Minä omistan tämän kuvan käyttöoikeuden ja annan luvan sen julkaisemiseen Photo &amp; Moto -sivustolla.</span>
             </label>
             <div class="yk-flash-actions">
-              <button id="yk-photo-btn" class="btn btn--submit" type="submit" disabled>Lähetä kuva</button>
+              <span class="yk-photo-submit-wrap" id="yk-photo-submit-wrap">
+                <button id="yk-photo-btn" class="btn btn--submit" type="submit" disabled>Lähetä kuva</button>
+              </span>
               <button id="yk-photo-clear" class="btn btn--ghost" type="button">Tyhjennä</button>
             </div>
             <p id="yk-photo-msg" class="yk-msg" style="display:none;"></p>
@@ -315,9 +317,56 @@ const lang = 'fi';
     });
   }
 
+  // Downsize the main image before upload — identical to the editor Lähetä kuva
+  // flow (functions/api/mystery/upload.js stores the image as base64 in D1, so
+  // it MUST stay under D1's ~2 MB per-value limit). Max edge 1600px, JPEG q0.8.
+  // Graceful: returns the original file if resizing isn't needed or fails.
+  async function ykGenerateMainImage(file) {
+    return new Promise((resolve) => {
+      try {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            try {
+              const MAX = 1600;
+              if (img.width <= MAX && img.height <= MAX) { resolve(file); return; }
+              let w = img.width, h = img.height;
+              if (w > h) { h = Math.round(h * (MAX / w)); w = MAX; }
+              else { w = Math.round(w * (MAX / h)); h = MAX; }
+              const canvas = document.createElement('canvas');
+              canvas.width = w; canvas.height = h;
+              canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+              canvas.toBlob((blob) => {
+                if (!blob) { resolve(file); return; }
+                const newName = file.name.replace(/\.(jpe?g|png|webp)$/i, '.jpg');
+                resolve(new File([blob], newName, { type: 'image/jpeg' }));
+              }, 'image/jpeg', 0.8);
+            } catch { resolve(file); }
+          };
+          img.onerror = () => resolve(file);
+          img.src = ev.target.result;
+        };
+        reader.onerror = () => resolve(file);
+        reader.readAsDataURL(file);
+      } catch { resolve(file); }
+    });
+  }
+
   // Consent gate — keep submit disabled until the ownership box is ticked.
   $('yk-photo-consent')?.addEventListener('change', (e) => {
     const btn = $('yk-photo-btn'); if (btn) btn.disabled = !e.target.checked;
+  });
+
+  // Safety net: the submit button is disabled (pointer-events:none) until consent
+  // is given, so a click lands on this wrapper instead — surface a clear message
+  // explaining why nothing happened.
+  $('yk-photo-submit-wrap')?.addEventListener('click', () => {
+    const consent = $('yk-photo-consent');
+    if (!consent || !consent.checked) {
+      const msg = $('yk-photo-msg');
+      if (msg) { msg.className = 'yk-msg yk-msg--err'; msg.textContent = 'Sinun täytyy hyväksyä käyttöoikeusehto ennen lähettämistä.'; msg.style.display = 'block'; }
+    }
   });
 
   // Submit photo (Avustaja upload with consent → /api/submit-photo).
@@ -328,7 +377,7 @@ const lang = 'fi';
     const consent = $('yk-photo-consent');
     msg.style.display = 'none';
     if (!consent || !consent.checked) {
-      msg.className = 'yk-msg yk-msg--err'; msg.textContent = '✗ Vahvista suostumus ennen lähettämistä.'; msg.style.display = 'block'; return;
+      msg.className = 'yk-msg yk-msg--err'; msg.textContent = 'Sinun täytyy hyväksyä käyttöoikeusehto ennen lähettämistä.'; msg.style.display = 'block'; return;
     }
     const fileInput = e.target.querySelector('input[name="photo"]');
     const file = fileInput && fileInput.files[0];
@@ -336,7 +385,9 @@ const lang = 'fi';
     btn.disabled = true; const orig = btn.textContent; btn.textContent = 'Lähetetään…';
     try {
       const thumb = await ykGenerateThumb(file);
+      const mainFile = await ykGenerateMainImage(file);
       const fd = new FormData(e.target);
+      fd.set('photo', mainFile); // upload the downsized image, not the raw original
       fd.set('consent_given', '1');
       if (thumb) fd.append('thumb_data', thumb);
       const r = await fetch('/api/submit-photo', { method: 'POST', credentials: 'same-origin', body: fd });
@@ -499,6 +550,10 @@ const lang = 'fi';
   .yk-consent { display: flex; align-items: flex-start; gap: 10px; font-size: .85rem; line-height: 1.45; color: #444;
     background: #fff8e6; border: 1px solid #ffdf85; border-left: 3px solid #ff9900; border-radius: 8px; padding: 12px 14px; cursor: pointer; }
   .yk-consent input { margin-top: 2px; flex: 0 0 auto; width: 16px; height: 16px; cursor: pointer; }
+  /* Submit wrapper catches clicks while the button is disabled, so the consent
+     safety-net message can fire (a disabled button emits no events itself). */
+  .yk-photo-submit-wrap { display: inline-flex; }
+  #yk-photo-btn:disabled { pointer-events: none; }
 
   /* Card navigation (replaces tabs) — mirrors the Toimituskeskus card style. */
   .adm-toplink { display: inline-block; font-size: .82rem; color: #888; text-decoration: none; margin: 0 0 10px; }

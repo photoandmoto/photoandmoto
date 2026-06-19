@@ -64,6 +64,15 @@ export async function onRequestPost({ request, env }) {
     const bytes = new Uint8Array(await file.arrayBuffer());
     let bin = '';
     for (let i = 0; i < bytes.length; i += 8192) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 8192));
+    const imageB64 = btoa(bin);
+
+    // The image is stored as base64 in D1 (photos.image_data) exactly like the
+    // editor flow. D1 caps a single value at ~2,000,000 bytes, so reject an
+    // oversized payload with a friendly message instead of a raw D1_ERROR. The
+    // Avustaja client downsizes to 1600px/q0.8 first, so this should be rare.
+    if (imageB64.length > 1_900_000) {
+      return json({ error: 'Kuva on liian suuri tallennettavaksi. Yritä pienemmällä tai pienempiresoluutioisella kuvalla.' }, 413);
+    }
 
     // Optional client-generated thumbnail (same contract as /api/mystery/upload).
     let thumbData = fd.get('thumb_data');
@@ -80,7 +89,7 @@ export async function onRequestPost({ request, env }) {
     ).bind(
       file.name,
       file.type,
-      btoa(bin),
+      imageB64,
       submitterName,
       fd.get('year_estimate') || '',
       fd.get('people') || '',
