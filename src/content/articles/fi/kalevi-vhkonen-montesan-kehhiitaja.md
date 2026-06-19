@@ -11,7 +11,7 @@ featured_image: /images/kalevi-vhkonen-montesan-kehhiitaja-heikki-huusko-ajoi-em
 card_image: null
 show_hero: true
 image_caption: ''
-draft: true
+draft: false
 seo_description: kalevi kale vehkonen montesa mies ja sen kehittäjä
 sources: null
 language: fi
