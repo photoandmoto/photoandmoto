@@ -326,7 +326,7 @@ export async function onRequestPost({ request, env }) {
          VALUES ('artikkeli', 'odottaa', ?, ?, ?, ?, ?, ?, datetime('now'))`
       ).bind(title, auth.user.id, author, auth.user.email || null, category, slug).run();
     } catch (e) {
-      console.error('submissions insert failed (non-fatal):', e);
+      console.error('submissions insert failed (non-fatal):', e?.name, e?.message, e?.cause, String(e));
     }
 
     // 7. Notify the editor via Resend (non-fatal — the draft is already committed).
