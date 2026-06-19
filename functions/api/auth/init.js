@@ -178,6 +178,39 @@ export async function runInit(env) {
   await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_access_requests_token ON access_requests(token)`).run();
   await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_access_requests_open ON access_requests(verified, handled)`).run();
 
+  // ─── photo_submissions ────────────────────────────────────────────────
+  // Permanent compliance audit trail for Avustaja photo uploads (Lähetä kuva).
+  // Each row records the consent snapshot at submission time and the review
+  // outcome. Rows are NEVER deleted — when the underlying mystery `photos` row
+  // is published or removed, this audit record stays. `photo_id` links to the
+  // photos row while it exists (FK-free + nullable, consistent with the other
+  // tables here); editor uploads create no row, so a photo with no matching
+  // photo_submissions row is an internal/trusted upload.
+  await env.DB.prepare(`
+    CREATE TABLE IF NOT EXISTS photo_submissions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      photo_id INTEGER,
+      filename TEXT NOT NULL,
+      submitter_name TEXT NOT NULL,
+      submitter_email TEXT NOT NULL,
+      submitter_id INTEGER,
+      consent_given INTEGER NOT NULL DEFAULT 0,
+      consent_text TEXT NOT NULL,
+      consent_at TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'odottaa' CHECK (status IN ('odottaa', 'hyvaksytty', 'hylatty')),
+      reviewed_at TEXT,
+      reviewed_by INTEGER,
+      gallery_assigned TEXT,
+      rejection_reason TEXT,
+      submitted_at TEXT DEFAULT (datetime('now')),
+      FOREIGN KEY (submitter_id) REFERENCES users(id) ON DELETE SET NULL,
+      FOREIGN KEY (reviewed_by) REFERENCES users(id) ON DELETE SET NULL
+    )
+  `).run();
+
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_photo_submissions_status ON photo_submissions(status)`).run();
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_photo_submissions_photo ON photo_submissions(photo_id)`).run();
+
   return { success: true };
 }
 

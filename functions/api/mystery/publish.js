@@ -483,6 +483,53 @@ export async function onRequestPost({ request, env }) {
     cleanupWarning = `D1 cleanup failed: ${e.message}`;
   }
 
+  // ---- 7b. Avustaja audit trail ----
+  // If this photo originated from a contributor submission (Lähetä kuva), mark
+  // its audit row approved and notify the submitter. Editor uploads have no
+  // photo_submissions row, so this is a no-op for them. Fully non-fatal — the
+  // photo is already published.
+  try {
+    const sub = await env.DB
+      .prepare(`SELECT id, submitter_name, submitter_email FROM photo_submissions WHERE photo_id = ? AND status = 'odottaa'`)
+      .bind(photoId)
+      .first();
+    if (sub) {
+      await env.DB
+        .prepare(`UPDATE photo_submissions SET status = 'hyvaksytty', gallery_assigned = ?, reviewed_at = datetime('now'), reviewed_by = ? WHERE id = ?`)
+        .bind(slug, auth.user?.id ?? null, sub.id)
+        .run();
+      if (env.RESEND_API_KEY && sub.submitter_email) {
+        const text =
+`Hei ${sub.submitter_name || ''},
+
+Hienoa! Lähettämäsi kuva on hyväksytty ja julkaistu Photo & Moto -galleriaan
+"${galleryTitle || slug}".
+
+Kiitos arvokkaasta panoksestasi — pidetään yhteyttä!
+
+Ystävällisin terveisin,
+Photo & Moto -toimitus`;
+        try {
+          const res = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              from: 'Photo & Moto <noreply@photoandmoto.fi>',
+              to: [sub.submitter_email],
+              subject: 'Kuvasi on hyväksytty — Photo & Moto',
+              text,
+            }),
+          });
+          if (!res.ok) console.error('Resend error (photo approve):', res.status, await res.text().catch(() => ''));
+        } catch (e) {
+          console.error('photo approve email threw:', e);
+        }
+      }
+    }
+  } catch (e) {
+    console.error('photo approve audit update failed (non-fatal):', e);
+  }
+
   return jsonResponse({
     success: true,
     branch,

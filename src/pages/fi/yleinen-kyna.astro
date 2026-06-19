@@ -53,6 +53,11 @@ const lang = 'fi';
             <span class="adm-card__sub">Luo tekoälyavusteinen lyhyt uutinen avainsanoilla</span>
             <span class="adm-card__arrow">→</span>
           </button>
+          <button type="button" class="adm-card" data-section="photo">
+            <span class="adm-card__title">Lähetä kuva</span>
+            <span class="adm-card__sub">Lähetä tunnistettava kuva galleriaan</span>
+            <span class="adm-card__arrow">→</span>
+          </button>
           <a href="/fi/avustajan-ohjekirja" class="adm-card">
             <span class="adm-card__title">Avustajan Ohjekirja</span>
             <span class="adm-card__sub">Ohjeet artikkelin ja pikauutisen lähettämiseen</span>
@@ -120,6 +125,27 @@ const lang = 'fi';
             </div>
           </div>
         </div>
+
+        <!-- Panel 3: Lähetä kuva (Avustaja photo submission with consent). -->
+        <div id="yk-panel-photo" class="yk-panel" hidden>
+          <form id="yk-photo-form" class="yk-form">
+            <p class="yk-card__sub">Lähetä tunnistettava kuva galleriaan. Toimitus tarkistaa kuvan ennen julkaisua.</p>
+            <label class="yk-field"><span>Kuva *</span><input name="photo" class="inp" type="file" accept="image/jpeg,image/png,image/webp" required /></label>
+            <label class="yk-field"><span>Vuosiarvio</span><input name="year_estimate" class="inp" placeholder="Esim. 1977" /></label>
+            <label class="yk-field"><span>Henkilöt kuvassa</span><input name="people" class="inp" placeholder="Keitä tunnistat?" /></label>
+            <label class="yk-field"><span>Paikka / tapahtuma</span><input name="location_notes" class="inp" placeholder="Missä otettu?" /></label>
+            <label class="yk-field"><span>Lisätietoja</span><input name="notes" class="inp" placeholder="Muuta tietoa?" /></label>
+            <label class="yk-consent">
+              <input type="checkbox" id="yk-photo-consent" />
+              <span>Minä omistan tämän kuvan käyttöoikeuden ja annan luvan sen julkaisemiseen Photo &amp; Moto -sivustolla.</span>
+            </label>
+            <div class="yk-flash-actions">
+              <button id="yk-photo-btn" class="btn btn--submit" type="submit" disabled>Lähetä kuva</button>
+              <button id="yk-photo-clear" class="btn btn--ghost" type="button">Tyhjennä</button>
+            </div>
+            <p id="yk-photo-msg" class="yk-msg" style="display:none;"></p>
+          </form>
+        </div>
       </div>
     </div>
   </section>
@@ -167,7 +193,7 @@ const lang = 'fi';
   if (flashCatSel) flashCatSel.innerHTML = catOptions;
 
   // Card navigation — open a form panel, show the "← Avustajat" back link.
-  const YK_PANELS = { article: 'yk-panel-article', flash: 'yk-panel-flash' };
+  const YK_PANELS = { article: 'yk-panel-article', flash: 'yk-panel-flash', photo: 'yk-panel-photo' };
   function ykShowCards() {
     document.querySelectorAll('#yk-form-wrap .yk-panel').forEach((p) => { p.hidden = true; });
     const back = $('yk-back'); if (back) back.style.display = 'none';
@@ -259,6 +285,86 @@ const lang = 'fi';
     } finally {
       btn.disabled = false; btn.textContent = orig;
     }
+  });
+
+  // Browser-side thumbnail (graceful: resolves null on any failure).
+  async function ykGenerateThumb(file) {
+    return new Promise((resolve) => {
+      try {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            try {
+              const MAX = 300;
+              let w = img.width, h = img.height;
+              if (w > h) { if (w > MAX) { h = Math.round(h * (MAX / w)); w = MAX; } }
+              else { if (h > MAX) { w = Math.round(w * (MAX / h)); h = MAX; } }
+              const canvas = document.createElement('canvas');
+              canvas.width = w; canvas.height = h;
+              canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+              resolve(canvas.toDataURL('image/jpeg', 0.7));
+            } catch { resolve(null); }
+          };
+          img.onerror = () => resolve(null);
+          img.src = ev.target.result;
+        };
+        reader.onerror = () => resolve(null);
+        reader.readAsDataURL(file);
+      } catch { resolve(null); }
+    });
+  }
+
+  // Consent gate — keep submit disabled until the ownership box is ticked.
+  $('yk-photo-consent')?.addEventListener('change', (e) => {
+    const btn = $('yk-photo-btn'); if (btn) btn.disabled = !e.target.checked;
+  });
+
+  // Submit photo (Avustaja upload with consent → /api/submit-photo).
+  $('yk-photo-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const msg = $('yk-photo-msg');
+    const btn = $('yk-photo-btn');
+    const consent = $('yk-photo-consent');
+    msg.style.display = 'none';
+    if (!consent || !consent.checked) {
+      msg.className = 'yk-msg yk-msg--err'; msg.textContent = '✗ Vahvista suostumus ennen lähettämistä.'; msg.style.display = 'block'; return;
+    }
+    const fileInput = e.target.querySelector('input[name="photo"]');
+    const file = fileInput && fileInput.files[0];
+    if (!file) { msg.className = 'yk-msg yk-msg--err'; msg.textContent = '✗ Valitse kuva.'; msg.style.display = 'block'; return; }
+    btn.disabled = true; const orig = btn.textContent; btn.textContent = 'Lähetetään…';
+    try {
+      const thumb = await ykGenerateThumb(file);
+      const fd = new FormData(e.target);
+      fd.set('consent_given', '1');
+      if (thumb) fd.append('thumb_data', thumb);
+      const r = await fetch('/api/submit-photo', { method: 'POST', credentials: 'same-origin', body: fd });
+      const data = await r.json().catch(() => ({}));
+      if (r.ok && data.ok) {
+        msg.className = 'yk-msg yk-msg--ok';
+        msg.textContent = '✓ Kiitos! Kuva lähetettiin toimitukselle tarkistettavaksi.';
+        msg.style.display = 'block';
+        e.target.reset(); // unticks consent
+      } else if (r.status === 401 || r.status === 403) {
+        msg.className = 'yk-msg yk-msg--err'; msg.textContent = '✗ Istunto vanhentunut tai ei oikeutta — kirjaudu uudelleen.'; msg.style.display = 'block';
+      } else {
+        msg.className = 'yk-msg yk-msg--err'; msg.textContent = '✗ ' + (data.error || 'Lähetys epäonnistui — yritä uudelleen.'); msg.style.display = 'block';
+      }
+    } catch {
+      msg.className = 'yk-msg yk-msg--err'; msg.textContent = '✗ Yhteysvirhe — yritä uudelleen.'; msg.style.display = 'block';
+    } finally {
+      btn.textContent = orig;
+      // Re-enable only if consent is still ticked (a successful submit reset it).
+      btn.disabled = !($('yk-photo-consent') && $('yk-photo-consent').checked);
+    }
+  });
+
+  // Tyhjennä — clear the photo form and re-disable submit.
+  $('yk-photo-clear')?.addEventListener('click', () => {
+    const f = $('yk-photo-form'); if (f) f.reset();
+    const m = $('yk-photo-msg'); if (m) m.style.display = 'none';
+    const b = $('yk-photo-btn'); if (b) b.disabled = true;
   });
 
   // Generate pikauutinen (Gemini — takes a few seconds).
@@ -388,6 +494,11 @@ const lang = 'fi';
   .yk-msg { font-size: .9rem; font-weight: 600; margin: 0; }
   .yk-msg--ok { color: #1a8a5c; }
   .yk-msg--err { color: #dc3545; }
+
+  /* Consent checkbox (Lähetä kuva) */
+  .yk-consent { display: flex; align-items: flex-start; gap: 10px; font-size: .85rem; line-height: 1.45; color: #444;
+    background: #fff8e6; border: 1px solid #ffdf85; border-left: 3px solid #ff9900; border-radius: 8px; padding: 12px 14px; cursor: pointer; }
+  .yk-consent input { margin-top: 2px; flex: 0 0 auto; width: 16px; height: 16px; cursor: pointer; }
 
   /* Card navigation (replaces tabs) — mirrors the Toimituskeskus card style. */
   .adm-toplink { display: inline-block; font-size: .82rem; color: #888; text-decoration: none; margin: 0 0 10px; }
