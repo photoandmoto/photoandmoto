@@ -195,33 +195,42 @@ const lang = 'fi';
 
           <div class="hyv-block">
             <div class="hyv-block__head"><h4 class="hyv-block__title">Artikkelit</h4></div>
-            <ol class="hyv-instructions">
-              <li>Avaa artikkeli Sveltiassa</li>
-              <li>Jos hyväksyt: poista valinta 'Piilota sivustolta' ja tallenna</li>
-              <li>Jos hylkäät: poista luonnos Sveltiassa</li>
-              <li>Muista julkaista muutokset Toimitus → Julkaise -osiossa</li>
-            </ol>
+            <details class="hyv-lue-ensin">
+              <summary>Lue ensin</summary>
+              <ol class="hyv-instructions">
+                <li>Avaa artikkeli Sveltiassa</li>
+                <li>Jos hyväksyt: poista valinta 'Piilota sivustolta' ja tallenna</li>
+                <li>Jos hylkäät: poista luonnos Sveltiassa</li>
+                <li>Muista julkaista muutokset Toimitus → Julkaise -osiossa</li>
+              </ol>
+            </details>
             <div id="hyvList-artikkeli" class="hyv-list"><div class="kt-loading">Ladataan…</div></div>
           </div>
 
           <div class="hyv-block">
             <div class="hyv-block__head"><h4 class="hyv-block__title">Pikauutiset</h4></div>
-            <ol class="hyv-instructions">
-              <li>Avaa pikauutinen Sveltiassa</li>
-              <li>Jos hyväksyt: poista valinta 'Piilota sivustolta' ja tallenna</li>
-              <li>Jos hylkäät: poista luonnos Sveltiassa</li>
-              <li>Muista julkaista muutokset Toimitus → Julkaise -osiossa</li>
-            </ol>
+            <details class="hyv-lue-ensin">
+              <summary>Lue ensin</summary>
+              <ol class="hyv-instructions">
+                <li>Avaa pikauutinen Sveltiassa</li>
+                <li>Jos hyväksyt: poista valinta 'Piilota sivustolta' ja tallenna</li>
+                <li>Jos hylkäät: poista luonnos Sveltiassa</li>
+                <li>Muista julkaista muutokset Toimitus → Julkaise -osiossa</li>
+              </ol>
+            </details>
             <div id="hyvList-pikauutinen" class="hyv-list"><div class="kt-loading">Ladataan…</div></div>
           </div>
 
           <div class="hyv-block">
             <div class="hyv-block__head"><h4 class="hyv-block__title">Käyttöoikeuspyynnöt</h4></div>
-            <ol class="hyv-instructions">
-              <li>Tarkista hakijan tiedot ja syy</li>
-              <li>Klikkaa Käsittele → Käyttäjät ja luo käyttäjätili</li>
-              <li>Hakija saa automaattisesti aktivointilinkin sähköpostitse</li>
-            </ol>
+            <details class="hyv-lue-ensin">
+              <summary>Lue ensin</summary>
+              <ol class="hyv-instructions">
+                <li>Tarkista hakijan tiedot ja syy</li>
+                <li>Jos hyväksyt: klikkaa Käsittele → Käyttäjät ja luo käyttäjätili — hakija saa automaattisesti aktivointilinkin sähköpostitse</li>
+                <li>Jos hylkäät: klikkaa Hylkää ja kirjoita syy — hakija saa automaattisesti tiedon sähköpostitse</li>
+              </ol>
+            </details>
             <div id="hyvList-pyynnot" class="hyv-list"><div class="kt-loading">Ladataan…</div></div>
           </div>
 
@@ -1567,13 +1576,21 @@ const hyvReject = (kind, id, reason) => hyvPost(kind, id, kind === 'request' ? '
 
 // Click delegation: row action buttons + reject confirm/cancel.
 document.getElementById('tabHyvaksynnat')?.addEventListener('click', (e) => {
-  if (e.target.closest('.hyv-to-kayttajat')) { openSection('kayttajat'); return; }
   if (e.target.closest('.hyv-reminder__go')) { openSection('julkaise'); return; }
   const row = e.target.closest('.hyv-row');
   if (!row) return;
   const kind = row.dataset.kind;
   const id = Number(row.dataset.id);
   const rejectBox = row.querySelector('.hyv-confirm--reject');
+
+  // Käsittele → Käyttäjät: jump to the Käyttäjät section and open a "new user"
+  // modal pre-filled from this access request, for the admin to review.
+  if (e.target.closest('.hyv-to-kayttajat')) {
+    const rq = hyvRequests.find(r => Number(r.id) === id);
+    openSection('kayttajat');
+    ktOpenCreateModalFromRequest(rq);
+    return;
+  }
 
   // Reject flow (access requests — submissions are auto-detected via Julkaise).
   if (e.target.closest('.hyv-reject-btn')) {
@@ -2150,6 +2167,21 @@ function ktOpenCreateModal() {
   document.getElementById('ktModalCancel').textContent = 'Peruuta';
   document.getElementById('ktUserModal').style.display = 'flex';
   setTimeout(() => document.getElementById('ktModalFirst').focus(), 50);
+}
+
+// Open the create-user modal seeded from an access request: the name is split
+// into first word / remaining words, the email is copied, and the role is set
+// to Avustaja — whose defaults tick only the "Avustajat" (laheta_artikkeli)
+// permission. The admin reviews/adjusts before clicking "Luo ja tee linkki".
+function ktOpenCreateModalFromRequest(rq) {
+  ktOpenCreateModal();
+  if (!rq) return;
+  const parts = (rq.name || '').trim().split(/\s+/).filter(Boolean);
+  document.getElementById('ktModalFirst').value = parts[0] || '';
+  document.getElementById('ktModalLast').value = parts.slice(1).join(' ');
+  document.getElementById('ktModalEmail').value = rq.email || '';
+  document.getElementById('ktModalRole').value = 'avustaja';
+  ktApplyRoleDefaults('avustaja');
 }
 
 function ktOpenEditModal(uid) {
@@ -3237,11 +3269,16 @@ if (document.getElementById('ktAddBtn')) {
   }
   .adm-back:hover { color: var(--brand-primary, #ff9900); }
 
-  /* 860px centered column for the login card (.admin-panel) + permission card
-     grid (.adm-cards, centered above) ONLY. Tool sections (Tarkista, Lähetä
-     kuva, Hallitse galleriaa, Julkaise, Käyttäjät) keep the full container
-     width — their grids, tables and image layouts need the room. */
-  .admin-panel { margin-left: auto; margin-right: auto; }
+  /* Center the login card, the permission card grid (.adm-cards, centered
+     above), and the narrower content sections within the wide admin container.
+     Only the full-bleed tool sections — Tarkista (mystery grid) and Hallitse
+     galleriaa (.hallitse-section) — stay full width; their grids, tables and
+     image layouts need the room. .upload-section covers both Lähetä kuva and
+     Julkaise; .kt-section is Käyttäjät; .hyv-section is Hyväksynnät. */
+  .admin-panel,
+  .upload-section,
+  .hyv-section,
+  .kt-section { margin-left: auto; margin-right: auto; }
 
   /* Hyväksynnät (Phase 3 editorial board) */
   .hyv-section { max-width: 860px; }
@@ -3261,8 +3298,15 @@ if (document.getElementById('ktAddBtn')) {
   .hyv-confirm { flex: 1 1 100%; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f0f0f0; font-size: .85rem; }
   .hyv-confirm__q { font-weight: 700; color: #b32218; }
   .hyv-confirm__q--ok { color: #1a7d3c; }
-  /* Short workflow instructions under each block head */
-  .hyv-instructions { margin: 0 0 12px; padding-left: 1.25em; color: #9a9a9a; font-size: .8rem; line-height: 1.5; }
+  /* Short workflow instructions under each block head, collapsed by default
+     behind a "Lue ensin" toggle (mirrors the .kt-audit details pattern). */
+  .hyv-lue-ensin { margin: 0 0 12px; }
+  .hyv-lue-ensin summary { cursor: pointer; font-size: .82rem; font-weight: 700; color: #888; list-style: none; }
+  .hyv-lue-ensin summary::-webkit-details-marker { display: none; }
+  .hyv-lue-ensin summary::before { content: '▶ '; color: #ff9900; font-size: .7rem; }
+  .hyv-lue-ensin[open] summary::before { content: '▼ '; }
+  .hyv-lue-ensin summary:hover { color: var(--brand-primary, #ff9900); }
+  .hyv-instructions { margin: 10px 0 0; padding-left: 1.25em; color: #9a9a9a; font-size: .8rem; line-height: 1.5; }
   .hyv-instructions li { margin: 0; }
   /* Post-action reminder banner (publish to production) */
   .hyv-reminder { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 0 0 20px; padding: 12px 16px; background: #eef8f0; border: 1px solid #bfe3c8; border-radius: 10px; color: #1a5b30; font-size: .9rem; }
