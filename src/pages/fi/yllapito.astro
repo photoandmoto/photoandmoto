@@ -196,9 +196,10 @@ const lang = 'fi';
           <div class="hyv-block">
             <div class="hyv-block__head"><h4 class="hyv-block__title">Artikkelit</h4></div>
             <ol class="hyv-instructions">
-              <li>Avaa artikkeli Sveltiassa ja lue se läpi</li>
-              <li>Palaa tänne ja klikkaa Hyväksy ja julkaise tai Hylkää</li>
-              <li>Muista julkaista muutokset Julkaise-osiossa</li>
+              <li>Avaa artikkeli Sveltiassa</li>
+              <li>Jos hyväksyt: aseta Näytä sivustoilla päälle ja tallenna</li>
+              <li>Jos hylkäät: poista luonnos Sveltiassa</li>
+              <li>Muista julkaista muutokset Toimitus → Julkaise -osiossa</li>
             </ol>
             <div id="hyvList-artikkeli" class="hyv-list"><div class="kt-loading">Ladataan…</div></div>
           </div>
@@ -206,9 +207,10 @@ const lang = 'fi';
           <div class="hyv-block">
             <div class="hyv-block__head"><h4 class="hyv-block__title">Pikauutiset</h4></div>
             <ol class="hyv-instructions">
-              <li>Avaa pikauutinen Sveltiassa ja tarkista sisältö</li>
-              <li>Palaa tänne ja klikkaa Hyväksy ja julkaise tai Hylkää</li>
-              <li>Muista julkaista muutokset Julkaise-osiossa</li>
+              <li>Avaa pikauutinen Sveltiassa</li>
+              <li>Jos hyväksyt: aseta Näytä sivustoilla päälle ja tallenna</li>
+              <li>Jos hylkäät: poista luonnos Sveltiassa</li>
+              <li>Muista julkaista muutokset Toimitus → Julkaise -osiossa</li>
             </ol>
             <div id="hyvList-pikauutinen" class="hyv-list"><div class="kt-loading">Ladataan…</div></div>
           </div>
@@ -1159,6 +1161,11 @@ async function triggerDeploy(target, btn){
   const msg=document.getElementById('deployMsg');
   jkStartCountdown(target, btn);          // spinner + 3:00, resets if already running
   if(msg) msg.innerHTML='<span class="u-load">Rakennetaan… älä sulje sivua.</span>';
+  // Auto-detect approvals/rejections from Sveltia BEFORE building, so statuses
+  // (and author emails) reflect what the editor did. Non-blocking — a sweep
+  // failure must never stop the deploy.
+  try{ await fetch('/api/submissions/sweep', { method:'POST', credentials:'same-origin' }); }
+  catch(e){ console.warn('submissions sweep failed (non-blocking):', e); }
   let ok=false, authFail=false;
   try{
     const r=await jkDeployRequest(target);
@@ -1460,19 +1467,6 @@ function hyvConfirm() {
     </div>`;
 }
 
-// Inline "Hyväksy ja julkaise" confirm — submissions only, hidden until the
-// approve button is clicked.
-function hyvApproveConfirm() {
-  return `
-    <div class="hyv-confirm hyv-confirm--approve" style="display:none;">
-      <span class="hyv-confirm__q hyv-confirm__q--ok">Oletko lukenut artikkelin Sveltiassa ja olet valmis hyväksymään sen?</span>
-      <div class="hyv-confirm__actions">
-        <button type="button" class="btn btn--submit btn--sm hyv-approve-confirm">Kyllä, hyväksy</button>
-        <button type="button" class="btn btn--ghost btn--sm hyv-approve-cancel">Peruuta</button>
-      </div>
-    </div>`;
-}
-
 // Reminder banner shown after an approve/reject so the editor remembers the
 // change still needs a manual publish. kind: 'approve' | 'reject'.
 function hyvShowReminder(kind) {
@@ -1521,11 +1515,7 @@ function hyvRenderSubmissions(group) {
       </div>
       <div class="hyv-row__actions">
         <a href="${HYV_SVELTIA[group]}" target="_blank" rel="noopener" class="btn btn--ghost btn--sm">Käsittele Sveltiassa ↗</a>
-        <button type="button" class="btn btn--submit btn--sm hyv-approve">Hyväksy ja julkaise</button>
-        <button type="button" class="btn btn--ghost btn--sm hyv-reject-btn">Hylkää</button>
       </div>
-      ${hyvApproveConfirm()}
-      ${hyvConfirm()}
     </div>`).join('');
 }
 
@@ -1575,30 +1565,6 @@ async function hyvPost(kind, id, action, reason) {
 }
 const hyvReject = (kind, id, reason) => hyvPost(kind, id, kind === 'request' ? 'rejected' : 'hylatty', reason);
 
-// "Hyväksy ja julkaise" — flips draft:false on dev + marks the submission
-// approved, then reminds the editor to publish to production.
-async function hyvApprove(id) {
-  const msg = document.getElementById('hyvMsg');
-  if (msg) msg.style.display = 'none';
-  try {
-    const r = await fetch('/api/submissions/approve', {
-      method: 'POST', credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id }),
-    });
-    const data = await r.json().catch(() => ({}));
-    if (!r.ok || !data.success) {
-      if (msg) { msg.textContent = data.error || 'Hyväksyntä epäonnistui.'; msg.style.display = 'block'; }
-      return;
-    }
-    if (data.email_warning && msg) { msg.textContent = 'Huom: ' + data.email_warning; msg.style.display = 'block'; }
-    await hyvLoadAll();
-    hyvShowReminder('approve');
-  } catch {
-    if (msg) { msg.textContent = 'Yhteysvirhe — yritä uudelleen.'; msg.style.display = 'block'; }
-  }
-}
-
 // Click delegation: row action buttons + reject confirm/cancel.
 document.getElementById('tabHyvaksynnat')?.addEventListener('click', (e) => {
   if (e.target.closest('.hyv-to-kayttajat')) { openSection('kayttajat'); return; }
@@ -1607,21 +1573,10 @@ document.getElementById('tabHyvaksynnat')?.addEventListener('click', (e) => {
   if (!row) return;
   const kind = row.dataset.kind;
   const id = Number(row.dataset.id);
-  const approveBox = row.querySelector('.hyv-confirm--approve');
   const rejectBox = row.querySelector('.hyv-confirm--reject');
 
-  // Approve flow (submissions only).
-  if (e.target.closest('.hyv-approve')) {
-    if (rejectBox) rejectBox.style.display = 'none';
-    if (approveBox) approveBox.style.display = (approveBox.style.display === 'none' ? 'flex' : 'none');
-    return;
-  }
-  if (e.target.closest('.hyv-approve-confirm')) { hyvApprove(id); return; }
-  if (e.target.closest('.hyv-approve-cancel')) { if (approveBox) approveBox.style.display = 'none'; return; }
-
-  // Reject flow (submissions + access requests).
+  // Reject flow (access requests — submissions are auto-detected via Julkaise).
   if (e.target.closest('.hyv-reject-btn')) {
-    if (approveBox) approveBox.style.display = 'none';
     if (rejectBox) rejectBox.style.display = (rejectBox.style.display === 'none' ? 'flex' : 'none');
     return;
   }
