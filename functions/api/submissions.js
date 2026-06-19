@@ -6,7 +6,9 @@
 //   GET  /api/submissions   → all submissions, newest first
 //   POST /api/submissions   → { id, action: 'hylatty', rejection_reason }
 //        Reject only — requires rejection_reason, deletes the draft .md, and
-//        emails the author (both non-fatal). Approval is POST /api/submissions/approve.
+//        emails the author (both non-fatal). Approval is auto-detected by the
+//        Julkaise sweep (POST /api/submissions/sweep) — there is no manual
+//        approve endpoint.
 
 import {
   requireAuth, getJsonBody, jsonResponse, errorResponse, corsOptionsResponse,
@@ -148,7 +150,7 @@ export async function onRequestPost({ request, env }) {
   const rejectionReason = (body.rejection_reason || '').toString().trim();
 
   if (!id || Number.isNaN(id)) return errorResponse('Virheellinen lähetyksen ID', 400);
-  // Approval moved to POST /api/submissions/approve — this endpoint only rejects.
+  // Approval is auto-detected by the Julkaise sweep — this endpoint only rejects.
   if (action !== 'hylatty') return errorResponse('Virheellinen toiminto', 400);
   if (!rejectionReason) return errorResponse('Hylkäyksen syy vaaditaan', 400);
   if (rejectionReason.length > 500) return errorResponse('Syy on liian pitkä (enintään 500 merkkiä)', 400);
