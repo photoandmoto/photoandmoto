@@ -1,18 +1,20 @@
 ---
-title: "Kalevi Vhkonen Montesan kehhiitäjä"
-subtitle: null
-author: "Arto Vilkman"
+title: Kalevi Vhkonen Montesan kehhiitäjä
+subtitle: ''
+author: Arto Vilkman
 date: 2026-06-19
-category: "Historical"
-tags: ["Montesa","motocross"]
-featured_image: "/images/kalevi-vhkonen-montesan-kehhiitaja-heikki-huusko-ajoi-em-mestariksi-varkaudessa..jpg"
+category: Historical
+tags:
+  - Montesa
+  - motocross
+featured_image: /images/kalevi-vhkonen-montesan-kehhiitaja-heikki-huusko-ajoi-em-mestariksi-varkaudessa..jpg
 card_image: null
-image_caption: null
-language: "fi"
 show_hero: true
+image_caption: ''
 draft: true
-seo_description: null
+seo_description: kalevi kale vehkonen montesa mies ja sen kehittäjä
 sources: null
+language: fi
 ---
 
 Kale oli kova kehittäjä
