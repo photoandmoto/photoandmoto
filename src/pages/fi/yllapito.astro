@@ -429,14 +429,15 @@ function getNewCount(p){
   return p.comments.filter(c=>new Date(c.created_at).getTime()>cutoff).length;
 }
 
-// A photo is "tarkistettavaa" if it has new comments OR was uploaded since last admin visit.
+// A photo is "tarkistettavaa" if it's unreviewed (status='new') or has new
+// comment activity since the admin's last visit. The old created_at timestamp
+// comparison was unreliable: photos submitted before the admin's current
+// session always landed in "Kesken" even though they'd never been processed.
 function isTarkistettavaa(p){
-  if(!adminPw || !adminLastVisit)return false;
+  if(!adminPw)return false;
+  if(p.status==='new')return true;
+  if(!adminLastVisit)return false;
   if(getNewCount(p)>0)return true;
-  if(p.created_at){
-    const cutoff=new Date(adminLastVisit).getTime();
-    if(new Date(p.created_at).getTime()>cutoff)return true;
-  }
   return false;
 }
 
