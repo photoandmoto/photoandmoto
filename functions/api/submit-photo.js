@@ -84,8 +84,8 @@ export async function onRequestPost({ request, env }) {
 
     // 1. Insert into photos so it enters the Tarkista queue (mirrors upload.js).
     const photoRes = await env.DB.prepare(
-      `INSERT INTO photos (filename,content_type,image_data,uploader_name,year_estimate,people,location_notes,notes,thumb_data)
-       VALUES (?,?,?,?,?,?,?,?,?)`
+      `INSERT INTO photos (filename,content_type,image_data,uploader_name,year_estimate,people,location_notes,notes,thumb_data,status)
+       VALUES (?,?,?,?,?,?,?,?,?,'new')`
     ).bind(
       file.name,
       file.type,

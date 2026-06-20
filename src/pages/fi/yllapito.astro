@@ -648,7 +648,7 @@ function renderAdminForm(p){
       <div class="af-footer">
         <button type="button" class="btn btn--secondary" id="afPublish" disabled>Julkaise Galleriaan</button>
         ${sub?`<button type="button" class="btn btn--ghost btn--sm af-reject-btn" id="afReject">Hylkää</button>`:''}
-        <button type="button" class="af-footer__del" id="abDel">Poista kuva</button>
+        ${!sub?`<button type="button" class="af-footer__del" id="abDel">Poista kuva</button>`:''}
       </div>
       ${sub?`<div id="afRejectBox" class="af-reject-box" style="display:none;">
         <textarea id="afRejectReason" class="inp" rows="2" maxlength="500" placeholder="Hylkäyksen syy (näkyy lähettäjälle)"></textarea>
@@ -711,7 +711,7 @@ function renderAdminForm(p){
     }
     openPublishPanel(p);
   });
-  el.querySelector('#abDel').addEventListener('click',async()=>{
+  el.querySelector('#abDel')?.addEventListener('click',async()=>{
     if(!confirm('Poistetaanko kuva pysyvästi?'))return;
     const ok=await adminAction('delete_photo',{photo_id:p.id});
     if(ok){closeModal();await load();}
@@ -1597,7 +1597,7 @@ function hyvRenderKuvat() {
         <span class="hyv-row__meta">${hyvEsc(s.submitter_name)} · ${hyvFmtDate(s.submitted_at)} · ✓ Suostumus vahvistettu</span>
       </div>
       <div class="hyv-row__actions">
-        <button type="button" class="btn btn--ghost btn--sm hyv-to-tarkista">Käsittele Tarkistassa ↗</button>
+        <button type="button" class="btn btn--ghost btn--sm hyv-to-tarkista">Käsittele kuva ↗</button>
       </div>
     </div>`).join('');
 }
