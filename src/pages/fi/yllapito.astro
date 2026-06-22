@@ -2,23 +2,13 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 const lang = 'fi';
 ---
-<BaseLayout title="Ylläpito" lang={lang} description="Photo & Moto hallintapaneeli.">
+<BaseLayout title="Toimitus" lang={lang} description="Photo & Moto hallintapaneeli.">
   <section class="mp">
     <div class="container">
       <div class="mp-header">
         <div class="mp-header__left">
-          <h1 class="mp-title">Ylläpito</h1>
+          <h1 class="mp-title">Toimitus</h1>
           <p class="mp-sub" id="mpSubCommunity" style="display:none;"></p>
-          <div class="mp-sub mp-sub--admin" id="mpSubAdmin" style="display:none;">
-            <a href="/fi/julkaisijan-ohjeet/" class="ohje-fullguide" target="_blank" rel="noopener">
-              <span class="ohje-fullguide__icon">📖</span>
-              <span class="ohje-fullguide__text">
-                <strong>Avaa täydellinen julkaisijan ohjekirja</strong>
-                <small>Sveltia CMS, tunnistamattomat kuvat, galleriat, vianetsintä</small>
-              </span>
-              <span class="ohje-fullguide__arrow">↗</span>
-            </a>
-          </div>
         </div>
         <div class="mp-header__right">
           
@@ -29,6 +19,9 @@ const lang = 'fi';
         </div>
       </div>
 
+      <!-- Back to Toimituskeskus (shown when logged in). -->
+      <a id="adminToToimitus" class="adm-toplink" href="/fi/toimitus" style="display:none;">← Toimituskeskus</a>
+
       <!-- Admin login panel (small, shown on demand) -->
       <div id="adminPanel" class="admin-panel" style="display:none;">
         <div id="adminAuth" class="admin-auth">
@@ -36,7 +29,7 @@ const lang = 'fi';
           <div class="pw-wrap">
             <input type="password" id="adminPw" class="inp inp--pw" placeholder="Salasana" autocomplete="current-password" />
             <button type="button" class="pw-eye" id="pwEye" aria-label="Näytä salasana" tabindex="-1">👁</button>
-            <div class="pw-caps" id="pwCaps" style="display:none;">⚠ Caps Lock päällä</div>
+            <div class="pw-caps" id="pwCaps" style="display:none;">Caps Lock on päällä</div>
           </div>
           <button id="adminPwBtn" class="btn">Kirjaudu</button>
           <span id="adminPwErr" class="err-msg" style="display:none;">Väärät kirjautumistiedot</span>
@@ -44,16 +37,56 @@ const lang = 'fi';
         </div>
       </div>
 
-      <!-- Admin tabs (visible only when logged in) -->
-      <div id="adminTabs" class="admin-tabs" style="display:none;">
-        <button type="button" class="admin-tab admin-tab--on" data-tab="tarkista">Tarkista</button>
-        <button type="button" class="admin-tab" data-tab="laheta">Lähetä kuva</button>
-        <button type="button" class="admin-tab" data-tab="hallitse">Hallitse galleriaa</button>
-        <a href="/admin/" target="_blank" rel="noopener" class="admin-tab admin-tab--external" data-decap-link>Hallitse artikkeleita ↗</a>
-        <button type="button" class="admin-tab" data-tab="julkaise">Julkaise</button>
-        <span class="admin-tabs__sep" aria-hidden="true"></span>
-        <button type="button" class="admin-tab admin-tab--iam" data-tab="kayttajat">Käyttäjät</button>
+      <!-- Card navigation (visible only when logged in). Each card requires a
+           permission and is shown only if the user has it. -->
+      <div id="adminCards" class="adm-cards" style="display:none;">
+        <!-- Row 1: Tarkista | Hallitse galleriaa | Hyväksynnät | Julkaise -->
+        <button type="button" class="adm-card" data-section="tarkista" data-perm="tarkista">
+          <span class="adm-card__title">Tarkista</span>
+          <span class="adm-card__sub">Tarkista mystery-kuvat ja merkitse tunnistetut</span>
+          <span class="adm-card__arrow">→</span>
+        </button>
+        <button type="button" class="adm-card" data-section="hallitse" data-perm="hallitse_galleriaa">
+          <span class="adm-card__title">Hallitse galleriaa</span>
+          <span class="adm-card__sub">Muokkaa ja järjestä galleriakuvia</span>
+          <span class="adm-card__arrow">→</span>
+        </button>
+        <button type="button" class="adm-card" data-section="hyvaksynnat" data-perm="hallitse_artikkeleita">
+          <span class="adm-card__title">Hyväksynnät</span>
+          <span class="adm-card__sub">Artikkelit, pikauutiset, kuvat ja käyttöoikeuspyynnöt</span>
+          <span class="adm-card__arrow">→</span>
+        </button>
+        <button type="button" class="adm-card" data-section="julkaise" data-perm="hallitse_artikkeleita">
+          <span class="adm-card__title">Julkaise</span>
+          <span class="adm-card__sub">Julkaise sisältö esikatselu- tai tuotantoympäristöön</span>
+          <span class="adm-card__arrow">→</span>
+        </button>
+        <!-- Row 2: Hallitse artikkeleita | Julkaisijan Ohjekirja | Käyttäjät | Lähetä kuva -->
+        <a href="/admin/" target="_blank" rel="noopener" class="adm-card" data-decap-link data-perm="hallitse_artikkeleita">
+          <span class="adm-card__title">Hallitse artikkeleita</span>
+          <span class="adm-card__sub">Hallitse artikkeleita Sveltia CMS:ssä</span>
+          <span class="adm-card__arrow">↗</span>
+        </a>
+        <a href="/fi/julkaisijan-ohjeet/" target="_blank" rel="noopener" class="adm-card">
+          <span class="adm-card__title">Julkaisijan Ohjekirja</span>
+          <span class="adm-card__sub">Sveltia CMS, tunnistamattomat kuvat, galleriat, vianetsintä</span>
+          <span class="adm-card__arrow">↗</span>
+        </a>
+        <button type="button" class="adm-card" data-section="kayttajat" data-perm="admin_iam">
+          <span class="adm-card__title">Käyttäjät</span>
+          <span class="adm-card__sub">Hallitse käyttäjiä ja käyttöoikeuksia</span>
+          <span class="adm-card__arrow">→</span>
+        </button>
+        <button type="button" class="adm-card" data-section="laheta" data-perm="lahetakuva">
+          <span class="adm-card__title">Lähetä kuva</span>
+          <span class="adm-card__sub">Lähetä uusia tunnistettavia kuvia</span>
+          <span class="adm-card__arrow">→</span>
+        </button>
       </div>
+      <p id="adminNoperm" class="adm-noperm" style="display:none;">Sinulla ei ole käyttöoikeutta. Ota yhteyttä toimitukseen.</p>
+
+      <!-- Back to the card grid (shown inside a section). -->
+      <a id="adminBack" class="adm-back" href="#" style="display:none;">← Toimitus</a>
 
       <!-- Tarkista tab: filters + grid (community sees filters too) -->
       <div id="tabTarkista" class="tab-content" style="display:none;">
@@ -114,50 +147,110 @@ const lang = 'fi';
           <h3 class="upload-title">Julkaise</h3>
           <p class="upload-hint">Sveltia CMS tallentaa artikkelit automaattisesti. Vie ne ensin esikatseluun, tarkista tulos, ja julkaise sitten tuotantoon.</p>
 
-          <div class="julkaise-step">
-            <div class="julkaise-step__num">1</div>
-            <div class="julkaise-step__body">
-              <h4 class="julkaise-step__title">Julkaise esikatseluun</h4>
-              <p class="julkaise-step__desc">Käynnistää esikatselusivuston rakentamisen osoitteessa photoandmoto-staging.pages.dev.</p>
+          <div class="julkaise-grid">
+            <div class="julkaise-card">
+              <h4 class="julkaise-card__title">Julkaise esikatseluun</h4>
+              <p class="julkaise-card__desc">Käynnistää esikatselusivuston rakentamisen osoitteessa photoandmoto-staging.pages.dev.</p>
               <p class="julkaise-warn">⚠️ Odota 2 minuuttia Sveltia-tallennuksen jälkeen ennen kuin painat tätä painiketta.</p>
               <button type="button" id="deployStagingBtn" class="btn">Julkaise esikatseluun</button>
             </div>
-          </div>
 
-          <div class="julkaise-step">
-            <div class="julkaise-step__num">2</div>
-            <div class="julkaise-step__body">
-              <h4 class="julkaise-step__title">Esikatsele</h4>
-              <p class="julkaise-step__desc">Avaa esikatselusivuston uuteen välilehteen. <strong>Odota 2–3 minuuttia ennen esikatselua</strong>, jotta sivusto ehtii rakentua.</p>
+            <div class="julkaise-card">
+              <h4 class="julkaise-card__title">Esikatsele</h4>
+              <p class="julkaise-card__desc">Avaa esikatselusivuston uuteen välilehteen. <strong>Odota 2–3 minuuttia ennen esikatselua</strong>, jotta sivusto ehtii rakentua.</p>
               <a href="https://photoandmoto-staging.pages.dev" target="_blank" rel="noopener" class="btn btn--ghost">Esikatsele ↗</a>
             </div>
-          </div>
 
-          <div class="julkaise-step">
-            <div class="julkaise-step__num">3</div>
-            <div class="julkaise-step__body">
-              <h4 class="julkaise-step__title">Julkaise tuotantoon</h4>
-              <p class="julkaise-step__desc">Julkaisee sisällön osoitteessa www.photoandmoto.fi. Tee tämä vasta kun olet tarkistanut esikatselun.</p>
+            <div class="julkaise-card">
+              <h4 class="julkaise-card__title">Julkaise tuotantoon</h4>
+              <p class="julkaise-card__desc">Julkaisee sisällön osoitteessa www.photoandmoto.fi. Tee tämä vasta kun olet tarkistanut esikatselun.</p>
               <p class="julkaise-warn">⚠️ Odota 2 minuuttia Sveltia-tallennuksen jälkeen ennen kuin painat tätä painiketta.</p>
               <button type="button" id="deployProdBtn" class="btn">Julkaise tuotantoon</button>
+            </div>
+
+            <div class="julkaise-card" id="geminiKeyCard">
+              <h4 class="julkaise-card__title">Gemini-avain (käännöksiin)</h4>
+              <p class="julkaise-card__desc">Tekoälyavain artikkelien kääntämiseen Sveltia-editorissa.</p>
+              <button type="button" id="geminiKeyBtn" class="btn btn--ghost">Näytä Gemini-avain</button>
+              <div id="geminiKeyBox" class="gemini-key__box" style="display:none;">
+                <div class="gemini-key__row">
+                  <input type="text" id="geminiKeyField" class="inp" readonly />
+                  <button type="button" id="geminiKeyCopy" class="btn btn--ghost">📋 Kopioi</button>
+                </div>
+                <p class="julkaise-card__desc">Liitä tämä Sveltia-editorin asetuksiin (文A → Google Gemini → API-avain)</p>
+              </div>
+              <div id="geminiKeyMsg" class="upload-msg"></div>
             </div>
           </div>
 
           <div id="deployMsg" class="upload-msg julkaise-msg" aria-live="polite"></div>
+        </div>
+      </div>
 
-          <div class="gemini-key">
-            <h4 class="julkaise-step__title">Gemini-avain (käännöksiin)</h4>
-            <p class="julkaise-step__desc">Tekoälyavain artikkelien kääntämiseen Sveltia-editorissa.</p>
-            <button type="button" id="geminiKeyBtn" class="btn btn--ghost">Näytä Gemini-avain</button>
-            <div id="geminiKeyBox" class="gemini-key__box" style="display:none;">
-              <div class="gemini-key__row">
-                <input type="text" id="geminiKeyField" class="inp" readonly />
-                <button type="button" id="geminiKeyCopy" class="btn btn--ghost">📋 Kopioi</button>
-              </div>
-              <p class="julkaise-step__desc">Liitä tämä Sveltia-editorin asetuksiin (文A → Google Gemini → API-avain)</p>
-            </div>
-            <div id="geminiKeyMsg" class="upload-msg"></div>
+      <!-- Hyväksynnät tab (Phase 3 — hallitse_artikkeleita permission required) -->
+      <div id="tabHyvaksynnat" class="tab-content" style="display:none;">
+        <div class="hyv-section">
+          <h3 class="upload-title">Hyväksynnät</h3>
+          <p class="upload-hint">Käsittele avustajien lähetykset ja vahvistetut käyttöoikeuspyynnöt. Vain käsittelemättömät näkyvät listalla.</p>
+
+          <div id="hyvReminder" class="hyv-reminder" style="display:none;"></div>
+
+          <div class="hyv-block">
+            <div class="hyv-block__head"><h4 class="hyv-block__title">Artikkelit</h4></div>
+            <details class="hyv-lue-ensin">
+              <summary>Lue ensin</summary>
+              <ol class="hyv-instructions">
+                <li>Avaa artikkeli Sveltiassa</li>
+                <li>Jos hyväksyt: poista valinta 'Piilota sivustolta' ja tallenna</li>
+                <li>Jos hylkäät: poista luonnos Sveltiassa</li>
+                <li>Muista julkaista muutokset Toimitus → Julkaise -osiossa</li>
+              </ol>
+            </details>
+            <div id="hyvList-artikkeli" class="hyv-list"><div class="kt-loading">Ladataan…</div></div>
           </div>
+
+          <div class="hyv-block">
+            <div class="hyv-block__head"><h4 class="hyv-block__title">Pikauutiset</h4></div>
+            <details class="hyv-lue-ensin">
+              <summary>Lue ensin</summary>
+              <ol class="hyv-instructions">
+                <li>Avaa pikauutinen Sveltiassa</li>
+                <li>Jos hyväksyt: poista valinta 'Piilota sivustolta' ja tallenna</li>
+                <li>Jos hylkäät: poista luonnos Sveltiassa</li>
+                <li>Muista julkaista muutokset Toimitus → Julkaise -osiossa</li>
+              </ol>
+            </details>
+            <div id="hyvList-pikauutinen" class="hyv-list"><div class="kt-loading">Ladataan…</div></div>
+          </div>
+
+          <div class="hyv-block">
+            <div class="hyv-block__head"><h4 class="hyv-block__title">Kuvat</h4></div>
+            <details class="hyv-lue-ensin">
+              <summary>Lue ensin</summary>
+              <ol class="hyv-instructions">
+                <li>Avaa kuva Tarkistassa</li>
+                <li>Jos hyväksyt: lisää kuva galleriaan normaalisti</li>
+                <li>Jos hylkäät: klikkaa Hylkää ja kirjoita syy</li>
+                <li>Lähettäjä saa automaattisesti tiedon sähköpostitse</li>
+              </ol>
+            </details>
+            <div id="hyvList-kuvat" class="hyv-list"><div class="kt-loading">Ladataan…</div></div>
+          </div>
+
+          <div class="hyv-block">
+            <div class="hyv-block__head"><h4 class="hyv-block__title">Käyttöoikeuspyynnöt</h4></div>
+            <details class="hyv-lue-ensin">
+              <summary>Lue ensin</summary>
+              <ol class="hyv-instructions">
+                <li>Tarkista hakijan tiedot ja syy</li>
+                <li>Jos hyväksyt: klikkaa Käsittele → Käyttäjät ja luo käyttäjätili — hakija saa automaattisesti aktivointilinkin sähköpostitse</li>
+                <li>Jos hylkäät: klikkaa Hylkää ja kirjoita syy — hakija saa automaattisesti tiedon sähköpostitse</li>
+              </ol>
+            </details>
+            <div id="hyvList-pyynnot" class="hyv-list"><div class="kt-loading">Ladataan…</div></div>
+          </div>
+
+          <div id="hyvMsg" class="err-msg" style="display:none; margin-top:10px;"></div>
         </div>
       </div>
 
@@ -204,6 +297,7 @@ const lang = 'fi';
                 <select id="ktModalRole" class="inp">
                   <option value="editor">Editor</option>
                   <option value="admin">Admin</option>
+                  <option value="avustaja">Avustaja</option>
                 </select>
               </div>
               <fieldset class="kt-perms-set">
@@ -213,7 +307,8 @@ const lang = 'fi';
                 <label class="kt-perm-check"><input type="checkbox" id="ktPerm_hallitse_galleriaa"> Hallitse galleriaa <small>(galleriakuvien muokkaus)</small></label>
                 <label class="kt-perm-check"><input type="checkbox" id="ktPerm_hallitse_artikkeleita"> Hallitse artikkeleita <small>(Sveltia CMS — erillinen GitHub-kirjautuminen)</small></label>
                 <label class="kt-perm-check"><input type="checkbox" id="ktPerm_admin_iam"> <strong>Hallitse käyttäjiä</strong> <small>(tämä paneeli)</small></label>
-                <label class="kt-perm-check"><input type="checkbox" id="ktPerm_laheta_artikkeli"> Yleinen Kynä <small>(artikkelin lähetyslomake — contributor-rooli)</small></label>
+                <label class="kt-perm-check"><input type="checkbox" id="ktPerm_laheta_artikkeli"> Avustajat <small>(artikkelin lähetyslomake — contributor-rooli)</small></label>
+                <label class="kt-perm-check"><input type="checkbox" id="ktPerm_nahta_gemini_avain"> Näytä Gemini-avain <small>(Gemini API-avain Sveltia-kääntäjälle)</small></label>
               </fieldset>
             </div>
             <div id="ktModalErr" class="err-msg" style="display:none; margin-top:10px;"></div>
@@ -221,7 +316,7 @@ const lang = 'fi';
               <p><strong>Provisiointilinkki luotu — kopioi ja lähetä käyttäjälle:</strong></p>
               <input type="text" id="ktModalLink" class="inp" readonly />
               <button id="ktModalCopyLink" class="btn btn--ghost" type="button">📋 Kopioi linkki</button>
-              <p class="kt-modal__hint">Linkki vanhenee 7 päivässä. Käyttäjä asettaa avatessaan oman salasanansa + 3 palautuskysymystä.</p>
+              <p class="kt-modal__hint">Linkki vanhenee 24 tunnissa. Käyttäjä asettaa avatessaan oman salasanansa + 3 palautuskysymystä.</p>
             </div>
             <div class="kt-modal__actions">
               <button id="ktModalCancel" class="btn btn--ghost" type="button">Peruuta</button>
@@ -334,24 +429,40 @@ function getNewCount(p){
   return p.comments.filter(c=>new Date(c.created_at).getTime()>cutoff).length;
 }
 
-// A photo is "tarkistettavaa" if it has new comments OR was uploaded since last admin visit.
+// A photo is "tarkistettavaa" if it's unreviewed (status='new') or has new
+// comment activity since the admin's last visit. The old created_at timestamp
+// comparison was unreliable: photos submitted before the admin's current
+// session always landed in "Kesken" even though they'd never been processed.
 function isTarkistettavaa(p){
-  if(!adminPw || !adminLastVisit)return false;
+  if(!adminPw)return false;
+  if(p.status==='new')return true;
+  if(!adminLastVisit)return false;
   if(getNewCount(p)>0)return true;
-  if(p.created_at){
-    const cutoff=new Date(adminLastVisit).getTime();
-    if(new Date(p.created_at).getTime()>cutoff)return true;
-  }
   return false;
 }
 
 fetch('/api/mystery/init',{method:'POST'}).catch(()=>{});
 async function verifyPw(pw){const r=await fetch('/api/mystery/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});return(await r.json()).valid===true;}
 
+// Avustaja photo submissions, keyed by photo_id — populated on admin load so the
+// Tarkista form can show a "Lähettäjä" tag + Hylkää on contributor-submitted
+// photos. Editor uploads have no entry here.
+let photoSubsByPhotoId={};
+async function loadPhotoSubs(){
+  if(!adminPw){photoSubsByPhotoId={};return;}
+  try{
+    const r=await fetch('/api/photo-submissions',{credentials:'same-origin'});
+    const subs=r.ok?((await r.json()).submissions||[]):[];
+    const map={};
+    subs.forEach(s=>{if(s.photo_id!=null)map[s.photo_id]=s;});
+    photoSubsByPhotoId=map;
+  }catch{photoSubsByPhotoId={};}
+}
+
 async function load(){
   try{
     const qs=adminPw?'?include=all':'';
-    const r=await fetch('/api/mystery/photos'+qs);
+    const [r]=await Promise.all([fetch('/api/mystery/photos'+qs), loadPhotoSubs()]);
     photos=(await r.json()).photos||[];
     renderFilters();renderGrid();
   }
@@ -472,6 +583,8 @@ function renderCommunityForm(p){
 
 function renderAdminForm(p){
   const el=document.getElementById('modalForm');
+  // Avustaja-submitted photos carry a consent/audit row; editor uploads don't.
+  const sub=photoSubsByPhotoId[p.id]||null;
 
   // Per field: top-level suggestions with matching field_type + all their replies.
   // Sort: upvotes DESC, created_at DESC (newest among same vote count).
@@ -522,17 +635,30 @@ function renderAdminForm(p){
   el.innerHTML=`
     <div class="form-card form-card--admin">
       <div class="form-card__header form-card__header--admin">
-        <h3>Ylläpito</h3>
+        <h3>Toimitus</h3>
         <span class="form-card__sub">Tarkista ehdotukset ja kirjoita viralliset tiedot</span>
       </div>
+      ${sub?`<div class="af-submitter">
+        <span class="af-submitter__tag">Lähettäjä: ${esc(sub.submitter_name)}</span>
+        <span class="af-submitter__consent">✓ Suostumus vahvistettu</span>
+      </div>`:''}
       <div id="afStatus" class="af-status"></div>
       ${fieldsHtml}
       <button class="btn btn--wide" id="abSave">Tallenna</button>
       <div id="abSaveMsg" class="ab-save-msg" aria-live="polite"></div>
       <div class="af-footer">
         <button type="button" class="btn btn--secondary" id="afPublish" disabled>Julkaise Galleriaan</button>
-        <button type="button" class="af-footer__del" id="abDel">Poista kuva</button>
+        ${sub?`<button type="button" class="btn btn--ghost btn--sm af-reject-btn" id="afReject">Hylkää</button>`:''}
+        ${!sub?`<button type="button" class="af-footer__del" id="abDel">Poista kuva</button>`:''}
       </div>
+      ${sub?`<div id="afRejectBox" class="af-reject-box" style="display:none;">
+        <textarea id="afRejectReason" class="inp" rows="2" maxlength="500" placeholder="Hylkäyksen syy (näkyy lähettäjälle)"></textarea>
+        <div class="af-reject-actions">
+          <button type="button" class="btn btn--sm" id="afRejectConfirm">Vahvista hylkäys</button>
+          <button type="button" class="btn btn--ghost btn--sm" id="afRejectCancel">Peruuta</button>
+        </div>
+        <div id="afRejectMsg" class="ab-save-msg" aria-live="polite"></div>
+      </div>`:''}
       <div id="pubPanel" class="pub-panel" style="display:none;"></div>
     </div>`;
 
@@ -586,11 +712,32 @@ function renderAdminForm(p){
     }
     openPublishPanel(p);
   });
-  el.querySelector('#abDel').addEventListener('click',async()=>{
+  el.querySelector('#abDel')?.addEventListener('click',async()=>{
     if(!confirm('Poistetaanko kuva pysyvästi?'))return;
     const ok=await adminAction('delete_photo',{photo_id:p.id});
     if(ok){closeModal();await load();}
   });
+
+  // Hylkää (avustaja-submitted photos only) — records the rejection in the audit
+  // trail, emails the submitter, and removes the photo from the queue.
+  const rejBtn=el.querySelector('#afReject');
+  if(rejBtn){
+    const box=el.querySelector('#afRejectBox');
+    rejBtn.addEventListener('click',()=>{box.style.display=box.style.display==='none'?'block':'none';});
+    el.querySelector('#afRejectCancel').addEventListener('click',()=>{box.style.display='none';});
+    el.querySelector('#afRejectConfirm').addEventListener('click',async()=>{
+      const reason=(el.querySelector('#afRejectReason').value||'').trim();
+      const msg=el.querySelector('#afRejectMsg');
+      if(!reason){msg.textContent='Anna hylkäyksen syy.';msg.className='ab-save-msg ab-save-msg--err';return;}
+      const cbtn=el.querySelector('#afRejectConfirm');cbtn.disabled=true;cbtn.textContent='Hylätään…';
+      try{
+        const r=await fetch('/api/photo-submissions',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({photo_id:p.id,action:'hylatty',rejection_reason:reason})});
+        const data=await r.json().catch(()=>({}));
+        if(r.ok&&data.success){closeModal();await load();}
+        else{msg.textContent='✗ '+(data.error||'Hylkäys epäonnistui');msg.className='ab-save-msg ab-save-msg--err';cbtn.disabled=false;cbtn.textContent='Vahvista hylkäys';}
+      }catch{msg.textContent='✗ Yhteysvirhe';msg.className='ab-save-msg ab-save-msg--err';cbtn.disabled=false;cbtn.textContent='Vahvista hylkäys';}
+    });
+  }
 
   updateStatusDisplay(el);
 }
@@ -1019,7 +1166,10 @@ document.getElementById('adminLogout').addEventListener('click',async()=>{
   adminLastVisit=null;
   cachedGalleries=null;
   document.getElementById('adminActions').style.display='none';
-  document.getElementById('adminTabs').style.display='none';
+  document.getElementById('adminToToimitus').style.display='none';
+  document.getElementById('adminCards').style.display='none';
+  document.getElementById('adminNoperm').style.display='none';
+  document.getElementById('adminBack').style.display='none';
   document.getElementById('adminPanel').style.display='block';
   document.getElementById('adminGreeting').textContent='';
   document.getElementById('tabTarkista').style.display='none';
@@ -1027,32 +1177,12 @@ document.getElementById('adminLogout').addEventListener('click',async()=>{
   document.getElementById('tabHallitse').style.display='none';
   document.getElementById('tabJulkaise').style.display='none';
   document.getElementById('tabKayttajat').style.display='none';
-  document.getElementById('mpSubAdmin').style.display='none';
-  // Reset to Tarkista tab so re-login lands on the right place
-  document.getElementById('tabTarkista').style.display='';
-  document.getElementById('tabLaheta').style.display='none';
-  document.getElementById('tabHallitse').style.display='none';
-  document.querySelectorAll('.admin-tab').forEach(t=>t.classList.toggle('admin-tab--on',t.dataset.tab==='tarkista'));
-  // Restore all admin tab buttons (they may have been hidden by applyPermissions)
-  document.querySelectorAll('#adminTabs .admin-tab').forEach(t=>{t.style.display='';});
   curFilter=null;
   renderFilters();
   load(); // reload without include=all so identified photos drop out for community
 });
 
-// Tab switching (Tarkista / Lähetä)
-document.querySelectorAll('.admin-tab').forEach(t=>t.addEventListener('click',()=>{
-  const tab=t.dataset.tab;
-  if(!tab)return; // Skip elements without data-tab (e.g. the Decap admin link)
-  document.querySelectorAll('.admin-tab').forEach(x=>x.classList.toggle('admin-tab--on',x===t));
-  document.getElementById('tabTarkista').style.display=tab==='tarkista'?'':'none';
-  document.getElementById('tabLaheta').style.display=tab==='laheta'?'':'none';
-  document.getElementById('tabHallitse').style.display=tab==='hallitse'?'':'none';
-  document.getElementById('tabJulkaise').style.display=tab==='julkaise'?'':'none';
-  document.getElementById('tabKayttajat').style.display=tab==='kayttajat'?'':'none';
-  if(tab==='hallitse' && adminPw){loadHallitseGalleries();}
-  if(tab==='kayttajat' && adminPw){ktLoadUsers();}
-}));
+// Tab switching removed — replaced by card navigation (showCards / openSection).
 
 // =====================================================================
 // JULKAISE TAB — staging / production deploy with spinner + countdown
@@ -1108,6 +1238,11 @@ async function triggerDeploy(target, btn){
   const msg=document.getElementById('deployMsg');
   jkStartCountdown(target, btn);          // spinner + 3:00, resets if already running
   if(msg) msg.innerHTML='<span class="u-load">Rakennetaan… älä sulje sivua.</span>';
+  // Auto-detect approvals/rejections from Sveltia BEFORE building, so statuses
+  // (and author emails) reflect what the editor did. Non-blocking — a sweep
+  // failure must never stop the deploy.
+  try{ await fetch('/api/submissions/sweep', { method:'POST', credentials:'same-origin' }); }
+  catch(e){ console.warn('submissions sweep failed (non-blocking):', e); }
   let ok=false, authFail=false;
   try{
     const r=await jkDeployRequest(target);
@@ -1319,53 +1454,264 @@ load();
 
 function applyPermissions(user) {
   const perms = user.permissions || {};
-  // Hide each tab the user doesn't have permission for
-  document.querySelectorAll('#adminTabs .admin-tab').forEach(t => {
-    const which = t.dataset.tab;
-    let visible;
-    if (which === 'tarkista')        visible = !!perms.tarkista;
-    else if (which === 'laheta')     visible = !!perms.lahetakuva;
-    else if (which === 'hallitse')   visible = !!perms.hallitse_galleriaa;
-    else if (which === 'julkaise')   visible = !!perms.hallitse_artikkeleita;
-    else if (which === 'kayttajat')  visible = !!perms.admin_iam;
-    else if (t.hasAttribute('data-decap-link')) visible = !!perms.hallitse_artikkeleita;
-    else visible = false;
-    t.style.display = visible ? '' : 'none';
+  // Show each card if it requires no permission (data-perm absent — e.g. the
+  // Julkaisijan Ohjekirja link) or the user holds the required permission.
+  document.querySelectorAll('#adminCards .adm-card').forEach(card => {
+    const need = card.dataset.perm;
+    card.style.display = (!need || perms[need]) ? '' : 'none';
   });
+  // Gemini-avain card (Julkaise section) is gated by its own permission —
+  // hidden entirely unless the user has perm_nahta_gemini_avain.
+  const gk = document.getElementById('geminiKeyCard');
+  if (gk) gk.style.display = perms.nahta_gemini_avain ? '' : 'none';
 }
 
-function showFirstAvailableTab(user) {
-  const perms = user.permissions || {};
-  const candidates = [
-    { tab: 'tarkista',  content: 'tabTarkista',  has: !!perms.tarkista },
-    { tab: 'laheta',    content: 'tabLaheta',    has: !!perms.lahetakuva },
-    { tab: 'hallitse',  content: 'tabHallitse',  has: !!perms.hallitse_galleriaa },
-    { tab: 'julkaise',  content: 'tabJulkaise',  has: !!perms.hallitse_artikkeleita },
-    { tab: 'kayttajat', content: 'tabKayttajat', has: !!perms.admin_iam },
-  ];
-  const first = candidates.find(c => c.has);
-  // Hide all tab content first
+// Section key → content element id.
+const ADM_SECTIONS = {
+  tarkista:    'tabTarkista',
+  laheta:      'tabLaheta',
+  hallitse:    'tabHallitse',
+  julkaise:    'tabJulkaise',
+  hyvaksynnat: 'tabHyvaksynnat',
+  kayttajat:   'tabKayttajat',
+};
+
+// Landing view after login: the card grid (or a no-permission notice). Hides
+// all section content and the back link.
+function showCards() {
   document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-  document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('admin-tab--on'));
-  if (first) {
-    document.getElementById(first.content).style.display = '';
-    const btn = document.querySelector(`[data-tab="${first.tab}"]`);
-    if (btn) btn.classList.add('admin-tab--on');
-  }
-  // Load gallery dropdown lazily if the user lands on hallitse
-  if (first && first.tab === 'hallitse') loadHallitseGalleries();
-  if (first && first.tab === 'kayttajat') ktLoadUsers();
+  document.getElementById('adminBack').style.display = 'none';
+  const perms = (currentUser && currentUser.permissions) || {};
+  const hasAny = !!(perms.tarkista || perms.lahetakuva || perms.hallitse_galleriaa
+    || perms.hallitse_artikkeleita || perms.admin_iam);
+  document.getElementById('adminCards').style.display = hasAny ? '' : 'none';
+  document.getElementById('adminNoperm').style.display = hasAny ? 'none' : '';
 }
+
+// Open one section's content; hide the card grid; show the "← Toimitus" back link.
+function openSection(section) {
+  const id = ADM_SECTIONS[section];
+  if (!id) return;
+  document.getElementById('adminCards').style.display = 'none';
+  document.getElementById('adminNoperm').style.display = 'none';
+  document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+  document.getElementById(id).style.display = '';
+  document.getElementById('adminBack').style.display = '';
+  if (section === 'hallitse') loadHallitseGalleries();
+  if (section === 'kayttajat') ktLoadUsers();
+  if (section === 'hyvaksynnat') hyvLoadAll();
+  if (section === 'tarkista') { curFilter = null; renderFilters(); }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Card → open its section. Cards without data-section (the Sveltia link) are
+// real anchors and navigate normally.
+document.querySelectorAll('#adminCards .adm-card[data-section]').forEach(card => {
+  card.addEventListener('click', () => openSection(card.dataset.section));
+});
+// Back link → return to the card grid.
+document.getElementById('adminBack').addEventListener('click', (e) => { e.preventDefault(); showCards(); });
+
+// ── Hyväksynnät (Phase 3 editorial board) ──────────────────────────────
+// Horizontal rows; only unprocessed items shown (submissions status='odottaa',
+// access requests handled=0). Explicit action buttons only — no checkbox.
+// Hylkää opens an inline "Oletko varma?" confirm (reason required) before firing.
+let hyvSubmissions = [];
+let hyvRequests = [];
+let hyvPhotoSubs = [];
+const HYV_SVELTIA = {
+  artikkeli: '/admin/#/collections/articles',
+  pikauutinen: '/admin/#/collections/pikauutiset',
+};
+
+function hyvEsc(s) { const d = document.createElement('div'); d.textContent = (s == null ? '' : String(s)); return d.innerHTML; }
+function hyvFmtDate(s) {
+  if (!s) return '';
+  const d = new Date(s.includes('T') ? s : s.replace(' ', 'T') + 'Z');
+  return isNaN(d.getTime()) ? hyvEsc(s) : d.toLocaleDateString('fi-FI', { day: 'numeric', month: 'numeric', year: 'numeric' });
+}
+
+// Inline "Oletko varma?" rejection confirm — shared by every row, hidden until
+// Hylkää is clicked.
+function hyvConfirm() {
+  return `
+    <div class="hyv-confirm hyv-confirm--reject" style="display:none;">
+      <span class="hyv-confirm__q">Oletko varma?</span>
+      <textarea class="inp hyv-reason" rows="2" maxlength="500" placeholder="Hylkäyksen syy (näkyy lähettäjälle)"></textarea>
+      <div class="hyv-confirm__actions">
+        <button type="button" class="btn btn--sm hyv-reject-confirm">Vahvista hylkäys</button>
+        <button type="button" class="btn btn--ghost btn--sm hyv-reject-cancel">Peruuta</button>
+      </div>
+    </div>`;
+}
+
+// Reminder banner shown after an approve/reject so the editor remembers the
+// change still needs a manual publish. kind: 'approve' | 'reject'.
+function hyvShowReminder(kind) {
+  const el = document.getElementById('hyvReminder');
+  if (!el) return;
+  const text = kind === 'reject'
+    ? '🗑️ Hylätty ja poistettu. Muista julkaista muutokset Julkaise-osiossa.'
+    : '✅ Hyväksytty! Muista julkaista muutokset Julkaise-osiossa.';
+  el.innerHTML = `<span class="hyv-reminder__text">${text}</span>` +
+    `<button type="button" class="btn btn--submit btn--sm hyv-reminder__go">Siirry Julkaise-osioon →</button>`;
+  el.style.display = 'flex';
+}
+
+async function hyvLoadAll() {
+  const msg = document.getElementById('hyvMsg');
+  if (msg) msg.style.display = 'none';
+  const reminder = document.getElementById('hyvReminder');
+  if (reminder) reminder.style.display = 'none';
+  ['artikkeli', 'pikauutinen', 'kuvat', 'pyynnot'].forEach(g => {
+    const el = document.getElementById('hyvList-' + g);
+    if (el) el.innerHTML = '<div class="kt-loading">Ladataan…</div>';
+  });
+  try {
+    const r = await fetch('/api/submissions', { credentials: 'same-origin' });
+    hyvSubmissions = r.ok ? ((await r.json()).submissions || []) : [];
+  } catch { hyvSubmissions = []; }
+  try {
+    const r = await fetch('/api/access-requests', { credentials: 'same-origin' });
+    hyvRequests = r.ok ? ((await r.json()).requests || []) : [];
+  } catch { hyvRequests = []; }
+  try {
+    const r = await fetch('/api/photo-submissions', { credentials: 'same-origin' });
+    hyvPhotoSubs = r.ok ? ((await r.json()).submissions || []) : [];
+  } catch { hyvPhotoSubs = []; }
+  hyvRenderSubmissions('artikkeli');
+  hyvRenderSubmissions('pikauutinen');
+  hyvRenderKuvat();
+  hyvRenderRequests();
+}
+
+// Kuvat — read-only list of pending avustaja photo submissions. Approve/reject
+// happens in Tarkista (Step 5); this section is visibility + navigation only.
+function hyvRenderKuvat() {
+  const el = document.getElementById('hyvList-kuvat');
+  if (!el) return;
+  if (!hyvPhotoSubs.length) { el.innerHTML = '<div class="hyv-empty">Ei käsiteltäviä kuvia.</div>'; return; }
+  el.innerHTML = hyvPhotoSubs.map(s => `
+    <div class="hyv-row">
+      <div class="hyv-row__main">
+        <span class="hyv-row__title">${hyvEsc(s.filename)}</span>
+        <span class="hyv-row__meta">${hyvEsc(s.submitter_name)} · ${hyvFmtDate(s.submitted_at)} · ✓ Suostumus vahvistettu</span>
+      </div>
+      <div class="hyv-row__actions">
+        <button type="button" class="btn btn--ghost btn--sm hyv-to-tarkista">Käsittele kuva ↗</button>
+      </div>
+    </div>`).join('');
+}
+
+function hyvRenderSubmissions(group) {
+  const el = document.getElementById('hyvList-' + group);
+  if (!el) return;
+  const rows = hyvSubmissions.filter(s => s.type === group && s.status === 'odottaa');
+  if (!rows.length) { el.innerHTML = '<div class="hyv-empty">Ei käsiteltäviä lähetyksiä.</div>'; return; }
+  el.innerHTML = rows.map(s => `
+    <div class="hyv-row" data-kind="submission" data-id="${s.id}">
+      <div class="hyv-row__main">
+        <span class="hyv-row__title">${hyvEsc(s.title)}</span>
+        <span class="hyv-row__meta">${hyvEsc(s.author_name)} · ${hyvFmtDate(s.submitted_at)} · ${hyvEsc(s.category)}</span>
+      </div>
+      <div class="hyv-row__actions">
+        <a href="${HYV_SVELTIA[group]}" target="_blank" rel="noopener" class="btn btn--ghost btn--sm">Käsittele Sveltiassa ↗</a>
+      </div>
+    </div>`).join('');
+}
+
+function hyvRenderRequests() {
+  const el = document.getElementById('hyvList-pyynnot');
+  if (!el) return;
+  if (!hyvRequests.length) { el.innerHTML = '<div class="hyv-empty">Ei käsiteltäviä pyyntöjä.</div>'; return; }
+  el.innerHTML = hyvRequests.map(rq => `
+    <div class="hyv-row" data-kind="request" data-id="${rq.id}">
+      <div class="hyv-row__main">
+        <span class="hyv-row__title">${hyvEsc(rq.name)}</span>
+        <span class="hyv-row__meta">${hyvEsc(rq.email)} · ${hyvFmtDate(rq.created_at)}</span>
+        ${rq.reason ? `<span class="hyv-row__reason-text">${hyvEsc(rq.reason)}</span>` : ''}
+      </div>
+      <div class="hyv-row__actions">
+        <button type="button" class="btn btn--ghost btn--sm hyv-to-kayttajat">Käsittele → Käyttäjät</button>
+        <button type="button" class="btn btn--ghost btn--sm hyv-reject-btn">Hylkää</button>
+      </div>
+      ${hyvConfirm()}
+    </div>`).join('');
+}
+
+// POST an action to the right endpoint, then reload so handled rows drop off.
+async function hyvPost(kind, id, action, reason) {
+  const url = kind === 'request' ? '/api/access-requests' : '/api/submissions';
+  const msg = document.getElementById('hyvMsg');
+  if (msg) msg.style.display = 'none';
+  try {
+    const r = await fetch(url, {
+      method: 'POST', credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, action, rejection_reason: reason }),
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok || !data.success) {
+      if (msg) { msg.textContent = data.error || 'Toiminto epäonnistui.'; msg.style.display = 'block'; }
+      return;
+    }
+    if (data.email_warning && msg) { msg.textContent = 'Huom: ' + data.email_warning; msg.style.display = 'block'; }
+    await hyvLoadAll();
+    // Submission rejections delete the .md from dev → remind to publish.
+    // Access-request rejections touch no content, so no reminder.
+    if (kind === 'submission') hyvShowReminder('reject');
+  } catch {
+    if (msg) { msg.textContent = 'Yhteysvirhe — yritä uudelleen.'; msg.style.display = 'block'; }
+  }
+}
+const hyvReject = (kind, id, reason) => hyvPost(kind, id, kind === 'request' ? 'rejected' : 'hylatty', reason);
+
+// Click delegation: row action buttons + reject confirm/cancel.
+document.getElementById('tabHyvaksynnat')?.addEventListener('click', (e) => {
+  if (e.target.closest('.hyv-reminder__go')) { openSection('julkaise'); return; }
+  if (e.target.closest('.hyv-to-tarkista')) { openSection('tarkista'); return; }
+  const row = e.target.closest('.hyv-row');
+  if (!row) return;
+  const kind = row.dataset.kind;
+  const id = Number(row.dataset.id);
+  const rejectBox = row.querySelector('.hyv-confirm--reject');
+
+  // Käsittele → Käyttäjät: jump to the Käyttäjät section and open a "new user"
+  // modal pre-filled from this access request, for the admin to review.
+  if (e.target.closest('.hyv-to-kayttajat')) {
+    const rq = hyvRequests.find(r => Number(r.id) === id);
+    openSection('kayttajat');
+    ktOpenCreateModalFromRequest(rq);
+    return;
+  }
+
+  // Reject flow (access requests — submissions are auto-detected via Julkaise).
+  if (e.target.closest('.hyv-reject-btn')) {
+    if (rejectBox) rejectBox.style.display = (rejectBox.style.display === 'none' ? 'flex' : 'none');
+    return;
+  }
+  if (e.target.closest('.hyv-reject-confirm')) {
+    const reason = (row.querySelector('.hyv-reason')?.value || '').trim();
+    const msg = document.getElementById('hyvMsg');
+    if (!reason) { if (msg) { msg.textContent = 'Anna hylkäyksen syy.'; msg.style.display = 'block'; } return; }
+    hyvReject(kind, id, reason);
+    return;
+  }
+  if (e.target.closest('.hyv-reject-cancel')) {
+    if (rejectBox) { rejectBox.style.display = 'none'; const ta = rejectBox.querySelector('.hyv-reason'); if (ta) ta.value = ''; }
+    return;
+  }
+});
 
 function showAdminUI() {
   document.getElementById('adminPanel').style.display='none';
   document.getElementById('adminActions').style.display='flex';
-  document.getElementById('adminTabs').style.display='flex';
+  document.getElementById('adminToToimitus').style.display='';
   document.getElementById('mpSubCommunity').style.display='none';
-  document.getElementById('mpSubAdmin').style.display='block';
   document.getElementById('adminGreeting').textContent = `Tervetuloa, ${currentUser.first_name}`;
   applyPermissions(currentUser);
-  showFirstAvailableTab(currentUser);
+  showCards();
+  // (Julkaisijan Ohjekirja is now a card in the grid — no separate banner.)
   curFilter = null;
   renderFilters();
   load(); // reload with include=all to pick up identified photos for admins
@@ -1824,7 +2170,7 @@ function ktPermsBadges(p) {
   if (p.hallitse_galleriaa) out.push('<span class="kt-badge" title="Hallitse galleriaa">G</span>');
   if (p.hallitse_artikkeleita) out.push('<span class="kt-badge" title="Hallitse artikkeleita">A</span>');
   if (p.admin_iam) out.push('<span class="kt-badge kt-badge--admin" title="Hallitse käyttäjiä">I</span>');
-  if (p.laheta_artikkeli) out.push('<span class="kt-badge kt-badge--contributor" title="Yleinen Kynä">YK</span>');
+  if (p.laheta_artikkeli) out.push('<span class="kt-badge kt-badge--contributor" title="Avustajat">YK</span>');
   return out.join(' ') || '<span class="kt-badge-empty">—</span>';
 }
 
@@ -1870,9 +2216,32 @@ function ktRenderTable() {
     <span><span class="kt-badge">G</span> Hallitse galleriaa</span> ·
     <span><span class="kt-badge">A</span> Hallitse artikkeleita</span> ·
     <span><span class="kt-badge kt-badge--admin">I</span> Hallitse käyttäjiä</span> ·
-    <span><span class="kt-badge kt-badge--contributor">YK</span> Yleinen Kynä</span>
+    <span><span class="kt-badge kt-badge--contributor">YK</span> Avustajat</span>
   </div>`;
 }
+
+// Default permission ticks per role. Gemini-avain is always off by default,
+// including for Admin (granted explicitly when needed).
+const KT_ROLE_DEFAULTS = {
+  admin:    { tarkista: 1, lahetakuva: 1, hallitse_galleriaa: 1, hallitse_artikkeleita: 1, admin_iam: 1, laheta_artikkeli: 1, nahta_gemini_avain: 0 },
+  editor:   { tarkista: 1, lahetakuva: 1, hallitse_galleriaa: 0, hallitse_artikkeleita: 1, admin_iam: 0, laheta_artikkeli: 0, nahta_gemini_avain: 0 },
+  avustaja: { tarkista: 0, lahetakuva: 0, hallitse_galleriaa: 0, hallitse_artikkeleita: 0, admin_iam: 0, laheta_artikkeli: 1, nahta_gemini_avain: 0 },
+};
+function ktApplyRoleDefaults(role) {
+  const d = KT_ROLE_DEFAULTS[role] || KT_ROLE_DEFAULTS.editor;
+  document.getElementById('ktPerm_tarkista').checked = !!d.tarkista;
+  document.getElementById('ktPerm_lahetakuva').checked = !!d.lahetakuva;
+  document.getElementById('ktPerm_hallitse_galleriaa').checked = !!d.hallitse_galleriaa;
+  document.getElementById('ktPerm_hallitse_artikkeleita').checked = !!d.hallitse_artikkeleita;
+  document.getElementById('ktPerm_admin_iam').checked = !!d.admin_iam;
+  document.getElementById('ktPerm_laheta_artikkeli').checked = !!d.laheta_artikkeli;
+  document.getElementById('ktPerm_nahta_gemini_avain').checked = !!d.nahta_gemini_avain;
+}
+// Changing the role in the CREATE modal re-applies that role's default ticks.
+// In edit mode we leave the loaded permissions untouched.
+document.getElementById('ktModalRole')?.addEventListener('change', (e) => {
+  if (ktEditingUserId === null) ktApplyRoleDefaults(e.target.value);
+});
 
 function ktOpenCreateModal() {
   ktEditingUserId = null;
@@ -1882,12 +2251,7 @@ function ktOpenCreateModal() {
   document.getElementById('ktModalEmail').value = '';
   document.getElementById('ktModalEmail').disabled = false;
   document.getElementById('ktModalRole').value = 'editor';
-  document.getElementById('ktPerm_tarkista').checked = true;
-  document.getElementById('ktPerm_lahetakuva').checked = true;
-  document.getElementById('ktPerm_hallitse_galleriaa').checked = false;
-  document.getElementById('ktPerm_hallitse_artikkeleita').checked = true;
-  document.getElementById('ktPerm_admin_iam').checked = false;
-  document.getElementById('ktPerm_laheta_artikkeli').checked = false;
+  ktApplyRoleDefaults('editor');
   document.getElementById('ktModalLinkBox').style.display = 'none';
   document.getElementById('ktModalErr').style.display = 'none';
   document.getElementById('ktModalSave').disabled = false;
@@ -1896,6 +2260,21 @@ function ktOpenCreateModal() {
   document.getElementById('ktModalCancel').textContent = 'Peruuta';
   document.getElementById('ktUserModal').style.display = 'flex';
   setTimeout(() => document.getElementById('ktModalFirst').focus(), 50);
+}
+
+// Open the create-user modal seeded from an access request: the name is split
+// into first word / remaining words, the email is copied, and the role is set
+// to Avustaja — whose defaults tick only the "Avustajat" (laheta_artikkeli)
+// permission. The admin reviews/adjusts before clicking "Luo ja tee linkki".
+function ktOpenCreateModalFromRequest(rq) {
+  ktOpenCreateModal();
+  if (!rq) return;
+  const parts = (rq.name || '').trim().split(/\s+/).filter(Boolean);
+  document.getElementById('ktModalFirst').value = parts[0] || '';
+  document.getElementById('ktModalLast').value = parts.slice(1).join(' ');
+  document.getElementById('ktModalEmail').value = rq.email || '';
+  document.getElementById('ktModalRole').value = 'avustaja';
+  ktApplyRoleDefaults('avustaja');
 }
 
 function ktOpenEditModal(uid) {
@@ -1914,6 +2293,7 @@ function ktOpenEditModal(uid) {
   document.getElementById('ktPerm_hallitse_artikkeleita').checked = !!u.permissions.hallitse_artikkeleita;
   document.getElementById('ktPerm_admin_iam').checked = !!u.permissions.admin_iam;
   document.getElementById('ktPerm_laheta_artikkeli').checked = !!u.permissions.laheta_artikkeli;
+  document.getElementById('ktPerm_nahta_gemini_avain').checked = !!u.permissions.nahta_gemini_avain;
   document.getElementById('ktModalLinkBox').style.display = 'none';
   document.getElementById('ktModalErr').style.display = 'none';
   document.getElementById('ktModalSave').disabled = false;
@@ -1953,6 +2333,7 @@ async function ktSubmitModal() {
       hallitse_artikkeleita: document.getElementById('ktPerm_hallitse_artikkeleita').checked,
       admin_iam: document.getElementById('ktPerm_admin_iam').checked,
       laheta_artikkeli: document.getElementById('ktPerm_laheta_artikkeli').checked,
+      nahta_gemini_avain: document.getElementById('ktPerm_nahta_gemini_avain').checked,
     },
   };
 
@@ -2127,63 +2508,8 @@ if (document.getElementById('ktAddBtn')) {
 .mp-title{font-family:var(--font-headline);font-size:2.2rem;font-weight:900;margin:0 0 6px;color:#111;letter-spacing:-.5px}
 .mp-sub{font-size:.95rem;color:#666;margin:0;line-height:1.6}
 
-/* Admin-only ohje card — simple link, no collapse */
-.mp-sub--admin{
-  background:transparent;
-  padding:0;
-  border:none;
-  box-shadow:none;
-  max-width:720px;
-  margin-top:8px;
-}
-
-/* Full-manual link at the top of the OHJE block */
-.ohje-fullguide{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  padding:12px 14px;
-  margin:0 0 16px;
-  background:#fff8e6;
-  border:1px solid #f0d27a;
-  border-radius:8px;
-  text-decoration:none;
-  color:#5a4400;
-  transition:all .15s ease;
-}
-.ohje-fullguide:hover{
-  background:#fff2d0;
-  border-color:#ff9900;
-  transform:translateY(-1px);
-  box-shadow:0 2px 8px rgba(255,153,0,.15);
-}
-.ohje-fullguide__icon{
-  font-size:1.5rem;
-  flex:0 0 auto;
-}
-.ohje-fullguide__text{
-  display:flex;
-  flex-direction:column;
-  gap:2px;
-  flex:1 1 auto;
-  min-width:0;
-}
-.ohje-fullguide__text strong{
-  font-size:.95rem;
-  color:#5a4400;
-  line-height:1.3;
-}
-.ohje-fullguide__text small{
-  font-size:.78rem;
-  color:#8a6d28;
-  line-height:1.3;
-}
-.ohje-fullguide__arrow{
-  font-size:1.1rem;
-  font-weight:700;
-  color:#ff9900;
-  flex:0 0 auto;
-}
+/* (Removed: .mp-sub--admin + .ohje-fullguide banner — Julkaisijan Ohjekirja is
+   now a standard card in the grid.) */
 
 .ohje-section{margin-bottom:10px}
 .ohje-section:last-child{margin-bottom:0}
@@ -2306,55 +2632,8 @@ if (document.getElementById('ktAddBtn')) {
 }
 .admin-logout:hover{border-color:#dc3545;color:#dc3545}
 
-/* Admin tabs */
-.admin-tabs{
-  display:flex;
-  gap:4px;
-  margin-bottom:24px;
-  border-bottom:2px solid #e5e5e5;
-  align-items:center;
-  flex-wrap:wrap;
-}
-.admin-tab{
-  background:none;
-  border:none;
-  padding:10px 20px;
-  font-family:'DM Sans',sans-serif;
-  font-size:.9rem;
-  font-weight:700;
-  color:#999;
-  cursor:pointer;
-  border-bottom:3px solid transparent;
-  margin-bottom:-2px;
-  transition:all .15s;
-  letter-spacing:.2px;
-}
-.admin-tab:hover{color:#555}
-.admin-tab--on{color:#222;border-bottom-color:#ff9900}
-/* Separator between editor tabs and admin-only tabs */
-.admin-tabs__sep{
-  flex:1 1 auto;
-  display:block;
-  min-width:24px;
-}
-/* Admin-only IAM tab — visually distinct from editor tabs */
-.admin-tab--iam{
-  color:#a06400;
-  background:#fff8e6;
-  border:1px solid #f0d27a;
-  border-bottom-width:1px;
-  border-radius:8px 8px 0 0;
-  padding:8px 16px;
-  font-size:.82rem;
-  margin-bottom:-1px;
-}
-.admin-tab--iam:hover{color:#a06400;background:#fff2d0;border-color:#ff9900}
-.admin-tab--iam.admin-tab--on{
-  background:#fff;
-  color:#a06400;
-  border-color:#ff9900;
-  border-bottom-color:#fff;
-}
+/* (Admin tab-bar styles removed — navigation is now card-based; see the
+   .adm-cards / .adm-card rules at the end of this file.) */
 
 /* ===== BUTTONS ===== */
 .btn{font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:700;padding:11px 24px;border-radius:10px;border:none;background:#ff9900;color:#000;cursor:pointer;transition:all .2s ease;letter-spacing:.2px}
@@ -2417,6 +2696,14 @@ if (document.getElementById('ktAddBtn')) {
 .gemini-key__box{margin-top:10px}
 .gemini-key__row{display:flex;gap:8px;align-items:center;margin-bottom:6px}
 .gemini-key__row .inp{flex:1;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.82rem}
+
+/* Julkaise — 2x2 card grid */
+.julkaise-grid{display:grid;grid-template-columns:1fr;gap:16px;max-width:760px;margin-top:8px}
+@media(min-width:640px){.julkaise-grid{grid-template-columns:1fr 1fr}}
+.julkaise-card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.04);display:flex;flex-direction:column;gap:10px}
+.julkaise-card__title{font-family:var(--font-headline);font-size:1.15rem;font-weight:800;margin:0;color:#111}
+.julkaise-card__desc{font-size:.85rem;color:#666;margin:0;line-height:1.5}
+.julkaise-card .btn{align-self:flex-start}
 @keyframes jk-spin{to{transform:rotate(360deg)}}
 
 /* ===== FILTERS ===== */
@@ -2564,6 +2851,12 @@ if (document.getElementById('ktAddBtn')) {
 .btn--secondary:disabled{opacity:.5;cursor:not-allowed;background:#fafafa;color:#999;border-color:#e5e5e5}
 .af-footer__del{background:none;border:none;color:#bbb;font-size:.78rem;cursor:pointer;padding:8px 12px;border-radius:6px;transition:all .15s;font-weight:600;font-family:'DM Sans',sans-serif;white-space:nowrap}
 .af-footer__del:hover{background:#fde8e8;color:#dc3545}
+.af-submitter{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px;padding:8px 12px;background:#f4f8ff;border:1px solid #d6e4fb;border-radius:8px;font-size:.82rem}
+.af-submitter__tag{font-weight:700;color:#1a4d8f}
+.af-submitter__consent{color:#1a7d3c;font-weight:600}
+.af-reject-box{margin-top:10px;padding-top:12px;border-top:1px solid #f0f0f0;display:flex;flex-direction:column;gap:8px}
+.af-reject-box .inp{width:100%;box-sizing:border-box;resize:vertical}
+.af-reject-actions{display:flex;gap:8px}
 
 /* ===== PUBLISH PANEL (inline confirm UI for Julkaise Galleriaan) ===== */
 .pub-panel{
@@ -2975,6 +3268,7 @@ if (document.getElementById('ktAddBtn')) {
   .kt-role{display:inline-block;padding:2px 8px;border-radius:10px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.4px}
   .kt-role--admin{background:#fff3e0;color:#a06400}
   .kt-role--editor{background:#e3f2fd;color:#1565c0}
+  .kt-role--avustaja{background:#e8f5e9;color:#2e7d32}
   .kt-status{font-size:.78rem;font-weight:600;white-space:nowrap}
   .kt-status--active{color:#2e7d32}
   .kt-status--inactive{color:#888}
@@ -3037,4 +3331,95 @@ if (document.getElementById('ktAddBtn')) {
     .kt-row{flex-direction:column}
   }
 
+</style>
+
+<!-- Idle auto-logout (gated page). -->
+<script>
+  import '../../scripts/idle-timeout.js';
+</script>
+
+<style>
+  /* Card-based admin navigation (replaces the old tab bar). Mirrors the
+     Toimituskeskus card style. */
+  .adm-toplink { display: inline-block; font-size: .82rem; color: #888; text-decoration: none; margin: 4px 0 18px; }
+  .adm-toplink:hover { color: var(--brand-primary, #ff9900); }
+
+  .adm-cards { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: 860px; margin-left: auto; margin-right: auto; }
+  @media (min-width: 640px) { .adm-cards { grid-template-columns: 1fr 1fr; } }
+  /* Wide screens: 4-across so the cards read as the intended two rows
+     (Row 1: Tarkista · Hallitse galleriaa · Hyväksynnät · Julkaise;
+      Row 2: Hallitse artikkeleita · Julkaisijan Ohjekirja · Käyttäjät · Lähetä kuva). */
+  @media (min-width: 1000px) { .adm-cards { grid-template-columns: repeat(4, 1fr); max-width: 1120px; } }
+
+  .adm-card {
+    position: relative; display: block; width: 100%; text-align: left; text-decoration: none;
+    background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 22px 22px 26px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04); cursor: pointer; font: inherit; color: inherit;
+    transition: transform .12s, box-shadow .12s, border-color .12s;
+  }
+  .adm-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.1); border-color: var(--brand-primary, #ff9900); }
+  .adm-card__title { display: block; font-family: var(--font-headline); font-size: 1.3rem; font-weight: 800; margin: 0 0 6px; color: #111; }
+  .adm-card__sub { display: block; font-size: .9rem; color: #666; line-height: 1.45; }
+  .adm-card__arrow { position: absolute; right: 18px; bottom: 14px; font-size: 1.3rem; color: var(--brand-primary, #ff9900); font-weight: 900; }
+
+  .adm-noperm {
+    max-width: 640px; background: #fff8e6; border: 1px solid #ffdf85; border-left: 3px solid #ff9900;
+    border-radius: 10px; padding: 16px 18px; color: #5a4010;
+  }
+  .adm-back {
+    display: inline-block; font-size: .85rem; font-weight: 700; color: #888; text-decoration: none;
+    margin: 0 0 16px; cursor: pointer;
+  }
+  .adm-back:hover { color: var(--brand-primary, #ff9900); }
+
+  /* Center the login card, the permission card grid (.adm-cards, centered
+     above), and the narrower content sections within the wide admin container.
+     Only the full-bleed tool sections — Tarkista (mystery grid) and Hallitse
+     galleriaa (.hallitse-section) — stay full width; their grids, tables and
+     image layouts need the room. .upload-section covers both Lähetä kuva and
+     Julkaise; .kt-section is Käyttäjät; .hyv-section is Hyväksynnät. */
+  .admin-panel,
+  .upload-section,
+  .hyv-section,
+  .kt-section { margin-left: auto; margin-right: auto; }
+
+  /* Hyväksynnät (Phase 3 editorial board) */
+  .hyv-section { max-width: 860px; }
+  .hyv-block { margin: 0 0 28px; }
+  .hyv-block__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+  .hyv-block__title { font-family: var(--font-headline); font-size: 1.15rem; font-weight: 800; margin: 0; color: #111; }
+  .hyv-list { display: flex; flex-direction: column; gap: 8px; }
+  .hyv-empty { color: #888; font-size: .9rem; padding: 6px 2px; }
+  /* One horizontal line: info (truncates) on the left, buttons on the right.
+     The reject confirm wraps to a full-width second line (flex 1 1 100%). */
+  .hyv-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; background: #fff; border: 1px solid #e5e5e5; border-radius: 10px; padding: 12px 14px; }
+  .hyv-row__main { flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+  .hyv-row__title { font-weight: 700; color: #111; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hyv-row__meta { font-size: .78rem; color: #888; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hyv-row__reason-text { font-size: .82rem; color: #666; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hyv-row__actions { display: flex; gap: 8px; flex-wrap: wrap; flex: 0 0 auto; margin-left: auto; }
+  .hyv-confirm { flex: 1 1 100%; display: flex; flex-direction: column; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid #f0f0f0; font-size: .85rem; }
+  .hyv-confirm__q { font-weight: 700; color: #b32218; }
+  .hyv-confirm__q--ok { color: #1a7d3c; }
+  /* Short workflow instructions under each block head, collapsed by default
+     behind a "Lue ensin" toggle (mirrors the .kt-audit details pattern). */
+  .hyv-lue-ensin { margin: 0 0 12px; }
+  .hyv-lue-ensin summary { cursor: pointer; font-size: .82rem; font-weight: 700; color: #888; list-style: none; }
+  .hyv-lue-ensin summary::-webkit-details-marker { display: none; }
+  .hyv-lue-ensin summary::before { content: '▶ '; color: #ff9900; font-size: .7rem; }
+  .hyv-lue-ensin[open] summary::before { content: '▼ '; }
+  .hyv-lue-ensin summary:hover { color: var(--brand-primary, #ff9900); }
+  .hyv-instructions { margin: 10px 0 0; padding-left: 1.25em; color: #9a9a9a; font-size: .8rem; line-height: 1.5; }
+  .hyv-instructions li { margin: 0; }
+  /* Post-action reminder banner (publish to production) */
+  .hyv-reminder { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 0 0 20px; padding: 12px 16px; background: #eef8f0; border: 1px solid #bfe3c8; border-radius: 10px; color: #1a5b30; font-size: .9rem; }
+  .hyv-reminder__text { flex: 1 1 auto; font-weight: 600; }
+  .hyv-reminder__go { flex: 0 0 auto; }
+  .hyv-confirm .inp { width: 100%; box-sizing: border-box; resize: vertical; }
+  .hyv-confirm__actions { display: flex; gap: 8px; }
+  .btn--sm { padding: 6px 12px; font-size: .82rem; }
+
+  @media (max-width: 560px) {
+    .hyv-row__actions { margin-left: 0; width: 100%; }
+  }
 </style>

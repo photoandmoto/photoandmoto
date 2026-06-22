@@ -20,11 +20,13 @@ secrets, and recover from incidents. This document is self-contained.
 | Worker → Repo writes | **GitHub App** (`Photoandmoto Publisher`) | JWT-signed atomic commits from the publish pipeline |
 
 Two environments share this stack: **production** (`main` branch) and
-**staging** (`dev` branch). Each has its own Pages project and its own copy of
-the secrets, but **both bind the `DB` D1 binding to the same database**
-(`photoandmoto-community`). So the IAM users — and the mystery photos/comments —
-are shared: an editor logs in to staging and production with one account, and
-staging actions write to the same data as production.
+**staging** (`dev` branch). Each has its own Pages project, its own copy of the
+secrets, and **its own D1 database** — production binds the `DB` binding to
+`photoandmoto-community`, staging binds it to `photoandmoto-community-dev`. So
+IAM users, sessions, and the mystery photos/comments are **environment-specific**:
+an account created on staging does not exist on production, and staging actions
+never write to production data. (Schema migrations must therefore be run against
+each database separately.)
 
 ---
 
@@ -33,7 +35,7 @@ staging actions write to the same data as production.
 | Environment | Branch | Cloudflare Pages project | URL | D1 database |
 |---|---|---|---|---|
 | Production | `main` | `photoandmoto` | www.photoandmoto.fi | `photoandmoto-community` |
-| Staging | `dev` | `photoandmoto-staging` | photoandmoto-staging.pages.dev | `photoandmoto-community` (shared with prod) |
+| Staging | `dev` | `photoandmoto-staging` | photoandmoto-staging.pages.dev | `photoandmoto-community-dev` (separate from prod) |
 
 **Working rule:** all changes go to `dev` first, get verified on the staging
 URL, then a PR `dev → main` promotes them. Direct pushes to `main` are
@@ -85,6 +87,20 @@ the original custom admin.
   removed in a follow-up.
 - Backed by `functions/api/mystery/*` and Cloudflare D1.
 
+### Contributor & editorial system — Avustajat / Toimituskeskus
+
+Built on the same IAM + GitHub App + D1 stack as the custom admin above.
+**`/fi/toimitus` (Toimituskeskus)** is the single entry point — linked from the
+Muuta dropdown — from which users reach **Toimitus** (`/fi/yllapito`, the admin
+above) and/or **Avustajat** (`/fi/yleinen-kyna`, contributor article + AI
+"pikauutinen" forms). It adds the `avustaja` role, the `perm_laheta_artikkeli`
+and `perm_nahta_gemini_avain` permissions (IAM now has **7** permission flags,
+not 5), an email-verified access-request flow (D1 `access_requests` table), and
+the public `/fi/pikauutiset` feed.
+
+**See `YLEINEN_KYNA.md` (v3.0) for the full design and current built state, and
+`INFRASTRUCTURE.md` for the image-storage roadmap.**
+
 ### Article frontmatter reference
 
 Articles are Markdown with YAML frontmatter, validated by Zod in
@@ -132,7 +148,8 @@ up a third environment), here's the full sequence.
 ### 2. Cloudflare D1 database
 
 1. Cloudflare dashboard → **Workers & Pages** → **D1**
-2. **Create database** → name it `photoandmoto-community` (or `-dev` for staging)
+2. **Create database** → `photoandmoto-community` for production, or
+   `photoandmoto-community-dev` for staging (each environment binds `DB` to its own)
 3. After creation, in **Settings**, copy the database ID
 4. Bind it to the Pages project:
    - Pages project → **Settings** → **Functions** → **D1 database bindings**

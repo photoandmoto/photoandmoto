@@ -1,0 +1,323 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const lang = 'fi';
+---
+<BaseLayout title="Toimituskeskus" lang={lang} description="Photo & Moto toimituskeskus — kirjautuminen toimituksen ja avustajien työkaluihin.">
+  <section class="tk">
+    <div class="container">
+      <h1 class="tk-title">Toimituskeskus</h1>
+
+      <!-- Login gate (default state — visible so the page never renders blank). -->
+      <div id="tk-gate" class="tk-gate">
+        <div class="tk-card tk-card--login">
+          <div class="tk-card__header" role="button" aria-expanded="false" tabindex="0">
+            <div class="tk-card__header-text">
+              <h2 class="tk-card__title">Kirjaudu sisään</h2>
+              <p class="tk-card__sub">Kirjaudu toimituksen ja avustajien työkaluihin.</p>
+            </div>
+            <span class="tk-card__chevron" aria-hidden="true"></span>
+          </div>
+          <div class="tk-card__body">
+            <input id="tk-email" class="inp" type="email" placeholder="Sähköposti" autocomplete="off" />
+            <div class="pw-wrap">
+              <input id="tk-pw" class="inp" type="password" placeholder="Salasana" autocomplete="off" />
+              <button type="button" class="pw-eye" id="tk-pw-eye" aria-label="Näytä salasana" tabindex="-1">👁</button>
+            </div>
+            <p class="pw-caps" id="tk-pw-caps" style="display:none;">Caps Lock on päällä</p>
+            <button id="tk-login-btn" class="btn">Kirjaudu</button>
+            <p id="tk-err" class="tk-err" style="display:none;"></p>
+            <a href="/fi/palauta-salasana/" class="tk-link">Unohditko salasanan?</a>
+          </div>
+        </div>
+
+        <div class="tk-card tk-card--request">
+          <div class="tk-card__header" role="button" aria-expanded="false" tabindex="0">
+            <div class="tk-card__header-text">
+              <h2 class="tk-card__title">Pyydä käyttöoikeutta</h2>
+              <p class="tk-card__sub">Haluatko kirjoittaa Photo &amp; Motoon? Pyydä Avustaja-oikeudet — lähetämme sinulle vahvistuslinkin sähköpostitse.</p>
+            </div>
+            <span class="tk-card__chevron" aria-hidden="true"></span>
+          </div>
+          <div class="tk-card__body">
+            <input id="tk-req-name" class="inp" type="text" placeholder="Nimi" maxlength="100" autocomplete="off" />
+            <input id="tk-req-email" class="inp" type="email" placeholder="Sähköposti" autocomplete="off" />
+            <textarea id="tk-req-reason" class="inp tk-req-reason" rows="4" maxlength="500" placeholder="Miksi haluat kirjoittaa Photo & Motoon?"></textarea>
+            <button id="tk-req-btn" class="btn btn--ghost">Lähetä pyyntö</button>
+            <p id="tk-req-msg" class="tk-msg" style="display:none;"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logged-in hub (links shown by permission). -->
+      <div id="tk-hub" class="tk-hub" style="display:none;">
+        <div class="tk-hub-head">
+          <span id="tk-greet" class="tk-greet"></span>
+          <button id="tk-logout" class="btn btn--ghost">Kirjaudu ulos</button>
+        </div>
+
+        <div class="tk-cards">
+          <a id="tk-admin" href="/fi/yllapito" class="tk-link-card" style="display:none;">
+            <h2 class="tk-link-card__title">Toimitus</h2>
+            <p class="tk-link-card__sub">Hallitse käyttäjiä, sisältöä ja sivuston asetuksia</p>
+            <span class="tk-link-card__arrow">→</span>
+          </a>
+          <a id="tk-avustajat" href="/fi/yleinen-kyna" class="tk-link-card" style="display:none;">
+            <h2 class="tk-link-card__title">Avustajat</h2>
+            <p class="tk-link-card__sub">Kirjoita artikkeli tai luo pikauutinen</p>
+            <span class="tk-link-card__arrow">→</span>
+          </a>
+        </div>
+
+        <p id="tk-noperm" class="tk-notice" style="display:none;">
+          Sinulla ei ole käyttöoikeutta. Ota yhteyttä toimitukseen.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const gate = $('tk-gate');
+  const hub = $('tk-hub');
+
+  function showGate() { gate.style.display = ''; hub.style.display = 'none'; }
+  function showHub(user) {
+    gate.style.display = 'none'; hub.style.display = '';
+    const greet = $('tk-greet');
+    if (greet) greet.textContent = `Tervetuloa, ${user?.first_name || ''}`.trim();
+
+    const perms = (user && user.permissions) || {};
+    const admin = $('tk-admin');
+    const avustajat = $('tk-avustajat');
+    // Toimitus card: any editorial/admin permission. Avustajat card: laheta_artikkeli.
+    const hasToimitus = !!(perms.tarkista || perms.lahetakuva || perms.hallitse_galleriaa
+      || perms.hallitse_artikkeleita || perms.admin_iam);
+    const hasAvustajat = !!perms.laheta_artikkeli;
+    admin.style.display = hasToimitus ? '' : 'none';
+    avustajat.style.display = hasAvustajat ? '' : 'none';
+    $('tk-noperm').style.display = (hasToimitus || hasAvustajat) ? 'none' : 'block';
+  }
+
+  // Avustaja-only accounts (laheta_artikkeli, no editorial/admin perms) skip the
+  // hub and go straight to the contributor page.
+  function isAvustajaOnly(user) {
+    const p = (user && user.permissions) || {};
+    const hasToimitus = !!(p.tarkista || p.lahetakuva || p.hallitse_galleriaa
+      || p.hallitse_artikkeleita || p.admin_iam);
+    return !!p.laheta_artikkeli && !hasToimitus;
+  }
+
+  // Session boot — gate visible by default, so a failure never blanks the page.
+  async function boot() {
+    try {
+      const r = await fetch('/api/auth/me', { credentials: 'same-origin' });
+      if (!r.ok) { showGate(); return; }
+      const data = await r.json();
+      if (!data.user) { showGate(); return; }
+      if (isAvustajaOnly(data.user)) { window.location.href = '/fi/yleinen-kyna'; return; }
+      showHub(data.user);
+    } catch {
+      showGate();
+    }
+  }
+  boot();
+
+  // Collapsible cards — both start collapsed, only one open at a time.
+  (function () {
+    const cards = document.querySelectorAll('.tk-card');
+    function openCard(card) {
+      cards.forEach(c => {
+        const h = c.querySelector('.tk-card__header');
+        c.classList.remove('tk-card--open');
+        if (h) h.setAttribute('aria-expanded', 'false');
+      });
+      card.classList.add('tk-card--open');
+      const header = card.querySelector('.tk-card__header');
+      if (header) header.setAttribute('aria-expanded', 'true');
+    }
+    function closeCard(card) {
+      card.classList.remove('tk-card--open');
+      const header = card.querySelector('.tk-card__header');
+      if (header) header.setAttribute('aria-expanded', 'false');
+    }
+    cards.forEach(card => {
+      const header = card.querySelector('.tk-card__header');
+      if (!header) return;
+      header.addEventListener('click', () => {
+        card.classList.contains('tk-card--open') ? closeCard(card) : openCard(card);
+      });
+      header.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          card.classList.contains('tk-card--open') ? closeCard(card) : openCard(card);
+        }
+      });
+    });
+  })();
+
+  // Login.
+  $('tk-login-btn')?.addEventListener('click', async () => {
+    const email = $('tk-email').value.trim();
+    const pw = $('tk-pw').value;
+    const err = $('tk-err');
+    err.style.display = 'none';
+    if (!email || !pw) { err.textContent = 'Anna sähköposti ja salasana.'; err.style.display = 'block'; return; }
+    try {
+      const r = await fetch('/api/auth/login', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pw }),
+      });
+      if (!r.ok) {
+        err.textContent = r.status === 429 ? 'Liian monta yritystä. Yritä myöhemmin.' : 'Väärät kirjautumistiedot.';
+        err.style.display = 'block';
+        return;
+      }
+      $('tk-email').value = ''; $('tk-pw').value = ''; // clear credentials after login
+      await boot();
+    } catch {
+      err.textContent = 'Yhteysvirhe — yritä uudelleen.'; err.style.display = 'block';
+    }
+  });
+
+  // Logout.
+  $('tk-logout')?.addEventListener('click', async () => {
+    try { await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' }); } catch {}
+    showGate();
+  });
+
+  // Access request (Pyydä käyttöoikeutta) — sends a verification link by email.
+  $('tk-req-btn')?.addEventListener('click', async () => {
+    const name = $('tk-req-name').value.trim();
+    const email = $('tk-req-email').value.trim();
+    const reason = $('tk-req-reason').value.trim();
+    const msg = $('tk-req-msg');
+    const btn = $('tk-req-btn');
+    msg.style.display = 'none';
+    if (name.length < 2) { msg.className = 'tk-msg tk-msg--err'; msg.textContent = 'Anna nimesi.'; msg.style.display = 'block'; return; }
+    if (!email) { msg.className = 'tk-msg tk-msg--err'; msg.textContent = 'Anna sähköpostiosoite.'; msg.style.display = 'block'; return; }
+    if (!reason) { msg.className = 'tk-msg tk-msg--err'; msg.textContent = 'Kerro miksi haluat kirjoittaa.'; msg.style.display = 'block'; return; }
+    btn.disabled = true;
+    try {
+      const r = await fetch('/api/request-access', {
+        method: 'POST', credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, reason }),
+      });
+      const data = await r.json().catch(() => ({}));
+      if (r.ok && data.ok) {
+        msg.className = 'tk-msg tk-msg--ok';
+        msg.textContent = 'Tarkista sähköpostisi — lähetimme sinulle vahvistuslinkin.';
+        $('tk-req-name').value = ''; $('tk-req-email').value = ''; $('tk-req-reason').value = '';
+      } else {
+        msg.className = 'tk-msg tk-msg--err';
+        msg.textContent = data.error || 'Pyynnön lähetys epäonnistui — yritä uudelleen.';
+      }
+      msg.style.display = 'block';
+    } catch {
+      msg.className = 'tk-msg tk-msg--err'; msg.textContent = 'Yhteysvirhe — yritä uudelleen.'; msg.style.display = 'block';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  // Password eye toggle + Caps Lock warning (login form).
+  (function () {
+    const pw = $('tk-pw'); if (!pw) return;
+    const eye = $('tk-pw-eye');
+    eye?.addEventListener('click', () => {
+      const showing = pw.type === 'text';
+      pw.type = showing ? 'password' : 'text';
+      eye.classList.toggle('pw-eye--on', !showing);
+      pw.focus();
+    });
+    const caps = $('tk-pw-caps');
+    const check = (e) => { if (caps) caps.style.display = (e.getModifierState && e.getModifierState('CapsLock')) ? 'block' : 'none'; };
+    pw.addEventListener('keydown', check);
+    pw.addEventListener('keyup', check);
+  })();
+</script>
+
+<!-- Idle auto-logout (gated page). -->
+<script>
+  import '../../scripts/idle-timeout.js';
+</script>
+
+<style>
+  .tk { padding: var(--space-5, 3rem) 0; }
+  .tk-title { font-family: var(--font-headline); font-size: 2rem; font-weight: 900; margin: 0 0 24px; }
+
+  .tk-gate { display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 760px; }
+  @media (min-width: 640px) { .tk-gate { grid-template-columns: 1fr 1fr; align-items: start; } }
+  .tk-msg { font-size: .85rem; font-weight: 600; margin: 0; line-height: 1.4; }
+  .tk-msg--ok { color: #1a8a5c; }
+  .tk-msg--err { color: #dc3545; }
+  .tk-req-reason { resize: vertical; min-height: 80px; font-family: inherit; }
+  .tk-card {
+    background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 20px;
+    display: flex; flex-direction: column; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.04);
+  }
+  .tk-card__title { font-family: var(--font-headline); font-size: 1.15rem; font-weight: 800; margin: 0; }
+  .tk-card__sub { font-size: .85rem; color: var(--text-secondary); margin: 0; line-height: 1.45; }
+  .tk-link { font-size: .82rem; color: var(--text-secondary); }
+  .tk-err { color: #dc3545; font-size: .85rem; font-weight: 600; margin: 0; }
+
+  /* Password field: eye toggle + Caps Lock warning */
+  .pw-wrap { position: relative; }
+  .pw-wrap .inp { width: 100%; padding-right: 42px; }
+  .pw-eye {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer; font-size: 1.05rem; line-height: 1; opacity: .55; padding: 4px;
+  }
+  .pw-eye--on, .pw-eye:hover { opacity: 1; }
+  .pw-caps { color: #b8860b; font-size: .8rem; font-weight: 600; margin: 0; }
+
+  .tk-hub-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; max-width: 760px; }
+  .tk-greet { font-weight: 700; }
+
+  .tk-cards { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: 760px; }
+  @media (min-width: 640px) { .tk-cards { grid-template-columns: 1fr 1fr; } }
+
+  .tk-link-card {
+    position: relative; display: block; text-decoration: none;
+    background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 22px 22px 26px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.04); transition: transform .12s, box-shadow .12s, border-color .12s;
+  }
+  .tk-link-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.1); border-color: var(--brand-primary, #ff9900); }
+  .tk-link-card__title { font-family: var(--font-headline); font-size: 1.3rem; font-weight: 800; margin: 0 0 6px; color: #111; }
+  .tk-link-card__sub { font-size: .9rem; color: var(--text-secondary); margin: 0; line-height: 1.45; }
+  .tk-link-card__arrow { position: absolute; right: 18px; bottom: 14px; font-size: 1.3rem; color: var(--brand-primary, #ff9900); font-weight: 900; }
+
+  .tk-notice {
+    max-width: 640px; background: #fff8e6; border: 1px solid #ffdf85; border-left: 3px solid #ff9900;
+    border-radius: 10px; padding: 16px 18px; color: #5a4010; margin: 0;
+  }
+
+  /* Centered content column (consistent across gated pages). */
+  .container { max-width: 860px; }
+  .tk-gate, .tk-cards, .tk-hub-head, .tk-notice { margin-left: auto; margin-right: auto; }
+
+  /* Collapsible cards */
+  .tk-card { gap: 0; }
+  .tk-card__header {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
+    cursor: pointer; user-select: none; padding-bottom: 4px;
+  }
+  .tk-card__header-text { display: flex; flex-direction: column; gap: 4px; }
+  .tk-card__header .tk-card__title,
+  .tk-card__header .tk-card__sub { margin: 0; }
+  .tk-card__chevron {
+    flex-shrink: 0; width: 20px; height: 20px; margin-top: 2px;
+    border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+    transform: rotate(45deg); transition: transform .25s ease;
+    color: var(--text-secondary, #888);
+  }
+  .tk-card--open .tk-card__chevron { transform: rotate(225deg); margin-top: 6px; }
+  .tk-card__body {
+    display: flex; flex-direction: column; gap: 10px;
+    overflow: hidden; max-height: 0; transition: max-height .35s ease, padding-top .35s ease;
+    padding-top: 0;
+  }
+  .tk-card--open .tk-card__body { max-height: 480px; padding-top: 12px; }
+</style>

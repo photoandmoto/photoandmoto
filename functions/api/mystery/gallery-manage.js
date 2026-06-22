@@ -233,14 +233,6 @@ function targetBranch(env) {
   return b === 'main' ? 'main' : 'dev';
 }
 
-function sanitizeSlug(slug) {
-  return String(slug || '')
-    .toLowerCase()
-    .replace(/[^a-z0-9-]/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-}
-
 // ---------------------------------------------------------------------------
 // Action handlers
 // ---------------------------------------------------------------------------
@@ -440,7 +432,7 @@ export async function onRequestPost({ request, env }) {
   if (!env.GITHUB_APP_ID || !env.GITHUB_APP_INSTALLATION_ID || !env.GITHUB_APP_PRIVATE_KEY)
     return serverError('GitHub App secrets missing');
 
-  const slug = sanitizeSlug(body.gallery_slug);
+  const slug = (body.gallery_slug || '').trim();
   if (!slug) return badRequest('gallery_slug required');
 
   const action = body.action || '';
@@ -480,7 +472,7 @@ export async function onRequestPost({ request, env }) {
 
       case 'move_photo': {
         const filename    = (body.filename || '').trim();
-        const targetSlug  = sanitizeSlug(body.target_slug);
+        const targetSlug  = (body.target_slug || '').trim();
         if (!filename)   return badRequest('filename required');
         if (!targetSlug) return badRequest('target_slug required');
         return await actionMovePhoto(token, branch, slug, filename, targetSlug);

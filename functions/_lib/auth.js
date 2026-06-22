@@ -25,7 +25,7 @@ export const TOKEN_LENGTH_BYTES = 32;          // 256 bits → 43 base64url char
 export const SESSION_LENGTH_BYTES = 32;        // ditto
 export const SESSION_MAX_AGE_SECONDS = 30 * 24 * 60 * 60;        // 30 days (absolute cap)
 export const SESSION_IDLE_TIMEOUT_SECONDS = 4 * 60 * 60;         // 4 hours (inactivity logout — mirrored as the '-4 hours' literal in requireAuth's query)
-export const PROVISIONING_TOKEN_TTL_SECONDS = 48 * 60 * 60;      // 48 hours
+export const PROVISIONING_TOKEN_TTL_SECONDS = 86400;             // 24 hours
 export const RECOVERY_TOKEN_TTL_SECONDS = 15 * 60;               // 15 minutes
 export const SESSION_COOKIE_NAME = 'pm_session';
 export const PASSWORD_MIN_LENGTH = 12;
@@ -289,6 +289,7 @@ export async function requireAuth(request, env, requiredPerm = null) {
        u.first_name, u.last_name, u.email, u.role,
        u.perm_tarkista, u.perm_lahetakuva, u.perm_hallitse_galleriaa,
        u.perm_hallitse_artikkeleita, u.perm_admin_iam, u.perm_laheta_artikkeli,
+       u.perm_nahta_gemini_avain,
        u.is_active
      FROM sessions s
      INNER JOIN users u ON u.id = s.user_id
@@ -328,6 +329,7 @@ export async function requireAuth(request, env, requiredPerm = null) {
         hallitse_artikkeleita: !!row.perm_hallitse_artikkeleita,
         admin_iam: !!row.perm_admin_iam,
         laheta_artikkeli: !!row.perm_laheta_artikkeli,
+        nahta_gemini_avain: !!row.perm_nahta_gemini_avain,
       },
     },
     sessionRow: row,

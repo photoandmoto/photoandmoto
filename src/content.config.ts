@@ -29,6 +29,26 @@ const articlesCollection = defineCollection({
   }),
 });
 
+// Pikauutiset — short AI-assisted news flashes (Yleinen Kynä Phase 2). Lean,
+// FI-only, separate collection. The 2–3 sentence text lives in the markdown
+// BODY (content area) — same as the articles collection, which is why `body`
+// is not a frontmatter field here (Sveltia reserves the `body` name for the
+// content area). generate-article.js validates title + body non-empty before
+// committing. `source` is always 'ai_generated'; `author` always from the IAM
+// session; `draft` always starts true.
+const pikauutisetCollection = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/pikauutiset' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.date(),
+    author: z.string(),
+    category: z.string(),
+    photo: z.string().nullish(),
+    draft: z.preprocess((v) => v ?? false, z.boolean()),
+    source: z.string().default('ai_generated'),
+  }),
+});
+
 const galleriesCollection = defineCollection({
   loader: glob({ pattern: '**/*.json', base: './src/content/galleries' }),
   schema: z.object({
@@ -62,6 +82,7 @@ const categoriesCollection = defineCollection({
 
 export const collections = {
   articles: articlesCollection,
+  pikauutiset: pikauutisetCollection,
   galleries: galleriesCollection,
   categories: categoriesCollection,
 };

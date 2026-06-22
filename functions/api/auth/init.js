@@ -17,13 +17,15 @@ export async function runInit(env) {
       first_name TEXT NOT NULL,
       last_name TEXT NOT NULL,
       email TEXT UNIQUE NOT NULL,
-      role TEXT NOT NULL CHECK (role IN ('admin', 'editor')),
+      role TEXT NOT NULL CHECK (role IN ('admin', 'editor', 'avustaja')),
 
       perm_tarkista INTEGER DEFAULT 0,
       perm_lahetakuva INTEGER DEFAULT 0,
       perm_hallitse_galleriaa INTEGER DEFAULT 0,
       perm_hallitse_artikkeleita INTEGER DEFAULT 0,
       perm_admin_iam INTEGER DEFAULT 0,
+      perm_laheta_artikkeli INTEGER NOT NULL DEFAULT 0,
+      perm_nahta_gemini_avain INTEGER NOT NULL DEFAULT 0,
 
       password_hash TEXT,
       password_salt TEXT,
@@ -37,9 +39,7 @@ export async function runInit(env) {
       created_by INTEGER,
       last_login_at TEXT,
       last_recovery_at TEXT,
-      is_active INTEGER DEFAULT 1,
-
-      FOREIGN KEY (created_by) REFERENCES users(id)
+      is_active INTEGER DEFAULT 1
     )
   `).run();
 
@@ -120,6 +120,96 @@ export async function runInit(env) {
 
   await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_login_ip ON login_attempts(ip, attempted_at)`).run();
   await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_login_email ON login_attempts(email_attempted, attempted_at)`).run();
+
+  // ─── submissions ──────────────────────────────────────────────────────
+  // Editorial board (Hyväksynnät, Phase 3): review state for contributor
+  // article / pikauutinen submissions. The .md lives in git; this row tracks
+  // its status. author_id is nullable and FK-free (consistent with the rest).
+  await env.DB.prepare(`
+    CREATE TABLE IF NOT EXISTS submissions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      type TEXT NOT NULL CHECK (type IN ('artikkeli', 'pikauutinen')),
+      status TEXT NOT NULL DEFAULT 'odottaa' CHECK (status IN ('odottaa', 'julkaistu', 'hylatty')),
+      title TEXT NOT NULL,
+      author_id INTEGER,
+      author_name TEXT,
+      author_email TEXT,
+      category TEXT,
+      github_slug TEXT,
+      submitted_at TEXT DEFAULT (datetime('now')),
+      reviewed_at TEXT,
+      reviewed_by INTEGER,
+      rejection_reason TEXT
+    )
+  `).run();
+
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_submissions_status ON submissions(status)`).run();
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_submissions_submitted ON submissions(submitted_at)`).run();
+
+  // ─── access_requests ──────────────────────────────────────────────────
+  // Avustaja access-request flow + Hyväksynnät handling. Created here for
+  // fresh environments (existing DBs already have the base columns from the
+  // manual migration). `handled`/`handled_at`/`rejection_reason` are added by
+  // the guarded ALTERs below for databases created before Phase 3.
+  await env.DB.prepare(`
+    CREATE TABLE IF NOT EXISTS access_requests (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      reason TEXT,
+      token TEXT,
+      verified INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT DEFAULT (datetime('now')),
+      expires_at TEXT,
+      handled INTEGER NOT NULL DEFAULT 0,
+      handled_at TEXT,
+      rejection_reason TEXT
+    )
+  `).run();
+
+  // SQLite can't ALTER ... ADD COLUMN IF NOT EXISTS, so add each missing column
+  // best-effort and ignore the "duplicate column name" error on existing DBs.
+  for (const colDef of ['handled INTEGER NOT NULL DEFAULT 0', 'handled_at TEXT', 'rejection_reason TEXT']) {
+    try {
+      await env.DB.prepare(`ALTER TABLE access_requests ADD COLUMN ${colDef}`).run();
+    } catch { /* column already exists */ }
+  }
+
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_access_requests_token ON access_requests(token)`).run();
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_access_requests_open ON access_requests(verified, handled)`).run();
+
+  // ─── photo_submissions ────────────────────────────────────────────────
+  // Permanent compliance audit trail for Avustaja photo uploads (Lähetä kuva).
+  // Each row records the consent snapshot at submission time and the review
+  // outcome. Rows are NEVER deleted — when the underlying mystery `photos` row
+  // is published or removed, this audit record stays. `photo_id` links to the
+  // photos row while it exists (FK-free + nullable, consistent with the other
+  // tables here); editor uploads create no row, so a photo with no matching
+  // photo_submissions row is an internal/trusted upload.
+  await env.DB.prepare(`
+    CREATE TABLE IF NOT EXISTS photo_submissions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      photo_id INTEGER,
+      filename TEXT NOT NULL,
+      submitter_name TEXT NOT NULL,
+      submitter_email TEXT NOT NULL,
+      submitter_id INTEGER,
+      consent_given INTEGER NOT NULL DEFAULT 0,
+      consent_text TEXT NOT NULL,
+      consent_at TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'odottaa' CHECK (status IN ('odottaa', 'hyvaksytty', 'hylatty')),
+      reviewed_at TEXT,
+      reviewed_by INTEGER,
+      gallery_assigned TEXT,
+      rejection_reason TEXT,
+      submitted_at TEXT DEFAULT (datetime('now')),
+      FOREIGN KEY (submitter_id) REFERENCES users(id) ON DELETE SET NULL,
+      FOREIGN KEY (reviewed_by) REFERENCES users(id) ON DELETE SET NULL
+    )
+  `).run();
+
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_photo_submissions_status ON photo_submissions(status)`).run();
+  await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_photo_submissions_photo ON photo_submissions(photo_id)`).run();
 
   return { success: true };
 }

@@ -43,9 +43,23 @@ jobs:
 
       - name: Detect article deletions in this push
         id: detect
+        env:
+          HEAD_COMMIT_MSG: ${{ github.event.head_commit.message }}
         run: |
           # Raw UTF-8 filenames (Finnish slugs) instead of quoted/escaped paths.
           git config --global core.quotePath false
+
+          # Rejection deletions (Hyväksynnät "Hylkää", functions/api/submissions.js)
+          # commit with this exact prefix and must NOT promote dev → main — they
+          # only remove an unpublished draft. Each rejection is a single-commit
+          # Contents-API push, so the tip commit message is authoritative here.
+          case "$HEAD_COMMIT_MSG" in
+            "chore: reject submission"*)
+              echo "Rejection deletion detected — skipping auto-promotion."
+              echo "deleted=false" >> "$GITHUB_OUTPUT"
+              exit 0
+              ;;
+          esac
 
           BEFORE="${{ github.event.before }}"
           AFTER="${{ github.event.after }}"

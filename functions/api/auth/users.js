@@ -18,10 +18,11 @@ import {
 } from '../../_lib/auth.js';
 import { runInit } from './init.js';
 
-const VALID_ROLES = ['admin', 'editor'];
+const VALID_ROLES = ['admin', 'editor', 'avustaja'];
 const VALID_PERMS = [
   'tarkista', 'lahetakuva', 'hallitse_galleriaa',
   'hallitse_artikkeleita', 'admin_iam', 'laheta_artikkeli',
+  'nahta_gemini_avain',
 ];
 
 function rowToUser(row) {
@@ -38,6 +39,7 @@ function rowToUser(row) {
       hallitse_artikkeleita: !!row.perm_hallitse_artikkeleita,
       admin_iam: !!row.perm_admin_iam,
       laheta_artikkeli: !!row.perm_laheta_artikkeli,
+      nahta_gemini_avain: !!row.perm_nahta_gemini_avain,
     },
     is_active: !!row.is_active,
     has_password: !!row.has_password,
@@ -59,6 +61,7 @@ export async function onRequestGet({ request, env }) {
     SELECT id, first_name, last_name, email, role,
            perm_tarkista, perm_lahetakuva, perm_hallitse_galleriaa,
            perm_hallitse_artikkeleita, perm_admin_iam, perm_laheta_artikkeli,
+           perm_nahta_gemini_avain,
            is_active,
            (password_hash IS NOT NULL) AS has_password,
            created_at, last_login_at, last_recovery_at
@@ -115,9 +118,10 @@ export async function onRequestPost({ request, env }) {
       first_name, last_name, email, role,
       perm_tarkista, perm_lahetakuva, perm_hallitse_galleriaa,
       perm_hallitse_artikkeleita, perm_admin_iam, perm_laheta_artikkeli,
+      perm_nahta_gemini_avain,
       created_by, is_active
     )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1)
   `).bind(
     body.first_name.trim(),
     body.last_name.trim(),
@@ -125,6 +129,7 @@ export async function onRequestPost({ request, env }) {
     body.role,
     permFlags.tarkista, permFlags.lahetakuva, permFlags.hallitse_galleriaa,
     permFlags.hallitse_artikkeleita, permFlags.admin_iam, permFlags.laheta_artikkeli,
+    permFlags.nahta_gemini_avain,
     auth.user.id
   ).run();
 
@@ -140,15 +145,62 @@ export async function onRequestPost({ request, env }) {
     VALUES (?, ?, 'initial_provision', ?, ?)
   `).bind(tokenHash, userId, expiresAt, auth.user.id).run();
 
+  // ── Auto-clear a matching access request (non-fatal) ──
+  // If this new user was provisioned in response to a verified, not-yet-handled
+  // access request (same email), mark that request handled so it drops off the
+  // Käyttöoikeuspyynnöt queue automatically — no manual "Merkitse käsitellyksi".
+  try {
+    await env.DB.prepare(`
+      UPDATE access_requests
+      SET handled = 1, handled_at = datetime('now')
+      WHERE lower(email) = ? AND COALESCE(handled, 0) = 0
+    `).bind(email).run();
+  } catch (e) {
+    console.error('access_request auto-clear failed (non-fatal):', e);
+  }
+
   // ── Build the link from the request origin ──
   const url = new URL(request.url);
   const provisioningLink = `${url.protocol}//${url.host}/fi/aseta-salasana?token=${rawToken}`;
+
+  // ── Auto-email the activation link to the new user (non-fatal). If Resend is
+  //    not configured or the send fails, we still return the link below so the
+  //    admin can copy and send it manually. ──
+  if (env.RESEND_API_KEY) {
+    const text =
+`Hei ${body.first_name.trim()},
+
+Sinut on kutsuttu Photo & Moto -sivuston avustajaksi.
+
+Aktivoi tilisi klikkaamalla alla olevaa linkkiä:
+${provisioningLink}
+
+Linkki vanhenee 24 tunnin kuluttua.
+
+Jos et odottanut tätä viestiä, voit jättää sen huomiotta.`;
+    try {
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from: 'Photo & Moto <noreply@photoandmoto.fi>',
+          to: [email],
+          subject: 'Tervetuloa Photo & Moto — aktivoi tilisi',
+          text,
+        }),
+      });
+      if (!res.ok) console.error('provisioning email failed (non-fatal):', res.status, await res.text().catch(() => ''));
+    } catch (e) {
+      console.error('provisioning email threw (non-fatal):', e);
+    }
+  }
 
   // ── Fetch the user back for response shape consistency ──
   const userRow = await env.DB.prepare(`
     SELECT id, first_name, last_name, email, role,
            perm_tarkista, perm_lahetakuva, perm_hallitse_galleriaa,
            perm_hallitse_artikkeleita, perm_admin_iam, perm_laheta_artikkeli,
+           perm_nahta_gemini_avain,
            is_active,
            (password_hash IS NOT NULL) AS has_password,
            created_at, last_login_at, last_recovery_at

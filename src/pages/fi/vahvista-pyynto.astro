@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const lang = 'fi';
+---
+<BaseLayout
+  title="Vahvista pyyntö"
+  lang={lang}
+  description="Vahvista Avustaja-käyttöoikeuspyyntösi Photo & Moto -sivustolle."
+  noindex={true}
+>
+  <section class="vp">
+    <div class="container vp-wrap">
+      <h1 class="vp-title">Käyttöoikeuspyyntö</h1>
+      <p id="vp-status" class="vp-status">Vahvistetaan…</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const status = document.getElementById('vp-status');
+  function show(msg, kind) {
+    status.textContent = msg;
+    status.className = 'vp-status' + (kind ? ' vp-status--' + kind : '');
+  }
+  (async () => {
+    const token = new URLSearchParams(location.search).get('token');
+    const invalid = 'Linkki on vanhentunut tai virheellinen. Lähetä uusi pyyntö osoitteessa /fi/toimitus';
+    if (!token) { show(invalid, 'err'); return; }
+    try {
+      const r = await fetch('/api/verify-access-request?token=' + encodeURIComponent(token), { credentials: 'same-origin' });
+      const data = await r.json().catch(() => ({}));
+      if (r.ok && data.ok) {
+        show('Pyyntösi on vahvistettu! Toimitus käsittelee hakemuksesi ja ottaa sinuun yhteyttä pian.', 'ok');
+      } else {
+        show(invalid, 'err');
+      }
+    } catch {
+      show(invalid, 'err');
+    }
+  })();
+</script>
+
+<style>
+  .vp { padding: var(--space-5, 3rem) 0; }
+  .vp-wrap { max-width: 600px; margin: 0 auto; }
+  .vp-title { font-family: var(--font-headline); font-size: 1.8rem; font-weight: 900; margin: 0 0 16px; }
+  .vp-status {
+    font-size: 1.05rem; line-height: 1.6; color: var(--text-primary, #222);
+    padding: 18px 20px; border-radius: 10px; background: #f7f7f7; border: 1px solid #e5e5e5; margin: 0;
+  }
+  .vp-status--ok { background: #e8f6ef; border-color: #b6e3cd; color: #1a6b46; }
+  .vp-status--err { background: #fdecea; border-color: #f5c2bd; color: #b32218; }
+</style>

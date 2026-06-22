@@ -10,12 +10,24 @@ const description = 'Photo & Moto -sivuston sisällöntuottajan ja ylläpitäjä
 <BaseLayout title={title} lang={lang} description={description} noindex={true}>
   <section class="docpage">
     <div class="container docpage-container">
+      <button type="button" class="docpage-back" data-back>← Takaisin</button>
       <div class="docpage-prose">
         <Content />
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  // "← Takaisin" — one step back; fall back to the hub if there's no history
+  // (this page is often opened in a new tab from Toimitus).
+  document.querySelectorAll('[data-back]').forEach((el) => {
+    el.addEventListener('click', () => {
+      if (window.history.length > 1) window.history.back();
+      else window.location.href = '/fi/toimitus';
+    });
+  });
+</script>
 
 <style>
   /* Layout — wide enough for tables, narrow enough for comfortable reading */
@@ -28,6 +40,20 @@ const description = 'Photo & Moto -sivuston sisällöntuottajan ja ylläpitäjä
     margin: 0 auto;
     padding: 0 1.25rem;
   }
+  .docpage-back {
+    display: inline-block;
+    font-size: .85rem;
+    font-weight: 700;
+    color: #888;
+    text-decoration: none;
+    margin: 0 0 14px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+  }
+  .docpage-back:hover { color: #ff9900; }
   .docpage-prose {
     background: #fff;
     padding: 2.5rem 3rem;
