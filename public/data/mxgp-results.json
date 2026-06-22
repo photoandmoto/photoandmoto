@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-06-21",
+  "lastUpdated": "2026-06-22",
   "seasonComplete": false,
   "totalRounds": 19,
   "latestRace": {
@@ -674,69 +674,19 @@
   "nextRace": null,
   "highlights": {
     "fi": {
-      "mxgp_quali": [
-        "Tim Gajser nappasi paalupaikan lauantain aika-ajossa.",
-        "Slovenialainen Tim Gajser hallitsi lauantain aika-ajoa Montevarchissa."
-      ],
-      "mxgp_race": [
-        "Jeffrey Herlings dominoi ensimmäistä MXGP-erää.",
-        "Tim Gajser voitti toisen MXGP-erän näyttävästi.",
-        "Jeffrey Herlings vei MXGP-osakilpailun voiton Italian Montevarchissa."
-      ],
-      "mx2_quali": [
-        "Mathis Valin otti paalupaikan MX2-aika-ajossa.",
-        "Mathis Valin oli nopein MX2-lähdössä lauantaina."
-      ],
-      "mx2_race": [
-        "Guillem Farres voitti ensimmäisen MX2-erän tiukasti.",
-        "Camden McLellan dominoi toista MX2-erää.",
-        "Sacha Coenen vei MX2-osakilpailun voiton Montevarchissa."
-      ],
-      "standings": [
-        "Lucas Coenen jatkaa MXGP-sarjan johdossa.",
-        "Jeffrey Herlings pysyi MXGP-sarjan kakkosena.",
-        "Romain Febvre piti MXGP-sarjan kolmostilaa varmasti."
-      ]
+      "mxgp_quali": [],
+      "mxgp_race": [],
+      "mx2_quali": [],
+      "mx2_race": [],
+      "standings": []
     },
     "en": {
-      "mxgp_quali": [
-        "Tim Gajser claimed pole position in Saturday qualifying.",
-        "Slovenian Tim Gajser dominated Saturday's MXGP qualifying session."
-      ],
-      "mxgp_race": [
-        "Jeffrey Herlings dominated the first MXGP moto.",
-        "Tim Gajser took a commanding victory in MXGP Race 2.",
-        "Jeffrey Herlings claimed the overall MXGP win in Italy."
-      ],
-      "mx2_quali": [
-        "Mathis Valin secured pole position in MX2 qualifying.",
-        "Mathis Valin was the fastest in MX2 qualifying on Saturday."
-      ],
-      "mx2_race": [
-        "Guillem Farres won a close MX2 Race 1.",
-        "Camden McLellan dominated the second MX2 moto.",
-        "Sacha Coenen took the overall MX2 victory at Montevarchi."
-      ],
-      "standings": [
-        "Lucas Coenen held firm at the top of MXGP standings.",
-        "Jeffrey Herlings held firm in second place in MXGP.",
-        "Romain Febvre held firm in third place in MXGP."
-      ]
-    },
-    "mx2_quali": [
-      "Mathis Valin nappasi paalupaikan MX2-aika-ajossa.",
-      "Mathis Valin oli nopein MX2-lähdössä lauantaina."
-    ],
-    "mx2_race": [
-      "Guillem Farres voitti tiukan ensimmäisen MX2-erän.",
-      "Camden McLellan dominoi toista MX2-erää.",
-      "Sacha Coenen vei MX2-osakilpailun voiton Montevarchissa."
-    ],
-    "standings": [
-      "Lucas Coenen jatkaa MXGP-sarjan johdossa.",
-      "Jeffrey Herlings pysyi MXGP-sarjan kakkosena.",
-      "Romain Febvre piti MXGP-sarjan kolmostilaa varmasti."
-    ]
+      "mxgp_quali": [],
+      "mxgp_race": [],
+      "mx2_quali": [],
+      "mx2_race": [],
+      "standings": []
+    }
   },
   "standings": {
     "mxgp": [
