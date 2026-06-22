@@ -82,7 +82,7 @@ const lang = 'fi';
           <label class="yk-field"><span>Sisältö * (Markdown)</span><textarea name="body" class="inp yk-textarea" rows="14" required></textarea></label>
           <label class="yk-field"><span>Lähteet (valinnainen, yksi per rivi)</span><textarea name="sources" class="inp" rows="3"></textarea></label>
           <p class="yk-card__sub">Toimitus tarkistaa ja julkaisee artikkelin. Lähetys tallentuu luonnoksena.</p>
-          <label class="yk-consent">
+          <label class="yk-consent" id="yk-article-consent-photo-wrap" style="display:none;">
             <input type="checkbox" id="yk-article-consent-photo" name="consent_photo" value="1" />
             <span>Vakuutan, että minulla on oikeudet lähettämiini kuviin ja annan Photo &amp; Motolle oikeuden käyttää niitä tässä artikkelissa. Olen itse vastuussa luvattomasta materiaalista.</span>
           </label>
@@ -135,7 +135,7 @@ const lang = 'fi';
                   <span class="yk-char-count" id="yk-flash-body-count">0 / 500</span>
                 </label>
               </div>
-              <label class="yk-consent">
+              <label class="yk-consent" id="yk-flash-consent-photo-wrap" style="display:none;">
                 <input type="checkbox" id="yk-flash-consent-photo" />
                 <span>Vakuutan, että minulla on oikeudet lähettämiini kuviin ja annan Photo &amp; Motolle oikeuden käyttää niitä tässä artikkelissa. Olen itse vastuussa luvattomasta materiaalista.</span>
               </label>
@@ -296,11 +296,12 @@ const lang = 'fi';
     const msg = $('yk-submit-msg');
     const btn = $('yk-submit-btn');
     msg.style.display = 'none';
-    if (!$('yk-article-consent-photo')?.checked || !$('yk-article-consent-content')?.checked) {
-      msg.className = 'yk-msg yk-msg--err';
-      msg.textContent = 'Sinun täytyy hyväksyä molemmat ehdot ennen lähettämistä.';
-      msg.style.display = 'block'; return;
-    }
+    { const w = $('yk-article-consent-photo-wrap'), vis = w && w.style.display !== 'none';
+      if ((vis && !$('yk-article-consent-photo')?.checked) || !$('yk-article-consent-content')?.checked) {
+        msg.className = 'yk-msg yk-msg--err';
+        msg.textContent = 'Sinun täytyy hyväksyä molemmat ehdot ennen lähettämistä.';
+        msg.style.display = 'block'; return;
+      } }
     btn.disabled = true; const orig = btn.textContent; btn.textContent = 'Lähetetään…';
     try {
       const fd = new FormData(e.target);
@@ -312,6 +313,7 @@ const lang = 'fi';
           + (data.email_warning ? ' (Huom: ' + data.email_warning + ')' : '');
         msg.style.display = 'block';
         e.target.reset();
+        const wrap = $('yk-article-consent-photo-wrap'); if (wrap) wrap.style.display = 'none';
       } else if (r.status === 401 || r.status === 403) {
         msg.className = 'yk-msg yk-msg--err';
         msg.textContent = '✗ Istunto vanhentunut tai ei oikeutta — kirjaudu uudelleen.';
@@ -398,15 +400,26 @@ const lang = 'fi';
     const btn = $('yk-photo-btn'); if (btn) btn.disabled = !e.target.checked;
   });
 
-  // Article consent gate — both boxes must be ticked before submit enables.
+  // Article consent gate — photo consent only required when its wrapper is visible.
   function ykArticleConsentUpdate() {
+    const wrap = $('yk-article-consent-photo-wrap');
+    const photoRequired = wrap && wrap.style.display !== 'none';
     const cp = $('yk-article-consent-photo');
     const cc = $('yk-article-consent-content');
     const btn = $('yk-submit-btn');
-    if (btn) btn.disabled = !(cp && cp.checked && cc && cc.checked);
+    const photoOk = !photoRequired || (cp && cp.checked);
+    if (btn) btn.disabled = !(photoOk && cc && cc.checked);
   }
   $('yk-article-consent-photo')?.addEventListener('change', ykArticleConsentUpdate);
   $('yk-article-consent-content')?.addEventListener('change', ykArticleConsentUpdate);
+  document.querySelector('#yk-form input[name="featured_image"]')?.addEventListener('change', (e) => {
+    const wrap = $('yk-article-consent-photo-wrap');
+    const cp = $('yk-article-consent-photo');
+    const hasFile = !!(e.target.files && e.target.files.length > 0);
+    if (wrap) wrap.style.display = hasFile ? '' : 'none';
+    if (!hasFile && cp) cp.checked = false;
+    ykArticleConsentUpdate();
+  });
 
   // Safety net: the submit button is disabled (pointer-events:none) until consent
   // is given, so a click lands on this wrapper instead — surface a clear message
@@ -504,6 +517,8 @@ const lang = 'fi';
         updateCharCount('yk-flash-edit-title', 'yk-flash-title-count', 80);
         updateCharCount('yk-flash-edit-body', 'yk-flash-body-count', 500);
         e.target.style.display = 'none';
+        const fpw = $('yk-flash-consent-photo-wrap');
+        if (fpw) fpw.style.display = pendingFlash?.photo ? '' : 'none';
         $('yk-flash-success').style.display = '';
       } else if (r.status === 401 || r.status === 403) {
         msg.className = 'yk-msg yk-msg--err'; msg.textContent = '✗ Istunto vanhentunut tai ei oikeutta — kirjaudu uudelleen.'; msg.style.display = 'block';
@@ -524,11 +539,12 @@ const lang = 'fi';
     const smsg = $('yk-flash-submit-msg');
     const sbtn = $('yk-flash-submit-btn');
     smsg.style.display = 'none';
-    if (!$('yk-flash-consent-photo')?.checked || !$('yk-flash-consent-content')?.checked) {
-      smsg.className = 'yk-msg yk-msg--err';
-      smsg.textContent = 'Sinun täytyy hyväksyä molemmat ehdot ennen lähettämistä.';
-      smsg.style.display = 'block'; return;
-    }
+    { const w = $('yk-flash-consent-photo-wrap'), vis = w && w.style.display !== 'none';
+      if ((vis && !$('yk-flash-consent-photo')?.checked) || !$('yk-flash-consent-content')?.checked) {
+        smsg.className = 'yk-msg yk-msg--err';
+        smsg.textContent = 'Sinun täytyy hyväksyä molemmat ehdot ennen lähettämistä.';
+        smsg.style.display = 'block'; return;
+      } }
     const title = ($('yk-flash-edit-title')?.value || '').trim();
     const body = ($('yk-flash-edit-body')?.value || '').trim();
     if (!title) { smsg.className = 'yk-msg yk-msg--err'; smsg.textContent = '✗ Otsikko ei voi olla tyhjä.'; smsg.style.display = 'block'; return; }
@@ -578,6 +594,7 @@ const lang = 'fi';
     const confirm = $('yk-flash-confirm'); if (confirm) confirm.style.display = 'none';
     const sm = $('yk-flash-submit-msg'); if (sm) sm.style.display = 'none';
     const msg = $('yk-flash-msg'); if (msg) msg.style.display = 'none';
+    const fpw = $('yk-flash-consent-photo-wrap'); if (fpw) fpw.style.display = 'none';
     const cp = $('yk-flash-consent-photo'); if (cp) cp.checked = false;
     const cc = $('yk-flash-consent-content'); if (cc) cc.checked = false;
     const sbtn = $('yk-flash-submit-btn'); if (sbtn) sbtn.disabled = true;
@@ -585,8 +602,12 @@ const lang = 'fi';
 
   // Consent gate for pikauutinen review screen.
   function ykFlashConsentUpdate() {
-    const ok = !!$('yk-flash-consent-photo')?.checked && !!$('yk-flash-consent-content')?.checked;
-    const sbtn = $('yk-flash-submit-btn'); if (sbtn) sbtn.disabled = !ok;
+    const wrap = $('yk-flash-consent-photo-wrap');
+    const photoRequired = wrap && wrap.style.display !== 'none';
+    const cp = $('yk-flash-consent-photo');
+    const cc = $('yk-flash-consent-content');
+    const photoOk = !photoRequired || (cp && cp.checked);
+    const sbtn = $('yk-flash-submit-btn'); if (sbtn) sbtn.disabled = !(photoOk && cc && cc.checked);
   }
   $('yk-flash-consent-photo')?.addEventListener('change', ykFlashConsentUpdate);
   $('yk-flash-consent-content')?.addEventListener('change', ykFlashConsentUpdate);
@@ -599,6 +620,7 @@ const lang = 'fi';
   $('yk-article-clear')?.addEventListener('click', () => {      // article form → cleared, stays
     const f = $('yk-form'); if (f) f.reset();
     const m = $('yk-submit-msg'); if (m) m.style.display = 'none';
+    const wrap = $('yk-article-consent-photo-wrap'); if (wrap) wrap.style.display = 'none';
     ykArticleConsentUpdate(); // re-disable submit after reset
   });
 
