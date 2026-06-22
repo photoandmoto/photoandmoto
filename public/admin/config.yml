@@ -11,7 +11,7 @@ backend:
 # Set to false (or remove) for production. With local_backend: true and
 # `npx decap-server` running locally, the CMS edits files on disk instead
 # of committing to GitHub — useful for config/iteration without OAuth.
-local_backend: true
+local_backend: false
 
 # Direct commits to the `main` branch (production). No PR-based editorial
 # workflow — editor saves → commits to main → Cloudflare rebuilds production
