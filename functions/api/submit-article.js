@@ -17,6 +17,7 @@
 // src/content.config.ts or the staging build breaks.
 
 import { requireAuth } from '../_lib/auth.js';
+import { CONSENT_PHOTO_TEXT, CONSENT_CONTENT_TEXT } from '../_lib/consent.js';
 
 const REPO_OWNER = 'photoandmoto';
 const REPO_NAME = 'photoandmoto';
@@ -230,6 +231,12 @@ export async function onRequestPost({ request, env }) {
     if (!ALLOWED_CATEGORIES.includes(category)) return fail('Valitse kelvollinen kategoria', 400);
     if (!bodyText) return fail('Sisältö on pakollinen', 400);
 
+    const consentPhoto = (form.get('consent_photo') || '').toString().trim();
+    const consentContent = (form.get('consent_content') || '').toString().trim();
+    if (consentPhoto !== '1' || consentContent !== '1') {
+      return fail('Sinun täytyy hyväksyä molemmat ehdot ennen lähettämistä.', 400);
+    }
+
     const featured = form.get('featured_image');
     if (!featured || typeof featured === 'string' || featured.size === 0) {
       return fail('Pääkuva on pakollinen', 400);
@@ -322,9 +329,10 @@ export async function onRequestPost({ request, env }) {
     try {
       await env.DB.prepare(
         `INSERT INTO submissions
-           (type, status, title, author_id, author_name, author_email, category, github_slug, submitted_at)
-         VALUES ('artikkeli', 'odottaa', ?, ?, ?, ?, ?, ?, datetime('now'))`
-      ).bind(title, auth.user.id, author, auth.user.email || null, category, slug).run();
+           (type, status, title, author_id, author_name, author_email, category, github_slug, submitted_at,
+            consent_photo, consent_photo_text, consent_content, consent_content_text, consent_at)
+         VALUES ('artikkeli', 'odottaa', ?, ?, ?, ?, ?, ?, datetime('now'), 1, ?, 1, ?, datetime('now'))`
+      ).bind(title, auth.user.id, author, auth.user.email || null, category, slug, CONSENT_PHOTO_TEXT, CONSENT_CONTENT_TEXT).run();
     } catch (e) {
       console.error('submissions insert failed (non-fatal):', e?.name, e?.message, e?.cause, String(e));
     }

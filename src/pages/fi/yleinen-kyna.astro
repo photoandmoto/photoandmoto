@@ -82,8 +82,16 @@ const lang = 'fi';
           <label class="yk-field"><span>Sisältö * (Markdown)</span><textarea name="body" class="inp yk-textarea" rows="14" required></textarea></label>
           <label class="yk-field"><span>Lähteet (valinnainen, yksi per rivi)</span><textarea name="sources" class="inp" rows="3"></textarea></label>
           <p class="yk-card__sub">Toimitus tarkistaa ja julkaisee artikkelin. Lähetys tallentuu luonnoksena.</p>
+          <label class="yk-consent">
+            <input type="checkbox" id="yk-article-consent-photo" name="consent_photo" value="1" />
+            <span>Vakuutan, että minulla on oikeudet lähettämiini kuviin ja annan Photo &amp; Motolle oikeuden käyttää niitä tässä artikkelissa. Olen itse vastuussa luvattomasta materiaalista.</span>
+          </label>
+          <label class="yk-consent">
+            <input type="checkbox" id="yk-article-consent-content" name="consent_content" value="1" />
+            <span>Vakuutan, että tämän artikkelin sisältö on totta, eikä se loukkaa muiden tekijänoikeuksia. Olen itse vastuussa luvattomasta materiaalista.</span>
+          </label>
           <div class="yk-flash-actions">
-            <button id="yk-submit-btn" class="btn btn--submit" type="submit">Lähetä artikkeli</button>
+            <button id="yk-submit-btn" class="btn btn--submit" type="submit" disabled>Lähetä artikkeli</button>
             <button id="yk-article-clear" class="btn btn--ghost" type="button">Tyhjennä</button>
           </div>
           <p id="yk-submit-msg" class="yk-msg" style="display:none;"></p>
@@ -127,8 +135,16 @@ const lang = 'fi';
                   <span class="yk-char-count" id="yk-flash-body-count">0 / 500</span>
                 </label>
               </div>
+              <label class="yk-consent">
+                <input type="checkbox" id="yk-flash-consent-photo" />
+                <span>Vakuutan, että minulla on oikeudet lähettämiini kuviin ja annan Photo &amp; Motolle oikeuden käyttää niitä tässä artikkelissa. Olen itse vastuussa luvattomasta materiaalista.</span>
+              </label>
+              <label class="yk-consent">
+                <input type="checkbox" id="yk-flash-consent-content" />
+                <span>Vakuutan, että tämän artikkelin sisältö on totta, eikä se loukkaa muiden tekijänoikeuksia. Olen itse vastuussa luvattomasta materiaalista.</span>
+              </label>
               <div class="yk-flash-actions">
-                <button id="yk-flash-submit-btn" class="btn btn--submit" type="button">Lähetä toimitukselle</button>
+                <button id="yk-flash-submit-btn" class="btn btn--submit" type="button" disabled>Lähetä toimitukselle</button>
                 <button id="yk-flash-again" class="btn btn--ghost" type="button">Luo uusi pikauutinen</button>
                 <button id="yk-flash-clear2" class="btn btn--ghost" type="button">Tyhjennä</button>
               </div>
@@ -280,6 +296,11 @@ const lang = 'fi';
     const msg = $('yk-submit-msg');
     const btn = $('yk-submit-btn');
     msg.style.display = 'none';
+    if (!$('yk-article-consent-photo')?.checked || !$('yk-article-consent-content')?.checked) {
+      msg.className = 'yk-msg yk-msg--err';
+      msg.textContent = 'Sinun täytyy hyväksyä molemmat ehdot ennen lähettämistä.';
+      msg.style.display = 'block'; return;
+    }
     btn.disabled = true; const orig = btn.textContent; btn.textContent = 'Lähetetään…';
     try {
       const fd = new FormData(e.target);
@@ -303,7 +324,8 @@ const lang = 'fi';
     } catch {
       msg.className = 'yk-msg yk-msg--err'; msg.textContent = '✗ Yhteysvirhe — yritä uudelleen.'; msg.style.display = 'block';
     } finally {
-      btn.disabled = false; btn.textContent = orig;
+      btn.textContent = orig;
+      ykArticleConsentUpdate(); // re-disable if form was reset on success
     }
   });
 
@@ -375,6 +397,26 @@ const lang = 'fi';
   $('yk-photo-consent')?.addEventListener('change', (e) => {
     const btn = $('yk-photo-btn'); if (btn) btn.disabled = !e.target.checked;
   });
+
+  // Article consent gate — both boxes must be ticked before submit enables.
+  function ykArticleConsentUpdate() {
+    const cp = $('yk-article-consent-photo');
+    const cc = $('yk-article-consent-content');
+    const btn = $('yk-submit-btn');
+    if (btn) btn.disabled = !(cp && cp.checked && cc && cc.checked);
+  }
+  $('yk-article-consent-photo')?.addEventListener('change', ykArticleConsentUpdate);
+  $('yk-article-consent-content')?.addEventListener('change', ykArticleConsentUpdate);
+
+  // Pikauutinen review consent gate — both boxes must be ticked before submit enables.
+  function ykFlashConsentUpdate() {
+    const cp = $('yk-flash-consent-photo');
+    const cc = $('yk-flash-consent-content');
+    const btn = $('yk-flash-submit-btn');
+    if (btn) btn.disabled = !(cp && cp.checked && cc && cc.checked);
+  }
+  $('yk-flash-consent-photo')?.addEventListener('change', ykFlashConsentUpdate);
+  $('yk-flash-consent-content')?.addEventListener('change', ykFlashConsentUpdate);
 
   // Safety net: the submit button is disabled (pointer-events:none) until consent
   // is given, so a click lands on this wrapper instead — surface a clear message
@@ -492,6 +534,11 @@ const lang = 'fi';
     const smsg = $('yk-flash-submit-msg');
     const sbtn = $('yk-flash-submit-btn');
     smsg.style.display = 'none';
+    if (!$('yk-flash-consent-photo')?.checked || !$('yk-flash-consent-content')?.checked) {
+      smsg.className = 'yk-msg yk-msg--err';
+      smsg.textContent = 'Sinun täytyy hyväksyä molemmat ehdot ennen lähettämistä.';
+      smsg.style.display = 'block'; return;
+    }
     const title = ($('yk-flash-edit-title')?.value || '').trim();
     const body = ($('yk-flash-edit-body')?.value || '').trim();
     if (!title) { smsg.className = 'yk-msg yk-msg--err'; smsg.textContent = '✗ Otsikko ei voi olla tyhjä.'; smsg.style.display = 'block'; return; }
@@ -503,6 +550,8 @@ const lang = 'fi';
       fd.append('body', body);
       fd.append('category', pendingFlash?.category || '');
       fd.append('date', pendingFlash?.date || '');
+      fd.append('consent_photo', '1');
+      fd.append('consent_content', '1');
       if (pendingFlash?.photo) fd.append('photo', pendingFlash.photo);
       const r = await fetch('/api/submit-pikauutinen', { method: 'POST', credentials: 'same-origin', body: fd });
       const data = await r.json().catch(() => ({}));
@@ -519,7 +568,8 @@ const lang = 'fi';
     } catch {
       smsg.className = 'yk-msg yk-msg--err'; smsg.textContent = '✗ Yhteysvirhe — yritä uudelleen.'; smsg.style.display = 'block';
     } finally {
-      sbtn.disabled = false; sbtn.textContent = orig;
+      sbtn.textContent = orig;
+      ykFlashConsentUpdate(); // re-disable if consent was reset
     }
   });
 
@@ -538,6 +588,9 @@ const lang = 'fi';
     const confirm = $('yk-flash-confirm'); if (confirm) confirm.style.display = 'none';
     const sm = $('yk-flash-submit-msg'); if (sm) sm.style.display = 'none';
     const msg = $('yk-flash-msg'); if (msg) msg.style.display = 'none';
+    const cp = $('yk-flash-consent-photo'); if (cp) cp.checked = false;
+    const cc = $('yk-flash-consent-content'); if (cc) cc.checked = false;
+    const sbtn = $('yk-flash-submit-btn'); if (sbtn) sbtn.disabled = true;
   }
 
   // Tyhjennä clears the form and STAYS on it. Only "← Avustajat" returns to the grid.
@@ -548,6 +601,7 @@ const lang = 'fi';
   $('yk-article-clear')?.addEventListener('click', () => {      // article form → cleared, stays
     const f = $('yk-form'); if (f) f.reset();
     const m = $('yk-submit-msg'); if (m) m.style.display = 'none';
+    ykArticleConsentUpdate(); // re-disable submit after reset
   });
 
   // Password eye toggle + Caps Lock warning (login form).
