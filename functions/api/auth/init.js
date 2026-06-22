@@ -146,6 +146,19 @@ export async function runInit(env) {
   await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_submissions_status ON submissions(status)`).run();
   await env.DB.prepare(`CREATE INDEX IF NOT EXISTS idx_submissions_submitted ON submissions(submitted_at)`).run();
 
+  // Consent audit columns — guarded for existing DBs.
+  for (const colDef of [
+    'consent_photo INTEGER DEFAULT 0',
+    'consent_photo_text TEXT',
+    'consent_content INTEGER DEFAULT 0',
+    'consent_content_text TEXT',
+    'consent_at TEXT',
+  ]) {
+    try {
+      await env.DB.prepare(`ALTER TABLE submissions ADD COLUMN ${colDef}`).run();
+    } catch { /* column already exists */ }
+  }
+
   // ─── access_requests ──────────────────────────────────────────────────
   // Avustaja access-request flow + Hyväksynnät handling. Created here for
   // fresh environments (existing DBs already have the base columns from the

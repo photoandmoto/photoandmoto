@@ -5,6 +5,7 @@
 // Step 1 (Gemini generation) is handled by /api/generate-article.
 
 import { requireAuth } from '../_lib/auth.js';
+import { CONSENT_PHOTO_TEXT, CONSENT_CONTENT_TEXT } from '../_lib/consent.js';
 
 const REPO_OWNER = 'photoandmoto';
 const REPO_NAME = 'photoandmoto';
@@ -209,6 +210,12 @@ export async function onRequestPost({ request, env }) {
     const photo = form.get('photo');
     const hasPhoto = photo && typeof photo !== 'string' && photo.size > 0;
 
+    const consentPhoto = (form.get('consent_photo') || '').toString().trim();
+    const consentContent = (form.get('consent_content') || '').toString().trim();
+    if (consentPhoto !== '1' || consentContent !== '1') {
+      return fail('Sinun täytyy hyväksyä molemmat ehdot ennen lähettämistä.', 400);
+    }
+
     if (!title) return fail('Otsikko on pakollinen', 400);
     if (title.length > TITLE_MAX) return fail(`Otsikko on liian pitkä (enintään ${TITLE_MAX} merkkiä)`, 400);
     if (!body) return fail('Teksti on pakollinen', 400);
@@ -275,9 +282,10 @@ export async function onRequestPost({ request, env }) {
     try {
       await env.DB.prepare(
         `INSERT INTO submissions
-           (type, status, title, author_id, author_name, author_email, category, github_slug, submitted_at)
-         VALUES ('pikauutinen', 'odottaa', ?, ?, ?, ?, ?, ?, datetime('now'))`
-      ).bind(title, auth.user.id, author, auth.user.email || null, category, base).run();
+           (type, status, title, author_id, author_name, author_email, category, github_slug, submitted_at,
+            consent_photo, consent_photo_text, consent_content, consent_content_text, consent_at)
+         VALUES ('pikauutinen', 'odottaa', ?, ?, ?, ?, ?, ?, datetime('now'), 1, ?, 1, ?, datetime('now'))`
+      ).bind(title, auth.user.id, author, auth.user.email || null, category, base, CONSENT_PHOTO_TEXT, CONSENT_CONTENT_TEXT).run();
     } catch (e) {
       console.error('submissions insert failed (non-fatal):', e?.name, e?.message, e?.cause, String(e));
     }

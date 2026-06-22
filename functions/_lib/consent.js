@@ -9,3 +9,9 @@
 
 export const PHOTO_CONSENT_TEXT =
   'Minä omistan tämän kuvan käyttöoikeuden ja annan luvan sen julkaisemiseen Photo & Moto -sivustolla.';
+
+export const CONSENT_PHOTO_TEXT =
+  'Vakuutan, että minulla on oikeudet lähettämiini kuviin ja annan Photo & Motolle oikeuden käyttää niitä tässä artikkelissa. Olen itse vastuussa luvattomasta materiaalista.';
+
+export const CONSENT_CONTENT_TEXT =
+  'Vakuutan, että tämän artikkelin sisältö on totta, eikä se loukkaa muiden tekijänoikeuksia. Olen itse vastuussa luvattomasta materiaalista.';
