@@ -412,14 +412,24 @@ const lang = 'fi';
   }
   $('yk-article-consent-photo')?.addEventListener('change', ykArticleConsentUpdate);
   $('yk-article-consent-content')?.addEventListener('change', ykArticleConsentUpdate);
-  document.querySelector('#yk-form input[name="featured_image"]')?.addEventListener('change', (e) => {
+  function ykArticlePhotoWrapUpdate() {
+    const fi = document.querySelector('#yk-form input[name="featured_image"]');
+    const ci = document.querySelector('#yk-form input[name="card_image"]');
+    const bi = document.querySelector('#yk-form input[name="body_images"]');
+    const hasFile = !!(
+      (fi && fi.files && fi.files.length > 0) ||
+      (ci && ci.files && ci.files.length > 0) ||
+      (bi && bi.files && bi.files.length > 0)
+    );
     const wrap = $('yk-article-consent-photo-wrap');
     const cp = $('yk-article-consent-photo');
-    const hasFile = !!(e.target.files && e.target.files.length > 0);
     if (wrap) wrap.style.display = hasFile ? '' : 'none';
     if (!hasFile && cp) cp.checked = false;
     ykArticleConsentUpdate();
-  });
+  }
+  document.querySelector('#yk-form input[name="featured_image"]')?.addEventListener('change', ykArticlePhotoWrapUpdate);
+  document.querySelector('#yk-form input[name="card_image"]')?.addEventListener('change', ykArticlePhotoWrapUpdate);
+  document.querySelector('#yk-form input[name="body_images"]')?.addEventListener('change', ykArticlePhotoWrapUpdate);
 
   // Safety net: the submit button is disabled (pointer-events:none) until consent
   // is given, so a click lands on this wrapper instead — surface a clear message
