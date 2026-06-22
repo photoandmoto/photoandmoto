@@ -299,8 +299,10 @@ const lang = 'fi';
     { const w = $('yk-article-consent-photo-wrap'), vis = w && w.style.display !== 'none';
       if ((vis && !$('yk-article-consent-photo')?.checked) || !$('yk-article-consent-content')?.checked) {
         msg.className = 'yk-msg yk-msg--err';
-        msg.textContent = 'Sinun täytyy hyväksyä molemmat ehdot ennen lähettämistä.';
-        msg.style.display = 'block'; return;
+        msg.textContent = 'Vahvista suostumus ennen lähettämistä rastittamalla vaaditut ruudut.';
+        msg.style.display = 'block';
+        (vis ? w : $('yk-article-consent-content'))?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
       } }
     btn.disabled = true; const orig = btn.textContent; btn.textContent = 'Lähetetään…';
     try {
@@ -438,7 +440,8 @@ const lang = 'fi';
     const consent = $('yk-photo-consent');
     if (!consent || !consent.checked) {
       const msg = $('yk-photo-msg');
-      if (msg) { msg.className = 'yk-msg yk-msg--err'; msg.textContent = 'Sinun täytyy hyväksyä käyttöoikeusehto ennen lähettämistä.'; msg.style.display = 'block'; }
+      if (msg) { msg.className = 'yk-msg yk-msg--err'; msg.textContent = 'Vahvista suostumus ennen lähettämistä rastittamalla vaadittu ruutu.'; msg.style.display = 'block'; }
+      consent?.closest('label')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   });
 
@@ -450,7 +453,8 @@ const lang = 'fi';
     const consent = $('yk-photo-consent');
     msg.style.display = 'none';
     if (!consent || !consent.checked) {
-      msg.className = 'yk-msg yk-msg--err'; msg.textContent = 'Sinun täytyy hyväksyä käyttöoikeusehto ennen lähettämistä.'; msg.style.display = 'block'; return;
+      msg.className = 'yk-msg yk-msg--err'; msg.textContent = 'Vahvista suostumus ennen lähettämistä rastittamalla vaadittu ruutu.'; msg.style.display = 'block';
+      consent?.closest('label')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return;
     }
     const fileInput = e.target.querySelector('input[name="photo"]');
     const file = fileInput && fileInput.files[0];
@@ -552,8 +556,10 @@ const lang = 'fi';
     { const w = $('yk-flash-consent-photo-wrap'), vis = w && w.style.display !== 'none';
       if ((vis && !$('yk-flash-consent-photo')?.checked) || !$('yk-flash-consent-content')?.checked) {
         smsg.className = 'yk-msg yk-msg--err';
-        smsg.textContent = 'Sinun täytyy hyväksyä molemmat ehdot ennen lähettämistä.';
-        smsg.style.display = 'block'; return;
+        smsg.textContent = 'Vahvista suostumus ennen lähettämistä rastittamalla vaaditut ruudut.';
+        smsg.style.display = 'block';
+        (vis ? w : $('yk-flash-consent-content'))?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
       } }
     const title = ($('yk-flash-edit-title')?.value || '').trim();
     const body = ($('yk-flash-edit-body')?.value || '').trim();
