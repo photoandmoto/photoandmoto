@@ -112,16 +112,34 @@ const lang = 'fi';
           </form>
 
           <div id="yk-flash-success" class="yk-flash-success" style="display:none;">
-            <h3 class="yk-card__title">✓ Pikauutinen luotu!</h3>
-            <p class="yk-card__sub">Tekoäly kirjoitti seuraavan luonnoksen. Toimitus tarkistaa ja julkaisee sen.</p>
-            <div class="yk-flash-preview">
-              <h4 id="yk-flash-ptitle"></h4>
-              <p id="yk-flash-pbody"></p>
+            <div id="yk-flash-review">
+              <h3 class="yk-card__title">Tarkista pikauutinen</h3>
+              <p class="yk-card__sub">Tekoäly kirjoitti alla olevan luonnoksen. Voit muokata otsikkoa ja tekstiä ennen lähettämistä.</p>
+              <div class="yk-flash-edit">
+                <label class="yk-field">
+                  <span>Otsikko</span>
+                  <input id="yk-flash-edit-title" class="inp" type="text" maxlength="80" />
+                  <span class="yk-char-count" id="yk-flash-title-count">0 / 80</span>
+                </label>
+                <label class="yk-field">
+                  <span>Teksti</span>
+                  <textarea id="yk-flash-edit-body" class="inp yk-textarea" rows="5" maxlength="500"></textarea>
+                  <span class="yk-char-count" id="yk-flash-body-count">0 / 500</span>
+                </label>
+              </div>
+              <div class="yk-flash-actions">
+                <button id="yk-flash-submit-btn" class="btn btn--submit" type="button">Lähetä toimitukselle</button>
+                <button id="yk-flash-again" class="btn btn--ghost" type="button">Luo uusi pikauutinen</button>
+                <button id="yk-flash-clear2" class="btn btn--ghost" type="button">Tyhjennä</button>
+              </div>
+              <p id="yk-flash-submit-msg" class="yk-msg" style="display:none;"></p>
             </div>
-            <p id="yk-flash-note" class="yk-card__sub" style="display:none;"></p>
-            <div class="yk-flash-actions">
-              <button id="yk-flash-again" class="btn btn--submit" type="button">Luo uusi pikauutinen</button>
-              <button id="yk-flash-clear2" class="btn btn--ghost" type="button">Tyhjennä</button>
+            <div id="yk-flash-confirm" style="display:none;">
+              <h3 class="yk-card__title">✓ Pikauutinen lähetetty toimitukselle!</h3>
+              <p class="yk-card__sub">Toimitus tarkistaa pikauutisen ennen julkaisua.</p>
+              <div class="yk-flash-actions">
+                <button id="yk-flash-again2" class="btn btn--submit" type="button">Luo uusi pikauutinen</button>
+              </div>
             </div>
           </div>
         </div>
@@ -418,7 +436,19 @@ const lang = 'fi';
     const b = $('yk-photo-btn'); if (b) b.disabled = true;
   });
 
-  // Generate pikauutinen (Gemini — takes a few seconds).
+  let pendingFlash = null;
+
+  function updateCharCount(inputId, countId, max) {
+    const el = $(inputId); const ct = $(countId);
+    if (!el || !ct) return;
+    const len = el.value.length;
+    ct.textContent = `${len} / ${max}`;
+    ct.style.color = len > max * 0.9 ? '#dc3545' : '#999';
+  }
+  $('yk-flash-edit-title')?.addEventListener('input', () => updateCharCount('yk-flash-edit-title', 'yk-flash-title-count', 80));
+  $('yk-flash-edit-body')?.addEventListener('input', () => updateCharCount('yk-flash-edit-body', 'yk-flash-body-count', 500));
+
+  // Generate pikauutinen (Gemini only — no GitHub commit).
   $('yk-flash-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const msg = $('yk-flash-msg');
@@ -428,14 +458,19 @@ const lang = 'fi';
     btn.textContent = 'Luodaan pikauutista… (muutama sekunti)';
     try {
       const fd = new FormData(e.target);
+      const rawPhoto = fd.get('photo');
+      pendingFlash = {
+        category: fd.get('category') || '',
+        date: fd.get('paivays') || '',
+        photo: rawPhoto && typeof rawPhoto !== 'string' && rawPhoto.size > 0 ? rawPhoto : null,
+      };
       const r = await fetch('/api/generate-article', { method: 'POST', credentials: 'same-origin', body: fd });
       const data = await r.json().catch(() => ({}));
       if (r.ok && data.ok) {
-        $('yk-flash-ptitle').textContent = data.title || '';
-        $('yk-flash-pbody').textContent = data.body || '';
-        const note = $('yk-flash-note');
-        if (data.email_warning) { note.textContent = 'Huom: ' + data.email_warning; note.style.display = 'block'; }
-        else { note.style.display = 'none'; }
+        const et = $('yk-flash-edit-title'); if (et) { et.value = data.title || ''; }
+        const eb = $('yk-flash-edit-body'); if (eb) { eb.value = data.body || ''; }
+        updateCharCount('yk-flash-edit-title', 'yk-flash-title-count', 80);
+        updateCharCount('yk-flash-edit-body', 'yk-flash-body-count', 500);
         e.target.style.display = 'none';
         $('yk-flash-success').style.display = '';
       } else if (r.status === 401 || r.status === 403) {
@@ -452,23 +487,64 @@ const lang = 'fi';
     }
   });
 
-  // Reset the pikauutinen tab to a clean, empty form — clears the generated
-  // draft preview so it never persists. Used by "Luo uusi pikauutinen" and on
-  // every session boot.
+  // Submit reviewed pikauutinen (GitHub commit + D1 + email).
+  $('yk-flash-submit-btn')?.addEventListener('click', async () => {
+    const smsg = $('yk-flash-submit-msg');
+    const sbtn = $('yk-flash-submit-btn');
+    smsg.style.display = 'none';
+    const title = ($('yk-flash-edit-title')?.value || '').trim();
+    const body = ($('yk-flash-edit-body')?.value || '').trim();
+    if (!title) { smsg.className = 'yk-msg yk-msg--err'; smsg.textContent = '✗ Otsikko ei voi olla tyhjä.'; smsg.style.display = 'block'; return; }
+    if (!body) { smsg.className = 'yk-msg yk-msg--err'; smsg.textContent = '✗ Teksti ei voi olla tyhjä.'; smsg.style.display = 'block'; return; }
+    sbtn.disabled = true; const orig = sbtn.textContent; sbtn.textContent = 'Lähetetään…';
+    try {
+      const fd = new FormData();
+      fd.append('title', title);
+      fd.append('body', body);
+      fd.append('category', pendingFlash?.category || '');
+      fd.append('date', pendingFlash?.date || '');
+      if (pendingFlash?.photo) fd.append('photo', pendingFlash.photo);
+      const r = await fetch('/api/submit-pikauutinen', { method: 'POST', credentials: 'same-origin', body: fd });
+      const data = await r.json().catch(() => ({}));
+      if (r.ok && data.ok) {
+        $('yk-flash-review').style.display = 'none';
+        $('yk-flash-confirm').style.display = '';
+      } else if (r.status === 401 || r.status === 403) {
+        smsg.className = 'yk-msg yk-msg--err'; smsg.textContent = '✗ Istunto vanhentunut tai ei oikeutta — kirjaudu uudelleen.'; smsg.style.display = 'block';
+      } else {
+        smsg.className = 'yk-msg yk-msg--err';
+        smsg.textContent = '✗ ' + (data.error || 'Lähetys epäonnistui — yritä uudelleen.');
+        smsg.style.display = 'block';
+      }
+    } catch {
+      smsg.className = 'yk-msg yk-msg--err'; smsg.textContent = '✗ Yhteysvirhe — yritä uudelleen.'; smsg.style.display = 'block';
+    } finally {
+      sbtn.disabled = false; sbtn.textContent = orig;
+    }
+  });
+
+  // Reset the pikauutinen tab to a clean, empty form. Used by "Luo uusi pikauutinen"
+  // and on every session boot.
   function resetFlash() {
+    pendingFlash = null;
     const form = $('yk-flash-form');
     if (form) { form.reset(); form.style.display = ''; }
     const succ = $('yk-flash-success'); if (succ) succ.style.display = 'none';
-    const pt = $('yk-flash-ptitle'); if (pt) pt.textContent = '';
-    const pb = $('yk-flash-pbody'); if (pb) pb.textContent = '';
-    const note = $('yk-flash-note'); if (note) { note.textContent = ''; note.style.display = 'none'; }
+    const et = $('yk-flash-edit-title'); if (et) et.value = '';
+    const eb = $('yk-flash-edit-body'); if (eb) eb.value = '';
+    const tc = $('yk-flash-title-count'); if (tc) tc.textContent = '0 / 80';
+    const bc = $('yk-flash-body-count'); if (bc) bc.textContent = '0 / 500';
+    const review = $('yk-flash-review'); if (review) review.style.display = '';
+    const confirm = $('yk-flash-confirm'); if (confirm) confirm.style.display = 'none';
+    const sm = $('yk-flash-submit-msg'); if (sm) sm.style.display = 'none';
     const msg = $('yk-flash-msg'); if (msg) msg.style.display = 'none';
   }
 
   // Tyhjennä clears the form and STAYS on it. Only "← Avustajat" returns to the grid.
-  $('yk-flash-clear')?.addEventListener('click', resetFlash);   // pikauutinen form → empty form
-  $('yk-flash-clear2')?.addEventListener('click', resetFlash);  // success screen → empty form
-  $('yk-flash-again')?.addEventListener('click', resetFlash);   // "Luo uusi" → empty form
+  $('yk-flash-clear')?.addEventListener('click', resetFlash);    // pikauutinen form → empty form
+  $('yk-flash-clear2')?.addEventListener('click', resetFlash);   // review screen → empty form
+  $('yk-flash-again')?.addEventListener('click', resetFlash);    // review screen "Luo uusi" → empty form
+  $('yk-flash-again2')?.addEventListener('click', resetFlash);   // confirm screen "Luo uusi" → empty form
   $('yk-article-clear')?.addEventListener('click', () => {      // article form → cleared, stays
     const f = $('yk-form'); if (f) f.reset();
     const m = $('yk-submit-msg'); if (m) m.style.display = 'none';
@@ -579,14 +655,11 @@ const lang = 'fi';
 
   .yk-panel[hidden] { display: none; }
 
-  /* Pikauutinen success screen */
+  /* Pikauutinen review/confirm screen */
   .yk-flash-success { max-width: 680px; display: flex; flex-direction: column; gap: 12px; }
-  .yk-flash-preview {
-    background: #f7f7f7; border: 1px solid #e5e5e5; border-left: 3px solid var(--brand-primary, #ff9900);
-    border-radius: 10px; padding: 16px 18px;
-  }
-  .yk-flash-preview h4 { font-family: var(--font-headline); font-size: 1.1rem; font-weight: 800; margin: 0 0 8px; }
-  .yk-flash-preview p { margin: 0; line-height: 1.55; color: #333; }
+  #yk-flash-review, #yk-flash-confirm { display: flex; flex-direction: column; gap: 12px; }
+  .yk-flash-edit { display: flex; flex-direction: column; gap: 14px; }
+  .yk-char-count { font-size: .75rem; color: #999; align-self: flex-end; }
   .yk-flash-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 
   /* Centered content column (consistent across gated pages). */
