@@ -91,7 +91,9 @@ const lang = 'fi';
             <span>Vakuutan, että tämän artikkelin sisältö on totta, eikä se loukkaa muiden tekijänoikeuksia. Olen itse vastuussa luvattomasta materiaalista.</span>
           </label>
           <div class="yk-flash-actions">
-            <button id="yk-submit-btn" class="btn btn--submit" type="submit" disabled>Lähetä artikkeli</button>
+            <span id="yk-article-submit-wrap">
+              <button id="yk-submit-btn" class="btn btn--submit" type="submit" disabled>Lähetä artikkeli</button>
+            </span>
             <button id="yk-article-clear" class="btn btn--ghost" type="button">Tyhjennä</button>
           </div>
           <p id="yk-submit-msg" class="yk-msg" style="display:none;"></p>
@@ -144,7 +146,9 @@ const lang = 'fi';
                 <span>Vakuutan, että tämän artikkelin sisältö on totta, eikä se loukkaa muiden tekijänoikeuksia. Olen itse vastuussa luvattomasta materiaalista.</span>
               </label>
               <div class="yk-flash-actions">
-                <button id="yk-flash-submit-btn" class="btn btn--submit" type="button" disabled>Lähetä toimitukselle</button>
+                <span id="yk-flash-submit-wrap">
+                  <button id="yk-flash-submit-btn" class="btn btn--submit" type="button" disabled>Lähetä toimitukselle</button>
+                </span>
                 <button id="yk-flash-again" class="btn btn--ghost" type="button">Luo uusi pikauutinen</button>
                 <button id="yk-flash-clear2" class="btn btn--ghost" type="button">Tyhjennä</button>
               </div>
@@ -444,6 +448,22 @@ const lang = 'fi';
       consent?.closest('label')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   });
+  $('yk-article-submit-wrap')?.addEventListener('click', () => {
+    if ($('yk-submit-btn')?.disabled) {
+      const msg = $('yk-submit-msg');
+      if (msg) { msg.className = 'yk-msg yk-msg--err'; msg.textContent = 'Vahvista suostumus ennen lähettämistä rastittamalla vaaditut ruudut.'; msg.style.display = 'block'; }
+      const w = $('yk-article-consent-photo-wrap');
+      (w && w.style.display !== 'none' ? w : $('yk-article-consent-content'))?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
+  $('yk-flash-submit-wrap')?.addEventListener('click', () => {
+    if ($('yk-flash-submit-btn')?.disabled) {
+      const msg = $('yk-flash-submit-msg');
+      if (msg) { msg.className = 'yk-msg yk-msg--err'; msg.textContent = 'Vahvista suostumus ennen lähettämistä rastittamalla vaaditut ruudut.'; msg.style.display = 'block'; }
+      const w = $('yk-flash-consent-photo-wrap');
+      (w && w.style.display !== 'none' ? w : $('yk-flash-consent-content'))?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  });
 
   // Submit photo (Avustaja upload with consent → /api/submit-photo).
   $('yk-photo-form')?.addEventListener('submit', async (e) => {
@@ -718,8 +738,8 @@ const lang = 'fi';
   .yk-consent input { margin-top: 2px; flex: 0 0 auto; width: 16px; height: 16px; cursor: pointer; }
   /* Submit wrapper catches clicks while the button is disabled, so the consent
      safety-net message can fire (a disabled button emits no events itself). */
-  .yk-photo-submit-wrap { display: inline-flex; }
-  #yk-photo-btn:disabled { pointer-events: none; }
+  .yk-photo-submit-wrap, #yk-article-submit-wrap, #yk-flash-submit-wrap { display: inline-flex; }
+  #yk-photo-btn:disabled, #yk-submit-btn:disabled, #yk-flash-submit-btn:disabled { pointer-events: none; }
 
   /* Card navigation (replaces tabs) — mirrors the Toimituskeskus card style. */
   .adm-toplink { display: inline-block; font-size: .82rem; color: #888; text-decoration: none; margin: 0 0 10px; }
