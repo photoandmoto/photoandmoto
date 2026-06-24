@@ -75,34 +75,10 @@ const lang = 'fi';
           <label class="yk-field"><span>Alaotsikko</span><input name="subtitle" class="inp" /></label>
           <label class="yk-field"><span>Kategoria *</span><select id="yk-cat" name="category" class="inp" required></select></label>
           <label class="yk-field"><span>Avainsanat (pilkulla erotettuna)</span><input name="tags" class="inp" placeholder="esim. motocross, MXGP, Hyvinkää" /></label>
-          <div class="yk-field"><span>Pääkuva *</span>
-            <input type="file" name="featured_image" id="featured_image-camera" accept="image/jpeg,image/png,image/webp" capture="environment" style="display:none" />
-            <input type="file" name="featured_image" id="featured_image-file" accept="image/jpeg,image/png,image/webp" style="display:none" />
-            <div class="yk-file-btns">
-              <button type="button" class="btn btn--submit yk-cam-btn" data-target="featured_image-camera">📷 Kamera</button>
-              <button type="button" class="btn btn--ghost yk-file-btn" data-target="featured_image-file">📁 Valitse tiedosto</button>
-              <span class="yk-file-name" id="featured_image-label">Ei tiedostoa valittu</span>
-            </div>
-          </div>
-          <div class="yk-field"><span>Korttikuva (valinnainen)</span>
-            <input type="file" name="card_image" id="card_image-camera" accept="image/jpeg,image/png,image/webp" capture="environment" style="display:none" />
-            <input type="file" name="card_image" id="card_image-file" accept="image/jpeg,image/png,image/webp" style="display:none" />
-            <div class="yk-file-btns">
-              <button type="button" class="btn btn--submit yk-cam-btn" data-target="card_image-camera">📷 Kamera</button>
-              <button type="button" class="btn btn--ghost yk-file-btn" data-target="card_image-file">📁 Valitse tiedosto</button>
-              <span class="yk-file-name" id="card_image-label">Ei tiedostoa valittu</span>
-            </div>
-          </div>
+          <label class="yk-field"><span>Pääkuva *</span><input name="featured_image" class="inp" type="file" accept="image/jpeg,image/png,image/webp" /></label>
+          <label class="yk-field"><span>Korttikuva (valinnainen)</span><input name="card_image" class="inp" type="file" accept="image/jpeg,image/png,image/webp" /></label>
           <label class="yk-field"><span>Pääkuvan kuvateksti</span><input name="image_caption" class="inp" /></label>
-          <div class="yk-field"><span>Lisäkuvat tekstiin (valinnainen, useita)</span>
-            <input type="file" name="body_images" id="body_images-camera" accept="image/jpeg,image/png,image/webp" capture="environment" multiple style="display:none" />
-            <input type="file" name="body_images" id="body_images-file" accept="image/jpeg,image/png,image/webp" multiple style="display:none" />
-            <div class="yk-file-btns">
-              <button type="button" class="btn btn--submit yk-cam-btn" data-target="body_images-camera">📷 Kamera</button>
-              <button type="button" class="btn btn--ghost yk-file-btn" data-target="body_images-file">📁 Valitse tiedosto</button>
-              <span class="yk-file-name" id="body_images-label">Ei tiedostoa valittu</span>
-            </div>
-          </div>
+          <label class="yk-field"><span>Lisäkuvat tekstiin (valinnainen, useita)</span><input name="body_images" class="inp" type="file" accept="image/jpeg,image/png,image/webp" multiple /></label>
           <label class="yk-field"><span>Sisältö * (Markdown)</span><textarea name="body" class="inp yk-textarea" rows="14" required></textarea></label>
           <label class="yk-field"><span>Lähteet (valinnainen, yksi per rivi)</span><textarea name="sources" class="inp" rows="3"></textarea></label>
           <p class="yk-card__sub">Toimitus tarkistaa ja julkaisee artikkelin. Lähetys tallentuu luonnoksena.</p>
@@ -137,15 +113,7 @@ const lang = 'fi';
             <label class="yk-field"><span>Negatiiviset tapahtumat</span><textarea name="negatiiviset_tapahtumat" class="inp" rows="2" placeholder="valinnainen — kaatumiset, keskeytykset"></textarea></label>
             <label class="yk-field"><span>Tulokset *</span><textarea name="tulokset" class="inp" rows="3" required placeholder="top 3 tai tuloslista"></textarea></label>
             <label class="yk-field"><span>Muuta</span><textarea name="muuta" class="inp" rows="2" placeholder="valinnainen"></textarea></label>
-            <div class="yk-field"><span>Pääkuva (valinnainen)</span>
-              <input type="file" name="photo" id="flash-photo-camera" accept="image/jpeg,image/png,image/webp" capture="environment" style="display:none" />
-              <input type="file" name="photo" id="flash-photo-file" accept="image/jpeg,image/png,image/webp" style="display:none" />
-              <div class="yk-file-btns">
-                <button type="button" class="btn btn--submit yk-cam-btn" data-target="flash-photo-camera">📷 Kamera</button>
-                <button type="button" class="btn btn--ghost yk-file-btn" data-target="flash-photo-file">📁 Valitse tiedosto</button>
-                <span class="yk-file-name" id="flash-photo-label">Ei tiedostoa valittu</span>
-              </div>
-            </div>
+            <label class="yk-field"><span>Pääkuva (valinnainen)</span><input name="photo" class="inp" type="file" accept="image/jpeg,image/png,image/webp" /></label>
             <div class="yk-flash-actions">
               <button id="yk-flash-btn" class="btn btn--submit" type="submit">Luo pikauutinen</button>
               <button id="yk-flash-clear" class="btn btn--ghost" type="button">Tyhjennä</button>
@@ -200,15 +168,7 @@ const lang = 'fi';
         <div id="yk-panel-photo" class="yk-panel" hidden>
           <form id="yk-photo-form" class="yk-form">
             <p class="yk-card__sub">Lähetä tunnistettava kuva galleriaan. Toimitus tarkistaa kuvan ennen julkaisua.</p>
-            <div class="yk-field"><span>Kuva *</span>
-              <input type="file" name="photo" id="yk-photo-camera" accept="image/jpeg,image/png,image/webp" capture="environment" style="display:none" />
-              <input type="file" name="photo" id="yk-photo-file" accept="image/jpeg,image/png,image/webp" style="display:none" />
-              <div class="yk-file-btns">
-                <button type="button" class="btn btn--submit yk-cam-btn" data-target="yk-photo-camera">📷 Kamera</button>
-                <button type="button" class="btn btn--ghost yk-file-btn" data-target="yk-photo-file">📁 Valitse tiedosto</button>
-                <span class="yk-file-name" id="yk-photo-label">Ei tiedostoa valittu</span>
-              </div>
-            </div>
+            <label class="yk-field"><span>Kuva *</span><input name="photo" class="inp" type="file" accept="image/jpeg,image/png,image/webp" required /></label>
             <label class="yk-field"><span>Vuosiarvio</span><input name="year_estimate" class="inp" placeholder="Esim. 1977" /></label>
             <label class="yk-field"><span>Henkilöt kuvassa</span><input name="people" class="inp" placeholder="Keitä tunnistat?" /></label>
             <label class="yk-field"><span>Paikka / tapahtuma</span><input name="location_notes" class="inp" placeholder="Missä otettu?" /></label>
@@ -351,13 +311,6 @@ const lang = 'fi';
     btn.disabled = true; const orig = btn.textContent; btn.textContent = 'Lähetetään…';
     try {
       const fd = new FormData(e.target);
-      for (const [cam, fil, name] of [['featured_image-camera','featured_image-file','featured_image'],['card_image-camera','card_image-file','card_image']]) {
-        fd.delete(name); const _f = $(cam)?.files?.[0] || $(fil)?.files?.[0]; if (_f) fd.set(name, _f, _f.name);
-      }
-      fd.delete('body_images');
-      const _bc = $('body_images-camera'), _bf = $('body_images-file');
-      const _bfl = _bc?.files?.length > 0 ? _bc.files : _bf?.files;
-      if (_bfl?.length > 0) for (const _f of _bfl) fd.append('body_images', _f, _f.name);
       const r = await fetch('/api/submit-article', { method: 'POST', credentials: 'same-origin', body: fd });
       const data = await r.json().catch(() => ({}));
       if (r.ok && data.ok) {
@@ -367,7 +320,6 @@ const lang = 'fi';
         msg.style.display = 'block';
         e.target.reset();
         const wrap = $('yk-article-consent-photo-wrap'); if (wrap) wrap.style.display = 'none';
-        for (const _id of ['featured_image-label','card_image-label','body_images-label']) { const _l = $(_id); if (_l) _l.textContent = 'Ei tiedostoa valittu'; }
       } else if (r.status === 401 || r.status === 403) {
         msg.className = 'yk-msg yk-msg--err';
         msg.textContent = '✗ Istunto vanhentunut tai ei oikeutta — kirjaudu uudelleen.';
@@ -467,13 +419,13 @@ const lang = 'fi';
   $('yk-article-consent-photo')?.addEventListener('change', ykArticleConsentUpdate);
   $('yk-article-consent-content')?.addEventListener('change', ykArticleConsentUpdate);
   function ykArticlePhotoWrapUpdate() {
+    const fi = document.querySelector('#yk-form input[name="featured_image"]');
+    const ci = document.querySelector('#yk-form input[name="card_image"]');
+    const bi = document.querySelector('#yk-form input[name="body_images"]');
     const hasFile = !!(
-      $('featured_image-camera')?.files?.length > 0 ||
-      $('featured_image-file')?.files?.length > 0 ||
-      $('card_image-camera')?.files?.length > 0 ||
-      $('card_image-file')?.files?.length > 0 ||
-      $('body_images-camera')?.files?.length > 0 ||
-      $('body_images-file')?.files?.length > 0
+      (fi && fi.files && fi.files.length > 0) ||
+      (ci && ci.files && ci.files.length > 0) ||
+      (bi && bi.files && bi.files.length > 0)
     );
     const wrap = $('yk-article-consent-photo-wrap');
     const cp = $('yk-article-consent-photo');
@@ -481,36 +433,9 @@ const lang = 'fi';
     if (!hasFile && cp) cp.checked = false;
     ykArticleConsentUpdate();
   }
-
-  // Button click delegation — triggers the hidden file input for camera/file buttons.
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('button[data-target]');
-    if (!btn) return;
-    const target = $(btn.dataset.target);
-    if (target) target.click();
-  });
-
-  // File input pair: on change, clear the other input, update label, fire callback.
-  function ykSetupFilePair(cameraId, fileId, labelId, onChange) {
-    function handle(activeId, otherId) {
-      const other = $(otherId); if (other) other.value = '';
-      const active = $(activeId);
-      const lbl = $(labelId);
-      if (lbl) {
-        if (!active?.files?.length) lbl.textContent = 'Ei tiedostoa valittu';
-        else if (active.files.length > 1) lbl.textContent = `${active.files.length} tiedostoa valittu`;
-        else lbl.textContent = active.files[0].name;
-      }
-      if (onChange) onChange();
-    }
-    $(cameraId)?.addEventListener('change', () => handle(cameraId, fileId));
-    $(fileId)?.addEventListener('change', () => handle(fileId, cameraId));
-  }
-  ykSetupFilePair('featured_image-camera', 'featured_image-file', 'featured_image-label', ykArticlePhotoWrapUpdate);
-  ykSetupFilePair('card_image-camera', 'card_image-file', 'card_image-label', ykArticlePhotoWrapUpdate);
-  ykSetupFilePair('body_images-camera', 'body_images-file', 'body_images-label', ykArticlePhotoWrapUpdate);
-  ykSetupFilePair('flash-photo-camera', 'flash-photo-file', 'flash-photo-label', null);
-  ykSetupFilePair('yk-photo-camera', 'yk-photo-file', 'yk-photo-label', null);
+  document.querySelector('#yk-form input[name="featured_image"]')?.addEventListener('change', ykArticlePhotoWrapUpdate);
+  document.querySelector('#yk-form input[name="card_image"]')?.addEventListener('change', ykArticlePhotoWrapUpdate);
+  document.querySelector('#yk-form input[name="body_images"]')?.addEventListener('change', ykArticlePhotoWrapUpdate);
 
   // Safety net: the submit button is disabled (pointer-events:none) until consent
   // is given, so a click lands on this wrapper instead — surface a clear message
@@ -551,7 +476,8 @@ const lang = 'fi';
       msg.className = 'yk-msg yk-msg--err'; msg.textContent = 'Vahvista suostumus ennen lähettämistä rastittamalla vaadittu ruutu.'; msg.style.display = 'block';
       consent?.closest('label')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return;
     }
-    const file = $('yk-photo-camera')?.files?.[0] || $('yk-photo-file')?.files?.[0];
+    const fileInput = e.target.querySelector('input[name="photo"]');
+    const file = fileInput && fileInput.files[0];
     if (!file) { msg.className = 'yk-msg yk-msg--err'; msg.textContent = '✗ Valitse kuva.'; msg.style.display = 'block'; return; }
     btn.disabled = true; const orig = btn.textContent; btn.textContent = 'Lähetetään…';
     try {
@@ -568,7 +494,6 @@ const lang = 'fi';
         msg.textContent = '✓ Kiitos! Kuva lähetettiin toimitukselle tarkistettavaksi.';
         msg.style.display = 'block';
         e.target.reset(); // unticks consent
-        const _lbl = $('yk-photo-label'); if (_lbl) _lbl.textContent = 'Ei tiedostoa valittu';
       } else if (r.status === 401 || r.status === 403) {
         msg.className = 'yk-msg yk-msg--err'; msg.textContent = '✗ Istunto vanhentunut tai ei oikeutta — kirjaudu uudelleen.'; msg.style.display = 'block';
       } else {
@@ -588,7 +513,6 @@ const lang = 'fi';
     const f = $('yk-photo-form'); if (f) f.reset();
     const m = $('yk-photo-msg'); if (m) m.style.display = 'none';
     const b = $('yk-photo-btn'); if (b) b.disabled = true;
-    const lbl = $('yk-photo-label'); if (lbl) lbl.textContent = 'Ei tiedostoa valittu';
   });
 
   let pendingFlash = null;
@@ -613,13 +537,11 @@ const lang = 'fi';
     btn.textContent = 'Luodaan pikauutista… (muutama sekunti)';
     try {
       const fd = new FormData(e.target);
-      fd.delete('photo');
-      const _fp = $('flash-photo-camera')?.files?.[0] || $('flash-photo-file')?.files?.[0];
-      if (_fp) fd.set('photo', _fp, _fp.name);
+      const rawPhoto = fd.get('photo');
       pendingFlash = {
         category: fd.get('category') || '',
         date: fd.get('paivays') || '',
-        photo: _fp && _fp.size > 0 ? _fp : null,
+        photo: rawPhoto && typeof rawPhoto !== 'string' && rawPhoto.size > 0 ? rawPhoto : null,
       };
       const r = await fetch('/api/generate-article', { method: 'POST', credentials: 'same-origin', body: fd });
       const data = await r.json().catch(() => ({}));
@@ -699,7 +621,6 @@ const lang = 'fi';
     pendingFlash = null;
     const form = $('yk-flash-form');
     if (form) { form.reset(); form.style.display = ''; }
-    const fpl = $('flash-photo-label'); if (fpl) fpl.textContent = 'Ei tiedostoa valittu';
     const succ = $('yk-flash-success'); if (succ) succ.style.display = 'none';
     const et = $('yk-flash-edit-title'); if (et) et.value = '';
     const eb = $('yk-flash-edit-body'); if (eb) eb.value = '';
@@ -736,7 +657,6 @@ const lang = 'fi';
     const f = $('yk-form'); if (f) f.reset();
     const m = $('yk-submit-msg'); if (m) m.style.display = 'none';
     const wrap = $('yk-article-consent-photo-wrap'); if (wrap) wrap.style.display = 'none';
-    for (const _id of ['featured_image-label','card_image-label','body_images-label']) { const _l = $(_id); if (_l) _l.textContent = 'Ei tiedostoa valittu'; }
     ykArticleConsentUpdate(); // re-disable submit after reset
   });
 
