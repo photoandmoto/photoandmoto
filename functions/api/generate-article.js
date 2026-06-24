@@ -153,7 +153,12 @@ async function callGemini(apiKey, prompt) {
     }),
   });
   const text = await resp.text();
-  if (!resp.ok) throw new Error(`Gemini ${resp.status}: ${text.slice(0, 200)}`);
+  if (!resp.ok) {
+    console.error(`Gemini HTTP ${resp.status} headers:`, Object.fromEntries(resp.headers.entries()), 'body:', text);
+    const err = new Error(`Gemini ${resp.status}: ${text.slice(0, 500)}`);
+    err.geminiStatus = resp.status;
+    throw err;
+  }
   const data = JSON.parse(text);
   const out = data?.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!out) throw new Error('Gemini palautti tyhjän vastauksen');
@@ -222,7 +227,9 @@ export async function onRequestPost({ request, env }) {
       title = (parsed.title || '').toString().trim();
       body = (parsed.body || '').toString().trim();
     } catch (e) {
-      console.error('Gemini generation/parse failed:', e);
+      console.error('Gemini generation/parse failed:', e?.message, 'cause:', e?.cause, 'str:', String(e));
+      if (e?.geminiStatus === 429) return fail('Tekoälyn kiintiö ylitetty — yritä myöhemmin', 429);
+      if (e?.geminiStatus === 503) return fail('Tekoälypalvelu ylikuormittunut — yritä hetken kuluttua uudelleen', 503);
       return fail('Tekoälyn vastaus epäonnistui — yritä uudelleen', 502);
     }
     if (!title || !body) return fail('Tekoäly ei tuottanut kelvollista uutista — tarkista syötteet ja yritä uudelleen', 422);

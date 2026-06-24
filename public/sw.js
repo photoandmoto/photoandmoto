@@ -23,12 +23,8 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-  // Never intercept API calls — always go to network
-  if (e.request.url.includes('/api/')) {
-    e.respondWith(fetch(e.request));
-    return;
-  }
-  // Cache-first for static assets
+  if (e.request.method !== 'GET') return;
+  if (e.request.url.includes('/api/')) return;
   e.respondWith(
     caches.match(e.request).then((cached) => cached || fetch(e.request))
   );
