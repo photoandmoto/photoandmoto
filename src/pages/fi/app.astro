@@ -1,0 +1,981 @@
+---
+// Standalone mobile PWA — no site layout, no header, no footer.
+// Lives at /fi/app/ — the PWA start_url and scope.
+---
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Photo &amp; Moto</title>
+  <meta name="description" content="Avustajat — lähetä artikkeli, pikauutinen tai kuva">
+  <meta name="theme-color" content="#ff9900">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Photo &amp; Moto">
+  <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ── Reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;font-family:'Montserrat',sans-serif;background:#000;color:#1a1a1a;-webkit-font-smoothing:antialiased}
+
+/* ── Screen system ── */
+.screen{
+  position:fixed;inset:0;display:flex;flex-direction:column;
+  opacity:0;pointer-events:none;
+  transition:opacity .25s ease;
+}
+.screen.active{opacity:1;pointer-events:all;}
+
+/* ── Splash ── */
+#screen-splash{background:#000;align-items:center;justify-content:center;gap:20px;}
+.splash-logo{width:120px;height:120px;object-fit:contain;}
+.splash-wordmark{font-size:1.5rem;font-weight:900;color:#ff9900;letter-spacing:2px;text-transform:uppercase;}
+
+/* ── Login ── */
+#screen-login{background:#f4f4f4;align-items:center;justify-content:center;padding:24px;}
+.login-card{background:#fff;border-radius:16px;padding:32px 24px;width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center;gap:20px;box-shadow:0 4px 24px rgba(0,0,0,.12);}
+.login-logo{width:72px;height:72px;object-fit:contain;}
+.login-title{font-size:1.4rem;font-weight:900;color:#000;letter-spacing:1px;}
+.login-fields{width:100%;display:flex;flex-direction:column;gap:14px;}
+
+/* ── App shell ── */
+#screen-home{background:#f4f4f4;overflow:hidden;}
+.app-header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:56px;background:#000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;
+  padding-top:env(safe-area-inset-top);
+}
+.app-header-logo{width:32px;height:32px;object-fit:contain;}
+.app-header-title{font-size:1rem;font-weight:900;color:#ff9900;letter-spacing:1px;text-transform:uppercase;}
+.app-logout-btn{background:none;border:none;cursor:pointer;color:#fff;padding:8px;display:flex;align-items:center;justify-content:center;border-radius:8px;min-width:44px;min-height:44px;}
+.app-logout-btn:hover{background:rgba(255,255,255,.1);}
+
+.app-main{
+  position:fixed;
+  top:calc(56px + env(safe-area-inset-top));
+  bottom:calc(60px + env(safe-area-inset-bottom));
+  left:0;right:0;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  background:#f4f4f4;
+}
+
+/* ── Bottom nav ── */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  height:calc(60px + env(safe-area-inset-bottom));
+  background:#000;
+  display:flex;
+  border-top:1px solid rgba(255,255,255,.1);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.nav-tab{
+  flex:1;background:none;border:none;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;color:rgba(255,255,255,.45);
+  transition:color .15s;min-height:60px;
+}
+.nav-tab.active{color:#ff9900;}
+.nav-tab-icon{font-size:1.3rem;line-height:1;}
+.nav-tab-label{font-size:.65rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+
+/* ── Tab panels ── */
+.tab-panel{display:none;padding:20px 16px 24px;}
+.tab-panel.active{display:block;}
+
+/* ── Form elements ── */
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.field-label{font-size:.72rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;}
+.inp{
+  width:100%;background:#fff;
+  border:1.5px solid #ddd;border-radius:10px;
+  padding:12px 14px;
+  font-size:16px;font-family:inherit;color:#1a1a1a;
+  outline:none;transition:border-color .15s;
+  appearance:none;-webkit-appearance:none;
+}
+.inp:focus{border-color:#ff9900;}
+select.inp{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;}
+textarea.inp{resize:vertical;min-height:100px;font-size:16px;line-height:1.5;}
+
+/* ── Password field ── */
+.pw-wrap{position:relative;}
+.pw-wrap .inp{padding-right:48px;}
+.pw-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1.1rem;opacity:.45;padding:6px;min-height:44px;}
+.pw-eye:hover,.pw-eye.on{opacity:1;}
+
+/* ── Buttons ── */
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer;text-align:center;transition:background .15s,transform .1s;min-height:48px;letter-spacing:.3px;}
+.btn:active{transform:scale(.98);}
+.btn-primary{background:#ff9900;color:#fff;}
+.btn-primary:hover{background:#e68a00;}
+.btn-primary:disabled{background:#ccc;cursor:not-allowed;transform:none;}
+.btn-ghost{background:#f0f0f0;color:#444;border:1.5px solid #ddd;}
+.btn-ghost:hover{background:#e8e8e8;}
+.btn-sm{padding:10px 16px;font-size:.9rem;width:auto;display:inline-block;}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;}
+
+/* ── File picker buttons ── */
+.file-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.file-btns{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.file-btn-cam{background:#ff9900;color:#fff;border:none;border-radius:10px;padding:11px 16px;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;min-height:44px;white-space:nowrap;}
+.file-btn-file{background:#f0f0f0;color:#444;border:1.5px solid #ddd;border-radius:10px;padding:10px 16px;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;min-height:44px;white-space:nowrap;}
+.file-name{font-size:.78rem;color:#888;font-style:italic;}
+
+/* ── Consent ── */
+.consent{display:flex;align-items:flex-start;gap:10px;background:#fff8e6;border:1px solid #ffdf85;border-left:3px solid #ff9900;border-radius:10px;padding:14px;cursor:pointer;margin-bottom:16px;}
+.consent input[type="checkbox"]{flex:0 0 auto;width:18px;height:18px;margin-top:2px;accent-color:#ff9900;cursor:pointer;}
+.consent-text{font-size:.85rem;line-height:1.5;color:#444;}
+
+/* ── Messages ── */
+.msg{font-size:.88rem;font-weight:600;border-radius:8px;padding:12px 14px;margin-bottom:12px;display:none;}
+.msg.ok{background:#e8f5ee;color:#1a8a5c;border:1px solid #b8dfc9;}
+.msg.err{background:#fdeaea;color:#c0392b;border:1px solid #f5c6c6;}
+.msg.info{background:#fff3cd;color:#856404;border:1px solid #ffc107;}
+.err-inline{color:#c0392b;font-size:.83rem;font-weight:600;margin-bottom:8px;display:none;}
+
+/* ── Char count ── */
+.char-count{font-size:.73rem;color:#999;align-self:flex-end;margin-top:2px;}
+
+/* ── Section headings inside tabs ── */
+.tab-heading{font-size:1.1rem;font-weight:800;margin-bottom:4px;}
+.tab-sub{font-size:.82rem;color:#888;margin-bottom:20px;line-height:1.5;}
+
+/* ── Pikauutinen review ── */
+.flash-review{display:flex;flex-direction:column;}
+.flash-review-hidden{display:none;}
+
+/* ── Consent wrap (toggles visibility) ── */
+.consent-wrap-hidden{display:none;}
+
+/* ── Submit wrap (catches clicks when button disabled) ── */
+.submit-wrap{display:block;}
+.submit-wrap .btn:disabled{pointer-events:none;}
+
+/* ── Toast notification ── */
+.toast{
+  position:fixed;top:calc(64px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);
+  background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:999px;
+  font-size:.85rem;font-weight:600;
+  opacity:0;pointer-events:none;transition:opacity .2s ease;
+  z-index:200;white-space:nowrap;max-width:90vw;text-align:center;
+}
+.toast.visible{opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- ═══ SPLASH ═══ -->
+<div id="screen-splash" class="screen">
+  <img src="/images/logo.png" alt="Photo &amp; Moto" class="splash-logo">
+  <p class="splash-wordmark">Photo &amp; Moto</p>
+</div>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="screen-login" class="screen">
+  <div class="login-card">
+    <img src="/images/logo.png" alt="Photo &amp; Moto" class="login-logo">
+    <p class="login-title">Photo &amp; Moto</p>
+    <div class="login-fields">
+      <div class="field">
+        <label for="login-email" class="field-label">Sähköposti</label>
+        <input id="login-email" type="email" class="inp" autocomplete="email" placeholder="sähköposti@esimerkki.fi">
+      </div>
+      <div class="field">
+        <label for="login-pw" class="field-label">Salasana</label>
+        <div class="pw-wrap">
+          <input id="login-pw" type="password" class="inp" autocomplete="current-password" placeholder="••••••••">
+          <button type="button" id="login-pw-eye" class="pw-eye" aria-label="Näytä salasana">👁</button>
+        </div>
+      </div>
+      <p id="login-err" class="err-inline"></p>
+      <button id="login-btn" class="btn btn-primary">Kirjaudu sisään</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ HOME ═══ -->
+<div id="screen-home" class="screen">
+
+  <header class="app-header">
+    <img src="/images/logo.png" alt="" class="app-header-logo">
+    <span class="app-header-title">Photo &amp; Moto</span>
+    <button id="app-logout-btn" class="app-logout-btn" aria-label="Kirjaudu ulos">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+      </svg>
+    </button>
+  </header>
+
+  <main class="app-main">
+
+    <!-- ── TAB: Artikkeli ── -->
+    <div id="tab-article" class="tab-panel active">
+      <p class="tab-sub">Toimitus tarkistaa ja julkaisee artikkelin. Lähetys tallentuu luonnoksena.</p>
+      <form id="app-article-form" novalidate>
+        <div class="field">
+          <label for="art-title" class="field-label">Otsikko *</label>
+          <input id="art-title" name="title" type="text" class="inp" required>
+        </div>
+        <div class="field">
+          <label for="art-subtitle" class="field-label">Alaotsikko</label>
+          <input id="art-subtitle" name="subtitle" type="text" class="inp">
+        </div>
+        <div class="field">
+          <label for="art-cat" class="field-label">Kategoria *</label>
+          <select id="art-cat" name="category" class="inp" required></select>
+        </div>
+        <div class="field">
+          <label for="art-tags" class="field-label">Avainsanat (pilkulla erotettuna)</label>
+          <input id="art-tags" name="tags" type="text" class="inp" placeholder="esim. motocross, MXGP, Hyvinkää">
+        </div>
+
+        <!-- Pääkuva — dual buttons -->
+        <div class="file-field">
+          <span class="field-label">Pääkuva *</span>
+          <input type="file" id="art-fi-cam" name="featured_image" accept="image/jpeg,image/png,image/webp" capture="environment" style="display:none">
+          <input type="file" id="art-fi-file" name="featured_image" accept="image/jpeg,image/png,image/webp" style="display:none">
+          <div class="file-btns">
+            <button type="button" class="file-btn-cam" data-target="art-fi-cam">📷 Kamera</button>
+            <button type="button" class="file-btn-file" data-target="art-fi-file">📁 Valitse tiedosto</button>
+          </div>
+          <span class="file-name" id="art-fi-lbl">Ei tiedostoa valittu</span>
+        </div>
+
+        <!-- Korttikuva — dual buttons -->
+        <div class="file-field">
+          <span class="field-label">Korttikuva (valinnainen)</span>
+          <input type="file" id="art-ci-cam" name="card_image" accept="image/jpeg,image/png,image/webp" capture="environment" style="display:none">
+          <input type="file" id="art-ci-file" name="card_image" accept="image/jpeg,image/png,image/webp" style="display:none">
+          <div class="file-btns">
+            <button type="button" class="file-btn-cam" data-target="art-ci-cam">📷 Kamera</button>
+            <button type="button" class="file-btn-file" data-target="art-ci-file">📁 Valitse tiedosto</button>
+          </div>
+          <span class="file-name" id="art-ci-lbl">Ei tiedostoa valittu</span>
+        </div>
+
+        <div class="field">
+          <label for="art-caption" class="field-label">Pääkuvan kuvateksti</label>
+          <input id="art-caption" name="image_caption" type="text" class="inp">
+        </div>
+
+        <!-- Lisäkuvat — dual buttons, multiple -->
+        <div class="file-field">
+          <span class="field-label">Lisäkuvat tekstiin (valinnainen, useita)</span>
+          <input type="file" id="art-bi-cam" name="body_images" accept="image/jpeg,image/png,image/webp" capture="environment" multiple style="display:none">
+          <input type="file" id="art-bi-file" name="body_images" accept="image/jpeg,image/png,image/webp" multiple style="display:none">
+          <div class="file-btns">
+            <button type="button" class="file-btn-cam" data-target="art-bi-cam">📷 Kamera</button>
+            <button type="button" class="file-btn-file" data-target="art-bi-file">📁 Valitse tiedosto</button>
+          </div>
+          <span class="file-name" id="art-bi-lbl">Ei tiedostoa valittu</span>
+        </div>
+
+        <div class="field">
+          <label for="art-body" class="field-label">Sisältö * (Markdown)</label>
+          <textarea id="art-body" name="body" class="inp" rows="12" required style="font-family:ui-monospace,monospace;font-size:15px;"></textarea>
+        </div>
+        <div class="field">
+          <label for="art-sources" class="field-label">Lähteet (valinnainen, yksi per rivi)</label>
+          <textarea id="art-sources" name="sources" class="inp" rows="3"></textarea>
+        </div>
+
+        <label id="art-consent-photo-wrap" class="consent consent-wrap-hidden">
+          <input type="checkbox" id="art-consent-photo" name="consent_photo" value="1">
+          <span class="consent-text">Vakuutan, että minulla on oikeudet lähettämiini kuviin ja annan Photo &amp; Motolle oikeuden käyttää niitä tässä artikkelissa. Olen itse vastuussa luvattomasta materiaalista.</span>
+        </label>
+        <label class="consent">
+          <input type="checkbox" id="art-consent-content" name="consent_content" value="1">
+          <span class="consent-text">Vakuutan, että tämän artikkelin sisältö on totta, eikä se loukkaa muiden tekijänoikeuksia. Olen itse vastuussa luvattomasta materiaalista.</span>
+        </label>
+
+        <p id="art-msg" class="msg"></p>
+        <div class="submit-wrap" id="art-submit-wrap">
+          <button type="submit" id="art-submit-btn" class="btn btn-primary" disabled>Lähetä artikkeli</button>
+        </div>
+        <br>
+        <button type="button" id="art-clear-btn" class="btn btn-ghost">Tyhjennä lomake</button>
+      </form>
+    </div>
+
+    <!-- ── TAB: Pikauutinen ── -->
+    <div id="tab-flash" class="tab-panel">
+
+      <!-- Sub-screen A: generation form -->
+      <div id="flash-form-screen">
+        <p class="tab-sub">Täytä tapahtuman tiedot — tekoäly kirjoittaa niistä lyhyen pikauutisen, jonka toimitus tarkistaa ennen julkaisua.</p>
+        <form id="app-flash-form" novalidate>
+          <div class="field">
+            <label for="fla-aihe" class="field-label">Aihe *</label>
+            <input id="fla-aihe" name="aihe" type="text" class="inp" required placeholder="esim. MXGP Italia 2026">
+          </div>
+          <div class="field">
+            <label for="fla-cat" class="field-label">Kategoria *</label>
+            <select id="fla-cat" name="category" class="inp" required></select>
+          </div>
+          <div class="field">
+            <label for="fla-date" class="field-label">Tapahtumapäivä *</label>
+            <input id="fla-date" name="paivays" type="date" class="inp" required>
+          </div>
+          <div class="field">
+            <label for="fla-place" class="field-label">Paikka *</label>
+            <input id="fla-place" name="paikka" type="text" class="inp" required placeholder="rata, kaupunki, maa">
+          </div>
+          <div class="field">
+            <label for="fla-weather" class="field-label">Sää</label>
+            <input id="fla-weather" name="saa" type="text" class="inp" placeholder="valinnainen">
+          </div>
+          <div class="field">
+            <label for="fla-pos" class="field-label">Positiiviset tapahtumat *</label>
+            <textarea id="fla-pos" name="positiiviset_tapahtumat" class="inp" rows="3" required placeholder="kuka johti, palkintopallit, käännekohdat"></textarea>
+          </div>
+          <div class="field">
+            <label for="fla-neg" class="field-label">Negatiiviset tapahtumat</label>
+            <textarea id="fla-neg" name="negatiiviset_tapahtumat" class="inp" rows="2" placeholder="valinnainen — kaatumiset, keskeytykset"></textarea>
+          </div>
+          <div class="field">
+            <label for="fla-results" class="field-label">Tulokset *</label>
+            <textarea id="fla-results" name="tulokset" class="inp" rows="3" required placeholder="top 3 tai tuloslista"></textarea>
+          </div>
+          <div class="field">
+            <label for="fla-other" class="field-label">Muuta</label>
+            <textarea id="fla-other" name="muuta" class="inp" rows="2" placeholder="valinnainen"></textarea>
+          </div>
+
+          <!-- Flash photo — dual buttons -->
+          <div class="file-field">
+            <span class="field-label">Pääkuva (valinnainen)</span>
+            <input type="file" id="fla-ph-cam" name="photo" accept="image/jpeg,image/png,image/webp" capture="environment" style="display:none">
+            <input type="file" id="fla-ph-file" name="photo" accept="image/jpeg,image/png,image/webp" style="display:none">
+            <div class="file-btns">
+              <button type="button" class="file-btn-cam" data-target="fla-ph-cam">📷 Kamera</button>
+              <button type="button" class="file-btn-file" data-target="fla-ph-file">📁 Valitse tiedosto</button>
+            </div>
+            <span class="file-name" id="fla-ph-lbl">Ei tiedostoa valittu</span>
+          </div>
+
+          <p id="flash-gen-msg" class="msg"></p>
+          <button type="submit" id="fla-gen-btn" class="btn btn-primary">Luo pikauutinen</button>
+          <br><br>
+          <button type="button" id="fla-clear-btn" class="btn btn-ghost">Tyhjennä</button>
+        </form>
+      </div>
+
+      <!-- Sub-screen B: review -->
+      <div id="flash-review-screen" class="flash-review-hidden">
+        <p class="tab-heading">Tarkista pikauutinen</p>
+        <p class="tab-sub">Voit muokata otsikkoa ja tekstiä ennen lähettämistä.</p>
+        <div class="field">
+          <label for="fla-edit-title" class="field-label">Otsikko</label>
+          <input id="fla-edit-title" type="text" class="inp" maxlength="80">
+          <span class="char-count" id="fla-title-count">0 / 80</span>
+        </div>
+        <div class="field">
+          <label for="fla-edit-body" class="field-label">Teksti</label>
+          <textarea id="fla-edit-body" class="inp" rows="7" maxlength="500" style="font-size:16px;line-height:1.6;"></textarea>
+          <span class="char-count" id="fla-body-count">0 / 500</span>
+        </div>
+
+        <label id="fla-consent-photo-wrap" class="consent consent-wrap-hidden">
+          <input type="checkbox" id="fla-consent-photo">
+          <span class="consent-text">Vakuutan, että minulla on oikeudet lähettämiini kuviin ja annan Photo &amp; Motolle oikeuden käyttää niitä tässä artikkelissa. Olen itse vastuussa luvattomasta materiaalista.</span>
+        </label>
+        <label class="consent">
+          <input type="checkbox" id="fla-consent-content">
+          <span class="consent-text">Vakuutan, että tämän artikkelin sisältö on totta, eikä se loukkaa muiden tekijänoikeuksia. Olen itse vastuussa luvattomasta materiaalista.</span>
+        </label>
+
+        <p id="flash-submit-msg" class="msg"></p>
+        <div class="submit-wrap" id="fla-submit-wrap">
+          <button type="button" id="fla-submit-btn" class="btn btn-primary" disabled>Lähetä toimitukselle</button>
+        </div>
+        <br>
+        <div class="btn-row">
+          <button type="button" id="fla-new-btn" class="btn btn-ghost btn-sm">↺ Luo uusi</button>
+        </div>
+      </div>
+
+      <!-- Sub-screen C: confirm -->
+      <div id="flash-confirm-screen" class="flash-review-hidden">
+        <p class="tab-heading">✓ Pikauutinen lähetetty!</p>
+        <p class="tab-sub">Toimitus tarkistaa pikauutisen ennen julkaisua.</p>
+        <br>
+        <button type="button" id="fla-again-btn" class="btn btn-primary">Luo uusi pikauutinen</button>
+      </div>
+
+    </div>
+
+    <!-- ── TAB: Kuva ── -->
+    <div id="tab-photo" class="tab-panel">
+      <p class="tab-sub">Lähetä tunnistettava kuva galleriaan. Toimitus tarkistaa kuvan ennen julkaisua.</p>
+      <form id="app-photo-form" novalidate>
+
+        <!-- Photo — camera button (direct) + file picker -->
+        <div class="file-field">
+          <span class="field-label">Kuva *</span>
+          <input type="file" id="pho-cam" name="photo" accept="image/jpeg,image/png,image/webp" capture="environment" style="display:none">
+          <input type="file" id="pho-file" name="photo" accept="image/jpeg,image/png,image/webp" style="display:none">
+          <div class="file-btns">
+            <button type="button" class="file-btn-cam" data-target="pho-cam">📷 Kamera</button>
+            <button type="button" class="file-btn-file" data-target="pho-file">📁 Valitse tiedosto</button>
+          </div>
+          <span class="file-name" id="pho-lbl">Ei tiedostoa valittu</span>
+        </div>
+
+        <div class="field">
+          <label for="pho-year" class="field-label">Vuosiarvio</label>
+          <input id="pho-year" name="year_estimate" type="text" class="inp" placeholder="Esim. 1977">
+        </div>
+        <div class="field">
+          <label for="pho-people" class="field-label">Henkilöt kuvassa</label>
+          <input id="pho-people" name="people" type="text" class="inp" placeholder="Keitä tunnistat?">
+        </div>
+        <div class="field">
+          <label for="pho-location" class="field-label">Paikka / tapahtuma</label>
+          <input id="pho-location" name="location_notes" type="text" class="inp" placeholder="Missä otettu?">
+        </div>
+        <div class="field">
+          <label for="pho-notes" class="field-label">Lisätietoja</label>
+          <input id="pho-notes" name="notes" type="text" class="inp" placeholder="Muuta tietoa?">
+        </div>
+
+        <label class="consent">
+          <input type="checkbox" id="pho-consent">
+          <span class="consent-text">Minä omistan tämän kuvan käyttöoikeuden ja annan luvan sen julkaisemiseen Photo &amp; Moto -sivustolla.</span>
+        </label>
+
+        <p id="pho-msg" class="msg"></p>
+        <div class="submit-wrap" id="pho-submit-wrap">
+          <button type="submit" id="pho-submit-btn" class="btn btn-primary" disabled>Lähetä kuva</button>
+        </div>
+        <br>
+        <button type="button" id="pho-clear-btn" class="btn btn-ghost">Tyhjennä</button>
+      </form>
+    </div>
+
+  </main><!-- .app-main -->
+
+  <nav class="bottom-nav">
+    <button class="nav-tab active" data-tab="article">
+      <span class="nav-tab-icon">📝</span>
+      <span class="nav-tab-label">Artikkeli</span>
+    </button>
+    <button class="nav-tab" data-tab="flash">
+      <span class="nav-tab-icon">⚡</span>
+      <span class="nav-tab-label">Pikauutinen</span>
+    </button>
+    <button class="nav-tab" data-tab="photo">
+      <span class="nav-tab-icon">📷</span>
+      <span class="nav-tab-label">Kuva</span>
+    </button>
+  </nav>
+
+</div><!-- #screen-home -->
+
+<div id="app-toast" class="toast"></div>
+
+<script>
+// ── Categories ──
+const CATS = [
+  {name:'Enduro',label:'Enduro'},{name:'Interview',label:'Haastattelu'},
+  {name:'Profile',label:'Henkilökuva'},{name:'Historical',label:'Historiallinen'},
+  {name:'Ice speedway',label:'Ice speedway'},{name:'Long Track',label:'Maarata'},
+  {name:'Motocross',label:'Motocross'},{name:'MXGP',label:'MXGP'},
+  {name:'Scramble',label:'Scramble'},{name:'Speedway',label:'Speedway'},
+  {name:'Technical',label:'Tekninen'},{name:'Trail',label:'Trail'},
+];
+const CAT_HTML = '<option value="">— valitse kategoria —</option>' +
+  CATS.map(c=>`<option value="${c.name}">${c.label}</option>`).join('');
+
+const $=id=>document.getElementById(id);
+
+// Populate category selects
+$('art-cat').innerHTML = CAT_HTML;
+$('fla-cat').innerHTML = CAT_HTML;
+
+// ── Screen management ──
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>{
+    s.classList.toggle('active', s.id===id);
+  });
+}
+
+// ── Toast ──
+let toastTimer;
+function toast(msg, ms=2800) {
+  const el=$('app-toast');
+  el.textContent=msg; el.classList.add('visible');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove('visible'), ms);
+}
+
+// ── Auth boot (splash + auth in parallel) ──
+let splashDone=false, authResult=null;
+function resolveStartup() {
+  if (!splashDone || !authResult) return;
+  if (authResult.ok) showScreen('screen-home');
+  else showScreen('screen-login');
+}
+showScreen('screen-splash');
+setTimeout(()=>{ splashDone=true; resolveStartup(); }, 1500);
+(async()=>{
+  try {
+    const r=await fetch('/api/auth/me',{credentials:'same-origin'});
+    if (r.ok) { const d=await r.json(); authResult={ok:!!(d.user?.permissions?.laheta_artikkeli)}; }
+    else authResult={ok:false};
+  } catch { authResult={ok:false}; }
+  resolveStartup();
+})();
+
+// ── Login ──
+$('login-pw-eye').addEventListener('click',()=>{
+  const pw=$('login-pw');
+  const show=pw.type==='password';
+  pw.type=show?'text':'password';
+  $('login-pw-eye').classList.toggle('on',show);
+});
+$('login-btn').addEventListener('click', async()=>{
+  const email=$('login-email').value.trim();
+  const pw=$('login-pw').value;
+  const err=$('login-err');
+  err.style.display='none';
+  if(!email||!pw){err.textContent='Anna sähköposti ja salasana.';err.style.display='block';return;}
+  $('login-btn').disabled=true;
+  try {
+    const r=await fetch('/api/auth/login',{
+      method:'POST',credentials:'same-origin',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email,password:pw}),
+    });
+    if(r.ok){
+      $('login-email').value=''; $('login-pw').value='';
+      showScreen('screen-home');
+    } else {
+      err.textContent=r.status===429?'Liian monta yritystä. Yritä myöhemmin.':'Väärät kirjautumistiedot.';
+      err.style.display='block';
+    }
+  } catch {
+    err.textContent='Yhteysvirhe — yritä uudelleen.'; err.style.display='block';
+  } finally { $('login-btn').disabled=false; }
+});
+// Allow Enter key in login fields
+[$('login-email'),$('login-pw')].forEach(el=>el.addEventListener('keydown',e=>{if(e.key==='Enter')$('login-btn').click();}));
+
+// ── Logout ──
+async function logout() {
+  try { await fetch('/api/auth/logout',{method:'POST',credentials:'same-origin'}); } catch {}
+  showScreen('screen-login');
+}
+$('app-logout-btn').addEventListener('click', logout);
+
+// ── Tab switching ──
+document.querySelectorAll('.nav-tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const tab=btn.dataset.tab;
+    document.querySelectorAll('.nav-tab').forEach(b=>b.classList.toggle('active',b===btn));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id===`tab-${tab}`));
+    $('app-main')?.scrollTo(0,0);
+  });
+});
+// Expose app-main scroll target for tab switch
+Object.defineProperty(document,'app-main',{get:()=>document.querySelector('.app-main')});
+
+// ── File button delegation ──
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('[data-target]');
+  if(!btn||btn.tagName!=='BUTTON') return;
+  const t=$(btn.dataset.target); if(t) t.click();
+});
+
+// ── File pair helper ──
+function setupFilePair(camId, fileId, lblId, onChange) {
+  function handle(activeId, otherId) {
+    const other=$(otherId); if(other) other.value='';
+    const active=$(activeId); const lbl=$(lblId);
+    if(lbl){
+      if(!active?.files?.length) lbl.textContent='Ei tiedostoa valittu';
+      else if(active.files.length>1) lbl.textContent=`${active.files.length} tiedostoa valittu`;
+      else lbl.textContent=active.files[0].name;
+    }
+    if(onChange) onChange();
+  }
+  $(camId)?.addEventListener('change',()=>handle(camId,fileId));
+  $(fileId)?.addEventListener('change',()=>handle(fileId,camId));
+}
+
+// ── Article photo consent visibility ──
+function artPhotoWrapUpdate() {
+  const hasFile=!!(
+    $('art-fi-cam')?.files?.length||$('art-fi-file')?.files?.length||
+    $('art-ci-cam')?.files?.length||$('art-ci-file')?.files?.length||
+    $('art-bi-cam')?.files?.length||$('art-bi-file')?.files?.length
+  );
+  const wrap=$('art-consent-photo-wrap');
+  if(wrap) wrap.classList.toggle('consent-wrap-hidden',!hasFile);
+  if(!hasFile){ const cp=$('art-consent-photo'); if(cp) cp.checked=false; }
+  artConsentUpdate();
+}
+setupFilePair('art-fi-cam','art-fi-file','art-fi-lbl', artPhotoWrapUpdate);
+setupFilePair('art-ci-cam','art-ci-file','art-ci-lbl', artPhotoWrapUpdate);
+setupFilePair('art-bi-cam','art-bi-file','art-bi-lbl', artPhotoWrapUpdate);
+setupFilePair('fla-ph-cam','fla-ph-file','fla-ph-lbl', null);
+setupFilePair('pho-cam','pho-file','pho-lbl', phoFileChanged);
+
+// ── Article consent gate ──
+function artConsentUpdate() {
+  const photoRequired=!$('art-consent-photo-wrap').classList.contains('consent-wrap-hidden');
+  const cp=$('art-consent-photo'); const cc=$('art-consent-content');
+  const photoOk=!photoRequired||(cp&&cp.checked);
+  const btn=$('art-submit-btn'); if(btn) btn.disabled=!(photoOk&&cc?.checked);
+}
+$('art-consent-photo').addEventListener('change', artConsentUpdate);
+$('art-consent-content').addEventListener('change', artConsentUpdate);
+
+// ── Article submit wrapper (consent error hint) ──
+$('art-submit-wrap').addEventListener('click',()=>{
+  if($('art-submit-btn')?.disabled){
+    const msg=$('art-msg');
+    msg.textContent='Vahvista suostumus ennen lähettämistä rastittamalla vaaditut ruudut.';
+    msg.className='msg err'; msg.style.display='block';
+    const w=$('art-consent-photo-wrap');
+    (w&&!w.classList.contains('consent-wrap-hidden')?w:$('art-consent-content'))?.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+});
+
+// ── Image helpers ──
+function generateThumb(file){
+  return new Promise(resolve=>{
+    try{
+      const reader=new FileReader();
+      reader.onload=ev=>{
+        const img=new Image();
+        img.onload=()=>{
+          try{
+            const MAX=300; let w=img.width,h=img.height;
+            if(w>h){if(w>MAX){h=Math.round(h*(MAX/w));w=MAX;}}
+            else{if(h>MAX){w=Math.round(w*(MAX/h));h=MAX;}}
+            const c=document.createElement('canvas');
+            c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+            resolve(c.toDataURL('image/jpeg',0.7));
+          }catch{resolve(null);}
+        };
+        img.onerror=()=>resolve(null);
+        img.src=ev.target.result;
+      };
+      reader.onerror=()=>resolve(null);
+      reader.readAsDataURL(file);
+    }catch{resolve(null);}
+  });
+}
+function resizeMainImage(file){
+  return new Promise(resolve=>{
+    try{
+      const reader=new FileReader();
+      reader.onload=ev=>{
+        const img=new Image();
+        img.onload=()=>{
+          try{
+            const MAX=1600;
+            if(img.width<=MAX&&img.height<=MAX){resolve(file);return;}
+            let w=img.width,h=img.height;
+            if(w>h){h=Math.round(h*(MAX/w));w=MAX;}
+            else{w=Math.round(w*(MAX/h));h=MAX;}
+            const c=document.createElement('canvas');
+            c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+            c.toBlob(blob=>{
+              if(!blob){resolve(file);return;}
+              const name=file.name.replace(/\.(jpe?g|png|webp)$/i,'.jpg');
+              resolve(new File([blob],name,{type:'image/jpeg'}));
+            },'image/jpeg',0.8);
+          }catch{resolve(file);}
+        };
+        img.onerror=()=>resolve(file);
+        img.src=ev.target.result;
+      };
+      reader.onerror=()=>resolve(file);
+      reader.readAsDataURL(file);
+    }catch{resolve(file);}
+  });
+}
+
+// ── Article submit ──
+$('app-article-form').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const msg=$('art-msg'); const btn=$('art-submit-btn');
+  msg.style.display='none';
+  // Re-check consent
+  const photoRequired=!$('art-consent-photo-wrap').classList.contains('consent-wrap-hidden');
+  if((photoRequired&&!$('art-consent-photo').checked)||!$('art-consent-content').checked){
+    msg.textContent='Vahvista suostumus ennen lähettämistä rastittamalla vaaditut ruudut.';
+    msg.className='msg err'; msg.style.display='block'; return;
+  }
+  btn.disabled=true; const orig=btn.textContent; btn.textContent='Lähetetään…';
+  try {
+    const fd=new FormData(e.target);
+    // Fix-up dual-name file inputs
+    for(const[cam,fil,nm]of[['art-fi-cam','art-fi-file','featured_image'],['art-ci-cam','art-ci-file','card_image']]){
+      fd.delete(nm); const f=$(cam)?.files?.[0]||$(fil)?.files?.[0]; if(f) fd.set(nm,f,f.name);
+    }
+    fd.delete('body_images');
+    const bc=$('art-bi-cam'),bf=$('art-bi-file');
+    const bfl=bc?.files?.length>0?bc.files:bf?.files;
+    if(bfl?.length>0) for(const f of bfl) fd.append('body_images',f,f.name);
+    const r=await fetch('/api/submit-article',{method:'POST',credentials:'same-origin',body:fd});
+    const data=await r.json().catch(()=>({}));
+    if(r.ok&&data.ok){
+      toast('✓ Artikkeli lähetetty toimitukselle!');
+      e.target.reset();
+      $('art-consent-photo-wrap').classList.add('consent-wrap-hidden');
+      ['art-fi-lbl','art-ci-lbl','art-bi-lbl'].forEach(id=>{const l=$(id);if(l)l.textContent='Ei tiedostoa valittu';});
+      artConsentUpdate();
+      document.querySelector('.app-main').scrollTo(0,0);
+    } else if(r.status===401||r.status===403){
+      msg.textContent='✗ Istunto vanhentunut — kirjaudu uudelleen.'; msg.className='msg err'; msg.style.display='block';
+    } else {
+      msg.textContent='✗ '+(data.error||'Lähetys epäonnistui — yritä uudelleen.'); msg.className='msg err'; msg.style.display='block';
+    }
+  } catch {
+    msg.textContent='✗ Yhteysvirhe — yritä uudelleen.'; msg.className='msg err'; msg.style.display='block';
+  } finally {
+    btn.textContent=orig; artConsentUpdate();
+  }
+});
+
+$('art-clear-btn').addEventListener('click',()=>{
+  $('app-article-form').reset();
+  $('art-msg').style.display='none';
+  $('art-consent-photo-wrap').classList.add('consent-wrap-hidden');
+  ['art-fi-lbl','art-ci-lbl','art-bi-lbl'].forEach(id=>{const l=$(id);if(l)l.textContent='Ei tiedostoa valittu';});
+  artConsentUpdate();
+});
+
+// ── Pikauutinen ──
+let pendingFlash=null;
+
+function flashCharCount() {
+  const t=$('fla-edit-title'),b=$('fla-edit-body');
+  const tc=$('fla-title-count'),bc=$('fla-body-count');
+  if(t&&tc){const n=t.value.length;tc.textContent=`${n} / 80`;tc.style.color=n>72?'#c0392b':'#999';}
+  if(b&&bc){const n=b.value.length;bc.textContent=`${n} / 500`;bc.style.color=n>450?'#c0392b':'#999';}
+}
+$('fla-edit-title').addEventListener('input',flashCharCount);
+$('fla-edit-body').addEventListener('input',flashCharCount);
+
+function flaConsentUpdate() {
+  const photoRequired=!$('fla-consent-photo-wrap').classList.contains('consent-wrap-hidden');
+  const cp=$('fla-consent-photo'); const cc=$('fla-consent-content');
+  const photoOk=!photoRequired||(cp&&cp.checked);
+  const btn=$('fla-submit-btn'); if(btn) btn.disabled=!(photoOk&&cc?.checked);
+}
+$('fla-consent-photo').addEventListener('change',flaConsentUpdate);
+$('fla-consent-content').addEventListener('change',flaConsentUpdate);
+
+$('fla-submit-wrap').addEventListener('click',()=>{
+  if($('fla-submit-btn')?.disabled){
+    const msg=$('flash-submit-msg');
+    msg.textContent='Vahvista suostumus ennen lähettämistä rastittamalla vaaditut ruudut.';
+    msg.className='msg err'; msg.style.display='block';
+  }
+});
+
+function resetFlash() {
+  pendingFlash=null;
+  $('app-flash-form').reset();
+  $('fla-ph-lbl').textContent='Ei tiedostoa valittu';
+  $('flash-gen-msg').style.display='none';
+  $('flash-form-screen').style.display='';
+  $('flash-review-screen').classList.add('flash-review-hidden');
+  $('flash-confirm-screen').classList.add('flash-review-hidden');
+  $('fla-edit-title').value=''; $('fla-edit-body').value='';
+  $('fla-title-count').textContent='0 / 80'; $('fla-body-count').textContent='0 / 500';
+  $('fla-consent-photo-wrap').classList.add('consent-wrap-hidden');
+  $('fla-consent-photo').checked=false; $('fla-consent-content').checked=false;
+  $('flash-submit-msg').style.display='none';
+  flaConsentUpdate();
+  document.querySelector('.app-main').scrollTo(0,0);
+}
+
+$('app-flash-form').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const msg=$('flash-gen-msg'); const btn=$('fla-gen-btn');
+  msg.style.display='none';
+  btn.disabled=true; const orig=btn.textContent; btn.textContent='Luodaan… (muutama sekunti)';
+  try {
+    const fd=new FormData(e.target);
+    fd.delete('photo');
+    const fp=$('fla-ph-cam')?.files?.[0]||$('fla-ph-file')?.files?.[0];
+    if(fp) fd.set('photo',fp,fp.name);
+    pendingFlash={category:fd.get('category')||'',date:fd.get('paivays')||'',photo:fp&&fp.size>0?fp:null};
+    const r=await fetch('/api/generate-article',{method:'POST',credentials:'same-origin',body:fd});
+    const data=await r.json().catch(()=>({}));
+    if(r.ok&&data.ok){
+      $('fla-edit-title').value=data.title||'';
+      $('fla-edit-body').value=data.body||'';
+      flashCharCount();
+      $('fla-consent-photo-wrap').classList.toggle('consent-wrap-hidden',!pendingFlash?.photo);
+      $('flash-form-screen').style.display='none';
+      $('flash-review-screen').classList.remove('flash-review-hidden');
+      flaConsentUpdate();
+      document.querySelector('.app-main').scrollTo(0,0);
+    } else if(r.status===401||r.status===403){
+      msg.textContent='✗ Istunto vanhentunut — kirjaudu uudelleen.'; msg.className='msg err'; msg.style.display='block';
+    } else {
+      msg.textContent='✗ '+(data.error||'Pikauutisen luonti epäonnistui — yritä uudelleen.'); msg.className='msg err'; msg.style.display='block';
+    }
+  } catch {
+    msg.textContent='✗ Yhteysvirhe — yritä uudelleen.'; msg.className='msg err'; msg.style.display='block';
+  } finally { btn.disabled=false; btn.textContent=orig; }
+});
+
+$('fla-submit-btn').addEventListener('click', async()=>{
+  const msg=$('flash-submit-msg'); const btn=$('fla-submit-btn');
+  msg.style.display='none';
+  const photoRequired=!$('fla-consent-photo-wrap').classList.contains('consent-wrap-hidden');
+  if((photoRequired&&!$('fla-consent-photo').checked)||!$('fla-consent-content').checked){
+    msg.textContent='Vahvista suostumus ennen lähettämistä rastittamalla vaaditut ruudut.'; msg.className='msg err'; msg.style.display='block'; return;
+  }
+  const title=($('fla-edit-title')?.value||'').trim();
+  const body=($('fla-edit-body')?.value||'').trim();
+  if(!title){msg.textContent='✗ Otsikko ei voi olla tyhjä.';msg.className='msg err';msg.style.display='block';return;}
+  if(!body){msg.textContent='✗ Teksti ei voi olla tyhjä.';msg.className='msg err';msg.style.display='block';return;}
+  btn.disabled=true; const orig=btn.textContent; btn.textContent='Lähetetään…';
+  try {
+    const fd=new FormData();
+    fd.append('title',title); fd.append('body',body);
+    fd.append('category',pendingFlash?.category||''); fd.append('date',pendingFlash?.date||'');
+    fd.append('consent_photo','1'); fd.append('consent_content','1');
+    if(pendingFlash?.photo) fd.append('photo',pendingFlash.photo);
+    const r=await fetch('/api/submit-pikauutinen',{method:'POST',credentials:'same-origin',body:fd});
+    const data=await r.json().catch(()=>({}));
+    if(r.ok&&data.ok){
+      $('flash-review-screen').classList.add('flash-review-hidden');
+      $('flash-confirm-screen').classList.remove('flash-review-hidden');
+      document.querySelector('.app-main').scrollTo(0,0);
+    } else if(r.status===401||r.status===403){
+      msg.textContent='✗ Istunto vanhentunut — kirjaudu uudelleen.'; msg.className='msg err'; msg.style.display='block';
+    } else {
+      msg.textContent='✗ '+(data.error||'Lähetys epäonnistui — yritä uudelleen.'); msg.className='msg err'; msg.style.display='block';
+    }
+  } catch {
+    msg.textContent='✗ Yhteysvirhe — yritä uudelleen.'; msg.className='msg err'; msg.style.display='block';
+  } finally { btn.textContent=orig; flaConsentUpdate(); }
+});
+
+$('fla-clear-btn').addEventListener('click', resetFlash);
+$('fla-new-btn').addEventListener('click', resetFlash);
+$('fla-again-btn').addEventListener('click', resetFlash);
+
+// ── Photo form ──
+function phoFileChanged() {
+  const hasFile=!!($('pho-cam')?.files?.length||$('pho-file')?.files?.length);
+  // Consent already gated — just re-evaluate button state
+  phoConsentUpdate();
+}
+function phoConsentUpdate() {
+  const hasFile=!!($('pho-cam')?.files?.length||$('pho-file')?.files?.length);
+  const consented=$('pho-consent')?.checked;
+  const btn=$('pho-submit-btn'); if(btn) btn.disabled=!(hasFile&&consented);
+}
+$('pho-consent').addEventListener('change', phoConsentUpdate);
+
+$('pho-submit-wrap').addEventListener('click',()=>{
+  if($('pho-submit-btn')?.disabled){
+    const msg=$('pho-msg'); const hasFile=!!($('pho-cam')?.files?.length||$('pho-file')?.files?.length);
+    if(!hasFile){ msg.textContent='Valitse ensin kuva.'; msg.className='msg err'; msg.style.display='block'; return; }
+    msg.textContent='Vahvista suostumus ennen lähettämistä rastittamalla vaadittu ruutu.'; msg.className='msg err'; msg.style.display='block';
+    $('pho-consent').closest('label')?.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+});
+
+$('app-photo-form').addEventListener('submit', async e=>{
+  e.preventDefault();
+  const msg=$('pho-msg'); const btn=$('pho-submit-btn');
+  msg.style.display='none';
+  const file=$('pho-cam')?.files?.[0]||$('pho-file')?.files?.[0];
+  if(!file){msg.textContent='✗ Valitse kuva.';msg.className='msg err';msg.style.display='block';return;}
+  if(!$('pho-consent').checked){msg.textContent='✗ Vahvista suostumus.';msg.className='msg err';msg.style.display='block';return;}
+  btn.disabled=true; const orig=btn.textContent; btn.textContent='Lähetetään…';
+  try {
+    const thumb=await generateThumb(file);
+    const mainFile=await resizeMainImage(file);
+    const fd=new FormData(e.target);
+    fd.delete('photo'); fd.set('photo',mainFile);
+    fd.set('consent_given','1');
+    if(thumb) fd.append('thumb_data',thumb);
+    const r=await fetch('/api/submit-photo',{method:'POST',credentials:'same-origin',body:fd});
+    const data=await r.json().catch(()=>({}));
+    if(r.ok&&data.ok){
+      toast('✓ Kuva lähetetty toimitukselle!');
+      e.target.reset(); $('pho-lbl').textContent='Ei tiedostoa valittu';
+      phoConsentUpdate();
+      document.querySelector('.app-main').scrollTo(0,0);
+    } else if(r.status===401||r.status===403){
+      msg.textContent='✗ Istunto vanhentunut — kirjaudu uudelleen.'; msg.className='msg err'; msg.style.display='block';
+    } else {
+      msg.textContent='✗ '+(data.error||'Lähetys epäonnistui — yritä uudelleen.'); msg.className='msg err'; msg.style.display='block';
+    }
+  } catch {
+    msg.textContent='✗ Yhteysvirhe — yritä uudelleen.'; msg.className='msg err'; msg.style.display='block';
+  } finally { btn.textContent=orig; phoConsentUpdate(); }
+});
+
+$('pho-clear-btn').addEventListener('click',()=>{
+  $('app-photo-form').reset();
+  $('pho-lbl').textContent='Ei tiedostoa valittu';
+  $('pho-msg').style.display='none';
+  phoConsentUpdate();
+});
+
+// ── Idle auto-logout (25 min warn, 30 min logout) ──
+(function(){
+  const IDLE=30*60*1000, WARN=25*60*1000, THROTTLE=2000;
+  let wt,lt,banner=null,last=0;
+  function mkBanner(){
+    if(banner) return banner;
+    banner=document.createElement('div');
+    banner.textContent='Istuntosi vanhenee 5 minuutissa. Jatka kirjautumista klikkaamalla.';
+    Object.assign(banner.style,{
+      position:'fixed',left:'50%',bottom:'80px',transform:'translateX(-50%)',
+      zIndex:'9999',maxWidth:'min(92vw,420px)',background:'#1a1a1a',color:'#fff',
+      border:'1px solid #ff9900',borderLeft:'4px solid #ff9900',borderRadius:'10px',
+      padding:'14px 18px',font:'600 .88rem/1.4 system-ui,sans-serif',cursor:'pointer',
+      boxShadow:'0 8px 24px rgba(0,0,0,.5)',display:'none',textAlign:'center',
+    });
+    banner.addEventListener('click',reset);
+    document.body.appendChild(banner);
+    return banner;
+  }
+  function showWarn(){mkBanner().style.display='block';}
+  function hideWarn(){if(banner)banner.style.display='none';}
+  async function doLogout(){
+    hideWarn();
+    try{await fetch('/api/auth/logout',{method:'POST',credentials:'same-origin'});}catch{}
+    showScreen('screen-login');
+  }
+  function reset(){
+    hideWarn(); clearTimeout(wt); clearTimeout(lt);
+    wt=setTimeout(showWarn,WARN); lt=setTimeout(doLogout,IDLE);
+  }
+  function onActivity(){
+    if(banner&&banner.style.display==='block'){last=Date.now();reset();return;}
+    const now=Date.now(); if(now-last<THROTTLE)return; last=now; reset();
+  }
+  ['mousemove','keydown','click','touchstart'].forEach(ev=>document.addEventListener(ev,onActivity,{passive:true}));
+  reset();
+})();
+
+// ── Service worker ──
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));
+}
+</script>
+</body>
+</html>

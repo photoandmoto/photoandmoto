@@ -1,6 +1,6 @@
-const CACHE_NAME = 'photoandmoto-v1';
+const CACHE_NAME = 'photoandmoto-v2';
 const STATIC_ASSETS = [
-  '/fi/yleinen-kyna/',
+  '/fi/app/',
   '/manifest.json',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png',

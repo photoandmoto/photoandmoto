@@ -147,13 +147,6 @@ const otherLang = lang === 'fi' ? 'en' : 'fi';
   <!-- Google Analytics (GA4) is loaded by CookieConsent.astro only after
        the user explicitly consents to analytics. See that component. -->
 
-  <!-- PWA standalone: hide site chrome so only the app content is visible -->
-  <style is:global>
-    @media (display-mode: standalone) {
-      .site-header { display: none !important; }
-      .site-footer { display: none !important; }
-    }
-  </style>
 </head>
 <body>
   <Header lang={lang} currentPath={Astro.url.pathname}>
@@ -166,11 +159,6 @@ const otherLang = lang === 'fi' ? 'en' : 'fi';
 
   <Footer lang={lang} />
   <CookieConsent lang={lang} />
-<script is:inline>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js'); });
-  }
-</script>
 <script is:inline>
   // Open every link in a new tab, except those marked data-no-newtab.
   // Runs once on page load.
