@@ -1,0 +1,26 @@
+{
+  "name": "Photo & Moto",
+  "short_name": "Photo & Moto",
+  "description": "Avustajat — lähetä artikkeli, pikauutinen tai kuva",
+  "start_url": "/fi/yleinen-kyna/",
+  "scope": "/fi/yleinen-kyna/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#000000",
+  "theme_color": "#ff9900",
+  "lang": "fi",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
