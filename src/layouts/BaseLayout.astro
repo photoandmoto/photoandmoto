@@ -148,7 +148,7 @@ const otherLang = lang === 'fi' ? 'en' : 'fi';
        the user explicitly consents to analytics. See that component. -->
 
   <!-- PWA standalone: hide site chrome so only the app content is visible -->
-  <style>
+  <style is:global>
     @media (display-mode: standalone) {
       .site-header { display: none !important; }
       .site-footer { display: none !important; }
