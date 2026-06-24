@@ -70,7 +70,7 @@ html,body{height:100%;overflow:hidden;font-family:'Montserrat',sans-serif;backgr
 /* ── Bottom nav ── */
 .bottom-nav{
   flex-shrink:0;
-  height:calc(60px + env(safe-area-inset-bottom));
+  height:calc(64px + env(safe-area-inset-bottom));
   background:#000;
   display:flex;
   border-top:1px solid rgba(255,255,255,.1);
@@ -79,12 +79,12 @@ html,body{height:100%;overflow:hidden;font-family:'Montserrat',sans-serif;backgr
 .nav-tab{
   flex:1;background:none;border:none;cursor:pointer;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:3px;color:rgba(255,255,255,.45);
-  transition:color .15s;min-height:60px;
+  gap:4px;color:rgba(255,255,255,.45);
+  transition:color .15s;min-height:64px;
 }
 .nav-tab.active{color:#ff9900;}
-.nav-tab-icon{font-size:1.3rem;line-height:1;}
-.nav-tab-label{font-size:.65rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
+.nav-tab-icon{font-size:1.5rem;line-height:1;}
+.nav-tab-label{font-size:.72rem;font-weight:700;letter-spacing:.4px;text-transform:uppercase;}
 
 /* ── Tab panels ── */
 .tab-panel{display:none;padding:20px 16px 24px;}
@@ -168,6 +168,18 @@ textarea.inp{resize:vertical;min-height:100px;font-size:16px;line-height:1.5;}
   z-index:200;white-space:nowrap;max-width:90vw;text-align:center;
 }
 .toast.visible{opacity:1;}
+
+/* ── Button loading state ── */
+@keyframes spin{to{transform:rotate(360deg);}}
+.btn-loading{pointer-events:none;opacity:.85;}
+.btn-loading::after{
+  content:'';display:inline-block;vertical-align:middle;
+  width:14px;height:14px;margin-left:10px;margin-bottom:1px;
+  border:2.5px solid rgba(255,255,255,.35);
+  border-top-color:#fff;
+  border-radius:50%;
+  animation:spin .65s linear infinite;
+}
 </style>
 </head>
 <body>
@@ -547,7 +559,8 @@ $('login-btn').addEventListener('click', async()=>{
   const err=$('login-err');
   err.style.display='none';
   if(!email||!pw){err.textContent='Anna sähköposti ja salasana.';err.style.display='block';return;}
-  $('login-btn').disabled=true;
+  const loginBtn=$('login-btn');
+  loginBtn.classList.add('btn-loading'); loginBtn.textContent='Kirjaudutaan…';
   try {
     const r=await fetch('/api/auth/login',{
       method:'POST',credentials:'same-origin',
@@ -563,7 +576,7 @@ $('login-btn').addEventListener('click', async()=>{
     }
   } catch {
     err.textContent='Yhteysvirhe — yritä uudelleen.'; err.style.display='block';
-  } finally { $('login-btn').disabled=false; }
+  } finally { loginBtn.classList.remove('btn-loading'); loginBtn.textContent='Kirjaudu sisään'; }
 });
 // Allow Enter key in login fields
 [$('login-email'),$('login-pw')].forEach(el=>el.addEventListener('keydown',e=>{if(e.key==='Enter')$('login-btn').click();}));
@@ -714,7 +727,7 @@ $('app-article-form').addEventListener('submit', async e=>{
     msg.textContent='Vahvista suostumus ennen lähettämistä rastittamalla vaaditut ruudut.';
     msg.className='msg err'; msg.style.display='block'; return;
   }
-  btn.disabled=true; const orig=btn.textContent; btn.textContent='Lähetetään…';
+  btn.disabled=true; btn.classList.add('btn-loading'); const orig=btn.textContent; btn.textContent='Lähetetään…';
   try {
     const fd=new FormData(e.target);
     // Fix-up dual-name file inputs
@@ -742,7 +755,7 @@ $('app-article-form').addEventListener('submit', async e=>{
   } catch {
     msg.textContent='✗ Yhteysvirhe — yritä uudelleen.'; msg.className='msg err'; msg.style.display='block';
   } finally {
-    btn.textContent=orig; artConsentUpdate();
+    btn.disabled=false; btn.classList.remove('btn-loading'); btn.textContent=orig; artConsentUpdate();
   }
 });
 
@@ -804,7 +817,7 @@ $('app-flash-form').addEventListener('submit', async e=>{
   e.preventDefault();
   const msg=$('flash-gen-msg'); const btn=$('fla-gen-btn');
   msg.style.display='none';
-  btn.disabled=true; const orig=btn.textContent; btn.textContent='Luodaan… (muutama sekunti)';
+  btn.disabled=true; btn.classList.add('btn-loading'); const orig=btn.textContent; btn.textContent='Luodaan…';
   try {
     const fd=new FormData(e.target);
     fd.delete('photo');
@@ -829,7 +842,7 @@ $('app-flash-form').addEventListener('submit', async e=>{
     }
   } catch {
     msg.textContent='✗ Yhteysvirhe — yritä uudelleen.'; msg.className='msg err'; msg.style.display='block';
-  } finally { btn.disabled=false; btn.textContent=orig; }
+  } finally { btn.disabled=false; btn.classList.remove('btn-loading'); btn.textContent=orig; }
 });
 
 $('fla-submit-btn').addEventListener('click', async()=>{
@@ -843,7 +856,7 @@ $('fla-submit-btn').addEventListener('click', async()=>{
   const body=($('fla-edit-body')?.value||'').trim();
   if(!title){msg.textContent='✗ Otsikko ei voi olla tyhjä.';msg.className='msg err';msg.style.display='block';return;}
   if(!body){msg.textContent='✗ Teksti ei voi olla tyhjä.';msg.className='msg err';msg.style.display='block';return;}
-  btn.disabled=true; const orig=btn.textContent; btn.textContent='Lähetetään…';
+  btn.disabled=true; btn.classList.add('btn-loading'); const orig=btn.textContent; btn.textContent='Lähetetään…';
   try {
     const fd=new FormData();
     fd.append('title',title); fd.append('body',body);
@@ -863,7 +876,7 @@ $('fla-submit-btn').addEventListener('click', async()=>{
     }
   } catch {
     msg.textContent='✗ Yhteysvirhe — yritä uudelleen.'; msg.className='msg err'; msg.style.display='block';
-  } finally { btn.textContent=orig; flaConsentUpdate(); }
+  } finally { btn.disabled=false; btn.classList.remove('btn-loading'); btn.textContent=orig; flaConsentUpdate(); }
 });
 
 $('fla-clear-btn').addEventListener('click', resetFlash);
@@ -899,7 +912,7 @@ $('app-photo-form').addEventListener('submit', async e=>{
   const file=$('pho-cam')?.files?.[0]||$('pho-file')?.files?.[0];
   if(!file){msg.textContent='✗ Valitse kuva.';msg.className='msg err';msg.style.display='block';return;}
   if(!$('pho-consent').checked){msg.textContent='✗ Vahvista suostumus.';msg.className='msg err';msg.style.display='block';return;}
-  btn.disabled=true; const orig=btn.textContent; btn.textContent='Lähetetään…';
+  btn.disabled=true; btn.classList.add('btn-loading'); const orig=btn.textContent; btn.textContent='Lähetetään…';
   try {
     const thumb=await generateThumb(file);
     const mainFile=await resizeMainImage(file);
@@ -921,7 +934,7 @@ $('app-photo-form').addEventListener('submit', async e=>{
     }
   } catch {
     msg.textContent='✗ Yhteysvirhe — yritä uudelleen.'; msg.className='msg err'; msg.style.display='block';
-  } finally { btn.textContent=orig; phoConsentUpdate(); }
+  } finally { btn.disabled=false; btn.classList.remove('btn-loading'); btn.textContent=orig; phoConsentUpdate(); }
 });
 
 $('pho-clear-btn').addEventListener('click',()=>{
