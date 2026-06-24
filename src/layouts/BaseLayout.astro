@@ -113,6 +113,14 @@ const otherLang = lang === 'fi' ? 'en' : 'fi';
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="apple-touch-icon" href="/favicon.png">
 
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#ff9900" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="apple-mobile-web-app-title" content="Photo & Moto" />
+  <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+
   <!-- JSON-LD: Organization + WebSite -->
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
@@ -150,6 +158,11 @@ const otherLang = lang === 'fi' ? 'en' : 'fi';
 
   <Footer lang={lang} />
   <CookieConsent lang={lang} />
+<script is:inline>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js'); });
+  }
+</script>
 <script is:inline>
   // Open every link in a new tab, except those marked data-no-newtab.
   // Runs once on page load.
