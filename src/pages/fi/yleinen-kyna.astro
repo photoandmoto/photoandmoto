@@ -75,10 +75,10 @@ const lang = 'fi';
           <label class="yk-field"><span>Alaotsikko</span><input name="subtitle" class="inp" /></label>
           <label class="yk-field"><span>Kategoria *</span><select id="yk-cat" name="category" class="inp" required></select></label>
           <label class="yk-field"><span>Avainsanat (pilkulla erotettuna)</span><input name="tags" class="inp" placeholder="esim. motocross, MXGP, Hyvinkää" /></label>
-          <label class="yk-field"><span>Pääkuva *</span><input name="featured_image" class="inp" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" required /></label>
-          <label class="yk-field"><span>Korttikuva (valinnainen)</span><input name="card_image" class="inp" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" /></label>
+          <label class="yk-field"><span>Pääkuva *</span><input name="featured_image" class="inp" type="file" accept="image/jpeg,image/png,image/webp" required /></label>
+          <label class="yk-field"><span>Korttikuva (valinnainen)</span><input name="card_image" class="inp" type="file" accept="image/jpeg,image/png,image/webp" /></label>
           <label class="yk-field"><span>Pääkuvan kuvateksti</span><input name="image_caption" class="inp" /></label>
-          <label class="yk-field"><span>Lisäkuvat tekstiin (valinnainen, useita)</span><input name="body_images" class="inp" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" multiple /></label>
+          <label class="yk-field"><span>Lisäkuvat tekstiin (valinnainen, useita)</span><input name="body_images" class="inp" type="file" accept="image/jpeg,image/png,image/webp" multiple /></label>
           <label class="yk-field"><span>Sisältö * (Markdown)</span><textarea name="body" class="inp yk-textarea" rows="14" required></textarea></label>
           <label class="yk-field"><span>Lähteet (valinnainen, yksi per rivi)</span><textarea name="sources" class="inp" rows="3"></textarea></label>
           <p class="yk-card__sub">Toimitus tarkistaa ja julkaisee artikkelin. Lähetys tallentuu luonnoksena.</p>
@@ -113,7 +113,7 @@ const lang = 'fi';
             <label class="yk-field"><span>Negatiiviset tapahtumat</span><textarea name="negatiiviset_tapahtumat" class="inp" rows="2" placeholder="valinnainen — kaatumiset, keskeytykset"></textarea></label>
             <label class="yk-field"><span>Tulokset *</span><textarea name="tulokset" class="inp" rows="3" required placeholder="top 3 tai tuloslista"></textarea></label>
             <label class="yk-field"><span>Muuta</span><textarea name="muuta" class="inp" rows="2" placeholder="valinnainen"></textarea></label>
-            <label class="yk-field"><span>Pääkuva (valinnainen)</span><input name="photo" class="inp" type="file" accept="image/jpeg,image/png,image/webp" capture="environment" /></label>
+            <label class="yk-field"><span>Pääkuva (valinnainen)</span><input name="photo" class="inp" type="file" accept="image/jpeg,image/png,image/webp" /></label>
             <div class="yk-flash-actions">
               <button id="yk-flash-btn" class="btn btn--submit" type="submit">Luo pikauutinen</button>
               <button id="yk-flash-clear" class="btn btn--ghost" type="button">Tyhjennä</button>
