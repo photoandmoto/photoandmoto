@@ -1,4 +1,4 @@
-const CACHE_NAME = 'photoandmoto-v2';
+const CACHE_NAME = 'photoandmoto-v3';
 const STATIC_ASSETS = [
   '/fi/app/',
   '/manifest.json',
@@ -25,6 +25,23 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return;
   if (e.request.url.includes('/api/')) return;
+
+  const url = new URL(e.request.url);
+  const isAppShell = url.pathname === '/fi/app/' || url.pathname === '/fi/app';
+
+  if (isAppShell) {
+    // Network-first: always fetch fresh HTML so updates appear without reinstalling
+    e.respondWith(
+      fetch(e.request)
+        .then((r) => {
+          caches.open(CACHE_NAME).then((c) => c.put(e.request, r.clone()));
+          return r;
+        })
+        .catch(() => caches.match(e.request))
+    );
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request).then((cached) => cached || fetch(e.request))
   );

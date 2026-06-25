@@ -95,7 +95,7 @@ html,body{height:100%;font-family:'Montserrat',sans-serif;background:#000;color:
 
 /* ── Form elements ── */
 .field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
-.field-label{font-size:.72rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.5px;}
+.field-label{font-size:.85rem;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.4px;}
 .inp{
   width:100%;background:#fff;
   border:1.5px solid #ddd;border-radius:10px;
@@ -128,28 +128,28 @@ textarea.inp{resize:vertical;min-height:100px;font-size:16px;line-height:1.5;}
 /* ── File picker buttons ── */
 .file-field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
 .file-btns{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
-.file-btn-cam{background:#ff9900;color:#fff;border:none;border-radius:10px;padding:11px 16px;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;min-height:44px;white-space:nowrap;}
-.file-btn-file{background:#f0f0f0;color:#444;border:1.5px solid #ddd;border-radius:10px;padding:10px 16px;font-family:inherit;font-size:.9rem;font-weight:700;cursor:pointer;min-height:44px;white-space:nowrap;}
-.file-name{font-size:.78rem;color:#888;font-style:italic;}
+.file-btn-cam{background:#ff9900;color:#fff;border:none;border-radius:10px;padding:11px 16px;font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer;min-height:44px;white-space:nowrap;}
+.file-btn-file{background:#f0f0f0;color:#444;border:1.5px solid #ddd;border-radius:10px;padding:10px 16px;font-family:inherit;font-size:1rem;font-weight:700;cursor:pointer;min-height:44px;white-space:nowrap;}
+.file-name{font-size:.85rem;color:#888;font-style:italic;}
 
 /* ── Consent ── */
 .consent{display:flex;align-items:flex-start;gap:10px;background:#fff8e6;border:1px solid #ffdf85;border-left:3px solid #ff9900;border-radius:10px;padding:14px;cursor:pointer;margin-bottom:16px;}
 .consent input[type="checkbox"]{flex:0 0 auto;width:18px;height:18px;margin-top:2px;accent-color:#ff9900;cursor:pointer;}
-.consent-text{font-size:.85rem;line-height:1.5;color:#444;}
+.consent-text{font-size:.92rem;line-height:1.5;color:#444;}
 
 /* ── Messages ── */
-.msg{font-size:.88rem;font-weight:600;border-radius:8px;padding:12px 14px;margin-bottom:12px;display:none;}
+.msg{font-size:.92rem;font-weight:600;border-radius:8px;padding:12px 14px;margin-bottom:12px;display:none;}
 .msg.ok{background:#e8f5ee;color:#1a8a5c;border:1px solid #b8dfc9;}
 .msg.err{background:#fdeaea;color:#c0392b;border:1px solid #f5c6c6;}
 .msg.info{background:#fff3cd;color:#856404;border:1px solid #ffc107;}
-.err-inline{color:#c0392b;font-size:.83rem;font-weight:600;margin-bottom:8px;display:none;}
+.err-inline{color:#c0392b;font-size:.9rem;font-weight:600;margin-bottom:8px;display:none;}
 
 /* ── Char count ── */
-.char-count{font-size:.73rem;color:#999;align-self:flex-end;margin-top:2px;}
+.char-count{font-size:.82rem;color:#999;align-self:flex-end;margin-top:2px;}
 
 /* ── Section headings inside tabs ── */
-.tab-heading{font-size:1.1rem;font-weight:800;margin-bottom:4px;}
-.tab-sub{font-size:.82rem;color:#888;margin-bottom:20px;line-height:1.5;}
+.tab-heading{font-size:1.15rem;font-weight:800;margin-bottom:4px;}
+.tab-sub{font-size:.92rem;color:#888;margin-bottom:20px;line-height:1.5;}
 
 /* ── Pikauutinen review ── */
 .flash-review{display:flex;flex-direction:column;}
@@ -171,6 +171,24 @@ textarea.inp{resize:vertical;min-height:100px;font-size:16px;line-height:1.5;}
   z-index:200;white-space:nowrap;max-width:90vw;text-align:center;
 }
 .toast.visible{opacity:1;}
+
+/* ── Mic button (Web Speech API) ── */
+.mic-btn{
+  align-self:flex-end;
+  padding:7px 16px;
+  border:1.5px solid #ddd;border-radius:20px;
+  background:#f0f0f0;color:#555;
+  font-size:.9rem;font-family:inherit;font-weight:700;
+  cursor:pointer;min-height:38px;
+  transition:background .15s,color .15s,border-color .15s;
+  display:flex;align-items:center;gap:5px;
+}
+.mic-btn:active{transform:scale(.97);}
+.mic-btn.mic-active{
+  background:#fff0f0;color:#c0392b;border-color:#f5c6c6;
+  animation:mic-pulse 1.2s ease-in-out infinite;
+}
+@keyframes mic-pulse{0%,100%{opacity:1;}50%{opacity:.55;}}
 
 /* ── Button loading state ── */
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -241,7 +259,7 @@ textarea.inp{resize:vertical;min-height:100px;font-size:16px;line-height:1.5;}
         <form id="app-flash-form" novalidate>
           <div class="field">
             <label for="fla-aihe" class="field-label">Aihe *</label>
-            <input id="fla-aihe" name="aihe" type="text" class="inp" required placeholder="esim. MXGP Italia 2026">
+            <input id="fla-aihe" name="aihe" type="text" class="inp" required placeholder="esim. MXGP Italia 2026" data-mic="fi-FI">
           </div>
           <div class="field">
             <label for="fla-cat" class="field-label">Kategoria *</label>
@@ -253,7 +271,7 @@ textarea.inp{resize:vertical;min-height:100px;font-size:16px;line-height:1.5;}
           </div>
           <div class="field">
             <label for="fla-place" class="field-label">Paikka *</label>
-            <input id="fla-place" name="paikka" type="text" class="inp" required placeholder="rata, kaupunki, maa">
+            <input id="fla-place" name="paikka" type="text" class="inp" required placeholder="rata, kaupunki, maa" data-mic="fi-FI">
           </div>
           <div class="field">
             <label for="fla-weather" class="field-label">Sää</label>
@@ -261,19 +279,19 @@ textarea.inp{resize:vertical;min-height:100px;font-size:16px;line-height:1.5;}
           </div>
           <div class="field">
             <label for="fla-pos" class="field-label">Positiiviset tapahtumat *</label>
-            <textarea id="fla-pos" name="positiiviset_tapahtumat" class="inp" rows="3" required placeholder="kuka johti, palkintopallit, käännekohdat"></textarea>
+            <textarea id="fla-pos" name="positiiviset_tapahtumat" class="inp" rows="3" required placeholder="kuka johti, palkintopallit, käännekohdat" data-mic="fi-FI"></textarea>
           </div>
           <div class="field">
             <label for="fla-neg" class="field-label">Negatiiviset tapahtumat</label>
-            <textarea id="fla-neg" name="negatiiviset_tapahtumat" class="inp" rows="2" placeholder="valinnainen — kaatumiset, keskeytykset"></textarea>
+            <textarea id="fla-neg" name="negatiiviset_tapahtumat" class="inp" rows="2" placeholder="valinnainen — kaatumiset, keskeytykset" data-mic="fi-FI"></textarea>
           </div>
           <div class="field">
             <label for="fla-results" class="field-label">Tulokset *</label>
-            <textarea id="fla-results" name="tulokset" class="inp" rows="3" required placeholder="top 3 tai tuloslista"></textarea>
+            <textarea id="fla-results" name="tulokset" class="inp" rows="3" required placeholder="top 3 tai tuloslista" data-mic="fi-FI"></textarea>
           </div>
           <div class="field">
             <label for="fla-other" class="field-label">Muuta</label>
-            <textarea id="fla-other" name="muuta" class="inp" rows="2" placeholder="valinnainen"></textarea>
+            <textarea id="fla-other" name="muuta" class="inp" rows="2" placeholder="valinnainen" data-mic="fi-FI"></textarea>
           </div>
 
           <!-- Flash photo — dual buttons -->
@@ -306,7 +324,7 @@ textarea.inp{resize:vertical;min-height:100px;font-size:16px;line-height:1.5;}
         </div>
         <div class="field">
           <label for="fla-edit-body" class="field-label">Teksti</label>
-          <textarea id="fla-edit-body" class="inp" rows="7" maxlength="500" style="font-size:16px;line-height:1.6;"></textarea>
+          <textarea id="fla-edit-body" class="inp" rows="7" maxlength="500" style="font-size:16px;line-height:1.6;" data-mic="fi-FI"></textarea>
           <span class="char-count" id="fla-body-count">0 / 500</span>
         </div>
 
@@ -804,6 +822,41 @@ $('pho-clear-btn').addEventListener('click',()=>{
   }
   ['mousemove','keydown','click','touchstart'].forEach(ev=>document.addEventListener(ev,onActivity,{passive:true}));
   reset();
+})();
+
+// ── Voice input (Web Speech API) ──
+(function(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR) return;
+  let active=null; // {btn, rec} currently recording
+  document.querySelectorAll('[data-mic]').forEach(input=>{
+    const btn=document.createElement('button');
+    btn.type='button'; btn.className='mic-btn';
+    btn.setAttribute('aria-label','Sanele');
+    btn.textContent='🎤 Sanele';
+    input.after(btn);
+    btn.addEventListener('click',()=>{
+      if(active){
+        if(active.btn!==btn) return; // another field recording — ignore
+        active.rec.stop(); return;   // same button — stop
+      }
+      const rec=new SR();
+      rec.lang=input.dataset.mic||'fi-FI';
+      rec.continuous=false; rec.interimResults=false;
+      active={btn,rec};
+      btn.classList.add('mic-active'); btn.textContent='⏹ Lopeta';
+      rec.onresult=e=>{
+        const t=e.results[0][0].transcript;
+        input.value=input.value?input.value.trimEnd()+' '+t:t;
+        input.dispatchEvent(new Event('input'));
+      };
+      rec.onend=rec.onerror=()=>{
+        active=null;
+        btn.classList.remove('mic-active'); btn.textContent='🎤 Sanele';
+      };
+      rec.start();
+    });
+  });
 })();
 
 // ── Service worker ──
