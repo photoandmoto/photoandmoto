@@ -8,7 +8,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Photo &amp; Moto</title>
-  <meta name="description" content="Avustajat — lähetä artikkeli, pikauutinen tai kuva">
+  <meta name="description" content="Avustajat — lähetä pikauutinen tai kuva">
   <meta name="theme-color" content="#ff9900">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -22,11 +22,14 @@
 <style>
 /* ── Reset ── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden;font-family:'Montserrat',sans-serif;background:#000;color:#1a1a1a;-webkit-font-smoothing:antialiased}
+html,body{height:100%;font-family:'Montserrat',sans-serif;background:#000;color:#1a1a1a;-webkit-font-smoothing:antialiased;overflow:hidden;}
+
+/* ── App root — locks to viewport height, screens are absolute inside ── */
+#app{height:100vh;height:100dvh;position:relative;overflow:hidden;background:#000;}
 
 /* ── Screen system ── */
 .screen{
-  position:fixed;inset:0;
+  position:absolute;inset:0;
   flex-direction:column;
   display:none;
 }
@@ -161,7 +164,7 @@ textarea.inp{resize:vertical;min-height:100px;font-size:16px;line-height:1.5;}
 
 /* ── Toast notification ── */
 .toast{
-  position:fixed;top:calc(64px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);
+  position:absolute;top:calc(64px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);
   background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:999px;
   font-size:.85rem;font-weight:600;
   opacity:0;pointer-events:none;transition:opacity .2s ease;
@@ -183,6 +186,7 @@ textarea.inp{resize:vertical;min-height:100px;font-size:16px;line-height:1.5;}
 </style>
 </head>
 <body>
+<div id="app">
 
 <!-- ═══ SPLASH ═══ -->
 <div id="screen-splash" class="screen">
@@ -228,97 +232,8 @@ textarea.inp{resize:vertical;min-height:100px;font-size:16px;line-height:1.5;}
 
   <main class="app-main">
 
-    <!-- ── TAB: Artikkeli ── -->
-    <div id="tab-article" class="tab-panel active">
-      <p class="tab-sub">Toimitus tarkistaa ja julkaisee artikkelin. Lähetys tallentuu luonnoksena.</p>
-      <form id="app-article-form" novalidate>
-        <div class="field">
-          <label for="art-title" class="field-label">Otsikko *</label>
-          <input id="art-title" name="title" type="text" class="inp" required>
-        </div>
-        <div class="field">
-          <label for="art-subtitle" class="field-label">Alaotsikko</label>
-          <input id="art-subtitle" name="subtitle" type="text" class="inp">
-        </div>
-        <div class="field">
-          <label for="art-cat" class="field-label">Kategoria *</label>
-          <select id="art-cat" name="category" class="inp" required></select>
-        </div>
-        <div class="field">
-          <label for="art-tags" class="field-label">Avainsanat (pilkulla erotettuna)</label>
-          <input id="art-tags" name="tags" type="text" class="inp" placeholder="esim. motocross, MXGP, Hyvinkää">
-        </div>
-
-        <!-- Pääkuva — dual buttons -->
-        <div class="file-field">
-          <span class="field-label">Pääkuva *</span>
-          <input type="file" id="art-fi-cam" name="featured_image" accept="image/jpeg,image/png,image/webp" capture="environment" style="display:none">
-          <input type="file" id="art-fi-file" name="featured_image" accept="image/jpeg,image/png,image/webp" style="display:none">
-          <div class="file-btns">
-            <button type="button" class="file-btn-cam" data-target="art-fi-cam">📷 Kamera</button>
-            <button type="button" class="file-btn-file" data-target="art-fi-file">📁 Valitse tiedosto</button>
-          </div>
-          <span class="file-name" id="art-fi-lbl">Ei tiedostoa valittu</span>
-        </div>
-
-        <!-- Korttikuva — dual buttons -->
-        <div class="file-field">
-          <span class="field-label">Korttikuva (valinnainen)</span>
-          <input type="file" id="art-ci-cam" name="card_image" accept="image/jpeg,image/png,image/webp" capture="environment" style="display:none">
-          <input type="file" id="art-ci-file" name="card_image" accept="image/jpeg,image/png,image/webp" style="display:none">
-          <div class="file-btns">
-            <button type="button" class="file-btn-cam" data-target="art-ci-cam">📷 Kamera</button>
-            <button type="button" class="file-btn-file" data-target="art-ci-file">📁 Valitse tiedosto</button>
-          </div>
-          <span class="file-name" id="art-ci-lbl">Ei tiedostoa valittu</span>
-        </div>
-
-        <div class="field">
-          <label for="art-caption" class="field-label">Pääkuvan kuvateksti</label>
-          <input id="art-caption" name="image_caption" type="text" class="inp">
-        </div>
-
-        <!-- Lisäkuvat — dual buttons, multiple -->
-        <div class="file-field">
-          <span class="field-label">Lisäkuvat tekstiin (valinnainen, useita)</span>
-          <input type="file" id="art-bi-cam" name="body_images" accept="image/jpeg,image/png,image/webp" capture="environment" multiple style="display:none">
-          <input type="file" id="art-bi-file" name="body_images" accept="image/jpeg,image/png,image/webp" multiple style="display:none">
-          <div class="file-btns">
-            <button type="button" class="file-btn-cam" data-target="art-bi-cam">📷 Kamera</button>
-            <button type="button" class="file-btn-file" data-target="art-bi-file">📁 Valitse tiedosto</button>
-          </div>
-          <span class="file-name" id="art-bi-lbl">Ei tiedostoa valittu</span>
-        </div>
-
-        <div class="field">
-          <label for="art-body" class="field-label">Sisältö * (Markdown)</label>
-          <textarea id="art-body" name="body" class="inp" rows="12" required style="font-family:ui-monospace,monospace;font-size:16px;"></textarea>
-        </div>
-        <div class="field">
-          <label for="art-sources" class="field-label">Lähteet (valinnainen, yksi per rivi)</label>
-          <textarea id="art-sources" name="sources" class="inp" rows="3"></textarea>
-        </div>
-
-        <label id="art-consent-photo-wrap" class="consent consent-wrap-hidden">
-          <input type="checkbox" id="art-consent-photo" name="consent_photo" value="1">
-          <span class="consent-text">Vakuutan, että minulla on oikeudet lähettämiini kuviin ja annan Photo &amp; Motolle oikeuden käyttää niitä tässä artikkelissa. Olen itse vastuussa luvattomasta materiaalista.</span>
-        </label>
-        <label class="consent">
-          <input type="checkbox" id="art-consent-content" name="consent_content" value="1">
-          <span class="consent-text">Vakuutan, että tämän artikkelin sisältö on totta, eikä se loukkaa muiden tekijänoikeuksia. Olen itse vastuussa luvattomasta materiaalista.</span>
-        </label>
-
-        <p id="art-msg" class="msg"></p>
-        <div class="submit-wrap" id="art-submit-wrap">
-          <button type="submit" id="art-submit-btn" class="btn btn-primary" disabled>Lähetä artikkeli</button>
-        </div>
-        <br>
-        <button type="button" id="art-clear-btn" class="btn btn-ghost">Tyhjennä lomake</button>
-      </form>
-    </div>
-
     <!-- ── TAB: Pikauutinen ── -->
-    <div id="tab-flash" class="tab-panel">
+    <div id="tab-flash" class="tab-panel active">
 
       <!-- Sub-screen A: generation form -->
       <div id="flash-form-screen">
@@ -475,11 +390,7 @@ textarea.inp{resize:vertical;min-height:100px;font-size:16px;line-height:1.5;}
   </main><!-- .app-main -->
 
   <nav class="bottom-nav">
-    <button class="nav-tab active" data-tab="article">
-      <span class="nav-tab-icon">📝</span>
-      <span class="nav-tab-label">Artikkeli</span>
-    </button>
-    <button class="nav-tab" data-tab="flash">
+    <button class="nav-tab active" data-tab="flash">
       <span class="nav-tab-icon">⚡</span>
       <span class="nav-tab-label">Pikauutinen</span>
     </button>
@@ -493,6 +404,7 @@ textarea.inp{resize:vertical;min-height:100px;font-size:16px;line-height:1.5;}
 
 <div id="app-toast" class="toast"></div>
 
+</div><!-- #app -->
 <script>
 // ── Categories ──
 const CATS = [
@@ -509,7 +421,6 @@ const CAT_HTML = '<option value="">— valitse kategoria —</option>' +
 const $=id=>document.getElementById(id);
 
 // Populate category selects
-$('art-cat').innerHTML = CAT_HTML;
 $('fla-cat').innerHTML = CAT_HTML;
 
 // ── Screen management ──
@@ -621,44 +532,8 @@ function setupFilePair(camId, fileId, lblId, onChange) {
   $(fileId)?.addEventListener('change',()=>handle(fileId,camId));
 }
 
-// ── Article photo consent visibility ──
-function artPhotoWrapUpdate() {
-  const hasFile=!!(
-    $('art-fi-cam')?.files?.length||$('art-fi-file')?.files?.length||
-    $('art-ci-cam')?.files?.length||$('art-ci-file')?.files?.length||
-    $('art-bi-cam')?.files?.length||$('art-bi-file')?.files?.length
-  );
-  const wrap=$('art-consent-photo-wrap');
-  if(wrap) wrap.classList.toggle('consent-wrap-hidden',!hasFile);
-  if(!hasFile){ const cp=$('art-consent-photo'); if(cp) cp.checked=false; }
-  artConsentUpdate();
-}
-setupFilePair('art-fi-cam','art-fi-file','art-fi-lbl', artPhotoWrapUpdate);
-setupFilePair('art-ci-cam','art-ci-file','art-ci-lbl', artPhotoWrapUpdate);
-setupFilePair('art-bi-cam','art-bi-file','art-bi-lbl', artPhotoWrapUpdate);
 setupFilePair('fla-ph-cam','fla-ph-file','fla-ph-lbl', null);
 setupFilePair('pho-cam','pho-file','pho-lbl', phoFileChanged);
-
-// ── Article consent gate ──
-function artConsentUpdate() {
-  const photoRequired=!$('art-consent-photo-wrap').classList.contains('consent-wrap-hidden');
-  const cp=$('art-consent-photo'); const cc=$('art-consent-content');
-  const photoOk=!photoRequired||(cp&&cp.checked);
-  const btn=$('art-submit-btn'); if(btn) btn.disabled=!(photoOk&&cc?.checked);
-}
-$('art-consent-photo').addEventListener('change', artConsentUpdate);
-$('art-consent-content').addEventListener('change', artConsentUpdate);
-
-// ── Article submit wrapper (consent error hint) ──
-$('art-submit-wrap').addEventListener('click',()=>{
-  if($('art-submit-btn')?.disabled){
-    const msg=$('art-msg');
-    msg.textContent='Vahvista suostumus ennen lähettämistä rastittamalla vaaditut ruudut.';
-    msg.className='msg err'; msg.style.display='block';
-    const w=$('art-consent-photo-wrap');
-    (w&&!w.classList.contains('consent-wrap-hidden')?w:$('art-consent-content'))?.scrollIntoView({behavior:'smooth',block:'center'});
-  }
-});
 
 // ── Image helpers ──
 function generateThumb(file){
@@ -715,57 +590,6 @@ function resizeMainImage(file){
     }catch{resolve(file);}
   });
 }
-
-// ── Article submit ──
-$('app-article-form').addEventListener('submit', async e=>{
-  e.preventDefault();
-  const msg=$('art-msg'); const btn=$('art-submit-btn');
-  msg.style.display='none';
-  // Re-check consent
-  const photoRequired=!$('art-consent-photo-wrap').classList.contains('consent-wrap-hidden');
-  if((photoRequired&&!$('art-consent-photo').checked)||!$('art-consent-content').checked){
-    msg.textContent='Vahvista suostumus ennen lähettämistä rastittamalla vaaditut ruudut.';
-    msg.className='msg err'; msg.style.display='block'; return;
-  }
-  btn.disabled=true; btn.classList.add('btn-loading'); const orig=btn.textContent; btn.textContent='Lähetetään…';
-  try {
-    const fd=new FormData(e.target);
-    // Fix-up dual-name file inputs
-    for(const[cam,fil,nm]of[['art-fi-cam','art-fi-file','featured_image'],['art-ci-cam','art-ci-file','card_image']]){
-      fd.delete(nm); const f=$(cam)?.files?.[0]||$(fil)?.files?.[0]; if(f) fd.set(nm,f,f.name);
-    }
-    fd.delete('body_images');
-    const bc=$('art-bi-cam'),bf=$('art-bi-file');
-    const bfl=bc?.files?.length>0?bc.files:bf?.files;
-    if(bfl?.length>0) for(const f of bfl) fd.append('body_images',f,f.name);
-    const r=await fetch('/api/submit-article',{method:'POST',credentials:'same-origin',body:fd});
-    const data=await r.json().catch(()=>({}));
-    if(r.ok&&data.ok){
-      toast('✓ Artikkeli lähetetty toimitukselle!');
-      e.target.reset();
-      $('art-consent-photo-wrap').classList.add('consent-wrap-hidden');
-      ['art-fi-lbl','art-ci-lbl','art-bi-lbl'].forEach(id=>{const l=$(id);if(l)l.textContent='Ei tiedostoa valittu';});
-      artConsentUpdate();
-      document.querySelector('.app-main').scrollTo(0,0);
-    } else if(r.status===401||r.status===403){
-      msg.textContent='✗ Istunto vanhentunut — kirjaudu uudelleen.'; msg.className='msg err'; msg.style.display='block';
-    } else {
-      msg.textContent='✗ '+(data.error||'Lähetys epäonnistui — yritä uudelleen.'); msg.className='msg err'; msg.style.display='block';
-    }
-  } catch {
-    msg.textContent='✗ Yhteysvirhe — yritä uudelleen.'; msg.className='msg err'; msg.style.display='block';
-  } finally {
-    btn.disabled=false; btn.classList.remove('btn-loading'); btn.textContent=orig; artConsentUpdate();
-  }
-});
-
-$('art-clear-btn').addEventListener('click',()=>{
-  $('app-article-form').reset();
-  $('art-msg').style.display='none';
-  $('art-consent-photo-wrap').classList.add('consent-wrap-hidden');
-  ['art-fi-lbl','art-ci-lbl','art-bi-lbl'].forEach(id=>{const l=$(id);if(l)l.textContent='Ei tiedostoa valittu';});
-  artConsentUpdate();
-});
 
 // ── Pikauutinen ──
 let pendingFlash=null;
