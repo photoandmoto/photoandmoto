@@ -6,7 +6,7 @@
 
 import { requireAuth, getClientIp } from '../_lib/auth.js';
 
-const GEMINI_MODEL = 'gemini-3.1-flash';
+const GEMINI_MODEL = 'gemini-2.5-flash';
 const TITLE_MAX = 80;
 const BODY_MAX = 500;
 
@@ -153,7 +153,7 @@ async function callGemini(apiKey, prompt, attempt = 0) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { maxOutputTokens: 800, temperature: 0.6, responseMimeType: 'application/json' },
+        generationConfig: { maxOutputTokens: 1500, temperature: 0.6 },
       }),
       signal: controller.signal,
     });
