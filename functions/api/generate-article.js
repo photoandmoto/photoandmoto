@@ -36,9 +36,9 @@ const ok = (d) => json({ ok: true, ...d });
 const fail = (msg, status = 400) => json({ ok: false, error: msg }, status);
 
 // ---------------------------------------------------------------------------
-// Rate limit — max 8 per IP per hour (in-memory, Worker-level).
+// Rate limit — max 10 per IP per hour (in-memory, Worker-level).
 // ---------------------------------------------------------------------------
-const RATE_LIMIT_MAX = 100;
+const RATE_LIMIT_MAX = 10;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const rateBuckets = new Map();
 function checkRateLimit(ip, now) {
@@ -206,7 +206,7 @@ export async function onRequestPost({ request, env }) {
 
     const ip = getClientIp(request) || 'unknown';
     if (!checkRateLimit(ip, Date.now())) {
-      return fail('Liian monta pikauutista tunnissa (enintään 8). Yritä myöhemmin uudelleen.', 429);
+      return fail('Liian monta pikauutista tunnissa (enintään 10). Yritä myöhemmin uudelleen.', 429);
     }
 
     let form;
