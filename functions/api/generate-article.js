@@ -6,7 +6,7 @@
 
 import { requireAuth, getClientIp } from '../_lib/auth.js';
 
-const GEMINI_MODEL = 'gemini-2.5-flash';
+const GEMINI_MODEL = 'gemini-3.1-flash';
 const TITLE_MAX = 80;
 const BODY_MAX = 500;
 
@@ -38,7 +38,7 @@ const fail = (msg, status = 400) => json({ ok: false, error: msg }, status);
 // ---------------------------------------------------------------------------
 // Rate limit — max 8 per IP per hour (in-memory, Worker-level).
 // ---------------------------------------------------------------------------
-const RATE_LIMIT_MAX = 8;
+const RATE_LIMIT_MAX = 100;
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const rateBuckets = new Map();
 function checkRateLimit(ip, now) {
