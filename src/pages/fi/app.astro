@@ -316,7 +316,7 @@ body{
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--r-lg);
-  padding: 20px 16px;
+  padding: 20px 24px;
   box-shadow: var(--shadow-card);
   margin-bottom: 20px;
   display: flex;
@@ -331,7 +331,7 @@ body{
   gap: 8px;
 }
 .field-label{
-  font-size: 1.1rem;
+  font-size: 16px;
   font-weight: 700;
   color: #111111;
   letter-spacing: 0.3px;
@@ -350,8 +350,9 @@ body{
   background-color: #FAFAFA;
   border: 1px solid #A0A0A0;
   border-radius: var(--r-md);
-  padding: 16px;
-  font-size: 1.1rem; /* Prevents iOS auto-zoom */
+  padding: 16px 48px 16px 16px;
+  min-height: 56px;
+  font-size: 18px; /* Prevents iOS auto-zoom */
   font-family: inherit;
   color: #111111;
   outline: none;
@@ -361,6 +362,7 @@ body{
 }
 .inp::placeholder{
   color: #666666;
+  font-size: 18px;
 }
 .inp:focus{
   border-color: var(--orange);
@@ -371,12 +373,12 @@ select.inp{
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238e8e93' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 16px center;
-  padding-right: 42px;
+  padding-right: 48px;
 }
 textarea.inp{
   resize: none;
   overflow: hidden;
-  min-height: 48px;
+  min-height: 56px;
   line-height: 1.5;
 }
 .inp[data-mic] {
