@@ -1243,18 +1243,19 @@ async function triggerDeploy(target, btn){
   // failure must never stop the deploy.
   try{ await fetch('/api/submissions/sweep', { method:'POST', credentials:'same-origin' }); }
   catch(e){ console.warn('submissions sweep failed (non-blocking):', e); }
-  let ok=false, authFail=false;
+  let ok=false, authFail=false, errDetail='';
   try{
     const r=await jkDeployRequest(target);
     const data=await r.json().catch(()=>({}));
     ok = r.ok && data.ok===true;
     authFail = (r.status===401 || r.status===403);
-  }catch(e){ ok=false; }
+    errDetail = data.error || ('HTTP '+r.status);
+  }catch(e){ ok=false; errDetail=e.message||'yhteysvirhe'; }
   if(!ok){
     jkStopCountdown(target, btn);
     if(msg) msg.innerHTML = authFail
       ? '<span class="u-err">✗ Istunto vanhentunut — kirjaudu uudelleen ja yritä uudelleen.</span>'
-      : '<span class="u-err">✗ Virhe — yritä uudelleen</span>';
+      : `<span class="u-err">✗ Virhe — ${errDetail}</span>`;
   }
   // On success the countdown keeps running and shows the valmis message at 0:00.
 }
