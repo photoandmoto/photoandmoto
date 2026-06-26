@@ -331,9 +331,9 @@ body{
   gap: 8px;
 }
 .field-label{
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--ink);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #111111;
   letter-spacing: 0.3px;
   text-transform: uppercase;
 }
@@ -347,25 +347,25 @@ body{
 }
 .inp{
   width: 100%;
-  background: var(--surface);
-  border: 1px solid var(--line);
+  background-color: #FAFAFA;
+  border: 1px solid #A0A0A0;
   border-radius: var(--r-md);
-  padding: 14px 16px;
-  font-size: 16px; /* Prevents iOS auto-zoom */
+  padding: 16px;
+  font-size: 1.1rem; /* Prevents iOS auto-zoom */
   font-family: inherit;
-  color: var(--ink);
+  color: #111111;
   outline: none;
   transition: all 0.2s ease-in-out;
   appearance: none;
   -webkit-appearance: none;
 }
 .inp::placeholder{
-  color: var(--ink-faint);
+  color: #666666;
 }
 .inp:focus{
   border-color: var(--orange);
   box-shadow: 0 0 0 3px var(--orange-ring);
-  background: #ffffff;
+  background-color: #ffffff;
 }
 select.inp{
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238e8e93' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
@@ -664,7 +664,7 @@ textarea.inp{
 /* ═══ Mic button ═══ */
 .mic-icon-btn {
   position: absolute;
-  right: 2px;
+  right: 8px;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
@@ -673,15 +673,19 @@ textarea.inp{
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: transparent;
-  border: none;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
   color: var(--ink-faint); /* #8e8e93 */
   cursor: pointer;
   transition: all 0.2s ease;
   z-index: 10;
+  padding: 0;
+  margin: 0;
 }
 .mic-icon-btn:active {
   transform: translateY(-50%) scale(0.9);
+  background: transparent !important;
 }
 .mic-icon-btn.mic-active {
   color: var(--err);
@@ -790,7 +794,9 @@ textarea.inp{
             </div>
             <div class="field">
               <label for="fla-weather" class="field-label">Sää</label>
-              <input id="fla-weather" name="saa" type="text" class="inp" placeholder="valinnainen">
+              <div class="input-wrap">
+                <input id="fla-weather" name="saa" type="text" class="inp" placeholder="valinnainen" data-mic="fi-FI">
+              </div>
             </div>
           </div>
 
