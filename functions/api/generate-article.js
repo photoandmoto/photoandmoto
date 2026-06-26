@@ -6,7 +6,7 @@
 
 import { requireAuth, getClientIp } from '../_lib/auth.js';
 
-const GEMINI_MODEL = 'gemini-2.5-flash-lite';
+const GEMINI_MODEL = 'gemini-3.5-flash';
 const TITLE_MAX = 80;
 const BODY_MAX = 500;
 
@@ -142,19 +142,31 @@ Palauta AINOASTAAN validi JSON, ei mitään muuta tekstiä:
 }`;
 }
 
-async function callGemini(apiKey, prompt) {
+async function callGemini(apiKey, prompt, attempt = 0) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${apiKey}`;
-  const resp = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      generationConfig: { maxOutputTokens: 800, temperature: 0.6, responseMimeType: 'application/json' },
-    }),
-  });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 20_000);
+  let resp;
+  try {
+    resp = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { maxOutputTokens: 800, temperature: 0.6, responseMimeType: 'application/json' },
+      }),
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
   const text = await resp.text();
   if (!resp.ok) {
     console.error(`Gemini HTTP ${resp.status} headers:`, Object.fromEntries(resp.headers.entries()), 'body:', text);
+    if (resp.status === 503 && attempt === 0) {
+      await new Promise((r) => setTimeout(r, 1000));
+      return callGemini(apiKey, prompt, 1);
+    }
     const err = new Error(`Gemini ${resp.status}: ${text.slice(0, 500)}`);
     err.geminiStatus = resp.status;
     throw err;
