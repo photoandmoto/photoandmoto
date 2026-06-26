@@ -1,9 +1,10 @@
-const CACHE_NAME = 'photoandmoto-v4';
+const CACHE_NAME = 'photoandmoto-v5';
 const STATIC_ASSETS = [
   '/fi/app/',
   '/manifest.json',
   '/icons/icon-192x192.png',
   '/icons/icon-512x512.png',
+  '/images/logo.png',
 ];
 
 self.addEventListener('install', (e) => {
