@@ -242,9 +242,9 @@ export async function onRequestPost({ request, env }) {
       console.error('Gemini generation/parse failed:', e?.message, 'cause:', e?.cause, 'str:', String(e));
       if (e?.geminiStatus === 429) return fail('Tekoälyn kiintiö ylitetty — yritä myöhemmin', 429);
       if (e?.geminiStatus === 503) return fail('Tekoälypalvelu ylikuormittunut — yritä hetken kuluttua uudelleen', 503);
-      return fail('Tekoälyn vastaus epäonnistui — yritä uudelleen', 502);
+      return fail(`Tekoälyn vastaus epäonnistui: ${e.message || String(e)}`, 502);
     }
-    if (!title || !body) return fail('Tekoäly ei tuottanut kelvollista uutista — tarkista syötteet ja yritä uudelleen', 422);
+    if (!title || !body) return fail(`Tekoäly ei tuottanut kelvollista uutista — title: "${title?.slice(0,20)}", body length: ${body?.length || 0}`, 422);
     title = clamp(title, TITLE_MAX);
     body = clamp(body, BODY_MAX);
 
