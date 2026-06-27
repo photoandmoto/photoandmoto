@@ -172,7 +172,8 @@ async function callGemini(apiKey, prompt, attempt = 0) {
     throw err;
   }
   const data = JSON.parse(text);
-  const out = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  const parts = data?.candidates?.[0]?.content?.parts || [];
+  const out = (parts.find(p => !p.thought) ?? parts[0])?.text;
   if (!out) throw new Error('Gemini palautti tyhjän vastauksen');
   return out;
 }
