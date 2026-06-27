@@ -37,11 +37,15 @@ Bilingual public site (`/fi/...` and `/en/...`):
 - **Etusivu / Home** — landing page; includes the community "APUA TARVITAAN" help block
 - **Galleria / Gallery** — curated photo collections, PhotoSwipe lightbox
 - **Aikakone / Time Machine** — long-form articles
+- **Pikauutiset** — short AI-generated news flashes, submitted by contributors
 - **Kalenteri** — race calendar
 - **Tilastot** — stats pages (FIM World Champions, SM, Motocross des Nations, AMA, Trans-AMA)
 - **MXGP 2026** — current season tracker
 - **Podcast** — episodes
 - **Tunnista kuva** — community mystery-photo identification
+- **Toimituskeskus** (`/fi/toimitus`) — contributor + editorial hub; login gate, access-request flow
+- **Avustajat** (`/fi/yleinen-kyna`) — contributor tools: article submission + AI pikauutinen form
+- **PWA — Avustajan sovellus** (`/fi/app/`) — standalone mobile app (Android home screen); splash → login → Pikauutinen + Kuva tabs
 
 ---
 
@@ -229,11 +233,22 @@ All workflows are in `.github/workflows/` and documented in
 ```
 .github/workflows/      GitHub Actions
 functions/
-  api/mystery/          Mystery-photo + gallery endpoints, D1-backed
+  api/
+    mystery/            Mystery-photo + gallery endpoints, D1-backed
+    auth/               IAM endpoints (login, logout, users, init, etc.)
+    submit-article.js   Contributor article submission → GitHub commit + email
+    generate-article.js Pikauutinen: Gemini → draft commit + email
+    submit-pikauutinen.js  Pikauutinen review-stage: commit + email
+    submissions.js      Hyväksynnät (Phase 3): list + reject submissions
+    request-access.js   Access-request flow step 1
+    verify-access-request.js  Access-request flow step 2
+    search.js           Site search (Gemini-assisted)
+    deploy.js           Julkaise tuotantoon — fires DEPLOY_HOOK_PRODUCTION
+  _lib/auth.js          Auth lib: requireAuth, session helpers, shared utils
   oauth/                GitHub OAuth proxy for Sveltia login
 public/
   admin/                Sveltia CMS — config.yml, branding.css
-  images/               Article images
+  images/               Article + contributor images
   galleries/<slug>/     Gallery images + generated thumbs/ and display/
   og/                   Auto-generated social cards
   data/site-index.json  Generated search index (build artifact)
@@ -247,17 +262,28 @@ scripts/
 src/
   content/
     articles/{fi,en}/   Markdown articles
+    pikauutiset/        AI-generated news flashes
     galleries/          Gallery manifests (JSON)
     categories/         Article categories (JSON)
   content.config.ts     Content collection schemas (Zod)
-  pages/                Routes — split fi/ and en/
-    fi/yllapito.astro   Custom admin (mystery photos + galleries)
+  pages/
+    fi/
+      yllapito.astro    Toimitus — custom admin (mystery photos, galleries, editorial)
+      toimitus.astro    Toimituskeskus — contributor + editorial hub
+      yleinen-kyna.astro  Avustajat — contributor tools
+      pikauutiset.astro   Public pikauutiset feed
+      app.astro         PWA — standalone Avustajan sovellus (/fi/app/)
+      avustajan-ohjekirja.astro  Public contributor guide
+  scripts/
+    idle-timeout.js     Idle auto-logout (30 min) for gated pages
   layouts/              BaseLayout, ArticleLayout
   components/           Shared components
   i18n/                 UI translations
   styles/               brand.css, global.css, components.css
 astro.config.mjs
 DEPLOYMENT.md           Deployment + operations guide
+YLEINEN_KYNA.md         Contributor + editorial system design
+INFRASTRUCTURE.md       Storage + infrastructure strategy
 ```
 
 ---
@@ -311,15 +337,18 @@ UI so the Lighthouse Accessibility score (currently 100) doesn't regress:
 
 ## Tech stack
 
-- **Framework:** Astro 6 (static output), TypeScript strict mode
+- **Framework:** Astro 6.2 (static output), TypeScript strict mode
 - **Content:** Astro content collections, Zod-validated
 - **CMS:** Sveltia CMS (git-based) for articles
 - **Gallery viewer:** PhotoSwipe 5
 - **Image processing:** Sharp (libvips)
 - **Search:** Pagefind (static index)
 - **Server-side:** Cloudflare Pages Functions (Workers runtime)
-- **Database:** Cloudflare D1 (edge SQLite) — mystery photos + comments
-- **Auth:** GitHub OAuth (Sveltia login); GitHub App + in-Worker JWT (publish pipeline)
+- **Database:** Cloudflare D1 (edge SQLite) — IAM, submissions, mystery photos + comments
+- **Image storage:** Cloudflare R2 — bucket `photoandmoto-uploads` exists; migration from repo planned (see `INFRASTRUCTURE.md`)
+- **Transactional email:** Resend — access requests, provisioning, submission notifications, rejection emails
+- **AI:** Gemini API (`gemini-2.5-flash`) — AI-assisted pikauutinen generation + site search
+- **Auth:** GitHub OAuth (Sveltia login); GitHub App + in-Worker JWT (publish pipeline); custom IAM (contributors/editors)
 - **CI/CD:** GitHub Actions + Cloudflare Pages auto-deploy
 - **Languages:** Finnish (`fi`), English (`en`)
 
@@ -332,7 +361,7 @@ Automatic via Cloudflare Pages. Two environments:
 | Branch | Cloudflare project | URL | D1 database |
 |---|---|---|---|
 | `main` | photoandmoto | www.photoandmoto.fi | photoandmoto-community |
-| `dev` | photoandmoto-staging | photoandmoto-staging.pages.dev | photoandmoto-community (shared with prod) |
+| `dev` | photoandmoto-staging | photoandmoto-staging.pages.dev | photoandmoto-community-dev |
 
 Working rule: changes go to `dev` first → verified on staging → PR `dev → main`
 promotes to production. Full setup, secrets, and troubleshooting are in
@@ -377,6 +406,20 @@ CREATE INDEX IF NOT EXISTS idx_comments_photo ON comments(photo_id);
 CREATE INDEX IF NOT EXISTS idx_photos_status ON photos(status);
 ```
 
+`functions/api/auth/init.js` bootstraps the IAM schema idempotently on first
+request. Key tables:
+
+| Table | Purpose |
+|---|---|
+| `users` | IAM accounts — roles (`admin`, `editor`, `avustaja`), permissions, password hashes |
+| `sessions` | Auth cookies — SHA-256 of raw session ID; includes `expires_at`, `user_agent`, `ip` |
+| `provisioning_tokens` | One-time invite-acceptance + password-reset tokens (stored as SHA-256 hash) |
+| `login_attempts` | Rate-limit source of truth for login; nullable `user_id` to log unknown-email attempts |
+| `recovery_attempts` | Same for password recovery |
+| `access_requests` | Avustaja access-request flow — `verified`, `handled`, `rejection_reason` |
+| `submissions` | Phase 3 editorial queue — `type` (artikkeli/pikauutinen), `status` (odottaa/julkaistu/hylatty), consent audit columns |
+| `photo_submissions` | Permanent audit trail for Avustaja photo uploads — consent snapshot + review outcome |
+
 ---
 
 ## SEO and structured data
@@ -401,6 +444,13 @@ handles `/` → `/fi`.
 
 Tracked work that's not blocking but worth picking up in future sessions.
 Listed in rough priority order.
+
+### Phase 3 — Hyväksynnät (editorial review queue) ✅ built on staging
+
+`submissions` table in D1, `functions/api/submissions.js` (list + reject),
+Hyväksynnät card in Toimitus (gated by `hallitse_artikkeleita`). Rejection
+deletes the draft `.md` via GitHub App and emails the author via Resend.
+Pending final production test.
 
 ### Phase D — Admin gallery management
 
