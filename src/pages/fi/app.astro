@@ -14,7 +14,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Photo &amp; Moto">
   <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="/manifest.json?v=2.0.0">
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1490,6 +1490,29 @@ document.addEventListener('astro:page-load', initVoiceInputAndTextareas);
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));
 }
+
+window.addEventListener('load', () => {
+  // Force scroll containment unlock on all screen views
+  document.querySelectorAll('.screen').forEach(el => {
+    el.style.setProperty('overflow-y', 'auto', 'important');
+    el.style.setProperty('-webkit-overflow-scrolling', 'touch', 'important');
+  });
+
+  // Force every form card away from the mobile screen boundaries
+  document.querySelectorAll('.form-card').forEach(el => {
+    el.style.setProperty('margin', '0 16px 24px 16px', 'important');
+    el.style.setProperty('padding', '24px 20px', 'important');
+    el.style.setProperty('width', 'calc(100% - 32px)', 'important');
+    el.style.setProperty('box-sizing', 'border-box', 'important');
+  });
+
+  // Force massive legible fonts and vertical heights onto all fields
+  document.querySelectorAll('input, textarea, select, .inp').forEach(el => {
+    el.style.setProperty('font-size', '20px', 'important');
+    el.style.setProperty('min-height', '60px', 'important');
+    el.style.setProperty('height', '60px', 'important');
+  });
+});
 </script>
 </body>
 </html>
