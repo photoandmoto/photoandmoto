@@ -14,10 +14,15 @@ secrets, and recover from incidents. This document is self-contained.
 | Static site hosting | **Cloudflare Pages** (2 projects) | Builds Astro on push, serves the result |
 | Article editing | **Sveltia CMS** at `/admin/` | Git-based CMS for articles, GitHub-OAuth login |
 | Mystery photos + galleries admin | **Custom admin** at `/fi/yllapito` | Photo identification, gallery management |
-| Server-side endpoints | **Cloudflare Pages Functions** (Workers runtime) | `/api/mystery/*`, `/oauth/*`, `/api/articles/*` |
-| Database | **Cloudflare D1** (2 databases) | Mystery photos table, comments table |
-| Automation | **GitHub Actions** | Image processing, translation, OG cards, link checks |
-| Worker → Repo writes | **GitHub App** (`Photoandmoto Publisher`) | JWT-signed atomic commits from the publish pipeline |
+| Contributor + editorial system | **Toimituskeskus** at `/fi/toimitus` | Access requests, article + AI pikauutinen submission, Hyväksynnät review queue |
+| PWA (mobile) | `src/pages/fi/app.astro` at `/fi/app/` | Standalone Android PWA for contributors |
+| Server-side endpoints | **Cloudflare Pages Functions** (Workers runtime) | `/api/mystery/*`, `/api/auth/*`, `/api/submit-article`, `/api/generate-article`, `/api/submissions`, `/api/deploy`, `/oauth/*` |
+| Database | **Cloudflare D1** (2 databases) | IAM (users, sessions, tokens), submissions, access requests, mystery photos, comments |
+| Image storage | **Cloudflare R2** — bucket `photoandmoto-uploads` | Planned: editorial + contributor images (see `INFRASTRUCTURE.md`). Bucket exists; no images yet. |
+| Transactional email | **Resend** | Access-request verification, provisioning links, rejection notifications |
+| AI generation | **Gemini API** (`gemini-2.5-flash`) | Pikauutinen generation (`/api/generate-article`) + site search (`/api/search`) |
+| Automation | **GitHub Actions** | Image processing, OG cards, link checks, deletion auto-promote |
+| Worker → Repo writes | **GitHub App** (`Photoandmoto Publisher`) | JWT-signed atomic commits from the publish + rejection pipeline |
 
 Two environments share this stack: **production** (`main` branch) and
 **staging** (`dev` branch). Each has its own Pages project, its own copy of the
@@ -155,9 +160,13 @@ up a third environment), here's the full sequence.
    - Pages project → **Settings** → **Functions** → **D1 database bindings**
    - Variable name: `DB`
    - Database: select the one you just created
-5. Schema bootstrap is handled by `functions/api/mystery/init.js` — first hit
-   to any mystery endpoint creates the tables. No manual SQL needed. To inspect
-   the schema later, run `PRAGMA table_info(photos)` in the D1 console.
+5. Two separate schema bootstraps:
+   - `functions/api/mystery/init.js` — mystery photos + comments tables.
+     Runs on first hit to any mystery endpoint.
+   - `functions/api/auth/init.js` — IAM + submissions tables (users, sessions,
+     provisioning_tokens, login_attempts, recovery_attempts, access_requests,
+     submissions, photo_submissions). Runs lazily on first auth API hit.
+   No manual SQL needed. To inspect: `PRAGMA table_info(<table>)` in D1 console.
 
 ### 3. Pages project secrets
 
@@ -170,8 +179,10 @@ In Pages project → **Settings** → **Environment variables** → **Production
 | `GITHUB_APP_ID` | yes | Numeric ID of the `Photoandmoto Publisher` GitHub App. |
 | `GITHUB_APP_INSTALLATION_ID` | yes | Numeric installation ID for that App on the `photoandmoto` repo. |
 | `GITHUB_APP_PRIVATE_KEY` | yes | Full PEM contents of the App's private key, including the `-----BEGIN/END-----` lines. |
-| `GEMINI_API_KEY` | optional | Google AI Studio key for the AI photo-identification fallback in the mystery flow. (The MXGP scraper Action uses a separate copy — see step 6.) |
-| `DEPLOY_HOOK_STAGING` | yes (for Julkaise) | Cloudflare Pages deploy-hook URL for the staging project (branch `dev`). Powers the **Julkaise esikatseluun** button (`functions/api/deploy.js`). Production publish uses the GitHub App, not a hook. |
+| `GEMINI_API_KEY` | yes | Google AI Studio key for Gemini `gemini-2.5-flash` — pikauutinen generation + site search. (The MXGP scraper Action also uses this — see step 6.) |
+| `RESEND_API_KEY` | yes | Resend API key. Powers all transactional email: access-request verification, provisioning links, submission confirmations, rejection notifications. Without this, emails silently fail but the operations complete (non-fatal). |
+| `DEPLOY_HOOK_STAGING` | yes | Cloudflare Pages deploy-hook URL for the staging project. ID: `03d2296b-366c-4727-bccc-4020be41f281`. Powers **Julkaise esikatseluun** (`functions/api/deploy.js`). |
+| `DEPLOY_HOOK_PRODUCTION` | yes | Cloudflare Pages deploy-hook URL for the production project. ID: `8d9229f6-2dc4-4cfd-bc4c-6ade1dbb4d74`. Powers **Julkaise tuotantoon** (`functions/api/deploy.js`) — fires the hook instead of merging dev→main. |
 | `OAUTH_GITHUB_CLIENT_ID` | yes (prod) | GitHub OAuth App client ID — powers Sveltia login. |
 | `OAUTH_GITHUB_CLIENT_SECRET` | yes (prod) | GitHub OAuth App client secret. **Encrypt this.** |
 | `OAUTH_REDIRECT_URI` | yes (prod) | `https://www.photoandmoto.fi/oauth/callback` |
@@ -393,9 +404,10 @@ Pattern: run `ALTER TABLE` in the D1 console, verify with
 6. **Preview and publish from the Julkaise tab** in `/fi/yllapito` (editors):
    - **Julkaise esikatseluun** — triggers a staging rebuild; preview at
      `photoandmoto-staging.pages.dev`.
-   - **Julkaise tuotantoon** — merges `dev → main` via the Publisher GitHub App
-     (`functions/api/deploy.js`), publishing to production (www). Developers can
-     also promote with a manual `dev → main` PR.
+   - **Julkaise tuotantoon** — fires `DEPLOY_HOOK_PRODUCTION` via
+     `functions/api/deploy.js`, triggering a fresh production build without
+     merging dev→main. Developers can also promote with a manual cherry-pick
+     to `main`.
    - **Deletions auto-publish:** deleting an article in Sveltia triggers the
      `auto-promote-deletions` Action, which merges `dev → main` automatically —
      no Julkaise tuotantoon needed.
@@ -513,8 +525,9 @@ the Domainkeskus parking page, contact Domainkeskus support (reference ticket
 | Code, gallery images, articles | ✅ | Git history on GitHub |
 | D1 mystery photos table | ⚠️ | Not backed up automatically. D1 time-travel gives 30-day point-in-time recovery, no exported snapshots. |
 | D1 comments table | ⚠️ | Same |
-| D1 users + provisioning_tokens + recovery_attempts tables (IAM) | ⚠️ | Same. Password hashes are bcrypt'd so an export is sensitive but not directly usable. |
-| Pages secrets | ❌ | Stored only in Cloudflare. Keep the GitHub App `.pem`, OAuth secret, and `UPLOAD_PASSWORD` in a password manager. |
+| D1 IAM tables (users, sessions, provisioning_tokens, login_attempts, recovery_attempts) | ⚠️ | Same. Password hashes are bcrypt'd so an export is sensitive but not directly usable. |
+| D1 submissions + access_requests + photo_submissions tables | ⚠️ | Same. Export monthly alongside other D1 tables. |
+| Pages secrets | ❌ | Stored only in Cloudflare. Keep the GitHub App `.pem`, OAuth secret, `RESEND_API_KEY`, and `UPLOAD_PASSWORD` in a password manager. |
 
 ### Manual D1 export (recommended monthly)
 
@@ -558,6 +571,44 @@ Open the deployment → **Build log**. Common causes:
   exchange, etc.).
 - **Sveltia shows stale state / wrong values** — clear browser
   localStorage for the admin origin; Sveltia caches pending edits across sessions.
+
+### Gemini / AI pikauutinen call fails
+
+`/api/generate-article` calls `gemini-2.5-flash`. Common causes of the
+502 "Tekoälyn vastaus epäonnistui" response:
+
+- **AbortError** — the 20 s timeout fired. Gemini was slow; retry.
+- **Gemini 429** — quota exhausted (in-memory rate limit is 10/IP/hour;
+  project-level Gemini quota may also apply). The response body includes
+  the specific error.
+- **Gemini 503** — overloaded; the function retries once automatically.
+- **JSON parse failure** — Gemini returned non-JSON despite the prompt.
+  Check real-time logs for the raw response. `parseGeminiJson` handles
+  fenced code blocks and loose text, but occasionally the model adds prose.
+- **GEMINI_API_KEY missing or wrong** — returns a Gemini 400/403.
+
+To inspect live: Workers & Pages → project → **Functions** → **Real-time logs**.
+
+### Resend email not sending
+
+`RESEND_API_KEY` is missing or expired. All email operations are non-fatal —
+the underlying D1 write already succeeded. Add or rotate the key in Cloudflare
+secrets (Production + Preview), then **Retry deployment** to activate it.
+Check Resend dashboard for delivery logs.
+
+### Contributor submission not appearing in Hyväksynnät
+
+The `submissions` table row is written by `functions/api/submit-article.js`
+(for articles) and `functions/api/submit-pikauutinen.js` (for pikauutiset).
+Check D1 console:
+
+```sql
+SELECT id, type, status, title, submitted_at FROM submissions ORDER BY submitted_at DESC LIMIT 20;
+```
+
+If the row is there but missing from the Hyväksynnät card, the session cookie
+may lack `hallitse_artikkeleita`. Check the user's permissions in the Käyttäjät
+tab.
 
 ### An article saved in Sveltia but doesn't appear on the site
 

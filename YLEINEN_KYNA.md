@@ -1,7 +1,7 @@
 # Avustajat & Toimitus — Contributor + Editorial System
 
-**Photo & Moto — Design & State v3.0**
-**Status: Phase 1 (article submission) and Phase 2 (AI pikauutiset) complete and accepted on staging (`dev`). Pending promotion to production (`main`).**
+**Photo & Moto — Design & State v3.1**
+**Status: Phase 1 (article submission), Phase 2 (AI pikauutiset), and Phase 3 (Hyväksynnät) complete on staging (`dev`). Phase 3 pending final production test. All phases pending promotion to production (`main`).**
 
 > Historical note: this feature was originally named **"Yleinen Kynä"**. It is now
 > **"Avustajat"** (contributors) and sits under a new **"Toimituskeskus"** hub. The
@@ -65,6 +65,9 @@ EN nav  : unchanged (no Toimituskeskus / Avustajat / Toimitus)
 - **`/fi/yllapito`** — Toimitus (editorial/admin tools).
 - **`/fi/pikauutiset`** — public pikauutiset feed.
 - **`/fi/avustajan-ohjekirja`** — public contributor guide.
+- **`/fi/app/`** — PWA (Avustajan sovellus) — standalone Android home-screen
+  app. Splash → login → Pikauutinen + Kuva tabs. Shares the same IAM
+  session cookie and `laheta_artikkeli` gate as Avustajat.
 
 ---
 
@@ -225,6 +228,7 @@ All links use `baseUrl = (env.CF_PAGES_BRANCH === 'main') ? 'https://www.photoan
 | Request verified (step 2) | editor | Uusi Avustaja-käyttöoikeuspyyntö — [name] |
 | New article submitted | editor | Uusi artikkeli odottaa tarkistusta — [title] |
 | New pikauutinen submitted | editor | Uusi pikauutinen odottaa tarkistusta — [title] |
+| Submission rejected (Phase 3) | author | Lähettämäsi [type] ei mennyt läpi — Photo & Moto |
 | User created | new user | Tervetuloa Photo & Moto — aktivoi tilisi |
 
 `RESEND_API_KEY` must be set on each environment; sends are non-fatal where the
@@ -234,9 +238,12 @@ underlying record is already saved.
 
 ## AI / Gemini (pikauutiset)
 
-- Model `gemini-2.5-flash-lite`, `responseMimeType: application/json`, strict
-  `{title, body}` parse; non-empty validation; title ≤80, body ≤450–500 chars.
-- Rate limit: 3 generations per IP per hour.
+- Model `gemini-2.5-flash`. No JSON mode (`responseMimeType` removed) — the
+  prompt instructs JSON output; `parseGeminiJson()` handles fenced-code-block
+  and loose-text wrapping. Strict `{title, body}` parse; non-empty validation;
+  title ≤80, body ≤450–500 chars (`clamp()` at sentence boundary).
+- Rate limit: **10 generations per IP per hour** (in-memory, Worker-level).
+  Quota exceeded → 429 with Finnish message.
 - Hardened prompt (`buildPrompt` in `generate-article.js`):
   - Use only given facts; if sparse, write only what's known — no invented details.
   - **Never** invent crash/DNF reasons, accidents, illness, injuries, substance
@@ -254,7 +261,7 @@ underlying record is already saved.
   warning banner, resets on activity; imported on Toimituskeskus, Avustajat,
   Toimitus.
 - Login rate limit: 5 failed/hour on production, 50 on staging/dev.
-- Access-request and pikauutinen generation: 3/IP/hour each.
+- Access-request: 3/IP/hour. Pikauutinen generation: 10/IP/hour.
 - Author is always taken from the IAM session, never the form. `draft: true` and
   `source: ai_generated` are hardcoded server-side.
 
@@ -276,10 +283,24 @@ underlying record is already saved.
 - `pikauutiset` collection (`content.config.ts` + `config.yml`), collapsible
   public page, `/fi/pikauutiset` in main nav.
 
+### Phase 3 — Hyväksynnät (editorial review queue) ✅ staging, pending production test
+- `submissions` table in D1: `type` (artikkeli/pikauutinen), `status`
+  (odottaa/julkaistu/hylatty), `author_id/name/email`, `github_slug`,
+  `reviewed_by`, `rejection_reason`, consent audit columns.
+- `functions/api/submissions.js` — `GET /api/submissions` (list, newest first);
+  `POST /api/submissions` (reject only — requires `rejection_reason`, deletes
+  the draft `.md` via GitHub App, emails author via Resend). Both require
+  `hallitse_artikkeleita`. Approval is auto-detected by Julkaise sweep.
+- Hyväksynnät card inside Toimitus on `yllapito.astro` (gated by
+  `hallitse_artikkeleita`).
+
 ### Cross-cutting ✅
 - Toimituskeskus hub, page renames, card navigation, idle timeout, env-aware
   emails, auto-provisioning email, 12-category alignment, Avustajan Ohjekirja,
   `avustaja` role + `perm_nahta_gemini_avain` in IAM code and `init.js`.
+- **PWA** — `src/pages/fi/app.astro` at `/fi/app/`. Standalone light-theme
+  Android home-screen app. SVG tab icons (Pikauutinen + Kuva), shared IAM
+  session cookie, `laheta_artikkeli` gate, idle timeout.
 
 ---
 
@@ -293,10 +314,14 @@ underlying record is already saved.
 | Pikauutiset feed | `src/pages/fi/pikauutiset.astro` |
 | Avustajan Ohjekirja | `src/pages/fi/avustajan-ohjekirja.astro` |
 | Verification landing | `src/pages/fi/vahvista-pyynto.astro` |
+| PWA (Avustajan sovellus) | `src/pages/fi/app.astro` (`/fi/app/`) |
 | Article handler | `functions/api/submit-article.js` |
-| Pikauutinen handler | `functions/api/generate-article.js` |
+| Pikauutinen generate | `functions/api/generate-article.js` |
+| Pikauutinen submit | `functions/api/submit-pikauutinen.js` |
+| Hyväksynnät (Phase 3) | `functions/api/submissions.js` |
 | Access request | `functions/api/request-access.js` |
 | Access verify | `functions/api/verify-access-request.js` |
+| Julkaise hook | `functions/api/deploy.js` |
 | User CRUD | `functions/api/auth/users.js`, `functions/api/auth/users/[id].js` |
 | Auth lib / session | `functions/_lib/auth.js` |
 | Schema bootstrap | `functions/api/auth/init.js` |
@@ -305,18 +330,18 @@ underlying record is already saved.
 | CMS config | `public/admin/config.yml` |
 
 ### Infrastructure / secrets
-- D1 (IAM + `access_requests`); staging binding `photoandmoto-community-dev`.
+- D1 (IAM + `access_requests` + `submissions`); staging binding `photoandmoto-community-dev`.
 - `RESEND_API_KEY`, `GEMINI_API_KEY`, `GITHUB_APP_*` per environment.
-- Staging deploys are **manual** ("Julkaise esikatseluun"); `dev → staging`,
-  `main → production`.
+- `DEPLOY_HOOK_STAGING` (ID `03d2296b-366c-4727-bccc-4020be41f281`) and
+  `DEPLOY_HOOK_PRODUCTION` (ID `8d9229f6-2dc4-4cfd-bc4c-6ade1dbb4d74`) — both
+  required; "Julkaise tuotantoon" fires the production hook directly.
 
 ---
 
 ## Planned / Backlog
 
-### Phase 3 — Toimituspöytä (Editorial Kanban) — planned
-A board for the editor to track submissions through states (saapunut → työn alla
-→ julkaistu), built on the existing draft/publish pipeline. Not yet started.
+### Phase 3 — Hyväksynnät ✅ built, pending production test
+See "What Was Built" above. Production deploy pending.
 
 ### Infrastructure
 - Sveltia → R2 media library; R2 custom subdomain; Astro `<Image />` for R2.
@@ -344,5 +369,5 @@ A board for the editor to track submissions through states (saapunut → työn a
 
 ---
 
-*Last updated: June 2026 (v3.0)*
+*Last updated: June 2026 (v3.1)*
 *Owner: Arto T Vilkman*

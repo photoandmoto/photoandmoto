@@ -1,6 +1,6 @@
 # Infrastructure Strategy — Photo & Moto
 
-**Status: Documented — implementation after Phase 1 + Phase 2 stable on production**
+**Status: Documented — Phase 1 + Phase 2 + Phase 3 built on staging; R2 migration after production stable**
 
 ---
 
@@ -11,7 +11,8 @@
 | Articles, pikauutiset, categories (text/markdown) | GitHub | Free, unlimited, Sveltia-native |
 | Editorial images (uploaded via Sveltia) | Cloudflare R2 | Bypass repo, $0 egress |
 | Contributor images (submitted via Avustajat) | GitHub `public/images/` (current) → R2 (planned) | Migration needed |
-| User accounts, sessions, access requests | Cloudflare D1 | Interactive/transactional data only |
+| User accounts, sessions, access requests, submissions | Cloudflare D1 | Interactive/transactional data only |
+| AI generation + search | Gemini API (`gemini-2.5-flash`) | Pikauutinen drafts + site search; key in Cloudflare secrets |
 
 ---
 
@@ -88,12 +89,14 @@ function becomes redundant. Remove it.
 
 ## Implementation Order
 
-1. Phase 1 + Phase 2 promoted to production (main) ← current priority
-2. R2 custom subdomain (owner action, no code)
-3. Sveltia → R2 media library (code + config, staging test first)
-4. Astro `<Image />` for R2 assets
-5. Retire `functions/images/[[path]].js`
-6. Contributor article images → R2 migration (dedicated session)
+1. ✅ Phase 1 + Phase 2 built on staging
+2. ✅ Phase 3 (Hyväksynnät) built on staging
+3. Promote Phase 1 + 2 + 3 to production (main) ← current priority
+4. R2 custom subdomain (owner action, no code)
+5. Sveltia → R2 media library (code + config, staging test first)
+6. Astro `<Image />` for R2 assets
+7. Retire `functions/images/[[path]].js`
+8. Contributor article images → R2 migration (dedicated session)
 
 ---
 
