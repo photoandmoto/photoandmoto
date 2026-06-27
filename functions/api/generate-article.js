@@ -154,6 +154,7 @@ async function callGemini(apiKey, prompt, attempt = 0) {
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: { maxOutputTokens: 1500, temperature: 0.6, responseMimeType: 'application/json' },
+        thinkingConfig: { thinkingBudget: 0 },
       }),
       signal: controller.signal,
     });
