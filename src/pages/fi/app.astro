@@ -742,6 +742,16 @@ textarea.inp{
   border-top-color: #000;
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
+#fla-edit-title {
+  min-height: 52px;
+  height: auto;
+  overflow: hidden;
+}
+#fla-edit-body {
+  min-height: 100px;
+  height: auto;
+  overflow: hidden;
+}
 </style>
 </head>
 <body>
@@ -886,7 +896,7 @@ textarea.inp{
         <div class="form-card">
           <div class="field">
             <label for="fla-edit-title" class="field-label">Otsikko</label>
-            <input id="fla-edit-title" type="text" class="inp" maxlength="80">
+            <textarea id="fla-edit-title" class="inp" maxlength="80" rows="1"></textarea>
             <span class="char-count" id="fla-title-count">0 / 80</span>
           </div>
           <div class="field">
@@ -1248,6 +1258,10 @@ $('app-flash-form').addEventListener('submit', async e=>{
     if(r.ok&&data.ok){
       $('fla-edit-title').value=data.title||'';
       $('fla-edit-body').value=data.body||'';
+      ['fla-edit-title', 'fla-edit-body'].forEach(id => {
+        const el = $(id);
+        if (el) { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; }
+      });
       $('fla-edit-body').dispatchEvent(new Event('input'));
       flashCharCount();
       $('fla-consent-photo-wrap').classList.toggle('consent-wrap-hidden',!pendingFlash?.photo);
