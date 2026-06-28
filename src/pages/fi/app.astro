@@ -591,6 +591,9 @@ textarea.inp{
   margin-bottom: 16px;
   display: none;
   line-height: 1.5;
+  max-width: 620px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .msg.ok{
   background: var(--ok-bg);
@@ -751,6 +754,20 @@ textarea.inp{
   min-height: 100px;
   height: auto;
   overflow: hidden;
+}
+#flash-confirm-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px 16px;
+}
+#flash-confirm-screen .tab-heading,
+#flash-confirm-screen .tab-sub {
+  max-width: 620px;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
 </head>
@@ -1258,15 +1275,17 @@ $('app-flash-form').addEventListener('submit', async e=>{
     if(r.ok&&data.ok){
       $('fla-edit-title').value=data.title||'';
       $('fla-edit-body').value=data.body||'';
-      ['fla-edit-title', 'fla-edit-body'].forEach(id => {
-        const el = $(id);
-        if (el) { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; }
-      });
       $('fla-edit-body').dispatchEvent(new Event('input'));
       flashCharCount();
       $('fla-consent-photo-wrap').classList.toggle('consent-wrap-hidden',!pendingFlash?.photo);
       $('flash-form-screen').style.display='none';
       $('flash-review-screen').classList.remove('flash-review-hidden');
+      requestAnimationFrame(() => {
+        ['fla-edit-title', 'fla-edit-body'].forEach(id => {
+          const el = $(id);
+          if (el) { el.style.height = 'auto'; el.style.height = el.scrollHeight + 'px'; }
+        });
+      });
       flaConsentUpdate();
       document.querySelector('.app-main').scrollTo(0,0);
     } else if(r.status===401||r.status===403){
