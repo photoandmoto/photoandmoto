@@ -653,7 +653,7 @@ textarea.inp{
   flex-direction: column;
 }
 .flash-review-hidden{
-  display: none;
+  display: none !important;
 }
 .consent-wrap-hidden{
   display: none;
@@ -1102,6 +1102,7 @@ $('login-btn').addEventListener('click', async()=>{
     if(r.ok){
       $('login-email').value=''; $('login-pw').value='';
       showScreen('screen-home');
+      document.querySelector('meta[name="viewport"]')?.setAttribute('content','width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
     } else {
       err.textContent=r.status===429?'Liian monta yritystä. Yritä myöhemmin.':'Väärät kirjautumistiedot.';
       err.style.display='block';
@@ -1244,6 +1245,7 @@ $('fla-submit-wrap').addEventListener('click',()=>{
 function resetFlash() {
   pendingFlash=null;
   $('app-flash-form').reset();
+  $('fla-gen-btn').disabled=false;
   $('fla-ph-lbl').textContent='Ei tiedostoa valittu';
   $('flash-gen-msg').style.display='none';
   $('flash-form-screen').style.display='';
