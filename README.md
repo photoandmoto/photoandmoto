@@ -347,7 +347,7 @@ UI so the Lighthouse Accessibility score (currently 100) doesn't regress:
 - **Database:** Cloudflare D1 (edge SQLite) — IAM, submissions, mystery photos + comments
 - **Image storage:** Cloudflare R2 — bucket `photoandmoto-uploads` exists; migration from repo planned (see `INFRASTRUCTURE.md`)
 - **Transactional email:** Resend — access requests, provisioning, submission notifications, rejection emails
-- **AI:** Gemini API (`gemini-2.5-flash`) — AI-assisted pikauutinen generation + site search
+- **AI:** Gemini API (`gemini-2.5-flash`) — pikauutinen generation (`generate-article.js`: JSON mode on, `maxOutputTokens: 8192`, 50 req/IP/hour) + site search (`search.js`: no JSON mode, 1500 tokens)
 - **Auth:** GitHub OAuth (Sveltia login); GitHub App + in-Worker JWT (publish pipeline); custom IAM (contributors/editors)
 - **CI/CD:** GitHub Actions + Cloudflare Pages auto-deploy
 - **Languages:** Finnish (`fi`), English (`en`)

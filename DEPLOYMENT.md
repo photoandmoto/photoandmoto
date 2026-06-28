@@ -179,7 +179,7 @@ In Pages project → **Settings** → **Environment variables** → **Production
 | `GITHUB_APP_ID` | yes | Numeric ID of the `Photoandmoto Publisher` GitHub App. |
 | `GITHUB_APP_INSTALLATION_ID` | yes | Numeric installation ID for that App on the `photoandmoto` repo. |
 | `GITHUB_APP_PRIVATE_KEY` | yes | Full PEM contents of the App's private key, including the `-----BEGIN/END-----` lines. |
-| `GEMINI_API_KEY` | yes | Google AI Studio key for Gemini `gemini-2.5-flash` — pikauutinen generation + site search. (The MXGP scraper Action also uses this — see step 6.) |
+| `GEMINI_API_KEY` | yes | Google AI Studio key for Gemini `gemini-2.5-flash`. Used by `generate-article.js` (JSON mode, 8192 tokens, 50 req/IP/hour) and `search.js` (no JSON mode, 1500 tokens). The MXGP scraper Action also uses this — see step 6. |
 | `RESEND_API_KEY` | yes | Resend API key. Powers all transactional email: access-request verification, provisioning links, submission confirmations, rejection notifications. Without this, emails silently fail but the operations complete (non-fatal). |
 | `DEPLOY_HOOK_STAGING` | yes | Cloudflare Pages deploy-hook URL for the staging project. ID: `03d2296b-366c-4727-bccc-4020be41f281`. Powers **Julkaise esikatseluun** (`functions/api/deploy.js`). |
 | `DEPLOY_HOOK_PRODUCTION` | yes | Cloudflare Pages deploy-hook URL for the production project. ID: `8d9229f6-2dc4-4cfd-bc4c-6ade1dbb4d74`. Powers **Julkaise tuotantoon** (`functions/api/deploy.js`) — fires the hook instead of merging dev→main. |
@@ -578,7 +578,7 @@ Open the deployment → **Build log**. Common causes:
 502 "Tekoälyn vastaus epäonnistui" response:
 
 - **AbortError** — the 20 s timeout fired. Gemini was slow; retry.
-- **Gemini 429** — quota exhausted (in-memory rate limit is 10/IP/hour;
+- **Gemini 429** — quota exhausted (in-memory rate limit is 50/IP/hour;
   project-level Gemini quota may also apply). The response body includes
   the specific error.
 - **Gemini 503** — overloaded; the function retries once automatically.
