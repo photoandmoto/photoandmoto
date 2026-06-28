@@ -175,7 +175,6 @@ async function callGemini(apiKey, prompt, attempt = 0) {
   const parts = data?.candidates?.[0]?.content?.parts || [];
   const out = (parts.find(p => !p.thought) ?? parts[0])?.text;
   if (!out) throw new Error('Gemini palautti tyhjän vastauksen');
-  console.log('GEMINI_RAW:', out?.substring(0, 500));
   return out;
 }
 
@@ -243,8 +242,8 @@ export async function onRequestPost({ request, env }) {
       title = (parsed.title || '').toString().trim();
       body = (parsed.body || '').toString().trim();
     } catch (e) {
-      console.error('Gemini generation/parse failed:', e, 'raw:', geminiRaw?.substring(0, 300));
-      return fail(`Tekoälyn vastaus epäonnistui: ${e.message} | raw: ${geminiRaw?.substring(0, 200)}`, 502);
+      console.error('Gemini generation/parse failed:', e?.message, String(e));
+      return fail('Tekoälyn vastaus epäonnistui — yritä uudelleen', 502);
     }
     if (!title || !body) return fail(`Tekoäly ei tuottanut kelvollista uutista — title: "${title?.slice(0,20)}", body length: ${body?.length || 0}`, 422);
     title = clamp(title, TITLE_MAX);

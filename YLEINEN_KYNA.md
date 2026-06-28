@@ -238,11 +238,14 @@ underlying record is already saved.
 
 ## AI / Gemini (pikauutiset)
 
-- Model `gemini-2.5-flash`. No JSON mode (`responseMimeType` removed) — the
-  prompt instructs JSON output; `parseGeminiJson()` handles fenced-code-block
-  and loose-text wrapping. Strict `{title, body}` parse; non-empty validation;
+- Model `gemini-2.5-flash`, `responseMimeType: 'application/json'` (JSON mode
+  on — required for structured `{title, body}` output), `maxOutputTokens: 8192`,
+  `temperature: 0.6`. `parseGeminiJson()` also strips any fence-wrapping as a
+  safety net. Strict `{title, body}` parse; non-empty validation;
   title ≤80, body ≤450–500 chars (`clamp()` at sentence boundary).
-- Rate limit: **10 generations per IP per hour** (in-memory, Worker-level).
+- **`/api/search`** uses the same `gemini-2.5-flash` model without JSON mode
+  (`maxOutputTokens: 1500`) — free-form prose response, no structured output.
+- Rate limit: **50 generations per IP per hour** (in-memory, Worker-level).
   Quota exceeded → 429 with Finnish message.
 - Hardened prompt (`buildPrompt` in `generate-article.js`):
   - Use only given facts; if sparse, write only what's known — no invented details.
@@ -261,7 +264,7 @@ underlying record is already saved.
   warning banner, resets on activity; imported on Toimituskeskus, Avustajat,
   Toimitus.
 - Login rate limit: 5 failed/hour on production, 50 on staging/dev.
-- Access-request: 3/IP/hour. Pikauutinen generation: 10/IP/hour.
+- Access-request: 3/IP/hour. Pikauutinen generation: 50/IP/hour.
 - Author is always taken from the IAM session, never the form. `draft: true` and
   `source: ai_generated` are hardcoded server-side.
 
@@ -299,8 +302,11 @@ underlying record is already saved.
   emails, auto-provisioning email, 12-category alignment, Avustajan Ohjekirja,
   `avustaja` role + `perm_nahta_gemini_avain` in IAM code and `init.js`.
 - **PWA** — `src/pages/fi/app.astro` at `/fi/app/`. Standalone light-theme
-  Android home-screen app. SVG tab icons (Pikauutinen + Kuva), shared IAM
-  session cookie, `laheta_artikkeli` gate, idle timeout.
+  Android home-screen app. Visual overhaul: white `theme-color` (#ffffff),
+  `#ff7a00` orange tokens, responsive `.form-card` (max 620px centered),
+  SVG nav icons, auto-expanding textareas (rAF-timed after screen visible),
+  confirm screen flex-centered, `.flash-review-hidden { display: none !important }`
+  specificity fix. Shared IAM session cookie, `laheta_artikkeli` gate, idle timeout.
 
 ---
 
