@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-06-28",
+  "lastUpdated": "2026-06-29",
   "seasonComplete": false,
   "totalRounds": 19,
   "latestRace": {
@@ -676,51 +676,51 @@
     "fi": {
       "mxgp_quali": [
         "Lucas Coenen nappasi paalupaikan Portugalin MXGP-karsinnassa.",
-        "Kokenut Jeffrey Herlings näytti vauhtiaan toisella sijalla."
+        "Jeffrey Herlings oli toinen tiukassa karsinta-ajossa."
       ],
       "mxgp_race": [
-        "Lucas Coenen hallitsi ensimmäistä MXGP-erää.",
-        "Jeffrey Herlings dominoi toista erää ja voitti GP:n tasapistein.",
-        "Jeffrey Herlings kruunattiin Portugalin GP:n voittajaksi."
+        "Lucas Coenen dominoi ensimmäistä MXGP-erää.",
+        "Jeffrey Herlings voitti toisen erän ja tasapisteissä kokonaiskilpailun.",
+        "Jeffrey Herlings vei kokonaisvoiton Portugalissa tasapisteissä Coeneniä vastaan."
       ],
       "mx2_quali": [
-        "Guillem Farres varmisti paalupaikan MX2-karsinnassa.",
-        "Sacha Coenen oli toinen, osoittaen vahvaa vauhtia."
+        "Guillem Farres oli nopein MX2-karsinnassa.",
+        "Sacha Coenen ajoi toiseksi haastavissa olosuhteissa."
       ],
       "mx2_race": [
-        "Guillem Farres oli pysäyttämätön voittaen molemmat MX2-erät.",
-        "Farres dominoi päivän MX2-kilpailua varmalla voitolla.",
-        "Guillem Farres vei Portugalin MX2 GP:n voiton."
+        "Guillem Farres hallitsi molempia MX2-eriä voittaen selvästi.",
+        "Janis Martins Reisulis taisteli vahvasti toiseksi kokonaiskilpailussa.",
+        "Guillem Farres vei täydet pisteet Portugalin MX2-GP:ssä."
       ],
       "standings": [
-        "Lucas Coenen pitää MXGP-sarjan kärkisijaa.",
-        "Jeffrey Herlings on toisena MXGP-pisteissä.",
-        "Simon Längenfelder nousi MX2-sarjan kolmanneksi."
+        "Lucas Coenen pitää MXGP-johtoa vahvasti.",
+        "Jeffrey Herlings pysyi toisena MXGP-sarjassa.",
+        "Romain Febvre jatkaa kolmantena MXGP-pisteissä."
       ]
     },
     "en": {
       "mxgp_quali": [
         "Lucas Coenen claimed pole position in MXGP qualifying.",
-        "Veteran Jeffrey Herlings showed his speed in second."
+        "Jeffrey Herlings secured second spot in a tight session."
       ],
       "mxgp_race": [
         "Lucas Coenen dominated the first MXGP moto.",
-        "Jeffrey Herlings controlled the second moto to win GP on countback.",
-        "Jeffrey Herlings was crowned the overall winner of the Portugal GP."
+        "Jeffrey Herlings won the second race, tying on points for the overall.",
+        "Jeffrey Herlings claimed the overall victory in Portugal on countback."
       ],
       "mx2_quali": [
-        "Guillem Farres secured pole position in MX2 qualifying.",
-        "Sacha Coenen was second, showing strong pace."
+        "Guillem Farres set the fastest lap in MX2 qualifying.",
+        "Sacha Coenen qualified second amidst challenging conditions."
       ],
       "mx2_race": [
-        "Guillem Farres was unstoppable, winning both MX2 motos.",
-        "Farres dominated the MX2 class with a commanding victory.",
-        "Guillem Farres claimed the MX2 GP overall win."
+        "Guillem Farres dominated both MX2 motos for a clear win.",
+        "Janis Martins Reisulis charged to second overall in MX2.",
+        "Guillem Farres took a commanding victory at the MX2 Portuguese GP."
       ],
       "standings": [
-        "Lucas Coenen holds firm at the top of MXGP standings.",
-        "Jeffrey Herlings remains in second place in MXGP points.",
-        "Simon Längenfelder moved up to third in the MX2 standings."
+        "Lucas Coenen held firm at the top of the MXGP standings.",
+        "Jeffrey Herlings maintained his second position in MXGP.",
+        "Romain Febvre stayed in third place in the MXGP championship."
       ]
     }
   },
