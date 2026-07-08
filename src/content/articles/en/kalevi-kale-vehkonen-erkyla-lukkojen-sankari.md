@@ -7,8 +7,8 @@ category: Historical
 tags:
   - Hyvinkää Erkylän lukot 1968, MM-motocross
 featured_image: /images/kalevi-kale-vehkonen-erkyla-lukkojen-sankari-hyvinkaa-mm-250-1971-kalevi-vehkonen.jpg
-card_image: /images/kalevi-kale-vehkonen-erkyla-lukkojen-sankari-vas.-kalevi-vehkonen-ja-sylvain-geboers.jpg
-show_hero: false
+card_image: ''
+show_hero: true
 image_caption: Kalevi Vehkonen at the Erkylä paddock in 1971
 draft: false
 seo_description: Kalevi Kale Vehkonen, the motocross hero of Erkylä circuit

@@ -7,8 +7,8 @@ category: Historical
 tags:
   - Hyvinkää Erkylän lukot 1968, MM-motocross
 featured_image: /images/kalevi-kale-vehkonen-erkyla-lukkojen-sankari-hyvinkaa-mm-250-1971-kalevi-vehkonen.jpg
-card_image: /images/kalevi-kale-vehkonen-erkyla-lukkojen-sankari-vas.-kalevi-vehkonen-ja-sylvain-geboers.jpg
-show_hero: false
+card_image: ''
+show_hero: true
 image_caption: Kalevi Vehkonen Erkylän lukoilla 1971
 draft: false
 seo_description: Kalevi Kale Vehkonen Erkylä lukkojen motocross sankari
@@ -21,6 +21,8 @@ language: fi
 Heinäkuun 28. päivä tulee kuluneeksi 58-vuotta siitä hetkestä, kun Kalevi Vehkonen täräytti Husqvarnallaan kaksi komeaa erävoittoa Hyvinkään Erkylän lukoilla 250ksm:n luokan MM-osakilpailussa (1968). Tuolloin vasta 21-vuotias Vehkonen oli kisassa täysin omaa luokkaansa ja johti molempia eriä käytännössä lähdöstä maaliin. Siinä sai katsella nuoren suomalaisen selkämystä kaikki, mukaan luettuna 1968 vuoden maailmanmestari, Belgian Joel Robert.
 
 Tuosta Erkylän lukkojen MM-kisan voitosta alkoi Vehkosen hurja nousu kohti MM-huippua. Seuraavana vuonna, 1969, Vehkonen ajoi Lukoilla myös avauserän voittoon. Toisessa erässä hän ajoi rajusti nurin ja taistelu erävoitosta valui Erkylän hiekkaan. Vehkosen uran kolmas MM-erävoitto (250cc) tuli 1971 Puolassa. Tuo Puolan kisa on sikäli historiallinen, että silloin Vehkonen ja Heikki Mikkola tasasivat erävoitot keskenään ja näin suomalaiset ottivat komean kaksoisvoiton (Lähde: MM-Motocrossia Antti Pyrhösen kyydissä, toim. Jukka Saastamoinen).
+
+![Kale Vehkonen ja Sylvain Geboers](/images/kalevi-kale-vehkonen-erkyla-lukkojen-sankari-vas.-kalevi-vehkonen-ja-sylvain-geboers.jpg "Kale Vehkonen ja Sylvain Geboers")
 
 Hyvinkäällä Vehkonen oli hyvässä iskussa myös elokuussa 1971, jolloin hän oli kisan yhteistulosten neljäs. Kaudella 1970 Vehkonen ajoi yhdessä Heikki Mikkolan ja Reino Hahlin kanssa Suomelle maajoukkueiden MM-pronssia.
 
