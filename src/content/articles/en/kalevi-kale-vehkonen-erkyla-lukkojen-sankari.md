@@ -9,7 +9,7 @@ tags:
 featured_image: /images/kalevi-kale-vehkonen-erkyla-lukkojen-sankari-hyvinkaa-mm-250-1971-kalevi-vehkonen.jpg
 card_image: /images/kalevi-kale-vehkonen-erkyla-lukkojen-sankari-vas.-kalevi-vehkonen-ja-sylvain-geboers.jpg
 show_hero: false
-image_caption: Kalevi Vehkonen at the Erkylä circuit in 1971 with Sylvain Geboers
+image_caption: Kalevi Vehkonen at the Erkylä paddock in 1971
 draft: false
 seo_description: Kalevi Kale Vehkonen, the motocross hero of Erkylä circuit
 sources: ''
