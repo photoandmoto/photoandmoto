@@ -29,9 +29,8 @@ Hyvinkäällä Vehkonen oli hyvässä iskussa myös elokuussa 1971, jolloin hän
 
 Kaudelle 1972 Vehkonen solmi tehdassopimuksen espanjalaisen Montesan kanssa. Vehkonen olikin huimassa iskussa ja oli 250ksm:n MM-sarjan yksi nopeimmista kuljettajista. Harmi vain, että Montesan tekniikka petti muutamaan otteeseen ratkaisevalla hetkellä ja jo varmalta näyttänyt MM-mitali vaihtui MM-sarjan neljänteen sijaan. Joka on toki sekin on loisto saavutus. Erkylän lukoilla Vehkonen oli jälleen iskussa elokuussa 1972. Ensimmäisessä erässä hän oli kolmas ja toisessa pykälää paremmin, toinen.
 
+Vehkonen ajoi Montesan tehdaskuskina myös kaudella 1973, mutta aivan samanlaiseen kiitoon hän ei päässyt kuin edelliskaudella. Kaksi seuraava kautta Vehkonen ajoi vielä Husqvarnan tehdastiimissä. 
 
-Vehkonen ajoi Montesan tehdaskuskina myös kaudella 1973, mutta aivan samanlaiseen kiitoon hän ei päässyt kuin edelliskaudella. Kaksi seuraava kautta Vehkonen ajoi vielä Husqvarnan tehdastiimissä. Suomen mestaruuksia Vehkoselle on kaksi; 1968 ja 1974. 
-
-Vehkonen kunnostautui myös endurossa ja hänellä on taskussaan muun muassa vuoden 1968 Päijänteen ympäriajon yleiskilpailun voitto (Husqvarna). Uransa huipulla hän lopetti kauden 1975 päätteeksi.
+Suomen mestaruuksia Vehkoselle on kaksi; 1968 ja 1974. Kale kunnostautui myös endurossa ja hänellä on taskussaan muun muassa vuoden 1968 Päijänteen ympäriajon yleiskilpailun voitto (Husqvarna). Uransa huipulla hän lopetti kauden 1975 päätteeksi.
 
 Kalevi Vehkonen s.26.9.1946, k. 3.1.2023

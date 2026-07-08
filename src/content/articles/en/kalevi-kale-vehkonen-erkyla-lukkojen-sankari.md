@@ -29,9 +29,8 @@ In Hyvinkää, Vehkonen was also in good form in August 1971, when he finished f
 
 For the 1972 season, Vehkonen signed a factory contract with the Spanish manufacturer Montesa. Vehkonen was in stunning form and was one of the fastest riders in the 250cc World Championship series. It is just a pity that Montesa's technology failed a few times at crucial moments, and a World Championship medal that already looked certain turned into a fourth place in the series. Which is, of course, a brilliant achievement in itself. At Erkylän lukot, Vehkonen was in form again in August 1972. In the first heat, he was third, and in the second, one step better, second.
 
+Vehkonen also rode as a factory rider for Montesa in the 1973 season, but he did not reach the same level of speed as in the previous season. For the next two seasons, Vehkonen still rode for the Husqvarna factory team. 
 
-Vehkonen also rode as a factory rider for Montesa in the 1973 season, but he did not reach the same level of speed as in the previous season. For the next two seasons, Vehkonen still rode for the Husqvarna factory team. Vehkonen has two Finnish championships; 1968 and 1974.
-
-Vehkonen also distinguished himself in enduro, and he has, among other things, the overall victory of the 1968 Päijänne Ajo (Päijänne Rally) in his pocket (Husqvarna). He ended his career at the peak of his performance at the end of the 1975 season.
+Vehkonen has two Finnish championships; 1968 and 1974.  Kale also distinguished himself in enduro, and he has, among other things, the overall victory of the 1968 Päijänne Ajo (Päijänne Rally) in his pocket (Husqvarna). He ended his career at the peak of his performance at the end of the 1975 season.
 
 Kalevi Vehkonen b. 26.9.1946, d. 3.1.2023
