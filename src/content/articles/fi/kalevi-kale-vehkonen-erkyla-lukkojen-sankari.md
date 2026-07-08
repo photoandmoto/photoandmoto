@@ -1,12 +1,12 @@
 ---
 title: Kalevi Kale Vehkonen - Erkylän lukkojen sankari
-subtitle: Kaksi komeaa erävoittoa 250 cc luokan MM-osakilpailussa vuonna 1968
+subtitle: Kaksi komeaa erävoittoa 250 cc MM luokassa vuonna 1968
 author: Tapio Vuori
 date: 2026-07-06
 category: Historical
 tags:
   - Hyvinkää Erkylän lukot 1968, MM-motocross
-featured_image: /images/kalevi-kale-vehkonen-erkyla-lukkojen-sankari-hyvinkaa-mm-250-1971-kalevi-vehkonen.jpg
+featured_image: /images/Kale Vehkonen 1968.jpg
 card_image: ''
 show_hero: true
 image_caption: Kalevi Vehkonen Erkylän lukoilla 1971

@@ -1,12 +1,12 @@
 ---
 title: Kalevi Kale Vehkonen - The hero of the Erkylä track
-subtitle: Double heat victory in the 250 cc class World Championship round in 1968
+subtitle: Two great heat victories in the 250 cc World Championship class in 1968
 author: Tapio Vuori
 date: 2026-07-06
 category: Historical
 tags:
   - Hyvinkää Erkylän lukot 1968, MM-motocross
-featured_image: /images/kalevi-kale-vehkonen-erkyla-lukkojen-sankari-hyvinkaa-mm-250-1971-kalevi-vehkonen.jpg
+featured_image: /images/Kale Vehkonen 1968.jpg
 card_image: ''
 show_hero: true
 image_caption: Kalevi Vehkonen at the Erkylä paddock in 1971
@@ -21,6 +21,8 @@ language: fi
 July 28th marks 58 years since the moment Kalevi Vehkonen blasted his Husqvarna to two magnificent heat victories at the 250cc World Championship round at Erkylän lukot in Hyvinkää (1968). At just 21 years old, Vehkonen was in a league of his own in the race, leading both heats practically from start to finish. Everyone had to watch the young Finn's back, including the 1968 world champion, Belgium's Joel Robert.
 
 That World Championship victory at Erkylän lukot marked the beginning of Vehkonen's fierce rise toward the world elite. The following year, 1969, Vehkonen also rode to a victory in the opening heat at Lukot. In the second heat, he crashed hard, and the battle for the heat win was lost in the sand of Erkylä. The third World Championship heat victory of Vehkonen's career (250cc) came in 1971 in Poland. That race in Poland is historic in that Vehkonen and Heikki Mikkola split the heat wins between them, and thus the Finns took a magnificent one-two finish (Source: MM-Motocrossia Antti Pyrhösen kyydissä, ed. Jukka Saastamoinen).
+
+![Kale Vehkonen and Sylvain Geboers](/images/kalevi-kale-vehkonen-erkyla-lukkojen-sankari-vas.-kalevi-vehkonen-ja-sylvain-geboers.jpg "Kale Vehkonen and Sylvain Geboers")
 
 In Hyvinkää, Vehkonen was also in good form in August 1971, when he finished fourth in the overall results of the race. In the 1970 season, Vehkonen, together with Heikki Mikkola and Reino Hahl, won World Championship bronze for Finland in the team competition.
 
