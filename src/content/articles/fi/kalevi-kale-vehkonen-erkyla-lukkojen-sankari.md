@@ -5,7 +5,8 @@ author: Tapio Vuori
 date: 2026-07-06
 category: Historical
 tags:
-  - Hyvinkää Erkylän lukot 1968, MM-motocross
+  - Hyvinkää Erkylän lukot 1968
+  - MM-motocross
 featured_image: /images/Kale Vehkonen 1968.jpg
 card_image: ''
 show_hero: true
@@ -26,9 +27,9 @@ Tuosta Erkylän lukkojen MM-kisan voitosta alkoi Vehkosen hurja nousu kohti MM-h
 
 Hyvinkäällä Vehkonen oli hyvässä iskussa myös elokuussa 1971, jolloin hän oli kisan yhteistulosten neljäs. Kaudella 1970 Vehkonen ajoi yhdessä Heikki Mikkolan ja Reino Hahlin kanssa Suomelle maajoukkueiden MM-pronssia.
 
-Kaudelle 1972 Vehkonen solmi tehdassopimuksen espanjalaisen Montesan kanssa. Vehkonen olikin huimassa iskussa ja oli 250ksm:n MM-sarjan yksi nopeimmista kuljettajista. Harmi vain, että Montesan tekniikka petti muutamaan otteeseen ratkaisevalla hetkellä ja jo varmalta näyttänyt MM-mitali vaihtui MM-sarjan neljänteen sijaan. Joka on toki sekin on loisto saavutus.
+Kaudelle 1972 Vehkonen solmi tehdassopimuksen espanjalaisen Montesan kanssa. Vehkonen olikin huimassa iskussa ja oli 250ksm:n MM-sarjan yksi nopeimmista kuljettajista. Harmi vain, että Montesan tekniikka petti muutamaan otteeseen ratkaisevalla hetkellä ja jo varmalta näyttänyt MM-mitali vaihtui MM-sarjan neljänteen sijaan. Joka on toki sekin on loisto saavutus. Erkylän lukoilla Vehkonen oli jälleen iskussa elokuussa 1972. Ensimmäisessä erässä hän oli kolmas ja toisessa pykälää paremmin, toinen.
 
-Erkylän lukoilla Vehkonen oli jälleen iskussa elokuussa 1972. Ensimmäisessä erässä hän oli kolmas ja toisessa pykälää paremmin, toinen.
+
 Vehkonen ajoi Montesan tehdaskuskina myös kaudella 1973, mutta aivan samanlaiseen kiitoon hän ei päässyt kuin edelliskaudella. Kaksi seuraava kautta Vehkonen ajoi vielä Husqvarnan tehdastiimissä. Suomen mestaruuksia Vehkoselle on kaksi; 1968 ja 1974. 
 
 Vehkonen kunnostautui myös endurossa ja hänellä on taskussaan muun muassa vuoden 1968 Päijänteen ympäriajon yleiskilpailun voitto (Husqvarna). Uransa huipulla hän lopetti kauden 1975 päätteeksi.
