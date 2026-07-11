@@ -185,8 +185,9 @@ which triggers the auto-provisioning email.
 ### Articles — `src/content/articles/fi/<slug>.md`
 Written by `submit-article.js` (and by editors in Sveltia). Frontmatter conforms
 to the Zod schema in `src/content.config.ts`: `title`, `subtitle?`, `author`
-(from IAM session), `date`, `category`, `tags`, `featured_image`, `card_image?`,
-`show_hero`, `image_caption?`, `language`, `draft` (always `true` on submit),
+(from IAM session), `date`, `category`, `tags`, `featured_image`,
+`featured_image_focus?`, `card_image?`, `card_image_focus?`, `show_hero`,
+`image_caption?`, `language`, `draft` (always `true` on submit),
 `seo_description?` (editor-only), `sources?`. Body is the markdown content area.
 
 ### Pikauutiset — `src/content/pikauutiset/<date>-<slug>.md`
