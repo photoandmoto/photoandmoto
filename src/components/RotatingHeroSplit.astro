@@ -10,7 +10,7 @@ interface Item {
 interface Props {
   items: Item[];
   intervalMs?: number;
-  variant?: 'grid' | 'list';
+  variant?: 'grid' | 'list' | 'sidebar';
 }
 
 const { items, intervalMs = 10000, variant = 'grid' } = Astro.props;
@@ -455,10 +455,121 @@ function catKey(cat?: string) {
     text-shadow: none;
   }
 
+  /* ── 'sidebar' variant ────────────────────────────────────────────────
+     Large featured hero (16:9 image, text below in normal flow — not
+     overlaid) + a narrower vertical list of compact rows (16:9 thumbnails,
+     text beside them). Reuses the same markup/JS as 'grid'/'list' — only
+     CSS positioning changes; the rotation script doesn't know or care how
+     these elements are laid out, so cross-fade/mutation keep working as-is. */
+  .rhs--sidebar {
+    grid-template-columns: 2fr 1fr;
+  }
+
+  .rhs--sidebar .rhs__stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  /* Big card: image on top (fixed 16:9), text below in normal flow.
+     The slides are position:absolute (needed for the cross-fade), so their
+     content never contributes to the wrap's height — without an explicit
+     intrinsic size here, the wrap stays pinned at the base rule's
+     min-height:360px, which is too short for a 16:9 image plus text below
+     it, and the content gets silently squeezed to near-zero height. Giving
+     the wrap its own aspect-ratio (instead of stretching to match the flex
+     parent) fixes that: align-items:flex-start stops .rhs__big from
+     force-stretching .rhs__big-link to the old 360px, and height:auto lets
+     aspect-ratio actually take effect instead of being overridden by the
+     inherited height:100%. */
+  .rhs--sidebar .rhs__big {
+    align-items: flex-start;
+  }
+  .rhs--sidebar .rhs__big-link {
+    background: transparent;
+  }
+  .rhs--sidebar .rhs__big-wrap {
+    height: auto;
+    aspect-ratio: 4/3;
+  }
+  .rhs--sidebar .rhs__big-slide {
+    display: flex;
+    flex-direction: column;
+  }
+  .rhs--sidebar .rhs__big-img {
+    position: static;
+    width: 100%;
+    aspect-ratio: 16/9;
+    height: auto;
+    flex-shrink: 0;
+  }
+  .rhs--sidebar .rhs__big-overlay {
+    display: none;
+  }
+  .rhs--sidebar .rhs__big-text {
+    position: static;
+    flex: 1;
+    padding: var(--space-3);
+    color: var(--text-primary);
+  }
+  .rhs--sidebar .rhs__big-title {
+    color: var(--text-primary);
+    text-shadow: none;
+  }
+  .rhs--sidebar .rhs__big-subtitle {
+    color: var(--text-secondary);
+    text-shadow: none;
+  }
+
+  /* Stack cards: 16:9 thumbnail beside title + subtitle, no overlay, no
+     per-row background — plain, divided by a thin top border, matching
+     LatestSidebar's compact rows (.lsb__row). */
+  .rhs--sidebar .rhs__stack-card {
+    background: transparent;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+  .rhs--sidebar .rhs__stack-card:first-child {
+    border-top: none;
+  }
+  .rhs--sidebar .rhs__stack-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 0;
+    padding: var(--space-2);
+  }
+  .rhs--sidebar .rhs__stack-img {
+    position: static;
+    width: 110px;
+    aspect-ratio: 16/9;
+    height: auto;
+    flex-shrink: 0;
+  }
+  .rhs--sidebar .rhs__stack-overlay {
+    display: none;
+  }
+  .rhs--sidebar .rhs__stack-text {
+    position: static;
+    color: var(--text-primary);
+    min-width: 0;
+  }
+  .rhs--sidebar .rhs__stack-title {
+    color: var(--text-primary);
+    text-shadow: none;
+    font-size: 0.95rem;
+  }
+  .rhs--sidebar .rhs__stack-subtitle {
+    color: var(--text-secondary);
+    text-shadow: none;
+  }
+
   /* Responsive */
   @media (max-width: 900px) {
     .rhs--grid {
       grid-template-columns: repeat(2, 1fr);
+    }
+    .rhs--sidebar {
+      grid-template-columns: 1fr;
     }
   }
 
