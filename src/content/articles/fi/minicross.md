@@ -1,15 +1,20 @@
 ---
-title: "Vain 50 kuutiosenttimetrin tähden"
-subtitle: "Tarina vauhdista, sorasta ja kasvusta"
-seo_description: "1970-luvun nappulacrossin tarina: kuinka 50-kuutioisten luokka avasi nuorille tien viralliseen motocross-kilpailuun Suomessa ja Ruotsissa."
+title: Vain 50 kuutiosenttimetrin tähden
+subtitle: Tarina vauhdista, sorasta ja kasvusta
+author: Photo & Moto
 date: 2026-05-01
-category: "Historical"
-tags: ["motocross", "minicross", "historia", "50cc"]
-featured_image: "/images/minicross-hero.jpg"
-author: "Photo & Moto"
-language: "fi"
+category: Historical
+tags:
+  - motocross
+  - minicross
+  - historia
+  - 50cc
+featured_image: /images/minicross-hero.jpg
+featured_image_focus: top
+image_caption: ''
+seo_description: '1970-luvun nappulacrossin tarina: kuinka 50-kuutioisten luokka avasi nuorille tien viralliseen motocross-kilpailuun Suomessa ja Ruotsissa.'
+language: fi
 ---
-
 
 Tämä juttu saa alkunsa toisen maailmansodan jälkeisestä suvantovaiheesta, ei suinkaan kilparadoilta. Ruotsin teollinen infrastruktuuri säilyi sodan myllerryksessä ehjänä, mikä loi vankan perustan 1950- ja 60-lukujen voimakkaalle talouskasvulle. Vaurastumisen myötä perheillä oli ensi kertaa mahdollisuus panostaa vapaa-aikaan ja harrastuksiin.
 

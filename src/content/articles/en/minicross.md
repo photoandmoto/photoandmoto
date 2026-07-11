@@ -1,13 +1,19 @@
 ---
-title: "For the sake of just 50cc"
-subtitle: "A story of speed, gravel, and growth"
-seo_description: "The story of 1970s minicross: how the 50cc class opened the door to official motocross competition for young riders in Finland and Sweden."
+title: For the sake of just 50cc
+subtitle: A story of speed, gravel, and growth
+author: Photo & Moto
 date: 2026-05-01
-category: "Historical"
-tags: ["motocross", "minicross", "history", "50cc"]
-featured_image: "/images/minicross-hero.jpg"
-author: "Photo & Moto"
-language: "en"
+category: Historical
+tags:
+  - motocross
+  - minicross
+  - history
+  - 50cc
+featured_image: /images/minicross-hero.jpg
+featured_image_focus: top
+image_caption: ''
+seo_description: 'The story of 1970s minicross: how the 50cc class opened the door to official motocross competition for young riders in Finland and Sweden.'
+language: en
 ---
 
 This story begins in the lull that followed the Second World War — not on race circuits, but in the post-war calm. Sweden's industrial infrastructure had survived the upheaval intact, laying a solid foundation for the strong economic growth of the 1950s and 60s. As prosperity spread, families had, for the first time, the means to invest in leisure and hobbies.
