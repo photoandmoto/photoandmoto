@@ -1,0 +1,295 @@
+---
+interface Item {
+  href: string;
+  image: string;
+  imageAlt?: string;
+  title: string;
+  subtitle?: string;
+  category?: string;
+  focus?: 'top' | 'center' | 'bottom';
+}
+
+interface Props {
+  items: Item[];
+}
+
+const { items } = Astro.props;
+const [lead, ...rows] = items;
+
+const categoryKey = (category?: string) =>
+  category ? category.toLowerCase().replace(/[^a-z0-9]/g, '') : '';
+---
+
+{lead && (
+  <div class="lsb">
+    <a href={lead.href} class="lsb__lead">
+      <div class="lsb__lead-image-wrap">
+        <img
+          src={lead.image}
+          alt={lead.imageAlt || lead.title}
+          class="lsb__lead-image"
+          style={`object-position: ${lead.focus || 'center'}`}
+          loading="lazy"
+        />
+        <div class="lsb__lead-overlay"></div>
+        {lead.category && (
+          <span class={`chip chip--${categoryKey(lead.category)} lsb__lead-chip`}>{lead.category}</span>
+        )}
+        <div class="lsb__lead-text">
+          <h3 class="lsb__lead-title">{lead.title}</h3>
+          {lead.subtitle && <p class="lsb__lead-subtitle">{lead.subtitle}</p>}
+        </div>
+      </div>
+    </a>
+
+    {rows.length > 0 && (
+      <ul class="lsb__list">
+        {rows.map(item => (
+          <li class="lsb__row">
+            <a href={item.href} class="lsb__row-link">
+              <img
+                src={item.image}
+                alt={item.imageAlt || item.title}
+                class="lsb__row-image"
+                style={`object-position: ${item.focus || 'center'}`}
+                loading="lazy"
+              />
+              <div class="lsb__row-text">
+                <h4 class="lsb__row-title">{item.title}</h4>
+                {item.subtitle && <p class="lsb__row-subtitle">{item.subtitle}</p>}
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+)}
+
+<style>
+  .lsb {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  /* Lead item — same visual language as ArticleCard: image with text overlay */
+  .lsb__lead {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .lsb__lead-image-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+  }
+
+  .lsb__lead-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .lsb__lead:hover .lsb__lead-image {
+    transform: scale(1.04);
+  }
+
+  .lsb__lead-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.1) 0%,
+      rgba(0, 0, 0, 0.2) 45%,
+      rgba(0, 0, 0, 0.85) 100%
+    );
+    pointer-events: none;
+  }
+
+  .lsb__lead-chip {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-family: var(--font-headline);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+    background: #5F5E5A;
+    padding: 5px 10px;
+    border-radius: 3px;
+    line-height: 1;
+    z-index: 2;
+  }
+
+  .lsb__lead-text {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 2;
+    color: white;
+  }
+
+  .lsb__lead-title {
+    font-family: var(--font-headline);
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: white;
+    margin: 0;
+    line-height: 1.2;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .lsb__lead-subtitle {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.92);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    margin: 6px 0 0;
+    line-height: 1.3;
+  }
+
+  /* Compact rows — thumbnail + title + date, no chip */
+  .lsb__list {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    flex: 1;
+  }
+
+  .lsb__row {
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .lsb__row:first-child {
+    border-top: none;
+  }
+
+  .lsb__row-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    text-decoration: none;
+    color: inherit;
+    padding-top: var(--space-2);
+  }
+
+  .lsb__row:first-child .lsb__row-link {
+    padding-top: 0;
+  }
+
+  .lsb__row-image {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    flex-shrink: 0;
+  }
+
+  .lsb__row-text {
+    min-width: 0;
+  }
+
+  .lsb__row-title {
+    font-family: var(--font-headline);
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .lsb__row-link:hover .lsb__row-title {
+    color: var(--brand-primary);
+  }
+
+  .lsb__row-subtitle {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin: 4px 0 0;
+  }
+
+  /* Category chip colors — mirrors ArticleCard.astro / RotatingHeroSplit.astro
+     (kept in sync intentionally; includes the existing blue speedway chip,
+     left unchanged per project convention). */
+  .lsb .chip--mxgp       { background: #FF9900; color: #000; }
+  .lsb .chip--mx2        { background: #D85A30; color: #000; }
+  .lsb .chip--historical { background: #FF9900; color: #000; }
+  .lsb .chip--speedway   { background: #378ADD; color: #000; }
+  .lsb .chip--enduro     { background: #639922; color: #000; }
+  .lsb .chip--technical  { background: #7F77DD; color: #000; }
+  .lsb .chip--interview  { background: #D4537E; color: #000; }
+
+  /* On mobile the lead item sits stacked directly under the (now full-width)
+     hero card. Keeping its overlay-hero treatment there reads as a second
+     hero, so it collapses to the same compact row layout as the list below —
+     just a bit larger — making it unambiguously secondary to the hero. */
+  @media (max-width: 900px) {
+    .lsb__lead-image-wrap {
+      aspect-ratio: auto;
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-2);
+      padding: var(--space-2);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .lsb__lead-image {
+      width: 100px;
+      height: 100px;
+      flex-shrink: 0;
+      border-radius: var(--radius-sm);
+    }
+
+    .lsb__lead-overlay {
+      display: none;
+    }
+
+    .lsb__lead-chip {
+      position: static;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+
+    .lsb__lead-text {
+      position: static;
+      color: var(--text-primary);
+    }
+
+    .lsb__lead-title {
+      color: var(--text-primary);
+      text-shadow: none;
+      font-size: 1rem;
+      -webkit-line-clamp: 2;
+    }
+
+    .lsb__lead-subtitle {
+      color: var(--text-secondary);
+      text-shadow: none;
+    }
+  }
+</style>

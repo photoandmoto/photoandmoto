@@ -17,6 +17,7 @@ const articlesCollection = defineCollection({
     tags: z.array(z.string()),
     featured_image: z.string().nullish(),
     card_image: z.string().nullish(),
+    card_image_focus: z.enum(['top', 'center', 'bottom']).optional(),
     // Booleans use preprocess to coerce null → default. Decap's i18n:duplicate
     // copies "default-but-unset" values as `null` to the non-default locale,
     // which would otherwise fail boolean validation.

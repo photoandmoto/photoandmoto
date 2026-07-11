@@ -85,6 +85,7 @@ collections:
       - { name: tags, label: Avainsanat, widget: list, default: [], required: false, i18n: true }
       - { name: featured_image, label: 'Pääkuva (hero)', widget: image, required: false, i18n: duplicate }
       - { name: card_image, label: 'Korttikuva (lista- ja etusivut)', widget: image, required: false, i18n: duplicate }
+      - { name: card_image_focus, label: 'Korttikuvan kohdistus (pystykuville)', widget: select, options: [{label: 'Ylä', value: top}, {label: 'Keski', value: center}, {label: 'Ala', value: bottom}], default: center, required: false, i18n: duplicate, hint: 'Mihin kohtaan rajaus keskittyy, jos kuva on pystysuuntainen. Vaakakuvilla ei yleensä väliä.' }
       - { name: show_hero, label: 'Näytä pääkuva otsikon yläpuolella', widget: boolean, default: true, required: false, i18n: duplicate }
       - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
       - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
@@ -158,6 +159,7 @@ collections:
       - { name: tags, label: Avainsanat, widget: list, default: ['MXGP'], required: false, i18n: true }
       - { name: featured_image, label: 'Pääkuva (hero)', widget: image, required: false, i18n: duplicate }
       - { name: card_image, label: 'Korttikuva (lista- ja etusivut)', widget: image, required: false, i18n: duplicate }
+      - { name: card_image_focus, label: 'Korttikuvan kohdistus (pystykuville)', widget: select, options: [{label: 'Ylä', value: top}, {label: 'Keski', value: center}, {label: 'Ala', value: bottom}], default: center, required: false, i18n: duplicate, hint: 'Mihin kohtaan rajaus keskittyy, jos kuva on pystysuuntainen. Vaakakuvilla ei yleensä väliä.' }
       - { name: show_hero, label: 'Näytä pääkuva otsikon yläpuolella', widget: boolean, default: true, required: false, i18n: duplicate }
       - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
       - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
@@ -208,6 +210,7 @@ collections:
       - { name: tags, label: Avainsanat, widget: list, default: ['historia'], required: false, i18n: true }
       - { name: featured_image, label: 'Pääkuva (hero)', widget: image, required: false, i18n: duplicate }
       - { name: card_image, label: 'Korttikuva (lista- ja etusivut)', widget: image, required: false, i18n: duplicate }
+      - { name: card_image_focus, label: 'Korttikuvan kohdistus (pystykuville)', widget: select, options: [{label: 'Ylä', value: top}, {label: 'Keski', value: center}, {label: 'Ala', value: bottom}], default: center, required: false, i18n: duplicate, hint: 'Mihin kohtaan rajaus keskittyy, jos kuva on pystysuuntainen. Vaakakuvilla ei yleensä väliä.' }
       - { name: show_hero, label: 'Näytä pääkuva otsikon yläpuolella', widget: boolean, default: true, required: false, i18n: duplicate }
       - { name: image_caption, label: 'Pääkuvan kuvateksti', widget: string, required: false, i18n: true }
       - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, required: false, i18n: duplicate }
