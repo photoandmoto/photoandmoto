@@ -5,6 +5,7 @@ import LatestSidebar from '../../components/LatestSidebar.astro';
 import TrendingTicker from '../../components/TrendingTicker.astro';
 import UpcomingRaces from '../../components/UpcomingRaces.astro';
 import RotatingHeroSplit from '../../components/RotatingHeroSplit.astro';
+import MysteryHelpBlock from '../../components/MysteryHelpBlock.astro';
 import { getCollection } from 'astro:content';
 import { ui } from '../../i18n/ui';
 
@@ -142,6 +143,9 @@ const galleryItems = featuredGalleries.map(g => ({
     </div>
   </section>
 
+  {/* ===== Mystery photo help block — appears only when unidentified photos exist ===== */}
+  <MysteryHelpBlock lang="fi" />
+
   {/* ===== Ota yhteyttä CTA section ===== */}
   <section class="section cta-section">
     <div class="container">
@@ -231,9 +235,19 @@ const galleryItems = featuredGalleries.map(g => ({
     padding: var(--space-6) 0;
   }
 
+  /* MysteryHelpBlock's own .mhb rule is white (correct for its position on
+     EN, right after EN's shaded gallery-section). On FI it now sits after
+     the white podcast-section instead, so it needs to be shaded here —
+     #mhbRoot (the component's root id) gives this override enough
+     specificity to win regardless of stylesheet load order, without
+     touching the shared component or EN's page. */
+  :global(#mhbRoot) {
+    background: var(--bg-secondary);
+  }
+
   /* ===== CTA section ("Ota yhteyttä") ===== */
   .section.cta-section {
-    background: var(--bg-secondary);
+    background: white;
     padding: var(--space-4) 0;
   }
 
