@@ -248,36 +248,47 @@ const galleryItems = featuredGalleries.map(g => ({
 
   /* Articles section */
   .featured-grid-section {
-    background: var(--bg-secondary);
+    background: white;
     padding-top: var(--space-8);
     padding-bottom: var(--space-6);
   }
 
+  /* UpcomingRaces defaults to white (correct for EN, where it still needs
+     to contrast against EN's shaded Featured section). On FI, Featured is
+     now white too, so Upcoming flips to shaded here to keep the
+     alternating rhythm going; its cards flip to white in the same
+     override so they don't disappear into the new shaded background.
+     #upcomingRacesRoot gives this override enough specificity to reliably
+     win over the component's own scoped rule, without touching the shared
+     component or EN's page. */
+  :global(#upcomingRacesRoot) {
+    background: var(--bg-secondary);
+  }
+  :global(#upcomingRacesRoot .upcoming-card) {
+    background: white;
+  }
+
   /* Gallery section */
   .gallery-section {
-    background: var(--bg-secondary);
+    background: white;
     padding: var(--space-6) 0;
   }
 
   /* Podcast section */
   .podcast-section {
-    background: white;
+    background: var(--bg-secondary);
     padding: var(--space-6) 0;
   }
 
-  /* MysteryHelpBlock's own .mhb rule is white (correct for its position on
-     EN, right after EN's shaded gallery-section). On FI it now sits after
-     the white podcast-section instead, so it needs to be shaded here —
-     #mhbRoot (the component's root id) gives this override enough
-     specificity to win regardless of stylesheet load order, without
-     touching the shared component or EN's page. */
-  :global(#mhbRoot) {
-    background: var(--bg-secondary);
-  }
+  /* MysteryHelpBlock's own .mhb rule is white, which is now correct here
+     too — Podcast (just above it) is shaded, so no override is needed;
+     removing the FI override that used to shade it keeps the alternation
+     going: Upcoming(shaded) -> Gallery(white) -> Podcast(shaded) ->
+     MysteryHelpBlock(white) -> CTA(shaded). */
 
   /* ===== CTA section ("Ota yhteyttä") ===== */
   .section.cta-section {
-    background: white;
+    background: var(--bg-secondary);
     padding: var(--space-4) 0;
   }
 
