@@ -6,6 +6,7 @@ date: 2026-06-09
 category: Historical
 tags: []
 card_image: /images/antti-pyrhonen-1993.jpg
+card_image_focus: top
 show_hero: false
 image_caption: ''
 draft: false
