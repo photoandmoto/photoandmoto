@@ -5,9 +5,10 @@ import LanguageSwitcher from './LanguageSwitcher.astro';
 interface Props {
   lang: 'fi' | 'en';
   currentPath: string;
+  tickerBelowNav?: boolean;
 }
 
-const { lang, currentPath } = Astro.props;
+const { lang, currentPath, tickerBelowNav = false } = Astro.props;
 const t = ui[lang];
 
 const navItems = lang === 'fi'
@@ -86,7 +87,7 @@ const mobileFlatItems = [
   </div>
 
   <!-- BAND 3: scrolling nav row -->
-  <div class="header-nav-row">
+  <div class:list={['header-nav-row', { 'header-nav-row--flush': tickerBelowNav }]}>
     <div class="container nav-row-inner">
 
       <!-- Desktop nav — exactly as before -->
@@ -300,6 +301,14 @@ const mobileFlatItems = [
     background: #000;
     border-top: 1px solid rgba(255,255,255,0.08);
     border-bottom: 2px solid var(--brand-primary);
+  }
+
+  /* When a page relocates the ticker into its own strip directly below
+     the nav (FI/EN homepage), drop the orange accent border so
+     nav+ticker reads as one solid black block instead of being split by
+     a colored seam. Every other page keeps the orange border as-is. */
+  .header-nav-row--flush {
+    border-bottom: none;
   }
 
   .nav-row-inner {
