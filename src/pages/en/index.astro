@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TrendingTicker from '../../components/TrendingTicker.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
+import LatestSidebar from '../../components/LatestSidebar.astro';
 import UpcomingRaces from '../../components/UpcomingRaces.astro';
 import RotatingHeroSplit from '../../components/RotatingHeroSplit.astro';
 import MysteryHelpBlock from '../../components/MysteryHelpBlock.astro';
@@ -20,9 +21,19 @@ const articles = (await getCollection('articles', (entry) =>
 
 const slugFor = (a) => `/en/time-machine/${a.id.replace(/^en\//, '')}`;
 const imgFor = (a) => a.data.card_image || a.data.featured_image;
+const focusFor = (a) => a.data.card_image ? a.data.card_image_focus : a.data.featured_image_focus;
 
-const heroCards = articles.slice(0, 2);
-const secondaryCards = articles.slice(2, 6);
+// Featured hero + sidebar: 1 hero article + 5 sidebar articles (1 lead + 4 compact rows)
+const featuredArticle = articles[0];
+const sidebarArticles = articles.slice(1, 6);
+const sidebarItems = sidebarArticles.map(a => ({
+  href: slugFor(a),
+  image: imgFor(a),
+  title: a.data.title,
+  subtitle: fmt(a.data.date),
+  category: a.data.category,
+  focus: focusFor(a),
+}));
 
 const tickerItems = articles.slice(0, 5).map(a => ({
   href: slugFor(a),
@@ -50,40 +61,29 @@ const galleryItems = featuredGalleries.map(g => ({
   <h1 class="sr-only">Photo & Moto — Speed and Life Through the Lens</h1>
   <TrendingTicker label="Trending now" items={tickerItems} slot="ticker" />
 
-  {/* ===== Featured grid (articles) ===== */}
-  {heroCards.length > 0 && (
+  {/* ===== Featured hero + sidebar (articles) ===== */}
+  {featuredArticle && (
     <section class="section featured-grid-section">
       <div class="container">
         <div class="section-header-row">
           <h2 class="section-heading">Latest articles</h2>
           <a href="/en/time-machine" class="section-all-link">All articles →</a>
         </div>
-        <div class="hero-split">
-          {heroCards.map(a => (
-            <ArticleCard
-              href={slugFor(a)}
-              image={imgFor(a)}
-              category={a.data.category}
-              title={a.data.title}
-              subtitle={fmt(a.data.date)}
-              size="lg"
-            />
-          ))}
+        <div class="featured-row">
+          <ArticleCard
+            href={slugFor(featuredArticle)}
+            image={imgFor(featuredArticle)}
+            category={featuredArticle.data.category}
+            title={featuredArticle.data.title}
+            subtitle={featuredArticle.data.subtitle}
+            size="lg"
+            textBelow
+            focus={focusFor(featuredArticle)}
+          />
+          {sidebarItems.length > 0 && (
+            <LatestSidebar items={sidebarItems} />
+          )}
         </div>
-
-        {secondaryCards.length > 0 && (
-          <div class="secondary-row">
-            {secondaryCards.map(a => (
-              <ArticleCard
-                href={slugFor(a)}
-                image={imgFor(a)}
-                category={a.data.category}
-                title={a.data.title}
-                size="sm"
-              />
-            ))}
-          </div>
-        )}
       </div>
     </section>
   )}
@@ -166,15 +166,15 @@ const galleryItems = featuredGalleries.map(g => ({
     text-decoration: underline;
   }
 
-  /* ===== Shared: 1 big + N stacked layout (hero-split) ===== */
-  .hero-split {
+  /* ===== Featured hero + sidebar layout ===== */
+  .featured-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
     gap: var(--space-3);
     align-items: stretch;
   }
 
-  .hero-split > article {
+  .featured-row > article {
     min-height: 420px;
   }
 
@@ -183,14 +183,6 @@ const galleryItems = featuredGalleries.map(g => ({
     background: var(--bg-secondary);
     padding-top: var(--space-8);
     padding-bottom: var(--space-6);
-  }
-
-  /* Secondary row: 4 cards */
-  .secondary-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-3);
-    margin-top: var(--space-3);
   }
 
   /* Gallery section */
@@ -258,14 +250,11 @@ const galleryItems = featuredGalleries.map(g => ({
 
   /* Responsive */
   @media (max-width: 900px) {
-    .hero-split {
+    .featured-row {
       grid-template-columns: 1fr;
     }
-    .hero-split > article {
+    .featured-row > article {
       min-height: 320px;
-    }
-    .secondary-row {
-      grid-template-columns: repeat(2, 1fr);
     }
     .cta-grid {
       grid-template-columns: 1fr;
@@ -276,9 +265,6 @@ const galleryItems = featuredGalleries.map(g => ({
   }
 
   @media (max-width: 540px) {
-    .secondary-row {
-      grid-template-columns: 1fr;
-    }
     .section-heading {
       font-size: 1.4rem;
     }
