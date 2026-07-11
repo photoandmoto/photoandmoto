@@ -21,6 +21,7 @@ const articles = (await getCollection('articles', (entry) =>
 
 const slugFor = (a: any) => `/fi/aikakone/${a.id.replace(/^fi\//, '')}`;
 const imgFor = (a: any) => a.data.card_image || a.data.featured_image;
+const focusFor = (a: any) => a.data.card_image ? a.data.card_image_focus : a.data.featured_image_focus;
 
 // Featured hero + sidebar: 1 hero article + 5 sidebar articles (1 lead + 4 compact rows)
 const featuredArticle = articles[0];
@@ -31,7 +32,7 @@ const sidebarItems = sidebarArticles.map(a => ({
   title: a.data.title,
   subtitle: fmt(a.data.date),
   category: a.data.category,
-  focus: a.data.card_image_focus,
+  focus: focusFor(a),
 }));
 
 // Ticker: latest 5 article titles
@@ -105,7 +106,7 @@ const galleryItems = featuredGalleries.map(g => ({
             subtitle={featuredArticle.data.subtitle}
             size="lg"
             textBelow
-            focus={featuredArticle.data.card_image_focus}
+            focus={focusFor(featuredArticle)}
           />
           {sidebarItems.length > 0 && (
             <LatestSidebar items={sidebarItems} />

@@ -16,6 +16,7 @@ const articlesCollection = defineCollection({
     category: z.string(),
     tags: z.array(z.string()),
     featured_image: z.string().nullish(),
+    featured_image_focus: z.enum(['top', 'center', 'bottom']).optional(),
     card_image: z.string().nullish(),
     card_image_focus: z.enum(['top', 'center', 'bottom']).optional(),
     // Booleans use preprocess to coerce null → default. Decap's i18n:duplicate
