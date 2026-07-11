@@ -107,7 +107,7 @@ const galleryItems = featuredGalleries.map(g => ({
 >
   <h1 class="sr-only">Photo & Moto — Vauhtia ja elämää linssin läpi</h1>
   <div class="ticker-band">
-    <TrendingTicker label="Nyt luetuimmat" items={tickerItems} />
+    <TrendingTicker label="Nyt luetuimmat" items={tickerItems} intervalMs={3000} />
   </div>
 
   {/* ===== Featured hero + sidebar (articles) ===== */}
@@ -225,11 +225,12 @@ const galleryItems = featuredGalleries.map(g => ({
     text-decoration: underline;
   }
 
-  /* Ticker — relocated out of the header, now its own strip between the nav
-     and "Uusimmat artikkelit". Breathing room on both sides since it no
-     longer sits flush inside the header bands. */
+  /* Ticker — relocated out of the header, now its own strip flush against
+     the nav bar (no seam between the nav's orange border and the ticker's
+     black background). Spacing is kept only below, before "Uusimmat
+     artikkelit". */
   .ticker-band {
-    margin: var(--space-3) 0;
+    margin: 0 0 var(--space-3);
   }
 
   /* ===== Featured hero + sidebar layout ===== */
