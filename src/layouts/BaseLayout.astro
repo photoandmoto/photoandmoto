@@ -13,6 +13,7 @@ interface Props {
   lang: 'fi' | 'en';
   noindex?: boolean;
   showHeaderTicker?: boolean;
+  tickerBelowNav?: boolean;
 }
 
 const {
@@ -22,6 +23,7 @@ const {
   lang = 'fi',
   noindex = false,
   showHeaderTicker = true,
+  tickerBelowNav = false,
 } = Astro.props;
 
 const siteUrl = import.meta.env.SITE || 'https://www.photoandmoto.fi';
@@ -156,7 +158,7 @@ const otherLang = lang === 'fi' ? 'en' : 'fi';
       <slot name="ticker" slot="ticker" />
     </Header>
   ) : (
-    <Header lang={lang} currentPath={Astro.url.pathname} />
+    <Header lang={lang} currentPath={Astro.url.pathname} tickerBelowNav={tickerBelowNav} />
   )}
 
   <main>
