@@ -61,7 +61,7 @@ const galleryItems = featuredGalleries.map(g => ({
 
   <h1 class="sr-only">Photo & Moto — Speed and Life Through the Lens</h1>
   <div class="ticker-band">
-    <TrendingTicker label="Trending now" items={tickerItems} />
+    <TrendingTicker label="Trending now" items={tickerItems} intervalMs={3000} />
   </div>
 
   {/* ===== Featured hero + sidebar (articles) ===== */}
@@ -168,11 +168,12 @@ const galleryItems = featuredGalleries.map(g => ({
     text-decoration: underline;
   }
 
-  /* Ticker — relocated out of the header, now its own strip between the nav
-     and "Latest articles". Breathing room on both sides since it no longer
-     sits flush inside the header bands. */
+  /* Ticker — relocated out of the header, now its own strip flush against
+     the nav bar (no seam between the nav's orange border and the ticker's
+     black background). Spacing is kept only below, before "Latest
+     articles". */
   .ticker-band {
-    margin: var(--space-3) 0;
+    margin: 0 0 var(--space-3);
   }
 
   /* ===== Featured hero + sidebar layout ===== */
