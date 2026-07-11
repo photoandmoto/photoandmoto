@@ -31,6 +31,7 @@ const sidebarItems = sidebarArticles.map(a => ({
   title: a.data.title,
   subtitle: fmt(a.data.date),
   category: a.data.category,
+  focus: a.data.card_image_focus,
 }));
 
 // Ticker: latest 5 article titles
@@ -101,8 +102,10 @@ const galleryItems = featuredGalleries.map(g => ({
             image={imgFor(featuredArticle)}
             category={featuredArticle.data.category}
             title={featuredArticle.data.title}
-            subtitle={fmt(featuredArticle.data.date)}
+            subtitle={featuredArticle.data.subtitle}
             size="lg"
+            textBelow
+            focus={featuredArticle.data.card_image_focus}
           />
           {sidebarItems.length > 0 && (
             <LatestSidebar items={sidebarItems} />

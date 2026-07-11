@@ -6,6 +6,7 @@ interface Item {
   title: string;
   subtitle?: string;
   category?: string;
+  focus?: 'top' | 'center' | 'bottom';
 }
 
 interface Props {
@@ -27,6 +28,7 @@ const categoryKey = (category?: string) =>
           src={lead.image}
           alt={lead.imageAlt || lead.title}
           class="lsb__lead-image"
+          style={`object-position: ${lead.focus || 'center'}`}
           loading="lazy"
         />
         <div class="lsb__lead-overlay"></div>
@@ -49,6 +51,7 @@ const categoryKey = (category?: string) =>
                 src={item.image}
                 alt={item.imageAlt || item.title}
                 class="lsb__row-image"
+                style={`object-position: ${item.focus || 'center'}`}
                 loading="lazy"
               />
               <div class="lsb__row-text">
@@ -235,9 +238,58 @@ const categoryKey = (category?: string) =>
      left unchanged per project convention). */
   .lsb .chip--mxgp       { background: #FF9900; color: #000; }
   .lsb .chip--mx2        { background: #D85A30; color: #000; }
-  .lsb .chip--historical { background: #5F5E5A; }
+  .lsb .chip--historical { background: #FF9900; color: #000; }
   .lsb .chip--speedway   { background: #378ADD; color: #000; }
   .lsb .chip--enduro     { background: #639922; color: #000; }
   .lsb .chip--technical  { background: #7F77DD; color: #000; }
   .lsb .chip--interview  { background: #D4537E; color: #000; }
+
+  /* On mobile the lead item sits stacked directly under the (now full-width)
+     hero card. Keeping its overlay-hero treatment there reads as a second
+     hero, so it collapses to the same compact row layout as the list below —
+     just a bit larger — making it unambiguously secondary to the hero. */
+  @media (max-width: 900px) {
+    .lsb__lead-image-wrap {
+      aspect-ratio: auto;
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-2);
+      padding: var(--space-2);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .lsb__lead-image {
+      width: 100px;
+      height: 100px;
+      flex-shrink: 0;
+      border-radius: var(--radius-sm);
+    }
+
+    .lsb__lead-overlay {
+      display: none;
+    }
+
+    .lsb__lead-chip {
+      position: static;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+
+    .lsb__lead-text {
+      position: static;
+      color: var(--text-primary);
+    }
+
+    .lsb__lead-title {
+      color: var(--text-primary);
+      text-shadow: none;
+      font-size: 1rem;
+      -webkit-line-clamp: 2;
+    }
+
+    .lsb__lead-subtitle {
+      color: var(--text-secondary);
+      text-shadow: none;
+    }
+  }
 </style>

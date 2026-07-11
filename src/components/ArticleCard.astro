@@ -7,6 +7,8 @@ interface Props {
   title: string;
   subtitle?: string;
   size?: 'lg' | 'md' | 'sm';
+  textBelow?: boolean;
+  focus?: 'top' | 'center' | 'bottom';
 }
 
 const {
@@ -17,30 +19,43 @@ const {
   title,
   subtitle,
   size = 'md',
+  textBelow = false,
+  focus = 'center',
 } = Astro.props;
 
 // Category → CSS class for chip coloring (matches .chip--<key> in styles)
 const categoryKey = category ? category.toLowerCase().replace(/[^a-z0-9]/g, '') : '';
 ---
 
-<article class={`acard acard--${size}`}>
+<article class:list={['acard', `acard--${size}`, textBelow && 'acard--text-below']}>
   <a href={href} class="acard__link">
     <div class="acard__image-wrap">
       <img
         src={image}
         alt={imageAlt || title}
         class="acard__image"
+        style={`object-position: ${focus}`}
         loading={size === 'lg' ? 'eager' : 'lazy'}
       />
-      <div class="acard__overlay"></div>
+      {!textBelow && <div class="acard__overlay"></div>}
       {category && <span class={`chip chip--${categoryKey}`}>{category}</span>}
-      <div class="acard__text-wrap">
-        <h3 class="acard__title">{title}</h3>
+      {!textBelow && (
+        <div class="acard__text-wrap">
+          <h3 class="acard__title">{title}</h3>
+          {subtitle && (
+            <p class="acard__subtitle">{subtitle}</p>
+          )}
+        </div>
+      )}
+    </div>
+    {textBelow && (
+      <div class="acard__below-text">
+        <h3 class="acard__below-title">{title}</h3>
         {subtitle && (
-          <p class="acard__subtitle">{subtitle}</p>
+          <p class="acard__below-subtitle">{subtitle}</p>
         )}
       </div>
-    </div>
+    )}
   </a>
 </article>
 
@@ -132,7 +147,7 @@ const categoryKey = category ? category.toLowerCase().replace(/[^a-z0-9]/g, '') 
      the vivid palette — matching how the mxgp chip already works. */
   .chip--mxgp     { background: #FF9900; color: #000; }
   .chip--mx2      { background: #D85A30; color: #000; }
-  .chip--historical { background: #5F5E5A; }
+  .chip--historical { background: #FF9900; color: #000; }
   .chip--speedway { background: #378ADD; color: #000; }
   .chip--enduro   { background: #639922; color: #000; }
   .chip--technical { background: #7F77DD; color: #000; }
@@ -198,9 +213,53 @@ const categoryKey = category ? category.toLowerCase().replace(/[^a-z0-9]/g, '') 
     line-height: 1.35;
   }
 
+  /* ===== textBelow variant: title/subtitle in normal flow below the image
+     instead of overlaid on the photo. Image keeps a fixed 16:9 ratio (matches
+     .acard--md) so a portrait or landscape source crops/centers to the same
+     uniform height instead of driving the whole card's height. ===== */
+  .acard--text-below {
+    background: var(--bg-secondary);
+  }
+
+  .acard--text-below .acard__link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .acard--text-below .acard__image-wrap {
+    aspect-ratio: 16/9;
+    height: auto;
+  }
+
+  .acard__below-text {
+    flex: 0 0 auto;
+    padding: var(--space-3);
+  }
+
+  .acard__below-title {
+    font-family: var(--font-headline);
+    font-weight: 900;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.2;
+    font-size: clamp(1.4rem, 2.4vw, 2rem);
+  }
+
+  .acard__below-subtitle {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin: 8px 0 0;
+    line-height: 1.35;
+  }
+
   @media (max-width: 768px) {
     .acard__title { font-size: 1rem; }
     .acard--lg .acard__title { font-size: 1.3rem; }
     .acard--lg .acard__subtitle { font-size: 0.9rem; }
+    .acard__below-title { font-size: 1.3rem; }
+    .acard__below-subtitle { font-size: 0.9rem; }
   }
 </style>
