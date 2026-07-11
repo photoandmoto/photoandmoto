@@ -62,14 +62,18 @@ const mobileFlatItems = [
 
 <header class="site-header">
 
-  <!-- BAND 1: ticker strip -->
-  <div class="header-ticker-strip">
-    <div class="container ticker-strip-inner">
-      <div class="ticker-slot">
-        <slot name="ticker" />
+  <!-- BAND 1: ticker strip — only rendered when a page actually forwards
+       ticker content (BaseLayout omits the slotted child entirely when its
+       showHeaderTicker prop is false, so this check is unambiguous). -->
+  {Astro.slots.has('ticker') && (
+    <div class="header-ticker-strip">
+      <div class="container ticker-strip-inner">
+        <div class="ticker-slot">
+          <slot name="ticker" />
+        </div>
       </div>
     </div>
-  </div>
+  )}
 
   <!-- BAND 2: logo row -->
   <div class="header-logo-row">

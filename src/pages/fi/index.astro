@@ -35,11 +35,29 @@ const sidebarItems = sidebarArticles.map(a => ({
   focus: focusFor(a),
 }));
 
-// Ticker: latest 5 article titles
-const tickerItems = articles.slice(0, 5).map(a => ({
-  href: slugFor(a),
-  title: a.data.title,
-}));
+// Ticker: combined pool — 5 newest articles + 3 newest Pikauutiset, merged
+// and sorted by date so the rotation reflects true recency across both
+// types rather than two concatenated blocks. Pikauutiset have no per-entry
+// URL/anchor (they're collapsible cards on one shared listing page), so
+// every pikauutinen ticker item links to the listing page itself.
+const pikauutiset = (await getCollection('pikauutiset', (entry) => !entry.data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+
+const tickerItems = [
+  ...articles.slice(0, 5).map(a => ({
+    href: slugFor(a),
+    title: a.data.title,
+    _date: a.data.date,
+  })),
+  ...pikauutiset.map(p => ({
+    href: '/fi/pikauutiset',
+    title: p.data.title,
+    _date: p.data.date,
+  })),
+]
+  .sort((a, b) => b._date.getTime() - a._date.getTime())
+  .map(({ href, title }) => ({ href, title }));
 
 const galleries = await getCollection('galleries');
 const featuredGalleries = galleries.slice(0, 4);
@@ -85,9 +103,12 @@ const galleryItems = featuredGalleries.map(g => ({
   title="Etusivu"
   lang={lang}
   description="Motocrossin ja moottoripyöräurheilun kuvia, tarinoita ja tuloksia 1960-luvulta nykypäivään. MXGP 2026, Aikakone-arkisto ja valokuvagalleria."
+  showHeaderTicker={false}
 >
   <h1 class="sr-only">Photo & Moto — Vauhtia ja elämää linssin läpi</h1>
-  <TrendingTicker label="Nyt luetuimmat" items={tickerItems} slot="ticker" />
+  <div class="ticker-band">
+    <TrendingTicker label="Nyt luetuimmat" items={tickerItems} />
+  </div>
 
   {/* ===== Featured hero + sidebar (articles) ===== */}
   {featuredArticle && (
@@ -202,6 +223,13 @@ const galleryItems = featuredGalleries.map(g => ({
   }
   .section-all-link:hover {
     text-decoration: underline;
+  }
+
+  /* Ticker — relocated out of the header, now its own strip between the nav
+     and "Uusimmat artikkelit". Breathing room on both sides since it no
+     longer sits flush inside the header bands. */
+  .ticker-band {
+    margin: var(--space-3) 0;
   }
 
   /* ===== Featured hero + sidebar layout ===== */

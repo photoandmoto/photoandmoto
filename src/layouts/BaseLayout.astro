@@ -12,6 +12,7 @@ interface Props {
   image?: string;
   lang: 'fi' | 'en';
   noindex?: boolean;
+  showHeaderTicker?: boolean;
 }
 
 const {
@@ -20,6 +21,7 @@ const {
   image = '/images/og-default.jpg',
   lang = 'fi',
   noindex = false,
+  showHeaderTicker = true,
 } = Astro.props;
 
 const siteUrl = import.meta.env.SITE || 'https://www.photoandmoto.fi';
@@ -149,9 +151,13 @@ const otherLang = lang === 'fi' ? 'en' : 'fi';
 
 </head>
 <body>
-  <Header lang={lang} currentPath={Astro.url.pathname}>
-    <slot name="ticker" slot="ticker" />
-  </Header>
+  {showHeaderTicker ? (
+    <Header lang={lang} currentPath={Astro.url.pathname}>
+      <slot name="ticker" slot="ticker" />
+    </Header>
+  ) : (
+    <Header lang={lang} currentPath={Astro.url.pathname} />
+  )}
 
   <main>
     <slot />
