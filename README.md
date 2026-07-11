@@ -23,10 +23,11 @@ npm run preview    # preview the build locally
 
 Node.js 20+ required.
 
-To test Sveltia CMS locally (no GitHub OAuth needed): `local_backend: true` is
-set in `public/admin/config.yml`, so with the dev server running, open
-`http://localhost:4321/admin/` and choose **Work with Local Repository**
-(Chromium browsers) to edit files on disk — no proxy process required.
+To test Sveltia CMS locally (no GitHub OAuth needed): set `local_backend: true`
+in `public/admin/config.yml` (it's `false` by default — production mode), then
+with the dev server running, open `http://localhost:4321/admin/` and choose
+**Work with Local Repository** (Chromium browsers) to edit files on disk — no
+proxy process required. Revert to `false` before committing.
 
 ---
 
@@ -59,10 +60,10 @@ Articles (the Aikakone content) are edited in **Sveltia CMS**, a git-based CMS
 served from `public/admin/`.
 
 - **URL:** `https://www.photoandmoto.fi/admin/` — login with GitHub
-- Commits go to the `dev` branch — staging rebuilds automatically. Editors
-  preview on staging, then promote to production from the **Julkaise** tab in
-  `/fi/yllapito` (Julkaise esikatseluun → Esikatsele → Julkaise tuotantoon, a
-  `dev → main` App merge). Deleting an article auto-promotes to production.
+- Commits go straight to the `main` branch — production rebuilds
+  automatically in ~2 minutes. There's no staging-preview step for content;
+  Sveltia's own preview pane before save is the review step. (Deliberate
+  change from an earlier dev-then-promote design — see `DECAP-MIGRATION.md`.)
 - Bilingual: **FI required, EN optional** per article (enable EN per entry from
   the editor's ⋯ menu); written to `src/content/articles/{fi,en}/<slug>.md`
 - **Quick Add templates** for MXGP and historical articles, with pre-filled
@@ -363,9 +364,10 @@ Automatic via Cloudflare Pages. Two environments:
 | `main` | photoandmoto | www.photoandmoto.fi | photoandmoto-community |
 | `dev` | photoandmoto-staging | photoandmoto-staging.pages.dev | photoandmoto-community-dev |
 
-Working rule: changes go to `dev` first → verified on staging → PR `dev → main`
-promotes to production. Full setup, secrets, and troubleshooting are in
-[DEPLOYMENT.md](DEPLOYMENT.md).
+Working rule: developer *code* changes go to `dev` first → verified on staging
+→ PR `dev → main` promotes to production. Sveltia CMS content edits are an
+exception and commit straight to `main` (see § Editing content above). Full
+setup, secrets, and troubleshooting are in [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ### D1 schema
 

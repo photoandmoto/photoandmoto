@@ -42,9 +42,11 @@ each database separately.)
 | Production | `main` | `photoandmoto` | www.photoandmoto.fi | `photoandmoto-community` |
 | Staging | `dev` | `photoandmoto-staging` | photoandmoto-staging.pages.dev | `photoandmoto-community-dev` (separate from prod) |
 
-**Working rule:** all changes go to `dev` first, get verified on the staging
-URL, then a PR `dev → main` promotes them. Direct pushes to `main` are
-reserved for documentation-only changes or hotfixes.
+**Working rule:** all *code* changes go to `dev` first, get verified on the
+staging URL, then a PR `dev → main` promotes them. Direct pushes to `main` are
+reserved for documentation-only changes or hotfixes. **Article content edited
+via Sveltia CMS is an exception** — it commits straight to `main` (see
+§ Content management below); this rule applies to developer code changes only.
 
 ---
 
@@ -59,8 +61,14 @@ a git-based CMS served as static files from `public/admin/`.
 
 - **URL:** `https://www.photoandmoto.fi/admin/`
 - **Login:** GitHub OAuth. The editor must have write access to the repo.
-- **Where edits go:** Sveltia commits straight to the `dev` branch. Cloudflare
-  rebuilds staging automatically. To reach production, promote `dev → main`.
+- **Where edits go:** Sveltia commits straight to the `main` branch
+  (`backend.branch: main` in `public/admin/config.yml`) — Cloudflare rebuilds
+  production automatically, live in ~2 minutes. There is no staging-preview
+  step for content edits: Sveltia's own preview pane before save is the review
+  step. (This was a deliberate change from an earlier `dev`-then-promote
+  design — see `DECAP-MIGRATION.md` § Completed in session 2, item 2, for the
+  rationale.) Code changes by developers still follow the `dev → PR → main`
+  flow described above.
 - **Collections:**
   - **Artikkelit** — browse and edit all articles, create blank ones
   - **+ Uusi MXGP-juttu** / **+ Uusi historiallinen tarina** — Quick Add
@@ -74,10 +82,12 @@ a git-based CMS served as static files from `public/admin/`.
   the editor) when a translation is wanted. Required fields (`title`, `body`,
   `seo_description`) use `required: [fi]`, so an article can be published FI-only
   or FI+EN. FI is the always-on default locale, so EN-only isn't possible.
-- **Local testing:** `local_backend: true` is set in `public/admin/config.yml`.
-  Run `npm run dev`, open `http://localhost:4321/admin/`, and choose **Work
-  with Local Repository** (Chromium browsers) to edit files on disk — no OAuth
-  and no proxy process needed.
+- **Local testing:** `local_backend` in `public/admin/config.yml` is currently
+  `false` (production mode). To test Sveltia locally without GitHub OAuth,
+  temporarily set it to `true`, run `npm run dev`, open
+  `http://localhost:4321/admin/`, and choose **Work with Local Repository**
+  (Chromium browsers) to edit files on disk. Revert to `false` before
+  committing — leaving it `true` would point the deployed CMS at local disk.
 
 ### Mystery photos + galleries — custom admin at `/fi/yllapito`
 
@@ -120,7 +130,9 @@ Articles are Markdown with YAML frontmatter, validated by Zod in
 | `category` | string | must match a `name` in the categories collection |
 | `tags` | string array | |
 | `featured_image` | string, optional | `/images/<file>` path |
+| `featured_image_focus` | `top` \| `center` \| `bottom`, optional | crop focal point when featured_image renders as hero; default `center` |
 | `card_image` | string, optional | overrides featured_image on list/cards |
+| `card_image_focus` | `top` \| `center` \| `bottom`, optional | crop focal point when card_image renders as hero/card; default `center` |
 | `show_hero` | boolean | default `true` |
 | `image_caption` | string, optional | |
 | `language` | `fi` \| `en`, optional | derived from folder; field is legacy |
@@ -368,7 +380,7 @@ All workflows live in `.github/workflows/`. They run on push to `dev` and
 | `generate-og-images.yml` | `src/content/articles/**` | Composites a 1200×630 branded social card per article (`scripts/generate-og-image.mjs`, Sharp + Montserrat). Commits to `public/og/`. |
 | `check-links.yml` | `src/content/articles/**` | Scans changed article markdown for broken external links. Fails the run (visible warning) if any are dead. Doesn't block deploys. |
 | `process-gallery-image.yml` | `public/galleries/**` | Generates thumb + display renditions for new gallery images, updates the manifest. |
-| `auto-promote-deletions.yml` | `src/content/articles/**` (push to `dev`) | If a push to `dev` deletes article files, merges `dev → main` via the Publisher GitHub App so the deletion reaches production automatically. |
+| `auto-promote-deletions.yml` | `src/content/articles/**` (push to `dev`) | Merges `dev → main` when a push to `dev` deletes article files. **Currently a no-op for Sveltia deletions** — Sveltia commits straight to `main` now (see § Editing and publishing articles), so this trigger never fires for them; the deletion still reaches production directly. Still relevant for any article deletion made via a `dev`-branch code push. |
 | `mxgp-scraper.yml` | scheduled | Refreshes MXGP results/standings data. |
 
 **Loop guards:** Actions that commit back use a commit-message prefix or a
@@ -400,21 +412,35 @@ Pattern: run `ALTER TABLE` in the D1 console, verify with
 4. To create the English version: fill the FI locale, switch to the EN locale,
    and translate the content by hand with Gemini (paste the FI text into
    Gemini, paste the result into the matching EN fields), review, and save.
-5. Sveltia commits to `dev` → staging rebuilds automatically.
-6. **Preview and publish from the Julkaise tab** in `/fi/yllapito` (editors):
-   - **Julkaise esikatseluun** — triggers a staging rebuild; preview at
-     `photoandmoto-staging.pages.dev`.
+5. Sveltia commits straight to `main` → production rebuilds automatically,
+   live in ~2 minutes. Sveltia's own preview pane (before save) is the review
+   step; there's no separate staging preview for content edits.
+6. **The Julkaise tab** in `/fi/yllapito` still exists but is now mostly
+   redundant for a normal Sveltia edit, since the commit already landed on
+   `main`:
    - **Julkaise tuotantoon** — fires `DEPLOY_HOOK_PRODUCTION` via
-     `functions/api/deploy.js`, triggering a fresh production build without
-     merging dev→main. Developers can also promote with a manual cherry-pick
-     to `main`.
-   - **Deletions auto-publish:** deleting an article in Sveltia triggers the
-     `auto-promote-deletions` Action, which merges `dev → main` automatically —
-     no Julkaise tuotantoon needed.
+     `functions/api/deploy.js`, forcing an extra production rebuild. Useful
+     after something that isn't a new commit (e.g. a secret rotation), not
+     needed after a normal Sveltia save.
+   - **Julkaise esikatseluun** — fires `DEPLOY_HOOK_STAGING`, rebuilding the
+     staging project from whatever is currently on `dev`. Since Sveltia no
+     longer commits to `dev`, this **will not show a newly-saved article** —
+     it only reflects `dev`'s own content state. Flagging this as a likely
+     stale/dead control now that content commits go straight to `main`; worth
+     confirming with the team before relying on it.
+   - **Deletions auto-publish — currently broken:** `auto-promote-deletions.yml`
+     only triggers `on: push: branches: [dev]` (see the workflow file). Since
+     Sveltia now commits straight to `main`, a Sveltia-initiated deletion never
+     fires this Action — confirmed by reading the trigger, not just inferred.
+     The deletion still reaches production immediately (it's already on `main`
+     directly), so the *deletion itself* isn't blocked, but the Action's stated
+     purpose ("no manual Julkaise tuotantoon needed for deletions") is now a
+     no-op. Needs a decision: retarget the trigger to `main`, or remove the
+     Action if it's no longer doing anything.
 
 **Verifying what's actually committed:** the Sveltia UI and live pages can show
 stale/cached content. The authoritative check is
-`git show origin/dev:src/content/articles/<lang>/<slug>.md`.
+`git show origin/main:src/content/articles/<lang>/<slug>.md`.
 
 ### Managing categories
 

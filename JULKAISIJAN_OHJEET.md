@@ -41,11 +41,11 @@ molempia. Tämä käsikirja kuvaa molemmat — voit hyppiä omaan osioosi.
 
 ### Tärkeintä tietää
 
-- **Tallennus menee ensin esikatseluun, ei suoraan tuotantoon.** Sveltia-
-  tallennus vie artikkelin `dev`-haaraan, josta se näkyy esikatselusivustolla
-  (`photoandmoto-staging.pages.dev`) noin parissa minuutissa. Tuotantoon
-  (`www.photoandmoto.fi`) artikkeli julkaistaan erikseen **Julkaise**-
-  välilehdeltä (ks. [Tallentaminen ja julkaisu](#tallentaminen-ja-julkaisu)).
+- **Tallennus menee suoraan tuotantoon.** Sveltia-tallennus commitoi muutoksen
+  suoraan `main`-haaraan, ja se näkyy osoitteessa `www.photoandmoto.fi` noin
+  2 minuutissa — ei erillistä esikatselu- tai julkaisuvaihetta. Tarkista siis
+  artikkeli huolella Sveltian omassa esikatselussa **ennen** tallennusta (ks.
+  [Tallentaminen ja julkaisu](#tallentaminen-ja-julkaisu)).
 - **Suomeksi pakollinen, englanniksi vapaaehtoinen.** Artikkelin voi julkaista
   pelkästään suomeksi tai suomeksi + englanniksi (ks.
   [Käännös suomesta englanniksi](#käännös-suomesta-englanniksi)).
@@ -180,33 +180,31 @@ pakkautuvat (GitHub Action tekee sen taustalla noin minuutissa).
 
 ### Tallentaminen ja julkaisu
 
-Julkaiseminen on kaksivaiheinen: **tallenna Sveltiassa → vie esikatseluun →
-julkaise tuotantoon.**
+Julkaiseminen on nyt yksivaiheinen: **tarkista Sveltian esikatselussa →
+tallenna.** Tallennus vie muutoksen suoraan tuotantoon — ei enää erillistä
+esikatselu- tai julkaisuvälivaihetta.
 
-**1. Tallenna Sveltiassa.** Sveltiassa ei ole erillistä julkaise-nappia —
-**Tallenna** riittää. Tallennus commitoi muutoksen `dev`-haaraan. Muutos ei
-vielä näy tuotannossa (`www.photoandmoto.fi`).
+**1. Tarkista ennen tallennusta.** Sveltian sisäinen esikatselu näyttää
+artikkelin suunnilleen sellaisena kuin se näkyy sivustolla. Tämä on ainoa
+tarkistusmahdollisuus ennen julkaisua — kun painat Tallenna, muutos on
+tuotannossa noin 2 minuutin kuluttua.
 
-**2. Vie esikatseluun ja tarkista.** Avaa `/fi/yllapito` ja sen **Julkaise**-
-välilehti:
+**2. Tallenna.** Sveltiassa ei ole erillistä julkaise-nappia — **Tallenna**
+riittää, ja se commitoi muutoksen suoraan `main`-haaraan.
 
-- **Julkaise esikatseluun** — rakentaa esikatselusivuston. Odota ~2 minuuttia.
-- **Esikatsele** — avaa `photoandmoto-staging.pages.dev` ja tarkista, että
-  artikkeli näyttää oikealta.
-
-**3. Julkaise tuotantoon.** Kun esikatselu on kunnossa, paina **Julkaise
-tuotantoon** ja vahvista. Sisältö ilmestyy `www.photoandmoto.fi`-sivulle noin
-2–3 minuutissa.
-
-> ⏱ Paina Julkaise-painikkeita vasta noin 2 minuuttia Sveltia-tallennuksen
-> jälkeen, jotta tallennus on ehtinyt mennä perille.
-
-Voit tarkistaa tilan:
+**3. Odota ~2 minuuttia ja tarkista sivustolta.** Cloudflare rakentaa
+tuotannon automaattisesti jokaisen tallennuksen jälkeen. Voit seurata tilaa:
 
 - **GitHub Actions:** <https://github.com/photoandmoto/photoandmoto/actions>
   (vihreä rasti = taustatyöt, esim. kuvien pakkaus, onnistuivat)
 - **Cloudflare deployments:** näet uusimman julkaisun statuksen sivuston
   rakentamisen ajan
+
+> ⚠️ **Julkaise**-välilehti `/fi/yllapito`-sivulla on yhä olemassa, mutta
+> normaalin tallennuksen jälkeen sitä ei enää tarvita — muutos on jo
+> tuotannossa. **Julkaise esikatseluun** ei näytä uusia tallennuksia (se
+> rakentaa esikatselusivuston vanhasta `dev`-haarasta, johon Sveltia ei enää
+> kirjoita) — älä käytä sitä uuden artikkelin tarkistamiseen.
 
 ### Artikkelin muokkaaminen
 
@@ -215,11 +213,10 @@ Voit tarkistaa tilan:
 3. Tee muutokset
 4. **Tallenna**
 
-Muutokset tallentuvat `dev`-haaraan ja näkyvät esikatselussa; vie ne tuotantoon
-**Julkaise**-välilehdeltä kuten yllä. Jos haluat tehdä useita muutoksia
-peräkkäin ilman että jokainen tallennus laukaisee esikatselubuildin, voit valita
-**Piilota sivustolta** -ruudun, tehdä muutokset, ja poistaa valinnan kun
-olet valmis.
+Muutokset menevät suoraan tuotantoon, kuten yllä. Jos haluat tehdä useita
+muutoksia peräkkäin ilman että jokainen välivaihe näkyy heti julkisesti, voit
+valita **Piilota sivustolta** -ruudun, tehdä muutokset, ja poistaa valinnan
+kun olet valmis.
 
 ### Artikkelin poistaminen
 
@@ -228,11 +225,10 @@ olet valmis.
 3. Vahvista poisto ("Haluatko varmasti poistaa tämän julkaistun artikkelin?")
 4. Klikkaa **OK**
 
-Poisto tallentuu `dev`-haaraan, ja **artikkelin poisto viedään tuotantoon
-automaattisesti** — erillinen GitHub Action huomaa poiston ja vie sen `main`-
-haaraan, joten poistolle ei tarvita Julkaise tuotantoon -painiketta. Artikkeli
-häviää `www.photoandmoto.fi`-sivulta noin 2–3 minuutissa, sekä suomen- että
-englanninkielinen versio kerralla.
+Poisto commitoituu suoraan `main`-haaraan, kuten kaikki muutkin tallennukset —
+artikkeli häviää `www.photoandmoto.fi`-sivulta noin 2–3 minuutissa, sekä
+suomen- että englanninkielinen versio kerralla. Erillistä julkaisuvaihetta ei
+tarvita.
 
 > ⚠️ **Poisto on lopullinen.** Palautus on mahdollinen vain `git revert`
 > -komennolla, joka vaatii kehittäjän apua. Tarkista kahdesti ennen poistoa.
@@ -654,4 +650,6 @@ kerro kehittäjälle.
 
 ---
 
-*Viimeksi päivitetty: kesäkuu 2026 (Sveltia CMS; tallenna → esikatselu → Julkaise tuotantoon; poistot automaattisesti tuotantoon; FI pakollinen, EN vapaaehtoinen)*
+*Viimeksi päivitetty: heinäkuu 2026 (Sveltia CMS tallentaa suoraan main-haaraan
+eli tuotantoon — ei enää erillistä esikatselu- tai julkaisuvälivaihetta; FI
+pakollinen, EN vapaaehtoinen)*
