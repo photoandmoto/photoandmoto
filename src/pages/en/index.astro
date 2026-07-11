@@ -56,10 +56,13 @@ const galleryItems = featuredGalleries.map(g => ({
   title="Home"
   lang={lang}
   description="Motocross and motorcycle sport photos, stories and race results from the 1960s to today. MXGP 2026, Time Machine archive and photo gallery."
+  showHeaderTicker={false}
 >
 
   <h1 class="sr-only">Photo & Moto — Speed and Life Through the Lens</h1>
-  <TrendingTicker label="Trending now" items={tickerItems} slot="ticker" />
+  <div class="ticker-band">
+    <TrendingTicker label="Trending now" items={tickerItems} />
+  </div>
 
   {/* ===== Featured hero + sidebar (articles) ===== */}
   {featuredArticle && (
@@ -163,6 +166,13 @@ const galleryItems = featuredGalleries.map(g => ({
   }
   .section-all-link:hover {
     text-decoration: underline;
+  }
+
+  /* Ticker — relocated out of the header, now its own strip between the nav
+     and "Latest articles". Breathing room on both sides since it no longer
+     sits flush inside the header bands. */
+  .ticker-band {
+    margin: var(--space-3) 0;
   }
 
   /* ===== Featured hero + sidebar layout ===== */
