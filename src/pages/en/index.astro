@@ -191,21 +191,43 @@ const galleryItems = featuredGalleries.map(g => ({
 
   /* Articles section */
   .featured-grid-section {
-    background: var(--bg-secondary);
+    background: white;
     padding-top: var(--space-8);
     padding-bottom: var(--space-6);
   }
 
+  /* UpcomingRaces defaults to white. Featured (just above it) is now white
+     too, so Upcoming flips to shaded here to keep the alternating rhythm
+     going; its cards flip to white in the same override so they don't
+     disappear into the new shaded background. #upcomingRacesRoot gives
+     this override enough specificity to reliably win over the component's
+     own scoped rule, without touching the shared component or FI's page
+     (FI's own override targets the same id independently). */
+  :global(#upcomingRacesRoot) {
+    background: var(--bg-secondary);
+  }
+  :global(#upcomingRacesRoot .upcoming-card) {
+    background: white;
+  }
+
   /* Gallery section */
   .gallery-section {
-    background: var(--bg-secondary);
+    background: white;
     padding: var(--space-6) 0;
   }
 
+  /* MysteryHelpBlock's own .mhb rule is white, which no longer fits here —
+     Gallery (just above it) is now white too. #mhbRoot gives this
+     override enough specificity to win regardless of stylesheet load
+     order, without touching the shared component or FI's page (FI needs
+     no override here since its own rhythm already lands on white). */
+  :global(#mhbRoot) {
+    background: var(--bg-secondary);
+  }
 
   /* ===== CTA section ===== */
   .section.cta-section {
-    background: var(--bg-secondary);
+    background: white;
     padding: var(--space-4) 0;
   }
 
