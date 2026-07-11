@@ -88,6 +88,9 @@ const galleryItems = featuredGalleries.map(g => ({
     </section>
   )}
 
+  {/* ===== Upcoming races band ===== */}
+  <UpcomingRaces lang="en" />
+
   {/* ===== Gallery section (rotating 1 big + 3 stacked) ===== */}
   {featuredGalleries.length > 0 && (
     <section class="section gallery-section">
@@ -103,10 +106,6 @@ const galleryItems = featuredGalleries.map(g => ({
 
   {/* ===== Mystery photo help block — appears only when unidentified photos exist ===== */}
   <MysteryHelpBlock lang="en" />
-
-  {/* ===== Upcoming races band ===== */}
-  <UpcomingRaces lang="en" />
-
 
   {/* ===== Contact CTA section ===== */}
   <section class="section cta-section">
@@ -187,14 +186,14 @@ const galleryItems = featuredGalleries.map(g => ({
 
   /* Gallery section */
   .gallery-section {
-    background: white;
+    background: var(--bg-secondary);
     padding: var(--space-6) 0;
   }
 
 
   /* ===== CTA section ===== */
   .section.cta-section {
-    background: white;
+    background: var(--bg-secondary);
     padding: var(--space-4) 0;
   }
 
