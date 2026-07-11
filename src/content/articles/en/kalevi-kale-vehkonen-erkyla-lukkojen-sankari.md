@@ -1,6 +1,6 @@
 ---
 title: Kalevi Kale Vehkonen - The hero of the Erkylä track
-subtitle: Two great heat victories in the 250 cc World Championship class in 1968
+subtitle: July 28th marks 58 years since the moment Kale took two great heat wins in the 250 cc World Championship class in 1968
 author: Tapio Vuori
 date: 2026-07-06
 category: Historical

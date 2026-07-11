@@ -1,6 +1,6 @@
 ---
 title: Kalevi Kale Vehkonen - Erkylän lukkojen sankari
-subtitle: Kaksi komeaa erävoittoa 250 cc MM luokassa vuonna 1968
+subtitle: Heinäkuun 28. päivä tulee kuluneeksi 58-vuotta siitä hetkestä, kun Kale nappasi kaksi komeaa erävoittoa 250 cc MM luokassa vuonna 1968
 author: Tapio Vuori
 date: 2026-07-06
 category: Historical
