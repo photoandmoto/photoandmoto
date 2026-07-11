@@ -32,12 +32,14 @@ const categoryKey = (category?: string) =>
           loading="lazy"
         />
         <div class="lsb__lead-overlay"></div>
-        {lead.category && (
-          <span class={`chip chip--${categoryKey(lead.category)} lsb__lead-chip`}>{lead.category}</span>
-        )}
-        <div class="lsb__lead-text">
-          <h3 class="lsb__lead-title">{lead.title}</h3>
-          {lead.subtitle && <p class="lsb__lead-subtitle">{lead.subtitle}</p>}
+        <div class="lsb__lead-body">
+          {lead.category && (
+            <span class={`chip chip--${categoryKey(lead.category)} lsb__lead-chip`}>{lead.category}</span>
+          )}
+          <div class="lsb__lead-text">
+            <h3 class="lsb__lead-title">{lead.title}</h3>
+            {lead.subtitle && <p class="lsb__lead-subtitle">{lead.subtitle}</p>}
+          </div>
         </div>
       </div>
     </a>
@@ -269,9 +271,17 @@ const categoryKey = (category?: string) =>
       display: none;
     }
 
+    .lsb__lead-body {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 0;
+    }
+
     .lsb__lead-chip {
       position: static;
       display: inline-block;
+      align-self: flex-start;
       margin-bottom: 6px;
     }
 
