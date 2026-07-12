@@ -134,10 +134,13 @@ const mobileFlatItems = [
         </ul>
       </nav>
 
-      <!-- Right side: hamburger + search + language. Hamburger is first in
-           DOM order so mobile shows it leftmost (hamburger -> search ->
-           language); it stays display:none on desktop, so this has no
-           effect there -- it's already skipped in the tab/visual order. -->
+      <!-- Right side: hamburger, then a search+language group. Hamburger is
+           first in DOM order and, on mobile, .header-right's
+           justify-content: space-between pushes it to the far left and the
+           .header-utility group (search + language) to the far right --
+           mirroring desktop's right-aligned search/language pair. Hamburger
+           stays display:none on desktop, so none of this affects desktop's
+           layout there. -->
       <div class="header-right">
         <button class="hamburger" id="hamburgerBtn"
                 aria-label="Toggle menu" aria-expanded="false"
@@ -146,23 +149,25 @@ const mobileFlatItems = [
           <span class="hamburger-bar"></span>
           <span class="hamburger-bar"></span>
         </button>
-        <a
-          href={searchHref}
-          class:list={['search-icon-link', { active: currentPath.startsWith(searchHref) }]}
-          target="_blank"
-          rel="noopener"
-          aria-label={searchLabel}
-          title={searchLabel}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-               viewBox="0 0 24 24" fill="none" stroke="currentColor"
-               stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
-               aria-hidden="true">
-            <circle cx="11" cy="11" r="7" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          </svg>
-        </a>
-        <LanguageSwitcher lang={lang} currentPath={currentPath} />
+        <div class="header-utility">
+          <a
+            href={searchHref}
+            class:list={['search-icon-link', { active: currentPath.startsWith(searchHref) }]}
+            target="_blank"
+            rel="noopener"
+            aria-label={searchLabel}
+            title={searchLabel}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                 aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </a>
+          <LanguageSwitcher lang={lang} currentPath={currentPath} />
+        </div>
       </div>
 
     </div>
@@ -430,8 +435,14 @@ const mobileFlatItems = [
   .nav-drop-item:hover { background: var(--brand-primary); color: black; }
   .nav-drop-item.active { color: var(--brand-primary); }
 
-  /* ── Header right (search + lang + hamburger) ──────────────────── */
+  /* ── Header right (hamburger + search/lang group) ───────────────── */
   .header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .header-utility {
     display: flex;
     align-items: center;
     gap: var(--space-2);
@@ -473,12 +484,17 @@ const mobileFlatItems = [
     .desktop-nav { display: none; }
     .hamburger { display: flex; }
 
-    /* With .desktop-nav hidden, .header-right (hamburger + search +
-       language switcher) becomes the only child of .nav-row-inner, so its
-       justify-content: space-between has nothing to space against and it
-       naturally sits at the left edge -- which is what we want here: the
-       hamburger leftmost, directly below the logo, with search and the
-       language switcher grouped to its right. */
+    /* With .desktop-nav hidden, .header-right becomes the only child of
+       .nav-row-inner and its own justify-content: space-between has nothing
+       to space against, so it needs to span the full row width itself.
+       Inside it, space-between pushes the hamburger to the far left and the
+       .header-utility group (search + language, kept together as a single
+       flex item) to the far right -- mirroring desktop's right-aligned
+       search/language pair. */
+    .header-right {
+      width: 100%;
+      justify-content: space-between;
+    }
 
     .logo-text { font-size: 1.8rem; }
 
