@@ -89,7 +89,10 @@ const { label, items, intervalMs = 6000 } = Astro.props;
     align-items: center;
     gap: 14px;
     padding-top: 8px;
-    padding-bottom: 8px;
+    /* Matches the header logo row's 22px top padding so the black header
+       block (logo -> nav -> ticker) is framed symmetrically top and
+       bottom before the page's white content begins. */
+    padding-bottom: 22px;
     min-height: 36px;
   }
 
@@ -194,6 +197,9 @@ const { label, items, intervalMs = 6000 } = Astro.props;
     .ticker__arrow {
       width: 24px;
       height: 24px;
+    }
+    .ticker__inner {
+      padding-bottom: 16px;
     }
   }
 </style>

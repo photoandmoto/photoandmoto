@@ -1,0 +1,52 @@
+---
+interface Props {
+  lang: 'fi' | 'en';
+}
+
+const { lang } = Astro.props;
+const locale = lang === 'fi' ? 'fi-FI' : 'en-GB';
+---
+
+<span class="header-clock" id="headerClock" data-locale={locale} aria-live="off"></span>
+
+<script>
+  function formatNow(locale: string): string {
+    const now = new Date();
+    const datePart = now.toLocaleDateString(locale, {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+    });
+    const timePart = now.toLocaleTimeString(locale, {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+    return `${datePart} · ${timePart}`;
+  }
+
+  document.querySelectorAll<HTMLElement>('.header-clock').forEach((el) => {
+    const locale = el.dataset.locale || 'en-GB';
+    const tick = () => { el.textContent = formatNow(locale); };
+    tick();
+    setInterval(tick, 1000);
+  });
+</script>
+
+<style>
+  .header-clock {
+    font-family: var(--font-headline);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 768px) {
+    .header-clock {
+      font-size: 0.7rem;
+    }
+  }
+</style>
