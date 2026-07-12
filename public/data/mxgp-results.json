@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-07-06",
+  "lastUpdated": "2026-07-12",
   "seasonComplete": false,
   "totalRounds": 19,
   "latestRace": {
@@ -671,56 +671,61 @@
       ]
     }
   },
-  "nextRace": null,
+  "nextRace": {
+    "round": 12,
+    "name": "MXGP of Great Britain",
+    "location": "Foxhills, United Kindgom",
+    "date": "2026-07-19"
+  },
   "highlights": {
     "fi": {
       "mxgp_quali": [
-        "Lucas Coenen hallitsi aika-ajoa ja varmisti paalupaikan.",
-        "Kukaan ei yllättänyt kärkisijoilla lauantain aika-ajossa."
+        "Lucas Coenen nappasi paalupaikan lauantain MXGP-aika-ajossa.",
+        "Vahvat suoritukset vaikeissa olosuhteissa nähtiin."
       ],
       "mxgp_race": [
         "Lucas Coenen dominoi molempia MXGP-eriä ja voitti GP:n.",
-        "Jeffrey Herlings taisteli vahvasti ja nousi toiseksi GP-kokonaiskilpailussa.",
-        "Lucas Coenen vei voiton Johannesburgin GP:ssä ylivoimaisesti."
+        "Jeffrey Herlings taisteli vahvasti ja nousi toiseksi.",
+        "Lucas Coenen vei täyden pistepotin MXGP Etelä-Afrikan GP:ssä."
       ],
       "mx2_quali": [
-        "Simon Längenfelder oli nopein MX2-luokan aika-ajoissa.",
-        "Camden McLellan näytti vauhtiaan kotiradallaan aika-ajossa."
+        "Simon Längenfelder oli nopein MX2-lähdön aika-ajossa.",
+        "Guillem Farres varmisti toisen lähtöruudun."
       ],
       "mx2_race": [
-        "Guillem Farres oli pysäyttämätön MX2-luokassa, voittaen molemmat erät.",
-        "Simon Längenfelder nousi toiseksi MX2-erissä ja GP-kokonaiskilpailussa.",
-        "Guillem Farres vei voiton Johannesburgin MX2-osakilpailussa."
+        "Guillem Farres voitti molemmat MX2-erät ja GP:n.",
+        "Simon Längenfelder nousi toiseksi toisessa erässä.",
+        "Guillem Farres hallitsi MX2 Etelä-Afrikan GP:tä."
       ],
       "standings": [
-        "Lucas Coenen piti MXGP-sarjan kärkisijansa vankasti.",
-        "Sacha Coenen jatkaa MX2-sarjan johdossa vahvasti.",
-        "Guillem Farres pysyi MX2-sarjan toisena, Simon Längenfelder kolmantena."
+        "Lucas Coenen piti MXGP-sarjan kärkisijaa.",
+        "Sacha Coenen jatkaa MX2-sarjan johdossa.",
+        "MXGP ja MX2 sarjataulukoiden kärki pysyi ennallaan."
       ]
     },
     "en": {
       "mxgp_quali": [
-        "Lucas Coenen dominated qualifying to claim pole position.",
-        "No major surprises in the MXGP Saturday qualifying session."
+        "Lucas Coenen claimed pole position in MXGP qualifying.",
+        "Strong performances were seen in challenging conditions."
       ],
       "mxgp_race": [
         "Lucas Coenen dominated both MXGP motos to win the GP.",
-        "Jeffrey Herlings charged hard for second overall in the GP.",
-        "Lucas Coenen claimed a dominant victory at the Johannesburg GP."
+        "Jeffrey Herlings battled hard for a strong second overall.",
+        "Lucas Coenen took maximum points at the MXGP of South Africa."
       ],
       "mx2_quali": [
-        "Simon Längenfelder set the fastest lap in MX2 qualifying.",
-        "Camden McLellan showed strong pace in his home qualifying."
+        "Simon Längenfelder was fastest in MX2 qualifying.",
+        "Guillem Farres secured the second grid spot."
       ],
       "mx2_race": [
-        "Guillem Farres was unstoppable in MX2, winning both races.",
-        "Simon Längenfelder moved up to second in the MX2 races and overall.",
-        "Guillem Farres took the win in the Johannesburg MX2 round."
+        "Guillem Farres won both MX2 motos and the GP.",
+        "Simon Längenfelder charged to second in moto two.",
+        "Guillem Farres mastered the MX2 of South Africa."
       ],
       "standings": [
-        "Lucas Coenen held firm at the top of the MXGP standings.",
+        "Lucas Coenen held firm at the top of MXGP standings.",
         "Sacha Coenen maintained his lead in the MX2 championship.",
-        "Guillem Farres held firm in second, Simon Längenfelder third in MX2."
+        "The top 3 order remained unchanged in both MXGP and MX2."
       ]
     }
   },
