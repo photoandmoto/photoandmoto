@@ -77,6 +77,14 @@ a git-based CMS served as static files from `public/admin/`.
 - **Bilingual:** Sveltia uses `i18n: multiple_folders`. One entry has FI and EN
   locales; files are written to `src/content/articles/fi/<slug>.md` and
   `src/content/articles/en/<slug>.md` with the same slug.
+- **Version-pinned, not "latest":** `public/admin/index.html` loads Sveltia
+  from unpkg pinned to an exact version (`@sveltia/cms@<version>`), not the
+  unpinned `@sveltia/cms` URL. An unpinned load re-resolves to npm's `latest`
+  tag on every page load, so any upstream regression applies immediately with
+  no warning — this bit us on 2026-07-12 (see § Sveltia CMS won't load or
+  login fails below). To upgrade: test the new version's `/admin/` locally
+  first (open every collection, check fields render, check save works),
+  *then* bump the pinned version number — never remove the pin.
 - **FI required, EN optional:** new entries start FI-only (`initial_locales:
   default`). The editor enables English per entry from the ⋯ menu (top-right of
   the editor) when a translation is wanted. Required fields (`title`, `body`,
@@ -597,6 +605,24 @@ Open the deployment → **Build log**. Common causes:
   exchange, etc.).
 - **Sveltia shows stale state / wrong values** — clear browser
   localStorage for the admin origin; Sveltia caches pending edits across sessions.
+- **Entry editor crashes, fields render empty, or a locale gets stuck
+  disabled** — check whether Sveltia shipped a new version and whether
+  `public/admin/index.html`'s pinned version is stale. Confirmed incident
+  (2026-07-12): Sveltia v0.170.6 shipped a Svelte template regression that
+  crashed the editor for any field with a `hint:` option (every Artikkelit
+  field — `featured_image_focus`, `card_image_focus`, `sources` — has one;
+  Pikauutiset has none and was unaffected, which is why only article editing
+  broke). Fixed upstream in v0.170.7. If this recurs: check
+  `github.com/sveltia/sveltia-cms/releases` and `/issues` for a recent
+  regression, then bump the pin to the next release once it's fixed (don't
+  just unpin it).
+- **Translate button (𝕏A icon) shows a toast reading "editor.undefined"
+  instead of translating** — known unresolved gap in Sveltia's own built-in
+  AI-translation feature (not our code; no local i18n override exists for
+  it). Root cause not yet fixed upstream as of 2026-07-12. Don't rely on this
+  button — use the manual method in § Käännös suomesta englanniksi
+  (JULKAISIJAN_OHJEET.md) instead, which is unaffected and remains the only
+  actually-supported path.
 
 ### Gemini / AI pikauutinen call fails
 

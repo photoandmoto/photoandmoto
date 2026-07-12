@@ -156,6 +156,12 @@ Englanninkielinen versio tallentuu omaan tiedostoonsa
 muokkaukset eivät kosketa englanninkielistä versiota — jos haluat käännöksen
 pysyvän ajan tasalla, päivitä EN-versio itse samalla tavalla.
 
+> **Huom:** Editorin oma käännöskuvake (𝕏A) ei tällä hetkellä toimi
+> luotettavasti — se voi näyttää virheilmoituksen "editor.undefined" oikean
+> käännöksen sijaan. Tämä on tunnettu, korjaamaton bugi Sveltian omassa
+> tekoälykäännösominaisuudessa, ei tämän sivuston koodissa. Käytä yllä
+> kuvattua käsin kopiointia Geminiin — se toimii aina.
+
 #### Kun artikkeli halutaan vain suomeksi
 
 Jätä englanninkielinen versio yksinkertaisesti luomatta. Tällöin artikkeli ei
