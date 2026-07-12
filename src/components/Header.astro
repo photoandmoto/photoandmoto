@@ -470,6 +470,16 @@ const mobileFlatItems = [
     .desktop-nav { display: none; }
     .hamburger { display: flex; }
 
+    /* With .desktop-nav hidden, .header-right (search + language switcher +
+       hamburger) becomes the only child of .nav-row-inner, so its
+       justify-content: space-between has nothing to space against and the
+       group collapses to the left edge instead of sitting at the right like
+       it does on desktop. margin-left: auto pushes it back to the right,
+       keeping the same search -> language -> hamburger order/spacing. */
+    .header-right {
+      margin-left: auto;
+    }
+
     .logo-text { font-size: 1.8rem; }
 
     .header-logo-row {
