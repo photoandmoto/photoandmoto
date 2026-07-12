@@ -41,6 +41,14 @@
     </style>
   </head>
   <body>
-    <script src="https://unpkg.com/@sveltia/cms/dist/sveltia-cms.js"></script>
+    <!-- Pinned to a known-good version (2026-07-12). v0.170.6 shipped a
+         template regression (Svelte `@const` -> `const` conversion) that
+         crashes field-editor.svelte for any field with a `hint:` option —
+         every Artikkelit field (featured_image_focus, card_image_focus,
+         sources) hits this; Pikauutiset has no `hint:` fields and was
+         unaffected. Fixed by revert in v0.170.7. Loading unpinned "latest"
+         means any future upstream regression breaks the editor here with
+         zero warning — pin and bump deliberately after testing instead. -->
+    <script src="https://unpkg.com/@sveltia/cms@0.170.7/dist/sveltia-cms.js"></script>
   </body>
 </html>
