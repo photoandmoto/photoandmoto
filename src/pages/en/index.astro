@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import TrendingTicker from '../../components/TrendingTicker.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import LatestSidebar from '../../components/LatestSidebar.astro';
 import UpcomingRaces from '../../components/UpcomingRaces.astro';
@@ -35,11 +34,6 @@ const sidebarItems = sidebarArticles.map(a => ({
   focus: focusFor(a),
 }));
 
-const tickerItems = articles.slice(0, 5).map(a => ({
-  href: slugFor(a),
-  title: a.data.title,
-}));
-
 const galleries = await getCollection('galleries');
 const featuredGalleries = galleries.slice(0, 4);
 
@@ -56,15 +50,9 @@ const galleryItems = featuredGalleries.map(g => ({
   title="Home"
   lang={lang}
   description="Motocross and motorcycle sport photos, stories and race results from the 1960s to today. MXGP 2026, Time Machine archive and photo gallery."
-  showHeaderTicker={false}
-  tickerBelowNav
-  showDateTime
 >
 
   <h1 class="sr-only">Photo & Moto — Speed and Life Through the Lens</h1>
-  <div class="ticker-band">
-    <TrendingTicker label="Trending now" items={tickerItems} intervalMs={3000} />
-  </div>
 
   {/* ===== Featured hero + sidebar (articles) ===== */}
   {featuredArticle && (
@@ -179,14 +167,6 @@ const galleryItems = featuredGalleries.map(g => ({
   }
   .section-all-link:hover {
     text-decoration: underline;
-  }
-
-  /* Ticker — relocated out of the header, now its own strip flush against
-     the nav bar (no seam between the nav's orange border and the ticker's
-     black background). Spacing is kept only below, before "Latest
-     articles". */
-  .ticker-band {
-    margin: 0 0 var(--space-3);
   }
 
   /* ===== Featured hero + sidebar layout ===== */

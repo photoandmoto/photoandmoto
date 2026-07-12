@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieConsent from '../components/CookieConsent.astro';
+import { getTickerItems } from '../lib/tickerItems';
 import '../styles/brand.css';
 import '../styles/global.css';
 import '../styles/components.css';
@@ -12,9 +13,10 @@ interface Props {
   image?: string;
   lang: 'fi' | 'en';
   noindex?: boolean;
-  showHeaderTicker?: boolean;
-  tickerBelowNav?: boolean;
-  showDateTime?: boolean;
+  // Site-wide header treatment (ticker + live clock + flush nav styling).
+  // Defaults on for every page; opt out on admin/account/utility pages
+  // where a "most read" news ticker doesn't make sense.
+  showTickerHeader?: boolean;
 }
 
 const {
@@ -23,10 +25,10 @@ const {
   image = '/images/og-default.jpg',
   lang = 'fi',
   noindex = false,
-  showHeaderTicker = true,
-  tickerBelowNav = false,
-  showDateTime = false,
+  showTickerHeader = true,
 } = Astro.props;
+
+const tickerItems = showTickerHeader ? await getTickerItems(lang) : [];
 
 const siteUrl = import.meta.env.SITE || 'https://www.photoandmoto.fi';
 const fullTitle = `${title} | Photo & Moto`;
@@ -155,13 +157,12 @@ const otherLang = lang === 'fi' ? 'en' : 'fi';
 
 </head>
 <body>
-  {showHeaderTicker ? (
-    <Header lang={lang} currentPath={Astro.url.pathname}>
-      <slot name="ticker" slot="ticker" />
-    </Header>
-  ) : (
-    <Header lang={lang} currentPath={Astro.url.pathname} tickerBelowNav={tickerBelowNav} showDateTime={showDateTime} />
-  )}
+  <Header
+    lang={lang}
+    currentPath={Astro.url.pathname}
+    showTicker={showTickerHeader}
+    tickerItems={tickerItems}
+  />
 
   <main>
     <slot />
