@@ -16,7 +16,9 @@ show_hero: true
 image_caption: Romain Febvre - Czech Republic MXGP 2025
 draft: false
 seo_description: 'From a red tank to Team Green: The story of Kawasaki motocross'
-sources: 'Multiple public sources: List available on request'
+sources: |-
+  Multiple public sources: list available upon request
+  Photos: Photo&Moto and courtesy of Ice1racing
 ---
 
 > Long before Kawasaki became one of the most recognizable names in motocross, Kawasaki Heavy Industries was building ships, trains and aircrafts. That background gave the company engineering depth, but it did not give it motocross credibility. That had to be earned the hard way — in mud, sand, ruts, long motos, stadium whoops and Grand Prix pressure.
@@ -53,7 +55,7 @@ Then came the colour change.
 
 Kawasaki moved away from the early red identity and adopted Lime Green. It was bright, bold and nearly impossible to miss on a racetrack. Against the more traditional colours of its rivals, Kawasaki stood out immediately.
 
-![Factory Kawaski 500 - Ruskesanta GP 1975 ](/images/the%20freen%20tank.jpg "Factory Kawaski 500 - Ruskesanta GP 1975 ")
+![Factory Kawaski 500 - Ruskesanta GP 1975](/images/the%20freen%20tank.jpg "Factory Kawaski 500 - Ruskesanta GP 1975")
 
 That mattered. In motocross, visibility is part of identity. More than half a century later, few motorcycle brands are as closely tied to one colour as Kawasaki is to Lime Green.
 

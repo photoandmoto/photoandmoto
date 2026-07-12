@@ -16,7 +16,9 @@ show_hero: true
 image_caption: Roman Fevbre - Czech Republic MXGP 2025
 draft: false
 seo_description: 'Punaisesta tankista Team Greeniin: Kawasakin motocrossin tarina'
-sources: 'Useita julkisia lähteitä: lista saatavilla pyynnöstä'
+sources: |-
+  Useita julkisia lähteitä: lista saatavilla pyynnöstä
+  Valokuvat: Photo&Moto ja Ice1racing luvalla
 ---
 
 > Kauan ennen kuin Kawasakista tuli yksi motocrossin tunnetuimmista nimistä, Kawasaki Heavy Industries rakensi laivoja, junia ja lentokoneita. Tämä tausta antoi yhtiölle vahvan teknisen osaamispohjan, mutta motocross-uskottavuutta se ei tuonut. Se oli ansaittava vaikeimman kautta — mudassa, hiekassa, urissa, pitkissä erissä, stadionien pattisuorilla ja Grand Prix -kilpailujen paineessa.
@@ -53,7 +55,7 @@ Sitten tuli värinvaihto.
 
 Kawasaki luopui varhaisesta punaisesta identiteetistään ja otti käyttöön Lime Greenin. Se oli kirkas, rohkea ja lähes mahdoton olla huomaamatta radalla. Kilpailijoiden perinteisempiä värejä vasten Kawasaki erottui välittömästi.
 
-![Tehdas Kawaski 500 - Ruskesanta GP 1975 ](/images/the%20freen%20tank.jpg "Tehdas Kawaski 500 - Ruskesanta GP 1975 ")
+![Tehdas Kawaski 500 - Ruskesanta GP 1975](/images/the%20freen%20tank.jpg "Tehdas Kawaski 500 - Ruskesanta GP 1975")
 
 Sillä oli merkitystä. Motocrossissa näkyvyys on osa identiteettiä. Yli puoli vuosisataa myöhemmin harva moottoripyörämerkki yhdistetään yhtä vahvasti yhteen väriin kuin Kawasaki Lime Greeniin.
 
