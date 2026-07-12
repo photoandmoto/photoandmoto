@@ -2,16 +2,19 @@
 import { ui } from '../i18n/ui';
 import LanguageSwitcher from './LanguageSwitcher.astro';
 import HeaderClock from './HeaderClock.astro';
+import TrendingTicker from './TrendingTicker.astro';
+import type { TickerItem } from '../lib/tickerItems';
 
 interface Props {
   lang: 'fi' | 'en';
   currentPath: string;
-  tickerBelowNav?: boolean;
-  showDateTime?: boolean;
+  showTicker?: boolean;
+  tickerItems?: TickerItem[];
 }
 
-const { lang, currentPath, tickerBelowNav = false, showDateTime = false } = Astro.props;
+const { lang, currentPath, showTicker = false, tickerItems = [] } = Astro.props;
 const t = ui[lang];
+const tickerLabel = lang === 'fi' ? 'Nyt luetuimmat' : 'Trending now';
 
 const navItems = lang === 'fi'
   ? [
@@ -65,32 +68,19 @@ const mobileFlatItems = [
 
 <header class="site-header">
 
-  <!-- BAND 1: ticker strip — only rendered when a page actually forwards
-       ticker content (BaseLayout omits the slotted child entirely when its
-       showHeaderTicker prop is false, so this check is unambiguous). -->
-  {Astro.slots.has('ticker') && (
-    <div class="header-ticker-strip">
-      <div class="container ticker-strip-inner">
-        <div class="ticker-slot">
-          <slot name="ticker" />
-        </div>
-      </div>
-    </div>
-  )}
-
-  <!-- BAND 2: logo row -->
+  <!-- BAND 1: logo row -->
   <div class="header-logo-row">
     <div class="container logo-row-inner">
       <a href={`/${lang}`} class="logo" aria-label="Photo & Moto home"
          data-no-newtab>
         <span class="logo-text">Photo &amp; Moto</span>
       </a>
-      {showDateTime && <HeaderClock lang={lang} />}
+      {showTicker && <HeaderClock lang={lang} />}
     </div>
   </div>
 
-  <!-- BAND 3: scrolling nav row -->
-  <div class:list={['header-nav-row', { 'header-nav-row--flush': tickerBelowNav }]}>
+  <!-- BAND 2: scrolling nav row -->
+  <div class:list={['header-nav-row', { 'header-nav-row--flush': showTicker }]}>
     <div class="container nav-row-inner">
 
       <!-- Desktop nav — exactly as before -->
@@ -173,6 +163,15 @@ const mobileFlatItems = [
     </div>
   </div>
 
+  <!-- BAND 3: ticker strip — flush against the nav row above (see
+       .header-nav-row--flush). Site-wide "most read" pool, identical on
+       every page (computed once per lang in BaseLayout). -->
+  {showTicker && tickerItems.length > 0 && (
+    <div class="ticker-band">
+      <TrendingTicker label={tickerLabel} items={tickerItems} intervalMs={3000} />
+    </div>
+  )}
+
   <!-- Mobile nav panel — exactly as before -->
   <nav class="mobile-nav" id="mobileNav" aria-hidden="true">
     <ul>
@@ -242,49 +241,7 @@ const mobileFlatItems = [
     display: contents;
   }
 
-  /* ── BAND 1: ticker strip ─────────────────────────────────────── */
-  .header-ticker-strip {
-    background: #0a0a0a;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-  }
-
-  .ticker-strip-inner {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    height: 100%;
-    padding-top: 0;
-    padding-bottom: 0;
-    gap: 16px;
-  }
-
-  .ticker-slot {
-    flex: 1;
-    min-width: 0;
-    /* TrendingTicker renders its own .ticker wrapper inside here.
-       Override its background/border so it blends into band 1. */
-  }
-
-  /* TrendingTicker renders a .ticker div — strip its own bg and border
-     since band 1 provides the background. */
-  .ticker-slot :global(.ticker) {
-    background: transparent;
-    border-bottom: none;
-  }
-
-  /* TrendingTicker's inner wrapper is itself a .container, which would double
-     the horizontal gutter and push the ticker content right of the logo and
-     nav. Strip its container padding/max-width so band 1 lines up to the same
-     left edge as bands 2 and 3 — the outer .container already supplies the
-     gutter. */
-  .ticker-slot :global(.ticker .container) {
-    max-width: none;
-    margin: 0;
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  /* ── BAND 2: logo row ──────────────────────────────────────────── */
+  /* ── BAND 1: logo row ──────────────────────────────────────────── */
   .header-logo-row {
     background: #000;
     padding: 22px 0 0;
@@ -316,17 +273,17 @@ const mobileFlatItems = [
     text-transform: uppercase;
   }
 
-  /* ── BAND 3: nav row ───────────────────────────────────────────── */
+  /* ── BAND 2: nav row ───────────────────────────────────────────── */
   .header-nav-row {
     background: #000;
     border-top: 1px solid rgba(255,255,255,0.08);
     border-bottom: 2px solid var(--brand-primary);
   }
 
-  /* When a page relocates the ticker into its own strip directly below
-     the nav (FI/EN homepage), drop the orange accent border so
-     nav+ticker reads as one solid black block instead of being split by
-     a colored seam. Every other page keeps the orange border as-is. */
+  /* When the ticker sits directly below the nav (every page that shows
+     one), drop the orange accent border so nav+ticker reads as one solid
+     black block instead of being split by a colored seam. Pages that
+     opt out of the ticker keep the orange border as-is. */
   .header-nav-row--flush {
     border-bottom: none;
   }
@@ -446,6 +403,14 @@ const mobileFlatItems = [
     display: flex;
     align-items: center;
     gap: var(--space-2);
+  }
+
+  /* ── BAND 3: ticker strip ──────────────────────────────────────── */
+  /* Flush against the nav row above (border removed via
+     .header-nav-row--flush); spacing is kept only below, before the
+     page's own content starts. */
+  .ticker-band {
+    margin: 0 0 var(--space-3);
   }
 
   /* ── Hamburger (mobile only) ───────────────────────────────────── */
