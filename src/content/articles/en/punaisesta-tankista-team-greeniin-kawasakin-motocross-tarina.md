@@ -8,12 +8,12 @@ tags:
   - Kawasaki
   - Motocross
   - Team Green
-featured_image: /images/The red tank.jpg
+featured_image: /images/Febvre_CzechRepublic_2025_Fullspectrum_BS_DSC_5370.jpg
 featured_image_focus: center
 card_image: ''
 card_image_focus: center
 show_hero: true
-image_caption: ''
+image_caption: Romain Febvre - Czech Republic MXGP 2025
 draft: false
 seo_description: 'From a red tank to Team Green: The story of Kawasaki motocross'
 sources: 'Multiple public sources: List available on request'
@@ -37,6 +37,8 @@ The result was the 1963 Kawasaki B8M.
 
 With its red fuel tank, it became known as the “Red Tank.” It was not glamorous by modern standards, but it was purposeful. More importantly, it worked.
 
+![Torleif Hansen's Kawasaki - Hyvinkää GP250 1973](/images/The%20red%20tank.jpg "Torleif Hansen's Kawasaki - Hyvinkää GP250 1973")
+
 At the 1963 Hyogo Prefectural Motocross race at Aonogahara, Kawasaki riders swept the top six positions in the 125cc class. For Kawasaki, that result was bigger than a race win. It proved the company could build serious competition motorcycles. It helped justify further investment in the motorcycle division. And it showed that motocross could be more than a weekend experiment. It could become a development tool and a brand builder.
 
 Without the Red Tank, the Green Machine story may have looked very different.
@@ -50,6 +52,8 @@ In 1967, Kawasaki introduced the F21M, a purpose-built scrambles racer powered b
 Then came the colour change.
 
 Kawasaki moved away from the early red identity and adopted Lime Green. It was bright, bold and nearly impossible to miss on a racetrack. Against the more traditional colours of its rivals, Kawasaki stood out immediately.
+
+![Factory Kawaski 500 - Ruskesanta GP 1975 ](/images/the%20freen%20tank.jpg "Factory Kawaski 500 - Ruskesanta GP 1975 ")
 
 That mattered. In motocross, visibility is part of identity. More than half a century later, few motorcycle brands are as closely tied to one colour as Kawasaki is to Lime Green.
 
@@ -78,6 +82,8 @@ Pettersson was valuable because he brought development knowledge as well as spee
 Then came Torleif Hansen.
 
 Hansen deserves more space in Kawasaki history because he helped move the company from development progress to genuine championship contention. He finished fourth in the 1973 FIM 250cc World Championship and later came even closer. In 1978, Hansen won the final two Grands Prix of the season and finished runner-up in the 250cc World Championship.
+
+![Torleif Hansen - Hyvinkää GP 250 1975](/images/the%20freen%20tank.jpg "Torleif Hansen - Hyvinkää GP 250 1975")
 
 That result mattered. It proved Kawasaki was no longer just learning. It was threatening to win.
 
@@ -209,6 +215,8 @@ In 2025, Febvre delivered the major modern breakthrough: the MXGP World Champion
 
 In America, the recent picture has been more mixed. Monster Energy Kawasaki has remained competitive in the AMA premier classes, especially during Jason Anderson’s strong 2022 season, but it has not recently dominated 450 Supercross or Pro Motocross the way Kawasaki did in earlier eras.
 
+![Procircuit Kawaski - 2024 Super Motocross Texas](/images/Kawa%20AMA.jpg "Procircuit Kawaski - 2024 Super Motocross Texas")
+
 The Pro Circuit 250 programme remains a major part of the brand’s American identity, continuing to develop front-running riders and race-winning machinery. But the modern AMA landscape is brutally competitive, and Kawasaki is still chasing its next premier-class American crown.
 
 That is the balanced view: Europe has delivered Kawasaki’s biggest recent championship success, while America remains competitive and dangerous.
@@ -221,7 +229,11 @@ In the United States, the premier-class effort is Monster Energy® Kawasaki, Kaw
 
 The American 250-class effort remains Monster Energy® Pro Circuit Kawasaki. Kawasaki credits the brand with 38 combined 250-class supercross and motocross championships, with Pro Circuit responsible for 31 of those titles. For 2026, Mitch Payton’s team fields Levi Kitchen, Drew Adams, Seth Hammaker and Cameron McAdoo on KX™250 machinery across the SMX schedule.
 
+![Procircuit Kawaski - 2024 Super Motocross Texas](/images/pro%20circuit%20kawa.jpg "Procircuit Kawaski - 2024 Super Motocross Texas")
+
 In Europe, Kawasaki Racing Team MXGP carries the brand’s Grand Prix programme. Managed by Antti Pyrhönen with Kimi Räikkönen as team principal, the team enters 2026 with Febvre carrying the number-one plate as reigning MXGP World Champion and Pauls Jonass alongside him on the factory KX™450SR. In MX2, Mathis Valin continues Kawasaki’s push aboard the KX™250.
+
+![Antti Pyrhönen together with the team](/images/Kawasaki_CzechRepublic_2025_Fullspectrum_BS_DSC_0363.jpg "Antti Pyrhönen together with the team")
 
 The split says plenty about modern Kawasaki. In America, the brand races under production-based rules where showroom relevance matters. In Europe, the Grand Prix programme has more room for works-level development. Pro Circuit sits in the middle as the professional 250-class development engine that has fed Kawasaki’s American success for decades.
 

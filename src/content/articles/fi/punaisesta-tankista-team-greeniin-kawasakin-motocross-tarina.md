@@ -8,12 +8,12 @@ tags:
   - Kawasaki
   - Motocross
   - Team Green
-featured_image: /images/The red tank.jpg
+featured_image: /images/Febvre_CzechRepublic_2025_Fullspectrum_BS_DSC_5370.jpg
 featured_image_focus: center
 card_image: ''
 card_image_focus: center
 show_hero: true
-image_caption: ''
+image_caption: Roman Fevbre - Czech Republic MXGP 2025
 draft: false
 seo_description: 'Punaisesta tankista Team Greeniin: Kawasakin motocrossin tarina'
 sources: 'Useita julkisia lähteitä: lista saatavilla pyynnöstä'
@@ -37,6 +37,8 @@ Tuloksena oli vuoden 1963 Kawasaki B8M.
 
 Punaisen polttoainetankkinsa vuoksi pyörä tunnettiin nimellä “Red Tank” — punainen tankki. Nykymittapuulla se ei ollut hohdokas, mutta se oli tarkoituksenmukainen. Vielä tärkeämpää: se toimi.
 
+![Torleif Hansenin Kawasaki  - Hyvinkää GP250](/images/The%20red%20tank.jpg "Torleif Hansenin Kawasaki  - Hyvinkää GP250")
+
 Vuoden 1963 Hyogon prefektuurin motocrosskilpailussa Aonogaharassa Kawasakin kuljettajat valtasivat 125-luokan kuusi ensimmäistä sijaa. Kawasakille tulos merkitsi enemmän kuin yksittäistä kilpailuvoittoa. Se osoitti, että yhtiö pystyi rakentamaan vakavasti otettavia kilpamoottoripyöriä. Se auttoi perustelemaan lisäinvestoinnit moottoripyörädivisioonaan. Ja se osoitti, että motocross voisi olla enemmän kuin viikonlopun kokeilu. Siitä voisi tulla tuotekehityksen työkalu ja brändin rakentaja.
 
 Ilman punaista tankkia vihreän koneen tarina olisi voinut näyttää hyvin erilaiselta.
@@ -50,6 +52,8 @@ Vuonna 1967 Kawasaki esitteli F21M:n, tarkoitusta varten rakennetun scrambles-ki
 Sitten tuli värinvaihto.
 
 Kawasaki luopui varhaisesta punaisesta identiteetistään ja otti käyttöön Lime Greenin. Se oli kirkas, rohkea ja lähes mahdoton olla huomaamatta radalla. Kilpailijoiden perinteisempiä värejä vasten Kawasaki erottui välittömästi.
+
+![Tehdas Kawaski 500 - Ruskesanta GP 1975 ](/images/the%20freen%20tank.jpg "Tehdas Kawaski 500 - Ruskesanta GP 1975 ")
 
 Sillä oli merkitystä. Motocrossissa näkyvyys on osa identiteettiä. Yli puoli vuosisataa myöhemmin harva moottoripyörämerkki yhdistetään yhtä vahvasti yhteen väriin kuin Kawasaki Lime Greeniin.
 
@@ -82,6 +86,8 @@ Pettersson oli arvokas, koska hän toi mukanaan sekä kehitysosaamista että vau
 Sitten tuli Torleif Hansen.
 
 Hansen ansaitsee enemmän tilaa Kawasakin historiassa, koska hän auttoi siirtämään yhtiön kehitysvaiheesta todelliseen mestaruustaisteluun. Hän sijoittui neljänneksi vuoden 1973 FIM:n 250-luokan maailmanmestaruussarjassa ja pääsi myöhemmin vielä lähemmäs. Vuonna 1978 Hansen voitti kauden kaksi viimeistä Grand Prix -kilpailua ja sijoittui 250-luokan MM-sarjassa toiseksi.
+
+![Torleif Hansen - Hyvinkää GP 250 1975](/images/TL%20Hansen.jpg "Torleif Hansen - Hyvinkää GP 250 1975")
 
 Tällä tuloksella oli merkitystä. Se osoitti, ettei Kawasaki enää vain opetellut. Se uhkasi voittaa.
 
@@ -211,6 +217,8 @@ Vuonna 2025 Febvre toi suuren modernin läpimurron: MXGP:n maailmanmestaruuden K
 
 Amerikassa viime vuosien kuva on ollut vaihtelevampi. Monster Energy Kawasaki on pysynyt kilpailukykyisenä AMA:n premier-luokissa, erityisesti Jason Andersonin vahvan vuoden 2022 kauden aikana, mutta se ei ole viime vuosina hallinnut 450-luokan supercrossia tai Pro Motocrossia samalla tavalla kuin Kawasaki teki aiempina aikakausina.
 
+![Procircuit Kawaski - 2024 Super Motocross Texas](/images/Kawa%20AMA.jpg "Procircuit Kawaski - 2024 Super Motocross Texas")
+
 Pro Circuitin 250-ohjelma on edelleen merkittävä osa merkin amerikkalaista identiteettiä ja jatkaa kärkikuljettajien sekä kilpailukykyisten pyörien kehittämistä. Moderni AMA-ympäristö on kuitenkin armottoman kilpailtu, ja Kawasaki jahtaa edelleen seuraavaa amerikkalaista premier-luokan kruunuaan.
 
 Tasapainoinen kuva on tämä: Eurooppa on tuonut Kawasakin suurimman viimeaikaisen mestaruusmenestyksen, kun taas Amerikassa Kawasaki on edelleen kilpailukykyinen ja vaarallinen haastaja.
@@ -223,7 +231,11 @@ Yhdysvalloissa premier-luokan ohjelmasta vastaa Monster Energy® Kawasaki, Kawas
 
 Amerikan 250-luokan ohjelma on edelleen Monster Energy® Pro Circuit Kawasakin käsissä. Kawasaki laskee merkille 38 yhdistettyä 250-luokan supercross- ja motocrossmestaruutta, joista Pro Circuitin osuus on 31. Kaudella 2026 Mitch Paytonin tiimi ajattaa Levi Kitcheniä, Drew Adamsia, Seth Hammakeria ja Cameron McAdoota KX™250-pyörillä SMX-kalenterin läpi.
 
+![Procircuit Kawaski - 2024 Super Motocross Texas](/images/pro%20circuit%20kawa.jpg "Procircuit Kawaski - 2024 Super Motocross Texas")
+
 Euroopassa Kawasakin Grand Prix -ohjelmaa kantaa Kawasaki Racing Team MXGP. Antti Pyrhösen johtama tiimi, jossa Kimi Räikkönen toimii team principal -roolissa, lähtee kauteen 2026 Febvren kantaessa hallitsevan MXGP-maailmanmestarin ykkösnumeroa ja Pauls Jonassin ajaessa hänen rinnallaan tehdasvalmisteisella KX™450SR:llä. MX2-luokassa Mathis Valin jatkaa Kawasakin panostusta KX™250:llä.
+
+![Antti Pyrhönen yhdessä tiimin kanssa](/images/Kawasaki_CzechRepublic_2025_Fullspectrum_BS_DSC_0363.jpg "Antti Pyrhönen yhdessä tiimin kanssa")
 
 Jako kertoo paljon modernista Kawasakista. Amerikassa merkki kilpailee tuotantopyöriin pohjautuvilla säännöillä, joissa yhteys jälleenmyyjän lattialla olevaan pyörään on tärkeä. Euroopassa Grand Prix -ohjelmalla on enemmän tilaa tehdastason kehitystyölle. Pro Circuit asettuu näiden väliin ammattimaisena 250-luokan kehityskoneistona, joka on ruokkinut Kawasakin amerikkalaista menestystä vuosikymmenten ajan.
 
