@@ -8,7 +8,7 @@ tags:
   - Kawasaki
   - Motocross
   - Team Green
-featured_image: ''
+featured_image: /images/The red tank.jpg
 featured_image_focus: center
 card_image: ''
 card_image_focus: center
@@ -41,7 +41,7 @@ At the 1963 Hyogo Prefectural Motocross race at Aonogahara, Kawasaki riders swep
 
 Without the Red Tank, the Green Machine story may have looked very different.
 
-## The Birth of Lime Green
+## The birth of Lime Green
 
 After proving itself at home, Kawasaki looked overseas. America was becoming a huge motorcycle market, and off-road riding was growing fast. Scrambles, desert racing and early motocross were pulling young riders into dealerships, and the Japanese manufacturers understood the obvious truth: winning sold motorcycles.
 
@@ -55,7 +55,7 @@ That mattered. In motocross, visibility is part of identity. More than half a ce
 
 The Green Machine had arrived.
 
-## Two Fronts: America and Europe
+## Two fronts: America and Europe
 
 By the early 1970s, Kawasaki had a bigger ambition. It wanted to compete in both America and Europe.
 
@@ -85,7 +85,7 @@ Christer Hammargren added another milestone. In 1975, he gave Kawasaki its first
 
 Pettersson helped develop the bikes. Hansen proved Kawasaki could fight for a world title. Hammargren delivered a major premier-class GP race win. Together, they gave Kawasaki the European foundation it needed.
 
-## America Falls First
+## Winning America first
 
 While Kawasaki was still learning Europe, it started winning in America.
 
@@ -105,7 +105,7 @@ By the mid-1970s, Kawasaki had won in America, scored in Europe and established 
 
 Then came the suspension revolution.
 
-## Uni-Trak Changes the Sport
+## Uni-Trak changes the sport
 
 The late 1970s were a turning point in motocross engineering. Engines were getting faster. Tracks were getting rougher. Riders were jumping farther. Traditional twin-shock rear suspension was reaching its limit.
 
@@ -121,7 +121,7 @@ The significance went beyond Kawasaki. The sport was moving away from twin shock
 
 Uni-Trak was one of Kawasaki’s defining technical contributions to the sport.
 
-## Team Green: The Amateur Revolution
+## Team Green: The amateur revolution
 
 If Uni-Trak changed motorcycles, Team Green changed rider development.
 
@@ -157,7 +157,7 @@ Team Green and Pro Circuit became two halves of the same development ladder. Tea
 
 It was smart, structured and very Kawasaki.
 
-## Europe Finally Falls
+## Europe finally follows
 
 For all its progress in the 1970s and 1980s, Kawasaki still had one major piece of unfinished business: an FIM Motocross World Championship.
 
@@ -175,7 +175,7 @@ By then, Kawasaki had proven itself across the major stages of motocross: Japan,
 
 But motocross was about to change again.
 
-## The Four-Stroke Gamble: Kawasaki and Suzuki
+## The four-stroke gamble: Kawasaki and Suzuki
 
 At the turn of the millennium, motocross faced its biggest technical shift since long-travel suspension.
 
@@ -199,7 +199,7 @@ The alliance served its purpose, but it was not built to last. By the mid-2000s,
 
 The partnership was brief, but historically important. It helped Kawasaki bridge the four-stroke revolution without missing the wave.
 
-## The Modern Picture
+## The modern picture
 
 In recent years, Kawasaki’s strongest headline has come from Europe.
 
@@ -213,7 +213,7 @@ The Pro Circuit 250 programme remains a major part of the brand’s American ide
 
 That is the balanced view: Europe has delivered Kawasaki’s biggest recent championship success, while America remains competitive and dangerous.
 
-## Kawasaki Today: Three Racing Pillars
+## Kawasaki today: three racing pillars
 
 For 2026, Kawasaki’s global motocross structure is best understood through three major racing pillars.
 
@@ -227,7 +227,7 @@ The split says plenty about modern Kawasaki. In America, the brand races under p
 
 Different teams. Different rulebooks. Different continents. Same green objective.
 
-## The Legacy
+## The legacy
 
 Kawasaki’s motocross story has never been about one rider, one bike or one championship. It is a story of learning and adapting.
 

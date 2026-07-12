@@ -8,7 +8,7 @@ tags:
   - Kawasaki
   - Motocross
   - Team Green
-featured_image: ''
+featured_image: /images/The red tank.jpg
 featured_image_focus: center
 card_image: ''
 card_image_focus: center
@@ -89,7 +89,7 @@ Christer Hammargren lisäsi tarinaan uuden virstanpylvään. Vuonna 1975 hän to
 
 Pettersson auttoi kehittämään pyöriä. Hansen osoitti, että Kawasaki pystyi taistelemaan maailmanmestaruudesta. Hammargren toi merkittävän premier-luokan GP-erävoiton. Yhdessä he antoivat Kawasakille sen tarvitseman eurooppalaisen perustan.
 
-## Amerikka kaatuu ensin
+## Amerikka toi ensimmäisen läpimurron
 
 Samalla kun Kawasaki vielä opetteli Eurooppaa, se alkoi voittaa Amerikassa.
 
@@ -159,7 +159,7 @@ Team Greenistä ja Pro Circuitista tuli saman kehityspolun kaksi puoliskoa. Team
 
 Se oli älykäs, rakenteellinen ja hyvin Kawasakimainen ratkaisu.
 
-## Eurooppa taipuu viimein
+## Eurooppa viimeinkin seuraa
 
 Kaikesta 1970- ja 1980-lukujen edistyksestä huolimatta Kawasakilla oli edelleen yksi suuri keskeneräinen asia: FIM:n motocrossin maailmanmestaruus.
 
