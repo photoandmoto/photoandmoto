@@ -14,7 +14,7 @@ card_image: ''
 card_image_focus: center
 show_hero: true
 image_caption: ''
-draft: true
+draft: false
 seo_description: 'From a red tank to Team Green: The story of Kawasaki motocross'
 sources: 'Multiple public sources: List available on request'
 ---

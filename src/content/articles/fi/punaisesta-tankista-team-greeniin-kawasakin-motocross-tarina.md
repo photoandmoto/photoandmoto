@@ -14,7 +14,7 @@ card_image: ''
 card_image_focus: center
 show_hero: true
 image_caption: ''
-draft: true
+draft: false
 seo_description: 'Punaisesta tankista Team Greeniin: Kawasakin motocrossin tarina'
 sources: 'Useita julkisia lähteitä: lista saatavilla pyynnöstä'
 ---
