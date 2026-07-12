@@ -74,6 +74,7 @@ const galleryItems = featuredGalleries.map(g => ({
           <h2 class="section-heading">Latest articles</h2>
           <a href="/en/time-machine" class="section-all-link">All articles →</a>
         </div>
+        <p class="section-subheading">Read the latest motocross news, race reports, historical stories, and rider interviews.</p>
         <div class="featured-row">
           <ArticleCard
             href={slugFor(featuredArticle)}
@@ -104,6 +105,7 @@ const galleryItems = featuredGalleries.map(g => ({
           <h2 class="section-heading">Gallery</h2>
           <a href="/en/gallery" class="section-all-link">All galleries →</a>
         </div>
+        <p class="section-subheading">Explore photos of Finnish and international motocross from the 1960s to today.</p>
         <RotatingHeroSplit items={galleryItems} variant="sidebar" />
       </div>
     </section>
@@ -140,7 +142,7 @@ const galleryItems = featuredGalleries.map(g => ({
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-2);
     gap: var(--space-3);
   }
 
@@ -150,6 +152,16 @@ const galleryItems = featuredGalleries.map(g => ({
     font-weight: 900;
     color: var(--text-primary);
     margin: 0;
+  }
+
+  .section-subheading {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    max-width: 640px;
+    margin: 0 0 var(--space-4);
   }
 
   .section-all-link {

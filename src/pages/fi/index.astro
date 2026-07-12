@@ -120,6 +120,7 @@ const galleryItems = featuredGalleries.map(g => ({
           <h2 class="section-heading">Uusimmat artikkelit</h2>
           <a href="/fi/aikakone" class="section-all-link">Kaikki artikkelit →</a>
         </div>
+        <p class="section-subheading">Lue tuoreimmat motocross-uutiset, kilpailuraportit, historiatarinat ja kuljettajahaastattelut.</p>
         <div class="featured-row">
           <ArticleCard
             href={slugFor(featuredArticle)}
@@ -150,6 +151,7 @@ const galleryItems = featuredGalleries.map(g => ({
           <h2 class="section-heading">Galleria</h2>
           <a href="/fi/galleria" class="section-all-link">Kaikki galleriat →</a>
         </div>
+        <p class="section-subheading">Tutustu suomalaisen ja kansainvälisen motocrossin kuviin 1960-luvulta nykypäivään.</p>
         <RotatingHeroSplit items={galleryItems} variant="sidebar" />
       </div>
     </section>
@@ -162,6 +164,7 @@ const galleryItems = featuredGalleries.map(g => ({
         <h2 class="section-heading">Podcast</h2>
         <a href="/fi/podcast" class="section-all-link">Kaikki jaksot →</a>
       </div>
+      <p class="section-subheading">Kuuntele haastatteluja, tarinoita ja keskusteluja motocrossin legendojen kanssa.</p>
       <RotatingHeroSplit items={podcastEpisodes} variant="sidebar" />
     </div>
   </section>
@@ -197,7 +200,7 @@ const galleryItems = featuredGalleries.map(g => ({
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-2);
     gap: var(--space-3);
   }
 
@@ -207,6 +210,16 @@ const galleryItems = featuredGalleries.map(g => ({
     font-weight: 900;
     color: var(--text-primary);
     margin: 0;
+  }
+
+  .section-subheading {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    max-width: 640px;
+    margin: 0 0 var(--space-4);
   }
 
   .section-all-link {
