@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-07-12",
+  "lastUpdated": "2026-07-13",
   "seasonComplete": false,
   "totalRounds": 19,
   "latestRace": {
@@ -680,52 +680,52 @@
   "highlights": {
     "fi": {
       "mxgp_quali": [
-        "Lucas Coenen nappasi paalupaikan lauantain MXGP-aika-ajossa.",
-        "Vahvat suoritukset vaikeissa olosuhteissa nähtiin."
+        "Lucas Coenen nappasi paalupaikan lauantain aika-ajossa.",
+        "Kovatasoisessa aika-ajossa nähtiin tiukkaa taistelua kärkisijoista."
       ],
       "mxgp_race": [
         "Lucas Coenen dominoi molempia MXGP-eriä ja voitti GP:n.",
-        "Jeffrey Herlings taisteli vahvasti ja nousi toiseksi.",
-        "Lucas Coenen vei täyden pistepotin MXGP Etelä-Afrikan GP:ssä."
+        "Jeffrey Herlings näytti vahvuutensa kahdella toisella sijallaan.",
+        "Lucas Coenen vei kokonaisvoiton murskaavalla suorituksella."
       ],
       "mx2_quali": [
-        "Simon Längenfelder oli nopein MX2-lähdön aika-ajossa.",
-        "Guillem Farres varmisti toisen lähtöruudun."
+        "Simon Längenfelder oli nopein MX2-luokan aika-ajossa.",
+        "Guillem Farres ja Camden McLellan seurasivat tiiviisti kärjessä."
       ],
       "mx2_race": [
-        "Guillem Farres voitti molemmat MX2-erät ja GP:n.",
-        "Simon Längenfelder nousi toiseksi toisessa erässä.",
-        "Guillem Farres hallitsi MX2 Etelä-Afrikan GP:tä."
+        "Guillem Farres hallitsi MX2-eriä ja voitti GP:n.",
+        "Simon Längenfelder taisteli vahvasti ja varmisti toisen sijan.",
+        "Guillem Farres vei kokonaisvoiton näyttävällä ajolla."
       ],
       "standings": [
-        "Lucas Coenen piti MXGP-sarjan kärkisijaa.",
-        "Sacha Coenen jatkaa MX2-sarjan johdossa.",
-        "MXGP ja MX2 sarjataulukoiden kärki pysyi ennallaan."
+        "Lucas Coenen piti MXGP-sarjan kärkipaikkansa.",
+        "Jeffrey Herlings jatkaa toisena MXGP-pisteissä.",
+        "Romain Febvre pysyi kolmantena MXGP-sarjassa."
       ]
     },
     "en": {
       "mxgp_quali": [
-        "Lucas Coenen claimed pole position in MXGP qualifying.",
-        "Strong performances were seen in challenging conditions."
+        "Lucas Coenen claimed pole position in Saturday's qualifying.",
+        "The tough qualifying session saw a fierce battle for the top spots."
       ],
       "mxgp_race": [
-        "Lucas Coenen dominated both MXGP motos to win the GP.",
-        "Jeffrey Herlings battled hard for a strong second overall.",
-        "Lucas Coenen took maximum points at the MXGP of South Africa."
+        "Lucas Coenen dominated both MXGP motos, winning the GP.",
+        "Jeffrey Herlings showed strength with two second-place finishes.",
+        "Lucas Coenen secured the overall victory with a commanding performance."
       ],
       "mx2_quali": [
-        "Simon Längenfelder was fastest in MX2 qualifying.",
-        "Guillem Farres secured the second grid spot."
+        "Simon Längenfelder was the fastest in MX2 qualifying.",
+        "Guillem Farres and Camden McLellan followed closely behind."
       ],
       "mx2_race": [
-        "Guillem Farres won both MX2 motos and the GP.",
-        "Simon Längenfelder charged to second in moto two.",
-        "Guillem Farres mastered the MX2 of South Africa."
+        "Guillem Farres controlled the MX2 motos and won the GP.",
+        "Simon Längenfelder battled hard to secure second overall.",
+        "Guillem Farres claimed the overall win with an impressive ride."
       ],
       "standings": [
-        "Lucas Coenen held firm at the top of MXGP standings.",
-        "Sacha Coenen maintained his lead in the MX2 championship.",
-        "The top 3 order remained unchanged in both MXGP and MX2."
+        "Lucas Coenen held firm at the top of the MXGP standings.",
+        "Jeffrey Herlings maintained his second position in MXGP points.",
+        "Romain Febvre held firm in third place in the MXGP standings."
       ]
     }
   },
