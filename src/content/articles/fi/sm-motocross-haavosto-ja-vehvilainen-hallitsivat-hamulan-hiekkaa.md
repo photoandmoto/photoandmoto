@@ -1,18 +1,19 @@
 ---
-title: "SM-Motocross: Haavosto ja Vehviläinen hallitsivat Hamulan hiekkaa"
-subtitle: null
-author: "Tapio Vuori"
+title: 'SM-Motocross: Haavosto ja Vehviläinen hallitsivat Hamulan hiekkaa'
+subtitle: ''
+author: Tapio Vuori
 date: 2026-07-15
-category: "Motocross"
-tags: ["SM- motocross"]
-featured_image: "/images/sm-motocross-haavosto-ja-vehvilainen-hallitsivat-hamulan-hiekkaa-vilho-vehvilainen-liitaa-voittoon-siilinjarvella.-kuva-lukas-willner.jpg"
+category: Motocross
+tags:
+  - SM- motocross
+featured_image: /images/sm-motocross-haavosto-ja-vehvilainen-hallitsivat-hamulan-hiekkaa-vilho-vehvilainen-liitaa-voittoon-siilinjarvella.-kuva-lukas-willner.jpg
 card_image: null
-image_caption: "Vilho Vehviläinen liitää voittoon Siilinjärven SM-kisassa. Kuva: Lukas Willner"
-language: "fi"
 show_hero: true
-draft: true
-seo_description: null
-sources: "SML Tiedotus"
+image_caption: 'Vilho Vehviläinen liitää voittoon Siilinjärven SM-kisassa. Kuva: Lukas Willner'
+draft: false
+seo_description: Haavisto ja Vehviläinen hallitsivat Hamulan hiekkaa – Siilinjärven SM-viikonloppu
+sources: SML Tiedotus
+language: fi
 ---
 
 Haavisto ja Vehviläinen hallitsivat Hamulan hiekkaa – Siilinjärven SM-viikonloppu tarjosi hellettä, draamaa ja näyttäviä voittajia
