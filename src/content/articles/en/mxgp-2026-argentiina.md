@@ -1,14 +1,20 @@
 ---
-title: "The Argentina Season Opener"
-subtitle: "The motocross World Championship season ready to launch from Argentina"
-author: "Tapio Vuori"
+title: The Argentina Season Opener
+subtitle: The motocross World Championship season ready to launch from Argentina
+author: Tapio Vuori
 date: 2026-03-04
-category: "MXGP"
-tags: ["MXGP", "motocross", "Argentina", "World Championship", "2026 season"]
-featured_image: "/images/mxgp-2026-hero.jpg"
-image_caption: "MXGP 2026 season kicks off"
-language: "en"
-seo_description: "The 2026 motocross World Championship season kicks off in Bariloche, Argentina."
+category: MXGP
+tags:
+  - MXGP
+  - motocross
+  - Argentina
+  - World Championship
+  - 2026 season
+featured_image: /images/2026-06-21-garcia-voitti-montevarchissa-tiburcio-ja-fueri-emx250-palkintopallille-mxgp-1-50.jpg
+image_caption: MXGP 2026 season kicks off
+seo_description: The 2026 motocross World Championship season kicks off in Bariloche, Argentina.
+sources: ''
+language: en
 ---
 
 The motocross World Championship season is ready to launch from Argentina. Multiple title contenders, a thrilling season ahead. The campaign gets under way this weekend (7–8 March) amid stunning scenery in Bariloche, in the Rio Negro province of Argentina, close to the Chilean border. A large lake lies just a couple of kilometres from the venue. It is a first-time World Championship host.
@@ -47,6 +53,6 @@ Other noteworthy contenders in MX2 include South Africa / Netherlands’ Camden 
 
 The season will be long and full of twists. The champions will be decided by the final (19th) round at the latest, in Darwin, Australia, on 20 September.
 
-*Text: Tapio Vuori*
+_Text: Tapio Vuori_
 
-*Photo & Moto reportage*
+_Photo & Moto reportage_

@@ -1,14 +1,20 @@
 ---
-title: "Argentiinan MM-Avaus"
-subtitle: "Motocrossin MM-kausi valmiina starttaamaan Argentiinasta"
-author: "Tapio Vuori"
+title: Argentiinan MM-Avaus
+subtitle: Motocrossin MM-kausi valmiina starttaamaan Argentiinasta
+author: Tapio Vuori
 date: 2026-03-04
-category: "MXGP"
-tags: ["MXGP", "motocross", "Argentiina", "MM-sarja", "kausi 2026"]
-featured_image: "/images/mxgp-2026-hero.jpg"
-image_caption: "MXGP 2026 kausi starttaa"
-language: "fi"
-seo_description: "Motocrossin MM-kausi 2026 starttaa Argentiinan Barilochessa."
+category: MXGP
+tags:
+  - MXGP
+  - motocross
+  - Argentiina
+  - MM-sarja
+  - kausi 2026
+featured_image: /images/2026-06-21-garcia-voitti-montevarchissa-tiburcio-ja-fueri-emx250-palkintopallille-mxgp-1-50.jpg
+image_caption: MXGP 2026 kausi starttaa
+seo_description: Motocrossin MM-kausi 2026 starttaa Argentiinan Barilochessa.
+sources: ''
+language: fi
 ---
 
 Motocrossin MM-kausi valmiina starttaamaan Argentiinasta. Monta mestariehdokasta, tulossa jännittävä kausi.
@@ -51,6 +57,6 @@ Muita varteenotettavia tekijöitä MX2-luokassa ovat mm. Etelä-Afrikan / Hollan
 
 Kausi tulee olemaan kuitenkin pitkä ja vivahderikas. Mestarit ratkeavat kuitenkin viimeistään kauden viimeisessä (19.) osakilpailussa Australian Darwinissa 20. syyskuuta.
 
-*Teksti: Tapio Vuori*
+_Teksti: Tapio Vuori_
 
-*Photo & Moto reportage*
+_Photo & Moto reportage_
