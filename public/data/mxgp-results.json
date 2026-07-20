@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-07-19",
+  "lastUpdated": "2026-07-20",
   "seasonComplete": false,
   "totalRounds": 19,
   "latestRace": {
@@ -675,52 +675,52 @@
   "highlights": {
     "fi": {
       "mxgp_quali": [
-        "Ruben Fernandez nappasi paalupaikan lauantain aika-ajoissa.",
-        "Herlings ja Gajser osoittivat vahvuutensa vaikeissa olosuhteissa."
+        "Ruben Fernandez nappasi paalupaikan lauantain aika-ajossa.",
+        "Kukaan ei yllättänyt vaikeissa olosuhteissa, kaikki kärki ajoi tasaisesti."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominoi molempia MXGP-eriä voittaen ylivoimaisesti.",
+        "Jeffrey Herlings dominoi molemmissa erissä ja voitti GP:n.",
         "Romain Febvre ja Tim Gajser taistelivat tiukasti kakkossijasta.",
-        "Herlings vei GP-voiton näyttävällä suorituksella."
+        "Ruben Fernandez ajoi vahvasti ollen molemmissa erissä neljäs."
       ],
       "mx2_quali": [
-        "Simon Längenfelder oli nopein MX2-luokan aika-ajoissa.",
-        "Guillem Farres osoitti vauhtinsa toisella sijalla."
+        "Simon Längenfelder oli nopein MX2-luokan aika-ajossa.",
+        "Guillem Farres osoitti vauhtinsa ollen toinen lauantaina."
       ],
       "mx2_race": [
-        "Guillem Farres hallitsi MX2-eriä voittaen molemmat lähdöt.",
-        "Simon Längenfelder taisteli vahvasti sijoista kärkikahinoissa.",
-        "Farres varmisti MX2 GP-kokonaisvoiton vakuuttavasti."
+        "Guillem Farres hallitsi MX2-kilpailua voittaen molemmat erät.",
+        "Simon Längenfelder taisteli vahvasti ja varmisti toisen sijan.",
+        "Camden McLellan ja Liam Everts jakoivat kolmannen sijan tasapisteissä."
       ],
       "standings": [
-        "Lucas Coenen pitää MXGP-kärjessä paikkaansa.",
-        "Jeffrey Herlings nousi toiseksi, ohittaen Febvren.",
-        "Guillem Farres nousi MX2-sarjan kärkeen edelliseltä sijalta."
+        "Lucas Coenen piti pintansa MXGP-sarjan kärjessä.",
+        "Jeffrey Herlings pysyi toisena MXGP-sarjassa.",
+        "Romain Febvre jatkaa kolmantena MXGP-sarjassa ilman muutoksia."
       ]
     },
     "en": {
       "mxgp_quali": [
         "Ruben Fernandez claimed pole position in Saturday's qualifying.",
-        "Herlings and Gajser showed strength in challenging conditions."
+        "No surprises in difficult conditions, the top riders were consistent."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominated both MXGP motos, winning convincingly.",
-        "Romain Febvre and Tim Gajser battled fiercely for second.",
-        "Herlings secured the GP overall victory with a dominant display."
+        "Jeffrey Herlings dominated both motos to win the GP overall.",
+        "Romain Febvre and Tim Gajser battled fiercely for second place.",
+        "Ruben Fernandez rode strongly, finishing fourth in both races."
       ],
       "mx2_quali": [
-        "Simon Längenfelder was the fastest in MX2 qualifying.",
-        "Guillem Farres showed his speed, taking second position."
+        "Simon Längenfelder was fastest in MX2 qualifying.",
+        "Guillem Farres showed his speed, finishing second on Saturday."
       ],
       "mx2_race": [
-        "Guillem Farres controlled the MX2 motos, winning both races.",
-        "Simon Längenfelder battled hard for podium contention.",
-        "Farres clinched the MX2 GP overall win with authority."
+        "Guillem Farres dominated the MX2 competition, winning both motos.",
+        "Simon Längenfelder fought hard to secure second overall.",
+        "Camden McLellan and Liam Everts tied for third on points."
       ],
       "standings": [
-        "Lucas Coenen holds firm at the top of MXGP standings.",
-        "Jeffrey Herlings moved up to second, surpassing Febvre.",
-        "Guillem Farres moved up to lead the MX2 championship."
+        "Lucas Coenen held firm at the top of the MXGP standings.",
+        "Jeffrey Herlings remained in second place in the MXGP standings.",
+        "Romain Febvre held firm in third in the MXGP standings."
       ]
     }
   },
