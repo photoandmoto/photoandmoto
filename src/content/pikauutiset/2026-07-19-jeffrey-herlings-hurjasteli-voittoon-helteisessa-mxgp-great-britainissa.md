@@ -8,4 +8,4 @@ photo: /images/2026-07-19-jeffrey-herlings-hurjasteli-voittoon-helteisessa-mxgp-
 draft: false
 ---
 
-Jeffrey Herlings dominoi helteisessä MXGP Great Britainin osakilpailussa Fox Hillissä 19. heinäkuuta 2026. Herlings vei molemmat MXGP-erät ja GP-voiton ylivoimaisesti 50 pisteellä. Romain Febvre (42 p.) ja Tim Gajser (42 p.) kävivät tiukan kamppailun kakkossijasta. Valitettavasti Fantic Factory Racing MXGP:n Alberto Forato koki rajun kaatumisen ja sai epäillyn olkapäävamman. MX2-luokan voitti Guillem Farres (Triumph) 50 pisteellä ennen Simon Längenfelderiä (KTM, 44 p. Kuva: Ice 1 Racing
+Hondan Jeffrey Herlings dominoi helteisessä MXGP:n osakilpailussa Fox Hillissä 19. heinäkuuta 2026. Herlings vei molemmat MXGP-erät ja GP-voiton ylivoimaisesti 50 pisteellä. Romain Febvre ( Kawaski, 42 p.) ja Tim Gajser ( Yamaha 42 p.) kävivät tiukan kamppailun kakkossijasta.  MX2-luokan voitti Guillem Farres (Triumph, 50 p) ennen Simon Längenfelderiä (KTM, 44 p) ja Camden McLellania (Triumph, 38 p). MXGP:ssä Fantic Factory Racing Alberto Forato koki rajun kaatumisen, joka aiheutti olkapäävamman.
