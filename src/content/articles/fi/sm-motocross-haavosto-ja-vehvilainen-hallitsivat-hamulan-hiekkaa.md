@@ -1,5 +1,5 @@
 ---
-title: 'SM-Motocross: Haavosto ja Vehviläinen hallitsivat Hamulan hiekkaa'
+title: 'SM-Motocross: Haavisto ja Vehviläinen hallitsivat Hamulan hiekkaa'
 subtitle: Siilinjärven SM-viikonloppu tarjosi hellettä, draamaa ja näyttäviä voittajia
 author: Tapio Vuori
 date: 2026-07-15
