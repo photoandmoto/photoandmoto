@@ -15,7 +15,7 @@ show_hero: false
 image_caption: 'null'
 draft: false
 seo_description: Sandblowers — a colourful speedway group of motocross friends since 1986. How Jawa's bright colours revolutionised the atmosphere of Finnish speedway.
-sources: ''
+sources: 'Text: Photo & Moto'
 auto_translated: true
 language: en
 translated_from: sandblowers
@@ -50,4 +50,10 @@ As in life in general, time moves on. Through various stages, the members of San
 
 > **Of the "Sandblowers"** on a personal level, **Mika Pellinen** rose the highest, achieving Finnish Championship bronze in 1991 and a fine Finnish Championship gold in 1993. His upward career took him to Sweden in 1993 to the Dackarna team and from there on to England in 1994, where he first represented the Swindon Robins and later the Exeter Falcons. However, his soaring career ended abruptly due to a serious accident in Exeter, where his leg was badly crushed. This unfortunate event ended Mika's eventful speedway career.
 
-_Text: Photo & Moto_
+![](/images/Mika%20Pellinen.%20Tampere%20Kaanaa%20spewa%20SM%201994.jpg)
+
+       Mika on his way to Finnish championship 1994 - Tampere Kaanaa track
+
+![](/images/Mika%20Pellinen.%20Tampere%20Kaanaa%20spewan%20Suomen%20Mestari%201994.jpg)
+
+                 Mika Pellinen Finnish champion 1994

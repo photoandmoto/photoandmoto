@@ -14,7 +14,7 @@ featured_image: /images/sandblowers-ryhma.jpg
 show_hero: false
 image_caption: ''
 seo_description: Sandblowers — motocrosskaverusten värikäs speedwayryhmä vuodesta 1986. Miten Jawan kirkkaat värit mullistivat suomalaisen speedwayn tunnelman.
-sources: ''
+sources: 'Teksti: Photo & Moto'
 language: fi
 ---
 
@@ -46,4 +46,10 @@ Niinkuin elämässä yleensä, aika ajaa asioiden edelle. Eri vaiheiden kautta, 
 
 > **“Heikkapuhaltajista”** henkilökohtaisella tasolla korkeimmalle kohosi **Mika Pellinen** saavuttaen SM-pronssia vuonna 1991 ja hienosti Suomen mestaruuden vuonna 1993. Hänen nousujohteinen uransa vei hänet vuonna 1993 Ruotsiin Dackarna-joukkueeseen ja sieltä edelleen Englantiin 1994, missä hän edusti ensin Swindon Robinsia ja myöhemmin Exeter Falconseja. Nousukiidossa ollut ura päättyi kuitenkin äkillisesti Exeterissä sattuneeseen vakavaan onnettomuuteen, jossa hänen jalkansa murskaantui pahasti. Tämä ikävä tapahtuma päätti Mikan vaiherikkaan speedway-uran.
 
-_Teksti: Photo & Moto_
+![Mika matkalla Suomen Mestariksi 1994](/images/Mika%20Pellinen.%20Tampere%20Kaanaa%20spewa%20SM%201994.jpg "Mika matkalla Suomen Mestariksi 1994")
+
+        Mika matkalla Suomen mestariksi 1994 - Tampere Kaanaan rata
+
+[![](/images/Mika%20Pellinen.%20Tampere%20Kaanaa%20spewan%20Suomen%20Mestari%201994.jpg "Mika Pellinen Suomen mestari 1994")](Mika Pellinen Suomen mestari 1994)
+
+                 Mika Pellinen Suomen mestari 1994
