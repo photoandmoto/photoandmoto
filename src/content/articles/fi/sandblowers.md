@@ -30,15 +30,11 @@ Debyytti Seinäjoella aiheutti hämmennystä. Ensinnäkin Englannin kielinen jou
 
 Sandblowersista tuli nopeasti paljon puhuttu joukkue, joka tunnettiin ainutlaatuisesta tyylistään ja kiistattomasta lahjakkuudestaan. Vain kahdessa vuodessa he nousivat vauhdilla Suomen speedwayn pääsarjaan.
 
-![Treenit](/images/sandblowers-treeni.jpg)
-
-_Speedwaypyörä taittuu crossikuskin käsittelyssä treeneissä Lahden Pipon radalla_
+![Treenit](/images/sandblowers-treeni.jpg "Speedwaypyörä taittuu crossikuskin käsittelyssä treeneissä Lahden Pipon radalla")
 
 Sandblowersin vaikutus ulottui radan ulkopuolelle. Heidän energiansa sytytti kipinän myös Jorma Virrassa, arvostetussa Hyvinkääläisessä moottorimiehessä, joka tunnettiin lempinimellä Mr. Speedway. Jorista tuli joukkueen mentori, ja hänen ohjauksessaan Hyvinkää saavutti myös tärkeän virstanpylvään, eli kaupunkiin valmistui sen historian ensimmäinen oma speedwaystadion.
 
-![Palaveri](/images/sandblowers-palaveri.jpg)
-
-_Sandblowers ja tukijoukot teamipalaverissa Jorma Virran ohjauksessa_
+![Palaveri](/images/sandblowers-palaveri.jpg "Sandblowers ja tukijoukot teamipalaverissa Jorma Virran ohjauksessa")
 
 ## Vallankumouksen haalistunut kaiku
 
@@ -48,8 +44,4 @@ Niinkuin elämässä yleensä, aika ajaa asioiden edelle. Eri vaiheiden kautta, 
 
 ![Mika matkalla Suomen Mestariksi 1994](/images/Mika%20Pellinen.%20Tampere%20Kaanaa%20spewa%20SM%201994.jpg "Mika matkalla Suomen Mestariksi 1994")
 
-        Mika matkalla Suomen mestariksi 1994 - Tampere Kaanaan rata
-
 [![](/images/Mika%20Pellinen.%20Tampere%20Kaanaa%20spewan%20Suomen%20Mestari%201994.jpg "Mika Pellinen Suomen mestari 1994")](Mika Pellinen Suomen mestari 1994)
-
-                 Mika Pellinen Suomen mestari 1994

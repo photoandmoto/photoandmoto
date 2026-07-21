@@ -34,15 +34,11 @@ Their debut in Seinäjoki caused confusion. First of all, an English team name w
 
 Sandblowers quickly became a much-talked-about team, known for their unique style and undeniable talent. In just two years, they rose rapidly to the top division of Finnish speedway.
 
-![Treenit](/images/sandblowers-treeni.jpg)
-
-_A speedway bike leans into a turn under the handling of a motocross rider during practice at the Lahti Pipo track_
+![Treenit](/images/sandblowers-treeni.jpg "A speedway bike leans into a turn under the handling of a motocross rider during practice at the Lahti Pipo track")
 
 Sandblowers' influence extended beyond the track. Their energy also ignited a spark in Jorma Virta, a respected motor enthusiast from Hyvinkää, known by the nickname Mr. Speedway. Jori became the team's mentor, and under his guidance, Hyvinkää also reached an important milestone, as the city's first-ever speedway stadium was completed.
 
-![Palaveri](/images/sandblowers-palaveri.jpg)
-
-_Sandblowers and support staff in a team meeting under the guidance of Jorma Virta_
+![Palaveri](/images/sandblowers-palaveri.jpg "Sandblowers and support staff in a team meeting under the guidance of Jorma Virta")
 
 ## The faded echo of a revolution
 
@@ -50,10 +46,6 @@ As in life in general, time moves on. Through various stages, the members of San
 
 > **Of the "Sandblowers"** on a personal level, **Mika Pellinen** rose the highest, achieving Finnish Championship bronze in 1991 and a fine Finnish Championship gold in 1993. His upward career took him to Sweden in 1993 to the Dackarna team and from there on to England in 1994, where he first represented the Swindon Robins and later the Exeter Falcons. However, his soaring career ended abruptly due to a serious accident in Exeter, where his leg was badly crushed. This unfortunate event ended Mika's eventful speedway career.
 
-![](/images/Mika%20Pellinen.%20Tampere%20Kaanaa%20spewa%20SM%201994.jpg)
-
-       Mika on his way to Finnish championship 1994 - Tampere Kaanaa track
-
-![](/images/Mika%20Pellinen.%20Tampere%20Kaanaa%20spewan%20Suomen%20Mestari%201994.jpg)
-
-                 Mika Pellinen Finnish champion 1994
+![Mika on his way to Finnish championship 1994 - Tampere Kaanaa track](/images/Mika%20Pellinen.%20Tampere%20Kaanaa%20spewa%20SM%201994.jpg "Mika on his way to Finnish championship 1994 - Tampere Kaanaa track")
+ 
+![Mika Pellinen Finnish champion 1994](/images/Mika%20Pellinen.%20Tampere%20Kaanaa%20spewan%20Suomen%20Mestari%201994.jpg "Mika Pellinen Finnish champion 1994")
