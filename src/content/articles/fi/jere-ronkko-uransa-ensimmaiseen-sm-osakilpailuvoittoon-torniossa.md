@@ -1,7 +1,7 @@
 ---
 title: Kolme lippurikerangaistusta käänsi MX1-tulokset
 subtitle: Jere Rönkkö uransa ensimmäiseen SM-osakilpailuvoittoon Torniossa
-author: Tapio Vuori
+author: SML Tiedotus
 date: 2026-07-20
 category: Motocross
 tags:
@@ -9,10 +9,10 @@ tags:
 featured_image: /images/jere-ronkko-uransa-ensimmaiseen-sm-osakilpailuvoittoon-torniossa-jere-ronkko-ajoi-voittoon-tornion-sml-amoq-sm-motocrossissa-kuva-kari-hassinen-sportphotos..jpg
 card_image: null
 show_hero: true
-image_caption: Jere Rönkkö uransa ensimmäiseen osakilpailuvoittoon Torniossa.
+image_caption: 'Rönkkö uransa ensimmäiseen osakilpailuvoittoon. Kuva: Kari Hassinen'
 draft: false
 seo_description: Kolme lippurikerangaistusta käänsi MX1-tulokset – Jere Rönkkö uransa ensimmäiseen osakilpailuvoittoon Torniossa.
-sources: SML Tiedotus
+sources: ''
 language: fi
 ---
 
