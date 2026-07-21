@@ -44,4 +44,4 @@ Niinkuin elämässä yleensä, aika ajaa asioiden edelle. Eri vaiheiden kautta, 
 
 ![Mika matkalla Suomen Mestariksi 1994](/images/Mika%20Pellinen.%20Tampere%20Kaanaa%20spewa%20SM%201994.jpg "Mika matkalla Suomen Mestariksi 1994")
 
-[![](/images/Mika%20Pellinen.%20Tampere%20Kaanaa%20spewan%20Suomen%20Mestari%201994.jpg "Mika Pellinen Suomen mestari 1994")](Mika Pellinen Suomen mestari 1994)
+![Mika Pellinen Suomen mestari 1994](/images/Mika%20Pellinen.%20Tampere%20Kaanaa%20spewan%20Suomen%20Mestari%201994.jpg "Mika Pellinen Suomen mestari 1994")
