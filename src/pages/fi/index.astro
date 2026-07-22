@@ -147,14 +147,29 @@ const galleryItems = featuredGalleries.map(g => ({
       <h2 class="cta-section__heading">Ota yhteyttä</h2>
       <div class="cta-grid">
         <a href="/fi/yhteystiedot" class="cta-card">
+          <svg class="cta-card__icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+            <circle cx="12" cy="13" r="4"></circle>
+          </svg>
           <h3 class="cta-card__heading">Kuvien käyttö</h3>
           <p class="cta-card__body">Haluatko käyttää kuviamme? Käsittelemme pyynnöt tapauskohtaisesti.</p>
         </a>
         <a href="/fi/yhteystiedot" class="cta-card">
+          <svg class="cta-card__icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
           <h3 class="cta-card__heading">Kysymykset</h3>
           <p class="cta-card__body">Mietityttääkö jokin? Meillä voi olla siihen vastaus.</p>
         </a>
         <a href="/fi/yhteystiedot" class="cta-card">
+          <svg class="cta-card__icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+          </svg>
           <h3 class="cta-card__heading">Jutut</h3>
           <p class="cta-card__body">Jaa aiheeseen liittyvä juttusi artikkelinamme.</p>
         </a>
@@ -294,6 +309,12 @@ const galleryItems = featuredGalleries.map(g => ({
     transform: translateY(-2px);
     background: #1a1a1a;
     border-color: rgba(255, 153, 0, 0.4);
+  }
+
+  .cta-card__icon {
+    display: block;
+    color: var(--brand-primary);
+    margin: 0 0 var(--space-2);
   }
 
   .cta-card__heading {
