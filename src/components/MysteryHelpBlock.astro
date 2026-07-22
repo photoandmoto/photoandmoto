@@ -175,17 +175,16 @@ const t = STRINGS[lang] || STRINGS.fi;
   margin-left: 6px;
 }
 .mhb-thumbs {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(0, 160px));
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
   margin-bottom: 24px;
-  align-items: start;
 }
 .mhb-thumb {
   position: relative;
-  width: 100%;
-  padding-bottom: 100%;
+  flex: 0 1 160px;
+  aspect-ratio: 1 / 1;
   border-radius: 10px;
   overflow: hidden;
   background: #fff;
@@ -237,8 +236,10 @@ const t = STRINGS[lang] || STRINGS.fi;
 
 @media (max-width: 768px) {
   .mhb-thumbs {
-    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
+  }
+  .mhb-thumb {
+    flex-basis: calc((100% - 20px) / 3);
   }
   .mhb-headline {
     font-size: 1.4rem;
@@ -248,8 +249,8 @@ const t = STRINGS[lang] || STRINGS.fi;
   }
 }
 @media (max-width: 480px) {
-  .mhb-thumbs {
-    grid-template-columns: repeat(2, 1fr);
+  .mhb-thumb {
+    flex-basis: calc((100% - 10px) / 2);
   }
   .mhb-footer {
     flex-direction: column;
