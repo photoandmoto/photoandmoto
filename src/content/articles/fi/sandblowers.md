@@ -42,6 +42,6 @@ Niinkuin elämässä yleensä, aika ajaa asioiden edelle. Eri vaiheiden kautta, 
 
 > **“Heikkapuhaltajista”** henkilökohtaisella tasolla korkeimmalle kohosi **Mika Pellinen** saavuttaen SM-pronssia vuonna 1991 ja hienosti Suomen mestaruuden vuonna 1993. Hänen nousujohteinen uransa vei hänet vuonna 1993 Ruotsiin Dackarna-joukkueeseen ja sieltä edelleen Englantiin 1994, missä hän edusti ensin Swindon Robinsia ja myöhemmin Exeter Falconseja. Nousukiidossa ollut ura päättyi kuitenkin äkillisesti Exeterissä sattuneeseen vakavaan onnettomuuteen, jossa hänen jalkansa murskaantui pahasti. Tämä ikävä tapahtuma päätti Mikan vaiherikkaan speedway-uran.
 
-![Mika matkalla Suomen Mestariksi 1994](/images/Mika%20Pellinen.%20Tampere%20Kaanaa%20spewa%20SM%201994.jpg "Mika matkalla Suomen Mestariksi 1994")
+![Mika matkalla Suomen Mestariksi 1993](/images/Mika%20Pellinen.%20Tampere%20Kaanaa%20spewa%20SM%201994.jpg "Mika matkalla Suomen Mestariksi 1993")
 
-![Mika Pellinen Suomen mestari 1994](/images/Mika%20Pellinen.%20Tampere%20Kaanaa%20spewan%20Suomen%20Mestari%201994.jpg "Mika Pellinen Suomen mestari 1994")
+![Mika Pellinen Suomen mestari 1993](/images/Mika%20Pellinen.%20Tampere%20Kaanaa%20spewan%20Suomen%20Mestari%201994.jpg "Mika Pellinen Suomen mestari 1993")
