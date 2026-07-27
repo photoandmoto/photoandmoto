@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-07-26",
+  "lastUpdated": "2026-07-27",
   "seasonComplete": false,
   "totalRounds": 19,
   "latestRace": {
@@ -675,51 +675,51 @@
   "highlights": {
     "fi": {
       "mxgp_quali": [
-        "Jeffrey Herlings dominoi aika-ajoissa Loketissa.",
-        "Tim Gajser yllätti sijoittumalla viidenneksi vaikeissa olosuhteissa."
+        "Jeffrey Herlings nappasi paalupaikan lauantain MXGP-aika-ajossa.",
+        "Tim Gajser yllätti sijoittumalla viidenneksi haastavissa olosuhteissa."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings hallitsi molempia MXGP-eriä täydellisesti.",
-        "Tom Vialle taisteli vahvasti ja varmisti toisen sijan GP:ssä.",
-        "Jeffrey Herlings vei murskavoiton ja GP-kokonaiskilpailun."
+        "Jeffrey Herlings dominoi molempia MXGP-eriä ja voitti GP:n.",
+        "Tom Vialle taisteli vahvasti nousten toiseksi GP-kokonaiskilpailussa.",
+        "Romain Febvre varmisti kolmannen sijan GP-kokonaiskilpailussa."
       ],
       "mx2_quali": [
-        "Simon Längenfelder oli nopein MX2-lauantain aika-ajoissa.",
-        "Liam Everts näytti vauhtiaan sijoittuen toiseksi aika-ajoissa."
+        "Simon Längenfelder oli nopein MX2-luokan aika-ajoissa.",
+        "Liam Everts näytti vauhtiaan ollen toinen lauantain sessiossa."
       ],
       "mx2_race": [
-        "Guillem Farres voitti ensimmäisen MX2-erän.",
-        "Liam Everts dominoi toista MX2-erää.",
-        "Guillem Farres vei voiton ja GP-kokonaiskilpailun."
+        "Guillem Farres voitti ensimmäisen MX2-erän ja GP:n.",
+        "Liam Everts dominoi toista MX2-erää vahvalla suorituksella.",
+        "Camden McLellan varmisti toisen sijan GP-kokonaiskilpailussa."
       ],
       "standings": [
-        "Jeffrey Herlings nousi kärkeen MXGP-sarjassa.",
-        "Lucas Coenen putosi toiseksi MXGP-sarjassa.",
-        "Camden McLellan nousi kolmanneksi MX2-sarjassa."
+        "Jeffrey Herlings johtaa MXGP-sarjaa vakuuttavasti.",
+        "Guillem Farres pitää MX2-sarjan kärkipaikkaa.",
+        "Camden McLellan nousi MX2-sarjan kolmanneksi."
       ]
     },
     "en": {
       "mxgp_quali": [
-        "Jeffrey Herlings dominated qualifying at Loket.",
-        "Tim Gajser surprised, taking fifth in tough conditions."
+        "Jeffrey Herlings claimed pole position in Saturday's MXGP qualifying.",
+        "Tim Gajser surprised by finishing fifth in challenging conditions."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings was in a class of his own in both MXGP motos.",
-        "Tom Vialle battled hard for a strong second overall.",
-        "Jeffrey Herlings claimed a dominant win and the GP overall."
+        "Jeffrey Herlings dominated both MXGP motos to win the GP.",
+        "Tom Vialle battled strongly to secure second overall in the GP.",
+        "Romain Febvre clinched third place in the GP overall standings."
       ],
       "mx2_quali": [
         "Simon Längenfelder set the fastest lap in MX2 qualifying.",
-        "Liam Everts showed his speed, qualifying second."
+        "Liam Everts showed his speed, taking second in the Saturday session."
       ],
       "mx2_race": [
-        "Guillem Farres took the win in the first MX2 moto.",
-        "Liam Everts dominated the second MX2 moto.",
-        "Guillem Farres claimed the overall GP victory."
+        "Guillem Farres won the first MX2 moto and the GP overall.",
+        "Liam Everts dominated the second MX2 moto with a strong performance.",
+        "Camden McLellan secured second place in the MX2 GP overall."
       ],
       "standings": [
-        "Jeffrey Herlings moved up to lead the MXGP standings.",
-        "Lucas Coenen dropped to second in the MXGP standings.",
+        "Jeffrey Herlings leads the MXGP standings firmly.",
+        "Guillem Farres holds the top spot in the MX2 championship.",
         "Camden McLellan moved up to third in the MX2 standings."
       ]
     }
