@@ -1,6 +1,16 @@
 ---
 // Standalone mobile PWA — no site layout, no header, no footer.
 // Lives at /fi/app/ — the PWA start_url and scope.
+//
+// This page builds its own <head> rather than using BaseLayout, so the font
+// imports have to be repeated here. Self-hosted for the same reason as the rest
+// of the site: a third-party font stylesheet blocks first paint, which matters
+// even more on the phones this page is built for.
+import '@fontsource/montserrat/400.css';
+import '@fontsource/montserrat/600.css';
+import '@fontsource/montserrat/700.css';
+import '@fontsource/montserrat/800.css';
+import '@fontsource/montserrat/900.css';
 ---
 <!DOCTYPE html>
 <html lang="fi">
@@ -16,9 +26,6 @@
   <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
   <link rel="manifest" href="/manifest.json?v=2.0.0">
   <link rel="icon" type="image/png" href="/favicon.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 input::placeholder, textarea::placeholder {
   font-size: 16px;

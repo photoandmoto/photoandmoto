@@ -3,6 +3,21 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieConsent from '../components/CookieConsent.astro';
 import { getTickerItems } from '../lib/tickerItems';
+// Self-hosted Montserrat. Previously loaded from fonts.googleapis.com, which put
+// two third-party round-trips (CSS, then woff2 from a second origin) directly in
+// the critical render path — Lighthouse measured 0.8s–3.9s of blocked rendering
+// per page. Bundling it means one same-origin request, cached immutably.
+// @fontsource/montserrat was already a dependency but was never imported.
+// Weights match what the stylesheets actually use: 500 is included here but was
+// missing from the Google request, so it had been synthesising all along.
+import '@fontsource/montserrat/400.css';
+import '@fontsource/montserrat/500.css';
+import '@fontsource/montserrat/600.css';
+import '@fontsource/montserrat/700.css';
+import '@fontsource/montserrat/800.css';
+import '@fontsource/montserrat/900.css';
+import '@fontsource/montserrat/400-italic.css';
+import '@fontsource/montserrat/600-italic.css';
 import '../styles/brand.css';
 import '../styles/global.css';
 import '../styles/components.css';
@@ -97,10 +112,8 @@ const otherLang = lang === 'fi' ? 'en' : 'fi';
 
   {noindex && <meta name="robots" content="noindex, nofollow">}
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
+  <!-- Fonts are bundled via @fontsource (see the imports above), so there are no
+       preconnects or stylesheet links to a third-party font host here. -->
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
