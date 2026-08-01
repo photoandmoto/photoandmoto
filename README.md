@@ -88,6 +88,15 @@ original custom admin.
 editorial layer: **Avustajat** (`/fi/yleinen-kyna` — article + AI pikauutinen
 submission) and **Toimitus** (`/fi/yllapito`, the custom admin above), plus the
 public `/fi/pikauutiset` feed. Built on the same IAM/D1/GitHub App stack.
+
+**Byline vs. identity.** Contributors choose their byline with a single
+"Julkaise nimettömänä" checkbox; the server resolves it to their session name or
+the house byline `Photo & Moto`. The **real submitter is always recorded
+separately** in D1 and never written into a content file, since this repo is
+public. **Julkaisujono** (`/fi/julkaisujono`) is where Toimitus looks that up —
+the only screen showing approved and rejected submissions, which Hyväksynnät
+filters out.
+
 **See `YLEINEN_KYNA.md` for the full design and `INFRASTRUCTURE.md` for the
 storage roadmap.**
 
@@ -271,6 +280,7 @@ src/
     fi/
       yllapito.astro    Toimitus — custom admin (mystery photos, galleries, editorial)
       toimitus.astro    Toimituskeskus — contributor + editorial hub
+      julkaisujono.astro  Submission history (who submitted what, any status)
       yleinen-kyna.astro  Avustajat — contributor tools
       pikauutiset.astro   Public pikauutiset feed
       app.astro         PWA — standalone Avustajan sovellus (/fi/app/)
@@ -373,6 +383,13 @@ setup, secrets, and troubleshooting are in [DEPLOYMENT.md](DEPLOYMENT.md).
 
 `functions/api/mystery/init.js` bootstraps the schema idempotently on first
 request. Reference:
+
+> **Note.** `init.js` only creates tables that do not already exist — it does not
+> migrate them, and there is no migration tooling here. Columns added after a
+> table's first creation are applied by hand per environment, and must reach
+> production **before** the code that writes to them. See *Manual schema
+> additions* in `DEPLOYMENT.md`. Applied so far:
+> `ALTER TABLE submissions ADD COLUMN published_as TEXT;`
 
 ```sql
 CREATE TABLE IF NOT EXISTS photos (

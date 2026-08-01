@@ -117,11 +117,17 @@ EN nav  : unchanged (no Toimituskeskus / Avustajat / Toimitus)
 - **Kirjoita artikkeli** form → `POST /api/submit-article`.
 - **Luo pikauutinen** form → `POST /api/generate-article` (Gemini).
 - "Tyhjennä" clears a form and stays on it; only the back link returns to the grid.
+- The pikauutinen review step ("Tarkista pikauutinen") carries a **Julkaise
+  nimettömänä** checkbox — see *Byline vs. identity* below. The mobile app
+  (`/fi/app`) has the same control; the two must stay in sync.
 
 ### Toimitus — `/fi/yllapito`
-- Login gate (`admin-panel`), then a permission-aware **card grid**:
-  Tarkista · Lähetä kuva · Hallitse galleriaa · Hallitse artikkeleita (Sveltia ↗) ·
-  Julkaise · Käyttäjät · **Julkaisijan Ohjekirja** (last). "← Toimitus" returns to the grid;
+- Login gate (`admin-panel`), then a permission-aware **card grid** ordered to follow
+  the editorial workflow — bring material in, check it, manage the libraries,
+  approve, look up history, deploy, then admin:
+  Lähetä kuva · Tarkista · Hallitse galleriaa · Hallitse artikkeleita (Sveltia ↗) ·
+  Hyväksynnät · **Julkaisujono** (↗ own page) · Julkaise · Käyttäjät ·
+  **Julkaisijan Ohjekirja** (last). "← Toimitus" returns to the grid;
   "← Toimituskeskus" link at the top.
 - Each card opens its section in place. Cards appear only if the user has the
   matching permission (the Ohjekirja card is always shown).
@@ -129,6 +135,28 @@ EN nav  : unchanged (no Toimituskeskus / Avustajat / Toimitus)
   Julkaise tuotantoon · **Gemini-avain** (gated by `nahta_gemini_avain`).
 - **Käyttäjät** modal: role dropdown (Editor/Admin/Avustaja), permission checkboxes
   (incl. "Avustajat" and "Näytä Gemini-avain"), role-based default ticks on create.
+
+### Julkaisujono — `/fi/julkaisujono`
+- Read-only history of **every submission**, any status, newest first. Its own page
+  rather than a section of `/fi/yllapito` (that file is already ~6.8k lines).
+- Exists because **Hyväksynnät only lists `status = 'odottaa'`** — the moment an item
+  is approved or rejected it disappears from every screen. The D1 row survived but
+  nothing surfaced it, so "who sent us this published article?" could only be
+  answered by querying D1 by hand. That is the question a copyright claim raises.
+- Shows submitter name + email, date, type, category, `github_slug`, and the byline
+  it was published under. Search matches title / name / email / slug, so a live
+  article can be traced back to the person who submitted it. Status + type filters.
+- **Read-only by design.** Approving and rejecting stay in Hyväksynnät so exactly one
+  screen mutates state.
+- Submissions published under the house byline by a *named* submitter are flagged
+  "Julkaistu nimettömänä — älä julkaise lähettäjän nimeä". Toimitus can see the real
+  name here, so the contributor's choice needs to be visible, not inferred.
+- Gated by `hallitse_artikkeleita` (enforced by `/api/submissions`, not the page).
+- Only covers content that came through **Yleinen Kynä / the mobile app**. Anything
+  written directly in Sveltia never touches the submit API, so it has no row — that
+  is expected, not a gap: in-house content is authored by Toimitus itself.
+- Styles use `<style is:global>`: rows are built client-side via `innerHTML`, so they
+  never receive Astro's scoping attribute and scoped rules would not match them.
 
 ### Pikauutiset — `/fi/pikauutiset`
 - Public, FI only. Latest 10 published items, newest first (older archived in git).
@@ -192,10 +220,25 @@ to the Zod schema in `src/content.config.ts`: `title`, `subtitle?`, `author`
 
 ### Pikauutiset — `src/content/pikauutiset/<date>-<slug>.md`
 Written by `generate-article.js`. Lean, FI-only collection. Frontmatter: `title`
-(Gemini), `date` (event date), `author` (IAM session), `category`, `photo?`,
-`draft` (always `true`), `source` (always `"ai_generated"`). The 2–3 sentence text
-is the **markdown body** (content area), same convention as articles — not a
-frontmatter field. Sveltia: `author`/`source` hidden, body is a markdown widget.
+(Gemini), `date` (event date), `author` (**byline** — see below), `category`,
+`photo?`, `draft` (always `true`), `source` (always `"ai_generated"`). The 2–3
+sentence text is the **markdown body** (content area), same convention as articles —
+not a frontmatter field. Sveltia: `source` hidden; `author` is a **visible required
+field** defaulting to `Photo & Moto`, so Toimitus can see and correct the byline
+during review.
+
+`author` holds the **byline only, never the submitter's identity** — this repo is
+public, so a contributor's name must not be written into a content file unless they
+chose to be named. Identity lives in D1 (`submissions.author_id` / `author_name` /
+`author_email`), behind login.
+
+The schema coerces a missing, null or empty `author` to `Photo & Moto`
+(`z.preprocess` in `src/content.config.ts`). This is a **build-safety net, not a
+convenience**: content collections are validated for drafts too, so a single
+submission with no author previously failed `astro build` and blocked production
+deploys for everyone — including drafts Toimitus had not reviewed yet. Both write
+paths now always set a real value; the preprocess only ensures a byline problem can
+never take the site's deploy pipeline down again.
 
 ### Categories — 12 (from `src/content/categories/`)
 Enduro · Haastattelu (Interview) · Henkilökuva (Profile) · Historiallinen
@@ -258,6 +301,41 @@ underlying record is already saved.
 
 ---
 
+## Byline vs. identity
+
+Two concepts that were previously conflated, now deliberately separate:
+
+| | What it is | Source | Where it is stored |
+|---|---|---|---|
+| **Submitter** | Who pressed send — the legal counterparty | IAM session, never client-supplied | D1 `submissions.author_id` / `author_name` / `author_email` |
+| **Byline** | The name printed on the public site | Contributor's choice | Markdown `author` + D1 `submissions.published_as` |
+
+**How it works.** The contributor ticks (or leaves unticked) a single **Julkaise
+nimettömänä** checkbox. The server resolves the byline in
+`functions/api/submit-pikauutinen.js`:
+
+- unticked → the session name
+- ticked → `Photo & Moto` (the house byline)
+
+The frontmatter therefore *always* holds a real value. "Anonymous" never means "empty
+field" — an empty `author` would fail schema validation and break the production
+build. Toimitus can still override the byline afterwards in Sveltia.
+
+**Why the server resolves it rather than the contributor typing a name.** A free-text
+author field was tried first and removed: typed names drift (`Photo&Moto Toimitus` vs
+`Photo & Moto` vs lowercase), and anyone could type someone else's name. The session
+already knows who is logged in, so it is both less work and more reliable.
+
+**Why identity is never written to the markdown.** The content repo is public. A
+contributor who chose anonymity would otherwise have their name published in git
+history. Identity stays in D1 behind login, viewable in Julkaisujono.
+
+**House byline is `Photo & Moto`** everywhere — the API fallback, the schema
+preprocess, and the Sveltia default. Rows created before this work show
+`published_as = NULL`; anonymity cannot be reconstructed for them.
+
+---
+
 ## Security
 
 - IAM sessions via `requireAuth` (`pm_session` cookie; 4-hour idle DB check).
@@ -289,14 +367,32 @@ underlying record is already saved.
 
 ### Phase 3 — Hyväksynnät (editorial review queue) ✅ staging, pending production test
 - `submissions` table in D1: `type` (artikkeli/pikauutinen), `status`
-  (odottaa/julkaistu/hylatty), `author_id/name/email`, `github_slug`,
-  `reviewed_by`, `rejection_reason`, consent audit columns.
+  (odottaa/julkaistu/hylatty), `author_id/name/email` (**the real submitter,
+  always from the session**), `published_as` (**the byline it was published
+  under**), `github_slug`, `reviewed_by`, `rejection_reason`, consent audit
+  columns.
+- `published_as` was added later via
+  `ALTER TABLE submissions ADD COLUMN published_as TEXT;` run in the D1 console.
+  There is no migration tooling in this repo — the schema is maintained by hand,
+  so schema changes must be applied to production **before** deploying code that
+  writes to the new column. Rows predating it are `NULL`.
 - `functions/api/submissions.js` — `GET /api/submissions` (list, newest first);
   `POST /api/submissions` (reject only — requires `rejection_reason`, deletes
   the draft `.md` via GitHub App, emails author via Resend). Both require
   `hallitse_artikkeleita`. Approval is auto-detected by Julkaise sweep.
 - Hyväksynnät card inside Toimitus on `yllapito.astro` (gated by
   `hallitse_artikkeleita`).
+
+### Phase 4 — Byline choice + Julkaisujono ✅
+- Free-text author field replaced by a **Julkaise nimettömänä** checkbox on both
+  the Yleinen Kynä web form and the mobile app; the server resolves the byline.
+  See *Byline vs. identity*.
+- `submissions.published_as` records the byline separately from the submitter, so
+  an anonymous byline never erases who actually sent the content.
+- **Julkaisujono** page (`/fi/julkaisujono`) + 9th Toimitus card — the first UI
+  that surfaces approved and rejected submissions, which Hyväksynnät hides.
+- `content.config.ts` hardened so a missing author cannot break the build.
+- House byline standardised to `Photo & Moto` across API, schema and Sveltia.
 
 ### Cross-cutting ✅
 - Toimituskeskus hub, page renames, card navigation, idle timeout, env-aware
@@ -318,6 +414,7 @@ underlying record is already saved.
 | Toimituskeskus hub | `src/pages/fi/toimitus.astro` |
 | Avustajat page | `src/pages/fi/yleinen-kyna.astro` |
 | Toimitus (admin) | `src/pages/fi/yllapito.astro` |
+| Julkaisujono (submission history) | `src/pages/fi/julkaisujono.astro` |
 | Pikauutiset feed | `src/pages/fi/pikauutiset.astro` |
 | Avustajan Ohjekirja | `src/pages/fi/avustajan-ohjekirja.astro` |
 | Verification landing | `src/pages/fi/vahvista-pyynto.astro` |

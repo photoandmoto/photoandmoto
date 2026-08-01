@@ -21,8 +21,10 @@ julkaisun yhteydessä.
 3. [Käyttäjätilit ja oikeudet — IAM](#käyttäjätilit-ja-oikeudet--iam)
 4. [Tunnistamattomat kuvat — yllapito](#tunnistamattomat-kuvat--yllapito)
 5. [Galleriat — Hallitse galleriaa](#galleriat--hallitse-galleriaa)
-6. [Yleisimmät tilanteet](#yleisimmät-tilanteet)
-7. [Vianetsintä](#vianetsintä)
+6. [Pikauutiset ja kirjoittajanimi](#pikauutiset-ja-kirjoittajanimi)
+7. [Julkaisujono — kuka lähetti jutun](#julkaisujono--kuka-lähetti-jutun)
+8. [Yleisimmät tilanteet](#yleisimmät-tilanteet)
+9. [Vianetsintä](#vianetsintä)
 
 ---
 
@@ -518,6 +520,53 @@ Nämä vaativat toistaiseksi manuaalista git-työtä — ota yhteyttä kehittäj
 
 ---
 
+## Pikauutiset ja kirjoittajanimi
+
+Pikauutisen **Kirjoittaja**-kenttä Sveltiassa on se nimi, joka näkyy sivustolla.
+Se ei ole sama asia kuin se, kuka jutun oikeasti lähetti.
+
+- Kenttä on **pakollinen** ja oletuksena `Photo & Moto`
+- Voit muuttaa sen, jos nimi on väärin tai puuttuu
+- Tyhjäksi sitä ei voi jättää
+
+**Miksi pakollinen:** aiemmin kenttä oli piilotettu eikä sillä ollut oletusarvoa.
+Kun pikauutinen luotiin suoraan Sveltiassa, kirjoittaja jäi tyhjäksi ja **koko
+sivuston julkaisu kaatui** — myös kaikilta muilta. Nyt kenttä on näkyvissä ja
+sillä on oletusarvo, joten näet ja voit korjata nimen tarkistuksen yhteydessä.
+
+**Jos avustaja on valinnut "Julkaise nimettömänä",** kirjoittajaksi tulee
+automaattisesti `Photo & Moto`. **Älä vaihda siihen avustajan omaa nimeä** — hän
+on nimenomaan pyytänyt, ettei nimeä julkaista. Näet Julkaisujonosta kuka jutun
+lähetti, mutta se tieto on vain toimitusta varten.
+
+---
+
+## Julkaisujono — kuka lähetti jutun
+
+[/fi/julkaisujono](/fi/julkaisujono) (linkki myös Ylläpidon korttivalikossa)
+listaa **kaikki avustajien lähettämät jutut** — myös jo julkaistut ja hylätyt,
+jotka eivät näy Hyväksynnät-näkymässä.
+
+Näet jokaisesta:
+
+- otsikko, tila (odottaa / julkaistu / hylätty), päivämäärä, tyyppi, kategoria
+- **lähettäjän nimi ja sähköposti** — tästä selviää kuka jutun lähetti
+- millä nimellä juttu julkaistiin
+- hylkäyksen syy, jos juttu hylättiin
+
+Hakukenttä toimii otsikolla, nimellä, sähköpostilla ja slugilla. Jos siis saat
+esimerkiksi tekijänoikeusreklamaation julkaistusta jutusta, kopioi jutun slug
+osoiteriviltä ja hae sillä — löydät lähettäjän yhteystiedot.
+
+**Näkymä on vain luettava.** Hyväksyminen ja hylkääminen tehdään edelleen
+Hyväksynnät-osiossa.
+
+**Huom:** Julkaisujonossa näkyvät vain avustajien lähettämät jutut. Suoraan
+Sveltiassa kirjoitetut artikkelit eivät ole listassa — ne ovat toimituksen omia,
+joten lähettäjää ei tarvitse erikseen jäljittää.
+
+---
+
 ## Yleisimmät tilanteet
 
 ### "Haluan kirjoittaa uuden MXGP-jutun"
@@ -656,6 +705,7 @@ kerro kehittäjälle.
 
 ---
 
-*Viimeksi päivitetty: heinäkuu 2026 (Sveltia CMS tallentaa suoraan main-haaraan
-eli tuotantoon — ei enää erillistä esikatselu- tai julkaisuvälivaihetta; FI
-pakollinen, EN vapaaehtoinen)*
+*Viimeksi päivitetty: elokuu 2026 (pikauutisen Kirjoittaja-kenttä näkyvissä ja
+pakollinen; Julkaisujono-näkymä lähetysten historiaan. Aiemmin: Sveltia CMS
+tallentaa suoraan main-haaraan eli tuotantoon — ei erillistä esikatselu- tai
+julkaisuvälivaihetta; FI pakollinen, EN vapaaehtoinen)*

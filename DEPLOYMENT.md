@@ -121,6 +121,15 @@ and `perm_nahta_gemini_avain` permissions (IAM now has **7** permission flags,
 not 5), an email-verified access-request flow (D1 `access_requests` table), and
 the public `/fi/pikauutiset` feed.
 
+**Byline vs. identity.** A contributor chooses their byline with a single
+"Julkaise nimettömänä" checkbox; the server resolves it (session name, or
+`Photo & Moto` if ticked) and writes it to the markdown `author` field and to
+`submissions.published_as`. The **real submitter is always recorded separately**
+in `submissions.author_id` / `author_name` / `author_email` from the session, and
+is never written into a content file — this repo is public. **Julkaisujono**
+(`/fi/julkaisujono`) is where Toimitus looks that up; it is the only screen that
+shows approved and rejected submissions, which Hyväksynnät filters out.
+
 **See `YLEINEN_KYNA.md` (v3.0) for the full design and current built state, and
 `INFRASTRUCTURE.md` for the image-storage roadmap.**
 
@@ -187,6 +196,22 @@ up a third environment), here's the full sequence.
      provisioning_tokens, login_attempts, recovery_attempts, access_requests,
      submissions, photo_submissions). Runs lazily on first auth API hit.
    No manual SQL needed. To inspect: `PRAGMA table_info(<table>)` in D1 console.
+6. **Manual schema additions.** `init.js` only creates tables that do not exist —
+   it does not migrate existing ones, and there is no migration tooling in this
+   repo. Columns added after a table's first creation must be applied by hand to
+   **each** environment, and applied to production **before** deploying code that
+   writes to them, or the insert fails silently (the write is wrapped in a
+   non-fatal try/catch, so submissions still reach GitHub but leave no D1 row).
+
+   Applied so far:
+
+   ```sql
+   -- byline a submission was published under, separate from the real submitter
+   ALTER TABLE submissions ADD COLUMN published_as TEXT;
+   ```
+
+   Run in the D1 **Console** tab. Take `/bookmark` first — it returns an ID you
+   can `/restore` from if anything goes wrong.
 
 ### 3. Pages project secrets
 
@@ -593,6 +618,15 @@ Open the deployment → **Build log**. Common causes:
 - **Invalid JSON in a gallery manifest** — missing/trailing comma in
   `src/content/galleries/<slug>.json`.
 - **D1 schema mismatch** — an endpoint queries a column that doesn't exist yet.
+  See *Manual schema additions* under "Cloudflare D1 database": columns added
+  after table creation are applied by hand, per environment.
+- **A pikauutinen or article with a missing required frontmatter field** —
+  content collections are validated for **drafts too**, so a single bad file
+  blocks the deploy for the whole site, including content nobody has reviewed
+  yet. This took production deploys down once when a Sveltia-created pikauutinen
+  had no `author`; the schema now coerces a missing/empty `author` to
+  `Photo & Moto` so that specific failure cannot recur. Other required fields
+  still fail hard by design.
 
 ### Sveltia CMS won't load or login fails
 
