@@ -465,15 +465,13 @@ function catKey(cat?: string) {
     grid-template-columns: 2fr 1fr;
   }
 
-  /* space-between spreads the three rows over the big card's full height. The
-     big card is ~590px tall (4/3 of the 2fr column) while three rows are only
-     ~300px, so without this the column bunches at the top and leaves a large
-     gap underneath. Distributing is what balances the two columns — no
-     realistic thumbnail size would fill that height on its own. */
+  /* Rows stay top-aligned and their natural height. Distributing them over the
+     big card's full height was tried and reverted: three short rows spread
+     across ~590px leaves gaps large enough that the dividers read as broken
+     layout rather than deliberate spacing. */
   .rhs--sidebar .rhs__stack {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     gap: var(--space-2);
   }
 
@@ -544,9 +542,14 @@ function catKey(cat?: string) {
     min-height: 0;
     padding: var(--space-2);
   }
+  /* Proportional, not fixed. The big card lives in a 2fr column and grows with
+     the viewport, so a fixed-px thumbnail keeps shrinking in relative terms the
+     wider the screen gets — at 1900px a 150px thumb looks smaller than the same
+     thumb did at 1400px. The clamp keeps it readable on narrow screens and lets
+     it scale with the column on wide ones. */
   .rhs--sidebar .rhs__stack-img {
     position: static;
-    width: 150px;
+    width: clamp(130px, 45%, 260px);
     aspect-ratio: 16/9;
     height: auto;
     flex-shrink: 0;
@@ -567,6 +570,9 @@ function catKey(cat?: string) {
   .rhs--sidebar .rhs__stack-subtitle {
     color: var(--text-secondary);
     text-shadow: none;
+    /* The base rule clamps to one line, which clipped the gallery blurbs
+       mid-word once the thumbnail took more of the row's width. */
+    -webkit-line-clamp: 2;
   }
 
   /* Responsive */
