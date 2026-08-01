@@ -61,7 +61,11 @@ const lang = 'fi';
   </section>
 </BaseLayout>
 
-<style>
+<!-- is:global is required, not stylistic: the rows are built in JS via
+     innerHTML, so they never receive Astro's scoping attribute and scoped
+     rules would not match them. Every class here is jj- prefixed, so making
+     the block global carries no collision risk. -->
+<style is:global>
   .jj { padding: var(--space-5) 0 var(--space-6); }
   .jj-back {
     display: inline-block;
