@@ -125,7 +125,10 @@ collections:
         value_field: name
         search_fields: [name, label]
         display_fields: [label]
-      - { name: author, label: Kirjoittaja, widget: hidden }
+      # Visible + required so Toimitus always sees and can correct the byline
+      # during review. Was widget:hidden with no default, which let Sveltia write
+      # a pikauutinen with no author at all and break the production build.
+      - { name: author, label: Kirjoittaja, widget: string, required: true, default: "Photo&Moto Toimitus" }
       - { name: source, label: Lähde, widget: hidden, default: ai_generated }
       - { name: photo, label: 'Pääkuva (valinnainen)', widget: image, required: false }
       - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false }

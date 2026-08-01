@@ -136,6 +136,11 @@ const lang = 'fi';
                   <textarea id="yk-flash-edit-body" class="inp yk-textarea" rows="5" maxlength="500"></textarea>
                   <span class="yk-char-count" id="yk-flash-body-count">0 / 500</span>
                 </label>
+                <label class="yk-field">
+                  <span>Kirjoittaja</span>
+                  <input id="yk-flash-edit-author" class="inp" type="text" maxlength="80" />
+                  <span class="yk-char-count">Jätä tyhjäksi, jos et halua nimeäsi juttuun.</span>
+                </label>
               </div>
               <label class="yk-consent" id="yk-flash-consent-photo-wrap" style="display:none;">
                 <input type="checkbox" id="yk-flash-consent-photo" />
@@ -210,6 +215,9 @@ const lang = 'fi';
   ];
 
   const $ = (id) => document.getElementById(id);
+  // Session user, kept at module scope so the pikauutinen byline field can be
+  // pre-filled from it later in the flow (showForm only receives it locally).
+  let ykUser = null;
   const gate = $('yk-gate');
   const noperm = $('yk-noperm');
   const formWrap = $('yk-form-wrap');
@@ -217,6 +225,7 @@ const lang = 'fi';
   function showGate() { gate.style.display = ''; noperm.style.display = 'none'; formWrap.style.display = 'none'; }
   function showNoperm() { gate.style.display = 'none'; noperm.style.display = ''; formWrap.style.display = 'none'; }
   function showForm(user) {
+    ykUser = user || null;
     gate.style.display = 'none'; noperm.style.display = 'none'; formWrap.style.display = '';
     const greet = $('yk-greet');
     if (greet) greet.textContent = `Tervetuloa, ${user?.first_name || ''}`.trim();
@@ -548,6 +557,10 @@ const lang = 'fi';
       if (r.ok && data.ok) {
         const et = $('yk-flash-edit-title'); if (et) { et.value = data.title || ''; }
         const eb = $('yk-flash-edit-body'); if (eb) { eb.value = data.body || ''; }
+        // Pre-fill the byline from the session so the common case needs no typing;
+        // clearing it is how a contributor opts out of being named.
+        const ea = $('yk-flash-edit-author');
+        if (ea && !ea.value) { ea.value = (ykUser ? `${ykUser.first_name || ''} ${ykUser.last_name || ''}`.trim() : ''); }
         updateCharCount('yk-flash-edit-title', 'yk-flash-title-count', 80);
         updateCharCount('yk-flash-edit-body', 'yk-flash-body-count', 500);
         e.target.style.display = 'none';
@@ -592,6 +605,7 @@ const lang = 'fi';
       fd.append('body', body);
       fd.append('category', pendingFlash?.category || '');
       fd.append('date', pendingFlash?.date || '');
+      fd.append('author', ($('yk-flash-edit-author')?.value || '').trim());
       fd.append('consent_photo', '1');
       fd.append('consent_content', '1');
       if (pendingFlash?.photo) fd.append('photo', pendingFlash.photo);
@@ -624,6 +638,7 @@ const lang = 'fi';
     const succ = $('yk-flash-success'); if (succ) succ.style.display = 'none';
     const et = $('yk-flash-edit-title'); if (et) et.value = '';
     const eb = $('yk-flash-edit-body'); if (eb) eb.value = '';
+    const ea = $('yk-flash-edit-author'); if (ea) ea.value = '';
     const tc = $('yk-flash-title-count'); if (tc) tc.textContent = '0 / 80';
     const bc = $('yk-flash-body-count'); if (bc) bc.textContent = '0 / 500';
     const review = $('yk-flash-review'); if (review) review.style.display = '';

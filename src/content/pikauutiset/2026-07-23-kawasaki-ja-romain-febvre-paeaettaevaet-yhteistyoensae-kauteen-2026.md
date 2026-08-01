@@ -1,6 +1,7 @@
 ---
 title: Kawasaki ja Romain Febvre päättävät yhteistyönsä kauteen 2026
 date: 2026-07-23
+author: Photo&Moto Toimitus
 category: MXGP
 source: ai_generated
 photo: /images/Febvre_CzechRepublic_2026_Fullspectrum_ESZ-51288.jpg

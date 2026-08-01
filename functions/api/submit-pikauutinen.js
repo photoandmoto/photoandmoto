@@ -207,6 +207,7 @@ export async function onRequestPost({ request, env }) {
     const body = (form.get('body') || '').toString().trim();
     const category = (form.get('category') || '').toString().trim();
     const date = (form.get('date') || '').toString().trim();
+    const authorInput = (form.get('author') || '').toString().trim();
     const photo = form.get('photo');
     const hasPhoto = photo && typeof photo !== 'string' && photo.size > 0;
 
@@ -223,7 +224,14 @@ export async function onRequestPost({ request, env }) {
     if (!ALLOWED_CATEGORIES.includes(category)) return fail('Valitse kelvollinen kategoria', 400);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return fail('Virheellinen päivämäärä', 400);
 
-    const author = `${auth.user.first_name || ''} ${auth.user.last_name || ''}`.trim() || 'Photo & Moto';
+    // Byline is optional for the contributor: an empty field means "publish this
+    // without my name", NOT "leave the field out". The frontmatter is always
+    // written with a real value — an empty author would fail content-collection
+    // validation and break the production build for everyone, including drafts
+    // that Toimitus has not reviewed yet. Toimitus can still change it later in
+    // Sveltia. Length-capped so a pasted essay can't end up in the byline.
+    const sessionName = `${auth.user.first_name || ''} ${auth.user.last_name || ''}`.trim();
+    const author = (authorInput || sessionName || 'Photo & Moto').slice(0, 80);
     const branch = targetBranch(env);
 
     let token;

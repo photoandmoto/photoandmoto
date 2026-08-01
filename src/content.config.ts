@@ -43,7 +43,16 @@ const pikauutisetCollection = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.date(),
-    author: z.string(),
+    // Safety net: a pikauutinen with no author (or an empty/null one, which is
+    // what Decap/Sveltia writes for a cleared field) used to fail validation and
+    // take down the whole production build — content collections are validated
+    // for drafts too, so a submission could break the deploy before Toimitus
+    // ever reviewed it. Both write paths now always set a real author; this
+    // preprocess only exists so that a missing one can never block a deploy.
+    author: z.preprocess(
+      (v) => (typeof v === 'string' && v.trim() !== '' ? v : 'Photo & Moto'),
+      z.string()
+    ),
     category: z.string(),
     photo: z.string().nullish(),
     draft: z.preprocess((v) => v ?? false, z.boolean()),
