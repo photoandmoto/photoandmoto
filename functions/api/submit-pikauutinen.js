@@ -207,7 +207,7 @@ export async function onRequestPost({ request, env }) {
     const body = (form.get('body') || '').toString().trim();
     const category = (form.get('category') || '').toString().trim();
     const date = (form.get('date') || '').toString().trim();
-    const authorInput = (form.get('author') || '').toString().trim();
+    const anonymous = (form.get('anonymous') || '').toString().trim() === '1';
     const photo = form.get('photo');
     const hasPhoto = photo && typeof photo !== 'string' && photo.size > 0;
 
@@ -224,14 +224,18 @@ export async function onRequestPost({ request, env }) {
     if (!ALLOWED_CATEGORIES.includes(category)) return fail('Valitse kelvollinen kategoria', 400);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return fail('Virheellinen päivämäärä', 400);
 
-    // Byline is optional for the contributor: an empty field means "publish this
-    // without my name", NOT "leave the field out". The frontmatter is always
-    // written with a real value — an empty author would fail content-collection
-    // validation and break the production build for everyone, including drafts
-    // that Toimitus has not reviewed yet. Toimitus can still change it later in
-    // Sveltia. Length-capped so a pasted essay can't end up in the byline.
-    const sessionName = `${auth.user.first_name || ''} ${auth.user.last_name || ''}`.trim();
-    const author = (authorInput || sessionName || 'Photo & Moto').slice(0, 80);
+    // Two separate concepts, deliberately kept apart:
+    //   submitter — who actually sent this. Always from the authenticated
+    //     session, never client-supplied, so it cannot be faked or cleared.
+    //     This is the record Toimitus needs for copyright questions.
+    //   byline    — the name printed on the public site. The contributor
+    //     chooses via the "julkaise nimettomana" checkbox; the server resolves
+    //     it, so the frontmatter always holds a real value (an empty author
+    //     would fail schema validation and break the production build).
+    // Only the byline goes into the markdown — the repo is public, so the
+    // submitter's identity must never be written to a content file.
+    const submitter = `${auth.user.first_name || ''} ${auth.user.last_name || ''}`.trim() || 'Photo & Moto';
+    const author = anonymous ? 'Photo & Moto' : submitter.slice(0, 80);
     const branch = targetBranch(env);
 
     let token;
@@ -291,9 +295,9 @@ export async function onRequestPost({ request, env }) {
       await env.DB.prepare(
         `INSERT INTO submissions
            (type, status, title, author_id, author_name, author_email, category, github_slug, submitted_at,
-            consent_photo, consent_photo_text, consent_content, consent_content_text, consent_at)
-         VALUES ('pikauutinen', 'odottaa', ?, ?, ?, ?, ?, ?, datetime('now'), 1, ?, 1, ?, datetime('now'))`
-      ).bind(title, auth.user.id, author, auth.user.email || null, category, base, CONSENT_PHOTO_TEXT, CONSENT_CONTENT_TEXT).run();
+            published_as, consent_photo, consent_photo_text, consent_content, consent_content_text, consent_at)
+         VALUES ('pikauutinen', 'odottaa', ?, ?, ?, ?, ?, ?, datetime('now'), ?, 1, ?, 1, ?, datetime('now'))`
+      ).bind(title, auth.user.id, submitter, auth.user.email || null, category, base, author, CONSENT_PHOTO_TEXT, CONSENT_CONTENT_TEXT).run();
     } catch (e) {
       console.error('submissions insert failed (non-fatal):', e?.name, e?.message, e?.cause, String(e));
     }

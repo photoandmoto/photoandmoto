@@ -925,6 +925,10 @@ textarea.inp{
           </div>
         </div>
 
+        <label class="consent">
+          <input type="checkbox" id="fla-anon">
+          <span class="consent-text">Julkaise nimettömänä — juttu julkaistaan nimellä Photo &amp; Moto. Toimitus näkee silti kuka sen lähetti.</span>
+        </label>
         <label id="fla-consent-photo-wrap" class="consent consent-wrap-hidden">
           <input type="checkbox" id="fla-consent-photo">
           <span class="consent-text">Vakuutan, että minulla on oikeudet lähettämiini kuviin ja annan Photo &amp; Motolle oikeuden käyttää niitä tässä artikkelissa. Olen itse vastuussa luvattomasta materiaalista.</span>
@@ -1256,6 +1260,7 @@ function resetFlash() {
   $('fla-title-count').textContent='0 / 80'; $('fla-body-count').textContent='0 / 500';
   $('fla-consent-photo-wrap').classList.add('consent-wrap-hidden');
   $('fla-consent-photo').checked=false; $('fla-consent-content').checked=false;
+  if($('fla-anon')) $('fla-anon').checked=false;
   $('flash-submit-msg').style.display='none';
   flaConsentUpdate();
   document.querySelector('.app-main').scrollTo(0,0);
@@ -1316,6 +1321,7 @@ $('fla-submit-btn').addEventListener('click', async()=>{
     const fd=new FormData();
     fd.append('title',title); fd.append('body',body);
     fd.append('category',pendingFlash?.category||''); fd.append('date',pendingFlash?.date||'');
+    fd.append('anonymous',$('fla-anon')?.checked?'1':'0');
     fd.append('consent_photo','1'); fd.append('consent_content','1');
     if(pendingFlash?.photo) fd.append('photo',pendingFlash.photo);
     const r=await fetch('/api/submit-pikauutinen',{method:'POST',credentials:'same-origin',body:fd});
