@@ -29,6 +29,13 @@
 /icons/*
   Cache-Control: public, max-age=604800
 
+# API routes set their own Cache-Control in the Function that serves them —
+# /api/mystery/featured asks for 60s of edge cache precisely so the landing page
+# does not hit D1 on every visit. A blanket /* rule here overrides that and turns
+# every page view into a live database query, so these are left alone.
+/api/*
+  X-Robots-Tag: noindex
+
 # HTML must stay fresh: these are static pages, but content changes on every
 # publish and visitors should see it without a hard refresh. must-revalidate
 # lets the CDN serve instantly while checking for a newer build.

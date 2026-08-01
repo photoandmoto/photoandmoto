@@ -22,7 +22,10 @@ export async function onRequestGet(context) {
     'Content-Type': 'application/json',
     // Cache for 60s on the edge — this endpoint hits the landing page on every visit,
     // and the answer barely changes. Reduces D1 load for high-traffic days.
-    'Cache-Control': 'public, max-age=60',
+    // s-maxage keeps it in Cloudflare's edge cache even though browsers only
+    // hold it briefly, so a busy day is a handful of D1 reads rather than one
+    // per visitor. stale-while-revalidate means the refresh never blocks anyone.
+    'Cache-Control': 'public, max-age=60, s-maxage=300, stale-while-revalidate=600',
   };
 
   try {
@@ -34,10 +37,19 @@ export async function onRequestGet(context) {
     ).first();
     const count = countRow ? (countRow.c || 0) : 0;
 
-    // Pull up to 6 random photos that have a thumb_data value.
-    // ORDER BY RANDOM() works on D1 (SQLite) and at this scale (hundreds of rows) is fine.
-    const rs = await env.DB.prepare(
-      `SELECT id, thumb_data FROM photos
+    // Two steps on purpose. The single-query version was
+    //   SELECT id, thumb_data ... ORDER BY RANDOM() LIMIT 6
+    // which looks harmless but is not: ORDER BY RANDOM() has to materialise and
+    // sort every matching row *including the selected columns*, so SQLite pushed
+    // each row's base64 thumb_data through the sorter before discarding all but
+    // six of them. Every row of this table also carries a full base64 image_data
+    // blob, so the scan was reading far more than it returned. Measured at ~9s
+    // on the live landing page.
+    //
+    // Sorting ids alone is cheap; fetching six rows by primary key afterwards is
+    // an indexed lookup. Same result, without dragging the blobs through a sort.
+    const idRows = await env.DB.prepare(
+      `SELECT id FROM photos
        WHERE status != 'identified'
          AND published_to_gallery_at IS NULL
          AND thumb_data IS NOT NULL
@@ -46,10 +58,18 @@ export async function onRequestGet(context) {
        LIMIT 6`
     ).all();
 
-    const photos = (rs.results || []).map(r => ({
-      id: r.id,
-      thumb_data: r.thumb_data,
-    }));
+    const ids = (idRows.results || []).map(r => r.id);
+    let photos = [];
+    if (ids.length > 0) {
+      const placeholders = ids.map(() => '?').join(',');
+      const rs = await env.DB.prepare(
+        `SELECT id, thumb_data FROM photos WHERE id IN (${placeholders})`
+      ).bind(...ids).all();
+      photos = (rs.results || []).map(r => ({
+        id: r.id,
+        thumb_data: r.thumb_data,
+      }));
+    }
 
     return new Response(JSON.stringify({ count, photos }), { headers: h });
   } catch (err) {

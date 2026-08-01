@@ -74,7 +74,20 @@ const t = STRINGS[lang] || STRINGS.fi;
 </section>
 
 <script is:inline define:vars={{ countSingular: t.countSingular, countPlural: t.countPlural }}>
-(async function(){
+// Deferred until the browser is idle. This block sits well below the fold, but
+// the fetch used to fire during page load and compete with the hero image and
+// fonts for bandwidth. Nothing above the fold depends on it, so it waits.
+function mhbStart(cb) {
+  if (document.readyState === 'complete') {
+    (window.requestIdleCallback || ((f) => setTimeout(f, 200)))(cb);
+  } else {
+    window.addEventListener('load', () => {
+      (window.requestIdleCallback || ((f) => setTimeout(f, 200)))(cb);
+    }, { once: true });
+  }
+}
+
+mhbStart(async function(){
   try {
     const r = await fetch('/api/mystery/featured');
     if (!r.ok) return;
@@ -104,7 +117,7 @@ const t = STRINGS[lang] || STRINGS.fi;
   } catch (e) {
     // Silent fail — block stays hidden
   }
-})();
+});
 </script>
 
 <style is:global>
