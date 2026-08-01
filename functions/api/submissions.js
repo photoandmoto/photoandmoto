@@ -129,7 +129,8 @@ export async function onRequestGet({ request, env }) {
 
   const { results } = await env.DB.prepare(
     `SELECT id, type, status, title, author_id, author_name, author_email,
-            category, github_slug, submitted_at, reviewed_at, reviewed_by, rejection_reason
+            category, github_slug, submitted_at, reviewed_at, reviewed_by, rejection_reason,
+            published_as
      FROM submissions
      ORDER BY submitted_at DESC`
   ).all();

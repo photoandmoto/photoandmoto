@@ -40,7 +40,14 @@ const lang = 'fi';
       <!-- Card navigation (visible only when logged in). Each card requires a
            permission and is shown only if the user has it. -->
       <div id="adminCards" class="adm-cards" style="display:none;">
-        <!-- Row 1: Tarkista | Hallitse galleriaa | Hyväksynnät | Julkaise -->
+        <!-- Order follows the editorial workflow: bring material in, check it,
+             manage the libraries, approve, look up history, deploy, then admin.
+             Each card keeps its own data-perm so visibility is unchanged. -->
+        <button type="button" class="adm-card" data-section="laheta" data-perm="lahetakuva">
+          <span class="adm-card__title">Lähetä kuva</span>
+          <span class="adm-card__sub">Lähetä uusia tunnistettavia kuvia</span>
+          <span class="adm-card__arrow">→</span>
+        </button>
         <button type="button" class="adm-card" data-section="tarkista" data-perm="tarkista">
           <span class="adm-card__title">Tarkista</span>
           <span class="adm-card__sub">Tarkista mystery-kuvat ja merkitse tunnistetut</span>
@@ -51,37 +58,36 @@ const lang = 'fi';
           <span class="adm-card__sub">Muokkaa ja järjestä galleriakuvia</span>
           <span class="adm-card__arrow">→</span>
         </button>
-        <button type="button" class="adm-card" data-section="hyvaksynnat" data-perm="hallitse_artikkeleita">
-          <span class="adm-card__title">Hyväksynnät</span>
-          <span class="adm-card__sub">Artikkelit, pikauutiset, kuvat ja käyttöoikeuspyynnöt</span>
-          <span class="adm-card__arrow">→</span>
-        </button>
-        <button type="button" class="adm-card" data-section="julkaise" data-perm="hallitse_artikkeleita">
-          <span class="adm-card__title">Julkaise</span>
-          <span class="adm-card__sub">Julkaise sisältö esikatselu- tai tuotantoympäristöön</span>
-          <span class="adm-card__arrow">→</span>
-        </button>
-        <!-- Row 2: Hallitse artikkeleita | Julkaisijan Ohjekirja | Käyttäjät | Lähetä kuva -->
         <a href="/admin/" target="_blank" rel="noopener" class="adm-card" data-decap-link data-perm="hallitse_artikkeleita">
           <span class="adm-card__title">Hallitse artikkeleita</span>
           <span class="adm-card__sub">Hallitse artikkeleita Sveltia CMS:ssä</span>
           <span class="adm-card__arrow">↗</span>
         </a>
-        <a href="/fi/julkaisijan-ohjeet/" target="_blank" rel="noopener" class="adm-card">
-          <span class="adm-card__title">Julkaisijan Ohjekirja</span>
-          <span class="adm-card__sub">Sveltia CMS, tunnistamattomat kuvat, galleriat, vianetsintä</span>
-          <span class="adm-card__arrow">↗</span>
+        <button type="button" class="adm-card" data-section="hyvaksynnat" data-perm="hallitse_artikkeleita">
+          <span class="adm-card__title">Hyväksynnät</span>
+          <span class="adm-card__sub">Artikkelit, pikauutiset, kuvat ja käyttöoikeuspyynnöt</span>
+          <span class="adm-card__arrow">→</span>
+        </button>
+        <a href="/fi/julkaisujono/" class="adm-card" data-perm="hallitse_artikkeleita">
+          <span class="adm-card__title">Julkaisujono</span>
+          <span class="adm-card__sub">Lähetysten historia — kuka lähetti ja millä nimellä julkaistiin</span>
+          <span class="adm-card__arrow">→</span>
         </a>
+        <button type="button" class="adm-card" data-section="julkaise" data-perm="hallitse_artikkeleita">
+          <span class="adm-card__title">Julkaise</span>
+          <span class="adm-card__sub">Julkaise sisältö esikatselu- tai tuotantoympäristöön</span>
+          <span class="adm-card__arrow">→</span>
+        </button>
         <button type="button" class="adm-card" data-section="kayttajat" data-perm="admin_iam">
           <span class="adm-card__title">Käyttäjät</span>
           <span class="adm-card__sub">Hallitse käyttäjiä ja käyttöoikeuksia</span>
           <span class="adm-card__arrow">→</span>
         </button>
-        <button type="button" class="adm-card" data-section="laheta" data-perm="lahetakuva">
-          <span class="adm-card__title">Lähetä kuva</span>
-          <span class="adm-card__sub">Lähetä uusia tunnistettavia kuvia</span>
-          <span class="adm-card__arrow">→</span>
-        </button>
+        <a href="/fi/julkaisijan-ohjeet/" target="_blank" rel="noopener" class="adm-card">
+          <span class="adm-card__title">Julkaisijan Ohjekirja</span>
+          <span class="adm-card__sub">Sveltia CMS, tunnistamattomat kuvat, galleriat, vianetsintä</span>
+          <span class="adm-card__arrow">↗</span>
+        </a>
       </div>
       <p id="adminNoperm" class="adm-noperm" style="display:none;">Sinulla ei ole käyttöoikeutta. Ota yhteyttä toimitukseen.</p>
 

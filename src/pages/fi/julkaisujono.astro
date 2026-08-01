@@ -1,0 +1,272 @@
+---
+// Julkaisujono — read-only history of every submission that has come through
+// Yleinen Kynä or the mobile app.
+//
+// Why this page exists: the Hyväksynnät view only lists items with status
+// 'odottaa', so once something is approved or rejected it disappears from the
+// UI entirely. The row stays in D1, but nothing surfaces it. That made it
+// impossible to answer "who sent us this article?" for published content —
+// exactly the question that matters for a copyright claim.
+//
+// Deliberately read-only: approving and rejecting stays in Hyväksynnät so
+// there is one place that mutates state. This page only reads.
+//
+// Identity lives here and only here. The submitter's name and email are never
+// written into a content file, because the content repo is public — the
+// markdown carries the byline (published_as) and nothing more.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const lang = 'fi';
+---
+
+<BaseLayout
+  title="Julkaisujono"
+  lang={lang}
+  description="Photo & Moto toimitus — lähetysten historia."
+  showTickerHeader={false}
+>
+  <section class="jj">
+    <div class="container">
+      <a href="/fi/yllapito/" class="jj-back">← Ylläpito</a>
+      <h1 class="jj-title">Julkaisujono</h1>
+      <p class="jj-sub">Kaikki lähetykset — kuka lähetti, milloin ja millä nimellä julkaistiin.</p>
+
+      <p id="jj-gate" class="jj-notice">Tarkistetaan käyttöoikeuksia…</p>
+
+      <div id="jj-wrap" style="display:none;">
+        <div class="jj-controls">
+          <input
+            id="jj-search"
+            class="jj-input"
+            type="search"
+            placeholder="Hae otsikolla, nimellä, sähköpostilla tai slugilla"
+            autocomplete="off"
+          />
+          <select id="jj-status" class="jj-input jj-input--select">
+            <option value="">Kaikki tilat</option>
+            <option value="odottaa">Odottaa</option>
+            <option value="julkaistu">Julkaistu</option>
+            <option value="hylatty">Hylätty</option>
+          </select>
+          <select id="jj-type" class="jj-input jj-input--select">
+            <option value="">Kaikki tyypit</option>
+            <option value="pikauutinen">Pikauutinen</option>
+            <option value="artikkeli">Artikkeli</option>
+          </select>
+        </div>
+
+        <div id="jj-stats" class="jj-stats"></div>
+        <div id="jj-list" class="jj-list"></div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .jj { padding: var(--space-5) 0 var(--space-6); }
+  .jj-back {
+    display: inline-block;
+    font-family: var(--font-headline);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #A85D00;
+    text-decoration: none;
+    margin-bottom: var(--space-3);
+  }
+  .jj-back:hover { text-decoration: underline; }
+  .jj-title {
+    font-family: var(--font-headline);
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 0 0 4px;
+    color: var(--text-primary);
+  }
+  .jj-sub { color: var(--text-secondary); margin: 0 0 var(--space-4); }
+  .jj-notice {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    color: var(--text-secondary);
+  }
+
+  .jj-controls { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-3); }
+  .jj-input {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 10px 12px;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: var(--radius-md);
+    background: white;
+    color: var(--text-primary);
+  }
+  #jj-search { flex: 1; min-width: 240px; }
+  .jj-input--select { min-width: 150px; }
+
+  .jj-stats {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-3);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+  .jj-stats strong { color: var(--text-primary); font-size: 1.1rem; }
+
+  .jj-list { border: 1px solid rgba(0,0,0,0.08); border-radius: var(--radius-md); overflow: hidden; background: white; }
+  .jj-row { padding: 12px 16px; border-top: 1px solid rgba(0,0,0,0.07); }
+  .jj-row:first-child { border-top: none; }
+  .jj-row__top { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  .jj-row__title { font-family: var(--font-headline); font-weight: 700; color: var(--text-primary); }
+  .jj-row__meta { font-size: 0.88rem; color: var(--text-secondary); margin-top: 3px; }
+  .jj-row__note { font-size: 0.82rem; color: var(--text-secondary); margin-top: 3px; }
+  .jj-row__note b { color: var(--text-primary); font-weight: 700; }
+
+  /* Anonymity is a promise to the contributor, so it is called out rather than
+     buried in the meta line — Toimitus can see the real name on this page and
+     must not publish it against the submitter's choice. */
+  .jj-anon {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    background: #FAEEDA;
+    color: #854F0B;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-top: 4px;
+  }
+
+  .jj-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 3px 9px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .jj-badge--odottaa  { background: #FAEEDA; color: #854F0B; }
+  .jj-badge--julkaistu { background: #EAF3DE; color: #3B6D11; }
+  .jj-badge--hylatty  { background: #FCEBEB; color: #A32D2D; }
+
+  .jj-empty { padding: var(--space-4); text-align: center; color: var(--text-secondary); }
+
+  @media (max-width: 600px) {
+    .jj-row__top { flex-direction: column; align-items: flex-start; gap: 4px; }
+  }
+</style>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  let rows = [];
+
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+  ));
+
+  function fmtDate(s) {
+    if (!s) return '';
+    const d = new Date(String(s).replace(' ', 'T') + (String(s).endsWith('Z') ? '' : 'Z'));
+    if (isNaN(d)) return String(s);
+    return d.toLocaleDateString('fi-FI', { day: 'numeric', month: 'numeric', year: 'numeric' });
+  }
+
+  const STATUS_LABEL = { odottaa: 'Odottaa', julkaistu: 'Julkaistu', hylatty: 'Hylätty' };
+
+  // The house byline doubles as the anonymity marker: if a submission was
+  // published under it while a named person sent it, the contributor asked not
+  // to be named. Older rows predate published_as and are simply left blank.
+  const HOUSE = 'Photo & Moto';
+  function isAnon(r) {
+    return !!r.published_as && r.published_as === HOUSE && r.author_name !== HOUSE;
+  }
+
+  function render() {
+    const q = ($('jj-search').value || '').trim().toLowerCase();
+    const status = $('jj-status').value;
+    const type = $('jj-type').value;
+
+    const shown = rows.filter((r) => {
+      if (status && r.status !== status) return false;
+      if (type && r.type !== type) return false;
+      if (!q) return true;
+      return [r.title, r.author_name, r.author_email, r.github_slug]
+        .some((f) => String(f ?? '').toLowerCase().includes(q));
+    });
+
+    const counts = rows.reduce((a, r) => { a[r.status] = (a[r.status] || 0) + 1; return a; }, {});
+    $('jj-stats').innerHTML =
+      `<span><strong>${counts.odottaa || 0}</strong> odottaa</span>` +
+      `<span><strong>${counts.julkaistu || 0}</strong> julkaistu</span>` +
+      `<span><strong>${counts.hylatty || 0}</strong> hylätty</span>` +
+      `<span>Näytetään <strong>${shown.length}</strong> / ${rows.length}</span>`;
+
+    if (!shown.length) {
+      $('jj-list').innerHTML = '<div class="jj-empty">Ei hakua vastaavia lähetyksiä.</div>';
+      return;
+    }
+
+    $('jj-list').innerHTML = shown.map((r) => {
+      const badge = `<span class="jj-badge jj-badge--${esc(r.status)}">${esc(STATUS_LABEL[r.status] || r.status)}</span>`;
+
+      let note = '';
+      if (isAnon(r)) {
+        note = '<div><span class="jj-anon">Julkaistu nimettömänä — älä julkaise lähettäjän nimeä</span></div>';
+      } else if (r.published_as) {
+        note = `<div class="jj-row__note">Julkaistu nimellä <b>${esc(r.published_as)}</b></div>`;
+      }
+
+      if (r.status === 'hylatty' && r.rejection_reason) {
+        note += `<div class="jj-row__note">Hylkäyksen syy: ${esc(r.rejection_reason)}</div>`;
+      } else if (r.reviewed_at) {
+        note += `<div class="jj-row__note">Käsitelty ${esc(fmtDate(r.reviewed_at))}</div>`;
+      }
+
+      const slug = r.github_slug ? ` · <code>${esc(r.github_slug)}</code>` : '';
+
+      return `<div class="jj-row">
+        <div class="jj-row__top">
+          <span class="jj-row__title">${esc(r.title)}</span>
+          ${badge}
+        </div>
+        <div class="jj-row__meta">
+          ${esc(r.author_name || '—')} · ${esc(r.author_email || 'ei sähköpostia')} ·
+          ${esc(fmtDate(r.submitted_at))} · ${esc(r.type)} · ${esc(r.category || '')}${slug}
+        </div>
+        ${note}
+      </div>`;
+    }).join('');
+  }
+
+  async function boot() {
+    try {
+      // The API enforces hallitse_artikkeleita itself; this call just tells us
+      // whether to show the table or the access notice.
+      const r = await fetch('/api/submissions', { credentials: 'same-origin' });
+      if (r.status === 401) {
+        $('jj-gate').innerHTML = 'Kirjaudu sisään nähdäksesi lähetykset. <a href="/fi/toimitus/">Kirjaudu →</a>';
+        return;
+      }
+      if (r.status === 403) {
+        $('jj-gate').textContent = 'Sinulla ei ole käyttöoikeutta lähetyshistoriaan.';
+        return;
+      }
+      if (!r.ok) { $('jj-gate').textContent = 'Lähetysten haku epäonnistui.'; return; }
+
+      const data = await r.json();
+      rows = data.submissions || [];
+      $('jj-gate').style.display = 'none';
+      $('jj-wrap').style.display = '';
+      render();
+    } catch {
+      $('jj-gate').textContent = 'Yhteysvirhe — yritä uudelleen.';
+    }
+  }
+
+  $('jj-search').addEventListener('input', render);
+  $('jj-status').addEventListener('change', render);
+  $('jj-type').addEventListener('change', render);
+  boot();
+</script>
