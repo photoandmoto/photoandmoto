@@ -53,7 +53,7 @@ const searchData = JSON.stringify(searchIndex);
               <img src={`/galleries/${gallery.data.slug}/${gallery.data.cover_image}`} alt={gallery.data.title} class="card__image" loading="lazy" />
               <div class="card__content">
                 <h2 class="card__title">{gallery.data.title}</h2>
-                <p class="card__text">{gallery.data.description}</p>
+                <p class="card__text">{gallery.data.description_en || gallery.data.description}</p>
                 <p class="gallery-count">{t['gallery.photoCount'].replace('{count}', gallery.data.images.length.toString())}</p>
               </div>
             </a>

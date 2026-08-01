@@ -26,7 +26,7 @@ if (!gallery) {
 <BaseLayout 
   title={gallery.data.title}
   lang={lang}
-  description={gallery.data.description}
+  description={gallery.data.description_en || gallery.data.description}
   image={`/galleries/${gallery.data.slug}/${gallery.data.cover_image}`}
 >
   <section class="section gallery-detail" data-pagefind-body data-pagefind-meta="type:gallery">
@@ -34,7 +34,7 @@ if (!gallery) {
       <div class="gallery-header">
         <a href="/en/gallery" class="back-link">&#8592; Back to galleries</a>
         <h1>{gallery.data.title}</h1>
-        <p class="gallery-description">{gallery.data.description}</p>
+        <p class="gallery-description">{gallery.data.description_en || gallery.data.description}</p>
         <p class="gallery-meta">
           {t['gallery.photoCount'].replace('{count}', gallery.data.images.length.toString())}
         </p>

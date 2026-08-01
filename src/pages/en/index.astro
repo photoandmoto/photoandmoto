@@ -38,11 +38,13 @@ const galleries = await getCollection('galleries');
 const featuredGalleries = galleries.slice(0, 4);
 
 // Build items array for galleries
+// See the FI homepage for why the blurb replaces the photo count here.
 const galleryItems = featuredGalleries.map(g => ({
   href: `/en/gallery/${g.data.slug}`,
   image: `/galleries/${g.data.slug}/${g.data.cover_image}`,
   title: g.data.title,
-  subtitle: t['gallery.photoCount'].replace('{count}', g.data.images.length.toString()),
+  subtitle: g.data.description_en || g.data.description
+    || t['gallery.photoCount'].replace('{count}', g.data.images.length.toString()),
 }));
 ---
 

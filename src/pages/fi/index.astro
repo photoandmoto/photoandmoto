@@ -66,11 +66,14 @@ const podcastEpisodes = [
 ];
 
 // Build items array for galleries using the existing structure
+// Subtitle is the gallery blurb, not the photo count: a count repeats what the
+// card already implies, while a sentence gives a reason to click. The count is
+// still shown on /fi/galleria. Falls back to the count if a blurb is missing.
 const galleryItems = featuredGalleries.map(g => ({
   href: `/fi/galleria/${g.data.slug}`,
   image: `/galleries/${g.data.slug}/${g.data.cover_image}`,
   title: g.data.title,
-  subtitle: t['gallery.photoCount'].replace('{count}', g.data.images.length.toString()),
+  subtitle: g.data.description || t['gallery.photoCount'].replace('{count}', g.data.images.length.toString()),
 }));
 ---
 

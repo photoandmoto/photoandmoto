@@ -465,9 +465,15 @@ function catKey(cat?: string) {
     grid-template-columns: 2fr 1fr;
   }
 
+  /* space-between spreads the three rows over the big card's full height. The
+     big card is ~590px tall (4/3 of the 2fr column) while three rows are only
+     ~300px, so without this the column bunches at the top and leaves a large
+     gap underneath. Distributing is what balances the two columns — no
+     realistic thumbnail size would fill that height on its own. */
   .rhs--sidebar .rhs__stack {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: var(--space-2);
   }
 
@@ -540,7 +546,7 @@ function catKey(cat?: string) {
   }
   .rhs--sidebar .rhs__stack-img {
     position: static;
-    width: 110px;
+    width: 150px;
     aspect-ratio: 16/9;
     height: auto;
     flex-shrink: 0;
@@ -582,6 +588,11 @@ function catKey(cat?: string) {
   @media (max-width: 480px) {
     .rhs--list .rhs__big-img,
     .rhs--list .rhs__stack-img {
+      width: 120px;
+    }
+    /* 150px is sized for the desktop two-column layout; on a phone the stack is
+       full width and that leaves too little room for the title beside it. */
+    .rhs--sidebar .rhs__stack-img {
       width: 120px;
     }
   }

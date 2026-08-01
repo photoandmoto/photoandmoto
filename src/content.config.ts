@@ -66,6 +66,10 @@ const galleriesCollection = defineCollection({
     title: z.string(),
     slug: z.string(),
     description: z.string(),
+    // Galleries are shared between FI and EN (one file, not one per locale), so
+    // the English pages need their own copy of the blurb. Optional: pages fall
+    // back to `description` when it is absent.
+    description_en: z.string().nullish(),
     cover_image: z.string(),
     images: z.array(
       z.object({
