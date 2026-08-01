@@ -223,6 +223,22 @@ const galleryItems = featuredGalleries.map(g => ({
     padding: var(--space-6) 0;
   }
 
+  /* Swap hero/stack sides: stacked 3 on the left, big card on the right.
+     Scoped to .gallery-section and desktop only, so the Podcast section
+     (which shares the same RotatingHeroSplit "sidebar" variant) and the
+     mobile single-column layout are both left untouched. */
+  @media (min-width: 901px) {
+    .gallery-section :global(.rhs--sidebar) {
+      grid-template-columns: 1fr 2fr;
+    }
+    .gallery-section :global(.rhs__big) {
+      order: 2;
+    }
+    .gallery-section :global(.rhs__stack) {
+      order: 1;
+    }
+  }
+
   /* MysteryHelpBlock's own .mhb rule is white, which no longer fits here —
      Gallery (just above it) is now white too. #mhbRoot gives this
      override enough specificity to win regardless of stylesheet load
