@@ -1,0 +1,36 @@
+# Cloudflare Pages response headers.
+#
+# Why this file exists: Lighthouse reported "Use efficient cache lifetimes" with
+# a TTL of "None" on /_astro/* assets on every page. Astro fingerprints those
+# filenames with a content hash, so a given URL can never change contents — they
+# are safe to cache forever, and without a header the browser re-validates them
+# on every visit.
+#
+# Rules are matched top to bottom; the most specific path wins.
+
+# Astro build output — filenames contain a content hash, so a URL is immutable.
+# A new build produces new filenames, which is what busts the cache.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Self-hosted font files (bundled by @fontsource) are hashed the same way.
+/_astro/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+# Gallery derivatives and article images are content-addressed by filename in
+# practice — a replaced photo gets a new name. A day of browser cache with
+# a week of CDN cache keeps repeat visits fast without stranding an update.
+/images/*
+  Cache-Control: public, max-age=86400, s-maxage=604800
+
+/galleries/*
+  Cache-Control: public, max-age=86400, s-maxage=604800
+
+/icons/*
+  Cache-Control: public, max-age=604800
+
+# HTML must stay fresh: these are static pages, but content changes on every
+# publish and visitors should see it without a hard refresh. must-revalidate
+# lets the CDN serve instantly while checking for a newer build.
+/*
+  Cache-Control: public, max-age=0, must-revalidate
