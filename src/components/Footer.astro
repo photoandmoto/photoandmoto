@@ -21,7 +21,11 @@ const currentYear = new Date().getFullYear();
       </div>
       
       <div class="footer-links">
-        <h4>{lang === 'fi' ? 'Linkit' : 'Links'}</h4>
+        {/* h2, not h4: the footer is on every page, and on pages whose only
+            other heading is the h1 (Pikauutiset, for one) an h4 skips two
+            levels, which screen readers report as a broken outline. h2 is also
+            the correct level for a section heading inside the footer landmark. */}
+        <h2>{lang === 'fi' ? 'Linkit' : 'Links'}</h2>
         <ul>
           <li><a href={lang === 'fi' ? '/fi/galleria' : '/en/gallery'}>{t['nav.gallery']}</a></li>
           {lang === 'fi' && <li><a href="/fi/aikakone">{t['nav.articles']}</a></li>}
@@ -85,7 +89,7 @@ const currentYear = new Date().getFullYear();
     line-height: 1.2;
   }
   
-  .footer-links h4 {
+  .footer-links h2 {
     font-family: var(--font-headline);
     font-size: 1rem;
     text-transform: uppercase;

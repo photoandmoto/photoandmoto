@@ -57,7 +57,7 @@ const items = await Promise.all(
                 <span class="pk-card__headtext">
                   <span class="pk-card__meta">
                     <time datetime={item.data.date.toISOString().slice(0, 10)}>{fmt(item.data.date)}</time>
-                    <span class="pk-card__dot">·</span>
+                    <span class="pk-card__dot" aria-hidden="true">·</span>
                     <span class="pk-card__author">{item.data.author}</span>
                   </span>
                   <span class="pk-card__title">{item.data.title}</span>
@@ -117,10 +117,15 @@ const items = await Promise.all(
   .pk-card__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; aspect-ratio: 1 / 1; }
   .pk-card__headtext { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
 
+  /* #999 on white is 2.85:1 — this is 11.5px text, so WCAG AA wants 4.5:1.
+     #6B6B6B gives 5.33:1 and still reads as clearly secondary. */
   .pk-card__meta {
     display: flex; align-items: center; gap: 8px;
-    font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #999;
+    font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #6B6B6B;
   }
+  /* Purely a separator between date and author, so it is aria-hidden rather
+     than contrast-corrected — darkening it would make the divider compete with
+     the text it separates. */
   .pk-card__dot { color: #ccc; }
   .pk-card__title { font-family: var(--font-headline); font-size: 1.05rem; font-weight: 800; line-height: 1.25; color: #111; }
 

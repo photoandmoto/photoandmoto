@@ -34,6 +34,10 @@ const { image, eyebrow, title, subtitle, alt, focus = 'center' } = Astro.props;
     widths={[768, 1280, 1920]}
     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 100vw, 1920px"
     loading="eager"
+    {/* This is the LCP element on every page that uses a hero. eager alone only
+        stops it being deferred; fetchpriority tells the browser to pull it ahead
+        of the other subresources competing for bandwidth. */}
+    fetchpriority="high"
   />
   <div class="page-hero__overlay"></div>
   <div class="page-hero__content">
