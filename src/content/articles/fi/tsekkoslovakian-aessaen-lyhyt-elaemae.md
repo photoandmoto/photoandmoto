@@ -29,7 +29,7 @@ Vuonna 1957 Simandl esitteli moderniin yhtenäisrakenteeseen perustuvan S45-moot
 
 #### Vaikka moottori oli poikkeuksellinen, Eson runko jätti paljon toivomisen varaa. 
 
-Pyörät olivat korkeampia, pidempiä ja painavampia kuin kilpailevat brittiläiset nelitahtiset. Ne olivat nopeita suorilla, mutta loivan ohjauskulman vuoksi ne kääntyivät hitaasti, mikä pakotti kuljettajat tukeutumaan vahvasti radan bermeihin mutkissa.
+Pyörät olivat korkeampia, pidempiä ja painavampia kuin kilpailevat brittiläiset nelitahtiset. Ne olivat nopeita suorilla, mutta loivan ohjauskulman vuoksi ne kääntyivät hitaasti, mikä pakotti kuljettajat tukeutumaan vahvasti radan penkkoihin mutkissa.
 
 > Ratkaistakseen käsittelyongelmat huipputason Grand Prix -kuljettajat yksinkertaisesti irrottivat arvostetut ESO-moottorit ja asensivat ne ylivoimaisiin erikoisrunkoihin. Ruotsalainen Sten Lundin asensi ESO-moottorin Lito-runkoon ja voitti vuoden 1961 maailmanmestaruuden, kun taas toinen mestari, Bill Nilsson, ahtoi omansa Rickman Metisse -runkoon vuonna 1964.
 
