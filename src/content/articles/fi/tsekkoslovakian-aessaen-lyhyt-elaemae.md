@@ -25,7 +25,7 @@ Nämä moottoripyörät olivat insinööri Jaroslav Simandlin ideoimia, ja hän 
 
 Vuonna 1957 Simandl esitteli moderniin yhtenäisrakenteeseen perustuvan S45-moottorin. Se oli saatavilla 250-, 350- ja 500-kuutioisena. Kaikissa malleissa oli nelivaihteinen vaihteisto ja kuivasumppuvoitelu erillisellä öljysäiliöllä. Moottori oli mekaanisesti ainutlaatuinen: siinä oli suorahampaiset rattaat ja taaksepäin pyörivä kampiakseli. Tyypillistä tšekkiläistä perusteellisuutta osoitti se, että tehdas toimitti pyörien mukana täydellisen varaosasarjan, joka sisälsi varamännän, kytkimen sekä kaasuttimen osia.
 
-#### ![ESOn moottori oli edistyksellinen, mutta runko jätti toivomisen varaa](/images/image%281%29.jpg "ESOn moottori oli edistyksellinen, mutta runko jätti toivomisen varaa")
+#### ![Pyörät olivat korkeampia, pidempiä ja painavampia kuin kilpailevat merkit](/images/image%281%29.jpg "Pyörät olivat korkeampia, pidempiä ja painavampia kuin kilpailevat merkit")
 
 #### Vaikka moottori oli poikkeuksellinen, Eson runko jätti paljon toivomisen varaa. 
 

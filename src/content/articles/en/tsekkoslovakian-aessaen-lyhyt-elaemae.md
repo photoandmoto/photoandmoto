@@ -25,7 +25,7 @@ These motorcycles were the brainchild of engineer Jaroslav Simandl, who original
 
 In 1957, Simandl introduced the S45 engine, based on a modern unit construction. It was available in 250cc, 350cc, and 500cc displacements. All models featured a four-speed gearbox and dry-sump lubrication with a separate oil tank. The engine was mechanically unique: it had straight-cut gears and a reverse-rotating crankshaft. Demonstrating typical Czech thoroughness, the factory supplied the bikes with a complete spare parts kit that included a spare piston, clutch, and carburetor parts.
 
-![The ESO engine was advanced, but the frame left something to be desired](/images/image%281%29.jpg "The ESO engine was advanced, but the frame left something to be desired")
+![The bikes were taller, longer, and heavier than competing brands](/images/image%281%29.jpg "The bikes were taller, longer, and heavier than competing brands")
 
 #### Although the engine was exceptional, the ESO frame left much to be desired. 
 
