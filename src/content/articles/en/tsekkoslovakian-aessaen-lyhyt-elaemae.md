@@ -19,7 +19,7 @@ seo_description: It was a limited-production four-stroke motocross bike that was
 sources: 'Multiple public referrals. Photos: Photo&Moto'
 ---
 
-#### It was a limited-production four-stroke motocross bike manufactured in between 1954 and 1964. 
+### It was a limited-production four-stroke motocross bike manufactured in between 1954 and 1964. 
 
 These motorcycles were the brainchild of engineer Jaroslav Simandl, who originally designed them for speedway racing. At the time, Simandl was competing with 20-year-old British JAP engines, but because spare parts were extremely difficult to obtain in Czechoslovakia, he decided to build his own modernized version.
 
@@ -27,7 +27,7 @@ In 1957, Simandl introduced the S45 engine, based on a modern unit construction.
 
 ![The bikes were taller, longer, and heavier than competing brands](/images/image%281%29.jpg "The bikes were taller, longer, and heavier than competing brands")
 
-#### Although the engine was exceptional, the ESO frame left much to be desired. 
+### Although the engine was exceptional, the ESO frame left much to be desired. 
 
 The bikes were taller, longer, and heavier than competing British four-strokes. They were fast on the straights, but due to their slack steering angle, they turned slowly, which forced riders to rely heavily on track berms in corners.
 
