@@ -34,15 +34,31 @@ Samalla kun Suzukin suojatit kamppailivat tiukasti mestaruudesta, nähtiin radal
 
 > Yleisön joukossa syntynyt epäjärjestys jätti ikävän varjon historialliselle päätösosakilpailulle, kun puussa roikkunut katsoja aiheutti brittiläisen tähtikuljettajan Graham Noycen rajun kaatumisen kesken kovan vauhdin. Noyce loukkaantui tilanteessa ja hänet toimitettiin kiireellisesti sairaalahoitoon kärsimiensä selkävammojen vuoksi.
 
-### Vuoden 1976 maailmanmestarit selvisivät elokuun osakilpailujen päätteeksi.
+### Sveitsiläisen kellosepän tarkkaa työtä Mikkolalta 250 cc luokassa
 
-Kansainvälisen kilpailukauden 1976 lopulliset maailmanmestarit saatiin selville, kun elokuun osakilpailut saapuivat päätökseensä
+Edistääkseen 250-kuutioisten tuotantomalliensa myyntiä Husqvarna houkutteli Heikki Mikkolan siirtymään luokkaa alemmas 500cc-luokasta vuonna 1976.
 
-- **500cc**: Roger De Coster (Belgia, Suzuki) vakiinnutti asemansa "The Manina" saavuttamalla uransa viimeisen maailmanmestaruuden.
+![](/images/The%20Flying%20Finn.jpg "The Flying Finn - nelinkertainen motocrossin maailmanmestari")
 
-- **250cc**: Historiallisen saavutuksen teki ”Lentävä suomalainen” Heikki Mikkola (Suomi, Husqvarna), joka voitti maailmanmestaruuden yhden pisteen erolla KTM-tallin Gennadi Moisejeviin. Tämän myötä Mikkolasta tuli historian ensimmäinen ajaja, jolla on hallussaan sekä 250 cc että 500 cc luokkien mestaruudet.
+Mikkola hallitsi alkukautta ja kerrytti itselleen vakuuttavan 40 pisteen etumatkan, mutta hänen vauhtinsa tyssäsi Ison-Britannian GP:ssä koettuun loukkaantumiseen. Tämä loi tilaisuuden Neuvostoliiton KTM-tehdaskuljettaja Gennadi Moisejeville, joka oli jättänyt kauden kaksi ensimmäistä osakilpailua väliin. 
 
-- **125cc**: Belgialainen Suzuki-kuljettaja Gaston Rahier hallitsi tätä vastaperustettua kevyttä luokkaa ja otti uransa toisen peräkkäisen maailmanmestaruuden.
+> Moisejev aloitti hurjan loppukirinsä ja onnistui voittamaan viidestä viimeisestä osakilpailusta peräti kolme.
+
+![](/images/Moisejev.jpg "Gennady Moisejev (keskellä) oli venjän menestykkäin motocrosskuljettaja.")
+
+Mikkola kuitenkin taisteli ja säilytti johtonsa täpärästi voittaen maailmanmestaruuden lopulta tasan yhden pisteen erolla Moisejeviin. Tämän historiallisen saavutuksen myötä Mikkolasta tuli motocrossin historian ensimmäinen ajaja, joka onnistui voittamaan maailmanmestaruuden sekä 250- että 500-kuutioisten luokissa.
+
+### Rahier ja Suzuki hallitsivat pikkuluokkaa suvereenisti
+
+FIM:n 125-kuutioiset ajettiin vuonna 1976 toista kertaa virallisena, täysimittaisena MM-sarjana. Kausi oli vahvasti Suzukin kevyen kaluston hallintaa, sillä edellisvuoden avauskauden menestyksen siivittämä ylivoima jatkui ja merkki säilytti asemansa luokan ehdottomana kärkenä.
+
+> Suzukin tekninen etumatka tarjosi belgialaiskuljettaja Gaston Rahierille täydelliset asetukset perinteisillä CZ-pyörillä kilpailleiden tšekkoslovakialaisten haastajiensa lyömiseen. 
+
+Rahier ajoikin tehdas-Suzukillaan uransa toisen peräkkäisen 125-kuutioisten maailmanmestaruuden, mikä oli osa hänen legendaarista valtakauttaan kyseisessä luokassa.
+
+![Rahier kilpaili motocrossin MM tasolla vuosina 1967 -1983](/images/Rahier.jpg "Rahier kilpaili motocrossin MM tasolla vuosina 1967 -1983")
+
+Sarjan lopullisessa kärkikaksikossa mestaruuden vienyt Rahier keräsi Suzukillaan 176 pistettä ja saavutti peräti 15 erävoittoa. Toiseksi sijoittunut Tšekkoslovakian Jiří Churavý puolestaan ajoi CZ-koneellaan 160 pistettä ja otti 4 erävoittoa.
 
 ### Sillä välin Amerikassa oli "Hurrikaanin" kesä
 
@@ -50,4 +66,4 @@ Samaan aikaan Atlantin takana AMA-motocrossissa koettiin elokuussa 1976 ennennä
 
 Hannah oli jo aiemmin samana kesänä hämmästyttänyt maailmaa Hangtownissa nousemalla takaa Hondan tähtikuljettajan Marty Smithin ohi voittoon. Elokuuhun 1976 mennessä hän ohjasi vallankumouksellista, nestejäähdytteistä tehdas-Yamaha OW27 -pyöräänsä Amerikan sarjan kärjessä. 
 
-> Hannahin kehittämä villi ja aggressiivinen "jalat pois jalkatapeilta" -ajotyyli muutti motocrossin pysyvästi, vieden sen kohti modernia ja korkealle lentävää extreme-urheilun aikakautta.
+> Hannahin kehittämä villi ja aggressiivinen "jalat pois jalkatapeilta" -ajotyyli muutti motocrossin pysyvästi, vieden sen kohti modernia ja korkealle lentävää vauhdikkaamman motocrossin aikakautta.
