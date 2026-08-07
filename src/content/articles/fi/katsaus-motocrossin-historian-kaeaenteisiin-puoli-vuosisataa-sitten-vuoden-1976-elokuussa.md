@@ -10,7 +10,7 @@ tags:
   - Mikkola
   - Rahier
 featured_image: /images/The Man.jpg
-featured_image_focus: center
+featured_image_focus: top
 card_image: ''
 card_image_focus: center
 show_hero: true
@@ -39,7 +39,9 @@ Samalla kun Suzukin suojatit kamppailivat tiukasti mestaruudesta, nähtiin radal
 Kansainvälisen kilpailukauden 1976 lopulliset maailmanmestarit saatiin selville, kun elokuun osakilpailut saapuivat päätökseensä
 
 - **500cc**: Roger De Coster (Belgia, Suzuki) vakiinnutti asemansa "The Manina" saavuttamalla uransa viimeisen maailmanmestaruuden.
+
 - **250cc**: Historiallisen saavutuksen teki ”Lentävä suomalainen” Heikki Mikkola (Suomi, Husqvarna), joka voitti maailmanmestaruuden yhden pisteen erolla KTM-tallin Gennadi Moisejeviin. Tämän myötä Mikkolasta tuli historian ensimmäinen ajaja, jolla on hallussaan sekä 250 cc että 500 cc luokkien mestaruudet.
+
 - **125cc**: Belgialainen Suzuki-kuljettaja Gaston Rahier hallitsi tätä vastaperustettua kevyttä luokkaa ja otti uransa toisen peräkkäisen maailmanmestaruuden.
 
 ### Sillä välin Amerikassa oli "Hurrikaanin" kesä
@@ -48,4 +50,4 @@ Samaan aikaan Atlantin takana AMA-motocrossissa koettiin elokuussa 1976 ennennä
 
 Hannah oli jo aiemmin samana kesänä hämmästyttänyt maailmaa Hangtownissa nousemalla takaa Hondan tähtikuljettajan Marty Smithin ohi voittoon. Elokuuhun 1976 mennessä hän ohjasi vallankumouksellista, nestejäähdytteistä tehdas-Yamaha OW27 -pyöräänsä Amerikan sarjan kärjessä. 
 
-Hannahin kehittämä villi ja aggressiivinen "jalat pois jalkatapeilta" -ajotyyli muutti motocrossin pysyvästi, vieden sen kohti modernia ja korkealle lentävää extreme-urheilun aikakautta.
+> Hannahin kehittämä villi ja aggressiivinen "jalat pois jalkatapeilta" -ajotyyli muutti motocrossin pysyvästi, vieden sen kohti modernia ja korkealle lentävää extreme-urheilun aikakautta.

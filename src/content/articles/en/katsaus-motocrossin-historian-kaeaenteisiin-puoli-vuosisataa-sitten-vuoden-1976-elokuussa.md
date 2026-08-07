@@ -10,7 +10,7 @@ tags:
   - Mikkola
   - Rahier
 featured_image: /images/The Man.jpg
-featured_image_focus: center
+featured_image_focus: top
 card_image: ''
 card_image_focus: center
 show_hero: true
@@ -39,7 +39,9 @@ While the Suzuki protégés fought tightly for the championship, a historic mome
 The final world champions of the 1976 international racing season were determined as the August races came to an end:
 
 - **500cc**: Roger De Coster (Belgium, Suzuki) cemented his status as "The Man" by achieving the final world championship of his career.
+
 - **250cc**: A historic achievement was made by the "Flying Finn" Heikki Mikkola (Finland, Husqvarna), who won the world championship by a one-point margin over KTM rider Gennadi Moisejev. With this, Mikkola became the first rider in history to hold both 250cc and 500cc class championships.
+
 - **125cc**: Belgian Suzuki rider Gaston Rahier dominated this newly established lightweight class and took his second consecutive world championship.
 
 ### Meanwhile in America, it was the summer of the "Hurricane"
@@ -48,4 +50,4 @@ At the same time across the Atlantic, AMA motocross experienced an unprecedented
 
 Hannah had already amazed the world earlier that summer at Hangtown by coming from behind to pass Honda star rider Marty Smith for the win. By August 1976, he was piloting his revolutionary, liquid-cooled factory Yamaha OW27 bike at the top of the American series.
 
-Hannah's wild and aggressive "feet off the pegs" riding style changed motocross permanently, taking it toward a modern and high-flying era of extreme sports.
+> Hannah's wild and aggressive "feet off the pegs" riding style changed motocross permanently, taking it toward a modern and high-flying era of extreme sports.
