@@ -35,6 +35,7 @@ const classes = (today?.classes ?? [])
   .sort((a, b) => b.entries - a.entries);
 
 const prevClass = (name) => prev?.classes?.find((c) => c.name === name) ?? null;
+const prevMakeCount = prev ? Object.keys(prev.makes ?? {}).length : null;
 const maxClass = Math.max(1, ...classes.map((c) => c.entries));
 
 // Makes with more than one bike get a bar; the singles are named in one line
@@ -110,6 +111,13 @@ const title = 'Hyvinkää Scramble & Trial 2026 — ilmoittautumistilanne';
             <div class="scr-tile">
               <span class="scr-tile__label">Merkkiä</span>
               <span class="scr-tile__value">{makeEntries.length}</span>
+              <span class="scr-tile__delta">
+                {prevMakeCount === null
+                  ? 'ensimmäinen mittaus'
+                  : makeEntries.length - prevMakeCount === 0
+                    ? 'ei muutosta'
+                    : `${makeEntries.length - prevMakeCount > 0 ? '▲' : '▼'} ${Math.abs(makeEntries.length - prevMakeCount)} eilisestä`}
+              </span>
             </div>
             <div class="scr-tile">
               <span class="scr-tile__label">Luokkaa</span>
@@ -205,22 +213,31 @@ const title = 'Hyvinkää Scramble & Trial 2026 — ilmoittautumistilanne';
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: var(--space-2);
   }
+  /* The event's own lime from the Scramble banner. It is a bright colour
+     (relative luminance 0.47), so it behaves like a light surface: dark text
+     passes comfortably, white text does not — #ffffff on this green is 2.0:1
+     and would fail. Everything here is therefore navy, which is both the
+     banner's second colour and 6.97:1 against the green.
+     Deliberately limited to the tiles: the bars on the cards below sit at
+     2.4–3.2:1 against this green, so filling the whole page with it would make
+     the charts harder to read exactly where precision matters. */
   .scr-tile {
-    background: var(--bg-secondary);
+    background: #A8C209;
     border-radius: var(--radius-md);
     padding: var(--space-3);
     display: flex;
     flex-direction: column;
     gap: 2px;
   }
-  .scr-tile__label { font-size: 0.85rem; color: var(--text-secondary); }
+  .scr-tile__label { font-size: 0.85rem; color: #042C53; font-weight: 600; }
   .scr-tile__value {
     font-family: var(--font-headline);
     font-size: 2.2rem;
     font-weight: 900;
     line-height: 1.05;
+    color: #042C53;
   }
-  .scr-tile__delta { font-size: 0.8rem; color: var(--text-secondary); }
+  .scr-tile__delta { font-size: 0.8rem; color: #0C447C; }
 
   .scr-hint {
     font-size: 0.85rem;
