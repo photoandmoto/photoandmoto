@@ -126,9 +126,9 @@ const galleryItems = featuredGalleries.map(g => ({
   {showScramble && (
     <section class="section scramble-promo">
       <div class="container">
-        <a href="/fi/scramble-2026" class="sp-card">
+        <a href="/fi/scramble-2026" class="sp-card" target="_blank" rel="noopener">
           <div class="sp-card__text">
-            <span class="sp-card__eyebrow">Hyvinkää Scramble &amp; Trial · 29.–30.8.2026</span>
+            <span class="sp-card__eyebrow">Hyvinkää Scramble &amp; Trial näytösajo · 29.–30.8.2026</span>
             <h2 class="sp-card__title">Ilmoittautumistilanne</h2>
             <p class="sp-card__sub">
               {scrambleSnap.entries} ilmoittautumista · {scrambleSnap.uniqueRiders} kuljettajaa ·
@@ -287,23 +287,26 @@ const galleryItems = featuredGalleries.map(g => ({
   }
 
   /* Scramble 2026 promo — temporary, removed once the archive is frozen. */
-  .scramble-promo { background: var(--bg-secondary); padding: var(--space-4) 0; }
+  .scramble-promo { background: white; padding: var(--space-4) 0; }
+  /* The event's lime, matching the stat tiles on /fi/scramble-2026. Every text
+     colour on this card had to change with the background: the orange used
+     before sits at 2.45:1 against this green and would have been unreadable.
+     Navy is 6.97:1 and is the banner's own second colour. */
   .sp-card {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--space-3);
     flex-wrap: wrap;
-    background: white;
-    border: 1px solid rgba(0,0,0,0.08);
-    border-left: 4px solid var(--brand-primary);
+    background: #A8C209;
+    border: 1px solid rgba(0,0,0,0.10);
     border-radius: var(--radius-md);
     padding: var(--space-3) var(--space-4);
     text-decoration: none;
     color: inherit;
-    transition: border-color 0.2s ease;
+    transition: filter 0.2s ease;
   }
-  .sp-card:hover { border-color: rgba(0,0,0,0.2); border-left-color: var(--brand-primary); }
+  .sp-card:hover { filter: brightness(0.96); }
   .sp-card__eyebrow {
     display: block;
     font-family: var(--font-headline);
@@ -311,7 +314,7 @@ const galleryItems = featuredGalleries.map(g => ({
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.6px;
-    color: #A85D00;
+    color: #042C53;
     margin-bottom: 2px;
   }
   .sp-card__title {
@@ -319,16 +322,16 @@ const galleryItems = featuredGalleries.map(g => ({
     font-size: 1.35rem;
     font-weight: 900;
     margin: 0 0 2px;
-    color: var(--text-primary);
+    color: #042C53;
   }
-  .sp-card__sub { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+  .sp-card__sub { margin: 0; color: #0C447C; font-size: 0.95rem; }
   .sp-card__cta {
     font-family: var(--font-headline);
     font-size: 0.85rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    color: #A85D00;
+    color: #042C53;
     white-space: nowrap;
   }
 

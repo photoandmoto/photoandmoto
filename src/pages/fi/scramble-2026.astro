@@ -73,6 +73,10 @@ const title = 'Hyvinkää Scramble & Trial 2026 — ilmoittautumistilanne';
           : 'Erkylän lukot, Hyvinkää · 29.–30.8.2026'}
       </p>
 
+      {!isOver && (
+        <p class="scr-schedule">Päivittyy päivittäin kello 9.00 ja 21.00.</p>
+      )}
+
       {!today && (
         <p class="scr-empty">Ilmoittautumistietoja ei ole vielä haettu.</p>
       )}
@@ -205,6 +209,9 @@ const title = 'Hyvinkää Scramble & Trial 2026 — ilmoittautumistilanne';
     line-height: 1.15;
   }
   .scr-lead { color: var(--text-secondary); margin: 0 0 4px; }
+  /* Times stated here must match the cron in
+     .github/workflows/scramble-scrape.yml (06:00 and 18:00 UTC). */
+  .scr-schedule { color: var(--text-secondary); font-size: 0.9rem; margin: 0 0 4px; }
   .scr-updated { font-size: 0.9rem; color: var(--text-secondary); margin: 0 0 var(--space-4); }
   .scr-empty { color: var(--text-secondary); }
 

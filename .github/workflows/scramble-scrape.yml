@@ -1,21 +1,25 @@
 name: Scramble 2026 entry stats
 
-# Fetches the Hyvinkää Scramble entry list once a day and commits the
+# Fetches the Hyvinkää Scramble entry list twice a day and commits the
 # aggregated counts. Cloudflare rebuilds on the commit, so /fi/scramble-2026
 # updates itself.
 #
-# 09:00 UTC = 12:00 Helsinki during summer time (EEST, UTC+3). The event is in
-# August so the clock does not change before this job stops mattering.
+# Twice a day at 09:00 and 21:00 Helsinki. Helsinki is UTC+3 in summer (EEST),
+# so that is 06:00 and 18:00 UTC. The event is in August, so summer time holds
+# for the whole run and the offset does not need to change.
 #
-# Scraping etiquette: once per day, one request, identifying User-Agent. The
-# source is a public entry list on a small club site — do not raise the
-# frequency.
+# The page states these times, so if the cron changes, change the page too:
+# src/pages/fi/scramble-2026.astro.
+#
+# Scraping etiquette: twice per day, one request each, identifying User-Agent.
+# The source is a public entry list on a small club site — do not raise the
+# frequency beyond this.
 #
 # Only counts are committed, never names. See scripts/scrape-scramble.mjs.
 
 on:
   schedule:
-    - cron: '0 9 * * *'
+    - cron: '0 6,18 * * *'
   # Lets us run it by hand from the Actions tab — used to verify the first run
   # before trusting the schedule.
   workflow_dispatch:
