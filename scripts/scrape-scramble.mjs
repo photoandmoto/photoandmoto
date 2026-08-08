@@ -191,8 +191,23 @@ async function main() {
   if (!tables.length) throw new Error('No entry tables found — page markup may have changed');
 
   const snapshot = aggregate(tables);
-  // Helsinki date, so a run at midday local is filed under that local day.
-  const date = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Helsinki' }).format(new Date());
+
+  // Two snapshots a day are kept, not one. Keying on the date alone meant the
+  // 21:00 run overwrote the 09:00 one, so the page could only ever compare
+  // "latest today" against "latest yesterday" — the morning figures vanished
+  // and the interval silently alternated between 12 and 24 hours.
+  // Keying on date + slot keeps both, so each run is compared against the one
+  // immediately before it.
+  const now = new Date();
+  const date = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Helsinki' }).format(now);
+  const hour = Number(
+    new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/Helsinki', hour: '2-digit', hour12: false,
+    }).format(now)
+  );
+  // A manual run lands in whichever half of the day it falls in, replacing that
+  // slot rather than adding a third point and skewing the deltas.
+  const slot = hour < 12 ? 'aamu' : 'ilta';
 
   let data = { source: URL_SOURCE, event: 'Hyvinkää Scramble & Trial 2026', snapshots: [] };
   try {
@@ -202,16 +217,19 @@ async function main() {
   }
   if (!Array.isArray(data.snapshots)) data.snapshots = [];
 
-  // Re-running on the same day replaces that day rather than adding a duplicate.
-  data.snapshots = data.snapshots.filter((s) => s.date !== date);
-  data.snapshots.push({ date, ...snapshot });
-  data.snapshots.sort((a, b) => a.date.localeCompare(b.date));
+  // Re-running the same slot replaces it rather than adding a duplicate.
+  data.snapshots = data.snapshots.filter((s) => !(s.date === date && s.slot === slot));
+  data.snapshots.push({ date, slot, at: now.toISOString(), ...snapshot });
+  data.snapshots.sort((a, b) =>
+    a.date === b.date ? (a.slot === b.slot ? 0 : a.slot === 'aamu' ? -1 : 1)
+                      : a.date.localeCompare(b.date)
+  );
   data.updated = new Date().toISOString();
 
   await mkdir(path.dirname(OUT), { recursive: true });
   await writeFile(OUT, JSON.stringify(data, null, 2) + '\n', 'utf8');
 
-  console.log(`${date}: ${snapshot.entries} entries, ${snapshot.uniqueRiders} riders, ` +
+  console.log(`${date} ${slot}: ${snapshot.entries} entries, ${snapshot.uniqueRiders} riders, ` +
     `${snapshot.classes.length} classes, ${Object.keys(snapshot.makes).length} makes`);
   for (const c of snapshot.classes) console.log(`  ${c.name}: ${c.entries}`);
 }

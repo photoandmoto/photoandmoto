@@ -5,6 +5,8 @@
   "snapshots": [
     {
       "date": "2026-08-01",
+      "slot": "ilta",
+      "at": "2026-08-01T18:00:00.000Z",
       "entries": 100,
       "uniqueRiders": 75,
       "classes": [
