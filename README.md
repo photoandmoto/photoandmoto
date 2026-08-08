@@ -235,6 +235,7 @@ All workflows are in `.github/workflows/` and documented in
 | `process-gallery-image.yml` | Gallery thumbnail/display derivative generation |
 | `auto-promote-deletions.yml` | Auto-merge `dev → main` when an article is deleted |
 | `mxgp-scraper.yml` | Refresh MXGP results data |
+| `scramble-scrape.yml` | Hyvinkää Scramble 2026 entry counts, twice daily (temporary — retire after 30.8.2026) |
 
 ---
 
@@ -281,6 +282,7 @@ src/
       yllapito.astro    Toimitus — custom admin (mystery photos, galleries, editorial)
       toimitus.astro    Toimituskeskus — contributor + editorial hub
       julkaisujono.astro  Submission history (who submitted what, any status)
+      scramble-2026.astro Scramble entry stats (temporary, self-hides after the event)
       yleinen-kyna.astro  Avustajat — contributor tools
       pikauutiset.astro   Public pikauutiset feed
       app.astro         PWA — standalone Avustajan sovellus (/fi/app/)

@@ -415,10 +415,55 @@ All workflows live in `.github/workflows/`. They run on push to `dev` and
 | `process-gallery-image.yml` | `public/galleries/**` | Generates thumb + display renditions for new gallery images, updates the manifest. |
 | `auto-promote-deletions.yml` | `src/content/articles/**` (push to `dev`) | Merges `dev → main` when a push to `dev` deletes article files. **Currently a no-op for Sveltia deletions** — Sveltia commits straight to `main` now (see § Editing and publishing articles), so this trigger never fires for them; the deletion still reaches production directly. Still relevant for any article deletion made via a `dev`-branch code push. |
 | `mxgp-scraper.yml` | scheduled | Refreshes MXGP results/standings data. |
+| `scramble-scrape.yml` | scheduled (`0 6,18 * * *`) + manual | Fetches the Hyvinkää Scramble entry list from scramble.fi and commits aggregate counts to `public/data/scramble-2026.json`. Temporary — retire after 30.8.2026. |
 
 **Loop guards:** Actions that commit back use a commit-message prefix or a
 path-filter mismatch so their own commits don't re-trigger them. If you change
 a workflow's commit message, update its loop guard to match.
+
+**Known issue — `compress-article-images.yml` misses some uploads.** It has
+twice let a multi-megabyte original through to production: an 8.6 MB article
+photo (5058×3372) that became the homepage LCP element and dropped Lighthouse
+performance to 58, and two 1.5 MB Jawa images. In both cases the workflow *did*
+run — other images in the same push came out at exactly 1600px — so the fault is
+in the detection step, not the trigger. Both were fixed by hand. Until the cause
+is found, check `public/images/` after any publish that adds photos:
+
+```bash
+ls -lS public/images/ | head
+```
+
+### Scramble 2026 entry stats (temporary)
+
+`scramble-scrape.yml` runs at 06:00 and 18:00 UTC — 09:00 and 21:00 Helsinki,
+which is what `/fi/scramble-2026` tells readers. **If the cron changes, change
+the page text too.**
+
+`scripts/scrape-scramble.mjs` reduces the source rows to counts before writing
+anything. **No rider names ever enter this repo.** That is deliberate rather
+than incidental: the source lists ~100 real people, one of whom registered as
+`*** Salainen ***` specifically to avoid being named, and this repo is public.
+
+Two normalisation rules, both from real cases on the source page:
+
+- **Bike make** is free text, so `HVA`, `Husgvarna` (a typo) and `Husqvarna`
+  fold into one. New spellings go in `MAKE_ALIASES`. Rickman and BSA are
+  deliberately *not* merged — `BSA Rikman 500` is a BSA-engined Rickman frame
+  and which one it counts as is the owner's call.
+- **Rider names** are keyed on their sorted parts, so `Rahkonen Timo` and
+  `Timo Rahkonen` count as one person. That is a genuine duplicate in the
+  current list, and the difference between 76 and 75 unique riders.
+
+Snapshots are keyed on **date + slot** (`aamu` / `ilta`), not date alone. Keying
+on the date meant the evening run overwrote the morning one, so the page could
+only compare "latest today" against "latest yesterday" and the comparison
+interval silently alternated between 12 and 24 hours. A manual run replaces
+whichever half of the day it falls in rather than adding a third point.
+
+The page and the homepage card both hide themselves after 30.8.2026 and the page
+switches to past tense, so the archive needs no intervention. **Disable the
+workflow after the event** — it will otherwise keep committing snapshots of a
+page that no longer changes.
 
 ---
 
@@ -602,6 +647,56 @@ large.
 
 Cloudflare dashboard → **D1** → database → **Time travel** → pick a timestamp →
 **Restore**. Available for 30 days.
+
+---
+
+## Performance decisions worth not undoing
+
+Three deliberate choices, each with a measured reason. All were made after
+Lighthouse put the homepage at 58.
+
+**Fonts are self-hosted, not loaded from Google.** `BaseLayout.astro` imports
+`@fontsource/montserrat`; there is no `fonts.googleapis.com` link, and adding one
+back would undo this. Google's copy put two third-party round-trips in the
+critical render path — a stylesheet, then a woff2 from a second origin — and
+Lighthouse measured 840 ms, 920 ms and 3,860 ms of blocked rendering across three
+pages. The package was already in `package.json` but had never been imported.
+`src/pages/fi/app.astro` builds its own `<head>` for the PWA and repeats the
+imports; keep the two in step. Weight 500 is included because the stylesheets use
+it — the old Google request omitted it, so the browser had been synthesising it.
+
+Side benefit: no per-visitor request to Google, which simplifies the position
+under the cookie-consent policy.
+
+**`public/_headers` sets cache lifetimes.** Astro fingerprints `/_astro/*`
+filenames with a content hash, so those URLs are immutable and cached for a year;
+a new build emits new filenames, which is what busts the cache. Without the file
+Lighthouse reported a TTL of "None" on every page.
+
+**`/api/*` is deliberately excluded from the blanket `Cache-Control` rule.**
+Functions set their own — `/api/mystery/featured` asks for edge caching precisely
+so the landing page does not hit D1 on every visit. A `/*` rule overrode that and
+turned every page view into a live database query. If you add rules, do not let
+`/*` swallow the API again.
+
+**`/api/mystery/featured` avoids `ORDER BY RANDOM()` on selected columns.** The
+original query was `SELECT id, thumb_data ... ORDER BY RANDOM() LIMIT 6`, which
+makes SQLite materialise and sort every matching row *including* its base64
+thumbnail before discarding all but six — and every row in that table also carries
+a full base64 image blob. Measured at 9.3 s on the live homepage. It now sorts ids
+only, then fetches six rows by primary key: 527 ms.
+
+That one mattered more than every other change combined. With everything cached,
+the homepage took 12.2 s to finish loading; afterwards, 0.5 s. Lighthouse never
+showed it, because FCP and LCP were fine — the page painted quickly and then
+churned. **If the site feels slow but the scores look healthy, measure the real
+page rather than reading the report:**
+
+```js
+performance.getEntriesByType('resource')
+  .map(e => ({ u: e.name, ms: Math.round(e.duration) }))
+  .sort((a, b) => b.ms - a.ms).slice(0, 5)
+```
 
 ---
 

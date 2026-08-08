@@ -1,5 +1,7 @@
-// Scrapes the Hyvinkää Scramble 2026 entry list and appends one aggregate
-// snapshot per day to public/data/scramble-2026.json.
+// Scrapes the Hyvinkää Scramble 2026 entry list and appends an aggregate
+// snapshot to public/data/scramble-2026.json. Two per day (09:00 and 21:00
+// Helsinki), keyed on date + slot so each run can be compared against the one
+// immediately before it.
 //
 // IMPORTANT — only counts are stored, never names.
 // The source page lists ~100 real people, one of whom registered as
