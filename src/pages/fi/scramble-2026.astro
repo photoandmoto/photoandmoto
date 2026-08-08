@@ -1,0 +1,295 @@
+---
+// Hyvinkää Scramble & Trial 2026 — entry statistics.
+//
+// Reads public/data/scramble-2026.json, which a daily GitHub Action refreshes
+// from scramble.fi. The data file holds aggregate counts only — no rider names
+// ever enter this repo, which is public. See scripts/scrape-scramble.mjs.
+//
+// Everything below is computed at build time from the two most recent
+// snapshots, so the page is static HTML with no client-side fetching.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import data from '../../../public/data/scramble-2026.json';
+
+const lang = 'fi';
+
+const snapshots = Array.isArray(data?.snapshots) ? data.snapshots : [];
+const today = snapshots[snapshots.length - 1] ?? null;
+const prev = snapshots.length > 1 ? snapshots[snapshots.length - 2] : null;
+
+const EVENT_END = new Date('2026-08-30T23:59:59+03:00');
+const isOver = new Date() > EVENT_END;
+
+const fmtDate = (iso) =>
+  iso ? new Date(iso + 'T12:00:00Z').toLocaleDateString('fi-FI', {
+    day: 'numeric', month: 'numeric', year: 'numeric',
+  }) : '';
+
+// Delta vs the previous snapshot. null on the first day, when there is nothing
+// to compare against — the template shows "ensimmäinen mittaus" instead of a
+// misleading "+0".
+const delta = (now, before) =>
+  before === undefined || before === null ? null : now - before;
+
+const classes = (today?.classes ?? [])
+  .slice()
+  .sort((a, b) => b.entries - a.entries);
+
+const prevClass = (name) => prev?.classes?.find((c) => c.name === name) ?? null;
+const maxClass = Math.max(1, ...classes.map((c) => c.entries));
+
+// Makes with more than one bike get a bar; the singles are named in one line
+// underneath, because a JAWA or a Matchless at a Finnish scramble is more
+// interesting to a reader than a grey "10 others" block.
+const makeEntries = Object.entries(today?.makes ?? {}).sort((a, b) => b[1] - a[1]);
+const multiMakes = makeEntries.filter(([, n]) => n > 1);
+const singleMakes = makeEntries.filter(([, n]) => n === 1).map(([m]) => m).sort();
+const maxMake = Math.max(1, ...multiMakes.map(([, n]) => n));
+
+// Decades rather than individual years: ~30 distinct model years across 100
+// bikes is noise, and it hides the real story (the 1980s dominate).
+const decades = {};
+for (const [year, n] of Object.entries(today?.years ?? {})) {
+  const d = Math.floor(Number(year) / 10) * 10;
+  decades[d] = (decades[d] || 0) + n;
+}
+const decadeList = Object.entries(decades).sort((a, b) => Number(a[0]) - Number(b[0]));
+const maxDecade = Math.max(1, ...decadeList.map(([, n]) => n));
+
+const title = 'Hyvinkää Scramble & Trial 2026 — ilmoittautumistilanne';
+---
+
+<BaseLayout
+  title="Scramble 2026"
+  lang={lang}
+  description="Hyvinkää Scramble & Trial 2026 ilmoittautumistilanne: ilmoittautuneet luokittain, pyörämerkit ja vuosimallit. Päivittyy päivittäin."
+>
+  <section class="scr">
+    <div class="container">
+      <h1 class="scr-title">{title}</h1>
+      <p class="scr-lead">
+        {isOver
+          ? 'Lopullinen ilmoittautumistilanne. Tapahtuma ajettiin Erkylän lukoilla 29.–30.8.2026.'
+          : 'Erkylän lukot, Hyvinkää · 29.–30.8.2026'}
+      </p>
+
+      {!today && (
+        <p class="scr-empty">Ilmoittautumistietoja ei ole vielä haettu.</p>
+      )}
+
+      {today && (
+        <>
+          <p class="scr-updated">
+            Tilanne {fmtDate(today.date)} · lähde{' '}
+            <a href={data.source} target="_blank" rel="noopener">scramble.fi</a>
+          </p>
+
+          {/* ── Headline numbers ─────────────────────────────────────── */}
+          <div class="scr-tiles">
+            <div class="scr-tile">
+              <span class="scr-tile__label">Ilmoittautumisia</span>
+              <span class="scr-tile__value">{today.entries}</span>
+              <span class="scr-tile__delta">
+                {delta(today.entries, prev?.entries) === null
+                  ? 'ensimmäinen mittaus'
+                  : delta(today.entries, prev.entries) === 0
+                    ? 'ei muutosta'
+                    : `${delta(today.entries, prev.entries) > 0 ? '▲' : '▼'} ${Math.abs(delta(today.entries, prev.entries))} eilisestä`}
+              </span>
+            </div>
+            <div class="scr-tile">
+              <span class="scr-tile__label">Eri kuljettajaa</span>
+              <span class="scr-tile__value">{today.uniqueRiders}</span>
+              <span class="scr-tile__delta">
+                {delta(today.uniqueRiders, prev?.uniqueRiders) === null
+                  ? 'ensimmäinen mittaus'
+                  : delta(today.uniqueRiders, prev.uniqueRiders) === 0
+                    ? 'ei muutosta'
+                    : `${delta(today.uniqueRiders, prev.uniqueRiders) > 0 ? '▲' : '▼'} ${Math.abs(delta(today.uniqueRiders, prev.uniqueRiders))} eilisestä`}
+              </span>
+            </div>
+            <div class="scr-tile">
+              <span class="scr-tile__label">Merkkiä</span>
+              <span class="scr-tile__value">{makeEntries.length}</span>
+            </div>
+            <div class="scr-tile">
+              <span class="scr-tile__label">Luokkaa</span>
+              <span class="scr-tile__value">{classes.length}</span>
+            </div>
+          </div>
+          <p class="scr-hint">
+            Ilmoittautumisia yhteensä ja eri kuljettajien määrä — sama kuljettaja
+            voi ajaa useassa luokassa.
+          </p>
+
+          {/* ── Classes ──────────────────────────────────────────────── */}
+          <h2 class="scr-h2">Ilmoittautuneet luokittain</h2>
+          <div class="scr-card">
+            {classes.map((c) => {
+              const d = delta(c.entries, prevClass(c.name)?.entries);
+              return (
+                <div class="scr-row">
+                  <span class="scr-row__label">{c.name}</span>
+                  <span class="scr-bar">
+                    <span class="scr-bar__fill" style={`width:${Math.round((c.entries / maxClass) * 100)}%`}></span>
+                  </span>
+                  <span class="scr-row__value">
+                    {c.entries}
+                    {d ? <span class={d > 0 ? 'scr-up' : 'scr-down'}> {d > 0 ? '+' : ''}{d}</span> : null}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+          <p class="scr-hint">Ilmoittautumisia luokittain. Muutos edelliseen päivään.</p>
+
+          {/* ── Makes and year models ────────────────────────────────── */}
+          <div class="scr-split">
+            <div>
+              <h2 class="scr-h2">Merkit</h2>
+              <div class="scr-card">
+                {multiMakes.map(([make, n]) => (
+                  <div class="scr-row">
+                    <span class="scr-row__label">{make}</span>
+                    <span class="scr-bar">
+                      <span class="scr-bar__fill scr-bar__fill--make" style={`width:${Math.round((n / maxMake) * 100)}%`}></span>
+                    </span>
+                    <span class="scr-row__value">{n}</span>
+                  </div>
+                ))}
+                {singleMakes.length > 0 && (
+                  <p class="scr-singles">
+                    <strong>Yksittäiset:</strong> {singleMakes.join(', ')}
+                  </p>
+                )}
+              </div>
+              <p class="scr-hint">Pyörämerkit kaikissa luokissa yhteensä.</p>
+            </div>
+
+            <div>
+              <h2 class="scr-h2">Vuosimallit</h2>
+              <div class="scr-card">
+                <div class="scr-decades">
+                  {decadeList.map(([dec, n]) => (
+                    <div class="scr-decade">
+                      <span class="scr-decade__value">{n}</span>
+                      <span class="scr-decade__bar" style={`height:${Math.round((n / maxDecade) * 100)}%`}></span>
+                      <span class="scr-decade__label">{dec}-luku</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <p class="scr-hint">Pyörien vuosimallit vuosikymmenittäin.</p>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .scr { padding: var(--space-5) 0 var(--space-6); }
+  .scr-title {
+    font-family: var(--font-headline);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 900;
+    margin: 0 0 6px;
+    line-height: 1.15;
+  }
+  .scr-lead { color: var(--text-secondary); margin: 0 0 4px; }
+  .scr-updated { font-size: 0.9rem; color: var(--text-secondary); margin: 0 0 var(--space-4); }
+  .scr-empty { color: var(--text-secondary); }
+
+  .scr-tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--space-2);
+  }
+  .scr-tile {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .scr-tile__label { font-size: 0.85rem; color: var(--text-secondary); }
+  .scr-tile__value {
+    font-family: var(--font-headline);
+    font-size: 2.2rem;
+    font-weight: 900;
+    line-height: 1.05;
+  }
+  .scr-tile__delta { font-size: 0.8rem; color: var(--text-secondary); }
+
+  .scr-hint {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 8px 0 var(--space-5);
+  }
+
+  .scr-h2 {
+    font-family: var(--font-headline);
+    font-size: 1.3rem;
+    font-weight: 900;
+    margin: 0 0 10px;
+  }
+
+  .scr-card {
+    background: white;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+  }
+
+  .scr-row {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr) 66px;
+    gap: 10px;
+    align-items: center;
+    padding: 5px 0;
+    font-size: 0.92rem;
+  }
+  .scr-row__label { color: var(--text-primary); }
+  .scr-row__value { color: var(--text-secondary); text-align: right; }
+  .scr-up { color: #3B6D11; }
+  .scr-down { color: #A32D2D; }
+
+  .scr-bar { background: var(--bg-secondary); border-radius: 3px; overflow: hidden; }
+  .scr-bar__fill { display: block; height: 15px; background: #185FA5; border-radius: 3px; }
+  .scr-bar__fill--make { background: #A85D00; }
+
+  .scr-singles {
+    font-size: 0.86rem;
+    color: var(--text-secondary);
+    margin: 10px 0 0;
+    padding-top: 10px;
+    border-top: 1px solid rgba(0,0,0,0.07);
+    line-height: 1.5;
+  }
+  .scr-singles strong { color: var(--text-primary); }
+
+  .scr-split {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .scr-decades { display: flex; align-items: flex-end; gap: 14px; height: 170px; }
+  .scr-decade {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    height: 100%;
+    text-align: center;
+  }
+  .scr-decade__value { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 4px; }
+  .scr-decade__bar { background: #0F6E56; border-radius: 3px 3px 0 0; min-height: 3px; }
+  .scr-decade__label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 6px; }
+
+  @media (max-width: 560px) {
+    .scr-row { grid-template-columns: 96px minmax(0, 1fr) 56px; font-size: 0.86rem; }
+    .scr-decades { gap: 8px; height: 140px; }
+  }
+</style>

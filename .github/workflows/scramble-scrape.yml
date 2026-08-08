@@ -1,0 +1,61 @@
+name: Scramble 2026 entry stats
+
+# Fetches the Hyvinkää Scramble entry list once a day and commits the
+# aggregated counts. Cloudflare rebuilds on the commit, so /fi/scramble-2026
+# updates itself.
+#
+# 09:00 UTC = 12:00 Helsinki during summer time (EEST, UTC+3). The event is in
+# August so the clock does not change before this job stops mattering.
+#
+# Scraping etiquette: once per day, one request, identifying User-Agent. The
+# source is a public entry list on a small club site — do not raise the
+# frequency.
+#
+# Only counts are committed, never names. See scripts/scrape-scramble.mjs.
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  # Lets us run it by hand from the Actions tab — used to verify the first run
+  # before trusting the schedule.
+  workflow_dispatch:
+
+concurrency:
+  group: scramble-scrape
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Scrape entry list
+        run: node scripts/scrape-scramble.mjs
+
+      - name: Commit snapshot
+        run: |
+          git config user.name "photoandmoto-publisher[bot]"
+          git config user.email "photoandmoto-publisher[bot]@users.noreply.github.com"
+          git add public/data/scramble-2026.json
+
+          if git diff --staged --quiet; then
+            echo "No change since the last run — nothing to commit."
+            exit 0
+          fi
+
+          git commit -m "chore(scramble): entry stats $(date -u +%Y-%m-%d)"
+          # Another job may have pushed while this one ran; rebase rather than fail.
+          git pull --rebase origin main
+          git push origin main

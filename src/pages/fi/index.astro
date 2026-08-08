@@ -37,6 +37,13 @@ const sidebarItems = sidebarArticles.map(a => ({
 const galleries = await getCollection('galleries');
 const featuredGalleries = galleries.slice(0, 4);
 
+// Scramble 2026 entry-stats promo. Hides itself the day after the event rather
+// than needing to be remembered and removed. The counts come from the same
+// daily-refreshed file the /fi/scramble-2026 page reads.
+import scrambleData from '../../../public/data/scramble-2026.json';
+const scrambleSnap = scrambleData?.snapshots?.[scrambleData.snapshots.length - 1] ?? null;
+const showScramble = scrambleSnap && new Date() <= new Date('2026-08-30T23:59:59+03:00');
+
 // Podcast episodes — using archive photos as cover images
 const podcastEpisodes = [
   {
@@ -114,6 +121,25 @@ const galleryItems = featuredGalleries.map(g => ({
 
   {/* ===== Upcoming races band ===== */}
   <UpcomingRaces />
+
+  {/* ===== Scramble 2026 entry stats promo (auto-hides after the event) ===== */}
+  {showScramble && (
+    <section class="section scramble-promo">
+      <div class="container">
+        <a href="/fi/scramble-2026" class="sp-card">
+          <div class="sp-card__text">
+            <span class="sp-card__eyebrow">Hyvinkää Scramble &amp; Trial · 29.–30.8.2026</span>
+            <h2 class="sp-card__title">Ilmoittautumistilanne</h2>
+            <p class="sp-card__sub">
+              {scrambleSnap.entries} ilmoittautumista · {scrambleSnap.uniqueRiders} kuljettajaa ·
+              {' '}{scrambleSnap.classes.length} luokkaa
+            </p>
+          </div>
+          <span class="sp-card__cta">Katso tilastot →</span>
+        </a>
+      </div>
+    </section>
+  )}
 
   {/* ===== Gallery section (rotating 1 big + 3 stacked) ===== */}
   {featuredGalleries.length > 0 && (
@@ -258,6 +284,52 @@ const galleryItems = featuredGalleries.map(g => ({
   }
   :global(#upcomingRacesRoot .upcoming-card) {
     background: white;
+  }
+
+  /* Scramble 2026 promo — temporary, removed once the archive is frozen. */
+  .scramble-promo { background: var(--bg-secondary); padding: var(--space-4) 0; }
+  .sp-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    background: white;
+    border: 1px solid rgba(0,0,0,0.08);
+    border-left: 4px solid var(--brand-primary);
+    border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s ease;
+  }
+  .sp-card:hover { border-color: rgba(0,0,0,0.2); border-left-color: var(--brand-primary); }
+  .sp-card__eyebrow {
+    display: block;
+    font-family: var(--font-headline);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #A85D00;
+    margin-bottom: 2px;
+  }
+  .sp-card__title {
+    font-family: var(--font-headline);
+    font-size: 1.35rem;
+    font-weight: 900;
+    margin: 0 0 2px;
+    color: var(--text-primary);
+  }
+  .sp-card__sub { margin: 0; color: var(--text-secondary); font-size: 0.95rem; }
+  .sp-card__cta {
+    font-family: var(--font-headline);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #A85D00;
+    white-space: nowrap;
   }
 
   /* Gallery section */
