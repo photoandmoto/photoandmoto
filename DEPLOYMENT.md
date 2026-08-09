@@ -460,6 +460,26 @@ only compare "latest today" against "latest yesterday" and the comparison
 interval silently alternated between 12 and 24 hours. A manual run replaces
 whichever half of the day it falls in rather than adding a third point.
 
+**The source is intermittently unreliable, and it fails in a way that looks like
+our bug.** On 9.8.2026 the 09:00 run got HTTP 200 with a body containing no
+tables at all, and reported `No entry tables found — page markup may have
+changed`. The markup had not changed: the page was verified correct in a browser
+at the same time, and re-running the identical request 25 minutes later
+succeeded. Two things came out of that:
+
+- The fetch is retried three times, 30 seconds apart. An **empty parse is
+  retried too**, not just network and status errors, because that was the shape
+  of the real failure.
+- The error now reports what actually arrived — status, byte count, `<table>`
+  and `<caption>` counts, and the first 200 characters — instead of asserting a
+  cause. The old message sent us searching the source page for a change that had
+  never happened.
+
+A failed run is safe: the script exits before writing, nothing is committed, and
+the page keeps serving the last good snapshot. The cost is a stale timestamp, not
+wrong numbers. Note also that scheduled runs fire late — the 18:00 run landed at
+18:41, the 06:00 run at 07:00. That is normal GitHub queueing, not a fault.
+
 The page and the homepage card both hide themselves after 30.8.2026 and the page
 switches to past tense, so the archive needs no intervention. **Disable the
 workflow after the event** — it will otherwise keep committing snapshots of a

@@ -178,20 +178,62 @@ function aggregate(tables) {
   };
 }
 
+// ── Fetching ────────────────────────────────────────────────────────────────
+// The source is flaky, and it fails in a way that looks like a bug in us.
+// On 2026-08-09 the 09:00 run got HTTP 200 with a body containing no tables at
+// all; re-running the identical request 25 minutes later succeeded. So a bad
+// response is not proof the page changed — it is usually just transient, and
+// the right response is to wait and ask again rather than to abort the run.
+//
+// Note that an empty parse is retried alongside network and status errors,
+// precisely because that was the shape of the observed failure.
+const ATTEMPTS = 3;
+const RETRY_DELAY_MS = 30_000;
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function fetchEntryTables() {
+  let lastError;
+
+  for (let attempt = 1; attempt <= ATTEMPTS; attempt++) {
+    try {
+      const res = await fetch(URL_SOURCE, {
+        headers: {
+          'User-Agent':
+            'photoandmoto.fi entry-stats bot (+https://www.photoandmoto.fi/fi/scramble-2026)',
+        },
+      });
+      if (!res.ok) throw new Error(`Source returned ${res.status}`);
+      const html = await res.text();
+
+      const tables = parseTables(html);
+      if (!tables.length) {
+        // Describe what actually arrived. The old message asserted the markup
+        // had changed, which sent us hunting through the source page while the
+        // real cause was a response that never contained the page at all.
+        const count = (re) => (html.match(re) || []).length;
+        throw new Error(
+          `No entry tables in response — HTTP ${res.status}, ${html.length} bytes, ` +
+            `${count(/<table/gi)} <table>, ${count(/<caption/gi)} <caption>. ` +
+            `First 200 chars: ${html.slice(0, 200).replace(/\s+/g, ' ')}`
+        );
+      }
+
+      if (attempt > 1) console.log(`Attempt ${attempt} succeeded.`);
+      return tables;
+    } catch (err) {
+      lastError = err;
+      console.warn(`Attempt ${attempt}/${ATTEMPTS} failed: ${err.message}`);
+      if (attempt < ATTEMPTS) await sleep(RETRY_DELAY_MS);
+    }
+  }
+
+  throw lastError;
+}
+
 // ── Main ────────────────────────────────────────────────────────────────────
 async function main() {
-  const res = await fetch(URL_SOURCE, {
-    headers: {
-      'User-Agent':
-        'photoandmoto.fi entry-stats bot (+https://www.photoandmoto.fi/fi/scramble-2026)',
-    },
-  });
-  if (!res.ok) throw new Error(`Source returned ${res.status}`);
-  const html = await res.text();
-
-  const tables = parseTables(html);
-  if (!tables.length) throw new Error('No entry tables found — page markup may have changed');
-
+  const tables = await fetchEntryTables();
   const snapshot = aggregate(tables);
 
   // Two snapshots a day are kept, not one. Keying on the date alone meant the
