@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-08-09",
+  "lastUpdated": "2026-08-10",
   "seasonComplete": false,
   "totalRounds": 19,
   "latestRace": {
@@ -680,52 +680,52 @@
   "highlights": {
     "fi": {
       "mxgp_quali": [
-        "Jeffrey Herlings nappasi paalupaikan lauantain aika-ajossa.",
-        "Lommelin haastavilla olosuhteilla ei ollut merkitystä nopeimmille."
+        "Jeffrey Herlings nappasi paalupaikan lauantain MXGP-aika-ajossa.",
+        "Lommelin haastavissa olosuhteissa nopein oli Jeffrey Herlings."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominoi molempia MXGP-eriä ja voitti GP:n.",
-        "Kay de Wolf taisteli vahvasti ja oli toinen molemmissa erissä.",
-        "Jeffrey Herlings vei nimiinsä Flandersin GP-kokonaiskilpailun."
+        "Jeffrey Herlings dominoi molempia MXGP-eriä.",
+        "Kay de Wolf taisteli vahvasti ja varmisti toisen sijan.",
+        "Jeffrey Herlings vei nimiinsä Flandersin MXGP-kokonaiskilpailun."
       ],
       "mx2_quali": [
-        "Camden McLellan oli nopein MX2-luokan aika-ajossa.",
-        "Triumph-kuljettajat näyttivät vahvaa vauhtia aika-ajossa."
+        "Camden McLellan oli nopein MX2-lähdön aika-ajossa.",
+        "Simon Längenfelder sijoittui toiseksi MX2-aika-ajossa."
       ],
       "mx2_race": [
-        "Camden McLellan hallitsi MX2-eriä ja voitti GP:n.",
-        "Guillem Farres nousi toiseksi toisessa erässä ja GP:ssä.",
-        "Camden McLellan vei nimiinsä Flandersin MX2 GP-kokonaiskilpailun."
+        "Camden McLellan hallitsi MX2-eriä voittaen molemmat.",
+        "Guillem Farres taisteli tiukasti ja nousi toiseksi.",
+        "Camden McLellan kruunattiin MX2-luokan kokonaisvoittajaksi."
       ],
       "standings": [
-        "Jeffrey Herlings pitää MXGP-johtonsa vakaana.",
-        "Romain Febvre pysyy MXGP-sarjan toisena.",
-        "Lucas Coenen on MXGP-sarjan kolmantena."
+        "Jeffrey Herlings pitää vahvasti MXGP-kärjessä.",
+        "Romain Febvre pysyi toisena MXGP-sarjassa.",
+        "Lucas Coenen varmisti kolmannen sijan MXGP-pisteissä."
       ]
     },
     "en": {
       "mxgp_quali": [
-        "Jeffrey Herlings claimed pole position in Saturday qualifying.",
-        "Lommel's challenging conditions did not deter the fastest riders."
+        "Jeffrey Herlings claimed pole position in MXGP qualifying.",
+        "Jeffrey Herlings was fastest in Lommel's challenging conditions."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominated both MXGP motos, winning the GP.",
-        "Kay de Wolf battled strongly for second in both races.",
-        "Jeffrey Herlings claimed the overall Flanders MXGP victory."
+        "Jeffrey Herlings dominated both MXGP motos.",
+        "Kay de Wolf battled hard for second overall.",
+        "Jeffrey Herlings claimed the Flanders MXGP overall victory."
       ],
       "mx2_quali": [
         "Camden McLellan set the fastest lap in MX2 qualifying.",
-        "Triumph riders showed strong pace during the qualifying session."
+        "Simon Längenfelder secured second spot in MX2 qualifying."
       ],
       "mx2_race": [
-        "Camden McLellan dominated both MX2 motos to win the GP.",
-        "Guillem Farres charged to second in moto two and the GP.",
-        "Camden McLellan secured the overall Flanders MX2 GP win."
+        "Camden McLellan dominated the MX2 races, winning both.",
+        "Guillem Farres charged hard to take second overall.",
+        "Camden McLellan was crowned the MX2 overall winner."
       ],
       "standings": [
-        "Jeffrey Herlings held firm at the top of the MXGP standings.",
-        "Romain Febvre held firm in second place in the MXGP standings.",
-        "Lucas Coenen held firm in third place in the MXGP standings."
+        "Jeffrey Herlings held firm at the MXGP championship lead.",
+        "Romain Febvre held firm in second in the MXGP standings.",
+        "Lucas Coenen held firm in third in the MXGP standings."
       ]
     }
   },
