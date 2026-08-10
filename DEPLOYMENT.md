@@ -435,9 +435,26 @@ ls -lS public/images/ | head
 
 ### Scramble 2026 entry stats (temporary)
 
-`scramble-scrape.yml` runs at 06:00 and 18:00 UTC — 09:00 and 21:00 Helsinki,
-which is what `/fi/scramble-2026` tells readers. **If the cron changes, change
-the page text too.**
+`scramble-scrape.yml` has **two cron entries per slot, none of them on the hour**
+(`25 5,17` and `25 6,18` UTC). Both properties are deliberate.
+
+**Never schedule this at minute 0.** On 10.8.2026 the 06:00 run never fired —
+no run record, no log, nothing to inspect. `mxgp-scraper.yml` is also due at
+`0 6` on Mondays, and 10.8 was the first Monday the two collided. Every slot
+where the Scramble workflow was alone had fired; the one shared slot dropped it.
+Keep same-repo workflows off each other's minutes.
+
+**Two entries per slot** because GitHub does not guarantee scheduled runs and
+does not tell you when it skips one. The second entry is a free retry an hour
+later, and a duplicate run is harmless: snapshots are keyed on date + slot, so a
+re-run replaces its own slot instead of adding a third point.
+
+**Scheduled runs land 40–60 minutes late** — observed at +41, +45, +61 and +71
+minutes. That is normal GitHub queueing, not a fault. The page therefore no
+longer promises clock times: it says "Päivittyy kaksi kertaa päivittäin" and
+stamps each snapshot with the time it was actually taken, read from `at`. It
+used to print a fixed "klo 21.00" derived from the cron, for a snapshot really
+taken at 21.44.
 
 `scripts/scrape-scramble.mjs` reduces the source rows to counts before writing
 anything. **No rider names ever enter this repo.** That is deliberate rather

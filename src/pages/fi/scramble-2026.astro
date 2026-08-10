@@ -24,10 +24,19 @@ const fmtDate = (iso) =>
     day: 'numeric', month: 'numeric', year: 'numeric',
   }) : '';
 
-// Two runs a day, so the date alone does not identify a snapshot. Older
-// snapshots predate the slot field and simply show no time.
-const SLOT_LABEL = { aamu: 'klo 9.00', ilta: 'klo 21.00' };
-const slotLabel = (s) => (s?.slot ? ` ${SLOT_LABEL[s.slot] ?? ''}`.trimEnd() : '');
+// Two runs a day, so the date alone does not identify a snapshot.
+//
+// This shows the real clock time the snapshot was taken, not the scheduled one.
+// It used to print a fixed "klo 9.00" / "klo 21.00" from the cron times, which
+// was simply untrue: GitHub queues scheduled jobs and they land 40-60 minutes
+// late, so a snapshot labelled 21.00 was actually taken at 21.44. Older
+// snapshots predate the slot field and show no time at all.
+const slotLabel = (s) =>
+  s?.at
+    ? ` klo ${new Intl.DateTimeFormat('fi-FI', {
+        timeZone: 'Europe/Helsinki', hour: '2-digit', minute: '2-digit',
+      }).format(new Date(s.at))}`
+    : '';
 
 // Delta vs the previous snapshot. null on the first day, when there is nothing
 // to compare against — the template shows "ensimmäinen mittaus" instead of a
@@ -67,7 +76,7 @@ const title = 'Hyvinkää Scramble & Trial 2026 — ilmoittautumistilanne';
 <BaseLayout
   title="Scramble 2026"
   lang={lang}
-  description="Hyvinkää Scramble & Trial 2026 ilmoittautumistilanne: ilmoittautuneet luokittain, pyörämerkit ja vuosimallit. Päivittyy päivittäin."
+  description="Hyvinkää Scramble & Trial 2026 ilmoittautumistilanne: ilmoittautuneet luokittain, pyörämerkit ja vuosimallit. Päivittyy kaksi kertaa päivittäin."
 >
   <section class="scr">
     <div class="container">
@@ -79,7 +88,7 @@ const title = 'Hyvinkää Scramble & Trial 2026 — ilmoittautumistilanne';
       </p>
 
       {!isOver && (
-        <p class="scr-schedule">Päivittyy päivittäin kello 9.00 ja 21.00.</p>
+        <p class="scr-schedule">Päivittyy kaksi kertaa päivittäin.</p>
       )}
 
       {!today && (
