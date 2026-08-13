@@ -3,7 +3,7 @@ title: Håkan “Carla” Carlqvist
 subtitle: A fiery Swedish master
 author: Photo & Moto
 date: 2026-08-13
-category: Personal Bios
+category: Profile
 tags:
   - Carla Carlqvist
   - Worldchampion
