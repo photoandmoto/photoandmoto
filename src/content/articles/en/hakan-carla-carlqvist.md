@@ -1,6 +1,6 @@
 ---
 title: Håkan “Carla” Carlqvist
-subtitle: A fiery Swedish master
+subtitle: A fiery Swedish champion and multi-talent who played ice hockey, football, and skied before switching entirely to motocross.
 author: Photo & Moto
 date: 2026-08-13
 category: Profile

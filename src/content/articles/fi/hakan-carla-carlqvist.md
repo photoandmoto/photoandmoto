@@ -1,6 +1,6 @@
 ---
 title: Håkan “Carla” Carlqvist
-subtitle: Tulisieluinen ruotsalaismestari
+subtitle: Tulisieluinen ruotsalaismestari ja monilahjakkuus, joka pelasi jääkiekkoa, jalkapalloa ja lasketteli ennen siirtymistään täysin motocrossiin.
 author: Photo & Moto
 date: 2026-08-13
 category: Profile
