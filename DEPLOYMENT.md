@@ -97,6 +97,23 @@ a git-based CMS served as static files from `public/admin/`.
   (Chromium browsers) to edit files on disk. Revert to `false` before
   committing — leaving it `true` would point the deployed CMS at local disk.
 
+#### Sveltia built-in translation (FI↔EN)
+
+The English locale is produced with Sveltia's built-in **Translate** button in
+the Content Editor (per field, or the top-of-pane button next to the 3-dot
+menu). Used selectively by editorial.
+
+- **Service:** Google Gemini.
+- **Where it's configured:** Sveltia → **Settings → Internationalization** →
+  **Default Translation Service** set to *Google Gemini*, with the API key
+  pasted in the **Google Gemini** field.
+- **Not in the repo:** the service and key are set only in Sveltia's in-browser
+  Settings dialog — there is no translation config in
+  `public/admin/config.yml`. The key is stored in the browser's local storage,
+  so it is per-browser: each editor pastes it once on their own machine.
+- **Key source:** Google AI Studio (`aistudio.google.com/api-keys`), `Photo and
+  Moto Bot` project.
+
 ### Mystery photos + galleries — custom admin at `/fi/yllapito`
 
 The "Tunnista kuva" photo-identification flow and gallery management remain in
@@ -525,8 +542,8 @@ Pattern: run `ALTER TABLE` in the D1 console, verify with
    article is excluded from the build and won't appear on the site. Leave it
    OFF for normal publishing.
 4. To create the English version: fill the FI locale, switch to the EN locale,
-   and translate the content by hand with Gemini (paste the FI text into
-   Gemini, paste the result into the matching EN fields), review, and save.
+   and use Sveltia's built-in **Translate** button (see § Sveltia built-in
+   translation above). Review before saving.
 5. Sveltia commits straight to `main` → production rebuilds automatically,
    live in ~2 minutes. Sveltia's own preview pane (before save) is the review
    step; there's no separate staging preview for content edits.
@@ -782,13 +799,13 @@ Open the deployment → **Build log**. Common causes:
   `github.com/sveltia/sveltia-cms/releases` and `/issues` for a recent
   regression, then bump the pin to the next release once it's fixed (don't
   just unpin it).
-- **Translate button (𝕏A icon) shows a toast reading "editor.undefined"
-  instead of translating** — known unresolved gap in Sveltia's own built-in
-  AI-translation feature (not our code; no local i18n override exists for
-  it). Root cause not yet fixed upstream as of 2026-07-12. Don't rely on this
-  button — use the manual method in § Käännös suomesta englanniksi
-  (JULKAISIJAN_OHJEET.md) instead, which is unaffected and remains the only
-  actually-supported path.
+- **Translate button errors instead of translating** — the built-in
+  translation runs on **Google Gemini** (see § Sveltia built-in translation
+  under Content management). Check, in order: the Gemini key is present in
+  **Settings → Internationalization** on this browser (it's stored in local
+  storage, per-browser, so a fresh browser has none); the **Default Translation
+  Service** dropdown is still *Google Gemini*; the key is valid and within quota
+  in Google AI Studio.
 
 ### Gemini / AI pikauutinen call fails
 
@@ -837,10 +854,10 @@ Verify with `git show origin/dev:src/content/articles/<lang>/<slug>.md`.
 
 ### English translation is missing for an article
 
-Translation is **manual**. If an article has no English version, an editor
-simply hasn't created one yet: open the article in Sveltia, enable the EN locale
-(⋯ menu), translate the fields by hand (with Gemini), and save. There is nothing
-server-side that produces translations.
+EN is optional and produced per entry by the editor. If an article has no
+English version, one simply hasn't been made yet: open it in Sveltia, enable the
+EN locale (⋯ menu), use the built-in **Translate** button (see § Sveltia
+built-in translation), review, and save.
 
 ### Site loads but mystery endpoints 500
 
