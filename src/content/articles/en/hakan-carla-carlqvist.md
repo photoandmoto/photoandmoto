@@ -13,7 +13,7 @@ card_image: ''
 card_image_focus: center
 show_hero: true
 image_caption: Carla with Heikki Mikkola's Yamaha Team Manager by her side - The year 1981
-draft: true
+draft: false
 seo_description: Håkan Carlqvist was one of the last in the line of Swedish motocross world champions
 sources: 'Multiple public sources. Photos: Photo&Moto'
 ---

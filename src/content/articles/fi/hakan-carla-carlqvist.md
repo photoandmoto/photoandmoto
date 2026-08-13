@@ -13,7 +13,7 @@ card_image: ''
 card_image_focus: center
 show_hero: true
 image_caption: Carla vierellään Heikki Mikkolan Yamahan Team Manageri - Vuosi 1981
-draft: true
+draft: false
 seo_description: Håkan Carlqvist oli yksi viimeisistä ruotsalaisten motocrossin maailmanmestareiden ketjussa
 sources: 'Useita julkisia lähteitä. Kuvat: Photo&Moto'
 ---
