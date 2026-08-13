@@ -1,7 +1,7 @@
 {
   "source": "https://www.scramble.fi/scramble-2026-ilmoittautuneet/",
   "event": "Hyvinkää Scramble & Trial 2026",
-  "updated": "2026-08-13T06:51:49.822Z",
+  "updated": "2026-08-13T07:58:26.509Z",
   "snapshots": [
     {
       "date": "2026-08-01",
@@ -1898,15 +1898,15 @@
     {
       "date": "2026-08-13",
       "slot": "aamu",
-      "at": "2026-08-13T06:51:49.805Z",
-      "entries": 129,
-      "uniqueRiders": 97,
+      "at": "2026-08-13T07:58:26.492Z",
+      "entries": 130,
+      "uniqueRiders": 98,
       "classes": [
         {
           "name": "Scramble A 1978 tai vanhempi",
-          "entries": 19,
+          "entries": 20,
           "makes": {
-            "Husqvarna": 6,
+            "Husqvarna": 7,
             "CZ": 1,
             "Suzuki": 1,
             "Ajs": 1,
@@ -1924,7 +1924,7 @@
             "1964": 2,
             "1967": 3,
             "1968": 2,
-            "1972": 2,
+            "1972": 3,
             "1974": 3,
             "1977": 3,
             "1978": 3
@@ -2041,7 +2041,7 @@
         }
       ],
       "makes": {
-        "Husqvarna": 19,
+        "Husqvarna": 20,
         "CZ": 1,
         "Suzuki": 11,
         "Ajs": 1,
@@ -2066,7 +2066,7 @@
         "1964": 2,
         "1967": 3,
         "1968": 3,
-        "1972": 3,
+        "1972": 4,
         "1974": 3,
         "1975": 2,
         "1976": 3,
