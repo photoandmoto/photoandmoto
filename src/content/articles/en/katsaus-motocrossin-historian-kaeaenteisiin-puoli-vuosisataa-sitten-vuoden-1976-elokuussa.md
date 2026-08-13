@@ -3,7 +3,7 @@ title: A look at the turning points in motocross history half a century ago, in 
 subtitle: Roger De Coster secured his fifth and final FIM 500cc motocross world championship in Ettelbruck, Luxembourg on August 8, 1976
 author: Photo & Moto
 date: 2026-08-07
-category: Profile
+category: Historical
 tags:
   - De Coster
   - Wolsink

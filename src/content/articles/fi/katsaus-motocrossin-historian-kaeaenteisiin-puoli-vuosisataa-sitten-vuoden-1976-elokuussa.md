@@ -3,7 +3,7 @@ title: Katsaus motocrossin historian käänteisiin puoli vuosisataa sitten, vuod
 subtitle: Roger De Coster varmisti viidennen ja viimeisen FIM 500cc motocrossin maailmanmestaruutensa Ettelbrückissä, Luxemburgissa 8. elokuuta 1976
 author: Photo & Moto
 date: 2026-08-07
-category: Profile
+category: Historical
 tags:
   - De Coster
   - Wolsink
