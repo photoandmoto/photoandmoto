@@ -1,14 +1,19 @@
 ---
-title: "They Knew How Back Then Too — Pentti Kalteva"
-subtitle: "The strangest shooting star in Finnish motocross history"
-author: "A.C Keller"
+title: They Knew How Back Then Too — Pentti Kalteva
+subtitle: The strangest shooting star in Finnish motocross history
+author: A.C Keller
 date: 2026-01-13
-category: "Historical"
-tags: ["motocross", "history", "Pentti Kalteva", "Hyvinkää", "Husqvarna"]
-featured_image: "/images/kalteva-hero.jpg"
-image_caption: "Pentti Kalteva - a motocross pioneer"
-language: "en"
-seo_description: "The story of Pentti Kalteva - the strangest shooting star in Finnish motocross history from the 1960s."
+category: Profile
+tags:
+  - motocross
+  - history
+  - Pentti Kalteva
+  - Hyvinkää
+  - Husqvarna
+featured_image: /images/kalteva-hero.jpg
+image_caption: Pentti Kalteva - a motocross pioneer
+seo_description: The story of Pentti Kalteva - the strangest shooting star in Finnish motocross history from the 1960s.
+language: en
 ---
 
 Seasoned motocross riders — led by Torsten Hallman, who had won the 250cc World Championship in the two previous years — were left speechless at the start of a Grand Prix round in France in the summer of 1964.
@@ -65,6 +70,6 @@ Kalteva ended his career in the saddle of a CZ in the autumn of 1967. The decisi
 
 > "If I had been able to get my hands on new equipment every year and if I had been able to race in all the Grand Prix rounds, the possibilities could have been limitless. I just should have gone out into the world as soon as results started to come."
 
-*Text: A.C Keller — Originally published in Bike magazine 6/2010*
+_Text: A.C Keller — Originally published in Bike magazine 6/2010_
 
-*Photo & Moto reportage*
+_Photo & Moto reportage_

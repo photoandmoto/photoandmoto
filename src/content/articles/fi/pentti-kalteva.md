@@ -1,14 +1,19 @@
 ---
-title: "Osattiin sitä ennenkin – Pentti Kalteva"
-subtitle: "Suomalaisen motocrosshistorian omituisin tähdenlento"
-author: "A.C Keller"
+title: Osattiin sitä ennenkin – Pentti Kalteva
+subtitle: Suomalaisen motocrosshistorian omituisin tähdenlento
+author: A.C Keller
 date: 2026-01-13
-category: "Historical"
-tags: ["motocross", "historia", "Pentti Kalteva", "Hyvinkää", "Husqvarna"]
-featured_image: "/images/kalteva-hero.jpg"
-image_caption: "Pentti Kalteva - motocrossin pioneeri"
-language: "fi"
-seo_description: "Pentti Kaltevan tarina - suomalaisen motocrossin omituisin tähdenlento 1960-luvulta."
+category: Profile
+tags:
+  - motocross
+  - historia
+  - Pentti Kalteva
+  - Hyvinkää
+  - Husqvarna
+featured_image: /images/kalteva-hero.jpg
+image_caption: Pentti Kalteva - motocrossin pioneeri
+seo_description: Pentti Kaltevan tarina - suomalaisen motocrossin omituisin tähdenlento 1960-luvulta.
+language: fi
 ---
 
 Kaiken nähneet motocrosskuljettajat, etunenässä kahtena edellisvuotena 250-luokan maailmanmestaruuden voittanut Torsten Hallman, menivät hämmästyksestä sanattomiksi Ranskassa ajetun MM-osakilpailun startissa kesällä 1964.
