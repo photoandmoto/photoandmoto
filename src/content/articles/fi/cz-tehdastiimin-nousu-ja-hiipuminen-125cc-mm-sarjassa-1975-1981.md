@@ -66,4 +66,4 @@ CZ:n 125-kuutioisen GP-projektin päätösluku nähtiin vuonna 1981, jolloin esi
 
 > Yuri Khudiakov saavutti MM-sarjassa 17. sijan 17 pisteellä, mikä jäi CZ:n viimeiseksi piste merkinnäksi piikkiluokassa. Tämän vaatimattoman kauden päätteeksi tehdastiimi vetäytyi vähäeleisesti radoilta luovuttaen varikot japanilaisten ja nousevien eurooppalaisten valmistajien hallintaan. 
 
-CZ-tehtaan 125-kuutioinen GP-projekti oli itäblokin moottoriurheilun teknologinen joutsenlaulu. Se osoitti insinöörien kyykyn taistella maailman kärkeä vastaan, kunnes lajin ammattimaistuminen ja kiihtyvä kehitys kävivät ylivoimaisiksi. MM-hopeasta huolimatta tarina päättyi hiljaiseen vetäytymiseen, jättäen jälkeensä muiston ajasta, jolloin se oli Tšekkoslovakian ylpeys.
+CZ-tehtaan 125-kuutioinen GP-projekti oli itäblokin moottoriurheilun teknologinen joutsenlaulu. Se osoitti insinöörien kyvyn taistella maailman kärkeä vastaan, kunnes lajin ammattimaistuminen ja kiihtyvä kehitys kävivät ylivoimaisiksi. MM-hopeasta huolimatta tarina päättyi hiljaiseen vetäytymiseen, jättäen jälkeensä muiston ajasta, jolloin se oli Tšekkoslovakian ylpeys.
