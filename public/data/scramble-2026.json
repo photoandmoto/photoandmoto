@@ -1,7 +1,7 @@
 {
   "source": "https://www.scramble.fi/scramble-2026-ilmoittautuneet/",
   "event": "Hyvinkää Scramble & Trial 2026",
-  "updated": "2026-08-16T17:39:48.388Z",
+  "updated": "2026-08-16T18:50:52.334Z",
   "snapshots": [
     {
       "date": "2026-08-01",
@@ -3292,13 +3292,13 @@
     {
       "date": "2026-08-16",
       "slot": "ilta",
-      "at": "2026-08-16T17:39:48.372Z",
-      "entries": 167,
-      "uniqueRiders": 132,
+      "at": "2026-08-16T18:50:52.316Z",
+      "entries": 170,
+      "uniqueRiders": 134,
       "classes": [
         {
           "name": "Scramble A 1978 tai vanhempi",
-          "entries": 24,
+          "entries": 25,
           "makes": {
             "Husqvarna": 8,
             "CZ": 2,
@@ -3307,14 +3307,15 @@
             "JAWA": 2,
             "Honda": 1,
             "Kawasaki": 1,
+            "Matchless": 2,
             "BSA": 1,
             "Maico": 2,
             "Yamaha": 1,
             "Rickman": 1,
-            "Matchless": 1,
             "Lito": 1
           },
           "years": {
+            "1960": 1,
             "1962": 2,
             "1964": 3,
             "1967": 3,
@@ -3373,10 +3374,10 @@
         },
         {
           "name": "Enduro",
-          "entries": 44,
+          "entries": 45,
           "makes": {
             "Honda": 7,
-            "Suzuki": 4,
+            "Suzuki": 5,
             "Yamaha": 10,
             "KTM": 11,
             "Husqvarna": 6,
@@ -3388,7 +3389,7 @@
             "1976": 1,
             "1977": 2,
             "1978": 4,
-            "1980": 5,
+            "1980": 6,
             "1981": 2,
             "1983": 1,
             "1984": 3,
@@ -3402,7 +3403,7 @@
         },
         {
           "name": "Trial",
-          "entries": 39,
+          "entries": 40,
           "makes": {
             "Yamaha": 6,
             "OME": 1,
@@ -3414,9 +3415,11 @@
             "SWM": 1,
             "Beta": 1,
             "Hoyas": 1,
+            "Ajs": 1,
             "Montesa": 1
           },
           "years": {
+            "1950": 1,
             "1952": 1,
             "1965": 1,
             "1972": 1,
@@ -3448,16 +3451,16 @@
       "makes": {
         "Husqvarna": 25,
         "CZ": 2,
-        "Suzuki": 14,
-        "Ajs": 1,
+        "Suzuki": 15,
+        "Ajs": 2,
         "JAWA": 2,
         "Honda": 30,
         "Kawasaki": 8,
+        "Matchless": 3,
         "BSA": 3,
         "Maico": 7,
         "Yamaha": 27,
         "Rickman": 1,
-        "Matchless": 2,
         "Lito": 1,
         "GM": 1,
         "SWM": 2,
@@ -3470,7 +3473,9 @@
         "Montesa": 1
       },
       "years": {
+        "1950": 1,
         "1952": 1,
+        "1960": 1,
         "1962": 2,
         "1964": 3,
         "1965": 1,
@@ -3484,7 +3489,7 @@
         "1977": 8,
         "1978": 14,
         "1979": 5,
-        "1980": 9,
+        "1980": 10,
         "1981": 12,
         "1982": 5,
         "1983": 10,
