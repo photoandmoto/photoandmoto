@@ -21,12 +21,15 @@ const gallery = await getEntry('galleries', slug);
 if (!gallery) {
   return Astro.redirect('/404');
 }
+
+const metaTitle = gallery.data.seo_title || gallery.data.title;
+const metaDescription = gallery.data.seo_description || gallery.data.description;
 ---
 
 <BaseLayout 
-  title={gallery.data.title}
+  title={metaTitle}
   lang={lang}
-  description={gallery.data.description}
+  description={metaDescription}
   image={`/galleries/${gallery.data.slug}/${gallery.data.cover_image}`}
 >
   <section class="section gallery-detail" data-pagefind-body data-pagefind-meta="type:gallery">

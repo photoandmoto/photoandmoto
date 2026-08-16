@@ -70,6 +70,13 @@ const galleriesCollection = defineCollection({
     // the English pages need their own copy of the blurb. Optional: pages fall
     // back to `description` when it is absent.
     description_en: z.string().nullish(),
+    // Optional SEO overrides for the <title> and meta description, per locale.
+    // When absent, pages fall back to `title` / `description` (+ `_en`). Keep
+    // seo_description under ~160 chars for clean SERP snippets.
+    seo_title: z.string().nullish(),
+    seo_title_en: z.string().nullish(),
+    seo_description: z.string().max(200).nullish(),
+    seo_description_en: z.string().max(200).nullish(),
     cover_image: z.string(),
     images: z.array(
       z.object({
