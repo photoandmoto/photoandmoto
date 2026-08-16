@@ -194,6 +194,9 @@ up a third environment), here's the full sequence.
    - Build command: `npm run build`
    - Build output directory: `dist`
    - Root directory: leave blank
+   - **Node version:** set an environment variable `NODE_VERSION` = `24`
+     (Astro 6 requires Node ≥ 22.12). Do **not** use a `.nvmrc` file — see the
+     Node-version note under Troubleshooting → Build fails.
 5. Save and deploy. First build takes ~2 minutes.
 
 ### 2. Cloudflare D1 database
@@ -776,6 +779,13 @@ Open the deployment → **Build log**. Common causes:
   had no `author`; the schema now coerces a missing/empty `author` to
   `Photo & Moto` so that specific failure cannot recur. Other required fields
   still fail hard by design.
+- **`Node.js vX is not supported by Astro!`** — Astro 6 requires Node
+  **≥ 22.12**. Cloudflare's build Node is pinned via the `NODE_VERSION`
+  environment variable (currently `24`) on each Pages project. **Do not add a
+  `.nvmrc` file pinning an older version** — it overrides `NODE_VERSION` and
+  fails the build. This happened on 2026-08-16: a `.nvmrc` pinning Node 20 was
+  added and broke the production build until removed. If you must set the Node
+  version, use the `NODE_VERSION` env var, not `.nvmrc`, and keep it ≥ 22.12.
 
 ### Sveltia CMS won't load or login fails
 
@@ -870,6 +880,22 @@ traces.
 
 Secrets only refresh on a new build. Deployments → **Retry deployment** on the
 latest to force a rebuild.
+
+### Pushed to `dev` but staging didn't deploy
+
+Staging (`photoandmoto-staging`) only auto-builds if **automatic production
+branch deployments** are enabled for its production branch (`dev`). If that
+checkbox is off, a `dev` push shows up in the staging project's deployment list
+as **"No deployment available"** and nothing builds — the code is fine, it just
+never ran. This happened on 2026-08-16 and looked like a code/caching bug for a
+while before the paused setting was found.
+
+Fix: staging project → **Settings** → **Branch control** → check **Enable
+automatic production branch deployments** → Save. To deploy a specific commit
+without waiting, open the row in **Deployments** and use **⋯ → Retry
+deployment**.
+
+Production (`photoandmoto`) has this enabled and is unaffected.
 
 ---
 
