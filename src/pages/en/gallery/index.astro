@@ -9,16 +9,6 @@ const lang = 'en';
 const t = ui[lang];
 
 const galleries = await getCollection('galleries');
-
-const searchIndex = galleries.flatMap(g => 
-  g.data.images.map(img => ({
-    caption: img.caption || '',
-    thumb: `/galleries/${g.data.slug}/${img.thumb}`,
-    gallery: g.data.title,
-    slug: g.data.slug,
-  }))
-);
-const searchData = JSON.stringify(searchIndex);
 ---
 
 <BaseLayout 
@@ -64,15 +54,71 @@ const searchData = JSON.stringify(searchIndex);
   </section>
 </BaseLayout>
 
-<script define:vars={{ searchData }}>
-  const INDEX = JSON.parse(searchData);
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.3/dist/photoswipe.css">
+
+<script>
+  import PhotoSwipeLightbox from 'photoswipe/lightbox';
+  import PhotoSwipe from 'photoswipe';
+
   const input = document.getElementById('photoSearch');
   const clearBtn = document.getElementById('photoClear');
   const resultsDiv = document.getElementById('photoResults');
   const countDiv = document.getElementById('photoCount');
   const galleryCards = document.getElementById('galleryCards');
-  
-  input.addEventListener('input', () => {
+
+  let INDEX = null;
+  let loading = false;
+  let currentMatches = [];
+
+  const lightbox = new PhotoSwipeLightbox({
+    pswpModule: PhotoSwipe,
+    bgOpacity: 0.95,
+    loop: true,
+    zoom: true,
+    padding: { top: 20, bottom: 60, left: 20, right: 20 },
+  });
+  lightbox.on('uiRegister', function () {
+    lightbox.pswp.ui.registerElement({
+      name: 'search-caption',
+      order: 9,
+      isButton: false,
+      appendTo: 'root',
+      onInit: (el, pswp) => {
+        el.style.cssText = 'position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.8);color:white;padding:8px 20px;border-radius:8px;font-size:14px;max-width:80%;text-align:center;pointer-events:none;';
+        pswp.on('change', () => {
+          const cap = pswp.currSlide?.data?.alt || '';
+          el.innerHTML = cap;
+          el.style.display = cap ? 'block' : 'none';
+        });
+      },
+    });
+  });
+  lightbox.init();
+
+  async function ensureIndex() {
+    if (INDEX || loading) return;
+    loading = true;
+    try {
+      const r = await fetch('/data/gallery-search.json');
+      INDEX = await r.json();
+    } catch {
+      INDEX = [];
+    }
+    loading = false;
+  }
+
+  function render(matches) {
+    galleryCards.style.display = 'none';
+    resultsDiv.style.display = 'grid';
+    countDiv.textContent = matches.length + ' photos found' + (matches.length === 0 ? ' — try a different search' : '');
+    if (matches.length === 0) { resultsDiv.innerHTML = ''; return; }
+    resultsDiv.innerHTML = matches.slice(0, 60).map((img, i) =>
+      '<a href="' + img.display + '" class="photo-result" data-i="' + i + '"><img src="' + img.thumb + '" alt="' + img.caption + '" loading="lazy" /><div class="photo-result-info"><span class="photo-result-caption">' + img.caption + '</span><span class="photo-result-gallery">' + img.gallery + '</span></div></a>'
+    ).join('');
+    if (matches.length > 60) resultsDiv.innerHTML += '<div class="photo-result-more">+ ' + (matches.length - 60) + ' more results</div>';
+  }
+
+  async function runSearch() {
     const q = input.value.trim().toLowerCase();
     if (q.length < 2) {
       resultsDiv.style.display = 'none';
@@ -82,16 +128,23 @@ const searchData = JSON.stringify(searchIndex);
       return;
     }
     clearBtn.style.display = 'block';
-    const matches = INDEX.filter(img => img.caption.toLowerCase().includes(q) || img.gallery.toLowerCase().includes(q));
-    galleryCards.style.display = 'none';
-    resultsDiv.style.display = 'grid';
-    countDiv.textContent = matches.length + ' photos found' + (matches.length === 0 ? ' — try a different search' : '');
-    if (matches.length === 0) { resultsDiv.innerHTML = ''; return; }
-    resultsDiv.innerHTML = matches.slice(0, 60).map(img => 
-      '<a href="/en/gallery/' + img.slug + '" class="photo-result"><img src="' + img.thumb + '" alt="' + img.caption + '" loading="lazy" /><div class="photo-result-info"><span class="photo-result-caption">' + img.caption + '</span><span class="photo-result-gallery">' + img.gallery + '</span></div></a>'
-    ).join('');
-    if (matches.length > 60) resultsDiv.innerHTML += '<div class="photo-result-more">+ ' + (matches.length - 60) + ' more results</div>';
+    await ensureIndex();
+    currentMatches = (INDEX || []).filter(img => img.caption.toLowerCase().includes(q) || img.gallery.toLowerCase().includes(q));
+    render(currentMatches);
+  }
+
+  input.addEventListener('input', runSearch);
+
+  resultsDiv.addEventListener('click', (e) => {
+    const link = e.target.closest('a.photo-result');
+    if (!link) return;
+    e.preventDefault();
+    const shown = currentMatches.slice(0, 60);
+    const startIndex = parseInt(link.getAttribute('data-i'), 10) || 0;
+    const dataSource = shown.map(img => ({ src: img.display, width: img.width || undefined, height: img.height || undefined, alt: img.caption || '' }));
+    lightbox.loadAndOpen(startIndex, dataSource);
   });
+
   clearBtn.addEventListener('click', () => { input.value = ''; resultsDiv.style.display = 'none'; galleryCards.style.display = ''; countDiv.textContent = ''; clearBtn.style.display = 'none'; });
 </script>
 

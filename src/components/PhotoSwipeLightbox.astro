@@ -74,4 +74,58 @@
   });
   
   lightbox.init();
+
+  // ---- Filtered navigation ----
+  // When the in-gallery filter is active (#gallery[data-filtered]), the prev/next
+  // arrows should cycle ONLY the matching (visible) photos, not the whole gallery.
+  // We intercept the click, build an array from the visible <a> items, and open
+  // PhotoSwipe on that array directly. When no filter is active, this handler does
+  // nothing and the normal DOM-based lightbox runs unchanged.
+  const galleryRoot = document.querySelector('#gallery');
+  if (galleryRoot) {
+    galleryRoot.addEventListener('click', (e) => {
+      const root = document.querySelector('#gallery');
+      if (!root || !root.hasAttribute('data-filtered')) return; // no filter -> default behaviour
+
+      const link = e.target.closest('a');
+      if (!link) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      // Only the currently visible (matching) items.
+      const visible = Array.from(root.querySelectorAll('a')).filter(
+        (a) => a.style.display !== 'none'
+      );
+      const startIndex = visible.indexOf(link);
+      if (startIndex === -1) return;
+
+      const dataSource = visible.map((a) => ({
+        src: a.getAttribute('href'),
+        width: parseInt(a.getAttribute('data-pswp-width'), 10) || undefined,
+        height: parseInt(a.getAttribute('data-pswp-height'), 10) || undefined,
+        alt: a.getAttribute('data-pswp-caption') || '',
+        element: a,
+      }));
+
+      lightbox.loadAndOpen(startIndex, dataSource);
+    }, true); // capture phase: run before PhotoSwipe's own click handler
+  }
+
+  // Deep-link: if URL has ?photo=<index>, open that photo directly.
+  // Index matches the gallery's <a> order (same order as the search index).
+  const params = new URLSearchParams(window.location.search);
+  const photoParam = params.get('photo');
+  if (photoParam !== null) {
+    const idx = parseInt(photoParam, 10);
+    const items = document.querySelectorAll('#gallery a');
+    if (!isNaN(idx) && idx >= 0 && idx < items.length) {
+      // Open once the gallery DOM is ready.
+      requestAnimationFrame(() => lightbox.loadAndOpen(idx));
+    }
+    // Remove the param so refresh / back doesn't re-open the lightbox.
+    params.delete('photo');
+    const clean = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+    window.history.replaceState({}, '', clean);
+  }
 </script>

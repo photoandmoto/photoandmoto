@@ -151,6 +151,8 @@ if (!gallery) {
   const loadMoreBtn = document.getElementById('load-more-btn');
   
   if (filterInput) {
+    const galleryEl = document.getElementById('gallery');
+
     filterInput.addEventListener('input', () => {
       const q = filterInput.value.trim().toLowerCase();
       const items = document.querySelectorAll('.gallery-item');
@@ -164,6 +166,7 @@ if (!gallery) {
         if (loadMoreBtn) loadMoreBtn.style.display = '';
         filterCount.textContent = '';
         filterClear.style.display = 'none';
+        if (galleryEl) galleryEl.removeAttribute('data-filtered');
         return;
       }
       
@@ -182,6 +185,7 @@ if (!gallery) {
         }
       });
       
+      if (galleryEl) galleryEl.setAttribute('data-filtered', '1');
       filterCount.textContent = matches + ' kuvaa löytyi' + (matches === 0 ? ' — kokeile toista hakusanaa' : '');
     });
     

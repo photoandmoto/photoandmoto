@@ -134,6 +134,32 @@ if (fs.existsSync(mxgpFile)) {
   }
 }
 
+// 7. Gallery photo search index (for the Gallery page in-place lightbox search).
+// Written as a separate lightweight file that the Gallery page fetches ONLY when
+// the user searches — keeps the page itself light regardless of archive size.
+const gallerySearch = [];
+if (fs.existsSync(galDir)) {
+  fs.readdirSync(galDir).filter(f => f.endsWith('.json')).forEach(f => {
+    const g = JSON.parse(fs.readFileSync(path.join(galDir, f), 'utf-8'));
+    const slug = f.replace('.json', '');
+    (g.images || []).forEach((img, idx) => {
+      gallerySearch.push({
+        caption: img.caption || '',
+        gallery: g.data?.title || g.title || '',
+        slug,
+        idx,
+        thumb: `/galleries/${slug}/${img.thumb}`,
+        display: `/galleries/${slug}/${img.display || img.filename}`,
+        width: img.width || 0,
+        height: img.height || 0,
+      });
+    });
+  });
+}
+const gallerySearchFile = path.join(ROOT, 'public/data/gallery-search.json');
+fs.writeFileSync(gallerySearchFile, JSON.stringify(gallerySearch, null, 0), 'utf-8');
+console.log(`\n\u2705 Gallery search index: ${gallerySearch.length} photos \u2192 ${gallerySearchFile}`);
+
 // Save
 const outFile = path.join(ROOT, 'public/data/site-index.json');
 fs.writeFileSync(outFile, JSON.stringify(index, null, 0), 'utf-8');
