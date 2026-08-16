@@ -2,6 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import GalleryGrid from '../../../components/GalleryGrid.astro';
 import PhotoSwipeLightbox from '../../../components/PhotoSwipeLightbox.astro';
+import ShareLinks from '../../../components/ShareLinks.astro';
 import { getCollection, getEntry } from 'astro:content';
 import { ui } from '../../../i18n/ui';
 
@@ -47,14 +48,18 @@ const metaDescription = gallery.data.seo_description || gallery.data.description
             <input type="text" id="galleryFilter" class="gallery-filter-input" placeholder="Suodata kuvia... esim. Mikkola, 1978" />
             <button id="galleryClear" class="gallery-filter-clear" style="display:none;">&#10005;</button>
           </div>
-          <div id="galleryFilterCount" class="gallery-filter-count"></div>
+          <div id="galleryFilterCount" class="gallery-filter-count" data-count-template={t['gallery.filterCount']} data-noresults-template={t['gallery.filterNoResults']}></div>
         </div>
       </div>
       
-      <GalleryGrid images={gallery.data.images} gallerySlug={gallery.data.slug} />
+      <GalleryGrid images={gallery.data.images} gallerySlug={gallery.data.slug} lang={lang} />
       <PhotoSwipeLightbox />
     </div>
   </section>
+
+  <div class="container">
+    <ShareLinks title={gallery.data.title} lang={lang} kind="gallery" />
+  </div>
 </BaseLayout>
 
 <style>
@@ -151,6 +156,8 @@ const metaDescription = gallery.data.seo_description || gallery.data.description
   const filterInput = document.getElementById('galleryFilter');
   const filterClear = document.getElementById('galleryClear');
   const filterCount = document.getElementById('galleryFilterCount');
+  const countTemplate = filterCount ? (filterCount.getAttribute('data-count-template') || '{count}') : '{count}';
+  const noResultsTemplate = filterCount ? (filterCount.getAttribute('data-noresults-template') || '{count}') : '{count}';
   const loadMoreBtn = document.getElementById('load-more-btn');
   
   if (filterInput) {
@@ -189,7 +196,8 @@ const metaDescription = gallery.data.seo_description || gallery.data.description
       });
       
       if (galleryEl) galleryEl.setAttribute('data-filtered', '1');
-      filterCount.textContent = matches + ' kuvaa löytyi' + (matches === 0 ? ' — kokeile toista hakusanaa' : '');
+      const template = matches === 0 ? noResultsTemplate : countTemplate;
+      filterCount.textContent = template.replace('{count}', matches.toString());
     });
     
     filterClear.addEventListener('click', () => {
