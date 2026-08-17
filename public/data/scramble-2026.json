@@ -1,7 +1,7 @@
 {
   "source": "https://www.scramble.fi/scramble-2026-ilmoittautuneet/",
   "event": "Hyvinkää Scramble & Trial 2026",
-  "updated": "2026-08-17T05:54:48.053Z",
+  "updated": "2026-08-17T07:27:35.112Z",
   "snapshots": [
     {
       "date": "2026-08-01",
@@ -3508,9 +3508,9 @@
     {
       "date": "2026-08-17",
       "slot": "aamu",
-      "at": "2026-08-17T05:54:48.035Z",
-      "entries": 171,
-      "uniqueRiders": 135,
+      "at": "2026-08-17T07:27:35.098Z",
+      "entries": 172,
+      "uniqueRiders": 136,
       "classes": [
         {
           "name": "Scramble A 1978 tai vanhempi",
@@ -3590,9 +3590,9 @@
         },
         {
           "name": "Enduro",
-          "entries": 45,
+          "entries": 46,
           "makes": {
-            "Honda": 7,
+            "Honda": 8,
             "Suzuki": 5,
             "Yamaha": 10,
             "KTM": 11,
@@ -3614,7 +3614,7 @@
             "1987": 3,
             "1988": 4,
             "1989": 4,
-            "1990": 9
+            "1990": 10
           }
         },
         {
@@ -3670,7 +3670,7 @@
         "Suzuki": 15,
         "Ajs": 2,
         "JAWA": 2,
-        "Honda": 31,
+        "Honda": 32,
         "Kawasaki": 8,
         "Matchless": 3,
         "BSA": 3,
@@ -3715,7 +3715,7 @@
         "1987": 9,
         "1988": 8,
         "1989": 7,
-        "1990": 18,
+        "1990": 19,
         "1991": 1,
         "1992": 1,
         "1995": 3
