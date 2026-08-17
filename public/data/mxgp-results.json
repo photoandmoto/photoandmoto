@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-08-16",
+  "lastUpdated": "2026-08-17",
   "seasonComplete": false,
   "totalRounds": 19,
   "latestRace": {
@@ -675,68 +675,54 @@
   "highlights": {
     "fi": {
       "mxgp_quali": [
-        "Jeffrey Herlings nappasi paalupaikan lauantain karsinnassa.",
-        "Tim Gajser ja Romain Febvre seurasivat tiukasti Herlingsiä."
+        "Jeffrey Herlings nappasi paalupaikan lauantain aika-ajoissa.",
+        "Tim Gajser ja Romain Febvre seurasivat tiiviisti Herlingsin perässä."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominoi molempia MXGP-eriä Ruotsissa.",
-        "Romain Febvre taisteli vahvasti toiseksi GP-kokonaiskilpailussa.",
-        "Tom Vialle varmisti kolmannen sijan tiukassa taistelussa."
+        "Jeffrey Herlings dominoi molempia MXGP-eriä ja voitti Ruotsin GP:n.",
+        "Romain Febvre taisteli vahvasti ja varmisti toisen sijan kokonaiskilpailussa.",
+        "Tom Vialle ajoi tasaisesti ja nousi palkintokorokkeelle kolmanneksi."
       ],
       "mx2_quali": [
-        "Simon Längenfelder oli nopein MX2-luokan lauantain karsinnassa.",
-        "Liam Everts ja Camden McLellan näyttivät vauhtiaan karsinnassa."
+        "Simon Längenfelder oli nopein MX2-luokan aika-ajoissa.",
+        "Liam Everts ja Camden McLellan olivat myös vahvassa vauhdissa."
       ],
       "mx2_race": [
-        "Sacha Coenen hallitsi molempia MX2-eriä ja voitti GP:n.",
-        "Liam Everts taisteli toiseksi GP-kokonaiskilpailussa.",
-        "Camden McLellan varmisti kolmannen sijan tiukassa kisassa."
+        "Sacha Coenen voitti molemmat MX2-erät ja vei Ruotsin GP-voiton.",
+        "Liam Everts ja Camden McLellan taistelivat tiukasti kakkos- ja kolmossijoista.",
+        "Coenenin dominoiva suoritus toi hänelle täydet pisteet ja GP-voiton."
       ],
       "standings": [
         "Jeffrey Herlings johtaa MXGP-sarjaa vankasti.",
-        "Romain Febvre pitää toista sijaa sarjapisteissä.",
-        "Tim Gajser nousi uudeksi kolmoseksi sarjataulukossa."
+        "Romain Febvre pitää toista sijaa pisteissä.",
+        "Tim Gajser on kolmantena MXGP-pisteissä."
       ]
     },
     "en": {
       "mxgp_quali": [
-        "Jeffrey Herlings claimed pole position in Saturday qualifying.",
-        "Tim Gajser and Romain Febvre followed Herlings closely."
+        "Jeffrey Herlings claimed pole position in Saturday's qualifying session.",
+        "Tim Gajser and Romain Febvre followed closely behind Herlings."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominated both MXGP motos in Sweden.",
-        "Romain Febvre charged hard for second overall.",
-        "Tom Vialle secured third place in a tight battle."
+        "Jeffrey Herlings dominated both MXGP motos, winning the Swedish GP.",
+        "Romain Febvre battled hard for second overall in the GP.",
+        "Tom Vialle secured a strong third place on the podium."
       ],
       "mx2_quali": [
-        "Simon Längenfelder was fastest in MX2 Saturday qualifying.",
-        "Liam Everts and Camden McLellan showed their speed in qualifying."
+        "Simon Längenfelder set the fastest lap in MX2 qualifying.",
+        "Liam Everts and Camden McLellan showed strong pace."
       ],
       "mx2_race": [
-        "Sacha Coenen dominated both MX2 motos, winning the GP.",
-        "Liam Everts battled to second overall in the MX2 GP.",
-        "Camden McLellan clinched third place in a close contest."
+        "Sacha Coenen won both MX2 races, claiming the Swedish GP victory.",
+        "Liam Everts and Camden McLellan fought fiercely for podium spots.",
+        "Coenen's dominant performance secured him maximum points and the GP win."
       ],
       "standings": [
-        "Jeffrey Herlings leads the MXGP championship standings.",
-        "Romain Febvre holds firm in second place in the standings.",
-        "Tim Gajser moved up to third in the championship standings."
+        "Jeffrey Herlings holds a strong lead in the MXGP standings.",
+        "Romain Febvre maintained his second position in the points.",
+        "Tim Gajser remains in third place in the MXGP championship."
       ]
-    },
-    "mx2_quali": [
-      "Simon Längenfelder oli nopein MX2-luokan lauantain karsinnassa.",
-      "Liam Everts ja Camden McLellan näyttivät vauhtiaan karsinnassa."
-    ],
-    "mx2_race": [
-      "Sacha Coenen dominoi molempia MX2-eriä ja voitti GP:n.",
-      "Liam Everts taisteli toiseksi GP-kokonaiskilpailussa.",
-      "Camden McLellan varmisti kolmannen sijan tiukassa kisassa."
-    ],
-    "standings": [
-      "Jeffrey Herlings johtaa MXGP-sarjaa vankasti.",
-      "Romain Febvre pitää toista sijaa sarjapisteissä.",
-      "Tim Gajser nousi uudeksi kolmoseksi sarjataulukossa."
-    ]
+    }
   },
   "standings": {
     "mxgp": [
