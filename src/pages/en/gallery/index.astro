@@ -8,7 +8,31 @@ import { ui } from '../../../i18n/ui';
 const lang = 'en';
 const t = ui[lang];
 
-const galleries = await getCollection('galleries');
+const _galleries = await getCollection('galleries');
+
+// Explicit display order for the gallery grid. Galleries are listed by slug in
+// the intended reading order; any gallery not in this list falls to the end
+// (alphabetically) so new galleries still appear without a code change.
+// Note: suomi-20s (the 2020s) sorts AFTER suomi-90s, since the 2020s follow the
+// 1990s chronologically even though "20" sorts before "70/80/90" as a string.
+const GALLERY_ORDER = [
+  'hyvinkaa-scramble',
+  'international-70s',
+  'international-80s',
+  'international-90s',
+  'suomi-70s',
+  'suomi-80s',
+  'suomi-90s',
+  'suomi-20s',
+];
+const galleries = [..._galleries].sort((a, b) => {
+  const ia = GALLERY_ORDER.indexOf(a.data.slug);
+  const ib = GALLERY_ORDER.indexOf(b.data.slug);
+  if (ia === -1 && ib === -1) return a.data.slug.localeCompare(b.data.slug);
+  if (ia === -1) return 1;
+  if (ib === -1) return -1;
+  return ia - ib;
+});
 ---
 
 <BaseLayout 
