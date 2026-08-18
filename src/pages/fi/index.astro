@@ -34,8 +34,31 @@ const sidebarItems = sidebarArticles.map(a => ({
   focus: focusFor(a),
 }));
 
-const galleries = await getCollection('galleries');
-const featuredGalleries = galleries.slice(0, 4);
+const _galleriesUnsorted = await getCollection('galleries');
+
+// Same explicit display order as the /fi/galleria index, so the rotating hero
+// cycles galleries in a sensible sequence rather than Astro's default order.
+// Anything not listed falls to the end.
+const GALLERY_ORDER = [
+  'hyvinkaa-scramble',
+  'international-70s',
+  'international-80s',
+  'international-90s',
+  'suomi-70s',
+  'suomi-80s',
+  'suomi-90s',
+  'suomi-20s',
+];
+const galleries = [..._galleriesUnsorted].sort((a, b) => {
+  const ia = GALLERY_ORDER.indexOf(a.data.slug);
+  const ib = GALLERY_ORDER.indexOf(b.data.slug);
+  if (ia === -1 && ib === -1) return a.data.slug.localeCompare(b.data.slug);
+  if (ia === -1) return 1;
+  if (ib === -1) return -1;
+  return ia - ib;
+});
+// The hero shows 4 slots at once but rotates through ALL galleries.
+const featuredGalleries = galleries;
 
 // Scramble 2026 entry-stats promo. Hides itself the day after the event rather
 // than needing to be remembered and removed. The counts come from the same
@@ -150,7 +173,7 @@ const galleryItems = featuredGalleries.map(g => ({
           <a href="/fi/galleria" class="section-all-link">Kaikki galleriat →</a>
         </div>
         <p class="section-subheading">Tutustu suomalaisen ja kansainvälisen motocrossin kuviin 1960-luvulta nykypäivään.</p>
-        <RotatingHeroSplit items={galleryItems} variant="sidebar" />
+        <RotatingHeroSplit items={galleryItems} variant="sidebar" intervalMs={6500} />
       </div>
     </section>
   )}
