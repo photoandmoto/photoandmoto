@@ -152,7 +152,7 @@ function catKey(cat?: string) {
      same data-role hooks regardless of layout. */
   .rhs {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--space-3);
     align-items: stretch;
   }
@@ -462,7 +462,7 @@ function catKey(cat?: string) {
      CSS positioning changes; the rotation script doesn't know or care how
      these elements are laid out, so cross-fade/mutation keep working as-is. */
   .rhs--sidebar {
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   }
 
   /* Rows stay top-aligned and their natural height. Distributing them over the
@@ -578,16 +578,16 @@ function catKey(cat?: string) {
   /* Responsive */
   @media (max-width: 900px) {
     .rhs--grid {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
     .rhs--sidebar {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 
   @media (max-width: 540px) {
     .rhs--grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 
