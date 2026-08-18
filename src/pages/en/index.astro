@@ -34,8 +34,31 @@ const sidebarItems = sidebarArticles.map(a => ({
   focus: focusFor(a),
 }));
 
-const galleries = await getCollection('galleries');
-const featuredGalleries = galleries.slice(0, 4);
+const _galleriesUnsorted = await getCollection('galleries');
+
+// Same explicit display order as the /en/gallery index, so the rotating hero
+// cycles galleries in a sensible sequence rather than Astro's default order.
+// Anything not listed falls to the end.
+const GALLERY_ORDER = [
+  'hyvinkaa-scramble',
+  'international-70s',
+  'international-80s',
+  'international-90s',
+  'suomi-70s',
+  'suomi-80s',
+  'suomi-90s',
+  'suomi-20s',
+];
+const galleries = [..._galleriesUnsorted].sort((a, b) => {
+  const ia = GALLERY_ORDER.indexOf(a.data.slug);
+  const ib = GALLERY_ORDER.indexOf(b.data.slug);
+  if (ia === -1 && ib === -1) return a.data.slug.localeCompare(b.data.slug);
+  if (ia === -1) return 1;
+  if (ib === -1) return -1;
+  return ia - ib;
+});
+// The hero shows 4 slots at once but rotates through ALL galleries.
+const featuredGalleries = galleries;
 
 // Build items array for galleries
 // See the FI homepage for why the blurb replaces the photo count here.
@@ -96,7 +119,7 @@ const galleryItems = featuredGalleries.map(g => ({
           <a href="/en/gallery" class="section-all-link">All galleries →</a>
         </div>
         <p class="section-subheading">Explore photos of Finnish and international motocross from the 1960s to today.</p>
-        <RotatingHeroSplit items={galleryItems} variant="sidebar" />
+        <RotatingHeroSplit items={galleryItems} variant="sidebar" intervalMs={6500} />
       </div>
     </section>
   )}
