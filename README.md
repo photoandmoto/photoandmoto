@@ -217,8 +217,23 @@ git add . && git commit -m "Add my-gallery" && git push
 Gallery categories (`international`, `finland`, `enduro`, `scramble`,
 `black-white`) are derived from the slug. Current galleries: `international-70s`,
 `international-80s`, `international-90s`, `suomi-70s`, `suomi-80s`, `suomi-90s`,
-`hyvinkaa-scramble`. Detailed photo-adding notes are in
+`suomi-20s`, `hyvinkaa-scramble`. Detailed photo-adding notes are in
 [src/assets/galleries/README.md](src/assets/galleries/README.md).
+
+**Gallery display order** on the Galleria index and the front-page rotating
+hero is set by an explicit `GALLERY_ORDER` slug list, duplicated in
+`src/pages/{fi/galleria,en/gallery}/index.astro` and both homepages. Galleries
+not in the list fall to the end alphabetically. This exists because a plain
+slug sort puts `suomi-20s` (the 2020s) before `suomi-70s`, whereas the 2020s
+should read *after* the 1990s. Add new gallery slugs to that list in the
+intended reading position.
+
+**Filenames = captions.** The manifest caption is derived directly from the
+source filename (extension stripped, `_` → space), so name files as you want
+the caption to read, e.g. `Topi Terävä Monnin rata SM 125 2026.jpg`. Include
+the year in each filename — the manifest sorts photos by the year parsed from
+the caption. Finnish characters (`ä ö å`) survive the pipeline correctly; a
+quick one-file test run before a large batch is still worth it.
 
 ---
 
@@ -246,6 +261,28 @@ gallery search against newly added photos locally.
 
 Search quality depends entirely on captions: a photo with an empty caption is
 not findable by name. Fill in captions when adding photos.
+
+---
+
+## Social share links
+
+Articles and galleries carry a script-free social share row (`ShareLinks.astro`)
+at the foot of the content — WhatsApp, Facebook, X, and email. Deliberately
+**no third-party SDKs, cookies, or JS**: each button is a plain `<a>` link to
+the service's share URL (`wa.me`, `facebook.com/sharer`, `twitter.com/intent`,
+`mailto:`), so it adds zero page weight and no tracking. Facebook and the others
+pull the title/image from the page's existing Open Graph tags, so only the URL
+is passed.
+
+- One shared component, rendered from `ArticleLayout.astro` (articles) and both
+  gallery `[slug]` pages. A `kind` prop switches the heading between
+  "Jaa tämä juttu / Share this story" and "Jaa tämä galleria / Share this
+  gallery"; the language comes from the existing `lang` prop.
+- Applies to every existing and future article/gallery automatically — it's in
+  the layout, not per-page.
+- The desktop "Open app" interstitial (WhatsApp) and the Business/Messenger
+  prompt are platform-side and unavoidable with any link-based share; they're
+  one tap and don't appear for typical single-app mobile users.
 
 ---
 
@@ -373,6 +410,23 @@ UI so the Lighthouse Accessibility score (currently 100) doesn't regress:
 - Interactive elements have visible hover **and** focus states; `aria-hidden`
   containers (e.g. the closed mobile nav) keep their descendants out of the
   tab order.
+
+### Section "see all" links
+
+The "Kaikki artikkelit / All galleries / Koko kalenteri" links (homepage
+section headers + the Tulevat kilpailut band) render as **outlined amber
+pills** that fill bright brand orange with black text on hover, mirroring the
+nav links' hover so they read as the same interactive family. The resting
+colour stays `#A85D00` (bright `#ff9900` fails AA as small text on white);
+black-on-orange on hover passes. The style lives on `.section-all-link` (both
+homepages) and `.upcoming-all` (`UpcomingRaces.astro`).
+
+### Front-page gallery hero
+
+The homepage Galleria section uses `RotatingHeroSplit` (sidebar variant): four
+gallery cards visible at once, rotating through **all** galleries (fed the full
+sorted `GALLERY_ORDER` set, not a slice) at a 6.5s interval. Pausing on hover is
+built into the component.
 
 ---
 
