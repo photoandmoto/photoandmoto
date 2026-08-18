@@ -903,7 +903,22 @@ Production (`photoandmoto`) has this enabled and is unaffected.
 
 - **D1 growth monitoring** — no automated alerting for table size yet.
 - **Original-image archive strategy** — the repo will eventually outgrow
-  GitHub's recommended size; R2 / cold storage is a future decision.
+  GitHub's recommended size; R2 / cold storage is a future decision. **Current
+  practice for manual bulk imports:** keep the full-resolution originals
+  *outside* the repo (photographer's masters / an external drive) and commit
+  only the generated `thumbs/` and `display/` renditions. The site never serves
+  the originals, so dropping them from the commit keeps repo growth down — e.g.
+  the 45-photo `suomi-20s` import added ~16.5 MB (thumbs + display) instead of
+  ~130 MB with originals. Delete the source `.jpg`/`.JPG` files from
+  `public/galleries/<slug>/` after running `npm run generate-gallery <slug>` and
+  before committing.
+- **WebP for galleries (not yet done).** The Sharp pipeline
+  (`generate-gallery-manifest.mjs`) emits JPEG only — no WebP/AVIF. Gallery
+  images sit at healthy sizes regardless (`suomi-20s`: avg ~188 KB, max ~528 KB),
+  but a pipeline-wide WebP pass would cut ~30–40%. Verify the current state
+  before building (`astro.config.mjs` image config, whether any component uses
+  Astro `<Image>`); article images render via plain markdown `<img>` and would
+  need a separate route (Astro `<Image>`).
 
 ---
 
