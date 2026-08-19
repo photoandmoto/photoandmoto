@@ -33,49 +33,43 @@ Bultacon motocrossmallisto tunnettiin nimellä Pursang. Nimi tarkoitti täysiver
 
 Mallin kehitys alkoi brittiläisten Rickman-veljesten runkoon rakennetusta Rickman-Bultaco Métissestä. Bultacon oma Pursang Mk2 esiteltiin vuonna 1967. Sen jälkeen mallisto kehittyi lukuisten sukupolvien kautta aina harvinaiseen Mk15-versioon saakka. Pursangeja valmistettiin eri vaiheissa 125-kuutioisista 420-kuutioisiin malleihin. Kevyen rakenteen, voimakkaiden kaksitahtimoottorien ja valmiin kilpailuvarustuksen ansiosta Pursang saavutti vahvan maineen erityisesti yksityiskuljettajien keskuudessa.
 
-Pursangin kansainvälinen maine kiteytyi vuonna 1973 Espanjan Sabadellissa.
+Pursangin kansainvälinen maine kiteytyi vuonna 1973 Espanjan Sabadellissa. Siellä ajettiin 250-kuutioisten motocrossin maailmanmestaruussarjan avausosakilpailu. Mukana oli 20-vuotias yhdysvaltalainen Jim Pomeroy, joka oli edellisenä vuonna voittanut AMA 250-kuutioisten osakilpailun Saddlebackissä yksityiskuljettajana ajamallaan Bultacolla. Tulos oli tuonut hänelle jälleenmyyjän tukisopimuksen ja mahdollisuuden kilpailla Euroopassa.
 
-Siellä ajettiin 250-kuutioisten motocrossin maailmanmestaruussarjan avausosakilpailu. Mukana oli 20-vuotias yhdysvaltalainen Jim Pomeroy, joka oli edellisenä vuonna voittanut AMA 250-kuutioisten osakilpailun Saddlebackissä yksityiskuljettajana ajamallaan Bultacolla. Tulos oli tuonut hänelle jälleenmyyjän tukisopimuksen ja mahdollisuuden kilpailla Euroopassa.
-
-Pomeroy voitti Sabadellin ensimmäisen erän ja sijoittui toisessa neljänneksi. Kilpailun järjestäjät laskivat tulokset ensin vanhentuneella järjestelmällä ja julistivat länsisaksalaisen Hans Maischin voittajaksi. FIM korjasi tuloksen myöhemmin: uuden pistejärjestelmän mukaan Pomeroy oli voittanut osakilpailun pistein 23–22.
+Pomeroy voitti Sabadellin ensimmäisen erän ja sijoittui toisessa neljänneksi. Kilpailun järjestäjät laskivat tulokset ensin vanhentuneella järjestelmällä ja julistivat länsisaksalaisen Hans Maischin voittajaksi. FIM korjasi tuloksen myöhemmin. Uuden pistejärjestelmän mukaan Pomeroy oli voittanut osakilpailun pistein 23–22.
 
 ![Jim Pomeroy Bultaco Pursang 250 cc 1973 Hyvinkäällä](/images/Jim%20Pomeroy%20Bultaco%20Pursang%20250%20cc%201973%20Hyvink%C3%A4%C3%A4ll%C3%A4.jpg "Jim Pomeroy Bultaco Pursang 250 cc 1973 Hyvinkäällä")
 
-Pomeroy oli ensimmäinen yhdysvaltalainen, joka voitti FIM motocrossin MM-osakilpailun. Hän oli myös ensimmäinen kuljettaja, joka voitti MM-osakilpailun GP-debyytissään, sekä ensimmäinen espanjalaisvalmisteisella moottoripyörällä motocrossin MM-osakilpailun voittanut kuljettaja.
+Pomeroy oli ensimmäinen yhdysvaltalainen, joka voitti motocrossin MM-osakilpailun. Hän oli myös ensimmäinen kuljettaja, joka voitti ensimmäisen ajamansa MM-GP, sekä ensimmäinen espanjalaisvalmisteisella moottoripyörällä motocrossin MM-osakilpailun voittanut kuljettaja.
 
-Voitto espanjalaisella pyörällä Espanjassa kasvatti huomattavasti Bultacon ja Pursangin kansainvälistä näkyvyyttä. Tarkkoja myyntilukuja voiton suorasta vaikutuksesta ei kuitenkaan ole käytettävissä.
+Voitto espanjalaisella pyörällä Espanjassa kasvatti huomattavasti Bultacon ja Pursangin kansainvälistä näkyvyyttä. Tarkkoja myyntilukuja voiton suorasta vaikutuksesta ei kuitenkaan ole käytettävissä..
 
 ### Montesa Cappra
 
-Montesan vastaus rakentui osittain suomalaisen tehdaskuljettajan Kalevi Vehkosen tekemän kehitystyön ympärille.
+Montesan Cappra 250 VR rakentui osittain suomalaisen tehdaskuljettajan Kalevi Vehkosen tekemän kehitystyön ympärille.
 
 Vehkonen ajoi vuonna 1972 Montesan tehdaskuljettajana 250-kuutioisten maailmanmestaruussarjassa ja sijoittui kokonaispisteissä neljänneksi. Hänen edellään olivat Joël Robert Suzukilla, Håkan Andersson Yamahalla ja Sylvain Geboers Suzukilla. Montesa oli siten kauden parhaiten sijoittunut eurooppalaisvalmisteinen moottoripyörä.
 
 ![Vehkosen Montesa Cappara 250 1972. Pedro Pi Team Manager](/images/Kalevi%20Vehkosen%20Montesa%20Cappara%20250%201972.%20Pedro%20Pi%20Team%20Manager.jpg "Vehkosen Montesa Cappara 250 1972. Pedro Pi Team Manager")
 
-Montesa muutti kilpailutuloksen tuotantomalliksi. Vuoden 1973 mallistoon esiteltiin Cappra 250 VR, jonka kirjaimet tarkoittivat Vehkonen Replicaa. Malli perustui Vehkosen kilpailupyörästä saatuihin kokemuksiin, ja sen runko, geometria sekä moottorin perusrakenne oli kehitetty kilpailutoiminnan kautta. Seuraavan vuoden versiossa rakennetta kehitettiin edelleen.
+Montesa muutti kilpailumenestyksen tuotantomalliksi. Vuoden 1973 mallistoon esiteltiin Cappra 250 VR, jonka kirjaimet tarkoittivat Vehkonen Replicaa. Malli perustui Vehkosen kilpailupyörästä saatuihin kokemuksiin. Sen runko, geometria ja moottorin perusrakenne oli kehitetty kilpailutoiminnan kautta. Seuraavan vuoden versiossa kokonaisuutta kehitettiin edelleen.
 
-Tavoitteena oli tarjota yksityiskuljettajalle mahdollisimman valmis kilpailupyörä suoraan jälleenmyyjältä. Cappra 250 VR sai Yhdysvalloissa erittäin myönteisiä koeajoarvioita. Cycle News arvioi sen yhdeksi markkinoiden parhaista ostettavista 250-kuutioisista motocrosspyöristä, ja Cycle World kiitti erityisesti sen runkoa, käsiteltävyyttä ja kilpailuvalmista kokonaisuutta.
-
-Eräs myöhempi Cappra VR omistaja ja vintage-kilpailija kuvasi pyörää pitkäksi, matalaksi ja nopeaksi. Hänen mukaansa se kääntyi Honda CR250M Elsinorea paremmin, mutta sen vaihteisto ei ollut Hondan tasolla. Kuvaus on yhden kuljettajan jälkikäteisarvio, ei yleispätevä mittaustulos.
+Tavoitteena oli tarjota yksityiskuljettajalle mahdollisimman valmis kilpailupyörä suoraan jälleenmyyjältä. Cappra 250 VR sai Yhdysvalloissa erittäin myönteisiä koeajoarvioita. Cycle News arvioi sen yhdeksi markkinoiden parhaista ostettavista 250-kuutioisista motocrosspyöristä, ja Cycle World kiitti erityisesti sen runkoa, käsiteltävyyttä ja kilpailuvalmista kokonaisuutta..
 
 ### Koneet riittivät, resurssit eivät
 
-Euroopassa molemmat tehtaat pystyivät voittamaan yksittäisiä kilpailuja ja sijoittumaan maailmanmestaruussarjan kärkipäähän, mutta henkilökohtaista motocrossin maailmanmestaruutta kumpikaan merkki ei saavuttanut.
+Pomeroyn ja Vehkosen saavutukset osoittivat, että molemmat espanjalaismerkit pystyivät kilpailemaan maailman kärkeä vastaan. Yksittäisistä läpimurroista ei kuitenkaan kehittynyt pitkäaikaista ylivoimaa.
 
-Vehkosen neljäs sija vuonna 1972 jäi Montesan parhaaksi sijoitukseksi 250-kuutioisten MM-sarjassa. Ruotsalainen Håkan Andersson ajoi Montesan 500-kuutioisella pyörällä vuonna 1977 ja sijoittui sarjassa viidenneksi.
+Montesa saavutti motocrossin MM-osakilpailuvoiton vuonna 1977, kun belgialainen Raymond Boven voitti Espanjan 250-kuutioisten GP Cappralla. Hän voitti ensimmäisen erän ja sijoittui toisessa viidenneksi. Samana vuonna ruotsalainen Håkan Andersson ajoi Montesan 500-kuutioisella pyörällä ja sijoittui MM-sarjassa viidenneksi.
 
-Montesa saavutti myös motocrossin MM-osakilpailuvoiton. Belgialainen Raymond Boven voitti vuonna 1977 Espanjan 250-kuutioisten GP Montesa Cappralla. Hän voitti ensimmäisen erän ja oli toisessa viides. Tämä saavutus on olennainen osa Montesan kilpailuhistoriaa, vaikka se ei johtanut maailmanmestaruuteen.
+Bultaco palkkasi vuosikymmenen lopulla belgialaisen Harry Evertsin kausiksi 1977–1978. Everts oli voittanut 250-kuutioisten maailmanmestaruuden vuonna 1975, mutta ei ollut enää Bultacolle siirtyessään hallitseva mestari. Hän sijoittui Bultacolla MM-sarjassa neljänneksi vuonna 1977 ja kuudenneksi vuonna 1978. Everts on myöhemmin kertonut Bultacon olleen tuolloin ainoa tehdas, joka tarjosi hänelle sopimusta.
 
-Bultacon ensimmäinen motocrossin MM-osakilpailuvoitto tuli Pomeroyn ajamana vuonna 1973. Vuosikymmenen lopulla tehdas palkkasi belgialaisen Harry Evertsin kausiksi 1977–1978. Everts oli vuoden 1975 maailmanmestari mutta ei enää Bultacolle siirtyessään hallitseva mestari. Hän sijoittui Bultacolla MM-sarjassa neljänneksi vuonna 1977 ja kuudenneksi vuonna 1978. Everts on myöhemmin kertonut Bultacon olleen tuolloin ainoa tehdas, joka tarjosi hänelle sopimusta.
-
-Yhdysvalloissa merkkien kilpailutulokset erosivat toisistaan. Montesalla oli laaja jälleenmyyjäverkosto ja sen pyörillä ajoivat muun muassa Peter Lamppu, Mike Runyard, Tim Hart ja Mickey Kessler. Cappra sai erinomaisia lehtiarvioita, mutta Montesa ei saavuttanut AMA Motocross National -osakilpailuvoittoa.
+Yhdysvalloissa merkkien kilpailutulokset erosivat toisistaan. Montesalla oli laaja jälleenmyyjäverkosto, ja sen pyörillä ajoivat muun muassa Peter Lamppu, Mike Runyard, Tim Hart ja Mickey Kessler. Montesa ei kuitenkaan saavuttanut AMA motocrossin kansallisen sarjan osakilpailuvoittoa.
 
 ![Peter Lamppu oli yksi Montesan menestykseimmistä kuskeista USA:ssa](/images/PL%203.jpg "Peter Lamppu oli yksi Montesan menestykseimmistä kuskeista USA:ssa")
 
-Bultaco menestyi paremmin. Gary Bailey voitti Pursangilla kaksi AMA 250-kuutioisten osakilpailua vuonna 1972. Kenny Zahrt voitti RedBudin 250-kuutioisten osakilpailun vuonna 1974. Samana vuonna Jim Pomeroy sijoittui Trans-AMA-sarjassa neljänneksi ja oli sarjan paras yhdysvaltalainen kuljettaja.
+Bultacon tulokset olivat parempia. Gary Bailey voitti Pursangilla kaksi AMA 250-kuutioisten osakilpailua vuonna 1972. Kenny Zahrt voitti RedBudin 250-kuutioisten osakilpailun vuonna 1974. Samana vuonna Jim Pomeroy sijoittui Trans-AMA-sarjassa neljänneksi ja oli sarjan paras yhdysvaltalainen kuljettaja.
 
-Yksittäisistä voitoista huolimatta Bultaco ja Montesa jäivät ilman motocrossin henkilökohtaista maailmanmestaruutta ja AMA Motocross -mestaruutta. Rajaus motocrossiin on tärkeä, sillä molemmat merkit saavuttivat huomattavaa kansainvälistä menestystä muissa lajeissa, erityisesti trialissa.
+Kumpikaan merkki ei muuttanut yksittäisiä kilpailuvoittojaan motocrossin henkilökohtaiseksi maailmanmestaruudeksi tai AMA Motocross -mestaruudeksi. Rajaus motocrossiin on tärkeä, sillä molemmat merkit saavuttivat huomattavaa kansainvälistä menestystä muissa lajeissa, erityisesti trialissa
 
 ### Loppu
 
