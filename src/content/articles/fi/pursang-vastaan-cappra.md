@@ -41,7 +41,7 @@ Pomeroy voitti Sabadellin ensimmäisen erän ja sijoittui toisessa neljänneksi.
 
 Pomeroy oli ensimmäinen yhdysvaltalainen, joka voitti motocrossin MM-osakilpailun. Hän oli myös ensimmäinen kuljettaja, joka voitti ensimmäisen ajamansa MM-GP, sekä ensimmäinen espanjalaisvalmisteisella moottoripyörällä motocrossin MM-osakilpailun voittanut kuljettaja.
 
-Voitto espanjalaisella pyörällä Espanjassa kasvatti huomattavasti Bultacon ja Pursangin kansainvälistä näkyvyyttä. Tarkkoja myyntilukuja voiton suorasta vaikutuksesta ei kuitenkaan ole käytettävissä..
+Voitto espanjalaisella pyörällä Espanjassa kasvatti huomattavasti Bultacon ja Pursangin kansainvälistä näkyvyyttä.
 
 ### Montesa Cappra
 
