@@ -535,7 +535,20 @@ pick it up automatically, no per-page work.
 
 Every page gets: per-page title + meta description, canonical URL, hreflang
 `fi`/`en`/`x-default` alternates, Open Graph + Twitter tags, JSON-LD
-Organization + WebSite schema, GA4 (`G-9Y0PEJY0XG`).
+Organization + WebSite schema, and GA4 (`G-9Y0PEJY0XG`) — loaded by
+`CookieConsent.astro` **only after the visitor consents to analytics**, not
+from `BaseLayout.astro`. Analytics therefore undercount relative to Search
+Console by design.
+
+**Brand name variants.** Both JSON-LD nodes carry an `alternateName` list
+(`Photo and Moto`, `PhotoandMoto`, `Photo&Moto`, plus lowercase forms). Google
+treats `photo&moto` and `photoandmoto` as unambiguous navigational queries and
+ranks the site first, but reads the spaced-out `photo and moto` as a generic
+informational phrase about motorcycle photography, where competitors outrank
+us. `alternateName` is a hint towards resolving that, not a fix — brand-entity
+recognition is driven mainly by external mentions and links. A `sameAs` array
+is the stronger signal and is **not yet present**: add one once official social
+profiles exist.
 
 Article pages additionally get JSON-LD Article schema and use the
 auto-generated OG card (`public/og/<slug>-<lang>.jpg`) as `og:image`.
