@@ -699,6 +699,40 @@ the Domainkeskus parking page, contact Domainkeskus support (reference ticket
 
 ---
 
+## Analytics
+
+Two analytics tools run in parallel. They measure different populations, and
+the difference between them is the point — do not treat either as "the"
+traffic number without knowing which one you are reading.
+
+| Tool | Consent-gated? | Measures | Where |
+|---|---|---|---|
+| **Google Analytics 4** (`G-9Y0PEJY0XG`) | **Yes** — injected by `src/components/CookieConsent.astro` only when the visitor accepts analytics cookies | Consented visitors only. A subset. | analytics.google.com |
+| **Cloudflare Web Analytics** | No — cookieless by design, no consent required | **All** visitors. The complete picture. | Cloudflare dashboard → Analytics → Web analytics |
+
+The Cloudflare site entry covers both `photoandmoto.pages.dev` and
+`www.photoandmoto.fi`, so production traffic is included. Created 2026-04.
+
+### Which one to use for what
+
+- **Traffic volume, trend, "is the site growing"** → Cloudflare. It counts
+  everyone.
+- **Behaviour, segments, referral detail, events** → GA4. Richer data, but only
+  for the consented subset, so treat the absolute numbers as a floor.
+- **Search performance** → neither. Use Search Console — impressions, queries
+  and positions exist nowhere else.
+
+### The gap is the consent rate
+
+Comparing the same day in both tools gives an approximate analytics-consent
+rate. Worth checking occasionally: if GA4 is reporting a small fraction of
+Cloudflare's visits, that is expected behaviour and not a broken tag. It also
+means GA4-derived conclusions about traffic size are systematically low, while
+GSC click counts will exceed GA4 sessions for the same period — again, by
+design, not a discrepancy to debug.
+
+---
+
 ## Backup and restore
 
 | Asset | Backup status | How |
