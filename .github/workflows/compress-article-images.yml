@@ -109,4 +109,27 @@ jobs:
           # IMPORTANT: this prefix must match the loop guard's startsWith()
           # check at the top of the job. If you change one, change the other.
           git commit -m "chore(images): compress article images"
-          git push origin ${{ github.ref_name }}
+
+          # Retry with rebase if the branch moved during this workflow.
+          # Without this, any concurrent writer to the branch (Sveltia CMS,
+          # generate-og-images.yml, publish.js) wins the race and this job
+          # dies with a non-fast-forward rejection — silently leaving the
+          # images uncompressed, because the failure doesn't block the deploy.
+          # Observed 2026-08-19 on commit a1501be: one Sveltia save touched
+          # both public/images/** and src/content/articles/**, firing this
+          # workflow and the OG workflow at once. The OG workflow already had
+          # this retry; this one did not, so it lost. Same pattern, kept in
+          # step deliberately.
+          for i in 1 2 3; do
+            if git push origin HEAD:${{ github.ref_name }}; then
+              echo "Push succeeded on attempt $i"
+              exit 0
+            fi
+
+            echo "Push failed on attempt $i, rebasing on origin/${{ github.ref_name }}..."
+            git fetch origin ${{ github.ref_name }}
+            git rebase origin/${{ github.ref_name }}
+          done
+
+          echo "Push failed after 3 attempts"
+          exit 1
