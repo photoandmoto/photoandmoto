@@ -12,10 +12,14 @@
 //   - Resize to MAX_WIDTH if wider (downscale only, never upscale)
 //   - Re-encode:
 //       JPEG -> mozjpeg quality 82
-//       PNG  -> compression 9 + palette
+//       PNG  -> compression 9, palette and truecolour both tried, smaller wins
 //       WebP -> quality 82
-//   - Skip the write if the new buffer is bigger than the original
-//     (avoids enlarging tiny already-optimized files)
+//   - Skip the write unless the new buffer is at least MIN_SAVING_RATIO
+//     smaller (avoids pointless rewrites of already-optimised files, which
+//     cost generational quality loss and a fresh blob in git history)
+//   - Log a NOTE for oversized PNGs: photos belong in JPEG, but converting
+//     means renaming, and the article markdown references the filename, so
+//     that call is left to a human
 //
 // Exit codes: 0 always (we don't fail the push for image issues).
 
@@ -27,6 +31,15 @@ const MAX_WIDTH = 1600;
 const JPEG_QUALITY = 82;
 const WEBP_QUALITY = 82;
 const SKIP_SIZE_BYTES = 200 * 1024; // 200 KB
+
+// Minimum saving required before we rewrite a file. Without this, the only
+// guard was "output must be smaller than input", so an already-compressed
+// image that shrank by 5 bytes still got rewritten on every touch. Observed
+// on 2026-08-19: Jawa ISDT 3 (-81 bytes), The red tank (-5), hero-bg (-45),
+// Kawa AMA (-422) — ten-odd files re-encoded for ~0.1% or less. Two costs:
+// generational JPEG loss (each pass re-encodes q82 on top of q82), and repo
+// bloat (git stores a whole new ~300 KB blob per rewrite, forever).
+const MIN_SAVING_RATIO = 0.05; // must save at least 5%
 
 function fmt(bytes) {
   return `${(bytes / 1024).toFixed(0)} KB`;
@@ -65,15 +78,45 @@ async function processImage(filepath) {
   if (ext === '.jpg' || ext === '.jpeg') {
     outputBuf = await pipeline.jpeg({ quality: JPEG_QUALITY, mozjpeg: true }).toBuffer();
   } else if (ext === '.png') {
-    outputBuf = await pipeline.png({ compressionLevel: 9, palette: true }).toBuffer();
+    // `palette: true` quantises to a 256-colour palette. That's right for
+    // logos and flat graphics, and wrong for photographs — on a photo it
+    // either wrecks quality or produces a LARGER file, which then trips the
+    // saving threshold above and the file is skipped forever. Two article
+    // photos saved as PNG (961 KB and 859 KB) sat untouched this way.
+    // So: encode both ways, keep whichever is smaller.
+    const pngBase = () => {
+      const p = sharp(originalBuf);
+      return width > MAX_WIDTH
+        ? p.resize({ width: MAX_WIDTH, withoutEnlargement: true })
+        : p;
+    };
+    const [paletted, truecolour] = await Promise.all([
+      pngBase().png({ compressionLevel: 9, palette: true }).toBuffer(),
+      pngBase().png({ compressionLevel: 9, palette: false }).toBuffer(),
+    ]);
+    outputBuf = paletted.length <= truecolour.length ? paletted : truecolour;
+
+    // PNG is the wrong container for a photograph regardless of how well it
+    // compresses — the same image as JPEG q82 is typically 5-10x smaller.
+    // We do NOT convert automatically: that means renaming the file, and the
+    // article markdown references it by name. Flag it for a human instead.
+    if (outputBuf.length > SKIP_SIZE_BYTES) {
+      console.log(
+        `NOTE: ${filepath} is a ${fmt(outputBuf.length)} PNG. If this is a ` +
+        `photograph, re-save it as JPEG and update the article reference — ` +
+        `PNG cannot get this much smaller.`
+      );
+    }
   } else if (ext === '.webp') {
     outputBuf = await pipeline.webp({ quality: WEBP_QUALITY }).toBuffer();
   }
 
-  if (outputBuf.length >= originalSize) {
+  if (outputBuf.length >= originalSize * (1 - MIN_SAVING_RATIO)) {
+    const delta = 100 - (100 * outputBuf.length) / originalSize;
+    const change = delta >= 0 ? `-${delta.toFixed(1)}%` : `+${(-delta).toFixed(1)}%`;
     console.log(
-      `SKIP (no improvement): ${filepath} ` +
-      `(would be ${fmt(outputBuf.length)} vs original ${fmt(originalSize)})`
+      `SKIP (saving below ${MIN_SAVING_RATIO * 100}% threshold): ${filepath} ` +
+      `(would be ${fmt(outputBuf.length)} vs original ${fmt(originalSize)}, ${change})`
     );
     return;
   }
