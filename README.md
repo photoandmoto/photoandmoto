@@ -264,6 +264,46 @@ not findable by name. Fill in captions when adding photos.
 
 ---
 
+## Article search and paging
+
+`/fi/aikakone` and `/en/time-machine` have an inline **keyword filter** and a
+**Näytä lisää / Show more** button. Both operate on the cards already rendered
+on the page — there is no fetch, no index file, and no dependency.
+
+- **What it searches:** title, subtitle, category, tags. **Not article body
+  text** — see below.
+- **How it matches:** each card carries a pre-lowercased `data-search`
+  attribute built at build time by `src/lib/articleSearch.ts`. Multi-word
+  queries are AND-ed (`kawasaki 1979` needs both).
+- **Paging:** 12 cards initially, +12 per click. 12 divides evenly into the
+  4/3/2-column breakpoints, so the last row is never ragged.
+- **Cards are hidden with a CSS class, never removed from the DOM.** This is
+  load-bearing: the filter always searches the *full* set rather than just the
+  visible page, and Google still sees every article link. If you ever switch to
+  server-side pagination, the filter silently starts searching only the current
+  page — which is worse than no filter, because a real article returns
+  "no results".
+- Sort order is unchanged (newest first), so the first 12 are the 12 newest.
+
+**Why not body text.** It was built, measured, and reverted. Distilling each
+article to its unique words still took `/fi/aikakone` from ~45 KB to 103 KB,
+and 16 of 22 articles hit the truncation cap anyway — so most were only
+*partly* searchable with no way for a reader to tell which. Raising the cap
+fixed coverage but not the page weight, which grows with every article
+published. Pagefind at `/fi/etsi` and `/en/search` already does full-text
+properly — lazily-loaded chunked index, stemming, ranked results, zero cost to
+pages that don't use it. Both filter boxes link to it for exactly this reason.
+The full reasoning is recorded in the header of `src/lib/articleSearch.ts`.
+
+**Known gap:** no accent folding — `hyvinkaa` does not match `Hyvinkää`.
+Worth adding to `articleSearch.ts` if Finnish readers turn out to type without
+umlauts.
+
+The two pages are near-identical copies. **Keep them in sync** — only the
+language strings and the Pagefind link differ.
+
+---
+
 ## Social share links
 
 Articles and galleries carry a script-free social share row (`ShareLinks.astro`)
@@ -293,7 +333,7 @@ All workflows are in `.github/workflows/` and documented in
 
 | Workflow | Purpose |
 |---|---|
-| `compress-article-images.yml` | Resize/re-encode oversized article images |
+| `compress-article-images.yml` | Resize/re-encode oversized article images (≥5% saving required; retries push on race) |
 | `generate-og-images.yml` | Per-article 1200×630 branded social cards |
 | `check-links.yml` | Scan article markdown for broken external links |
 | `process-gallery-image.yml` | Gallery thumbnail/display derivative generation |
@@ -336,6 +376,9 @@ scripts/
   check-links.mjs                 Link checker
   compress-article-images.mjs     Image compressor
 src/
+  lib/
+    articleSearch.ts    Build-time keyword blob for the article-listing filter
+    tickerItems.ts      "Nyt luetuimmat" ticker source
   content/
     articles/{fi,en}/   Markdown articles
     pikauutiset/        AI-generated news flashes
@@ -440,7 +483,8 @@ built into the component.
 - **Search:** Pagefind (static full-text index) for site-wide keyword search;
   a separate per-photo gallery search (`data/gallery-search.json`, generated at
   build) powers the Galleria search box and each gallery's filter, opening
-  results directly in a PhotoSwipe lightbox scoped to the matches
+  results directly in a PhotoSwipe lightbox scoped to the matches; plus a
+  build-time metadata filter on the article listings (`src/lib/articleSearch.ts`)
 - **Server-side:** Cloudflare Pages Functions (Workers runtime)
 - **Database:** Cloudflare D1 (edge SQLite) — IAM, submissions, mystery photos + comments
 - **Image storage:** Cloudflare R2 — bucket `photoandmoto-uploads` exists; migration from repo planned (see `INFRASTRUCTURE.md`)

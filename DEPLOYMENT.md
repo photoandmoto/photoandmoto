@@ -429,7 +429,7 @@ All workflows live in `.github/workflows/`. They run on push to `dev` and
 
 | Workflow | Trigger path | What it does |
 |---|---|---|
-| `compress-article-images.yml` | `public/images/**` | Resizes oversized images to ≤1600px wide, re-encodes JPEG/WebP at quality 82. Commits compressed versions. |
+| `compress-article-images.yml` | `public/images/**` | Resizes oversized images to ≤1600px wide, re-encodes JPEG/WebP at quality 82. Skips the rewrite unless it saves ≥5% (see below). Retries its push on a rebase if the branch moved. |
 | `generate-og-images.yml` | `src/content/articles/**` | Composites a 1200×630 branded social card per article (`scripts/generate-og-image.mjs`, Sharp + Montserrat). Commits to `public/og/`. |
 | `check-links.yml` | `src/content/articles/**` | Scans changed article markdown for broken external links. Fails the run (visible warning) if any are dead. Doesn't block deploys. |
 | `process-gallery-image.yml` | `public/galleries/**` | Generates thumb + display renditions for new gallery images, updates the manifest. |
@@ -441,17 +441,64 @@ All workflows live in `.github/workflows/`. They run on push to `dev` and
 path-filter mismatch so their own commits don't re-trigger them. If you change
 a workflow's commit message, update its loop guard to match.
 
-**Known issue — `compress-article-images.yml` misses some uploads.** It has
-twice let a multi-megabyte original through to production: an 8.6 MB article
-photo (5058×3372) that became the homepage LCP element and dropped Lighthouse
-performance to 58, and two 1.5 MB Jawa images. In both cases the workflow *did*
-run — other images in the same push came out at exactly 1600px — so the fault is
-in the detection step, not the trigger. Both were fixed by hand. Until the cause
-is found, check `public/images/` after any publish that adds photos:
+### Push races between workflows (resolved 2026-08-26)
 
-```bash
-ls -lS public/images/ | head
-```
+Any workflow that commits back to a branch can lose a **push race**: it checks
+out, spends 30–60 s doing work, and by the time it pushes, another writer has
+moved the branch. Git rejects the push as non-fast-forward and the job dies —
+**silently**, because these Actions don't block deploys. The work is simply
+lost.
+
+The repo has several concurrent writers to the same branches: Sveltia CMS
+(commits straight to `main`), `generate-og-images.yml`, `compress-article-images.yml`,
+the `publish.js` Worker, and ordinary developer pushes. A single Sveltia save
+of an article *with images* touches both `public/images/**` and
+`src/content/articles/**`, firing the compress and OG workflows simultaneously —
+so they race each other directly.
+
+That is exactly what happened on 2026-08-19 (commit `a1501be`,
+"Create Artikkeli ‘pursang-vastaan-cappra’"). The OG workflow already had a
+rebase-retry loop; the compress workflow did not. OG won, compress lost, and
+four article images stayed at full size with no visible error anywhere except
+the Actions tab.
+
+**Both workflows now retry**: on a rejected push they `git fetch` + `git rebase`
+onto the branch head and try again, up to three times. If you add another
+workflow that commits back, copy that loop — a bare `git push` will eventually
+lose.
+
+**Note the failure signature**, since it is easy to misread: the job log shows
+a *successful* commit followed by `! [rejected] ... (fetch first)`. The
+processing step worked fine. Only the push failed.
+
+### Image compression: minimum-saving threshold and PNG handling
+
+Two further fixes to `scripts/compress-article-images.mjs`, same date.
+
+**Minimum saving of 5% before rewriting.** The only guard used to be "output
+must be smaller than input", so an already-compressed image that shrank by a
+handful of bytes was still rewritten — every time anything touched it.
+Observed: `Jawa ISDT 3` −81 bytes, `The red tank` −5, `hero-bg` −45,
+`Kawa AMA` −422. Ten-odd files churning for ~0.1% or less. Two real costs:
+generational JPEG loss (each pass re-encodes q82 on top of q82), and repo
+bloat, since git stores a fresh ~300 KB blob per rewrite forever. Files below
+the threshold now log `SKIP (saving below 5% threshold)` and are left alone.
+
+**PNG is encoded both ways, smaller wins.** The PNG branch used
+`palette: true` unconditionally. Palette quantisation to 256 colours suits
+logos and flat graphics; on a *photograph* it either wrecks quality or produces
+a larger file — which then trips the saving guard, so the file is skipped and
+stays oversized forever. That is why two article photos saved as PNG (961 KB
+and 859 KB) sat untouched indefinitely. The script now encodes paletted and
+truecolour and keeps whichever is smaller.
+
+**PNG photos are flagged, not converted.** A photograph in PNG is typically
+5–10× larger than the same image as JPEG q82, and no amount of PNG tuning
+closes that. Converting automatically would mean renaming the file, and the
+article markdown references it by name — too risky to do unattended in CI. So
+an oversized PNG logs a `NOTE:` line recommending manual conversion instead.
+If you see one in an Action log, re-save that image as JPEG and update the
+article reference by hand.
 
 ### Scramble 2026 entry stats (temporary)
 
