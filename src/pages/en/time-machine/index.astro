@@ -4,6 +4,7 @@ import PageHero from '../../../components/PageHero.astro';
 import heroImage from '../../../assets/site/hero-aikakone.jpg';
 import { getCollection } from 'astro:content';
 import { ui } from '../../../i18n/ui';
+import { buildArticleSearchText } from '../../../lib/articleSearch';
 
 const lang = 'en';
 const t = ui[lang];
@@ -26,7 +27,26 @@ const articles = (await getCollection('articles', (entry) =>
         subtitle="A journey through motorsport history"
       />
 
+      {articles.length > 0 && (
+        <div class="article-filter">
+          <label class="article-filter__label" for="articleSearch">Search articles</label>
+          <input
+            type="search"
+            id="articleSearch"
+            class="article-filter__input"
+            placeholder="e.g. Kawasaki, MXGP, Carlqvist…"
+            autocomplete="off"
+          />
+          <p class="article-filter__count" id="articleCount" role="status" aria-live="polite"></p>
+          <p class="article-filter__hint">
+            Searches titles and topics. Looking for a word inside an article?
+            <a href="/en/search">Search the whole site</a>.
+          </p>
+        </div>
+      )}
+
       {articles.length > 0 ? (
+        <Fragment>
         <div class="articles-grid">
           {articles.map(article => {
             const formattedDate = new Intl.DateTimeFormat('en-US', {
@@ -35,8 +55,13 @@ const articles = (await getCollection('articles', (entry) =>
               day: 'numeric'
             }).format(article.data.date);
 
+            // Keyword blob for the client-side filter: metadata verbatim,
+            // plus the article body distilled to unique words. See
+            // src/lib/articleSearch.ts for why the body is deduplicated.
+            const searchText = buildArticleSearchText(article);
+
             return (
-              <article class="article-card">
+              <article class="article-card" data-search={searchText}>
                 <a href={`/en/time-machine/${article.id.replace(/^en\//, '')}`}>
                   <div class="article-card__image-wrap">
                     <img src={article.data.card_image || article.data.featured_image} alt={article.data.title} class="article-card__image" loading="lazy" />
@@ -56,6 +81,17 @@ const articles = (await getCollection('articles', (entry) =>
             );
           })}
         </div>
+
+        <div class="article-more">
+          <p class="article-empty" id="articleEmpty" hidden>
+            No matches for that keyword. Try another word or
+            <a href="/en/search">search the whole site</a>.
+          </p>
+          <button type="button" id="articleMore" class="article-more__btn" hidden>
+            Show more
+          </button>
+        </div>
+        </Fragment>
       ) : (
         <div class="empty-state">
           <p>No articles yet. Check back soon!</p>
@@ -65,7 +101,173 @@ const articles = (await getCollection('articles', (entry) =>
   </section>
 </BaseLayout>
 
+<script>
+  // Client-side keyword filter + progressive reveal for the article grid.
+  // Mirrors /fi/aikakone — keep the two in sync if you change either.
+  //
+  // Design notes:
+  //  - Every article card is rendered at build time and stays in the DOM.
+  //    We only toggle a CSS class. That means (a) the filter always searches
+  //    the full set, not just what's visible, and (b) Google still sees every
+  //    article link on the page.
+  //  - Match data lives in each card's data-search attribute, pre-lowercased
+  //    at build time (see the .astro frontmatter above).
+  //  - Multi-word queries are AND-ed: "kawasaki 1979" matches a card only if
+  //    both terms appear somewhere in its metadata.
+
+  const PAGE_SIZE = 12;
+
+  const grid = document.querySelector('.articles-grid');
+  const input = document.getElementById('articleSearch');
+  const moreBtn = document.getElementById('articleMore');
+  const countEl = document.getElementById('articleCount');
+  const emptyEl = document.getElementById('articleEmpty');
+
+  if (grid && input && moreBtn && countEl && emptyEl) {
+    const cards = Array.from(grid.querySelectorAll('.article-card'));
+    let visibleLimit = PAGE_SIZE;
+
+    function currentMatches() {
+      const q = input.value.trim().toLowerCase();
+      if (!q) return cards;
+      const terms = q.split(/\s+/);
+      return cards.filter((card) => {
+        const haystack = card.dataset.search || '';
+        return terms.every((term) => haystack.includes(term));
+      });
+    }
+
+    function render() {
+      const matches = currentMatches();
+      const shown = matches.slice(0, visibleLimit);
+      const shownSet = new Set(shown);
+
+      cards.forEach((card) => {
+        card.classList.toggle('is-hidden', !shownSet.has(card));
+      });
+
+      // Result count: only meaningful once the user has typed something.
+      const q = input.value.trim();
+      countEl.textContent = q
+        ? (matches.length === 1 ? '1 result' : `${matches.length} results`)
+        : '';
+
+      emptyEl.hidden = matches.length > 0;
+
+      // Button label is static in the HTML — we only toggle visibility.
+      const remaining = matches.length - shown.length;
+      moreBtn.hidden = remaining <= 0;
+    }
+
+    input.addEventListener('input', () => {
+      // A new query resets the reveal window — otherwise a user who had
+      // clicked "show more" would see an inconsistent number of results
+      // between searches.
+      visibleLimit = PAGE_SIZE;
+      render();
+    });
+
+    moreBtn.addEventListener('click', () => {
+      visibleLimit += PAGE_SIZE;
+      render();
+    });
+
+    render();
+  }
+</script>
+
 <style>
+  .article-filter {
+    max-width: 520px;
+    margin: 0 auto var(--space-5);
+    text-align: center;
+  }
+
+  .article-filter__label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-1);
+  }
+
+  .article-filter__input {
+    width: 100%;
+    padding: 12px 16px;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--text-primary);
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    transition: border-color var(--transition-base);
+  }
+
+  .article-filter__input:focus {
+    outline: none;
+    border-color: var(--brand-primary);
+  }
+
+  .article-filter__count {
+    min-height: 1.2em;
+    margin-top: var(--space-1);
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+  }
+
+  .article-filter__hint {
+    margin-top: var(--space-1);
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  .article-filter__hint a {
+    color: var(--brand-primary);
+    font-weight: 600;
+  }
+
+  /* The filter and the reveal window both work by toggling this class.
+     Cards are never removed from the DOM — see the script for why. */
+  .article-card.is-hidden {
+    display: none;
+  }
+
+  .article-more {
+    text-align: center;
+    margin-top: var(--space-5);
+  }
+
+  .article-more__btn {
+    padding: 12px 28px;
+    background: var(--brand-primary);
+    color: #000;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-headline);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: background var(--transition-base);
+  }
+
+  .article-more__btn:hover {
+    background: #cc7a00;
+  }
+
+  .article-empty {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+
+  .article-empty a {
+    color: var(--brand-primary);
+    font-weight: 600;
+  }
+
   .articles-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
