@@ -33,7 +33,7 @@ Kallion pyörästä rivi jatkuu toinen toistaan suurempien mestareiden ajokkeihi
 
 Jo tiimin toisella GP-kaudella (2003) tuli ensimmäinen GP-voitto 125-kuutioisten luokassa. Sen ajoi italialainen Andrea Ballerini. Ensimmäisen henkilökohtaisen maailmanmestaruuden Ajo Motorsportille ajoi ranskalainen Mike Di Meglio 125cc-luokassa vuonna 2008. Siitä lähtien mestaruuksia on napsahdellut tasaiseen tahtiin, ja niitä on kaikkiaan jo 11 – 125cc-, Moto3- ja Moto2-luokissa.
 
-![](/images/Ajo%20Motorsportille%20mestaruuksia%20ajaneiden%20kuljettajien%20kyp%C3%A4r%C3%A4t%20Aki%20Ajolla%20kiitosviesteineen.jpg)
+![Ajo Motorsportille mestaruuksia ajaneiden kuljettajien kypärät Aki Ajolla kiitosviesteineen](/images/Ajo%20Motorsportille%20mestaruuksia%20ajaneiden%20kuljettajien%20kyp%C3%A4r%C3%A4t%20Aki%20Ajolla%20kiitosviesteineen.jpg "Ajo Motorsportille mestaruuksia ajaneiden kuljettajien kypärät Aki Ajolla kiitosviesteineen")
 
 Mestaruuksia ovat ajaneet Di Meglion lisäksi Marc Márquez, Sandro Cortese, Johann Zarco, Brad Binder, Remy Gardner, Pedro Acosta, Augusto Fernández ja José Antonio Rueda. 
 
