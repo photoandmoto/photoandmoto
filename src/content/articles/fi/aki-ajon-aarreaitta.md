@@ -45,4 +45,4 @@ Aki Ajon museoon meitä oli tutustumassa seitsemän hengen äijäseurue, jossa o
 
 ![Martti Pesonen Ja Matti Kiiveri](/images/Matti%20Kiiveri%20ja%20Martti%20Pesonen%20tuntevat%20rr-kuviot%20todella%20tarkkaan.jpg "Martti Pesonen Ja Matti Kiiveri")
 
-[Aki Ajo itse johtaa nykyisin KTM:n tehdastiimiä ](https://ajo.fi/)MotoGP-luokassa. Hänen poikansa Niklas Ajo puolestaan johtaa Moto2- ja Moto3-tiimejä.
+> [Aki Ajo itse johtaa nykyisin KTM:n tehdastiimiä ](https://ajo.fi/)MotoGP-luokassa. Hänen poikansa Niklas Ajo puolestaan johtaa Moto2- ja Moto3-tiimejä.
