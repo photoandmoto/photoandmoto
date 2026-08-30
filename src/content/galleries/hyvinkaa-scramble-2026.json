@@ -8,17 +8,57 @@
   "seo_title_en": "Hyvinkää Scramble 2026 – Classic Bike Photos",
   "seo_description": "Kuvia Hyvinkään Scramble 2026 -tapahtumasta: klassikkopyöriä, näytösajoja ja vintage-motocrossia. Photo & Moton kuva-arkisto.",
   "seo_description_en": "Photos from the Hyvinkää Scramble 2026 event: classic bikes, demo rides and vintage motocross. From the Photo & Moto archive.",
-  "cover_image": "thumbs/Jawalla matkaan Hyvinkään Scramble 2026_thumb.jpg",
+  "cover_image": "thumbs/Husqvarna CR 390 1980 Hyvinkään Scramble 2026 001_thumb.jpg",
   "images": [
     {
-      "filename": "Jawalla matkaan Hyvinkään Scramble 2026.jpg",
-      "thumb": "thumbs/Jawalla matkaan Hyvinkään Scramble 2026_thumb.jpg",
-      "display": "display/Jawalla matkaan Hyvinkään Scramble 2026_display.jpg",
-      "caption": "Jawalla matkaan Hyvinkään Scramble 2026",
+      "filename": "Suzuki RM 1979 Hyvinkään Scramble 2026 002.jpg",
+      "thumb": "thumbs/Suzuki RM 1979 Hyvinkään Scramble 2026 002_thumb.jpg",
+      "display": "display/Suzuki RM 1979 Hyvinkään Scramble 2026 002_display.jpg",
+      "caption": "Suzuki RM 1979 Hyvinkään Scramble 2026 002",
       "photographer": "",
       "date": "",
-      "width": 900,
-      "height": 1600
+      "width": 1400,
+      "height": 788
+    },
+    {
+      "filename": "Husqvarna CR 390 1980 Hyvinkään Scramble 2026 001.jpg",
+      "thumb": "thumbs/Husqvarna CR 390 1980 Hyvinkään Scramble 2026 001_thumb.jpg",
+      "display": "display/Husqvarna CR 390 1980 Hyvinkään Scramble 2026 001_display.jpg",
+      "caption": "Husqvarna CR 390 1980 Hyvinkään Scramble 2026 001",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 788
+    },
+    {
+      "filename": "Hyvinkään Scramble 2026 005.jpg",
+      "thumb": "thumbs/Hyvinkään Scramble 2026 005_thumb.jpg",
+      "display": "display/Hyvinkään Scramble 2026 005_display.jpg",
+      "caption": "Hyvinkään Scramble 2026 005",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 931
+    },
+    {
+      "filename": "Jawalla matkaan Hyvinkään Scramble 2026 004.jpg",
+      "thumb": "thumbs/Jawalla matkaan Hyvinkään Scramble 2026 004_thumb.jpg",
+      "display": "display/Jawalla matkaan Hyvinkään Scramble 2026 004_display.jpg",
+      "caption": "Jawalla matkaan Hyvinkään Scramble 2026 004",
+      "photographer": "",
+      "date": "",
+      "width": 675,
+      "height": 1183
+    },
+    {
+      "filename": "Jawat rivissä Hyvinkään Scramble 2026 003.jpg",
+      "thumb": "thumbs/Jawat rivissä Hyvinkään Scramble 2026 003_thumb.jpg",
+      "display": "display/Jawat rivissä Hyvinkään Scramble 2026 003_display.jpg",
+      "caption": "Jawat rivissä Hyvinkään Scramble 2026 003",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 788
     }
   ]
 }
