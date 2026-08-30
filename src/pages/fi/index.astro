@@ -65,7 +65,7 @@ const featuredGalleries = galleries;
 // daily-refreshed file the /fi/scramble-2026 page reads.
 import scrambleData from '../../../public/data/scramble-2026.json';
 const scrambleSnap = scrambleData?.snapshots?.[scrambleData.snapshots.length - 1] ?? null;
-const showScramble = scrambleSnap && new Date() <= new Date('2026-08-30T23:59:59+03:00');
+const showScramble = new Date() <= new Date('2026-09-14T23:59:59+03:00');
 
 // Podcast episodes — using archive photos as cover images
 const podcastEpisodes = [
@@ -149,16 +149,15 @@ const galleryItems = featuredGalleries.map(g => ({
   {showScramble && (
     <section class="section scramble-promo">
       <div class="container">
-        <a href="/fi/scramble-2026" class="sp-card" target="_blank" rel="noopener">
+        <a href="/fi/galleria/hyvinkaa-scramble-2026" class="sp-card">
           <div class="sp-card__text">
             <span class="sp-card__eyebrow">Hyvinkää Scramble &amp; Trial näytösajo · 29.–30.8.2026</span>
-            <h2 class="sp-card__title">Ilmoittautumistilanne</h2>
+            <h2 class="sp-card__title">Kuvat tapahtumasta</h2>
             <p class="sp-card__sub">
-              {scrambleSnap.entries} ilmoittautumista · {scrambleSnap.uniqueRiders} kuljettajaa ·
-              {' '}{scrambleSnap.classes.length} luokkaa
+              Ensimmäiset kuvat julkaistu · lisää viikon 36 aikana
             </p>
           </div>
-          <span class="sp-card__cta">Katso tilastot →</span>
+          <span class="sp-card__cta">Katso kuvat →</span>
         </a>
       </div>
     </section>
