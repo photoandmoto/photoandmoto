@@ -8,6 +8,17 @@
   "seo_title_en": "Hyvinkää Scramble 2026 – Classic Bike Photos",
   "seo_description": "Kuvia Hyvinkään Scramble 2026 -tapahtumasta: klassikkopyöriä, näytösajoja ja vintage-motocrossia. Photo & Moton kuva-arkisto.",
   "seo_description_en": "Photos from the Hyvinkää Scramble 2026 event: classic bikes, demo rides and vintage motocross. From the Photo & Moto archive.",
-  "cover_image": "",
-  "images": []
+  "cover_image": "thumbs/Jawalla matkaan Hyvinkään Scramble 2026_thumb.jpg",
+  "images": [
+    {
+      "filename": "Jawalla matkaan Hyvinkään Scramble 2026.jpg",
+      "thumb": "thumbs/Jawalla matkaan Hyvinkään Scramble 2026_thumb.jpg",
+      "display": "display/Jawalla matkaan Hyvinkään Scramble 2026_display.jpg",
+      "caption": "Jawalla matkaan Hyvinkään Scramble 2026",
+      "photographer": "",
+      "date": "",
+      "width": 900,
+      "height": 1600
+    }
+  ]
 }
