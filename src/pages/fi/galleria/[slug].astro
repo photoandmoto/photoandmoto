@@ -38,7 +38,7 @@ const metaDescription = gallery.data.seo_description || gallery.data.description
       <div class="gallery-header">
         <a href="/fi/galleria" class="back-link">&#8592; Takaisin galleriaan</a>
         <h1>{gallery.data.title}</h1>
-        <p class="gallery-description">{gallery.data.description}</p>
+        <p class="gallery-description">{gallery.data.description}{gallery.data.slug === 'hyvinkaa-scramble-2026' && (<> · <a href="/fi/scramble-2026/" target="_blank" rel="noopener">Katso täältä - Näin ilmoittauduttiin &#8594;</a></>)}</p>
         <p class="gallery-meta">
           {t['gallery.photoCount'].replace('{count}', gallery.data.images.length.toString())}
         </p>
