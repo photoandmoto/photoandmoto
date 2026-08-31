@@ -20,43 +20,43 @@ sources: Photo&Moto event report
 
 ### **A track with a history**
 
-Erkylän lukot is no ordinary place. The track hosted World Championship motocross rounds 20 times between 1965 and 1985, 18 of which were in the 250 cc class and twice in the 125 cc class, in 1981 and 1985.
+Erkylän lukot is not just any place. The track hosted World Championship motocross rounds 20 times between 1965 and 1985, 18 of those in the 250 cc class and twice on 125 cc bikes, in 1981 and 1985.
 
-The first GP was held on August 1, 1965, on a rocky track that soon gained a reputation for being ruthless. [**In 1968, Kalevi "Kale" Vehkonen**](https://www.photoandmoto.fi/fi/aikakone/kalevi-kale-vehkonen-erkyla-lukkojen-sankari/) achieved his famous double victory here in the 250 cc World Championship class. The track also nurtured other great names, among them world champion Heikki Mikkola.
+The first GP was held on August 1, 1965, on a rocky track that soon gained a reputation for being ruthless. [**In 1968, Kalevi "Kale" Vehkonen**](https://www.photoandmoto.fi/fi/aikakone/kalevi-kale-vehkonen-erkyla-lukkojen-sankari/) took his famous double victory here in the 250 cc World Championship class. The track also nurtured other great names, among them world champion Heikki Mikkola.
 
 This is exactly what makes the event special. For many spectators and participants, the place holds a mental and emotional connection from years ago — from their own memories or stories told by fathers and grandfathers.
 
-### **The spirit of volunteerism carries on**
+### **Volunteer spirit carries it forward**
 
-The first Scramble was organized in 2000. The event's original father, Erkki Petäjä, is still involved and remains a driving force.
+The first Scramble was organized in 2000. The original father of the event, Erkki Petäjä, is still involved and remains a driving force.
 
 ![Erkki Petäjä, the father and driving force of the event.](/images/Hyvink%C3%A4%C3%A4%20Scramble%20%26%20Trail%20tapahtuman%20perustaja%20Erkki%20Pet%C3%A4j%C3%A4.JPG "Erkki Petäjä, the father and driving force of the event.")
 
-Scramble is not a competition but a demonstration ride, and that is exactly where its character stems from. Volunteerism, community spirit, and togetherness carry the event. Over the years, it has developed into, above all, a social event where you run into old acquaintances and maintain human connections.
+Scramble is not a competition but a demonstration ride, and that is where its character stems from. Volunteerism, community spirit, and togetherness carry the event. Over the years, it has developed above all into a social event where you run into old acquaintances and maintain human connections.
 
-Proof of this year's successful event is that the spirit of volunteerism is alive. The arrangements and logistics were handled excellently by volunteers under the leadership of Kai Uusitalo. It goes without saying that without this group and their spirit of getting things done, this would not have been possible — and it won't be in the future either.
+Proof of this year's successful event is that the volunteer spirit is alive. Arrangements and logistics were handled exemplarily by volunteers under the leadership of Kai Uusitalo. It goes without saying that this would not have been possible without this group and their spirit of getting things done — and it never will be.
 
 ### **Legends on the track and in the paddock**
 
-Over the years, numerous world-renowned riders have participated, including Heikki Mikkola, Vladimir Kavinov, Kees van der Ven, and Matti Tarkkonen.
+Over the years, numerous riders who have achieved world fame have participated, such as Heikki Mikkola, Vladimir Kavinov, Kees van der Ven, Marc Velkeneers, and Matti Tarkkonen.
 
-This year, the track saw, among others, Kari Tiainen, a seven-time enduro world champion, and Jarkko Vainio, who for years was one of Finland's top enduro riders in the top ten and achieved a Junior Trophy World Championship silver in the Six Days Enduro.
+This year, the track saw, among others, Kari Tiainen, a seven-time enduro world champion, and Jarkko Vainio, who for years was one of Finland's top enduro riders in the top ten and achieved a Junior Trophy World Championship silver medal at the Six Days Enduro.
 
-![The evergreen enduro champion Kari Tiainen](/images/Kari%20Tiainen%20kaksoiskuva~2.jpg "The evergreen enduro champion Kari Tiainen")
+![The ever-young enduro champion Kari Tiainen](/images/Kari%20Tiainen%20kaksoiskuva~2.jpg "The ever-young enduro champion Kari Tiainen")
 
-Timo and Eero Remes were there to strengthen the father-son bond. Timo once achieved the Finnish motocross championship in the 125 cc class, and Eero is a three-time Finnish motocross champion and a three-time enduro world champion.
+Strengthening the father-son bond were Timo and Eero Remes. Timo once achieved the Finnish motocross championship in the 125 cc class, and Eero is a three-time Finnish motocross champion and a three-time enduro world champion.
 
-![Does the apple fall far from the tree? Timo and Eero Remes](/images/Pojasta%20polvi%20paranee.%20Timo%20ja%20Eero%20Remes.JPG "Does the apple fall far from the tree? Timo and Eero Remes")
+![Like father, like son? Timo and Eero Remes](/images/Pojasta%20polvi%20paranee.%20Timo%20ja%20Eero%20Remes.JPG "Like father, like son? Timo and Eero Remes")
 
-In the paddock, one could spot past achievers from the Finnish and World Championship levels chatting: Matti Tarkkonen, Anssi Oksanen, Martti Pesonen, Ari Viiri, and many others.
+In the paddock, you could spot past achievers from the Finnish and world championship levels chatting: Matti Tarkkonen, Anssi Oksanen, Martti Pesonen, Ari Viiri, and many others.
 
-The paddock restaurant functioned flawlessly, serving coffee, soft drinks, pyttipannu (hash), and sausages at affordable prices.
+The paddock restaurant functioned flawlessly, serving coffee, soft drinks, hash (pyttipannu), and sausages at affordable prices.
 
 ### **Classics in the paddock**
 
 The salt of a demonstration ride is the bikes. The paddock was filled with classics from decades past, and there were also genuine rarities among them.
 
-One of them is the Solifer–Bultaco. In the 1960s, as a special project at the Solifer factory, a bike was assembled that combined the frame of a Husqvarna Silverpilen, a Bultaco engine, and a gas tank familiar from Solifer mopeds, complete with Solifer branding. According to reports, three of these bikes were manufactured.
+One of them is the Solifer–Bultaco. In the 1960s, as a special project at the Solifer factory, a bike was assembled that combined a Husqvarna Silverpilen frame, a Bultaco engine, and a fuel tank familiar from Solifer mopeds, complete with Solifer branding. According to reports, three of these bikes were manufactured.
 
 ![The Solifer enduro bike brought for display by Hannu Ihatsu](/images/Solifer%20Enduro%20py%C3%B6r%C3%A4.jpg "The Solifer enduro bike brought for display by Hannu Ihatsu")
 
@@ -64,6 +64,6 @@ The Solifer–Bultaco participated in the Päitsi (Päijänneajo), and the bike 
 
 ### **The audience found their way**
 
-The heath of Erkylän lukot attracted an enthusiastic and interested audience to such an extent that the designated parking spaces were filled with cars and motorcycles, many of them classics themselves. Admission to the event was free.
+The Erkylän lukot forest area attracted an enthusiastic and interested audience to such an extent that the designated parking spaces were filled with cars and motorcycles, many of them classics themselves. Admission to the event was free.
 
 See the photo collection [**here.**](https://www.photoandmoto.fi/fi/galleria/hyvinkaa-scramble-2026/)
