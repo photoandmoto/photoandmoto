@@ -1,5 +1,5 @@
 ---
-title: Hyvinkään Scramble 2026 — näytösajo, joka on kasvanut kohtaamispaikaksi
+title: Hyvinkään Scramble 2026 näytösajo, joka on kasvanut kohtaamispaikaksi
 subtitle: Erkylän lukoilla ajettiin 29.–30.8.2026 jälleen Hyvinkään Scramble & Trial -näytösajo. Tapahtuma keräsi ennätysmäärän osallistujia ja katsojia
 author: Photo & Moto
 date: 2026-08-31

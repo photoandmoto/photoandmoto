@@ -1,5 +1,5 @@
 ---
-title: Hyvinkää Scramble 2026 — an event that has grown into a meeting place
+title: Hyvinkää Scramble 2026 exhibition race, which has grown into a meeting place
 subtitle: The Hyvinkää Scramble & Trial exhibition event was held again at Erkylä Lukot on August 29–30, 2026. The event attracted a record number of participants and spectators.
 author: Photo & Moto
 date: 2026-08-31
