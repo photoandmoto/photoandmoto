@@ -42,7 +42,7 @@ Vuosien varrella mukana on ollut lukuisia maailmanmaineen niittäneitä kuljetta
 
 Tänä vuonna radalla nähtiin muun muassa Kari Tiainen, seitsenkertainen enduron maailmanmestari, sekä Jarkko Vainio, joka oli vuosien ajan Suomen enduron kärkinimiä kymmenen parhaan joukossa ja saavutti Six Days Enduron junior trophy -MM-hopeaa.
 
-![Ikinuori enduromestari Kari Tiainen](/images/Kari%20Tiainen%20kaksoiskuva.jpg "Ikinuori enduromestari Kari Tiainen")
+![Ikinuori enduromestari Kari Tiainen](/images/Kari%20Tiainen%20kaksoiskuva~2.jpg "Ikinuori enduromestari Kari Tiainen")
 
 Isä–poika-suhdetta olivat lujittamassa Timo ja Eero Remes. Timo saavutti aikoinaan motocrossin Suomen mestaruuden piikkiluokassa ja Eero puolestaan on kolminkertainen motocrossin Suomen mestari ja kolminkertainen enduron maailmanmestari.
 
