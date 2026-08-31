@@ -36,6 +36,18 @@ Scramble ei ole kilpailu vaan näytösajo, ja juuri siitä kumpuaa sen luonne. V
 
 Todiste tämän vuoden onnistuneesta tapahtumasta on se, että talkoohenki elää. Järjestelyt ja logistiikka hoituivat vapaaehtoisvoimin mallikkaasti Kai Uusitalon johdolla. Sanomattakin on selvää, ettei tämä ilman tätä porukkaa ja sen tekemisen henkeä olisi ollut mahdollista — eikä tule olemaan.
 
+### **Numeroiden valossa**
+
+Menestystä kuvaa se, että tapahtuma keräsi 177 eri kuljettajaa ja 220 ilmoittautumista kuudessa luokassa sekä 27 eri pyörämerkkiä. Useampi kuljettaja osallistui useampaan kuin yhteen luokkaan.
+
+Osallistujamäärät jakautuivat eri lajeihin siten, että enduro keräsi 61 ja trial 50 osallistujaa. Lisäksi kolmeen vuosimallien mukaan jaettuun Scramble-luokkaan osallistui yhteensä 105 ajajaa.
+
+![M](/images/Maico%20harvinaisuus.jpg)
+
+Tapahtumassa nähtiin erittäin laaja merkkikirjo. Eniten oli Hondia 42, Yamahaa 31, Husqvarnaa 29, Suzukia 21 ja Bultacoa 20. Suosituimpien merkkien ohella mukana olivat KTM 16 ja Kawasaki 12 pyörällä, minkä lisäksi joukossa oli harvinaisuuksia kuten Maico, BSA, Matchless, SWM, CZ, AJS, Jawa ja Montesa.
+
+Pyörien vuosimalleissa selvä valtaosa sijoittui 1980-luvulle, jolta oli mukana 110 pyörää. 1970-luvun pyöriä oli 54, 1990-luvun 34, 1960-luvun 18 ja 1950-luvun edustajia neljä kappaletta.
+
 ### **Legendoja radalla ja varikolla**
 
 Vuosien varrella mukana on ollut lukuisia maailmanmaineen niittäneitä kuljettajia, kuten esimerkiksi Heikki Mikkola, Vladimir Kavinov, Kees van der Ven. Marc Velkeneers ja Matti Tarkkonen.
