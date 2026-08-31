@@ -62,8 +62,6 @@ Isä–poika-suhdetta olivat lujittamassa Timo ja Eero Remes. Timo saavutti aiko
 
 Varikolla jutustelemassa saattoi bongata menneisyyden menestyjiä Suomen ja maailmanmestaruustasolta: Matti Tarkkonen, Anssi Oksanen, Martti Pesonen, Ari Viiri ja monet muut.
 
-Varikon ravintola toimi moitteettomasti tarjoillen kahvit, virvoitusjuomat, pyttipannut ja makkarat edulliseen hintaan.
-
 ### **Klassikot varikolla**
 
 Näytösajon suola ovat pyörät. Varikko täyttyi vuosikymmenten takaisista klassikoista, ja joukossa oli myös aitoja harvinaisuuksia.
@@ -76,6 +74,8 @@ Solifer–Bultacolla osallistuttiin Päitsiin, ja pyörällä saavutettiin histo
 
 ### **Yleisö löysi paikalle**
 
-Erkylän lukkojen kangas keräsi innostunutta ja kiinnostunutta yleisöä siinä määrin, että varatut parkkipaikat täyttyivät autoista ja moottoripyöristä , moni niistä klassikko itsessään. Tapahtumaan oli vapaa pääsy.
+Erkylän lukkojen kangas keräsi innostunutta ja kiinnostunutta yleisöä siinä määrin, että varatut parkkipaikat täyttyivät autoista ja moottoripyöristä , moni niistä klassikko itsessään. 
+
+Varikon ravintola toimi moitteettomasti tarjoillen kahvit, virvoitusjuomat, pyttipannut ja makkarat edulliseen hintaan. Tapahtumaan oli vapaa pääsy.
 
 Katso kuvakokoelma [**täältä.**](https://www.photoandmoto.fi/fi/galleria/hyvinkaa-scramble-2026/)
