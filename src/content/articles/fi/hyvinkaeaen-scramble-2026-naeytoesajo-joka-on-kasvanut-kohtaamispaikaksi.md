@@ -13,7 +13,7 @@ card_image: ''
 card_image_focus: center
 show_hero: true
 image_caption: Perinteikkäät Erkylän Lukot keräsivät ennätysmäärän harrastajia
-draft: true
+draft: false
 seo_description: Hyvinkään Scramble 2026 Erkylän Lukoilla keräsi ennätysyleisön. Kari Tiainen, Timo ja Eero Remes, klassikkopyörät ja talkoohenki historiallisella MM-radalla.
 sources: Photo&Moto tapahtumaraportti
 ---
@@ -22,7 +22,7 @@ sources: Photo&Moto tapahtumaraportti
 
 Erkylän lukot ei ole mikä tahansa paikka. Rata isännöi MM-motocrossin osakilpailuja 20 kertaa vuosien 1965 ja 1985 välillä , niistä 18 kertaa 250 cc -luokassa ja kahdesti 125-kuutioisilla, vuosina 1981 ja 1985.
 
-Ensimmäinen GP ajettiin 1.8.1965 kivikkoisella radalla, joka sai pian maineen armottomana. Vuonna 1968 Kalevi "Kale" Vehkonen otti täällä kuuluisan kaksoisvoittonsa 250 cc:n MM-luokassa. Rata kasvatti myös muita suuria nimiä, heidän joukossaan maailmanmestari Heikki Mikkolan.
+Ensimmäinen GP ajettiin 1.8.1965 kivikkoisella radalla, joka sai pian maineen armottomana. [**Vuonna 1968 Kalevi "Kale" Vehkonen**](https://www.photoandmoto.fi/fi/aikakone/kalevi-kale-vehkonen-erkyla-lukkojen-sankari/) otti täällä kuuluisan kaksoisvoittonsa 250 cc:n MM-luokassa. Rata kasvatti myös muita suuria nimiä, heidän joukossaan maailmanmestari Heikki Mikkolan.
 
 Juuri tämä tekee tapahtumasta erityisen. Monelle katsojalle ja osallistujalle paikkaan liittyy henkinen ja tunteellinen side vuosien takaa — omista muistoista tai isän ja isoisän kertomuksista.
 
@@ -65,3 +65,5 @@ Solifer–Bultacolla osallistuttiin Päitsiin, ja pyörällä saavutettiin histo
 ### **Yleisö löysi paikalle**
 
 Erkylän lukkojen kangas keräsi innostunutta ja kiinnostunutta yleisöä siinä määrin, että varatut parkkipaikat täyttyivät autoista ja moottoripyöristä , moni niistä klassikko itsessään. Tapahtumaan oli vapaa pääsy.
+
+Katso kuvakokoelma [**täältä.**](https://www.photoandmoto.fi/fi/galleria/hyvinkaa-scramble-2026/)
