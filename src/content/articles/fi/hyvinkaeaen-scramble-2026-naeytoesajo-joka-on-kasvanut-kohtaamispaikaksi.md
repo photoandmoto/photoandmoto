@@ -18,7 +18,7 @@ seo_description: Hyvinkään Scramble 2026 Erkylän Lukoilla keräsi ennätysyle
 sources: Photo&Moto tapahtumaraportti
 ---
 
-**Rata, jolla on historiaa**
+### **Rata, jolla on historiaa**
 
 Erkylän lukot ei ole mikä tahansa paikka. Rata isännöi MM-motocrossin osakilpailuja 20 kertaa vuosien 1965 ja 1985 välillä , niistä 18 kertaa 250 cc -luokassa ja kahdesti 125-kuutioisilla, vuosina 1981 ja 1985.
 
@@ -26,7 +26,7 @@ Ensimmäinen GP ajettiin 1.8.1965 kivikkoisella radalla, joka sai pian maineen a
 
 Juuri tämä tekee tapahtumasta erityisen. Monelle katsojalle ja osallistujalle paikkaan liittyy henkinen ja tunteellinen side vuosien takaa — omista muistoista tai isän ja isoisän kertomuksista.
 
-**Talkoohenki kantaa**
+### **Talkoohenki kantaa**
 
 Ensimmäinen Scramble järjestettiin vuonna 2000. Tapahtuman alkuperäinen isä Erkki Petäjä on edelleen mukana ja kantava voima.
 
@@ -36,7 +36,7 @@ Scramble ei ole kilpailu vaan näytösajo, ja juuri siitä kumpuaa sen luonne. V
 
 Todiste tämän vuoden onnistuneesta tapahtumasta on se, että talkoohenki elää. Järjestelyt ja logistiikka hoituivat vapaaehtoisvoimin mallikkaasti Kai Uusitalon johdolla. Sanomattakin on selvää, ettei tämä ilman tätä porukkaa ja sen tekemisen henkeä olisi ollut mahdollista — eikä tule olemaan.
 
-**Legendoja radalla ja varikolla**
+### **Legendoja radalla ja varikolla**
 
 Vuosien varrella mukana on ollut lukuisia maailmanmaineen niittäneitä kuljettajia, muun muassa Heikki Mikkola, Vladimir Kavinov, Kees van der Ven ja Matti Tarkkonen.
 
@@ -52,6 +52,14 @@ Varikolla jutustelemassa saattoi bongata menneisyyden menestyjiä Suomen ja maai
 
 Varikon ravintola toimi moitteettomasti tarjoillen kahvit, virvoitusjuomat, pyttipannut ja makkarat edulliseen hintaan.
 
-**Yleisö löysi paikalle**
+### **Klassikot varikolla**
+
+Näytösajon suola ovat pyörät. Varikko täyttyi vuosikymmenten takaisista klassikoista, ja joukossa oli myös aitoja harvinaisuuksia.
+
+Yksi niistä on Solifer–Bultaco. 1960-luvulla Soliferin tehtaalla koottiin erikoisprojektina pyörä, jossa yhdistyivät Husqvarna Silverpilenin runko, Bultacon moottori ja Soliferin mopoista tuttu bensatankki, Soliferin merkeillä varustettuna. Tietojen mukaan pyöriä valmistettiin kolme kappaletta.
+
+Solifer–Bultacolla osallistuttiin Päitsiin, ja pyörällä saavutettiin historiallinen luokkavoitto. Menestys näin rankassa kilpailussa oli Soliferille loistava markkinointivaltti. Se todisti, että suomalainen tehdas kykeni rakentamaan vaativaan maastoajoon sopivia, kestäviä ja kilpailukykyisiä laitteita maailmanluokan moottorikomponentteja hyödyntäen.
+
+### **Yleisö löysi paikalle**
 
 Erkylän lukkojen kangas keräsi innostunutta ja kiinnostunutta yleisöä siinä määrin, että varatut parkkipaikat täyttyivät autoista ja moottoripyöristä , moni niistä klassikko itsessään. Tapahtumaan oli vapaa pääsy.
