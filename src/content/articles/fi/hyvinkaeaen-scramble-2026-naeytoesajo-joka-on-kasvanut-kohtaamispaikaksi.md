@@ -58,6 +58,8 @@ Näytösajon suola ovat pyörät. Varikko täyttyi vuosikymmenten takaisista kla
 
 Yksi niistä on Solifer–Bultaco. 1960-luvulla Soliferin tehtaalla koottiin erikoisprojektina pyörä, jossa yhdistyivät Husqvarna Silverpilenin runko, Bultacon moottori ja Soliferin mopoista tuttu bensatankki, Soliferin merkeillä varustettuna. Tietojen mukaan pyöriä valmistettiin kolme kappaletta.
 
+![Hannu Ihatsun näytille tuoma Solifer enduropyörä](/images/Solifer%20Enduro%20py%C3%B6r%C3%A4.jpg "Hannu Ihatsun näytille tuoma Solifer enduropyörä")
+
 Solifer–Bultacolla osallistuttiin Päitsiin, ja pyörällä saavutettiin historiallinen luokkavoitto. Menestys näin rankassa kilpailussa oli Soliferille loistava markkinointivaltti. Se todisti, että suomalainen tehdas kykeni rakentamaan vaativaan maastoajoon sopivia, kestäviä ja kilpailukykyisiä laitteita maailmanluokan moottorikomponentteja hyödyntäen.
 
 ### **Yleisö löysi paikalle**
