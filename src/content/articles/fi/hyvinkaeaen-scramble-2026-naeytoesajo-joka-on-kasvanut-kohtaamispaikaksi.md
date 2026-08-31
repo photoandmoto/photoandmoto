@@ -38,7 +38,7 @@ Todiste tämän vuoden onnistuneesta tapahtumasta on se, että talkoohenki elä�
 
 ### **Legendoja radalla ja varikolla**
 
-Vuosien varrella mukana on ollut lukuisia maailmanmaineen niittäneitä kuljettajia, muun muassa Heikki Mikkola, Vladimir Kavinov, Kees van der Ven ja Matti Tarkkonen.
+Vuosien varrella mukana on ollut lukuisia maailmanmaineen niittäneitä kuljettajia, kuten esimerkiksi Heikki Mikkola, Vladimir Kavinov, Kees van der Ven. Marc Velkeneers ja Matti Tarkkonen.
 
 Tänä vuonna radalla nähtiin muun muassa Kari Tiainen, seitsenkertainen enduron maailmanmestari, sekä Jarkko Vainio, joka oli vuosien ajan Suomen enduron kärkinimiä kymmenen parhaan joukossa ja saavutti Six Days Enduron junior trophy -MM-hopeaa.
 
