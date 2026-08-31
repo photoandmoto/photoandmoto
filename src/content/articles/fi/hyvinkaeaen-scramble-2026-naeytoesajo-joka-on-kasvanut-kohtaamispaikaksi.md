@@ -30,7 +30,7 @@ Juuri tämä tekee tapahtumasta erityisen. Monelle katsojalle ja osallistujalle 
 
 Ensimmäinen Scramble järjestettiin vuonna 2000. Tapahtuman alkuperäinen isä Erkki Petäjä on edelleen mukana ja kantava voima.
 
-![Erkki Petjä tapahtuman isä ja kantava voima.](/images/Hyvink%C3%A4%C3%A4%20Scramble%20%26%20Trail%20tapahtuman%20perustaja%20Erkki%20Pet%C3%A4j%C3%A4.JPG "Erkki Petjä tapahtuman isä ja kantava voima.")
+![Erkki Petäjä tapahtuman isä ja kantava voima.](/images/Hyvink%C3%A4%C3%A4%20Scramble%20%26%20Trail%20tapahtuman%20perustaja%20Erkki%20Pet%C3%A4j%C3%A4.JPG "Erkki Petäjä tapahtuman isä ja kantava voima.")
 
 Scramble ei ole kilpailu vaan näytösajo, ja juuri siitä kumpuaa sen luonne. Vapaaehtoisuus, talkoohenki ja yhteenkuuluvuus kantavat tapahtumaa. Vuosien mittaan siitä on kehittynyt ennen kaikkea sosiaalinen tapahtuma, jossa törmätään vuosien takaisiin tuttuihin ja pidetään ihmissiteitä yllä.
 
