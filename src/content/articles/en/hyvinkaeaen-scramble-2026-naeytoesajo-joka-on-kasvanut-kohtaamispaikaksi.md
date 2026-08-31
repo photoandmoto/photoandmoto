@@ -34,7 +34,7 @@ The first Scramble was organized in 2000. The event's original father, Erkki Pet
 
 The Scramble is not a competition but a demonstration ride, and that is where its character stems from. Volunteerism, community spirit, and togetherness carry the event. Over the years, it has developed into, above all, a social event where people run into old acquaintances and maintain human connections.
 
-Proof of this year's successful event is that the spirit of volunteerism is alive. The arrangements and logistics were handled exemplarily by volunteers under the leadership of Kai Uusitalo. It goes without saying that this would not have been possible without this group and their spirit of getting things done — and it never will be.
+> Proof of this year's successful event is that the spirit of volunteerism is alive. The arrangements and logistics were handled exemplarily by volunteers under the leadership of Kai Uusitalo. It goes without saying that this would not have been possible without this group and their spirit of getting things done — and it never will be.
 
 ### **In light of the numbers**
 

@@ -34,7 +34,7 @@ Ensimmäinen Scramble järjestettiin vuonna 2000. Tapahtuman alkuperäinen isä 
 
 Scramble ei ole kilpailu vaan näytösajo, ja juuri siitä kumpuaa sen luonne. Vapaaehtoisuus, talkoohenki ja yhteenkuuluvuus kantavat tapahtumaa. Vuosien mittaan siitä on kehittynyt ennen kaikkea sosiaalinen tapahtuma, jossa törmätään vuosien takaisiin tuttuihin ja pidetään ihmissiteitä yllä.
 
-Todiste tämän vuoden onnistuneesta tapahtumasta on se, että talkoohenki elää. Järjestelyt ja logistiikka hoituivat vapaaehtoisvoimin mallikkaasti Kai Uusitalon johdolla. Sanomattakin on selvää, ettei tämä ilman tätä porukkaa ja sen tekemisen henkeä olisi ollut mahdollista — eikä tule olemaan.
+> Todiste tämän vuoden onnistuneesta tapahtumasta on se, että talkoohenki elää. Järjestelyt ja logistiikka hoituivat vapaaehtoisvoimin mallikkaasti Kai Uusitalon johdolla. Sanomattakin on selvää, ettei tämä ilman tätä porukkaa ja sen tekemisen henkeä olisi ollut mahdollista — eikä tule olemaan.
 
 ### **Numeroiden valossa**
 
