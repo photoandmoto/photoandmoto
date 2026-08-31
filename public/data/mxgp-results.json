@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-08-30",
+  "lastUpdated": "2026-08-31",
   "seasonComplete": false,
   "totalRounds": 19,
   "latestRace": {
@@ -680,68 +680,54 @@
   "highlights": {
     "fi": {
       "mxgp_quali": [
-        "Jeffrey Herlings nappasi paalupaikan lauantain karsinnoissa.",
-        "Kotikentällään kilpaileva Coldenhoff osoitti vauhtiaan neljännellä sijalla."
+        "Herlings nappasi paalupaikan lauantain karsinnassa.",
+        "Kotikentällään kilpaileva Coldenhoff osoitti vauhtiaan karsinnassa."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominoi molempia MXGP-eriä.",
-        "Kay de Wolf taisteli vahvasti ja varmisti kakkossijan.",
-        "Jeffrey Herlings vei kokonaisvoiton ylivoimaisesti Arnhamin GP:ssä."
+        "Herlings dominoi molempia MXGP-eriä voittaen GP:n.",
+        "De Wolf taisteli vahvasti ja varmisti toisen sijan.",
+        "Vialle nousi podiumille vahvoilla suorituksillaan."
       ],
       "mx2_quali": [
-        "Liam Everts oli nopein MX2-luokan aika-ajoissa.",
-        "Camden McLellan näytti vahvuutensa toisella sijalla."
+        "Everts vei paalupaikan MX2-karsinnassa.",
+        "McLellan näytti nopeutensa karsinnan toisella sijalla."
       ],
       "mx2_race": [
-        "Camden McLellan voitti ensimmäisen MX2-erän.",
-        "Liam Everts kiri voittoon toisessa MX2-erässä.",
-        "Camden McLellan juhli MX2-GP:n kokonaisvoittoa."
+        "McLellan voitti ensimmäisen erän ja GP:n.",
+        "Everts kuittasi toisen erän voiton ja GP:n kakkossijan.",
+        "Farres ja Coenen tasapisteissä GP:n jaetulla kolmannella sijalla."
       ],
       "standings": [
-        "Herlings jatkaa MXGP-sarjan kärjessä vankasti.",
+        "Herlings johtaa MXGP-sarjaa vankasti.",
         "Febvre pitää toista sijaa MXGP-pisteissä.",
-        "Gajser on kolmantena MXGP-sarjassa ilman muutoksia."
+        "Gajser on kolmantena MXGP-sarjassa."
       ]
     },
     "en": {
       "mxgp_quali": [
-        "Jeffrey Herlings claimed pole position in Saturday qualifying.",
-        "Home hero Coldenhoff showed his speed in fourth place."
+        "Herlings claimed pole position in Saturday qualifying.",
+        "Home hero Coldenhoff showed his speed in qualifying."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominated both MXGP motos.",
-        "Kay de Wolf battled strongly for second overall.",
-        "Jeffrey Herlings claimed the overall victory at the Dutch GP."
+        "Herlings dominated both MXGP motos, winning the GP.",
+        "De Wolf battled strongly to secure second overall.",
+        "Vialle charged to the podium with strong performances."
       ],
       "mx2_quali": [
-        "Liam Everts was fastest in MX2 qualifying.",
-        "Camden McLellan showed his strength in second place."
+        "Everts took pole position in MX2 qualifying.",
+        "McLellan showed his pace in second in qualifying."
       ],
       "mx2_race": [
-        "Camden McLellan won the first MX2 moto.",
-        "Liam Everts charged to victory in the second MX2 moto.",
-        "Camden McLellan took the overall MX2 GP win."
+        "McLellan won moto one and the GP overall.",
+        "Everts took moto two victory and GP second place.",
+        "Farres and Coenen tied for third overall on points."
       ],
       "standings": [
-        "Herlings holds firm at the top of MXGP standings.",
-        "Febvre maintained his second position in MXGP points.",
-        "Gajser remains third in the MXGP standings with no change."
+        "Herlings leads the MXGP standings firmly.",
+        "Febvre holds onto second place in MXGP points.",
+        "Gajser is third in the MXGP championship."
       ]
-    },
-    "mx2_quali": [
-      "Liam Everts oli nopein MX2-luokan aika-ajoissa.",
-      "Camden McLellan näytti vahvuutensa toisella sijalla."
-    ],
-    "mx2_race": [
-      "Camden McLellan voitti ensimmäisen MX2-erän.",
-      "Liam Everts kiri voittoon toisessa MX2-erässä.",
-      "Camden McLellan juhli MX2-GP:n kokonaisvoittoa."
-    ],
-    "standings": [
-      "Herlings jatkaa MXGP-sarjan kärjessä vankasti.",
-      "Febvre pitää toista sijaa MXGP-pisteissä.",
-      "Gajser on kolmantena MXGP-sarjassa ilman muutoksia."
-    ]
+    }
   },
   "standings": {
     "mxgp": [
