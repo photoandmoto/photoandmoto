@@ -237,6 +237,10 @@ const categoryKey = (category?: string) =>
     font-weight: 500;
     color: var(--text-secondary);
     margin: 4px 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   /* Category chip colors — mirrors ArticleCard.astro / RotatingHeroSplit.astro

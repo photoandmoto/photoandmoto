@@ -29,7 +29,7 @@ const sidebarItems = sidebarArticles.map(a => ({
   href: slugFor(a),
   image: imgFor(a),
   title: a.data.title,
-  subtitle: a === sidebarArticles[0] ? (a.data.subtitle || fmt(a.data.date)) : fmt(a.data.date),
+  subtitle: a.data.subtitle || fmt(a.data.date),
   category: a.data.category,
   focus: focusFor(a),
 }));
