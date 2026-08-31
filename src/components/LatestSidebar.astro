@@ -163,6 +163,10 @@ const categoryKey = (category?: string) =>
     color: rgba(255,255,255,0.92);
     text-shadow: 0 1px 3px rgba(0,0,0,0.5);
     margin: 6px 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
     line-height: 1.3;
   }
 
