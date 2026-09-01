@@ -170,7 +170,7 @@ const metaDescription = gallery.data.seo_description || gallery.data.description
       if (q.length < 2) {
         items.forEach((item, i) => {
           item.style.display = '';
-          if (i >= 9) item.classList.add('gallery-hidden');
+          if (i >= 12) item.classList.add('gallery-hidden');
           else item.classList.remove('gallery-hidden');
         });
         if (loadMoreBtn) loadMoreBtn.style.display = '';
