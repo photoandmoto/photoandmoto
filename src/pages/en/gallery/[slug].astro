@@ -92,7 +92,7 @@ const metaDescription = gallery.data.seo_description_en || gallery.data.descript
       const q = filterInput.value.trim().toLowerCase();
       const items = document.querySelectorAll('.gallery-item');
       if (q.length < 2) {
-        items.forEach((item, i) => { item.style.display = ''; if (i >= 9) item.classList.add('gallery-hidden'); else item.classList.remove('gallery-hidden'); });
+        items.forEach((item, i) => { item.style.display = ''; if (i >= 12) item.classList.add('gallery-hidden'); else item.classList.remove('gallery-hidden'); });
         if (loadMoreBtn) loadMoreBtn.style.display = '';
         filterCount.textContent = '';
         filterClear.style.display = 'none';

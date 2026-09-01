@@ -34,7 +34,7 @@ const processedImages = images.map((img, index) => ({
   {processedImages.map((img, index) => (
     <a
       href={img.href}
-      class:list={['gallery-item', { 'gallery-hidden': index >= 9 }]}
+      class:list={['gallery-item', { 'gallery-hidden': index >= 12 }]}
       data-pswp-width={img.width}
       data-pswp-height={img.height}
       data-pswp-caption={img.caption}
@@ -58,7 +58,7 @@ const processedImages = images.map((img, index) => ({
   ))}
 </div>
 
-{processedImages.length > 9 && (
+{processedImages.length > 12 && (
   <div class="load-more-wrapper">
     <button
       id="load-more-btn"
@@ -66,7 +66,7 @@ const processedImages = images.map((img, index) => ({
       type="button"
       data-label-template={t['gallery.loadMore']}
     >
-      {t['gallery.loadMore'].replace('{count}', (processedImages.length - 9).toString())}
+      {t['gallery.loadMore'].replace('{count}', (processedImages.length - 12).toString())}
     </button>
   </div>
 )}
@@ -77,7 +77,7 @@ const processedImages = images.map((img, index) => ({
     const labelTemplate = btn.getAttribute('data-label-template') || '{count}';
     btn.addEventListener('click', () => {
       const hidden = document.querySelectorAll('.gallery-hidden');
-      const toShow = Array.from(hidden).slice(0, 9);
+      const toShow = Array.from(hidden).slice(0, 12);
       toShow.forEach(el => el.classList.remove('gallery-hidden'));
       
       const remaining = document.querySelectorAll('.gallery-hidden');
