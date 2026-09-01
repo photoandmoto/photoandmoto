@@ -24,6 +24,8 @@ Erkylän lukot ei ole mikä tahansa paikka. Rata isännöi MM-motocrossin osakil
 
 Ensimmäinen GP ajettiin 1.8.1965 kivikkoisella radalla, joka sai pian maineen armottomana. [**Vuonna 1968 Kalevi "Kale" Vehkonen**](https://www.photoandmoto.fi/fi/aikakone/kalevi-kale-vehkonen-erkyla-lukkojen-sankari/) otti täällä kuuluisan kaksoisvoittonsa 250 cc:n MM-luokassa. Rata kasvatti myös muita suuria nimiä, heidän joukossaan maailmanmestari Heikki Mikkolan.
 
+![Hyvinkää MM 125 CC lähtökierroksen vauhtia 1981](/images/MM%20125%20cc%20startti%201981.jpg "Hyvinkää MM 125 CC lähtökierroksen vauhtia 1981")
+
 Juuri tämä tekee tapahtumasta erityisen. Monelle katsojalle ja osallistujalle paikkaan liittyy henkinen ja tunteellinen side vuosien takaa — omista muistoista tai isän ja isoisän kertomuksista.
 
 ### **Talkoohenki kantaa**
