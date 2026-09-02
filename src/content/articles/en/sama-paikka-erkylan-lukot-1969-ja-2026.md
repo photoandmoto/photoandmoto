@@ -3,7 +3,7 @@ title: Hyvinkää Erkylän Lukot 1969 and 2026
 subtitle: The photographer always returns to the scene — this time after 57 years
 author: Tapio Vuori
 date: 2026-09-02
-category: Scramble
+category: Motocross
 tags:
   - Scramble
   - Hyvinkää

@@ -3,7 +3,7 @@ title: Hyvinkää Erkylän lukot 1969 ja 2026
 subtitle: Kuvaaja palaa aina kuvauspaikalle — tällä kertaa 57 vuoden jälkeen
 author: Tapio Vuori
 date: 2026-09-02
-category: Scramble
+category: Motocross
 tags:
   - Scramble
   - Hyvinkää
