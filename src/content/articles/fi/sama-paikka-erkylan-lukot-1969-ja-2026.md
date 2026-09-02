@@ -7,11 +7,11 @@ category: Scramble
 tags:
   - Scramble
   - Hyvinkää
-featured_image: /images/sama-paikka-erkylan-lukot-1969-ja-2026-merged-image-2026.jpeg
+featured_image: /images/paikka.jpg
 card_image: null
 show_hero: true
-image_caption: Perinteet elää. Oikealla ollaan vauhdissa 1969 ja vasemmalla 2026
-draft: true
+image_caption: Perinteet elää maineekkaalla Erkylän Lukkojen radalla
+draft: false
 seo_description: 'Erkylän lukot 1969–2026: mies, kamera ja crossirata'
 sources: ''
 language: fi
@@ -20,6 +20,8 @@ language: fi
 ### Coca-colaa ja crossia
 
 Eletään elokuuta 1969 ja 13-vuotias Tapio oli saanut kovan kinuamisen tuloksena vanhemmiltaan ns. coca-cola kameran. Siis sellaisen pienen pokkarikameran. Optiikka sellaisessa halvassa kamerassa ei ollut järin hääppöinen, varsinkaan johonkin motocrossin kuvaamiseen ja filmikin oli mustavalkoista. Mutta kun Erkylän lukoilla ajettiin motocrossin MM-osakilpailu ja nuorella pojalla palava innostus motocrossiin, niin kuvattava oli, että jäisi muutakin kuin muistikuvia. Siitä yhtenä esimerkkinä tuo oikeanpuoleinen kuva. Laadullisesti varsin kehno kuva, mutta paikan tunnistaa kuitenkin, kuskeja taasen ei juurikaan.
+
+![Perinteet elää. Vsemmalla ollaan vauhdissa 1969 ja oikealla 2026](/images/Rotkon%20j%C3%A4lkeen%201969%20ja%202026.jpg "Perinteet elää. Vsemmalla ollaan vauhdissa 1969 ja oikealla 2026")
 
 ### Takaisin samalle mäelle
 
