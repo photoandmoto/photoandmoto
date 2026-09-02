@@ -7,7 +7,7 @@ category: Scramble
 tags:
   - Scramble
   - Hyvinkää
-featured_image: /images/paikka.jpg
+featured_image: /images/kartta 2.jpg
 featured_image_focus: center
 card_image: null
 card_image_focus: center

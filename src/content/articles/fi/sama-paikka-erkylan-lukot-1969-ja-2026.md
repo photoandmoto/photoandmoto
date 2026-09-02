@@ -7,7 +7,7 @@ category: Scramble
 tags:
   - Scramble
   - Hyvinkää
-featured_image: /images/paikka.jpg
+featured_image: /images/kartta 2.jpg
 card_image: null
 show_hero: true
 image_caption: Perinteet elää maineekkaalla Erkylän Lukkojen radalla
