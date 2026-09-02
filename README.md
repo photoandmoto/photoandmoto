@@ -643,6 +643,15 @@ which is noisy and occasionally causes confusion. Two options: add to
 `.gitignore` (relies on Cloudflare regenerating on every build) or move them to
 a `dist`-only path. Low priority — just clutter.
 
+### Scramble 2026 entry stats — frozen
+
+The `scramble-scrape.yml` workflow was removed (Sep 2026) after repeated job
+failures. `public/data/scramble-2026.json` is now static — the counts shown on
+`/fi/scramble-2026` reflect the last successful scrape and will not update.
+`scripts/scrape-scramble.mjs` is still in the repo and can be run manually
+(`node scripts/scrape-scramble.mjs`) if a refresh is ever wanted. The old
+workflow file is recoverable from git history if the automation is revived.
+
 ---
 
 ## License
