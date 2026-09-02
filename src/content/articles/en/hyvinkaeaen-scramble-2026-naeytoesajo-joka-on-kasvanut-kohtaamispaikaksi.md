@@ -22,7 +22,7 @@ sources: Photo&Moto event report
 
 Erkylän lukot is not just any place. The track hosted World Championship motocross rounds 20 times between 1965 and 1985, 18 of which were in the 250 cc class and twice in the 125 cc class, in 1981 and 1985.
 
-The first GP was held on August 1, 1965, on a rocky track that soon gained a reputation for being ruthless. [**In 1968, Kalevi "Kale" Vehkonen**](https://www.photoandmoto.fi/fi/aikakone/kalevi-kale-vehkonen-erkyla-lukkojen-sankari/) achieved his famous double victory here in the 250 cc World Championship class. The track also nurtured other great names, among them world champion Heikki Mikkola.
+The first GP was held on August 1, 1965, on a rocky track that soon gained a reputation for being ruthless. [**In 1968, Kalevi "Kale" Vehkonen**](https://www.photoandmoto.fi/en/time-machine/kalevi-kale-vehkonen-erkyla-lukkojen-sankari/) achieved his famous double victory here in the 250 cc World Championship class. The track also nurtured other great names, among them world champion Heikki Mikkola.
 
 ![Hyvinkää World Championship 125 CC start lap action 1981](/images/MM%20125%20cc%20startti%201981.jpg "Hyvinkää World Championship 125 CC start lap action 1981")
 
@@ -80,4 +80,4 @@ The heath of Erkylän lukot gathered an enthusiastic and interested audience to 
 
 The paddock restaurant functioned flawlessly, serving coffee, soft drinks, pyttipannu (hash), and sausages at an affordable price. Admission to the event was free.
 
-See the photo collection [**here.**](https://www.photoandmoto.fi/fi/galleria/hyvinkaa-scramble-2026/)
+See the photo collection [**here**](https://www.photoandmoto.fi/en/gallery/hyvinkaa-scramble-2026/)
