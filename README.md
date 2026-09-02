@@ -326,6 +326,65 @@ is passed.
 
 ---
 
+## Cookie consent and analytics
+
+`src/components/CookieConsent.astro` is the single place where anything
+consent-relevant happens. It renders from `BaseLayout.astro`, so it is on every
+page, and it holds both language versions in one `strings` object.
+
+**The banner offers two choices, and they differ in exactly one thing.**
+
+| Choice | GA4 | Cloudflare Web Analytics |
+|---|---|---|
+| **Hyväksy kaikki** / Accept all | loaded | runs |
+| **Vain välttämättömät** / Essential only | never loaded | runs |
+| No choice made yet | never loaded | runs |
+
+Cloudflare Web Analytics is cookieless and needs no consent, so it is outside
+the gate by design. GA4 is the only thing the choice controls. That is why
+declining appears to "do nothing" — there is one optional item, not a category
+list. A third **Asetukset** button used to sit on the banner for a single
+toggle; it was removed as noise. The settings modal still exists and is reached
+from the footer **Evästeasetukset** link (any element with
+`data-pm-cookie-open` opens it).
+
+**Withdrawal actually withdraws.** Turning analytics off in the modal sets
+GA's `ga-disable-<measurement-id>` window flag, deletes `_ga` and `_ga_*` across
+the plausible cookie domains, and reloads. Without the reload an
+already-initialised `gtag` keeps sending for the rest of the session, which
+would make the opt-out cosmetic — don't remove it.
+
+**What actually sets a cookie.** Less than the old copy claimed, and the
+privacy pages were corrected to match:
+
+| Cookie / key | Set by | Who gets it |
+|---|---|---|
+| `_ga`, `_ga_*` | GA4, after consent | consenting visitors |
+| `pm_session` | `functions/api/auth/login.js` | logged-in editors/contributors only |
+| `pm_cookie_consent` | the consent component | **localStorage, not a cookie** |
+
+Language is a URL path segment, not a preference cookie. So a logged-out
+visitor who declines analytics receives **no cookies at all**.
+
+**Verifying after any change to this component** — DevTools → Network,
+filter `google`, delete `pm_cookie_consent` from Application → Local storage,
+hard-reload between each case:
+
+1. No choice made → zero requests
+2. Click **Vain välttämättömät** → still zero, and zero again after a reload
+3. Click **Hyväksy kaikki** → `gtag/js?id=G-9Y0PEJY0XG` appears, `_ga` is set
+4. Reopen the modal, untick analytics, save → page reloads, `_ga` is gone
+
+Filter on `cloudflareinsights` instead to confirm the beacon fires regardless
+of the choice. Note that ad/tracker blockers neuter both beacons locally — a
+204 with 0 bytes means your browser blocked it, not that the site is broken.
+
+User-facing wording lives in three places and must agree: this component,
+`src/pages/fi/tietosuojaseloste.astro`, and
+`src/pages/en/privacy-policy.astro`. Change one, change all three.
+
+---
+
 ## GitHub Actions
 
 All workflows are in `.github/workflows/` and documented in

@@ -757,8 +757,33 @@ traffic number without knowing which one you are reading.
 | **Google Analytics 4** (`G-9Y0PEJY0XG`) | **Yes** — injected by `src/components/CookieConsent.astro` only when the visitor accepts analytics cookies | Consented visitors only. A subset. | analytics.google.com |
 | **Cloudflare Web Analytics** | No — cookieless by design, no consent required | **All** visitors. The complete picture. | Cloudflare dashboard → Analytics → Web analytics |
 
-The Cloudflare site entry covers both `photoandmoto.pages.dev` and
-`www.photoandmoto.fi`, so production traffic is included. Created 2026-04.
+The Cloudflare Web Analytics site entry was created 2026-04 and its card reads
+`photoandmoto.pages.dev +1` — two hostnames under one entry. The beacon has
+been confirmed firing on `www.photoandmoto.fi` in the browser, so the custom
+domain is served the snippet. **The hostname list itself has not been read from
+Manage site**, so "which two" is assumed rather than verified. If Cloudflare
+numbers ever look implausibly low or high, check that first: Analytics & Logs →
+Web Analytics → the site → **Manage site**.
+
+### Cookie consent — what gates GA4
+
+GA4 is injected by `src/components/CookieConsent.astro` and only after the
+visitor accepts analytics. Declining, or making no choice at all, means the
+tag is never loaded. Cloudflare's beacon is outside the gate because it is
+cookieless. Implementation detail and the re-verification procedure are in
+`README.md` § Cookie consent and analytics — run those four checks after any
+change to the component, since a silent break here means collecting data from
+people who declined.
+
+Three files carry user-facing cookie wording and must stay in agreement:
+`src/components/CookieConsent.astro`, `src/pages/fi/tietosuojaseloste.astro`,
+and `src/pages/en/privacy-policy.astro`. The English privacy policy was a
+4-section stub until 2026-09 and is now a full translation of the Finnish one —
+keep them in step when either changes.
+
+One inventory fact worth not re-deriving: the only cookie a **logged-out**
+visitor can receive is `_ga`/`_ga_*`, and only after consent. `pm_session` is
+admin-only, and the consent record itself lives in localStorage, not a cookie.
 
 ### Which one to use for what
 
