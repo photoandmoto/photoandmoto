@@ -3,7 +3,7 @@ title: Hyvinkää Erkylän lukot 1969 ja 2026
 subtitle: Kuvaaja palaa aina kuvauspaikalle — tällä kertaa 57 vuoden jälkeen
 author: Tapio Vuori
 date: 2026-09-02
-category: Motocross
+category: Scramble
 tags:
   - Scramble
   - Hyvinkää
@@ -25,8 +25,8 @@ Eletään elokuuta 1969 ja 13-vuotias Tapio oli saanut kovan kinuamisen tuloksen
 
 ### Takaisin samalle mäelle
 
-Nyt eletään elo-syyskuun vaihdetta 2026 ja Erkylän lukoilla ajetaan jälleen kerran pitkät perinteet omaava Hyvinkään Scramble. Kun puikkelehdin kameran kanssa - joka oli jo vaihtunut coca-cola-kamerasta Canonin digi-järkkäriin - pitkin radan vartta, saavuin mäenharjanteelle josta olin silloin vuonna 1969 ottanut sillä cockis-kameralla kuvan, päätin ottaa samanlaisen kuvan nyt 57 vuotta myöhemmin. Eipä ole loppujen lopuksi maisemat aivan hirveästi muuttuneet, eikä rata. Onneksi. Perinteet elää, ja hyvä niin.
+Nyt eletään elo-syyskuun vaihdetta 2026 ja Erkylän lukoilla ajetaan jälleen kerran pitkät perinteet omaava [**Hyvinkään Scramble.**](https://www.photoandmoto.fi/fi/aikakone/hyvinkaeaen-scramble-2026-naeytoesajo-joka-on-kasvanut-kohtaamispaikaksi/) Kun puikkelehdin kameran kanssa - joka oli jo vaihtunut coca-cola-kamerasta Canonin digi-järkkäriin - pitkin radan vartta, saavuin mäenharjanteelle josta olin silloin vuonna 1969 ottanut sillä cockis-kameralla kuvan, päätin ottaa samanlaisen kuvan nyt 57 vuotta myöhemmin. Eipä ole loppujen lopuksi maisemat aivan hirveästi muuttuneet, eikä rata. Onneksi. Perinteet elää, ja hyvä niin.
 
-> Erkylän Lukot toimi MM-sarjan näyttämönä kaikkiaan 20 kertaa vuosien 1965 ja 1985 välisenä aikana.  
+> Erkylän Lukot toimi [**MM-sarjan näyttämönä** ](https://www.photoandmoto.fi/fi/aikakone/kalevi-kale-vehkonen-erkyla-lukkojen-sankari/)kaikkiaan 20 kertaa vuosien 1965 ja 1985 välisenä aikana.  
 
 Tapio Vuori

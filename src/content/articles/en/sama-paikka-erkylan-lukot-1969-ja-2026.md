@@ -3,7 +3,7 @@ title: Hyvinkää Erkylän Lukot 1969 and 2026
 subtitle: The photographer always returns to the scene — this time after 57 years
 author: Tapio Vuori
 date: 2026-09-02
-category: Motocross
+category: Scramble
 tags:
   - Scramble
   - Hyvinkää
@@ -27,8 +27,8 @@ It is August 1969, and 13-year-old Tapio, after much begging, had received a so-
 
 ### Back to the same hill
 
-Now it is the turn of August and September 2026, and the long-standing Hyvinkää Scramble is being held once again at Erkylän Lukot. As I maneuvered with my camera—which had long since been replaced from the Coca-Cola camera to a Canon digital SLR—along the side of the track, I arrived at the ridge where I had taken that photo with the Coke camera back in 1969, and I decided to take a similar photo now, 57 years later. After all, the scenery hasn't changed all that much, and neither has the track. Fortunately. Traditions live on, and that's a good thing.
+Now it is the turn of August and September 2026, and the long-standing [**Hyvinkää Scramble**](https://www.photoandmoto.fi/en/time-machine/hyvinkaeaen-scramble-2026-naeytoesajo-joka-on-kasvanut-kohtaamispaikaksi/) is being held once again at Erkylän Lukot. As I maneuvered with my camera—which had long since been replaced from the Coca-Cola camera to a Canon digital SLR—along the side of the track, I arrived at the ridge where I had taken that photo with the Coke camera back in 1969, and I decided to take a similar photo now, 57 years later. After all, the scenery hasn't changed all that much, and neither has the track. Fortunately. Traditions live on, and that's a good thing.
 
-> Erkylän Lukot served as the stage for the World Championship series a total of 20 times between 1965 and 1985.  
+> Erkylän Lukot served as the [**stage for the World Championship**](https://www.photoandmoto.fi/en/time-machine/kalevi-kale-vehkonen-erkyla-lukkojen-sankari/) series a total of 20 times between 1965 and 1985.  
 
 Tapio Vuori
