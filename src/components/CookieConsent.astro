@@ -4,14 +4,19 @@
  *
  * Behavior:
  *   - First visit (no localStorage record) → banner shows at the bottom
- *   - User picks Accept all / Essential only / Settings
- *   - Settings opens a modal with per-category toggles
+ *   - User picks Accept all / Essential only. Two buttons only: analytics is
+ *     the sole optional category, so a third "Settings" button on the first
+ *     prompt was noise for a single toggle.
+ *   - Changing your mind later: the footer "Evästeasetukset" link opens the
+ *     modal (any element with data-pm-cookie-open triggers it)
+ *   - The modal can be dismissed without saving: X, Esc, or backdrop click
  *   - Choice persists in localStorage (key: pm_cookie_consent)
- *   - Footer "Evästeasetukset" link reopens the modal anytime
- *     (any element with data-pm-cookie-open triggers it)
  *
  * What gets gated:
  *   - GA4 (sets _ga, _ga_* cookies). Loaded only when consent.analytics = true.
+ *     Withdrawing consent sets GA's ga-disable flag, clears _ga/_ga_* and
+ *     reloads — without that, an already-loaded gtag keeps sending for the
+ *     rest of the session and the opt-out would be cosmetic.
  *
  * What does NOT need gating:
  *   - Cloudflare Web Analytics: cookieless by design, no consent required.
@@ -29,14 +34,14 @@ const { lang } = Astro.props;
 const strings = {
   fi: {
     banner_title: 'Tämä sivusto käyttää evästeitä',
-    banner_text: 'Käytämme analytiikkaevästeitä ymmärtääksemme miten sivustoa käytetään. Voit hyväksyä kaikki tai vain välttämättömät, tai säätää valintoja itse.',
+    banner_text: 'Käytämme Google Analyticsia ymmärtääksemme miten sivustoa käytetään. Voit hyväksyä sen tai käyttää sivustoa vain välttämättömillä. Voit muuttaa valintaasi myöhemmin alatunnisteen Evästeasetukset-linkistä.',
     accept_all: 'Hyväksy kaikki',
     essential_only: 'Vain välttämättömät',
-    settings: 'Asetukset',
+    close: 'Sulje',
     modal_title: 'Evästeasetukset',
     modal_intro: 'Voit valita itse mitä evästeitä sallit. Välttämättömät ovat aina käytössä, koska sivusto ei toimi ilman niitä.',
     cat_essential_title: 'Välttämättömät',
-    cat_essential_desc: 'Kirjautumisistunto (yllapito), kielivalinta, suostumustallennus. Eivät sisällä tunnistettavaa tietoa eivätkä lähetä sitä ulos.',
+    cat_essential_desc: 'Kirjautumisistunto (pm_session) vain sivuston ylläpitäjille — tavallinen kävijä ei saa tätä evästettä. Evästevalintasi tallennetaan selaimen local storageen, ei evästeeseen, ja kielivalinta on osa osoitetta. Käytännössä sivusto ei aseta kirjautumattomalle kävijälle yhtään evästettä.',
     cat_analytics_title: 'Analytiikka (Google Analytics)',
     cat_analytics_desc: 'Google Analytics 4 -seuranta auttaa meitä ymmärtämään mitä sisältöä lukijat etsivät ja kuinka pitkään he viipyvät sivuilla. Asettaa _ga ja _ga_* -evästeet.',
     cat_analytics_note: 'Lisäksi käytössä on Cloudflare Web Analytics, joka on evästeetön eikä vaadi suostumusta. Se kerää vain anonyymejä sivulatauksia.',
@@ -45,14 +50,14 @@ const strings = {
   },
   en: {
     banner_title: 'This site uses cookies',
-    banner_text: 'We use analytics cookies to understand how the site is used. You can accept all, accept only essential cookies, or adjust each choice yourself.',
+    banner_text: 'We use Google Analytics to understand how the site is used. You can accept it, or browse with essential cookies only. You can change your choice later via the Cookie settings link in the footer.',
     accept_all: 'Accept all',
     essential_only: 'Essential only',
-    settings: 'Settings',
+    close: 'Close',
     modal_title: 'Cookie settings',
     modal_intro: 'Choose which cookies you allow. Essential cookies are always on because the site cannot function without them.',
     cat_essential_title: 'Essential',
-    cat_essential_desc: 'Login session (yllapito), language preference, consent storage. No identifiable information, no data sent elsewhere.',
+    cat_essential_desc: 'A login session cookie (pm_session) for site administrators only — ordinary visitors never receive it. Your cookie choice is kept in browser local storage rather than a cookie, and language is part of the URL. In practice the site sets no cookies at all for a visitor who is not logged in.',
     cat_analytics_title: 'Analytics (Google Analytics)',
     cat_analytics_desc: 'Google Analytics 4 helps us understand what content readers look for and how long they stay. Sets _ga and _ga_* cookies.',
     cat_analytics_note: 'We also use Cloudflare Web Analytics, which is cookieless and requires no consent. It collects only anonymous page views.',
@@ -77,15 +82,13 @@ const privacyHref = lang === 'fi' ? '/fi/tietosuojaseloste/' : '/en/privacy-poli
       <button type="button" id="pm-cookie-essential" class="pm-cookie-btn pm-cookie-btn--primary">
         {t.essential_only}
       </button>
-      <button type="button" id="pm-cookie-open-settings" class="pm-cookie-btn pm-cookie-btn--ghost">
-        {t.settings}
-      </button>
     </div>
   </div>
 </div>
 
 <div id="pm-cookie-modal" class="pm-cookie-modal" hidden>
   <div class="pm-cookie-modal__panel">
+    <button type="button" id="pm-cookie-close" class="pm-cookie-modal__close" aria-label={t.close}>&times;</button>
     <h2 class="pm-cookie-modal__title">{t.modal_title}</h2>
     <p class="pm-cookie-modal__intro">{t.modal_intro}</p>
 
@@ -143,6 +146,25 @@ const privacyHref = lang === 'fi' ? '/fi/tietosuojaseloste/' : '/en/privacy-poli
       } catch (e) {}
       return record;
     }
+    // GA respects a window flag named after the measurement ID. Set before or
+    // after gtag loads, it stops all sending — this is the documented opt-out
+    // and the only thing that works on an already-initialised tag.
+    function disableGA4() {
+      window['ga-disable-' + GA_ID] = true;
+      var host = location.hostname;
+      var domains = ['', host, '.' + host];
+      var bare = host.split('.').slice(-2).join('.');
+      if (bare !== host) domains.push('.' + bare);
+      document.cookie.split(';').forEach(function (raw) {
+        var name = raw.split('=')[0].trim();
+        if (name !== '_ga' && name.indexOf('_ga_') !== 0) return;
+        domains.forEach(function (d) {
+          document.cookie =
+            name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/' +
+            (d ? '; domain=' + d : '');
+        });
+      });
+    }
     function loadGA4() {
       if (window.__pm_ga4_loaded) return;
       window.__pm_ga4_loaded = true;
@@ -169,6 +191,11 @@ const privacyHref = lang === 'fi' ? '/fi/tietosuojaseloste/' : '/en/privacy-poli
       var toggle = document.getElementById('pm-cookie-toggle-analytics');
       if (toggle) toggle.checked = c ? !!c.analytics : false;
     }
+    // Dismiss without saving. The stored record is untouched, so an accidental
+    // open can't silently change anything.
+    function closeModal() {
+      setHidden('pm-cookie-modal', true);
+    }
     function applyConsent(consent) {
       if (consent && consent.analytics) loadGA4();
     }
@@ -183,18 +210,34 @@ const privacyHref = lang === 'fi' ? '/fi/tietosuojaseloste/' : '/en/privacy-poli
       } else if (target.matches('#pm-cookie-essential')) {
         writeConsent(false);
         setHidden('pm-cookie-banner', true);
-      } else if (target.matches('#pm-cookie-open-settings')) {
-        showModal();
+      } else if (target.matches('#pm-cookie-close')) {
+        closeModal();
+      } else if (target.matches('#pm-cookie-modal')) {
+        // Backdrop itself, not the panel — panel clicks don't bubble to here
+        closeModal();
       } else if (target.matches('#pm-cookie-save')) {
         var toggle = document.getElementById('pm-cookie-toggle-analytics');
-        var c2 = writeConsent(toggle && toggle.checked);
-        applyConsent(c2);
+        var wanted = !!(toggle && toggle.checked);
+        var had = readConsent();
+        var c2 = writeConsent(wanted);
         setHidden('pm-cookie-banner', true);
-        setHidden('pm-cookie-modal', true);
+        closeModal();
+        // Withdrawal: gtag is already running, so stop it and drop its cookies.
+        // Reload is the honest option — it guarantees nothing queued survives.
+        if (!wanted && had && had.analytics) {
+          disableGA4();
+          location.reload();
+          return;
+        }
+        applyConsent(c2);
       } else if (target.closest && target.closest('[data-pm-cookie-open]')) {
         e.preventDefault();
         showModal();
       }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeModal();
     });
 
     var existing = readConsent();
@@ -293,6 +336,7 @@ const privacyHref = lang === 'fi' ? '/fi/tietosuojaseloste/' : '/en/privacy-poli
     display: none;
   }
   .pm-cookie-modal__panel {
+    position: relative;
     background: #fff;
     border-radius: 12px;
     padding: 28px;
@@ -305,8 +349,31 @@ const privacyHref = lang === 'fi' ? '/fi/tietosuojaseloste/' : '/en/privacy-poli
   }
   .pm-cookie-modal__title {
     margin: 0 0 6px;
+    padding-right: 36px;
     font-size: 1.4rem;
     font-weight: 800;
+  }
+  .pm-cookie-modal__close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: #888;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .pm-cookie-modal__close:hover {
+    background: #f4f4f3;
+    color: #222;
   }
   .pm-cookie-modal__intro {
     margin: 0 0 20px;
