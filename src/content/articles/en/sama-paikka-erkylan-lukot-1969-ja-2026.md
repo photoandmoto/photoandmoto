@@ -23,7 +23,7 @@ language: fi
 
 It is August 1969, and 13-year-old Tapio, after much begging, had received a so-called Coca-Cola camera from his parents. You know, one of those small point-and-shoot cameras. The optics in such a cheap camera weren't exactly stellar, especially for shooting something like motocross, and the film was black and white, too. But when a motocross World Championship round was held at Erkylän Lukot, and a young boy had a burning passion for motocross, he had to take pictures so there would be something left besides memories. The photo on the right is one example of that. Qualitatively, it's a rather poor photo, but the location is recognizable, even if the riders are not.
 
-![Traditions live on. On the left, we are in action in 1969, and on the right in 2026](/images/Rotkon%20j%C3%A4lkeen%201969%20ja%202026.jpg "Traditions live on. On the left, we are in action in 1969, and on the right in 2026")
+![Traditions live on. On the left, race in action in 1969, and on the right in 2026](/images/Rotkon%20j%C3%A4lkeen%201969%20ja%202026.jpg "Traditions live on. On the left, race in action in 1969, and on the right in 2026")
 
 ### Back to the same hill
 

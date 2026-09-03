@@ -21,7 +21,7 @@ language: fi
 
 Eletään elokuuta 1969 ja 13-vuotias Tapio oli saanut kovan kinuamisen tuloksena vanhemmiltaan ns. coca-cola kameran. Siis sellaisen pienen pokkarikameran. Optiikka sellaisessa halvassa kamerassa ei ollut järin hääppöinen, varsinkaan johonkin motocrossin kuvaamiseen ja filmikin oli mustavalkoista. Mutta kun Erkylän lukoilla ajettiin motocrossin MM-osakilpailu ja nuorella pojalla palava innostus motocrossiin, niin kuvattava oli, että jäisi muutakin kuin muistikuvia. Siitä yhtenä esimerkkinä tuo oikeanpuoleinen kuva. Laadullisesti varsin kehno kuva, mutta paikan tunnistaa kuitenkin, kuskeja taasen ei juurikaan.
 
-![Perinteet elää. Vsemmalla ollaan vauhdissa 1969 ja oikealla 2026](/images/Rotkon%20j%C3%A4lkeen%201969%20ja%202026.jpg "Perinteet elää. Vsemmalla ollaan vauhdissa 1969 ja oikealla 2026")
+![Perinteet elää. Vasemmalla ollaan vauhdissa 1969 ja oikealla 2026](/images/Rotkon%20j%C3%A4lkeen%201969%20ja%202026.jpg "Perinteet elää. Vasemmalla ollaan vauhdissa 1969 ja oikealla 2026")
 
 ### Takaisin samalle mäelle
 
