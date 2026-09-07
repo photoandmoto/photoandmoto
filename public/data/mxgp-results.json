@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-09-06",
+  "lastUpdated": "2026-09-07",
   "seasonComplete": false,
   "totalRounds": 19,
   "latestRace": {
@@ -671,31 +671,36 @@
       ]
     }
   },
-  "nextRace": null,
+  "nextRace": {
+    "round": 18,
+    "name": "MXGP of China",
+    "location": "Shanghai, China",
+    "date": "2026-09-13"
+  },
   "highlights": {
     "fi": {
       "mxgp_quali": [
-        "Jeffrey Herlings nappasi paalupaikan lauantain karsinnassa.",
-        "Tim Gajser näytti vahvuutensa haastavissa olosuhteissa."
+        "Jeffrey Herlings nappasi paalupaikan lauantain aika-ajossa.",
+        "Tim Gajser näytti vahvuutensa vaikeissa olosuhteissa."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominoi molempia MXGP-eriä voittaen selvästi.",
-        "Tim Gajser ja Romain Febvre taistelivat tiukasti kärkipaikoista.",
-        "Jeffrey Herlings vei Turkin GP:n kokonaisvoiton murskaavasti."
+        "Jeffrey Herlings dominoi molempia MXGP-eriä ja voitti GP:n.",
+        "Tim Gajser taisteli vahvasti ja saavutti palkintokorokepaikan.",
+        "Romain Febvre ajoi tasaisesti ja varmisti podiumsijan."
       ],
       "mx2_quali": [
-        "Guillem Farres oli nopein MX2-luokan lauantain karsinnassa.",
-        "Sacha Coenen osoitti vauhtinsa haastavassa karsinnassa."
+        "Guillem Farres oli nopein MX2-luokan aika-ajossa.",
+        "Sacha Coenen osoitti vauhtinsa ollen toinen aika-ajossa."
       ],
       "mx2_race": [
-        "Simon Längenfelder voitti ensimmäisen MX2-erän vahvalla ajolla.",
-        "Guillem Farres kuittasi toisen erän voiton tiukan taistelun jälkeen.",
-        "Guillem Farres juhli MX2-luokan voittoa Turkin GP:ssä."
+        "Guillem Farres voitti toisen erän ja koko MX2 GP:n.",
+        "Simon Längenfelder hallitsi ensimmäistä erää ja taisteli podiumille.",
+        "Liam Everts nousi vahvasti toisessa erässä ja GP-kokonaiskilpailussa."
       ],
       "standings": [
-        "Jeffrey Herlings jatkaa MXGP-sarjan johdossa vankasti.",
-        "Romain Febvre pysyi sarjakakkosena ilman muutoksia.",
-        "Camden McLellan nousi MX2-sarjan toiseksi, Sacha Coenen putosi kolmanneksi."
+        "Jeffrey Herlings vahvisti asemansa MXGP-sarjan kärjessä.",
+        "Romain Febvre piti toisen sijan MXGP-pisteissä.",
+        "Tim Gajser pysyi kolmantena MXGP-sarjan kärjessä."
       ]
     },
     "en": {
@@ -704,23 +709,23 @@
         "Tim Gajser showed his speed in challenging conditions."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominated both MXGP motos with clear wins.",
-        "Tim Gajser and Romain Febvre battled fiercely for top positions.",
-        "Jeffrey Herlings took the Turkish GP overall win decisively."
+        "Jeffrey Herlings dominated both MXGP motos to win the GP.",
+        "Tim Gajser charged hard for a strong podium finish.",
+        "Romain Febvre rode consistently to secure a podium spot."
       ],
       "mx2_quali": [
-        "Guillem Farres was fastest in MX2 Saturday qualifying.",
-        "Sacha Coenen demonstrated his pace in the challenging session."
+        "Guillem Farres set the fastest lap in MX2 qualifying.",
+        "Sacha Coenen impressed with a strong second-place qualifying effort."
       ],
       "mx2_race": [
-        "Simon Längenfelder won the first MX2 moto with a strong ride.",
-        "Guillem Farres claimed the second moto victory after a tough fight.",
-        "Guillem Farres celebrated the MX2 class win at the Turkish GP."
+        "Guillem Farres won moto two and the overall MX2 GP.",
+        "Simon Längenfelder dominated the first moto and battled for the podium.",
+        "Liam Everts surged in moto two and the GP overall."
       ],
       "standings": [
-        "Jeffrey Herlings firmly leads the MXGP championship standings.",
-        "Romain Febvre held firm in second place in the standings.",
-        "Camden McLellan moved up to second in MX2, Sacha Coenen dropped to third."
+        "Jeffrey Herlings held firm at the top of the MXGP standings.",
+        "Romain Febvre maintained his second position in the MXGP points.",
+        "Tim Gajser held firm in third place in the MXGP championship."
       ]
     }
   },
