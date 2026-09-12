@@ -7,7 +7,7 @@ category: Historical
 tags:
   - Ajovarusteet
   - Motocross
-featured_image: /images/Nahkaa.jpg
+featured_image: /images/TL Hansen.jpg
 featured_image_focus: center
 card_image: ''
 card_image_focus: center
@@ -30,7 +30,7 @@ Kohon varhaisissa motocrosshousuissa yhdistettiin nailon ja nahkavahvikkeet. Pia
 
 Se, mikä tuntuu tänään itsestäänselvyydeltä, oli silloin suuri murros: ajohousuista oli tulossa kevyempiä ja joustavampia teknisiä vaatteita.
 
-![Matti Autio ((Koho) , Erkki Syndström (Sinisalo) ja Pauli Piippola (Yoko) kilpa-asuissaan ](/images/Koho%20Sinisalo%20Yoko%202.jpg "Matti Autio ((Koho) , Erkki Syndström (Sinisalo) ja Pauli Piippola (Yoko) kilpa-asuissaan")
+![Matti Autio ((Koho) , Erkki Syndström (Sinisalo) ja Pauli Piippola (Yoko) kilpa-asuissaan](/images/Koho%20Sinisalo%20Yoko%202.jpg "Matti Autio ((Koho) , Erkki Syndström (Sinisalo) ja Pauli Piippola (Yoko) kilpa-asuissaan")
 
 Koho toimitti tuotteitaan jo Yhdysvaltain markkinoille, ja Yoko, Sinisalo – sekä myöhemmin Tackla – olivat mukana rakentamassa pientä suomalaista keskittymää tämän uuden sukupolven motocrossvarusteiden ympärille.
 

@@ -7,7 +7,7 @@ category: Historical
 tags:
   - Racing gear
   - Motocross
-featured_image: /images/Nahkaa.jpg
+featured_image: /images/TL Hansen.jpg
 featured_image_focus: center
 card_image: ''
 card_image_focus: center
