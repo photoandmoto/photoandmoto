@@ -13,7 +13,7 @@ card_image: ''
 card_image_focus: center
 show_hero: true
 image_caption: Torleif Hansen vuonna 1975  ABH:n nahkaisissa ajohousuissa
-draft: true
+draft: false
 seo_description: Suomi oli tämän muutoksen eturintamassa. Kohosta, Yokosta, Sinisalosta ja Tacklasta tuli osa uuden sukupolven motocrossvarusteiden valmistajia
 sources: 'Useita julkisia lähteitä. Kuvat: Photo&Moto'
 ---

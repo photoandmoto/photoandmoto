@@ -13,7 +13,7 @@ card_image: ''
 card_image_focus: center
 show_hero: true
 image_caption: Torleif Hansen in 1975 wearing ABH leather racing pants
-draft: true
+draft: false
 seo_description: Finland was at the forefront of this change. Kohos, Yoko, Sinisalo, and Tackla became part of a new generation of motocross gear manufacturers.
 sources: 'Multiple public sources. Photos: Photo&Moto'
 ---
