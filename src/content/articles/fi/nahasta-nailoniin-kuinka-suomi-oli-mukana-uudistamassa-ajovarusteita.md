@@ -7,14 +7,14 @@ category: Historical
 tags:
   - Ajovarusteet
   - Motocross
-featured_image: ''
+featured_image: /images/Nahkaa.jpg
 featured_image_focus: center
 card_image: ''
 card_image_focus: center
 show_hero: true
-image_caption: bbb
+image_caption: Torleif Hansen vuonna 1975  ABH:n nahkaisissa ajohousuissa
 draft: true
-seo_description: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+seo_description: Suomi oli tämän muutoksen eturintamassa. Kohosta, Yokosta, Sinisalosta ja Tacklasta tuli osa uuden sukupolven motocrossvarusteiden valmistajia
 sources: 'Useita julkisia lähteitä. Kuvat: Photo&Moto'
 ---
 
@@ -29,6 +29,8 @@ Suomalaisessa läpimurrossa ei ollut kyse nahan hylkäämisestä, vaan kunkin ma
 Kohon varhaisissa motocrosshousuissa yhdistettiin nailon ja nahkavahvikkeet. Pian suomalaisvalmisteisissa ajohousuissa käytettiin synteettisiä kankaita keveyden takaamiseksi, nahkaa kulumiselle alttiissa kohdissa, vaahtomuovia pehmusteena ja valumuovia suojauksessa.
 
 Se, mikä tuntuu tänään itsestäänselvyydeltä, oli silloin suuri murros: ajohousuista oli tulossa kevyempiä ja joustavampia teknisiä vaatteita.
+
+![Matti Autio ((Koho) , Erkki Syndström (Sinisalo) ja Pauli Piippola (Yoko) kilpa-asuissaan ](/images/Koho%20Sinisalo%20Yoko%202.jpg "Matti Autio ((Koho) , Erkki Syndström (Sinisalo) ja Pauli Piippola (Yoko) kilpa-asuissaan")
 
 Koho toimitti tuotteitaan jo Yhdysvaltain markkinoille, ja Yoko, Sinisalo – sekä myöhemmin Tackla – olivat mukana rakentamassa pientä suomalaista keskittymää tämän uuden sukupolven motocrossvarusteiden ympärille.
 
@@ -52,6 +54,8 @@ Suomalainen osaaminen muokkasi siten motocrossvarusteita paljon pidemmälle kuin
 
 Suomessa valmistetut varusteet kehittyivät lajin mukana. Synteettiset kankaat, integroidut suojat, sublimaatiopainatus ja kehittyneemmät grafiikat muuttivat ajovaatteet lähemmäksi nykyaikaista teknistä urheiluvaatetusta.
 
+![John Van Den Berg (Sinisalo), Yannig Kervella (Yoko) ja Ismo Vehkonen (Tackla)](/images/Van%20Den%20Berg%20%28Sinisalo%29%2C%20Ismo%20Vehkonen%20%28Tackla%29%20ja%20Yannick%20Kervella%20%28Yoko%29.jpg "John Van Den Berg (Sinisalo), Yannig Kervella (Yoko) ja Ismo Vehkonen (Tackla)")
+
 Nämä neljä suomalaistuotemerkkiä vaikuttivat eri tavoin tässä murroksessa: Koho varhaisessa materiaalimutoksessa, Yoko kansainvälisessä valmistuksessa ja kumppanuuksissa, Sinisalo suojavarusteiden kehityksessä ja Tackla Suomen näkyvyyden laajentamisessa kansainvälisessä motocrossissa.
 
 Yhdessä ne olivat mukana siirtymässä kohti kevyempiä, teknisempiä ja yhä erottuvampia ajovaatteita.
@@ -65,6 +69,8 @@ Jonkin aikaa Suomella oli huomattavan vahva asema alalla. Tämä etulyöntiasema
 1980-luvun lopulle tultaessa motocrossista oli tulossa huomattavasti suurempaa kansainvälistä liiketoimintaa.
 
 Foxin kaltaiset amerikkalaiset tuotemerkit kasvoivat kuljettajasponsoroinnin, markkinoinnin ja jakelun avulla, kun taas Italiasta oli muodostumassa toinen vahva keskittymä AXO:n kaltaisten yhtiöiden myötä.
+
+![Erik Kehoe Helsinki Supercross 1991 AXO](/images/Erik%20Kehoe%20Helsinki%20Supercross%201991%20AXO.jpg "Erik Kehoe Helsinki Supercross 1991 AXO")
 
 Samanaikaisesti Suomen tekstiili- ja vaatetusteollisuus supistui, ja teknisten vaatteiden tuotanto siirtyi enenevissä määrin halvemman tuotannon maihin.
 
