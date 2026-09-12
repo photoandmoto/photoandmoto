@@ -13,7 +13,7 @@ card_image: ''
 card_image_focus: center
 show_hero: true
 image_caption: bbb
-draft: false
+draft: true
 seo_description: bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 sources: 'Useita julkisia lähteitä. Kuvat: Photo&Moto'
 ---
