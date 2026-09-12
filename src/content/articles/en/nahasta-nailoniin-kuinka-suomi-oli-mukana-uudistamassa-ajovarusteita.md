@@ -1,5 +1,5 @@
 ---
-title: From leather to nylon - How Finland was involved in modernizing racing gear
+title: From leather to nylon - How Finland was involved in revolutionizing motocross gear
 subtitle: Motocross gear was once dominated by leather – heavy, protective, and restrictive to movement.
 author: Photo & Moto
 date: 2026-09-12
@@ -26,13 +26,13 @@ Finland was at the forefront of this change. Koho, Yoko, Sinisalo, and Tackla be
 
 The Finnish breakthrough was not about abandoning leather, but about using each material where it worked best.
 
-Koho's early motocross pants combined nylon with leather reinforcements. Soon, Finnish-made riding pants were using synthetic fabrics for lightness, leather in high-wear areas, foam for padding, and molded plastic for protection.
+Koho's early motocross pants combined nylon and leather reinforcements. Soon, Finnish-made riding pants were using synthetic fabrics for lightness, leather in high-wear areas, foam for padding, and molded plastic for protection.
 
 What feels obvious today was a major revolution back then: riding pants were becoming lighter and more flexible technical garments.
 
-![Matti Autio (Koho), Erkki Syndström (Sinisalo), and Pauli Piippola (Yoko) in their racing gear](/images/Koho%20Sinisalo%20Yoko%202.jpg "Matti Autio (Koho), Erkki Syndström (Sinisalo), and Pauli Piippola (Yoko) in their racing gear")
+![Matti Autio (Koho), Erkki Sundström (Sinisalo), and Pauli Piippola (Yoko) in their racing gear](/images/Koho%20Sinisalo%20Yoko%202.jpg "Matti Autio (Koho), Erkki Sundström (Sinisalo), and Pauli Piippola (Yoko) in their racing gear")
 
-Koho was already supplying products to the US market, and Yoko, Sinisalo – and later Tackla – were involved in building a small Finnish hub around this new generation of motocross gear.
+Koho was already supplying its products to the US market, and Yoko, Sinisalo – and later Tackla – were involved in building a small Finnish hub around this new generation of motocross gear.
 
 > The breakthrough was not about one new material, but about understanding where each material works best.
 
@@ -40,9 +40,9 @@ Koho was already supplying products to the US market, and Yoko, Sinisalo – and
 
 The next chapter was international. Koho's gear appeared in the US through JT Racing, Sinisalo established its position in America, and Tackla reached customers outside of Finland.
 
-Yoko went even further. It became part of the manufacturing chain for rising American motocross brands, and it manufactured motocross clothing in Finland for companies like Fox, among others.
+Yoko went even further. It became part of the supply chain for rising American motocross brands, manufacturing motocross clothing in Finland for companies like Fox.
 
-This relationship says a lot about Finland's position in the industry. Finnish companies did not just sell Finnish products; they had developed such valuable manufacturing expertise that foreign brands came to Finland to have their products made.
+This relationship says a lot about Finland's position in the industry. Finnish companies were not just selling Finnish products; they had developed such valuable manufacturing expertise that foreign brands came to Finland to have their products made.
 
 Finnish expertise thus shaped motocross gear far beyond the visibility of the Finnish brands themselves.
 
@@ -52,29 +52,29 @@ Finnish expertise thus shaped motocross gear far beyond the visibility of the Fi
 
 By the 1980s, motocross clothing was changing again. Functionality was still essential, but appearance, rider identity, and sponsorship were becoming increasingly important.
 
-Gear made in Finland evolved with the sport. Synthetic fabrics, integrated protectors, sublimation printing, and more advanced graphics moved riding gear closer to modern technical sportswear.
+Gear manufactured in Finland evolved with the sport. Synthetic fabrics, integrated protectors, sublimation printing, and more advanced graphics moved riding gear closer to modern technical sportswear.
 
-![John Van Den Berg (Sinisalo), Yannig Kervella (Yoko), and Ismo Vehkonen (Tackla)](/images/Van%20Den%20Berg%20%28Sinisalo%29%2C%20Ismo%20Vehkonen%20%28Tackla%29%20ja%20Yannick%20Kervella%20%28Yoko%29.jpg "John Van Den Berg (Sinisalo), Yannig Kervella (Yoko), and Ismo Vehkonen (Tackla)")
+![John Van Den Berg (Sinisalo), Yannig Kervella (Yoko), and Ismo Vehkonen (Tackla)](/images/Van%20Den%20Berg%20%28Sinisalo%29%2C%20Ismo%20Vehkonen%20%28Tackla%29%20ja%20Yannick%20Kervella%20%28Yoko%29.jpg "John Van Den Berg (Sinisalo), Yannig Kervella (Yoko) and Ismo Vehkonen (Tackla)")
 
-These four Finnish brands contributed in different ways to this transition: Koho in the early material shift, Yoko in international manufacturing and partnerships, Sinisalo in the development of protective gear, and Tackla in expanding Finland's visibility in international motocross.
+These four Finnish brands contributed in different ways to this transformation: Koho in the early material shift, Yoko in international manufacturing and partnerships, Sinisalo in the development of protective gear, and Tackla in expanding Finland's visibility in international motocross.
 
 Together, they were part of the shift toward lighter, more technical, and increasingly distinctive riding gear.
 
-> Motocross gear was no longer just protection. It was becoming part of the rider's identity.
+> Motocross gear was no longer just about protection. It was becoming part of the rider's identity.
 
-For a while, Finland had a remarkably strong position in the industry. However, this head start did not last forever.
+For a while, Finland had a remarkably strong position in the industry. However, this competitive advantage did not last forever.
 
 ### **Then the world changed**
 
-By the late 1980s, motocross was becoming a much larger international business.
+By the late 1980s, motocross was becoming a significantly larger international business.
 
 American brands like Fox grew through rider sponsorship, marketing, and distribution, while Italy was forming another strong hub with companies like AXO.
 
 ![Erik Kehoe Helsinki Supercross 1991 AXO](/images/Erik%20Kehoe%20Helsinki%20Supercross%201991%20AXO.jpg "Erik Kehoe Helsinki Supercross 1991 AXO")
 
-At the same time, Finland's textile and clothing industry was shrinking, and the production of technical clothing increasingly moved to countries with lower production costs.
+At the same time, Finland's textile and clothing industry was shrinking, and the production of technical clothing increasingly moved to lower-cost countries.
 
-Finnish companies were caught in the grip of this change. Yoko gave up domestic production of riding gear, and Sinisalo moved to using subcontracting in Estonia.
+Finnish companies were caught in the grip of this change. Yoko gave up domestic production of riding gear, and Sinisalo shifted to using subcontracting in Estonia.
 
 The expertise had not disappeared. The competitive advantage had.
 
@@ -90,7 +90,7 @@ Yet, Finland was one of the places where motocross gear moved from traditional l
 
 Koho, Yoko, Sinisalo, and Tackla were each part of this change.
 
-Their story shows how Finnish expertise reached international markets – and how quickly an industrial head start can change. What was rare in the 1970s had become globally common by the 1990s.
+Their story shows how Finnish expertise reached international markets – and how quickly an industrial edge can change. What was rare in the 1970s had become globally common by the 1990s.
 
 Production moved. Brands strengthened. New competitors appeared.
 
