@@ -97,6 +97,13 @@ export async function onRequestPost(context) {
       }
       const res = await fetch(env.DEPLOY_HOOK_STAGING, { method: 'POST' });
       if (!res.ok) {
+        // Log the body, not just the status. Cloudflare's deploy-hook docs say
+        // every POST triggers a build and document no non-2xx responses, so an
+        // unexpected status (a 304 was observed on 2026-09-13) tells us nothing
+        // on its own — in particular it does not say whether a build was queued.
+        // Real-time logs are the only place to find out.
+        const detail = await res.text().catch(() => '');
+        console.error('Deploy hook (staging) non-OK:', res.status, detail);
         return json({ ok: false, error: `Deploy-hook palautti ${res.status}` }, 502);
       }
       return json({ ok: true });
@@ -108,6 +115,9 @@ export async function onRequestPost(context) {
     }
     const resProd = await fetch(env.DEPLOY_HOOK_PRODUCTION, { method: 'POST' });
     if (!resProd.ok) {
+      // See the staging branch above for why the body is logged.
+      const detail = await resProd.text().catch(() => '');
+      console.error('Deploy hook (production) non-OK:', resProd.status, detail);
       return json({ ok: false, error: `Deploy-hook palautti ${resProd.status}` }, 502);
     }
     return json({ ok: true });
