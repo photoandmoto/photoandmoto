@@ -247,12 +247,16 @@ export async function onRequestPost({ request, env }) {
       return fail('GitHub-todennus epäonnistui', 502);
     }
 
+    // Locale subfolder is required: the pikauutiset collection uses Decap i18n
+    // with structure: multiple_folders, and the FI page only picks up entries
+    // whose id starts with 'fi/'. A file written to the collection root would
+    // commit cleanly and then never appear on the site.
     let base = `${date}-${slugify(title)}`;
-    let path = `src/content/pikauutiset/${base}.md`;
+    let path = `src/content/pikauutiset/fi/${base}.md`;
     try {
       if (await fileExists(token, branch, path)) {
         base = `${base}-${Date.now().toString(36).slice(-4)}`;
-        path = `src/content/pikauutiset/${base}.md`;
+        path = `src/content/pikauutiset/fi/${base}.md`;
       }
     } catch (e) {
       console.error('slug pre-flight failed:', e);

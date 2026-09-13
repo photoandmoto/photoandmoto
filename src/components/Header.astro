@@ -19,12 +19,13 @@ const tickerLabel = lang === 'fi' ? 'Nyt luetuimmat' : 'Trending now';
 const navItems = lang === 'fi'
   ? [
       { href: '/fi', label: t['nav.home'] },
-      { href: '/fi/pikauutiset', label: 'Pikauutiset' },
+      { href: '/fi/pikauutiset', label: t['nav.inBrief'] },
       { href: '/fi/galleria', label: t['nav.gallery'] },
       { href: '/fi/aikakone', label: t['nav.articles'] },
     ]
   : [
       { href: '/en', label: t['nav.home'] },
+      { href: '/en/in-brief', label: t['nav.inBrief'] },
       { href: '/en/gallery', label: t['nav.gallery'] },
       { href: '/en/time-machine', label: t['nav.articles'] },
     ];

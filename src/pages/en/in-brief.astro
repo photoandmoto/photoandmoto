@@ -2,26 +2,21 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 
-const lang = 'fi';
+const lang = 'en';
 const fmt = (d: Date) =>
-  d.toLocaleDateString('fi-FI', { day: 'numeric', month: 'numeric', year: 'numeric' });
+  d.toLocaleDateString('en-GB', { day: 'numeric', month: 'numeric', year: 'numeric' });
 
-// Locale-scoped collection (Decap i18n: multiple_folders), so entries live in
-// src/content/pikauutiset/fi/ and /en/ — same pattern as the articles
-// collection. Show only published (draft: false), newest first, latest 12.
-// Older pikauutiset stay in the collection (archived in git) but aren't listed.
+// EN counterpart of /fi/pikauutiset. Entries are opt-in per item in the CMS
+// (Decap i18n, initial_locales: default), so this list stays empty until an
+// editor enables English on a pikauutinen — exactly how the articles
+// collection behaves.
 const published = (await getCollection('pikauutiset', (e) =>
-  e.id.startsWith('fi/') && !e.data.draft
+  e.id.startsWith('en/') && !e.data.draft
 )).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 const latest = published.slice(0, 12);
 
-// Cards shown before the reader clicks "Lue lisää". The rest render in the same
-// markup but start hidden, so the button is a pure CSS/JS reveal — no extra
-// route, no pagination, no second fetch.
 const INITIAL_COUNT = 6;
 
-// First complete sentence of the body — shown in the collapsed card. Ends at
-// the first . ! or ? followed by a space or the end of the string.
 function extractFirstSentence(md: string) {
   const text = String(md || '').replace(/[#>*_`~]/g, '').replace(/\s+/g, ' ').trim();
   if (!text) return '';
@@ -29,7 +24,6 @@ function extractFirstSentence(md: string) {
   return (m ? m[0] : text).trim();
 }
 
-// Body (2–3 sentences) is the markdown content area — render each entry.
 const items = await Promise.all(
   latest.map(async (e) => {
     const { Content } = await render(e);
@@ -40,19 +34,19 @@ const items = await Promise.all(
 const hiddenCount = Math.max(0, items.length - INITIAL_COUNT);
 ---
 <BaseLayout
-  title="Lyhyesti"
+  title="In Brief"
   lang={lang}
-  description="Lyhyitä faktoja moottoriurheilun maailmasta — MXGP, speedway, enduro, historia ja tekniikka."
+  description="Short facts from the world of motorsport — MXGP, speedway, enduro, history and technology."
 >
   <section class="pk">
     <div class="container">
       <div class="pk-head">
-        <h1 class="pk-title">Lyhyesti</h1>
-        <p class="pk-intro">Lyhyitä faktoja moottoriurheilun maailmasta.</p>
+        <h1 class="pk-title">In Brief</h1>
+        <p class="pk-intro">Short facts from the world of motorsport.</p>
       </div>
 
       {items.length === 0 ? (
-        <p class="pk-empty">Ei vielä pikauutisia. Palaa pian uudelleen!</p>
+        <p class="pk-empty">No news flashes yet. Check back soon!</p>
       ) : (
         <>
           <div class="pk-list">
@@ -85,7 +79,7 @@ const hiddenCount = Math.max(0, items.length - INITIAL_COUNT);
           {hiddenCount > 0 && (
             <div class="pk-more">
               <button type="button" class="pk-more__btn" data-pk-more>
-                Lue lisää ({hiddenCount})
+                Read more ({hiddenCount})
               </button>
             </div>
           )}
@@ -96,11 +90,9 @@ const hiddenCount = Math.max(0, items.length - INITIAL_COUNT);
 </BaseLayout>
 
 <script>
-  // --- Collapsible cards -------------------------------------------------
-  // max-height is measured from the panel's own scrollHeight rather than a
-  // fixed cap. The old fixed 600px cap silently clipped long entries on
-  // desktop, where the two-column grid makes cards narrower and the same text
-  // wraps to more lines than it does in the single-column mobile layout.
+  // See /fi/pikauutiset for the reasoning — panel height is measured from
+  // scrollHeight rather than capped, so long entries are never clipped in the
+  // narrower two-column desktop layout.
   function expandPanel(card: Element) {
     const panel = card.querySelector<HTMLElement>('.pk-card__panel');
     if (panel) panel.style.maxHeight = `${panel.scrollHeight}px`;
@@ -121,8 +113,6 @@ const hiddenCount = Math.max(0, items.length - INITIAL_COUNT);
     });
   });
 
-  // Re-measure open panels when the viewport changes — a resize across the
-  // 768px breakpoint changes the column count and therefore the wrapped height.
   let resizeTimer: number;
   window.addEventListener('resize', () => {
     window.clearTimeout(resizeTimer);
@@ -131,7 +121,6 @@ const hiddenCount = Math.max(0, items.length - INITIAL_COUNT);
     }, 150);
   });
 
-  // --- "Lue lisää" -------------------------------------------------------
   const moreBtn = document.querySelector<HTMLButtonElement>('[data-pk-more]');
   moreBtn?.addEventListener('click', () => {
     document.querySelectorAll('.pk-card[data-overflow="true"]').forEach((card) => {
@@ -148,7 +137,6 @@ const hiddenCount = Math.max(0, items.length - INITIAL_COUNT);
   .pk-intro { color: var(--text-secondary); margin: 0; line-height: 1.5; }
   .pk-empty { color: var(--text-secondary); font-size: 1rem; }
 
-  /* Single column on mobile, two columns on desktop (≥768px). Centered column. */
   .container { max-width: 860px; }
   .pk-list { display: grid; grid-template-columns: 1fr; gap: 16px; max-width: 860px; margin-left: auto; margin-right: auto; align-items: start; }
   @media (min-width: 768px) { .pk-list { grid-template-columns: 1fr 1fr; } }
@@ -157,10 +145,8 @@ const hiddenCount = Math.max(0, items.length - INITIAL_COUNT);
     background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; overflow: hidden;
     box-shadow: 0 2px 8px rgba(0,0,0,.04);
   }
-  /* Cards past the initial 6 — hidden until "Lue lisää" is clicked. */
   .pk-card[data-overflow="true"] { display: none; }
 
-  /* Header — always visible, click/tap toggles expansion. */
   .pk-card__head {
     width: 100%; display: flex; align-items: center; gap: 14px; text-align: left;
     background: none; border: none; cursor: pointer; padding: 14px; font: inherit; color: inherit;
@@ -172,19 +158,13 @@ const hiddenCount = Math.max(0, items.length - INITIAL_COUNT);
   .pk-card__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; aspect-ratio: 1 / 1; }
   .pk-card__headtext { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
 
-  /* #999 on white is 2.85:1 — this is 11.5px text, so WCAG AA wants 4.5:1.
-     #6B6B6B gives 5.33:1 and still reads as clearly secondary. */
   .pk-card__meta {
     display: flex; align-items: center; gap: 8px;
     font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: #6B6B6B;
   }
-  /* Purely a separator between date and author, so it is aria-hidden rather
-     than contrast-corrected — darkening it would make the divider compete with
-     the text it separates. */
   .pk-card__dot { color: #ccc; }
   .pk-card__title { font-family: var(--font-headline); font-size: 1.05rem; font-weight: 800; line-height: 1.25; color: #111; }
 
-  /* First-sentence preview — collapsed only, hidden once expanded. */
   .pk-card__preview {
     display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     font-size: .88rem; color: #555; line-height: 1.45; margin-top: 2px;
@@ -194,10 +174,6 @@ const hiddenCount = Math.max(0, items.length - INITIAL_COUNT);
   .pk-card__chev { flex: 0 0 auto; color: #bbb; font-size: 1rem; transition: transform .2s ease; }
   .pk-card[data-expanded="true"] .pk-card__chev { transform: rotate(180deg); color: var(--brand-primary, #ff9900); }
 
-  /* Collapsible body — fully hidden when collapsed (max-height:0 + overflow),
-     so only the first-sentence preview shows. The open height is set inline by
-     the script from scrollHeight, so entries are never clipped regardless of
-     length or column width. */
   .pk-card__panel { overflow: hidden; max-height: 0; transition: max-height .3s ease; }
   .pk-card__text {
     padding: 4px 14px 16px;
@@ -206,10 +182,6 @@ const hiddenCount = Math.max(0, items.length - INITIAL_COUNT);
   .pk-card__text :global(p) { margin: 0 0 .5em; }
   .pk-card__text :global(p:last-child) { margin-bottom: 0; }
 
-  /* "Lue lisää" — same outlined amber pill as the landing page's section
-     links, so it reads as part of the same interactive family. #A85D00 is
-     4.8:1 on white; the hover fill uses black on brand orange, which passes AA
-     where small orange-on-white text would not. */
   .pk-more { display: flex; justify-content: center; margin-top: 28px; }
   .pk-more__btn {
     font-family: var(--font-headline);

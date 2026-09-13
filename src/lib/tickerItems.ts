@@ -6,10 +6,10 @@ export interface TickerItem {
 }
 
 // Shared "most read" ticker pool, identical on every page that shows it --
-// same 5 newest articles (+ 3 newest Pikauutiset on FI, merged by date) for
-// a given lang, regardless of which page is rendering. Pikauutiset have no
-// per-entry URL/anchor (they're collapsible cards on one shared listing
-// page), so every pikauutinen ticker item links to the listing page itself.
+// same 5 newest articles + 3 newest Pikauutiset for a given lang, merged by
+// date, regardless of which page is rendering. Pikauutiset have no per-entry
+// URL/anchor (they're collapsible cards on one shared listing page), so every
+// pikauutinen ticker item links to the listing page itself.
 export async function getTickerItems(lang: 'fi' | 'en'): Promise<TickerItem[]> {
   const articles = (await getCollection('articles', (entry) =>
     entry.id.startsWith(`${lang}/`) && !entry.data.draft
@@ -26,18 +26,21 @@ export async function getTickerItems(lang: 'fi' | 'en'): Promise<TickerItem[]> {
     _date: a.data.date,
   }));
 
-  if (lang !== 'fi') {
-    return articleItems.map(({ href, title }) => ({ href, title }));
-  }
-
-  const pikauutiset = (await getCollection('pikauutiset', (entry) => !entry.data.draft))
+  // Pikauutiset are now locale-scoped too (Decap i18n, multiple_folders), so
+  // they need the same `${lang}/` id filter the articles use. EN translations
+  // are opt-in per entry, so the EN pool is simply smaller until editors add
+  // them -- no special-casing needed.
+  const pikauutisetHref = lang === 'fi' ? '/fi/pikauutiset' : '/en/in-brief';
+  const pikauutiset = (await getCollection('pikauutiset', (entry) =>
+    entry.id.startsWith(`${lang}/`) && !entry.data.draft
+  ))
     .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
     .slice(0, 3);
 
   return [
     ...articleItems,
     ...pikauutiset.map((p) => ({
-      href: '/fi/pikauutiset',
+      href: pikauutisetHref,
       title: p.data.title,
       _date: p.data.date,
     })),

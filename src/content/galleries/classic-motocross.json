@@ -1,8 +1,8 @@
 {
-  "title": "Classic motocross",
+  "title": "Classic Motocross",
   "slug": "classic-motocross",
-  "description": "Photo gallery: Classic motocross",
-  "cover_image": "thumbs/Okay, myönnetään, että se vika hyppyri olis kannattanut jättää vetämättä täysillä! Ohkola 2014_thumb.jpg",
+  "description": "Photo gallery: Classic Motocross",
+  "cover_image": "thumbs/CZ on puhunut ja kärkeen meni Ohkola Classic MX 2014_thumb.jpg",
   "images": [
     {
       "filename": "Classic MX Ohkola Classic mx 2014.jpg",
@@ -65,10 +65,50 @@
       "height": 1600
     },
     {
+      "filename": "Honda-man Ohkola Classic MX-kisa 2014.jpg",
+      "thumb": "thumbs/Honda-man Ohkola Classic MX-kisa 2014_thumb.jpg",
+      "display": "display/Honda-man Ohkola Classic MX-kisa 2014_display.jpg",
+      "caption": "Honda-man Ohkola Classic MX-kisa 2014",
+      "photographer": "",
+      "date": "",
+      "width": 1133,
+      "height": 1600
+    },
+    {
+      "filename": "Honda-mies meni kärkeen Ohkola Classic MX 2014.jpg",
+      "thumb": "thumbs/Honda-mies meni kärkeen Ohkola Classic MX 2014_thumb.jpg",
+      "display": "display/Honda-mies meni kärkeen Ohkola Classic MX 2014_display.jpg",
+      "caption": "Honda-mies meni kärkeen Ohkola Classic MX 2014",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 923
+    },
+    {
+      "filename": "Husky-man Ohkola Classic MX 2014.jpg",
+      "thumb": "thumbs/Husky-man Ohkola Classic MX 2014_thumb.jpg",
+      "display": "display/Husky-man Ohkola Classic MX 2014_display.jpg",
+      "caption": "Husky-man Ohkola Classic MX 2014",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 989
+    },
+    {
       "filename": "Husky-man Ohkola Classic MX-kisa 2014.jpg",
       "thumb": "thumbs/Husky-man Ohkola Classic MX-kisa 2014_thumb.jpg",
       "display": "display/Husky-man Ohkola Classic MX-kisa 2014_display.jpg",
       "caption": "Husky-man Ohkola Classic MX-kisa 2014",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 989
+    },
+    {
+      "filename": "Husky-man Ohkola Scramble MX-kisa 2014.jpg",
+      "thumb": "thumbs/Husky-man Ohkola Scramble MX-kisa 2014_thumb.jpg",
+      "display": "display/Husky-man Ohkola Scramble MX-kisa 2014_display.jpg",
+      "caption": "Husky-man Ohkola Scramble MX-kisa 2014",
       "photographer": "",
       "date": "",
       "width": 1400,
@@ -89,6 +129,16 @@
       "thumb": "thumbs/Paukkuraudat ovat puhuneet! Ohkola Classic MX 2014_thumb.jpg",
       "display": "display/Paukkuraudat ovat puhuneet! Ohkola Classic MX 2014_display.jpg",
       "caption": "Paukkuraudat ovat puhuneet! Ohkola Classic MX 2014",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 932
+    },
+    {
+      "filename": "Paukkuraudat ärjyy Ohkola Classic MX 2014.jpg",
+      "thumb": "thumbs/Paukkuraudat ärjyy Ohkola Classic MX 2014_thumb.jpg",
+      "display": "display/Paukkuraudat ärjyy Ohkola Classic MX 2014_display.jpg",
+      "caption": "Paukkuraudat ärjyy Ohkola Classic MX 2014",
       "photographer": "",
       "date": "",
       "width": 1400,
