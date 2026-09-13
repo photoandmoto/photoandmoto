@@ -1,5 +1,5 @@
 ---
-title: 30 vuotta sitten - Vuoden 1996 motocrosskausi liipaisi nelitahtisen vallankumouksen
+title: 30 vuotta sitten - Vuoden 1996 kausi liipaisi nelitahtisen vallankumouksen
 date: 2026-09-13
 category: Historical
 author: Photo & Moto

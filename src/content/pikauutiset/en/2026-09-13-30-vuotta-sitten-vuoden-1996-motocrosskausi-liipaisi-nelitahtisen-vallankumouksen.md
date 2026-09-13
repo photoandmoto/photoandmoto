@@ -1,5 +1,5 @@
 ---
-title: 30 years ago - The 1996 motocross season triggered the four-stroke revolution
+title: 30 years ago - The 1996 season triggered the four-stroke revolution
 date: 2026-09-13
 category: Historical
 author: Photo & Moto
