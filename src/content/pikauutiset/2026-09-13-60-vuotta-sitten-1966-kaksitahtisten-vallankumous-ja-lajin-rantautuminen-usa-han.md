@@ -1,5 +1,5 @@
 ---
-title: 60 Vuotta sitten - 1966 Kaksitahtisten vallankumous ja lajin rantautuminen USA:han
+title: 60 Vuotta sitten - 1966 2- tahtisten nousu ja lajin rantautuminen USA:han
 date: 2026-09-13
 category: Historical
 author: Photo & Moto
