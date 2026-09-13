@@ -54,16 +54,17 @@ All submissions are drafts that go through editorial review before publishing.
 ## Entry Points & Navigation
 
 ```
-Main nav (FI): Etusivu | Pikauutiset | Galleria | Aikakone | Muuta ▾ | Yhteystiedot
+Main nav (FI): Etusivu | Lyhyesti | Galleria | Aikakone | Muuta ▾ | Yhteystiedot
 Muuta ▾ : … | Tunnista kuva | Toimituskeskus
-EN nav  : unchanged (no Toimituskeskus / Avustajat / Toimitus)
+EN nav  : Home | In Brief | Gallery | Time Machine | More ▾ | Contact
+          (no Toimituskeskus / Avustajat / Toimitus — those stay FI-only)
 ```
 
 - **`/fi/toimitus`** — Toimituskeskus. Login + access-request gate; after login,
   permission-aware cards link to Toimitus and/or Avustajat.
 - **`/fi/yleinen-kyna`** — Avustajat (contributor tools).
 - **`/fi/yllapito`** — Toimitus (editorial/admin tools).
-- **`/fi/pikauutiset`** — public pikauutiset feed.
+- **`/fi/pikauutiset`** — public Lyhyesti feed (EN: **`/en/in-brief`**).
 - **`/fi/avustajan-ohjekirja`** — public contributor guide.
 - **`/fi/app/`** — PWA (Avustajan sovellus) — standalone Android home-screen
   app. Splash → login → Pikauutinen + Kuva tabs. Shares the same IAM
@@ -158,12 +159,23 @@ EN nav  : unchanged (no Toimituskeskus / Avustajat / Toimitus)
 - Styles use `<style is:global>`: rows are built client-side via `innerHTML`, so they
   never receive Astro's scoping attribute and scoped rules would not match them.
 
-### Pikauutiset — `/fi/pikauutiset`
-- Public, FI only. Latest 10 published items, newest first (older archived in git).
+### Lyhyesti — `/fi/pikauutiset` · `/en/in-brief`
+- Public. **Bilingual since Sep 2026**: the collection uses Decap i18n
+  (`structure: multiple_folders`), so each page lists only its own locale.
+  New entries start FI-only; the editor enables English per entry from the
+  ⋯ menu, exactly as with Artikkelit. The EN page shows an empty state until
+  a translation exists.
+- **6 cards shown initially**, with a **Lue lisää / Read more** button revealing
+  the rest (up to 12 published items, newest first; older archived in git).
 - **Collapsible cards**, all **collapsed by default** (state in-memory, never persisted).
   Collapsed shows the square thumbnail + title + date + author + **first sentence**;
   expanding reveals the full body. Two columns on desktop, one on mobile.
-- Subtitle: "Lyhyet uutiset moottoriurheilun maailmasta."
+- Panel height is measured from `scrollHeight` on expand rather than capped at a
+  fixed value. The old 600px cap clipped long entries on desktop, where the
+  two-column grid makes cards narrower and the same text wraps to more lines
+  than it does on mobile.
+- Heading: "Lyhyesti" / "In Brief". Subtitle: "Lyhyitä faktoja moottoriurheilun
+  maailmasta." / "Short facts from the world of motorsport."
 
 ### Avustajan Ohjekirja — `/fi/avustajan-ohjekirja`
 - Public contributor guide (login, article form, pikauutinen form, image rules,
@@ -218,8 +230,8 @@ to the Zod schema in `src/content.config.ts`: `title`, `subtitle?`, `author`
 `image_caption?`, `language`, `draft` (always `true` on submit),
 `seo_description?` (editor-only), `sources?`. Body is the markdown content area.
 
-### Pikauutiset — `src/content/pikauutiset/<date>-<slug>.md`
-Written by `generate-article.js`. Lean, FI-only collection. Frontmatter: `title`
+### Pikauutiset — `src/content/pikauutiset/{fi,en}/<date>-<slug>.md`
+Written by `submit-pikauutinen.js` **into the `fi/` locale folder**. Frontmatter: `title`
 (Gemini), `date` (event date), `author` (**byline** — see below), `category`,
 `photo?`, `draft` (always `true`), `source` (always `"ai_generated"`). The 2–3
 sentence text is the **markdown body** (content area), same convention as articles —
@@ -365,6 +377,19 @@ preprocess, and the Sveltia default. Rows created before this work show
 - `pikauutiset` collection (`content.config.ts` + `config.yml`), collapsible
   public page, `/fi/pikauutiset` in main nav.
 
+#### Phase 2b — Lyhyesti rename + EN (Sep 2026) ✅
+- Renamed **Pikauutiset → Lyhyesti** on the public page and in the nav (the
+  route, the collection name and the CMS label all stay `pikauutiset`).
+- Collection switched to **Decap i18n `multiple_folders`**, so entries now live in
+  `src/content/pikauutiset/{fi,en}/`. `submit-pikauutinen.js` writes to `fi/`;
+  a file at the collection root would commit cleanly and then never render.
+- **EN page** at `/en/in-brief`, hreflang mapping `pikauutiset ↔ in-brief` in
+  `BaseLayout.astro`, `nav.inBrief` in `i18n/ui.ts`, EN nav item in `Header.astro`.
+- `tickerItems.ts` now filters pikauutiset by locale and feeds the EN ticker too
+  (it previously returned articles only for EN).
+- Public page: 6 cards + "Lue lisää", and the fixed 600px panel cap replaced by a
+  measured `scrollHeight` so long entries stop clipping on desktop.
+
 ### Phase 3 — Hyväksynnät (editorial review queue) ✅ staging, pending production test
 - `submissions` table in D1: `type` (artikkeli/pikauutinen), `status`
   (odottaa/julkaistu/hylatty), `author_id/name/email` (**the real submitter,
@@ -415,7 +440,7 @@ preprocess, and the Sveltia default. Rows created before this work show
 | Avustajat page | `src/pages/fi/yleinen-kyna.astro` |
 | Toimitus (admin) | `src/pages/fi/yllapito.astro` |
 | Julkaisujono (submission history) | `src/pages/fi/julkaisujono.astro` |
-| Pikauutiset feed | `src/pages/fi/pikauutiset.astro` |
+| Pikauutiset feed | `src/pages/fi/pikauutiset.astro` (FI) · `src/pages/en/in-brief.astro` (EN) |
 | Avustajan Ohjekirja | `src/pages/fi/avustajan-ohjekirja.astro` |
 | Verification landing | `src/pages/fi/vahvista-pyynto.astro` |
 | PWA (Avustajan sovellus) | `src/pages/fi/app.astro` (`/fi/app/`) |
@@ -473,5 +498,5 @@ See "What Was Built" above. Production deploy pending.
 
 ---
 
-*Last updated: June 2026 (v3.1)*
+*Last updated: September 2026 (v3.2 — Lyhyesti rename, bilingual pikauutiset)*
 *Owner: Arto T Vilkman*

@@ -38,7 +38,7 @@ Bilingual public site (`/fi/...` and `/en/...`):
 - **Etusivu / Home** — landing page; includes the community "APUA TARVITAAN" help block
 - **Galleria / Gallery** — curated photo collections, PhotoSwipe lightbox
 - **Aikakone / Time Machine** — long-form articles
-- **Pikauutiset** — short AI-generated news flashes, submitted by contributors
+- **Lyhyesti / In Brief** (`/fi/pikauutiset`, `/en/in-brief`) — short AI-generated news flashes, submitted by contributors; FI required, EN optional per entry
 - **Kalenteri** — race calendar
 - **Tilastot** — stats pages (FIM World Champions, SM, Motocross des Nations, AMA, Trans-AMA)
 - **MXGP 2026** — current season tracker
@@ -395,7 +395,7 @@ All workflows are in `.github/workflows/` and documented in
 | `compress-article-images.yml` | Resize/re-encode oversized article images (≥5% saving required; retries push on race) |
 | `generate-og-images.yml` | Per-article 1200×630 branded social cards |
 | `check-links.yml` | Scan article markdown for broken external links |
-| `process-gallery-image.yml` | Gallery thumbnail/display derivative generation |
+| `process-gallery-image.yml` | Gallery thumbnail/display derivative generation (retries push with rebase on race) |
 | `auto-promote-deletions.yml` | Auto-merge `dev → main` when an article is deleted |
 | `mxgp-scraper.yml` | Refresh MXGP results data |
 | `scramble-scrape.yml` | Hyvinkää Scramble 2026 entry counts, twice daily (temporary — retire after 30.8.2026) |
@@ -440,7 +440,7 @@ src/
     tickerItems.ts      "Nyt luetuimmat" ticker source
   content/
     articles/{fi,en}/   Markdown articles
-    pikauutiset/        AI-generated news flashes
+    pikauutiset/{fi,en}/  AI-generated news flashes (Lyhyesti / In Brief)
     galleries/          Gallery manifests (JSON)
     categories/         Article categories (JSON)
   content.config.ts     Content collection schemas (Zod)
@@ -451,7 +451,7 @@ src/
       julkaisujono.astro  Submission history (who submitted what, any status)
       scramble-2026.astro Scramble entry stats (temporary, self-hides after the event)
       yleinen-kyna.astro  Avustajat — contributor tools
-      pikauutiset.astro   Public pikauutiset feed
+      pikauutiset.astro   Public Lyhyesti feed (EN counterpart: pages/en/in-brief.astro)
       app.astro         PWA — standalone Avustajan sovellus (/fi/app/)
       avustajan-ohjekirja.astro  Public contributor guide
   scripts/

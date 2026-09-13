@@ -21,7 +21,7 @@ julkaisun yhteydessä.
 3. [Käyttäjätilit ja oikeudet — IAM](#käyttäjätilit-ja-oikeudet--iam)
 4. [Tunnistamattomat kuvat — yllapito](#tunnistamattomat-kuvat--yllapito)
 5. [Galleriat — Hallitse galleriaa](#galleriat--hallitse-galleriaa)
-6. [Pikauutiset ja kirjoittajanimi](#pikauutiset-ja-kirjoittajanimi)
+6. [Pikauutiset (Lyhyesti) — kirjoittajanimi ja käännös](#pikauutiset-lyhyesti--kirjoittajanimi-ja-käännös)
 7. [Julkaisujono — kuka lähetti jutun](#julkaisujono--kuka-lähetti-jutun)
 8. [Yleisimmät tilanteet](#yleisimmät-tilanteet)
 9. [Vianetsintä](#vianetsintä)
@@ -520,7 +520,13 @@ Nämä vaativat toistaiseksi manuaalista git-työtä — ota yhteyttä kehittäj
 
 ---
 
-## Pikauutiset ja kirjoittajanimi
+## Pikauutiset (Lyhyesti) — kirjoittajanimi ja käännös
+
+Pikauutiset näkyvät sivustolla otsikolla **Lyhyesti**
+([/fi/pikauutiset](/fi/pikauutiset)). Sveltiassa kokoelman nimi on edelleen
+**Pikauutiset** — se on sama asia.
+
+### Kirjoittajanimi
 
 Pikauutisen **Kirjoittaja**-kenttä Sveltiassa on se nimi, joka näkyy sivustolla.
 Se ei ole sama asia kuin se, kuka jutun oikeasti lähetti.
@@ -538,6 +544,30 @@ sillä on oletusarvo, joten näet ja voit korjata nimen tarkistuksen yhteydessä
 automaattisesti `Photo & Moto`. **Älä vaihda siihen avustajan omaa nimeä** — hän
 on nimenomaan pyytänyt, ettei nimeä julkaista. Näet Julkaisujonosta kuka jutun
 lähetti, mutta se tieto on vain toimitusta varten.
+
+### Käännös englanniksi (uutta, syyskuu 2026)
+
+Pikauutisen voi nyt julkaista myös englanniksi, **täsmälleen samalla tavalla kuin
+artikkelin**. Englanninkielinen versio näkyy osoitteessa
+[/en/in-brief](/en/in-brief) otsikolla **In Brief**.
+
+1. Kirjoita ja tallenna pikauutinen suomeksi (FI)
+2. Avaa se uudelleen ja valitse editorin oikean yläkulman **⋯**-valikosta
+   englanninkielinen versio käyttöön
+3. Käännä **Otsikko** ja **Teksti** — muut kentät (päivämäärä, kategoria,
+   kirjoittaja, kuva) kopioituvat automaattisesti, eikä niitä tarvitse täyttää
+   uudelleen
+4. Tallenna
+
+**Suomi on pakollinen, englanti vapaaehtoinen.** Jos et luo englanninkielistä
+versiota, pikauutinen ei näy `/en/in-brief`-sivulla — mikä on täysin ok. Sivu
+näyttää tyhjän tilan viestin niin kauan kuin yhtään käännöstä ei ole.
+
+### Montako näkyy kerralla
+
+Lyhyesti-sivu näyttää **6 uusinta** korttia, ja loput tulevat näkyviin
+**Lue lisää** -painikkeesta. Vanhemmat pikauutiset säilyvät arkistossa (gitissä)
+mutta eivät näy listalla.
 
 ---
 
@@ -705,7 +735,9 @@ kerro kehittäjälle.
 
 ---
 
-*Viimeksi päivitetty: elokuu 2026 (pikauutisen Kirjoittaja-kenttä näkyvissä ja
-pakollinen; Julkaisujono-näkymä lähetysten historiaan. Aiemmin: Sveltia CMS
-tallentaa suoraan main-haaraan eli tuotantoon — ei erillistä esikatselu- tai
-julkaisuvälivaihetta; FI pakollinen, EN vapaaehtoinen)*
+*Viimeksi päivitetty: syyskuu 2026 (Pikauutiset näkyvät sivustolla otsikolla
+Lyhyesti; pikauutisen voi nyt kääntää englanniksi samalla tavalla kuin artikkelin.
+Aiemmin: pikauutisen Kirjoittaja-kenttä näkyvissä ja pakollinen;
+Julkaisujono-näkymä lähetysten historiaan; Sveltia CMS tallentaa suoraan
+main-haaraan eli tuotantoon — ei erillistä esikatselu- tai julkaisuvälivaihetta;
+FI pakollinen, EN vapaaehtoinen)*

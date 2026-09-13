@@ -147,8 +147,33 @@ is never written into a content file — this repo is public. **Julkaisujono**
 (`/fi/julkaisujono`) is where Toimitus looks that up; it is the only screen that
 shows approved and rejected submissions, which Hyväksynnät filters out.
 
-**See `YLEINEN_KYNA.md` (v3.0) for the full design and current built state, and
+**See `YLEINEN_KYNA.md` (v3.2) for the full design and current built state, and
 `INFRASTRUCTURE.md` for the image-storage roadmap.**
+
+#### Pikauutiset ("Lyhyesti") — bilingual since Sep 2026
+
+The `pikauutiset` collection now uses the **same i18n model as Artikkelit**
+(`i18n: multiple_folders`), so entries live in
+`src/content/pikauutiset/fi/<date>-<slug>.md` and `…/en/…`. Public pages:
+`/fi/pikauutiset` ("Lyhyesti") and `/en/in-brief` ("In Brief"). FI is required,
+EN is enabled per entry from the ⋯ menu — the EN page shows an empty state until
+a translation exists.
+
+**Operationally the one thing that matters:** `submit-pikauutinen.js` must commit
+to `src/content/pikauutiset/fi/`, not the collection root. A file at the root
+commits cleanly, passes schema validation, and then never renders on either page,
+because both filter on the `fi/` / `en/` id prefix. If new pikauutiset stop
+appearing after a change to that endpoint, check the path first.
+
+The same trap applies to any entry created before the migration. When promoting
+`dev → main`, check for stragglers at the collection root — Sveltia commits
+straight to `main`, so an entry published mid-migration lands in the old
+location:
+
+```powershell
+git ls-tree --name-only origin/main src/content/pikauutiset/
+# any loose *.md at this level needs `git mv` into fi/
+```
 
 ### Article frontmatter reference
 
@@ -432,7 +457,7 @@ All workflows live in `.github/workflows/`. They run on push to `dev` and
 | `compress-article-images.yml` | `public/images/**` | Resizes oversized images to ≤1600px wide, re-encodes JPEG/WebP at quality 82. Skips the rewrite unless it saves ≥5% (see below). Retries its push on a rebase if the branch moved. |
 | `generate-og-images.yml` | `src/content/articles/**` | Composites a 1200×630 branded social card per article (`scripts/generate-og-image.mjs`, Sharp + Montserrat). Commits to `public/og/`. |
 | `check-links.yml` | `src/content/articles/**` | Scans changed article markdown for broken external links. Fails the run (visible warning) if any are dead. Doesn't block deploys. |
-| `process-gallery-image.yml` | `public/galleries/**` | Generates thumb + display renditions for new gallery images, updates the manifest. |
+| `process-gallery-image.yml` | `public/galleries/**` | Generates thumb + display renditions for new gallery images, updates the manifest. Retries its push on a rebase if the branch moved. |
 | `auto-promote-deletions.yml` | `src/content/articles/**` (push to `dev`) | Merges `dev → main` when a push to `dev` deletes article files. **Currently a no-op for Sveltia deletions** — Sveltia commits straight to `main` now (see § Editing and publishing articles), so this trigger never fires for them; the deletion still reaches production directly. Still relevant for any article deletion made via a `dev`-branch code push. |
 | `mxgp-scraper.yml` | scheduled | Refreshes MXGP results/standings data. |
 | `scramble-scrape.yml` | scheduled (`0 6,18 * * *`) + manual | Fetches the Hyvinkää Scramble entry list from scramble.fi and commits aggregate counts to `public/data/scramble-2026.json`. Temporary — retire after 30.8.2026. |
@@ -462,10 +487,22 @@ rebase-retry loop; the compress workflow did not. OG won, compress lost, and
 four article images stayed at full size with no visible error anywhere except
 the Actions tab.
 
-**Both workflows now retry**: on a rejected push they `git fetch` + `git rebase`
-onto the branch head and try again, up to three times. If you add another
-workflow that commits back, copy that loop — a bare `git push` will eventually
-lose.
+**All three workflows that commit back now retry**: on a rejected push they
+`git fetch` + `git rebase` onto the branch head and try again, up to three
+times. If you add another workflow that commits back, copy that loop — a bare
+`git push` will eventually lose.
+
+`process-gallery-image.yml` was the last one without the loop, and it lost the
+same race on 2026-09-13: the Sharp step generated all ten derivatives for the
+`classic-motocross` import, then the push was rejected because a developer had
+pushed to `dev` while the job ran. The derivatives existed only in the Action's
+unpushed commit and were gone with the runner. Recovery was
+`npm run generate-gallery classic-motocross` locally plus a commit — cheap, but
+only because someone noticed the red ✗ in the Actions tab.
+
+Note that the workflow already had a `concurrency` group, and it did not help:
+concurrency serialises *workflow runs against each other*, not a workflow
+against a human `git push`. The rebase loop is what covers that case.
 
 **Note the failure signature**, since it is easy to misread: the job log shows
 a *successful* commit followed by `! [rejected] ... (fetch first)`. The
