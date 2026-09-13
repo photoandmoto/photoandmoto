@@ -1,5 +1,5 @@
 ---
-title: 60 Years ago - 1966 The rise of 2-strokes and the arrival of the sport in the USA
+title: 60 years ago - 1966 the rise of 2-strokes and the arrival of the sport in the USA
 date: 2026-09-13
 category: Historical
 author: Photo & Moto
