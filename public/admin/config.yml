@@ -96,10 +96,13 @@ collections:
 
   # ============================================================
   # Pikauutiset — short AI-assisted news flashes (Yleinen Kynä Phase 2).
-  # FI only (no i18n). The 2–3 sentence text is the markdown BODY (content area),
-  # same as articles. `author` and `source` are hidden/read-only — written by
-  # generate-article.js and never changed by the editor. Light editorial flow:
-  # read, toggle "Piilota sivustolta" off, publish straight to production.
+  # FI + EN, same i18n model as Artikkelit: multiple_folders, so entries live in
+  # src/content/pikauutiset/fi/ and /en/. New entries start FI-only; the editor
+  # enables English per entry from the ⋯ menu when a translation is wanted.
+  # The 2–3 sentence text is the markdown BODY (content area), same as articles.
+  # `source` is hidden — written by generate-article.js and never changed by the
+  # editor. Light editorial flow: read, toggle "Piilota sivustolta" off, publish
+  # straight to production.
   # ============================================================
   - name: pikauutiset
     label: Pikauutiset
@@ -115,9 +118,10 @@ collections:
     sortable_fields: [date, title]
     view_filters:
       - { label: 'Piilotetut (luonnos)', field: draft, pattern: true }
+    i18n: true
     fields:
-      - { name: title, label: Otsikko, widget: string }
-      - { name: date, label: Tapahtumapäivä, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true }
+      - { name: title, label: Otsikko, widget: string, required: [fi], i18n: true }
+      - { name: date, label: Tapahtumapäivä, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true, i18n: duplicate }
       - name: category
         label: Kategoria
         widget: relation
@@ -125,14 +129,15 @@ collections:
         value_field: name
         search_fields: [name, label]
         display_fields: [label]
+        i18n: duplicate
       # Visible + required so Toimitus always sees and can correct the byline
       # during review. Was widget:hidden with no default, which let Sveltia write
       # a pikauutinen with no author at all and break the production build.
-      - { name: author, label: Kirjoittaja, widget: string, required: true, default: "Photo & Moto" }
-      - { name: source, label: Lähde, widget: hidden, default: ai_generated }
-      - { name: photo, label: 'Pääkuva (valinnainen)', widget: image, required: false }
-      - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false }
-      - { name: body, label: Teksti, widget: markdown }
+      - { name: author, label: Kirjoittaja, widget: string, required: true, default: "Photo & Moto", i18n: duplicate }
+      - { name: source, label: Lähde, widget: hidden, default: ai_generated, i18n: duplicate }
+      - { name: photo, label: 'Pääkuva (valinnainen)', widget: image, required: false, i18n: duplicate }
+      - { name: draft, label: 'Piilota sivustolta', widget: boolean, default: false, i18n: duplicate }
+      - { name: body, label: Teksti, widget: markdown, required: [fi], i18n: true }
 
   # ============================================================
   # Shadow collections: pre-filled article templates.

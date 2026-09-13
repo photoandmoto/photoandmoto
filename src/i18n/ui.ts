@@ -8,6 +8,7 @@ export const defaultLang = 'fi';
 export const ui = {
   fi: {
     'nav.home': 'Etusivu',
+    'nav.inBrief': 'Lyhyesti',
     'nav.gallery': 'Galleria',
     'nav.articles': 'Aikakone',
     'nav.calendar': 'Kalenteri',
@@ -31,6 +32,7 @@ export const ui = {
   },
   en: {
     'nav.home': 'Home',
+    'nav.inBrief': 'In Brief',
     'nav.gallery': 'Gallery',
     'nav.articles': 'Time Machine',
     'nav.calendar': 'Calendar',
