@@ -134,4 +134,25 @@ jobs:
           # IMPORTANT: this commit message must match the loop guard's startsWith()
           # check at the top of the job. If you change one, change the other.
           git commit -m "chore(gallery): process new image derivatives"
-          git push origin ${{ github.ref_name }}
+
+          # A human (or the Worker) can push to the branch while this job runs,
+          # which makes a plain push fail with non-fast-forward and silently
+          # discard the derivatives we just generated. Rebase onto whatever
+          # landed and retry; the derivatives touch only thumbs/, display/ and
+          # the manifests, so they rebase cleanly in practice.
+          for attempt in 1 2 3; do
+            if git push origin ${{ github.ref_name }}; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+            echo "Push rejected (attempt $attempt) - rebasing onto origin/${{ github.ref_name }}..."
+            git fetch origin ${{ github.ref_name }}
+            git rebase origin/${{ github.ref_name }} || {
+              echo "Rebase conflict - aborting. Regenerate locally with:"
+              echo "  npm run generate-gallery <slug>"
+              git rebase --abort
+              exit 1
+            }
+          done
+          echo "Push still failing after 3 attempts."
+          exit 1
