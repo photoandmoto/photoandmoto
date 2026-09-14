@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-09-13",
+  "lastUpdated": "2026-09-14",
   "seasonComplete": false,
   "totalRounds": 19,
   "latestRace": {
@@ -671,56 +671,61 @@
       ]
     }
   },
-  "nextRace": null,
+  "nextRace": {
+    "round": 19,
+    "name": "MXGP of Australia",
+    "location": "Darwin, Australia",
+    "date": "2026-09-20"
+  },
   "highlights": {
     "fi": {
       "mxgp_quali": [
         "Jeffrey Herlings nappasi paalupaikan lauantain MXGP-aika-ajossa.",
-        "Vialle ja Adamo osoittivat vahvuutta tiukassa karsintataistelussa."
+        "Vialle ja Pancar näyttivät vahvuutensa tiukassa karsinnassa."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominoi MXGP-kisoja voittaen molemmat erät ylivoimaisesti.",
-        "Romain Febvre taisteli vahvasti ja varmisti toisen sijan GP-kokonaiskilpailussa.",
-        "Tom Vialle ajoi tasaisesti ja kuittasi kolmannen sijan MXGP-viikonlopun päätteeksi."
+        "Jeffrey Herlings dominoi molempia MXGP-eriä ja voitti GP:n.",
+        "Romain Febvre taisteli vahvasti ja varmisti kakkossijan.",
+        "Tom Vialle ajoi tasaisesti ja kruunasi viikonloppunsa kolmossijalla."
       ],
       "mx2_quali": [
-        "Guillem Farres oli nopein MX2-luokan aika-ajossa.",
-        "Sacha Coenen ja Camden McLellan osoittivat vauhtiaan karsinnoissa."
+        "Guillem Farres oli nopein MX2-luokan aika-ajoissa.",
+        "Sacha Coenen ja Camden McLellan osoittivat vauhtinsa karsinnassa."
       ],
       "mx2_race": [
-        "Camden McLellan voitti MX2-luokan ensimmäisen erän näyttävästi.",
-        "Guillem Farres kuittasi toisen erän voiton ja nousi palkintokorokkeelle.",
-        "Camden McLellan vei voiton MX2-kokonaiskilpailussa tiukan taistelun jälkeen."
+        "Camden McLellan voitti ensimmäisen MX2-erän ylivoimaisesti.",
+        "Guillem Farres vei toisen erän voiton ja taisteli GP-voitosta.",
+        "McLellan vei GP-kokonaisvoiton tiukassa kaksinkamppailussa."
       ],
       "standings": [
-        "Jeffrey Herlings johtaa MXGP-sarjaa vankasti 915 pisteellä.",
-        "Romain Febvre pitää toista sijaa 752 pisteellä.",
-        "Tim Gajser on kolmantena MXGP-pisteissä 659 pisteellä."
+        "Jeffrey Herlings pitää vahvasti kiinni MXGP-sarjan johdosta.",
+        "Romain Febvre pysyy kakkosena pisteissä.",
+        "Tim Gajser on edelleen kolmantena MXGP-sarjassa."
       ]
     },
     "en": {
       "mxgp_quali": [
         "Jeffrey Herlings claimed pole position in Saturday's MXGP qualifying.",
-        "Vialle and Adamo showed strength in a tight qualifying battle."
+        "Vialle and Pancar showed strong pace in the tight qualifying session."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominated the MXGP races, winning both motos decisively.",
-        "Romain Febvre battled strongly to secure second overall in the GP.",
-        "Tom Vialle rode consistently for third place in the MXGP weekend."
+        "Jeffrey Herlings dominated both MXGP motos to win the GP.",
+        "Romain Febvre battled hard to secure second overall.",
+        "Tom Vialle rode consistently for a strong third place finish."
       ],
       "mx2_quali": [
-        "Guillem Farres was the fastest in MX2 qualifying.",
-        "Sacha Coenen and Camden McLellan showed their pace in qualifying."
+        "Guillem Farres set the fastest lap in MX2 qualifying.",
+        "Sacha Coenen and Camden McLellan showed their speed in qualifying."
       ],
       "mx2_race": [
-        "Camden McLellan took a commanding victory in the first MX2 moto.",
-        "Guillem Farres claimed moto two win, surging to the podium.",
-        "Camden McLellan won the MX2 overall after a fierce battle."
+        "Camden McLellan took a dominant victory in the first MX2 moto.",
+        "Guillem Farres won the second moto, fighting for the GP win.",
+        "McLellan claimed the overall MX2 GP victory in a close battle."
       ],
       "standings": [
-        "Jeffrey Herlings leads the MXGP standings firmly with 915 points.",
-        "Romain Febvre holds second place with 752 points.",
-        "Tim Gajser is third in the MXGP points with 659."
+        "Jeffrey Herlings held firm to his MXGP championship lead.",
+        "Romain Febvre maintained his second position in the standings.",
+        "Tim Gajser held firm in third place in the MXGP championship."
       ]
     }
   },
