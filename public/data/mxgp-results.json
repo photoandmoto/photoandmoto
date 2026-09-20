@@ -1,24 +1,24 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-09-14",
-  "seasonComplete": false,
+  "lastUpdated": "2026-09-20",
+  "seasonComplete": true,
   "totalRounds": 19,
   "latestRace": {
-    "round": 18,
-    "name": "MXGP of China 2026",
-    "slug": "china",
-    "location": "Shanghai, China",
-    "date": "2026-09-13",
+    "round": 19,
+    "name": "MXGP of Australia 2026",
+    "slug": "australia",
+    "location": "Darwin, Australia",
+    "date": "2026-09-20",
     "season": 2026,
     "mxgp": {
       "qualifying": [
         {
           "pos": 1,
-          "num": "84",
-          "rider": "Jeffrey Herlings",
+          "num": "16",
+          "rider": "Tom Vialle",
           "bike": "Honda",
-          "nat": "NED",
-          "time": "24:12.465"
+          "nat": "FRA",
+          "time": "24:51.018"
         },
         {
           "pos": 2,
@@ -26,63 +26,63 @@
           "rider": "Romain Febvre",
           "bike": "Kawasaki",
           "nat": "FRA",
-          "time": "+0:03.007"
+          "time": "+0:03.185"
         },
         {
           "pos": 3,
-          "num": "16",
-          "rider": "Tom Vialle",
+          "num": "84",
+          "rider": "Jeffrey Herlings",
           "bike": "Honda",
-          "nat": "FRA",
-          "time": "+0:22.433"
+          "nat": "NED",
+          "time": "+0:17.161"
         },
         {
           "pos": 4,
-          "num": "253",
-          "rider": "Jan Pancar",
-          "bike": "KTM",
-          "nat": "SLO",
-          "time": "+0:37.266"
-        },
-        {
-          "pos": 5,
           "num": "80",
           "rider": "Andrea Adamo",
           "bike": "KTM",
           "nat": "ITA",
-          "time": "+0:40.834"
+          "time": "+0:17.946"
         },
         {
-          "pos": 6,
-          "num": "10",
-          "rider": "Calvin Vlaanderen",
-          "bike": "Ducati",
-          "nat": "NED",
-          "time": "+0:43.280"
-        },
-        {
-          "pos": 7,
-          "num": "93",
-          "rider": "Jago Geerts",
-          "bike": "Beta",
-          "nat": "BEL",
-          "time": "+0:44.482"
-        },
-        {
-          "pos": 8,
-          "num": "91",
-          "rider": "Jeremy Seewer",
-          "bike": "KTM",
-          "nat": "SUI",
-          "time": "+0:46.709"
-        },
-        {
-          "pos": 9,
+          "pos": 5,
           "num": "41",
           "rider": "Pauls Jonass",
           "bike": "Kawasaki",
           "nat": "LAT",
-          "time": "+0:48.671"
+          "time": "+0:44.139"
+        },
+        {
+          "pos": 6,
+          "num": "91",
+          "rider": "Jeremy Seewer",
+          "bike": "KTM",
+          "nat": "SUI",
+          "time": "+0:57.277"
+        },
+        {
+          "pos": 7,
+          "num": "10",
+          "rider": "Calvin Vlaanderen",
+          "bike": "Ducati",
+          "nat": "NED",
+          "time": "+1:02.326"
+        },
+        {
+          "pos": 8,
+          "num": "253",
+          "rider": "Jan Pancar",
+          "bike": "KTM",
+          "nat": "SLO",
+          "time": "+1:06.528"
+        },
+        {
+          "pos": 9,
+          "num": "93",
+          "rider": "Jago Geerts",
+          "bike": "Beta",
+          "nat": "BEL",
+          "time": "+1:27.466"
         },
         {
           "pos": 10,
@@ -90,7 +90,7 @@
           "rider": "Dylan Walsh",
           "bike": "KTM",
           "nat": "NZL",
-          "time": "+1:32.329"
+          "time": "+1:49.268"
         }
       ],
       "race1": [
@@ -100,7 +100,7 @@
           "rider": "Jeffrey Herlings",
           "bike": "Honda",
           "nat": "NED",
-          "time": "35:14.056"
+          "time": "34:24.505"
         },
         {
           "pos": 2,
@@ -108,23 +108,23 @@
           "rider": "Romain Febvre",
           "bike": "Kawasaki",
           "nat": "FRA",
-          "time": "+0:08.333"
+          "time": "+0:18.362"
         },
         {
           "pos": 3,
+          "num": "80",
+          "rider": "Andrea Adamo",
+          "bike": "KTM",
+          "nat": "ITA",
+          "time": "+1:02.170"
+        },
+        {
+          "pos": 4,
           "num": "16",
           "rider": "Tom Vialle",
           "bike": "Honda",
           "nat": "FRA",
-          "time": "+0:12.236"
-        },
-        {
-          "pos": 4,
-          "num": "253",
-          "rider": "Jan Pancar",
-          "bike": "KTM",
-          "nat": "SLO",
-          "time": "+0:54.302"
+          "time": "+1:07.125"
         },
         {
           "pos": 5,
@@ -132,7 +132,7 @@
           "rider": "Pauls Jonass",
           "bike": "Kawasaki",
           "nat": "LAT",
-          "time": "+0:57.142"
+          "time": "+1:11.155"
         },
         {
           "pos": 6,
@@ -140,39 +140,39 @@
           "rider": "Calvin Vlaanderen",
           "bike": "Ducati",
           "nat": "NED",
-          "time": "+1:01.128"
+          "time": "+1:13.043"
         },
         {
           "pos": 7,
+          "num": "253",
+          "rider": "Jan Pancar",
+          "bike": "KTM",
+          "nat": "SLO",
+          "time": "+1:42.497"
+        },
+        {
+          "pos": 8,
           "num": "91",
           "rider": "Jeremy Seewer",
           "bike": "KTM",
           "nat": "SUI",
-          "time": "+1:03.868"
+          "time": "+1 lap"
         },
         {
-          "pos": 8,
+          "pos": 9,
           "num": "93",
           "rider": "Jago Geerts",
           "bike": "Beta",
           "nat": "BEL",
-          "time": "+1:23.353"
-        },
-        {
-          "pos": 9,
-          "num": "80",
-          "rider": "Andrea Adamo",
-          "bike": "KTM",
-          "nat": "ITA",
-          "time": "+1:47.688"
+          "time": "+1 lap"
         },
         {
           "pos": 10,
-          "num": "53",
-          "rider": "Dylan Walsh",
-          "bike": "KTM",
-          "nat": "NZL",
-          "time": "+1:49.387"
+          "num": "128",
+          "rider": "Ivo Monticelli",
+          "bike": "Yamaha",
+          "nat": "ITA",
+          "time": "+1 lap"
         }
       ],
       "race2": [
@@ -182,7 +182,7 @@
           "rider": "Jeffrey Herlings",
           "bike": "Honda",
           "nat": "NED",
-          "time": "35:15.685"
+          "time": "34:45.558"
         },
         {
           "pos": 2,
@@ -190,7 +190,7 @@
           "rider": "Romain Febvre",
           "bike": "Kawasaki",
           "nat": "FRA",
-          "time": "+0:05.641"
+          "time": "+0:03.600"
         },
         {
           "pos": 3,
@@ -198,15 +198,15 @@
           "rider": "Tom Vialle",
           "bike": "Honda",
           "nat": "FRA",
-          "time": "+0:41.944"
+          "time": "+0:07.742"
         },
         {
           "pos": 4,
-          "num": "10",
-          "rider": "Calvin Vlaanderen",
-          "bike": "Ducati",
-          "nat": "NED",
-          "time": "+0:46.190"
+          "num": "80",
+          "rider": "Andrea Adamo",
+          "bike": "KTM",
+          "nat": "ITA",
+          "time": "+0:49.372"
         },
         {
           "pos": 5,
@@ -214,15 +214,15 @@
           "rider": "Pauls Jonass",
           "bike": "Kawasaki",
           "nat": "LAT",
-          "time": "+0:49.575"
+          "time": "+0:53.702"
         },
         {
           "pos": 6,
-          "num": "80",
-          "rider": "Andrea Adamo",
-          "bike": "KTM",
-          "nat": "ITA",
-          "time": "+1:08.991"
+          "num": "10",
+          "rider": "Calvin Vlaanderen",
+          "bike": "Ducati",
+          "nat": "NED",
+          "time": "+1:07.131"
         },
         {
           "pos": 7,
@@ -230,7 +230,7 @@
           "rider": "Jan Pancar",
           "bike": "KTM",
           "nat": "SLO",
-          "time": "+1:10.738"
+          "time": "+1:12.735"
         },
         {
           "pos": 8,
@@ -238,7 +238,7 @@
           "rider": "Jeremy Seewer",
           "bike": "KTM",
           "nat": "SUI",
-          "time": "+1:14.623"
+          "time": "+1:14.516"
         },
         {
           "pos": 9,
@@ -246,7 +246,7 @@
           "rider": "Jago Geerts",
           "bike": "Beta",
           "nat": "BEL",
-          "time": "+1:22.305"
+          "time": "+1:18.525"
         },
         {
           "pos": 10,
@@ -280,15 +280,15 @@
           "rider": "Tom Vialle",
           "bike": "Honda",
           "nat": "FRA",
-          "pts": 40
+          "pts": 38
         },
         {
           "pos": 4,
-          "num": "10",
-          "rider": "Calvin Vlaanderen",
-          "bike": "Ducati",
-          "nat": "NED",
-          "pts": 33
+          "num": "80",
+          "rider": "Andrea Adamo",
+          "bike": "KTM",
+          "nat": "ITA",
+          "pts": 38
         },
         {
           "pos": 5,
@@ -300,19 +300,19 @@
         },
         {
           "pos": 6,
+          "num": "10",
+          "rider": "Calvin Vlaanderen",
+          "bike": "Ducati",
+          "nat": "NED",
+          "pts": 30
+        },
+        {
+          "pos": 7,
           "num": "253",
           "rider": "Jan Pancar",
           "bike": "KTM",
           "nat": "SLO",
-          "pts": 32
-        },
-        {
-          "pos": 7,
-          "num": "80",
-          "rider": "Andrea Adamo",
-          "bike": "KTM",
-          "nat": "ITA",
-          "pts": 27
+          "pts": 28
         },
         {
           "pos": 8,
@@ -320,7 +320,7 @@
           "rider": "Jeremy Seewer",
           "bike": "KTM",
           "nat": "SUI",
-          "pts": 27
+          "pts": 26
         },
         {
           "pos": 9,
@@ -328,7 +328,7 @@
           "rider": "Jago Geerts",
           "bike": "Beta",
           "nat": "BEL",
-          "pts": 25
+          "pts": 24
         },
         {
           "pos": 10,
@@ -336,7 +336,7 @@
           "rider": "Dylan Walsh",
           "bike": "KTM",
           "nat": "NZL",
-          "pts": 22
+          "pts": 21
         }
       ]
     },
@@ -344,83 +344,83 @@
       "qualifying": [
         {
           "pos": 1,
-          "num": "99",
-          "rider": "Guillem Farres",
-          "bike": "Triumph",
-          "nat": "ESP",
-          "time": "24:46.352"
-        },
-        {
-          "pos": 2,
-          "num": "19",
-          "rider": "Sacha Coenen",
-          "bike": "KTM",
-          "nat": "BEL",
-          "time": "+0:00.583"
-        },
-        {
-          "pos": 3,
           "num": "8",
           "rider": "Camden McLellan",
           "bike": "Triumph",
           "nat": "RSA",
-          "time": "+0:01.104"
+          "time": "23:43.715"
         },
         {
-          "pos": 4,
-          "num": "1",
-          "rider": "Simon Längenfelder",
-          "bike": "KTM",
-          "nat": "GER",
-          "time": "+0:05.167"
-        },
-        {
-          "pos": 5,
-          "num": "26",
-          "rider": "Liam Everts",
-          "bike": "Husqvarna",
-          "nat": "BEL",
-          "time": "+0:07.092"
-        },
-        {
-          "pos": 6,
+          "pos": 2,
           "num": "772",
           "rider": "Janis Martins Reisulis",
           "bike": "Yamaha",
           "nat": "LAT",
-          "time": "+0:13.341"
+          "time": "+0:01.288"
         },
         {
-          "pos": 7,
+          "pos": 3,
+          "num": "26",
+          "rider": "Liam Everts",
+          "bike": "Husqvarna",
+          "nat": "BEL",
+          "time": "+0:02.173"
+        },
+        {
+          "pos": 4,
+          "num": "99",
+          "rider": "Guillem Farres",
+          "bike": "Triumph",
+          "nat": "ESP",
+          "time": "+0:30.495"
+        },
+        {
+          "pos": 5,
           "num": "33",
           "rider": "Kay Karssemakers",
           "bike": "Kawasaki",
           "nat": "NED",
-          "time": "+0:29.114"
+          "time": "+0:32.213"
         },
         {
-          "pos": 8,
-          "num": "20",
-          "rider": "Julius Mikula",
+          "pos": 6,
+          "num": "19",
+          "rider": "Sacha Coenen",
           "bike": "KTM",
-          "nat": "CZE",
-          "time": "+0:31.473"
+          "nat": "BEL",
+          "time": "+0:40.142"
         },
         {
-          "pos": 9,
+          "pos": 7,
           "num": "265",
           "rider": "Byron Dennis",
           "bike": "KTM",
           "nat": "AUS",
-          "time": "+0:33.178"
+          "time": "+0:47.299"
         },
         {
-          "pos": 10,
+          "pos": 8,
           "num": "47",
           "rider": "Karlis Alberts Reisulis",
           "bike": "Yamaha",
           "nat": "LAT",
-          "time": "+1:00.953"
+          "time": "+0:50.990"
+        },
+        {
+          "pos": 9,
+          "num": "83",
+          "rider": "Maxime Grau",
+          "bike": "Honda",
+          "nat": "FRA",
+          "time": "+0:56.494"
+        },
+        {
+          "pos": 10,
+          "num": "73",
+          "rider": "Ferruccio Zanchi",
+          "bike": "Ducati",
+          "nat": "ITA",
+          "time": "+1:23.529"
         }
       ],
       "race1": [
@@ -430,15 +430,15 @@
           "rider": "Camden McLellan",
           "bike": "Triumph",
           "nat": "RSA",
-          "time": "34:10.515"
+          "time": "33:23.805"
         },
         {
           "pos": 2,
-          "num": "1",
-          "rider": "Simon Längenfelder",
-          "bike": "KTM",
-          "nat": "GER",
-          "time": "+0:01.575"
+          "num": "99",
+          "rider": "Guillem Farres",
+          "bike": "Triumph",
+          "nat": "ESP",
+          "time": "+0:01.367"
         },
         {
           "pos": 3,
@@ -446,15 +446,15 @@
           "rider": "Liam Everts",
           "bike": "Husqvarna",
           "nat": "BEL",
-          "time": "+0:01.982"
+          "time": "+0:02.168"
         },
         {
           "pos": 4,
-          "num": "99",
-          "rider": "Guillem Farres",
-          "bike": "Triumph",
-          "nat": "ESP",
-          "time": "+0:16.578"
+          "num": "772",
+          "rider": "Janis Martins Reisulis",
+          "bike": "Yamaha",
+          "nat": "LAT",
+          "time": "+0:17.635"
         },
         {
           "pos": 5,
@@ -462,39 +462,39 @@
           "rider": "Sacha Coenen",
           "bike": "KTM",
           "nat": "BEL",
-          "time": "+0:20.696"
+          "time": "+0:26.107"
         },
         {
           "pos": 6,
-          "num": "33",
-          "rider": "Kay Karssemakers",
-          "bike": "Kawasaki",
-          "nat": "NED",
-          "time": "+0:27.271"
-        },
-        {
-          "pos": 7,
-          "num": "772",
-          "rider": "Janis Martins Reisulis",
-          "bike": "Yamaha",
-          "nat": "LAT",
-          "time": "+0:28.402"
-        },
-        {
-          "pos": 8,
           "num": "265",
           "rider": "Byron Dennis",
           "bike": "KTM",
           "nat": "AUS",
-          "time": "+0:58.746"
+          "time": "+0:31.044"
         },
         {
-          "pos": 9,
+          "pos": 7,
+          "num": "33",
+          "rider": "Kay Karssemakers",
+          "bike": "Kawasaki",
+          "nat": "NED",
+          "time": "+0:39.062"
+        },
+        {
+          "pos": 8,
           "num": "83",
           "rider": "Maxime Grau",
           "bike": "Honda",
           "nat": "FRA",
-          "time": "+1:07.035"
+          "time": "+0:45.270"
+        },
+        {
+          "pos": 9,
+          "num": "47",
+          "rider": "Karlis Alberts Reisulis",
+          "bike": "Yamaha",
+          "nat": "LAT",
+          "time": "+0:47.661"
         },
         {
           "pos": 10,
@@ -502,17 +502,17 @@
           "rider": "Ferruccio Zanchi",
           "bike": "Ducati",
           "nat": "ITA",
-          "time": "+1:12.143"
+          "time": "+1:35.433"
         }
       ],
       "race2": [
         {
           "pos": 1,
-          "num": "99",
-          "rider": "Guillem Farres",
-          "bike": "Triumph",
-          "nat": "ESP",
-          "time": "34:19.096"
+          "num": "26",
+          "rider": "Liam Everts",
+          "bike": "Husqvarna",
+          "nat": "BEL",
+          "time": "33:31.260"
         },
         {
           "pos": 2,
@@ -520,71 +520,71 @@
           "rider": "Camden McLellan",
           "bike": "Triumph",
           "nat": "RSA",
-          "time": "+0:01.038"
+          "time": "+0:11.166"
         },
         {
           "pos": 3,
-          "num": "26",
-          "rider": "Liam Everts",
-          "bike": "Husqvarna",
-          "nat": "BEL",
-          "time": "+0:01.979"
-        },
-        {
-          "pos": 4,
           "num": "772",
           "rider": "Janis Martins Reisulis",
           "bike": "Yamaha",
           "nat": "LAT",
-          "time": "+0:22.688"
+          "time": "+0:14.418"
+        },
+        {
+          "pos": 4,
+          "num": "19",
+          "rider": "Sacha Coenen",
+          "bike": "KTM",
+          "nat": "BEL",
+          "time": "+0:22.488"
         },
         {
           "pos": 5,
+          "num": "99",
+          "rider": "Guillem Farres",
+          "bike": "Triumph",
+          "nat": "ESP",
+          "time": "+0:32.261"
+        },
+        {
+          "pos": 6,
           "num": "33",
           "rider": "Kay Karssemakers",
           "bike": "Kawasaki",
           "nat": "NED",
-          "time": "+0:33.503"
-        },
-        {
-          "pos": 6,
-          "num": "47",
-          "rider": "Karlis Alberts Reisulis",
-          "bike": "Yamaha",
-          "nat": "LAT",
-          "time": "+0:50.684"
+          "time": "+0:35.387"
         },
         {
           "pos": 7,
-          "num": "265",
-          "rider": "Byron Dennis",
-          "bike": "KTM",
-          "nat": "AUS",
-          "time": "+0:57.121"
-        },
-        {
-          "pos": 8,
-          "num": "1",
-          "rider": "Simon Längenfelder",
-          "bike": "KTM",
-          "nat": "GER",
-          "time": "+1:07.788"
-        },
-        {
-          "pos": 9,
-          "num": "73",
-          "rider": "Ferruccio Zanchi",
-          "bike": "Ducati",
-          "nat": "ITA",
-          "time": "+1:09.599"
-        },
-        {
-          "pos": 10,
           "num": "83",
           "rider": "Maxime Grau",
           "bike": "Honda",
           "nat": "FRA",
-          "time": "+1:05.403"
+          "time": "+0:38.666"
+        },
+        {
+          "pos": 8,
+          "num": "265",
+          "rider": "Byron Dennis",
+          "bike": "KTM",
+          "nat": "AUS",
+          "time": "+0:39.986"
+        },
+        {
+          "pos": 9,
+          "num": "47",
+          "rider": "Karlis Alberts Reisulis",
+          "bike": "Yamaha",
+          "nat": "LAT",
+          "time": "+0:41.190"
+        },
+        {
+          "pos": 10,
+          "num": "73",
+          "rider": "Ferruccio Zanchi",
+          "bike": "Ducati",
+          "nat": "ITA",
+          "time": "+1 lap"
         }
       ],
       "overall": [
@@ -598,35 +598,35 @@
         },
         {
           "pos": 2,
-          "num": "99",
-          "rider": "Guillem Farres",
-          "bike": "Triumph",
-          "nat": "ESP",
-          "pts": 43
-        },
-        {
-          "pos": 3,
           "num": "26",
           "rider": "Liam Everts",
           "bike": "Husqvarna",
           "nat": "BEL",
-          "pts": 40
+          "pts": 45
         },
         {
-          "pos": 4,
-          "num": "1",
-          "rider": "Simon Längenfelder",
-          "bike": "KTM",
-          "nat": "GER",
-          "pts": 35
-        },
-        {
-          "pos": 5,
+          "pos": 3,
           "num": "772",
           "rider": "Janis Martins Reisulis",
           "bike": "Yamaha",
           "nat": "LAT",
-          "pts": 32
+          "pts": 38
+        },
+        {
+          "pos": 4,
+          "num": "99",
+          "rider": "Guillem Farres",
+          "bike": "Triumph",
+          "nat": "ESP",
+          "pts": 38
+        },
+        {
+          "pos": 5,
+          "num": "19",
+          "rider": "Sacha Coenen",
+          "bike": "KTM",
+          "nat": "BEL",
+          "pts": 34
         },
         {
           "pos": 6,
@@ -634,7 +634,7 @@
           "rider": "Kay Karssemakers",
           "bike": "Kawasaki",
           "nat": "NED",
-          "pts": 31
+          "pts": 29
         },
         {
           "pos": 7,
@@ -642,90 +642,85 @@
           "rider": "Byron Dennis",
           "bike": "KTM",
           "nat": "AUS",
-          "pts": 27
+          "pts": 28
         },
         {
           "pos": 8,
-          "num": "47",
-          "rider": "Karlis Alberts Reisulis",
-          "bike": "Yamaha",
-          "nat": "LAT",
-          "pts": 25
-        },
-        {
-          "pos": 9,
-          "num": "73",
-          "rider": "Ferruccio Zanchi",
-          "bike": "Ducati",
-          "nat": "ITA",
-          "pts": 23
-        },
-        {
-          "pos": 10,
           "num": "83",
           "rider": "Maxime Grau",
           "bike": "Honda",
           "nat": "FRA",
-          "pts": 23
+          "pts": 27
+        },
+        {
+          "pos": 9,
+          "num": "47",
+          "rider": "Karlis Alberts Reisulis",
+          "bike": "Yamaha",
+          "nat": "LAT",
+          "pts": 24
+        },
+        {
+          "pos": 10,
+          "num": "73",
+          "rider": "Ferruccio Zanchi",
+          "bike": "Ducati",
+          "nat": "ITA",
+          "pts": 22
         }
       ]
     }
   },
-  "nextRace": {
-    "round": 19,
-    "name": "MXGP of Australia",
-    "location": "Darwin, Australia",
-    "date": "2026-09-20"
-  },
+  "nextRace": null,
   "highlights": {
     "fi": {
       "mxgp_quali": [
-        "Jeffrey Herlings nappasi paalupaikan lauantain MXGP-aika-ajossa.",
-        "Vialle ja Pancar näyttivät vahvuutensa tiukassa karsinnassa."
+        "Tom Vialle nappasi paalupaikan lauantain aika-ajoissa.",
+        "Jeffrey Herlings näytti vauhtinsa vaikeissakin olosuhteissa."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominoi molempia MXGP-eriä ja voitti GP:n.",
-        "Romain Febvre taisteli vahvasti ja varmisti kakkossijan.",
-        "Tom Vialle ajoi tasaisesti ja kruunasi viikonloppunsa kolmossijalla."
+        "Jeffrey Herlings dominoi molempia MXGP-eriä Australiassa.",
+        "Romain Febvre taisteli vahvasti ja varmisti toisen sijan.",
+        "Jeffrey Herlings vei kokonaisvoiton ylivoimaisesti."
       ],
       "mx2_quali": [
-        "Guillem Farres oli nopein MX2-luokan aika-ajoissa.",
-        "Sacha Coenen ja Camden McLellan osoittivat vauhtinsa karsinnassa."
+        "Camden McLellan oli nopein MX2-aika-ajoissa.",
+        "Janis Martins Reisulis osoitti vahvuutensa lauantaina."
       ],
       "mx2_race": [
-        "Camden McLellan voitti ensimmäisen MX2-erän ylivoimaisesti.",
-        "Guillem Farres vei toisen erän voiton ja taisteli GP-voitosta.",
-        "McLellan vei GP-kokonaisvoiton tiukassa kaksinkamppailussa."
+        "Camden McLellan voitti ensimmäisen MX2-erän Australiassa.",
+        "Liam Everts kiri voittoon toisessa MX2-erässä.",
+        "Camden McLellan kruunattiin MX2-GP:n voittajaksi."
       ],
       "standings": [
-        "Jeffrey Herlings pitää vahvasti kiinni MXGP-sarjan johdosta.",
-        "Romain Febvre pysyy kakkosena pisteissä.",
-        "Tim Gajser on edelleen kolmantena MXGP-sarjassa."
+        "Jeffrey Herlings johtaa MXGP-sarjaa vankasti.",
+        "Romain Febvre pysyi toisena sarjapisteissä.",
+        "Tim Gajser piti kolmannen sijan sarjassa."
       ]
     },
     "en": {
       "mxgp_quali": [
-        "Jeffrey Herlings claimed pole position in Saturday's MXGP qualifying.",
-        "Vialle and Pancar showed strong pace in the tight qualifying session."
+        "Tom Vialle claimed pole position in Saturday qualifying.",
+        "Jeffrey Herlings showed his speed in challenging conditions."
       ],
       "mxgp_race": [
-        "Jeffrey Herlings dominated both MXGP motos to win the GP.",
+        "Jeffrey Herlings dominated both MXGP motos in Australia.",
         "Romain Febvre battled hard to secure second overall.",
-        "Tom Vialle rode consistently for a strong third place finish."
+        "Jeffrey Herlings claimed the overall GP victory convincingly."
       ],
       "mx2_quali": [
-        "Guillem Farres set the fastest lap in MX2 qualifying.",
-        "Sacha Coenen and Camden McLellan showed their speed in qualifying."
+        "Camden McLellan was fastest in MX2 qualifying.",
+        "Janis Martins Reisulis showed his strength on Saturday."
       ],
       "mx2_race": [
-        "Camden McLellan took a dominant victory in the first MX2 moto.",
-        "Guillem Farres won the second moto, fighting for the GP win.",
-        "McLellan claimed the overall MX2 GP victory in a close battle."
+        "Camden McLellan won the first MX2 moto in Australia.",
+        "Liam Everts charged to victory in the second MX2 moto.",
+        "Camden McLellan was crowned the MX2 GP winner."
       ],
       "standings": [
-        "Jeffrey Herlings held firm to his MXGP championship lead.",
-        "Romain Febvre maintained his second position in the standings.",
-        "Tim Gajser held firm in third place in the MXGP championship."
+        "Jeffrey Herlings leads the MXGP standings strongly.",
+        "Romain Febvre held firm in second in the standings.",
+        "Tim Gajser maintained his third position in the championship."
       ]
     }
   },
@@ -737,7 +732,7 @@
         "rider": "Jeffrey Herlings",
         "bike": "Honda",
         "nat": "NED",
-        "pts": 915
+        "pts": 973
       },
       {
         "pos": 2,
@@ -745,7 +740,7 @@
         "rider": "Romain Febvre",
         "bike": "Kawasaki",
         "nat": "FRA",
-        "pts": 752
+        "pts": 805
       },
       {
         "pos": 3,
@@ -761,7 +756,7 @@
         "rider": "Tom Vialle",
         "bike": "Honda",
         "nat": "FRA",
-        "pts": 593
+        "pts": 641
       },
       {
         "pos": 5,
@@ -769,7 +764,7 @@
         "rider": "Andrea Adamo",
         "bike": "KTM",
         "nat": "ITA",
-        "pts": 592
+        "pts": 637
       },
       {
         "pos": 6,
@@ -797,19 +792,19 @@
       },
       {
         "pos": 9,
+        "num": "41",
+        "rider": "Pauls Jonass",
+        "bike": "Kawasaki",
+        "nat": "LAT",
+        "pts": 438
+      },
+      {
+        "pos": 10,
         "num": "74",
         "rider": "Kay de Wolf",
         "bike": "Husqvarna",
         "nat": "NED",
         "pts": 428
-      },
-      {
-        "pos": 10,
-        "num": "41",
-        "rider": "Pauls Jonass",
-        "bike": "Kawasaki",
-        "nat": "LAT",
-        "pts": 400
       }
     ],
     "mx2": [
@@ -819,7 +814,7 @@
         "rider": "Guillem Farres",
         "bike": "Triumph",
         "nat": "ESP",
-        "pts": 859
+        "pts": 904
       },
       {
         "pos": 2,
@@ -827,7 +822,7 @@
         "rider": "Camden McLellan",
         "bike": "Triumph",
         "nat": "RSA",
-        "pts": 811
+        "pts": 868
       },
       {
         "pos": 3,
@@ -835,10 +830,18 @@
         "rider": "Sacha Coenen",
         "bike": "KTM",
         "nat": "BEL",
-        "pts": 775
+        "pts": 814
       },
       {
         "pos": 4,
+        "num": "26",
+        "rider": "Liam Everts",
+        "bike": "Husqvarna",
+        "nat": "BEL",
+        "pts": 795
+      },
+      {
+        "pos": 5,
         "num": "1",
         "rider": "Simon Längenfelder",
         "bike": "KTM",
@@ -846,20 +849,12 @@
         "pts": 768
       },
       {
-        "pos": 5,
-        "num": "26",
-        "rider": "Liam Everts",
-        "bike": "Husqvarna",
-        "nat": "BEL",
-        "pts": 742
-      },
-      {
         "pos": 6,
         "num": "772",
         "rider": "Janis Martins Reisulis",
         "bike": "Yamaha",
         "nat": "LAT",
-        "pts": 644
+        "pts": 691
       },
       {
         "pos": 7,
@@ -867,7 +862,7 @@
         "rider": "Karlis Alberts Reisulis",
         "bike": "Yamaha",
         "nat": "LAT",
-        "pts": 528
+        "pts": 555
       },
       {
         "pos": 8,
@@ -891,7 +886,7 @@
         "rider": "Kay Karssemakers",
         "bike": "Kawasaki",
         "nat": "NED",
-        "pts": 353
+        "pts": 388
       }
     ]
   }
