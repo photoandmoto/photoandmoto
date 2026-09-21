@@ -98,7 +98,7 @@ The numbers describing Belgium's historical dominance are staggering. The countr
 
 After a four-decade reign, the Belgian motocross ecosystem began to crumble in the 2000s. The country still produces top talent, but it is no longer the essential "Silicon Valley" of the sport. Nevertheless, a few significant top-level teams still keep their headquarters in Belgium.
 
-![The Kawasaki Racing team, led by Kimi Räikkönen and Antti Pyrhönen, keeps its headquarters near the Lommel track](blob:https://www.photoandmoto.fi/Screenshot%202026-09-21%20152822.jpg "The Kawasaki Racing team, led by Kimi Räikkönen and Antti Pyrhönen, keeps its headquarters near the Lommel track")
+![The Kawasaki Racing team, led by Kimi Räikkönen and Antti Pyrhönen, keeps its headquarters near the Lommel track](/images/IceOne%20HQ%20lommel.jpg "The Kawasaki Racing team, led by Kimi Räikkönen and Antti Pyrhönen, keeps its headquarters near the Lommel track")
 
 The main reason for the decline of the sport was Belgian environmental legislation. A law that came into effect in Flanders in 1995 restricted grassroots motocross activity and training with strict noise standards and environmental permits.
 
