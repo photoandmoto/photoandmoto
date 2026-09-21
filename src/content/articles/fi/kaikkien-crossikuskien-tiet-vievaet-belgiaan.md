@@ -7,14 +7,14 @@ category: Historical
 tags:
   - Belgia
   - Motocross
-featured_image: /images/mIKKOLA.jpg
+featured_image: /images/Screenshot 2026-09-21 154137.jpg
 featured_image_focus: center
 card_image: ''
 card_image_focus: center
 show_hero: true
 image_caption: Mestari Mikkola juttusilla lengendaarisen Belgialaisen Sylvain Geboersin kanssa.
-draft: true
-seo_description: tiheään asuttu Belgia muuttui 1960-luvulta lähtien kansainvälisen motocrossin päänäyttämöksi ja pyhiinvaelluskohteeksi
+draft: false
+seo_description: Belgia muuttui 1960-luvulta lähtien kansainvälisen motocrossin päänäyttämöksi ja pyhiinvaelluskohteeksi
 sources: 'Lähteet: Lukuisia julkisija lähtetä. Kuvat: Photo&Moto, Ice 1 Racing'
 ---
 
@@ -24,7 +24,7 @@ Menestys nojasi ihanteelliseen logistiseen sijaintiin, syvään kansalliseen int
 
 Tämä artikkeli käsittelee Belgian roolia lajin globaalina keskuksena, sen merkitystä suomalaisille ja muille kuljettajille, belgialaisia innovaatioita sekä tekijöitä, jotka lopulta johtivat aikakauden hiipumiseen.
 
-## **Suomalaisten tukikohtana toimi aluksi Beringen lähialueineen**
+### **Suomalaisten tukikohtana toimi aluksi Beringen lähialueineen**
 
 Suomalaisen motocrossin kansainvälinen läpimurto ja nousu maailman huipulle on erottamattomasti sidoksissa Belgiaan. Kun laji alkoi ammattimaistua, Heikki Mikkolan kaltaiset suomalaiset pioneerit ymmärsivät nopeasti, että pysyvä menestys vaatii muutakin kuin satunnaista, kuluttavaa matkustelua Suomesta Keski-Euroopan GP-kilpailuihin. 1970 luvun alussa, Mikkola teki strategisen päätöksen ja perusti tukikohtansa Beligaan ja siellä myöhemmin Beringenin pikkukaupunkiin, joka sijaitsee Flanderin alueella. Tämä siirto loi standardin, jonka Mestari Mikkolan monet huipulle pyrkivät seuraajat omaksuivat nopeasti omakseen.
 
@@ -38,17 +38,17 @@ Toinen suosittu vaihtoehto oli Zolderin kilparadan välittömässä läheisyydes
 
 Menestyksen myötä ja ammattimaisuuden kasvaessa useimmat kuljettajat siirtyivät vuokraamaan alueelta omia taloja. Asuminen taloissa oli luonnollisesti kotoisempaa ja tarjosi vakaamman, perhe-elämää paremmin tukevan ympäristön pitkille ja uuvuttaville harjoitus- ja ajokausille.
 
-![Iloinen Suomalaisryhmä omakotitalon pihalla. Jukka Sintonen, Matti Tarkkonen ja Tapani Pikkarainen tukijoukkoineen](/images/Untitled%20design%20(2).jpg "Iloinen Suomalaisryhmä omakotitalon pihalla. Jukka Sintonen, Matti Tarkkonen ja Tapani Pikkarainen tukijoukkoineen")
+![Iloinen Suomalaisryhmä omakotitalon pihalla. Jukka Sintonen, Matti Tarkkonen ja Tapani Pikkarainen tukijoukkoineen](/images/Screenshot%202026-09-21%20153405.jpg "Iloinen Suomalaisryhmä omakotitalon pihalla. Jukka Sintonen, Matti Tarkkonen ja Tapani Pikkarainen tukijoukkoineen")
 
 Suomalaisten onnistuneessa integroitumisessa belgialaiseen yhteiskuntaan ja lajikulttuuriin keskeisessä roolissa olivat paikalliset taustavaikuttajat, jotka ottivat pohjoisen tulijat avosylin vastaan.
 
-![Suomalaiscrossarit ja houltojoukot futistreenin jälkeen Belgiassa 1980-luvulla.](/images/Suomi%20crossikuskit%20futistreenin%20j%C3%A4lkeen%20Belgiassa.jpg "Suomalaiscrossarit ja huoltojoukot futistreenin jälkeen Belgiassa 1980-luvulla.")
+![Suomalaiscrossarit ja houltojoukot futistreenin jälkeen Belgiassa 1980-luvulla.](/images/Screenshot%202026-09-21%20153522.jpg "Suomalaiscrossarit ja huoltojoukot futistreenin jälkeen Belgiassa 1980-luvulla.")
 
 Belgialaiset tunnettiin yleisesti erittäin auttavaisina suomalaisia kohtaan. Esimerkiksi, erityisen merkittäväksi muodostui René ja Angela Liekensin pariskunta. Liekensit toimivat managerien, tulkkeina, asiamiesten ja paikallisoppaiden roolissa, auttaen suomalaisia navigoimaan Belgian byrokratiassa, neuvottelemaan paikallisten tahojen kanssa ja ylläpitämään elintärkeitä suhteita kilpailun järjestäjiin.
 
-![Kakkukahvilla vuonna 1986: Rene, Angela ja Vivian Liekens yhdessä Simo ja Maile Taimin kanssa.](/images/Rene%2C%20Angela%20ja%20Vivian%20Liekens%20kakkukahvilla.jpg "Kakkukahvilla vuonna 1986: Rene, Angela ja Vivian Liekens yhdessä Simo ja Maile Taimin kanssa.")
+![Kakkukahvilla vuonna 1986: Rene, Angela ja Vivian Liekens yhdessä Simo ja Maile Taimin kanssa.](/images/Screenshot%202026-09-21%20153813.jpg "Kakkukahvilla vuonna 1986: Rene, Angela ja Vivian Liekens yhdessä Simo ja Maile Taimin kanssa.")
 
-## **Belgian magneetti: Sijainti, taloudellinen volyymi ja lajikulttuuri**
+### **Belgian magneetti: Sijainti, taloudellinen volyymi ja lajikulttuuri**
 
 Miksi Belgia sitten oli niin ylivoimaisen suosittu kohde ei ainoastaan suomalaisille, vaan kymmenien muidenkin maiden huippukuljettajille? Vastaus löytyy makrotason tekijöistä, joissa yhdistyivät maantiede, ilmasto ja poikkeuksellinen motocrossia suosiva urheilukulttuuri.
 
@@ -56,11 +56,11 @@ Miksi Belgia sitten oli niin ylivoimaisen suosittu kohde ei ainoastaan suomalais
 
 Euroopan ytimessä sijaitseva Belgia oli motocrossin MM-sarjaa ja muita kilpailuja kiertäville kuljettajille ihanteellinen tukikohta. Suoremmat yhteydet muun muassa Ranskaan,Italiaan, Alankomaihin, Saksaan ja Iso-Britanniaan vähensivät matkustamisen rasitusta ja kustannuksia aikana, jolloin kalustoa liikuteltiin pakettiautoin ja peräkärryin, jättäen enemmän aikaa harjoittelulle ja palautumiselle.
 
-![Håkan Carlqvist siirtyi Yamahalle 1980 ja testasi pyöräänsä Genkissä saman vuoden keväänä. Graham Noyce tutki takajousitusta samassa paikassa.](/images/noyce%20ja%20carla.jpg "Håkan Carlqvist siirtyi Yamahalle 1980 ja testasi pyöräänsä Genkissä saman vuoden keväänä. Graham Noyce tutki takajousitusta samassa paikassa.")
+![Håkan Carlqvist siirtyi Yamahalle 1980 ja testasi pyöräänsä Genkissä saman vuoden keväänä. Graham Noyce tutki takajousitusta samassa paikassa.](/images/Screenshot%202026-09-21%20154010.jpg "Håkan Carlqvist siirtyi Yamahalle 1980 ja testasi pyöräänsä Genkissä saman vuoden keväänä. Graham Noyce tutki takajousitusta samassa paikassa.")
 
 Lisäksi Flanderin ja Vallonian alueilla, 1960-luvulta aina 1990-luvun loppuun, sijaitsi äärimmäisen tiheä motocrossratojen verkosto. Kymmenet erilaiset radat,  syvästä hiekasta kovaan saveen ja metsäisiin rinteisiin, sijaitsivat vain lyhyiden ajomatkojen päässä toisistaan. Tämä mahdollisti kaikkien monipuolisin ja tehokkaan ajoharjoittelun lyhyiden etäisyyksien päässä. Belgian lauhkea ilmasto mahdollisti huomattavasti pidemmän ajoharjoituskauden kuin Pohjois-Euroopan karummat olosuhteet.
 
-**Ratojen kunikaat**
+### **Ratojen ehdottomat kunikaat**
 
 Valloniassa sijaitseva Namurin Citadelle oli sen aristokraattinen ja majesteettinen helmi. Namurissa vuosina 1947–2007 järjestettyä kilpailua kutsuttiin säännönmukaisesti "motocrossin Monacoksi". Rata ei sijainnut perinteisellä moottoriurheilualueella, vaan se oli raivattu väliaikaisesti Namurin kaupungin yllä kohoavan historiallisen linnoituksen (Citadelle) jylhään puistoon, metsiin ja kävelyteille. Toisessa ääripäässä, Pohjois-Belgian
 
@@ -70,13 +70,11 @@ Valloniassa sijaitseva Namurin Citadelle oli sen aristokraattinen ja majesteetti
 
 Belgian ekosysteemin perusta oli lajin nauttima poikkeuksellinen kansallissuosio. Motocross oli pitkään maassa miltei kansallisurheilun asemassa, ja sitä tuettiin vahvasti kaikilla tasoilla. Kansalliset ja kansainväliset kilpailut vetivät katsomot täyteen faneja, ja yleisömäärät olivat valtavia
 
-![Jukka Silvennoinen Genkin kansainvälisessä kilpailussa 1981](/images/Silvennoinen.jpg "Jukka Silvennoinen Genkin kansainvälisessä kilpailussa 1981")
+![Jukka Silvennoinen Genkin kansainvälisessä kilpailussa 1981](/images/Screenshot%202026-09-21%20153642.jpg "Jukka Silvennoinen Genkin kansainvälisessä kilpailussa 1981")
 
 Tämä valtava suosio synnytti vahvan taloudellisen pohjan. Yritysten sponsorointi, yleisötulot ja palkintorahat mahdollistivat kuljettajien ammattilaisuuden. Belgiassa kilpailtiin lähes joka viikonloppu huipputasolla maailmanmestareita ja tehdaskuljettajia vastaan. Ulkomaisille kuljettajille tämä tarjosi parhaan kehitysympäristön. Kehittyäkseen huipputasolle oli kilpailtava viikoittain maailman kärkikaartia vastaan. Mikkolan ja muiden suomalaisten omaksuma paras taktiikka belgialaisten voittamiseen oli oppia heidän salaisuutensa heidän omilla radoillaan ja samoissa vaativissa olosuhteissa.
 
-## **Innovaatioiden keskus**
-
-## 
+### **Innovaatioiden keskus**
 
 Poikkeuksellisten urheilijoiden kasvattamisen lisäksi Belgian motocross-ekosysteemi toimi alan merkittävimpänä teknologisten innovaatioiden hautomona. 
 
@@ -88,7 +86,7 @@ Tämän läpimurron taustalla vaikutti liegeläinen insinööri sekä paikallise
 
 Monoshock-jousituksen lisäksi kehittyi lukuisia muita teknisiä ratkaisuja, jotka paransivat moottoripyörien runkorakenteita, jousitusta sekä moottoreita ja raivasivat tietä nykyaikaisille pyörille.
 
-## **Maailmanmestareiden tehdas: Belgian poikkeuksellinen dominanssi**
+### **Maailmanmestareiden tehdas: Belgian poikkeuksellinen dominanssi**
 
 Belgian lajikulttuuri, tiheä rataverkosto ja valtava kilpailullinen paine loivat ekosysteemin, joka muistutti luonnonvalintaa. Vain vahvimmat, taitavimmat ja fyysisesti kestävimmät kuljettajat selviytyivät huipulle. Tämä mylly tuotti belgialaisia maailmanmestareita liukuhihnalta, tehden maasta lajin absoluuttisen valtiaan useiksi vuosikymmeniksi.
 
@@ -96,7 +94,7 @@ Belgian historiallista dominanssia kuvaavat numerot ovat ällistyttäviä. Maa p
 
 ![Belgian maailmanmestareista vuoden 1979 joukkue-MM:ssä: Roger De Coster, Harry Everts ja André Malherbe.](/images/Screenshot%202026-09-21%20153150.jpg "Belgian maailmanmestareista vuoden 1979 joukkue-MM:ssä: Roger De Coster, Harry Everts ja André Malherbe.")
 
-## **Miksi Belgian motocrossin ekosysteemi hiipui?**
+### **Miksi Belgian motocrossin ekosysteemi hiipui?**
 
 Neljän vuosikymmenen valtakauden jälkeen Belgian motocross-ekosysteemi alkoi murentua 2000-luvulla. Maa tuottaa edelleen huippulahjakkuuksia, mutta se ei ole enää lajin välttämätön "piilaakso". Siitä huolimatta, muutamat merkittävät huipputason tiimit pitävät yhä päämajaansa Belgiassa.
 
