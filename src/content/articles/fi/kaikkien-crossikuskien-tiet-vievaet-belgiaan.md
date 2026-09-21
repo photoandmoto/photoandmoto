@@ -96,7 +96,7 @@ Belgian historiallista dominanssia kuvaavat numerot ovat ällistyttäviä. Maa p
 
 ## **Miksi Belgian motocrossin ekosysteemi hiipui?**
 
-Neljän vuosikymmenen valtakauden jälkeen Belgian motocross-ekosysteemi alkoi murentua 2000-luvulla. Maa tuottaa edelleen huippulahjakkuuksia, mutta se ei ole enää lajin välttämätön "piilaakso". Siitä huolimatta, muutamat merkittävät huipputason tiimit pitävät yhä päämajaansa Belgiassa.
+Neljän vuosikymmenen valtakauden jälkeen Belgian motocross-ekosysteemi alkoi murentua 2000-luvulla. Maa tuottaa edelleen huippulahjakkuuksia, mutta se ei ole enää lajin välttämätön "piilaakso". Siitä huolimatta, muutamat merkittävät huipputason tiimit ja  kuskit pitävät yhä päämajaansa Belgiassa, onhan maa edellen logistiikan kannalta kesekinen paikka ja kantaa mukaan historiallista "motocrossin mekan" arvoa.
 
 ![Kimi Räikkösen ja Antti Pyrhösen luotsaama Kawasaki Racing team pitää päämajaansa Lommelin radan lähistöllä](/images/Screenshot%202026-09-21%20152822.jpg "Kimi Räikkösen ja Antti Pyrhösen luotsaama Kawasaki Racing team pitää päämajaansa Lommelin radan lähistöllä")
 
