@@ -24,7 +24,7 @@ Menestys nojasi ihanteelliseen logistiseen sijaintiin, syvään kansalliseen int
 
 Tämä artikkeli käsittelee Belgian roolia lajin globaalina keskuksena, sen merkitystä suomalaisille ja muille kuljettajille, belgialaisia innovaatioita sekä tekijöitä, jotka lopulta johtivat aikakauden hiipumiseen.
 
-### **Suomalaisten tukikohtana toimi aluksi Beringen lähialueineen**
+## **Suomalaisten tukikohtana toimi aluksi Beringen lähialueineen**
 
 Suomalaisen motocrossin kansainvälinen läpimurto ja nousu maailman huipulle on erottamattomasti sidoksissa Belgiaan. Kun laji alkoi ammattimaistua, Heikki Mikkolan kaltaiset suomalaiset pioneerit ymmärsivät nopeasti, että pysyvä menestys vaatii muutakin kuin satunnaista, kuluttavaa matkustelua Suomesta Keski-Euroopan GP-kilpailuihin. 1970 luvun alussa, Mikkola teki strategisen päätöksen ja perusti tukikohtansa Beligaan ja siellä myöhemmin Beringenin pikkukaupunkiin, joka sijaitsee Flanderin alueella. Tämä siirto loi standardin, jonka Mestari Mikkolan monet huipulle pyrkivät seuraajat omaksuivat nopeasti omakseen.
 
@@ -34,7 +34,7 @@ Alkuvaiheessa, kun resurssit olivat vielä rajalliset ja toiminta haki muotoaan,
 
 Toinen suosittu vaihtoehto oli Zolderin kilparadan välittömässä läheisyydessä sijaitseva leirintäalue, joka toimi kustannustehokkaana ratkaisuna ja mahdollisti tiiviin yhteisöllisyyden muiden kilpailijoiden kanssa.
 
-![Kuvassa suomalaisia Zolderin leirintäalueella vuonna 1979. Kimmo Suvinen huoltaa Liljegrenin pyörää, ja ar Ventoniemi sekä Pauli Piippolan juniori ihmettelevät palanutta huoltorakennusta.](/images/Zolder.jpg "Kuvassa suomalaisia Zolderin leirintäalueella vuonna 1979. Kimmo Suvinen huoltaa Liljegrenin pyörää, ja ar Ventoniemi sekä Pauli Piippolan juniori ihmettelevät palanutta huoltorakennusta.")
+![Suomalaisia Zolderin leirintäalueella vuonna 1979. Kimmo Suvinen huoltaa Göte Liljegrenin pyörää. Ari Ventoniemi sekä Pauli Piippolan juniori ihmettelevät palanutta huoltorakennusta.](/images/Zolder.jpg "Suomalaisia Zolderin leirintäalueella vuonna 1979. Kimmo Suvinen huoltaa Göte Liljegrenin pyörää. Ari Ventoniemi sekä Pauli Piippolan juniori ihmettelevät palanutta huoltorakennusta.")
 
 Menestyksen myötä ja ammattimaisuuden kasvaessa useimmat kuljettajat siirtyivät vuokraamaan alueelta omia taloja. Asuminen taloissa oli luonnollisesti kotoisempaa ja tarjosi vakaamman, perhe-elämää paremmin tukevan ympäristön pitkille ja uuvuttaville harjoitus- ja ajokausille.
 
@@ -48,7 +48,7 @@ Belgialaiset tunnettiin yleisesti erittäin auttavaisina suomalaisia kohtaan. Es
 
 ![Kakkukahvilla vuonna 1986: Rene, Angela ja Vivian Liekens yhdessä Simo ja Maile Taimin kanssa.](/images/Screenshot%202026-09-21%20153813.jpg "Kakkukahvilla vuonna 1986: Rene, Angela ja Vivian Liekens yhdessä Simo ja Maile Taimin kanssa.")
 
-### **Belgian magneetti: Sijainti, taloudellinen volyymi ja lajikulttuuri**
+## **Belgian magneetti: Sijainti, taloudellinen volyymi ja lajikulttuuri**
 
 Miksi Belgia sitten oli niin ylivoimaisen suosittu kohde ei ainoastaan suomalaisille, vaan kymmenien muidenkin maiden huippukuljettajille? Vastaus löytyy makrotason tekijöistä, joissa yhdistyivät maantiede, ilmasto ja poikkeuksellinen motocrossia suosiva urheilukulttuuri.
 
@@ -94,7 +94,7 @@ Belgian historiallista dominanssia kuvaavat numerot ovat ällistyttäviä. Maa p
 
 ![Belgian maailmanmestareista vuoden 1979 joukkue-MM:ssä: Roger De Coster, Harry Everts ja André Malherbe.](/images/Screenshot%202026-09-21%20153150.jpg "Belgian maailmanmestareista vuoden 1979 joukkue-MM:ssä: Roger De Coster, Harry Everts ja André Malherbe.")
 
-### **Miksi Belgian motocrossin ekosysteemi hiipui?**
+## **Miksi Belgian motocrossin ekosysteemi hiipui?**
 
 Neljän vuosikymmenen valtakauden jälkeen Belgian motocross-ekosysteemi alkoi murentua 2000-luvulla. Maa tuottaa edelleen huippulahjakkuuksia, mutta se ei ole enää lajin välttämätön "piilaakso". Siitä huolimatta, muutamat merkittävät huipputason tiimit pitävät yhä päämajaansa Belgiassa.
 
