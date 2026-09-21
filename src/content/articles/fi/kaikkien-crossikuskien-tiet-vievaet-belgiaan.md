@@ -38,4 +38,8 @@ Toinen suosittu vaihtoehto oli Zolderin kilparadan välittömässä läheisyydes
 
 Menestyksen myötä ja ammattimaisuuden kasvaessa useimmat kuljettajat siirtyivät vuokraamaan alueelta omia taloja. Asuminen taloissa oli luonnollisesti kotoisempaa ja tarjosi vakaamman, perhe-elämää paremmin tukevan ympäristön pitkille ja uuvuttaville harjoitus- ja ajokausille.
 
-![](/images/Untitled%20design%20%282%29.jpg)
+![Iloinen Suomalaisryhmä omakotitalon pihalla. Jukka Sintonen, Matti Tarkkonen ja Tapani Pikkarainen tukijoukkoineen](/images/Untitled%20design%20(2).jpg "Iloinen Suomalaisryhmä omakotitalon pihalla. Jukka Sintonen, Matti Tarkkonen ja Tapani Pikkarainen tukijoukkoineen")
+
+Suomalaisten onnistuneessa integroitumisessa belgialaiseen yhteiskuntaan ja lajikulttuuriin keskeisessä roolissa olivat paikalliset taustavaikuttajat, jotka ottivat pohjoisen tulijat avosylin vastaan.
+
+![Suomalaiscrossarit ja houltojoukot futistreenin jälkeen Belgiassa 1980-luvulla.](/images/Suomi%20crossikuskit%20futistreenin%20j%C3%A4lkeen%20Belgiassa.jpg "Suomalaiscrossarit ja huoltojoukot futistreenin jälkeen Belgiassa 1980-luvulla.")
