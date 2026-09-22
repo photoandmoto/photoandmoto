@@ -3,10 +3,11 @@
 // added in the last 14 days. Sits above the search box on /fi/galleria and
 // /en/gallery. Clicking a "new" pill opens ONLY those new photos in the
 // full-screen PhotoSwipe viewer (the href is a no-JS fallback to the gallery).
-// "New" pills and the matching card badges (.gns-badge[data-news-latest]) are
-// rendered hidden and revealed by the script only while still fresh, so
-// expired badges never show even if the site hasn't been rebuilt.
-import { getGalleryNews, newsLabel, NEWS_WINDOW_DAYS } from '../lib/galleryNews';
+// "New" pills and the matching card badges (.gns-badge[data-news-dates]) are
+// rendered hidden; the script recounts each photo's own 14-day window on every
+// view and reveals/relabels them, so counts drop and chips vanish on time even
+// if the site hasn't been rebuilt.
+import { getGalleryNews, newsLabel, newsDates, NEWS_WINDOW_DAYS } from '../lib/galleryNews';
 
 interface Img {
   filename: string;
@@ -43,6 +44,7 @@ const withNews = galleries
       width: img.width,
       height: img.height,
       alt: img.caption || '',
+      added: img.added_at,
     }))),
   }));
 ---
@@ -63,7 +65,8 @@ const withNews = galleries
       <a
         href={`${base}/${g.data.slug}`}
         class="gns__pill gns__pill--new"
-        data-news-latest={news.latest}
+        data-news-dates={newsDates(news)}
+        data-lang={lang}
         data-photos={photos}
         hidden
       >
@@ -81,15 +84,33 @@ const withNews = galleries
   const root = document.querySelector<HTMLElement>('.gns');
   const windowDays = Number(root?.dataset.windowDays || 14);
 
-  // Reveal only badges/pills whose latest addition is within the window.
+  // Per-photo window: a photo is new for NEWS_WINDOW_DAYS days after its own
+  // added date. Recount on every view so counts drop and chips/badges vanish
+  // on time without a rebuild. Dates arrive newest first.
   const now = new Date();
   const today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
-  document.querySelectorAll<HTMLElement>('[data-news-latest]').forEach(el => {
-    const days = (today - Date.parse(el.dataset.newsLatest + 'T00:00:00Z')) / 86400000;
-    if (days >= 0 && days <= windowDays) el.hidden = false;
+  const isNew = (d?: string) => {
+    if (!d) return false;
+    const days = (today - Date.parse(d + 'T00:00:00Z')) / 86400000;
+    return days >= 0 && days <= windowDays;
+  };
+  const EN_MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  // Keep in sync with newsLabel() in src/lib/galleryNews.ts.
+  const label = (count: number, latest: string, lang?: string) => {
+    const [, m, d] = latest.split('-').map(Number);
+    return lang === 'en'
+      ? `+${count} new · ${d} ${EN_MONTHS[m - 1]}`
+      : `+${count} uutta · ${d}.${m}.`;
+  };
+  document.querySelectorAll<HTMLElement>('[data-news-dates]').forEach(el => {
+    const fresh = (el.dataset.newsDates || '').split(',').filter(isNew);
+    if (!fresh.length) return;
+    const badge = el.classList.contains('gns-badge') ? el : el.querySelector<HTMLElement>('.gns-badge');
+    if (badge) badge.textContent = label(fresh.length, fresh[0], el.dataset.lang);
+    el.hidden = false;
   });
-  const label = root?.querySelector<HTMLElement>('.gns__label');
-  if (label && root?.querySelector('.gns__pill--new:not([hidden])')) label.hidden = false;
+  const hint = root?.querySelector<HTMLElement>('.gns__label');
+  if (hint && root?.querySelector('.gns__pill--new:not([hidden])')) hint.hidden = false;
 
   // Full-screen viewer showing only the new photos of the clicked gallery.
   const lightbox = new PhotoSwipeLightbox({
@@ -119,8 +140,9 @@ const withNews = galleries
 
   root?.querySelectorAll<HTMLAnchorElement>('.gns__pill--new').forEach(pill => {
     pill.addEventListener('click', e => {
-      let photos = [];
+      let photos: { added?: string }[] = [];
       try { photos = JSON.parse(pill.dataset.photos || '[]'); } catch { /* fall back to link */ }
+      photos = photos.filter(p => isNew(p.added));
       if (!photos.length) return;
       e.preventDefault();
       lightbox.loadAndOpen(0, photos);

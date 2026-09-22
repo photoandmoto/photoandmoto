@@ -280,17 +280,20 @@ the intro text and the search box:
 - New galleries are picked up automatically — no code change needed.
 
 **How "new" is decided.** Each manifest image can carry
-`added_at: "YYYY-MM-DD"` (Finnish time). The window is a **rolling 14 days**:
-the latest addition opens it, and earlier additions within 14 days of the next
-one extend the streak backwards. Example: 5 photos on 1.9 + 3 on 10.9 →
-`+8 · 10.9.`, shown until 24.9. Photos without `added_at` — everything added
-before the feature went live on 22.9.2026, except the 21 photos backfilled for
-15.9 onwards — are treated as old and never show as new.
+`added_at: "YYYY-MM-DD"` (Finnish time). **Every photo is new for 14 days
+after its own date**, independently of other photos. The chip counts how many
+of the gallery's photos are currently inside their window, dated by the newest
+one. Example: 1 photo on 22.9 + 1 on 23.9 → `+2 · 23.9.` until 6.10,
+`+1 · 23.9.` on 7.10, gone on 8.10. Continuous adding therefore never
+inflates the count — it always means "added in the last 14 days". Photos
+without `added_at` (everything added before 15.9.2026) are treated as old.
 
-**Expiry is checked in the browser, not at build time.** Chips and badges are
-rendered `hidden` and revealed by a small script only while still inside the
-window, so they disappear on schedule even if the site isn't rebuilt. Don't
-move this check to build time.
+**Expiry is checked in the browser, not at build time.** The build only
+pre-filters to photos new at build time; chips and badges are rendered
+`hidden` and a small script recounts each photo's date on every page view,
+relabels the count, and reveals only what's still new — so counts drop and
+chips disappear on schedule even if the site isn't rebuilt. Don't move this
+check to build time.
 
 **Where `added_at` comes from.**
 
@@ -302,7 +305,7 @@ move this check to build time.
 - **Manual** — add `"added_at": "YYYY-MM-DD"` to the image entry in
   `src/content/galleries/<slug>.json`.
 
-Code: `src/lib/galleryNews.ts` (streak logic, labels, `NEWS_WINDOW_DAYS`) and
+Code: `src/lib/galleryNews.ts` (per-photo window, labels, `NEWS_WINDOW_DAYS`) and
 `src/components/GalleryNewsStrip.astro` (chips, lightbox, expiry script). The
 card badges are rendered in both gallery index pages — keep them in sync.
 
@@ -481,7 +484,7 @@ scripts/
 src/
   lib/
     articleSearch.ts    Build-time keyword blob for the article-listing filter
-    galleryNews.ts      "New photos" rolling-window logic for the Galleria index
+    galleryNews.ts      "New photos" per-photo 14-day window logic for the Galleria index
     tickerItems.ts      "Nyt luetuimmat" ticker source
   content/
     articles/{fi,en}/   Markdown articles
