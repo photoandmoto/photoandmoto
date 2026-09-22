@@ -86,6 +86,10 @@ const galleriesCollection = defineCollection({
         caption: z.string().optional(),
         photographer: z.string().default('Matti Tarkkonen'),
         date: z.string().optional(),
+        // YYYY-MM-DD the photo was added to the gallery. Written by
+        // generate-gallery-manifest.mjs; drives the "new photos" badges on the
+        // gallery index. Absent on photos added before this field existed.
+        added_at: z.string().optional(),
         width: z.number(),
         height: z.number(),
       })

@@ -4,6 +4,8 @@ import PageHero from '../../../components/PageHero.astro';
 import heroImage from '../../../assets/site/hero-galleria.jpg';
 import { getCollection } from 'astro:content';
 import { ui } from '../../../i18n/ui';
+import GalleryNewsStrip from '../../../components/GalleryNewsStrip.astro';
+import { getGalleryNews, newsLabel } from '../../../lib/galleryNews';
 
 const lang = 'fi';
 const t = ui[lang];
@@ -50,6 +52,8 @@ const galleries = [..._galleries].sort((a, b) => {
       
       <p class="gallery-intro">Astu maailmaan missä jokainen kuva kertoo tarinan. Maailma, jossa jokainen kuva sykkii tarinaa ja moottoriurheilun huumaava menneisyys ja jännitys heräävät eloon, on vain klikkauksen päässä sinusta.</p>
       
+      <GalleryNewsStrip lang={lang} galleries={galleries} />
+
       <div class="photo-search">
         <div class="photo-search-input-wrap">
           <input type="text" id="photoSearch" class="photo-search-input" placeholder="Hae kuvia... esim. Mikkola, Ruskeasanta, 1978" />
@@ -76,6 +80,12 @@ const galleries = [..._galleries].sort((a, b) => {
                 <p class="gallery-count">
                   {t['gallery.photoCount'].replace('{count}', gallery.data.images.length.toString())}
                 </p>
+                {(() => {
+                  const news = getGalleryNews(gallery.data.images);
+                  return news && (
+                    <span class="gns-badge gns-badge--card" data-news-latest={news.latest} hidden>{newsLabel(news, lang)}</span>
+                  );
+                })()}
               </div>
             </a>
           </article>
