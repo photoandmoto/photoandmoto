@@ -182,7 +182,7 @@ functions/api/mystery/publish.js Worker:
 scripts/generate-gallery-manifest.mjs --add <filename>:
   - 600px thumbnail (no watermark)
   - 1400px display version (© Photo & Moto watermark)
-  - Updates src/content/galleries/<slug>.json
+  - Updates src/content/galleries/<slug>.json (stamps added_at = today)
     ↓
 Bot commits derivatives → Cloudflare deploys → photo appears in the gallery
 ```
@@ -261,6 +261,50 @@ gallery search against newly added photos locally.
 
 Search quality depends entirely on captions: a photo with an empty caption is
 not findable by name. Fill in captions when adding photos.
+
+---
+
+## Gallery new-photos chips
+
+The Galleria index (`/fi/galleria`, `/en/gallery`) shows a chip strip between
+the intro text and the search box:
+
+- **Total chip** — total photos across all galleries + number of galleries.
+  Always visible.
+- **New-photos chips** — one per gallery with recent additions, e.g.
+  `Suomi 70s · +3 uutta · 18.9.`, under a "UUSIA KUVIA / NEW PHOTOS" hint.
+  Clicking a chip opens **only the new photos** in a PhotoSwipe lightbox
+  (newest first); the chip's `href` to the gallery is the no-JS fallback.
+- **Card badge** — the same `+N uutta · date` badge on the matching gallery
+  card below (the card itself still opens the full gallery).
+- New galleries are picked up automatically — no code change needed.
+
+**How "new" is decided.** Each manifest image can carry
+`added_at: "YYYY-MM-DD"` (Finnish time). The window is a **rolling 14 days**:
+the latest addition opens it, and earlier additions within 14 days of the next
+one extend the streak backwards. Example: 5 photos on 1.9 + 3 on 10.9 →
+`+8 · 10.9.`, shown until 24.9. Photos without `added_at` — everything added
+before the feature went live on 22.9.2026, except the 21 photos backfilled for
+15.9 onwards — are treated as old and never show as new.
+
+**Expiry is checked in the browser, not at build time.** Chips and badges are
+rendered `hidden` and revealed by a small script only while still inside the
+window, so they disappear on schedule even if the site isn't rebuilt. Don't
+move this check to build time.
+
+**Where `added_at` comes from.**
+
+- **Publish pipeline / `--add` mode** — stamps today automatically; a re-run of
+  the same file keeps its original date.
+- **Full rebuild (`npm run generate-gallery <slug>`)** — keeps every existing
+  date; only files not already in the manifest get today. A brand-new bulk
+  gallery therefore shows as "+N new" for 14 days.
+- **Manual** — add `"added_at": "YYYY-MM-DD"` to the image entry in
+  `src/content/galleries/<slug>.json`.
+
+Code: `src/lib/galleryNews.ts` (streak logic, labels, `NEWS_WINDOW_DAYS`) and
+`src/components/GalleryNewsStrip.astro` (chips, lightbox, expiry script). The
+card badges are rendered in both gallery index pages — keep them in sync.
 
 ---
 
@@ -437,6 +481,7 @@ scripts/
 src/
   lib/
     articleSearch.ts    Build-time keyword blob for the article-listing filter
+    galleryNews.ts      "New photos" rolling-window logic for the Galleria index
     tickerItems.ts      "Nyt luetuimmat" ticker source
   content/
     articles/{fi,en}/   Markdown articles
