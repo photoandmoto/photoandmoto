@@ -5,7 +5,7 @@ import heroImage from '../../../assets/site/hero-galleria.jpg';
 import { getCollection } from 'astro:content';
 import { ui } from '../../../i18n/ui';
 import GalleryNewsStrip from '../../../components/GalleryNewsStrip.astro';
-import { getGalleryNews, newsLabel } from '../../../lib/galleryNews';
+import { getGalleryNews, newsLabel, newsDates } from '../../../lib/galleryNews';
 
 const lang = 'fi';
 const t = ui[lang];
@@ -83,7 +83,7 @@ const galleries = [..._galleries].sort((a, b) => {
                 {(() => {
                   const news = getGalleryNews(gallery.data.images);
                   return news && (
-                    <span class="gns-badge gns-badge--card" data-news-latest={news.latest} hidden>{newsLabel(news, lang)}</span>
+                    <span class="gns-badge gns-badge--card" data-news-dates={newsDates(news)} data-lang={lang} hidden>{newsLabel(news, lang)}</span>
                   );
                 })()}
               </div>
