@@ -1,0 +1,186 @@
+---
+// Gallery index strip: a total-count pill + one pill per gallery with photos
+// added in the last 14 days. Sits above the search box on /fi/galleria and
+// /en/gallery. Clicking a "new" pill opens ONLY those new photos in the
+// full-screen PhotoSwipe viewer (the href is a no-JS fallback to the gallery).
+// "New" pills and the matching card badges (.gns-badge[data-news-latest]) are
+// rendered hidden and revealed by the script only while still fresh, so
+// expired badges never show even if the site hasn't been rebuilt.
+import { getGalleryNews, newsLabel, NEWS_WINDOW_DAYS } from '../lib/galleryNews';
+
+interface Img {
+  filename: string;
+  display?: string;
+  caption?: string;
+  width: number;
+  height: number;
+  added_at?: string;
+}
+interface Props {
+  lang: 'fi' | 'en';
+  galleries: { data: { slug: string; title: string; images: Img[] } }[];
+}
+
+const { lang, galleries } = Astro.props;
+const base = lang === 'fi' ? '/fi/galleria' : '/en/gallery';
+
+const total = galleries.reduce((n, g) => n + g.data.images.length, 0);
+const totalText = total.toLocaleString(lang === 'fi' ? 'fi-FI' : 'en-US');
+const photosWord = lang === 'fi' ? 'kuvaa' : 'photos';
+const galleriesText = lang === 'fi'
+  ? `${galleries.length} galleriaa`
+  : `${galleries.length} galleries`;
+
+const withNews = galleries
+  .map(g => ({ g, news: getGalleryNews(g.data.images) }))
+  .filter((x): x is { g: typeof x.g; news: NonNullable<typeof x.news> } => x.news !== null)
+  .sort((a, b) => b.news.latest.localeCompare(a.news.latest))
+  .map(({ g, news }) => ({
+    g,
+    news,
+    photos: JSON.stringify(news.newImages.map(img => ({
+      src: `/galleries/${g.data.slug}/${img.display || img.filename}`,
+      width: img.width,
+      height: img.height,
+      alt: img.caption || '',
+    }))),
+  }));
+---
+
+<div class="gns" data-window-days={NEWS_WINDOW_DAYS}>
+  <p class="gns__label" hidden>
+    <strong>{lang === 'fi' ? 'Uusia kuvia' : 'New photos'}</strong>
+    <span class="gns__hint">{lang === 'fi'
+      ? ' – Klikkaa painiketta ja näet vain uudet lisäykset'
+      : ' – Click the chip to see just the new additions'}</span>
+  </p>
+  <div class="gns__pills">
+    <span class="gns__pill gns__pill--total">
+      <span class="gns__name">{totalText} {photosWord}</span>
+      <span class="gns-badge gns-badge--neutral">{galleriesText}</span>
+    </span>
+    {withNews.map(({ g, news, photos }) => (
+      <a
+        href={`${base}/${g.data.slug}`}
+        class="gns__pill gns__pill--new"
+        data-news-latest={news.latest}
+        data-photos={photos}
+        hidden
+      >
+        <span class="gns__name">{g.data.title}</span>
+        <span class="gns-badge">{newsLabel(news, lang)}</span>
+      </a>
+    ))}
+  </div>
+</div>
+
+<script>
+  import PhotoSwipeLightbox from 'photoswipe/lightbox';
+  import PhotoSwipe from 'photoswipe';
+
+  const root = document.querySelector<HTMLElement>('.gns');
+  const windowDays = Number(root?.dataset.windowDays || 14);
+
+  // Reveal only badges/pills whose latest addition is within the window.
+  const now = new Date();
+  const today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  document.querySelectorAll<HTMLElement>('[data-news-latest]').forEach(el => {
+    const days = (today - Date.parse(el.dataset.newsLatest + 'T00:00:00Z')) / 86400000;
+    if (days >= 0 && days <= windowDays) el.hidden = false;
+  });
+  const label = root?.querySelector<HTMLElement>('.gns__label');
+  if (label && root?.querySelector('.gns__pill--new:not([hidden])')) label.hidden = false;
+
+  // Full-screen viewer showing only the new photos of the clicked gallery.
+  const lightbox = new PhotoSwipeLightbox({
+    pswpModule: PhotoSwipe,
+    bgOpacity: 0.95,
+    loop: true,
+    zoom: true,
+    padding: { top: 20, bottom: 60, left: 20, right: 20 },
+  });
+  lightbox.on('uiRegister', () => {
+    lightbox.pswp!.ui!.registerElement({
+      name: 'gns-caption',
+      order: 9,
+      isButton: false,
+      appendTo: 'root',
+      onInit: (el, pswp) => {
+        el.style.cssText = 'position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.8);color:white;padding:8px 20px;border-radius:8px;font-size:14px;max-width:80%;text-align:center;pointer-events:none;';
+        pswp.on('change', () => {
+          const cap = (pswp.currSlide?.data?.alt as string) || '';
+          el.textContent = cap;
+          el.style.display = cap ? 'block' : 'none';
+        });
+      },
+    });
+  });
+  lightbox.init();
+
+  root?.querySelectorAll<HTMLAnchorElement>('.gns__pill--new').forEach(pill => {
+    pill.addEventListener('click', e => {
+      let photos = [];
+      try { photos = JSON.parse(pill.dataset.photos || '[]'); } catch { /* fall back to link */ }
+      if (!photos.length) return;
+      e.preventDefault();
+      lightbox.loadAndOpen(0, photos);
+    });
+  });
+</script>
+
+<style is:global>
+  .gns { margin: 0 auto var(--space-3); max-width: 900px; text-align: center; }
+  .gns__label {
+    margin: 0 0 8px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+  .gns__label strong {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #A85D00;
+  }
+  /* Equal-width pills: fixed column width, centred as a group. */
+  .gns__pills {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 280px);
+    justify-content: center;
+    gap: 8px;
+  }
+  .gns__pill {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 8px 6px 14px;
+    border: 1.5px solid var(--brand-primary);
+    border-radius: 999px;
+    background: #fff;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: background var(--transition-fast);
+  }
+  a.gns__pill { cursor: pointer; }
+  a.gns__pill:hover { background: #FFF6E8; text-decoration: none; }
+  .gns__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .gns-badge {
+    flex-shrink: 0;
+    display: inline-block;
+    background: #FFEBCC;
+    color: #7A4300;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .gns-badge--neutral { background: #F0F0F0; color: #444; }
+  .gns-badge--card { margin-top: 6px; }
+  .gns [hidden], .gns-badge[hidden] { display: none !important; }
+  @media (max-width: 620px) {
+    .gns__pills { grid-template-columns: 1fr; }
+  }
+</style>

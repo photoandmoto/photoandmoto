@@ -21,6 +21,13 @@ function xmlEscape(s) {
     .replace(/'/g, '&apos;');
 }
 
+// Today's date (YYYY-MM-DD) in Finnish time, used for each image's added_at.
+// en-CA formats as ISO date. Helsinki time so a publish just after midnight
+// Finnish time isn't stamped with yesterday's UTC date.
+function todayISO() {
+  return new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Helsinki' });
+}
+
 // =============================================================================
 // Shared image processing helpers (used by both full-rebuild and --add modes)
 // =============================================================================
@@ -157,10 +164,26 @@ async function generateManifest(gallerySlug) {
     console.log(`✓ Found ${files.length} images`);
     console.log(`📝 Generating thumbnails + display images with watermark...`);
 
+    // Preserve added_at from an existing manifest so a rebuild doesn't make
+    // every photo look "new". Files that were already in the manifest keep
+    // whatever they had (possibly nothing); only files not seen before get today.
+    let previous = null;
+    try {
+      previous = JSON.parse(await fs.readFile(outputPath, 'utf8'));
+    } catch { /* no existing manifest — brand new gallery */ }
+    const prevByName = new Map((previous?.images || []).map(img => [img.filename, img]));
+    const today = todayISO();
+
     const images = [];
 
     for (let i = 0; i < files.length; i++) {
       const entry = await processOneImage(galleryDir, files[i]);
+      const prev = prevByName.get(files[i]);
+      if (prev) {
+        if (prev.added_at) entry.added_at = prev.added_at;
+      } else {
+        entry.added_at = today;
+      }
       images.push(entry);
       process.stdout.write(`\r   ${i + 1}/${files.length} processed...`);
     }
@@ -250,11 +273,13 @@ async function addSingleImage(gallerySlug, filename) {
     if (!manifest.category) manifest.category = determineCategory(gallerySlug);
 
     // Skip if this exact filename is already in the manifest (idempotent re-runs)
-    const alreadyExists = manifest.images.some(img => img.filename === filename);
-    if (alreadyExists) {
+    const existingEntry = manifest.images.find(img => img.filename === filename);
+    if (existingEntry) {
       console.log(`\n⚠️  Image already in manifest — replacing entry to refresh dimensions`);
       manifest.images = manifest.images.filter(img => img.filename !== filename);
     }
+    // Keep the original added date on a re-run; stamp today for a genuinely new photo.
+    newEntry.added_at = existingEntry?.added_at || todayISO();
 
     manifest.images.push(newEntry);
     manifest.images = sortImages(manifest.images);
