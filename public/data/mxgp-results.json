@@ -1,6 +1,6 @@
 {
   "season": 2026,
-  "lastUpdated": "2026-09-28",
+  "lastUpdated": "2026-10-04",
   "seasonComplete": true,
   "totalRounds": 19,
   "latestRace": {
@@ -676,51 +676,51 @@
     "fi": {
       "mxgp_quali": [
         "Tom Vialle nappasi paalupaikan lauantain aika-ajoissa.",
-        "Jeffrey Herlings osoitti vahvuutensa vaativissa olosuhteissa."
+        "Jeffrey Herlings näytti vauhtinsa vaikeissa olosuhteissa."
       ],
       "mxgp_race": [
         "Jeffrey Herlings dominoi molempia MXGP-eriä.",
-        "Romain Febvre taisteli vahvasti kakkossijasta molemmissa erissä.",
-        "Jeffrey Herlings kruunattiin Australian GP:n voittajaksi."
+        "Romain Febvre taisteli vahvasti ja oli toinen GP:ssä.",
+        "Herlings vei voiton Australiassa ylivoimaisesti."
       ],
       "mx2_quali": [
-        "Camden McLellan oli nopein MX2-lähdön aika-ajoissa.",
-        "Janis Martins Reisulis varmisti toisen sijan aika-ajoissa."
+        "Camden McLellan oli nopein MX2-aika-ajoissa.",
+        "Janis Martins Reisulis oli toinen lauantain suorituksessa."
       ],
       "mx2_race": [
-        "Camden McLellan voitti ensimmäisen MX2-erän selvästi.",
+        "Camden McLellan voitti ensimmäisen MX2-erän.",
         "Liam Everts kiri voittoon toisessa MX2-erässä.",
-        "Camden McLellan vei MX2 Australian GP:n kokonaisvoiton."
+        "McLellan vei MX2-GP:n kokonaisvoiton tiukassa kisassa."
       ],
       "standings": [
-        "Jeffrey Herlings jatkaa MXGP-sarjan kärjessä vankasti.",
-        "Romain Febvre pysyi toisena MXGP-sarjassa.",
-        "Tim Gajser piti kolmannen sijan MXGP-pisteissä."
+        "Jeffrey Herlings johtaa MXGP-sarjaa vahvasti.",
+        "Romain Febvre pysyi toisena MXGP-pisteissä.",
+        "Tim Gajser piti kolmannen sijansa MXGP-sarjassa."
       ]
     },
     "en": {
       "mxgp_quali": [
-        "Tom Vialle claimed pole position in Saturday's qualifying.",
-        "Jeffrey Herlings showed strength in challenging conditions."
+        "Tom Vialle claimed pole position in Saturday qualifying.",
+        "Jeffrey Herlings showed his speed in difficult conditions."
       ],
       "mxgp_race": [
         "Jeffrey Herlings dominated both MXGP motos.",
-        "Romain Febvre battled strongly for second in both races.",
-        "Jeffrey Herlings was crowned the overall winner of the Australian GP."
+        "Romain Febvre battled hard for second overall.",
+        "Herlings claimed the Australian GP overall win convincingly."
       ],
       "mx2_quali": [
         "Camden McLellan was fastest in MX2 qualifying.",
-        "Janis Martins Reisulis secured second place in qualifying."
+        "Janis Martins Reisulis secured second place on Saturday."
       ],
       "mx2_race": [
-        "Camden McLellan took a clear win in the first MX2 moto.",
-        "Liam Everts charged to victory in the second MX2 moto.",
-        "Camden McLellan claimed the overall MX2 Australian GP win."
+        "Camden McLellan took the win in MX2 moto one.",
+        "Liam Everts charged to victory in the second moto.",
+        "McLellan clinched the MX2 GP overall title."
       ],
       "standings": [
-        "Jeffrey Herlings firmly leads the MXGP standings.",
-        "Romain Febvre held firm in second in the MXGP standings.",
-        "Tim Gajser maintained third place in the MXGP standings."
+        "Jeffrey Herlings holds a strong lead in MXGP standings.",
+        "Romain Febvre held firm in second place in MXGP.",
+        "Tim Gajser maintained his third position in the MXGP standings."
       ]
     }
   },
