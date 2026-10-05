@@ -10,7 +10,7 @@ featured_image: /images/motocross-of-nations-motocross-of-nations.jpeg
 card_image: null
 show_hero: true
 image_caption: Motocross of Nations - MXoN 2026
-draft: true
+draft: false
 seo_description: Belgia maailmanmestariksi – Evertsin sukuun yksi mestari lisää - Motocross of Nations - MXoN 2026
 sources: 'Lähteet: Julkiset tiedotteet'
 language: fi
