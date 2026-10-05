@@ -1,6 +1,6 @@
 ---
 title: Motocross of Nations
-subtitle: Belgia maailmanmestariksi  – Evertsin sukuun yksi mestari lisää
+subtitle: Belgia maailmanmestariksi. Evertsin sukuun yksi mestari lisää
 author: Tapio Vuori
 date: 2026-10-04
 category: Motocross
@@ -23,7 +23,6 @@ Ranskan Erneessä ajettiin motocrossin maajoukkueiden MM-kisa, eli Motocross of 
 Lauantaina ajettujen karsintaerien voittaja oli isäntämaa Ranska. Espanja oli aivan kannoilla ja Belgia karsintojen kolmas. Karsintojen perusteella useat olivatkin valmiita lyömään roponsa likoon joko Ranskan tai Espanjan puolesta. Mutta kuten niin monesti on nähty, ovat joukkuekisat aina arvoituksellisia, ja siksi juuri myös erittäin milenkiintoisia.
 
 Sunnuntain avauserässä ajoivat MXGP- ja MX2-luokat. Erän voittoon ajoi Ranskan Romain Febvre, kannoillaan Espanjan Jorge Prado ja kolmanneksi ajanut Belgian Lucas Coenen. Ranska sai kuitenkin erässä heti jobin postia kun Febvren joukkuekaveri Mathis Valin joutui keskeyttämään jo avauskierroksella. Näin Ranskalla ei ollut enää varaa virheisiin, jos mielii mestariksi. Espanjalla oli nyt vahava ote, silä erän neloseksi ajoi Guillem Farres.
-
 
 Toisessa erässä kohtasivat MX2- ja Open-luokan kuljettajat. Erästä odotettiin Hollannin Jeffrey Herlingsin näytöstä ja niin siinä myös kävi. Herlings voitti erän suvereenisesti. Toiseksi ajoi Italian Andrea Adamo ja kolmanneksi Lavian Pauls Jonass, joka oli löytänyt erinomaisen vireen. Ranskalle tuli jälleen kylmää vettä niskaan kun Tom Vialle koko Valinin kohtalon ja joutui keskeyttämään hänkin avauskierroksella. Ranska oli näin mestaruustaistelusta ulkona. Belgia sitävastoin teki vahvaa työtä Liam Evertsin ollessa erän neljäs ja Sacha Conenen seitsemäs. Espanja oli vuorostaan nyt hätää kärsimässä vaikka Farres olikin viides, sillä Francisco Carsia joutui keskeyttämään.
 
