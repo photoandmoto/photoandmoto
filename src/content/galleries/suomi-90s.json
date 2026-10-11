@@ -420,6 +420,16 @@
       "height": 891
     },
     {
+      "filename": "Salo SM 250 1992.jpg",
+      "thumb": "thumbs/Salo SM 250 1992_thumb.jpg",
+      "display": "display/Salo SM 250 1992_display.jpg",
+      "caption": "Salo SM 250 1992",
+      "photographer": "Matti Tarkkonen",
+      "date": "",
+      "width": 1400,
+      "height": 923
+    },
+    {
       "filename": "Salo SM 250 1992 vas. Kytölä, Nevala, Kovalainen ja Seppälä.jpg",
       "thumb": "thumbs/Salo SM 250 1992 vas. Kytölä, Nevala, Kovalainen ja Seppälä_thumb.jpg",
       "display": "display/Salo SM 250 1992 vas. Kytölä, Nevala, Kovalainen ja Seppälä_display.jpg",
@@ -1975,6 +1985,17 @@
       "added_at": "2026-09-24"
     },
     {
+      "filename": "Tommi Lehmsuvirta Heinola Joukkue SM 1998.jpg",
+      "thumb": "thumbs/Tommi Lehmsuvirta Heinola Joukkue SM 1998_thumb.jpg",
+      "display": "display/Tommi Lehmsuvirta Heinola Joukkue SM 1998_display.jpg",
+      "caption": "Tommi Lehmsuvirta Heinola Joukkue SM 1998",
+      "photographer": "",
+      "date": "",
+      "width": 1400,
+      "height": 965,
+      "added_at": "2026-10-11"
+    },
+    {
       "filename": "Toni Gröning Karkkila SM 125cc 1998.jpg",
       "thumb": "thumbs/Toni Gröning Karkkila SM 125cc 1998_thumb.jpg",
       "display": "display/Toni Gröning Karkkila SM 125cc 1998_display.jpg",
@@ -2120,16 +2141,6 @@
       "date": "",
       "width": 1075,
       "height": 1760
-    },
-    {
-      "filename": "Salo SM 250 1992.jpg",
-      "thumb": "thumbs/Salo SM 250 1992_thumb.jpg",
-      "display": "display/Salo SM 250 1992_display.jpg",
-      "caption": "Salo SM 250 1992",
-      "photographer": "Matti Tarkkonen",
-      "date": "",
-      "width": 1400,
-      "height": 923
     }
   ],
   "category": "finland"
