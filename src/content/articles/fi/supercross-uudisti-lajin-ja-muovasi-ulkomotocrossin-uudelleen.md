@@ -1,6 +1,6 @@
 ---
-title: Supercross uudisti lajin ja muovasi ulkomotocrossin uudelleen
-subtitle: Vaikka motocrossin sukujuuret ovat syvällä Euroopassa, Pohjois-Amerikka ja etenkin Yhdysvallat muovasivat lajista uudenlaisen spektaakkelin rakennettuine ratoineen. Tämä amerikkalainen murros vyöryi lopulta voimalla takaisin eurooppalaisille radoille noin 1980-luvun puolivälissä.
+title: Supercross uudisti lajin ja muovasi myös “ulkoratamotocrossin” uudelleen
+subtitle: Vaikka motocrossin juuret ovat Euroopassa, Yhdysvallat muovasi lajista uudenlaisen spektaakkelin rakennetuin ratoineen. Tämä amerikkalainen murros vyöryi lopulta voimalla takaisin eurooppalaisille radoille noin 1980-luvun puolivälissä.
 author: Photo & Moto
 date: 2026-10-21
 category: Motocross

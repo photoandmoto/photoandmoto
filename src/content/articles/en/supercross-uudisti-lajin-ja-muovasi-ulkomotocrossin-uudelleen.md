@@ -1,6 +1,6 @@
 ---
-title: Supercross revolutionized the sport and reshaped outdoor motocross
-subtitle: Although the roots of motocross run deep in Europe, North America and especially the United States shaped the sport into a new kind of spectacle with its built tracks. This American transformation eventually rolled back with force onto European tracks around the mid-1980s.
+title: Supercross revolutionized the sport and also reshaped "outdoor motocross"
+subtitle: Although the roots of motocross are in Europe, the United States shaped the sport into a new kind of spectacle with its purpose-built tracks. This American transformation eventually rolled back with force onto European tracks around the mid-1980s.
 author: Photo & Moto
 date: 2026-10-21
 category: Motocross
