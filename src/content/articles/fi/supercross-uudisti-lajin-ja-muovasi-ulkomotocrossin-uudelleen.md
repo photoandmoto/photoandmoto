@@ -23,9 +23,9 @@ Lajin tarina käynnistyi Englannissa vuonna 1924, kun Camberleyn moottoripyörä
 
 Toisen maailmansodan jälkeen motocross kasvoi vauhdilla. Ensimmäinen Motocross des Nations ajettiin Hollannissa vuonna 1947, FIM perusti Euroopan-mestaruussarjan 1952, ja jo vuonna 1957 käynnistyi virallinen MM-sarja. Varhaiset radat seurasivat tarkasti maaston luonnollisia muotoja pitkine kierroksineen ja loivine hyppyineen, joten menestyminen vaati ennen kaikkea rautaista fyysistä kestävyyttä.
 
-![Erkylän lukkojen motorcross rata oli hyvin typpilinen, ajajille raskas luonnonrata](/images/scramble.png "Erkylän lukkojen motorcross rata oli hyvin typpilinen, ajajille raskas luonnonrata")
+![Erkylän lukkojen motorcrossrata oli hyvin typpilinen, ajajille raskas luonnonrata](/images/scramble.png "Erkylän lukkojen motorcrossrata oli hyvin typpilinen, ajajille raskas luonnonrata")
 
-Pohjois-Amerikassa, ja etenkin Yhdysvalloissa, motocross oli pitkään melko tuntematon aina vuoteen 1966 asti. Silloin maahantuoja Edison Dye toi Ruotsin maailmanmestarin Torsten Hallmanin ja Husqvarnan Yhdysvaltoihin. Hallman dominoi tapahtumia näytöstyyliin ja voitti kaikki erät.
+Pohjois-Amerikassa motocross oli pitkään melko tuntematon aina vuoteen 1966 asti. Silloin maahantuoja Edison Dye toi Ruotsin maailmanmestarin Torsten Hallmanin ja Husqvarnan Yhdysvaltoihin. Hallman dominoi tapahtumia näytöstyyliin ja voitti kaikki erät.
 
 Menestyksen innoittamana Dye perusti Inter-Am-sarjan jo seuraavana vuonna, ja AMA seurasi perässä lanseeraamalla oman Trans-AMA-sarjansa vuonna 1970. Eurooppalaiset tähdet, kuten Roger De Coster, Joel Robert, Åke Jonsson ja Heikki Mikkola, hallitsivat kilpailuja ja opettivat samalla amerikkalaisille lajin saloja.
 
@@ -42,7 +42,7 @@ Euroopassa maastonmuotoja mukailevat radat pitivät pitkään pintansa, minkä v
 > Euroopassa supercross jäi vain erillisiksi tapahtumiksi, eikä kehittynyt omaksi sarjakseen FIM Grand Prix -motocrossin rinnalle. Siitä huolimatta perinteiset ulkoradat muuttuivat tiiviimmiksi ja saivat entistä teknisempiä sekä keinotekoisempia muotoja, mikä mahdollisti yleisölle kilpailun laajemman seuraamisen yhdestä paikasta. 
 
 MM-sarjan kaupallistuminen sai uutta vauhtia 1990-luvun puolivälistä alkaen, kun tv-oikeudet ja markkinointi keskitettiin yhdelle promoottorille. Sarjasta rakennettiin yhtenäinen tuote televisioon ja myöhemmin suoratoistopalveluihin. Koska kuvaan ja katsojille haluttiin tarjota helpommin seurattavaa sekä näyttävää toimintaa, ratoja tiivistettiin ja niihin lisättiin keinotekoisia muotoja. Tämä vahvisti suuntausta kohti teknisempää ja näyttävämpää ajotapaa samalla kun sarja ammattimaistui entisestään.
- 
+
 ![Kymiring MXGP vauhdissa vuonna 2025](/images/Kymiring.png "Kymiring MXGP vauhdissa vuonna 2025")
 
 Kokeneemmalle ajajasukupolvelle tämä murros oli kova paikka, sillä vanhojen, totuttujen ajotapojen ja tyylin muuttaminen oli vaikeaa. Perinteinen laji oli tukeutunut enempi puhtaaseen fyysiseen kestävyyteen, kuin äärimmäiseen huippuun hiottuun ajotekniikkaan. Uusi suuntaus vaati kovan kunnon lisäksi huomattavasti joustavampaa ja teknisempää ajotyyliä. Tämän seurauksena vanhempi kaarti alkoi jäädä kyydistä, ja uusi sukupolvi otti paikkansa lajin kärjessä.
