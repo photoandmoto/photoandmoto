@@ -23,7 +23,7 @@ The story of the sport began in England in 1924, when the Camberley Motor Cycle 
 
 After the Second World War, motocross grew rapidly. The first Motocross des Nations was held in the Netherlands in 1947, the FIM established the European Championship series in 1952, and the official World Championship series started as early as 1957. Early tracks closely followed the natural contours of the terrain with their long laps and gentle jumps, so success required, above all, iron physical endurance.
 
-![The Erkylän lukko motocross track was very typical, a natural track that was physically demanding for riders](/images/scramble.png "The Erkylän lukko motocross track was very typical, a natural track that was physically demanding for riders")
+![Hyvinkää Erkylän Lukot motocross track was very typical, a natural track that was physically demanding for riders](/images/scramble.png "Hyvinkää Erkylän Lukot motocross track was very typical, a natural track that was physically demanding for riders")
 
 In North America, motocross was relatively unknown for a long time until 1966. That year, importer Edison Dye brought Swedish world champion Torsten Hallman and Husqvarna to the United States. Hallman dominated the events in exhibition style and won every heat.
 

@@ -19,11 +19,11 @@ seo_description: motocrossin sukujuuret ovat syvällä Euroopassa, Pohjois-Ameri
 sources: 'Lähteet: Useita julkisia lähteitä. Kuvat: Photo and Moto'
 ---
 
-Lajin tarina käynnistyi Englannissa vuonna 1924, kun Camberleyn moottoripyöräkerho järjesti Surreyn nummilla Southern Scott Scramble -kilpailun. Kisassa oli kaksi kierrosta, jotka ajettiin 25 mailin reitillä, ja nopein voitti. Englannissa tapahtumasta käytettiin nimitystä “scramble”, mutta Ranskassa ja Belgiassa kilpailumuoto vakiintui pian nimellä moto cross.
+Lajin tarina käynnistyi Englannissa vuonna 1924, kun Camberleyn moottoripyöräkerho järjesti Surreyn nummilla Southern Scott Scramble -kilpailun. Kisassa oli kaksi kierrosta, jotka ajettiin 25 mailin reitillä, ja nopein voitti. Englannissa tapahtumasta käytettiin nimitystä “scramble”, mutta Ranskassa ja Belgiassa kilpailumuoto vakiintui pian nimellä motocross.
 
 Toisen maailmansodan jälkeen motocross kasvoi vauhdilla. Ensimmäinen Motocross des Nations ajettiin Hollannissa vuonna 1947, FIM perusti Euroopan-mestaruussarjan 1952, ja jo vuonna 1957 käynnistyi virallinen MM-sarja. Varhaiset radat seurasivat tarkasti maaston luonnollisia muotoja pitkine kierroksineen ja loivine hyppyineen, joten menestyminen vaati ennen kaikkea rautaista fyysistä kestävyyttä.
 
-![Erkylän lukkojen motorcrossrata oli hyvin typpilinen, ajajille raskas luonnonrata](/images/scramble.png "Erkylän lukkojen motorcrossrata oli hyvin typpilinen, ajajille raskas luonnonrata")
+![Hyvnkään Erkylän lukkojen motorcrossrata oli hyvin typpilinen, ajajille raskas luonnonrata](/images/scramble.png "Hyvinkään Erkylän lukkojen motorcrossrata oli hyvin typpilinen, ajajille raskas luonnonrata")
 
 Pohjois-Amerikassa motocross oli pitkään melko tuntematon aina vuoteen 1966 asti. Silloin maahantuoja Edison Dye toi Ruotsin maailmanmestarin Torsten Hallmanin ja Husqvarnan Yhdysvaltoihin. Hallman dominoi tapahtumia näytöstyyliin ja voitti kaikki erät.
 
