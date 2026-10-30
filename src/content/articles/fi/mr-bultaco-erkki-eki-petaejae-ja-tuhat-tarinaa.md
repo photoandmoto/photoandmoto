@@ -62,7 +62,7 @@ Kun kyseessä on pyörämerkki, jota ei ole valmistettu enää vuoden 1983 jälk
 
 ![Bultaco Pursang 125 MK5 1972](/images/Bultaco%20Pursang%20125%20MK5%201972%202.png "Bultaco Pursang 125 MK5 1972")
 
-> "Joskus 90-luvun alussa oltiin kaverin kanssa liikkeellä Saksassa ja oltiin saatu tietoa, että Belgiasta ex-crossari Marcel Wiertziltä löytyy jonkin verran osia. Siispä auton nokka kohti Belgiaa, lähelle Saksan rajaa. Lopulta kovan hakemisen jälkeen löytyy eräästä pikkukylästä Marcel Wiertzin motskariliike. 
+> "Joskus 90-luvun alussa oltiin kaverin kanssa liikkeellä Saksassa ja oltiin saatu tietoa, että Belgiasta ex-crossari Marcel Wiertziltä löytyy jonkin verran osia. Siispä auton nokka kohti Belgiaa, lähelle Saksan rajaa. Lopulta kovan hakemisen jälkeen löytyy eräästä pikkukylästä [Marcel Wiertzin](https://ca.wikipedia.org/wiki/Marcel_Wiertz) motskariliike. 
 
 ![Bultaco Pursang 250 MK9 1976](/images/Bultaco%20Pursang%20250%20MK9%201976%202.png "Bultaco Pursang 250 MK9 1976")
 
@@ -76,7 +76,7 @@ Kun kyseessä on pyörämerkki, jota ei ole valmistettu enää vuoden 1983 jälk
 
 ![Bultaco Sherpa T125 1972](/images/Bultaco%20Sherpa%20T125%201972%202.png "Bultaco Sherpa T125 1972")
 
-> "Samalla reissulla oltiin syömässä erässä ravintolassa vaimoni ja Luhtasuon Pepen kanssa ja Pepe vinkkasi, että samassa ravintolassa on Bultaco suvun mies Oriol Buig y Bulto, jonka setä oli yksi Bultacon omistajista. Kävin häneltä pyytämässä juuri ostamaani T-paitaan nimikirjoituksen. Ei taida olla kovin monella vastaavaa", miettii Petäjä.
+> "Samalla reissulla oltiin syömässä erässä ravintolassa vaimoni ja Luhtasuon Pepen kanssa ja Pepe vinkkasi, että samassa ravintolassa on Bultaco suvun mies [Oriol Puig i Bulto](https://ca.wikipedia.org/wiki/Oriol_Puig_i_Bult%C3%B3), jonka setä oli yksi Bultacon omistajista. Kävin häneltä pyytämässä juuri ostamaani T-paitaan nimikirjoituksen. Ei taida olla kovin monella vastaavaa", miettii Petäjä.
 
 ![Oriol Buig y Bulton signeeraama paita](/images/Bultaco%20forver%202.png "Oriol Buig y Bulton signeeraama paita")
 

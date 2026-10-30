@@ -62,7 +62,7 @@ When it comes to a bike brand that hasn't been manufactured since 1983, hunting 
 
 ![Bultaco Pursang 125 MK5 1972](/images/Bultaco%20Pursang%20125%20MK5%201972.png "Bultaco Pursang 125 MK5 1972")
 
-> "Sometime in the early 90s, a friend and I were in Germany and had received information that some parts could be found in Belgium from ex-cross rider Marcel Wiertz. So we headed towards Belgium, near the German border. Finally, after a hard search, we found Marcel Wiertz's motorcycle shop in a small village.
+> "Sometime in the early 90s, a friend and I were in Germany and had received information that some parts could be found in Belgium from ex-cross rider Marcel Wiertz. So we headed towards Belgium, near the German border. Finally, after a hard search, we found [Marcel Wiertz's ](https://ca.wikipedia.org/wiki/Marcel_Wiertz)motorcycle shop in a small village.
 
 ![Bultaco Pursang 250 MK9 1976](/images/Bultaco%20Pursang%20250%20MK9%201976.png "Bultaco Pursang 250 MK9 1976")
 
@@ -76,7 +76,7 @@ When it comes to a bike brand that hasn't been manufactured since 1983, hunting 
 
 ![Bultaco Sherpa T125 1972](/images/Bultaco%20Sherpa%20T125%201972.png "Bultaco Sherpa T125 1972")
 
-> "On the same trip, we were eating at a restaurant with my wife and Pepe Luhtasuo, and Pepe tipped me off that Oriol Buig y Bulto, a man from the Bultaco family whose uncle was one of the owners of Bultaco, was in the same restaurant. I went to ask him for an autograph on the T-shirt I had just bought. I don't think many people have one like that," reflects Petäjä.
+> "On the same trip, we were eating at a restaurant with my wife and Pepe Luhtasuo, and Pepe tipped me off that [Oriol Puig i Bulto, ](https://ca.wikipedia.org/wiki/Oriol_Puig_i_Bult%C3%B3)a man from the Bultaco family whose uncle was one of the owners of Bultaco, was in the same restaurant. I went to ask him for an autograph on the T-shirt I had just bought. I don't think many people have one like that," reflects Petäjä.
 
 ![Shirt signed by Oriol Buig y Bulto](/images/Bultaco%20forver.png "Shirt signed by Oriol Buig y Bulto")
 
