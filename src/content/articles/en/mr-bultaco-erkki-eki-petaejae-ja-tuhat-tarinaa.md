@@ -10,7 +10,7 @@ tags:
 featured_image: /images/Erkki Petäjä Bultaco Sherpa 250 CC 1970.jpg
 featured_image_focus: top
 card_image: ''
-card_image_focus: center
+card_image_focus: top
 show_hero: true
 image_caption: Erkki Petäjä is a man of fifteen Bultacos, and an enthusiast who knows everything about them.
 draft: false
