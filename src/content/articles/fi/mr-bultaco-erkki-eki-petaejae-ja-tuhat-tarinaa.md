@@ -13,7 +13,7 @@ card_image: ''
 card_image_focus: center
 show_hero: true
 image_caption: Erkki Petäjä on viidentoista Bultacon mies, ja niistä kaiken tietävä harrastaja.
-draft: true
+draft: false
 seo_description: Petäjän Bultaco-kavalkadi on Pohjois-Euroopan suurin. Ranskassa kahdella veljeksellä on huikeat 40 Bultacoa
 sources: 'Erkki Petäjän haastattelu. Kuvat: Photo and Moto'
 ---
