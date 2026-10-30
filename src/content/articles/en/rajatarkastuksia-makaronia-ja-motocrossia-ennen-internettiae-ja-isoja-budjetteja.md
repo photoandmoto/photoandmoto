@@ -1,5 +1,5 @@
 ---
-title: Border controls, macaroni and Motocross before the internet and big budgets
+title: Border checks, macaroni and motocross before the internet and big budgets
 subtitle: A return to a time when European road trips resembled constant survival more than streamlined elite sports.
 author: Photo & Moto
 date: 2026-10-30

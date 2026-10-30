@@ -1,5 +1,5 @@
 ---
-title: Rajatarkastuksia, makaronia ja Motocrossia ennen internettiä ja isoja budjetteja
+title: Rajatarkastuksia, makaronia ja motocrossia ennen internettiä ja isoja budjetteja
 subtitle: Paluu aikaan, jolloin  Euroopan kilpailumatkat muistuttivat enemmän jatkuvaa selviytymistä kuin virtaviivaista huippu-urheilua.
 author: Photo & Moto
 date: 2026-10-30
