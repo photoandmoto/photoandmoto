@@ -7,7 +7,7 @@ category: Profile
 tags:
   - Bultaco Pursang
   - Bultaco Sherpa
-featured_image: /images/Erkki Petäjä Bultaco Sherpa 250 CC 1970.jpg
+featured_image: /images/PXL_20261027_123644909~2.jpg
 featured_image_focus: top
 card_image: ''
 card_image_focus: top
