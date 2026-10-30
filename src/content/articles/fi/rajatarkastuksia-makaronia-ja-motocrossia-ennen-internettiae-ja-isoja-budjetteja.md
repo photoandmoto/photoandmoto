@@ -50,7 +50,7 @@ Ajovarusteet olivat yksi asia, joka Suomessa oli kunnossa. Maa oli tuohon aikaan
 
 Pankkikaan ei ollut todellinen vaihtoehto. Sitä saattoi pukea parhaan paidan päälle, mennä hattu kourassa sisään, vain kuullakseen tutun sanonnan: “Ei kiitos, sanottin pankissa”.
 
-Jokaisen kisan oli siis tuotettava tulosta, tai ennenaikainen matka Värtanin kautta Suomeen alkoi ennen aikojaan. Yhden viikonlopun rahat maksoivat viikon elämisen ja ajomatkan seuraavaan paikkaan. Tahto olla jonain päivänä huipulla oli kuitenkin periksiantamattoman kova.
+Jokaisen kisan oli siis tuotettava tulosta, tai matka Värtanin kautta Suomeen alkoi ennen aikojaan. Yhden viikonlopun rahat maksoivat viikon elämisen ja ajomatkan seuraavaan paikkaan. Tahto olla jonain päivänä huipulla oli kuitenkin periksiantamattoman kova.
 
 ### Perille pääsy kävi mutkien kautta
 
