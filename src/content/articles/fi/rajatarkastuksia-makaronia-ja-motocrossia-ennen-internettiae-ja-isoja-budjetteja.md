@@ -64,7 +64,7 @@ Pohjoismaissa passit saivat jäädä hansikaslokeroon, mutta etelämpänä, joka
 
 Tämä oli kuitenkin vasta Länsi-Euroopan osuus. Jos suunta oli rautaesiripun taakse, vaikkapa Tšekkoslovakiaan, prosessi oli huomattavasti monimutkaisempi. Matka edellytti hyvissä ajoin hankittua viisumia, ja rajalla odottivat aseistetut vartijat sekä pakettiauton perusteellinen tarkastus kaikkia varaosia myöten. Nykyään voit ajaa useimpien Euroopan rajojen yli vauhtia hidastamatta.
 
-Lompakkoja, tai itseasiassa lompakot sisälsivät eri valuuttoja. Matkalla tarvittiin vähintäänkin markkoja, kruunuja, d-markkoja ja frangeja. Valuutat oli vaihdettava etukäteen pankeissa. Mikäli käteinen pääsi loppumaan viikonlopun aikana, apua oli mahdotonta saada nopeasti. Mukana kulkenut kortti ei ollut muovinen,  vaan kortti tyttöystävälle, sekin usein vailla postimerkkiä.
+Lompakko, tai itseasiassa lompakot sisälsivät eri valuuttoja. Matkalla tarvittiin vähintäänkin markkoja, kruunuja, d-markkoja ja frangeja. Valuutat oli vaihdettava etukäteen pankeissa. Mikäli käteinen pääsi loppumaan viikonlopun aikana, apua oli mahdotonta saada nopeasti. Mukana kulkenut kortti ei ollut muovinen,  vaan kortti tyttöystävälle, sekin usein vailla postimerkkiä.
 
 ### Elämää tien päällä
 

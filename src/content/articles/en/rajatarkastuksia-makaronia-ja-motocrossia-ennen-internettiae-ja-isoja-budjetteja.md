@@ -64,7 +64,7 @@ In the Nordic countries, passports could stay in the glove compartment, but furt
 
 However, this was only the Western European part. If the destination was behind the Iron Curtain, say Czechoslovakia, the process was significantly more complicated. The trip required a visa obtained well in advance, and at the border, armed guards and a thorough inspection of the van, down to every spare part, awaited. Nowadays, you can drive across most European borders without slowing down.
 
-Wallets—or rather, wallets contained different currencies. On the road, you needed at least marks, crowns, D-marks, and francs. Currencies had to be exchanged in advance at banks. If you ran out of cash during the weekend, it was impossible to get help quickly. The card carried along was not plastic, but a card for a girlfriend, and even that was often without a stamp.
+Wallet—or rather, wallets contained different currencies. On the road, you needed at least marks, crowns, D-marks, and francs. Currencies had to be exchanged in advance at banks. If you ran out of cash during the weekend, it was impossible to get help quickly. The card carried along was not plastic, but a card for a girlfriend, and even that was often without a stamp.
 
 ### Life on the road
 
