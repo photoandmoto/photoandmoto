@@ -2,7 +2,7 @@
 title: Mr. Bultaco Erkki "Eki" Petäjä and a thousand stories
 subtitle: Erkki Petäjä is a man of fifteen Bultacos. Petäjä doesn't exactly collect Bultacos, but they just happen to have accumulated!
 author: Tapio Vuori
-date: 2026-11-02
+date: 2026-10-30
 category: Profile
 tags:
   - Bultaco Pursang

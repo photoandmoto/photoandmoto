@@ -2,7 +2,7 @@
 title: Mr. Bultaco Erkki ”Eki” Petäjä ja tuhat tarinaa
 subtitle: Erkki Petäjä on viidentoista Bultacon mies. Petäjä ei varsinaisesti kerää Bultacoja, mutta niitä nyt on vain sattunut kerääntymään!
 author: Tapio Vuori
-date: 2026-11-02
+date: 2026-10-30
 category: Profile
 tags:
   - Bultaco Pursang
