@@ -1,7 +1,7 @@
 ---
 title: Orimattilan MK ajoi joukkuekisan mestariksi
 subtitle: Heinolan raskas rata haastoi joukkueet
-author: Photo and Moto
+author: Photo & Moto
 date: 2026-09-23
 category: Motocross
 tags:

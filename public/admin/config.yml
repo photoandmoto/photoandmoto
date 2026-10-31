@@ -60,6 +60,10 @@ collections:
     slug: '{{slug}}'
     summary: '{{title}} — {{date | date("YYYY-MM-DD")}} ({{category}})'
     sortable_fields: [date, title, category]
+    # Table view columns + inline bulk edit. NOTE: bulk edit saves go straight to main (production).
+    table_columns: [title, date, category, author, draft]
+    bulk_edit:
+      fields: [title, date, category, author, draft]
     view_filters:
       - { label: 'Piilotetut (luonnos)', field: draft, pattern: true }
     view_groups:
@@ -71,7 +75,16 @@ collections:
     fields:
       - { name: title, label: Otsikko, widget: string, required: [fi], i18n: true }
       - { name: subtitle, label: Alaotsikko, widget: string, required: false, i18n: true }
-      - { name: author, label: Kirjoittaja, widget: string, default: 'Photo & Moto', i18n: duplicate }
+      - name: author
+        label: Kirjoittaja
+        widget: relation
+        collection: authors
+        value_field: name
+        search_fields: [name]
+        display_fields: [name]
+        default: 'Photo & Moto'
+        i18n: duplicate
+        hint: 'Jos kirjoittajaa ei löydy, lisää hänet vasemman sivupalkin Kirjoittajat-osiosta.'
       - { name: date, label: Päivämäärä, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: true, i18n: duplicate }
       - name: category
         label: Kategoria
@@ -262,3 +275,18 @@ collections:
     fields:
       - { name: name, label: 'Tunniste (englanniksi, ei välilyöntejä)', widget: string, hint: '⚠️ ÄLÄ MUUTA TÄTÄ olemassa olevalle kategorialle — kaikki sitä käyttävät artikkelit lakkaavat näkymästä. Uudelle kategorialle: tämä arvo tallennetaan artikkelien tiedostoihin (esim. MXGP, Speedway, Historical).' }
       - { name: label, label: 'Näytettävä nimi', widget: string, hint: 'Tämä näkyy Decapin pudotusvalikossa, esim. Historiallinen, Tekninen. Tämän voit muuttaa milloin vain — se ei riko mitään.' }
+
+  - name: authors
+    label: Kirjoittajat
+    label_singular: Kirjoittaja
+    description: '⚠️ Ennen kirjoittajan poistamista varmista, ettei mikään artikkeli käytä häntä. Poistetun kirjoittajan nimi jää artikkeliin tekstinä, mutta valintakenttä näyttää sen tyhjänä. Nimen muuttaminen ei päivitä vanhoja artikkeleita.'
+    folder: src/content/authors
+    create: true
+    delete: true
+    extension: json
+    format: json
+    slug: '{{slug}}'
+    identifier_field: name
+    summary: '{{name}}'
+    fields:
+      - { name: name, label: 'Nimi', widget: string, hint: 'Tämä tallennetaan artikkeleihin kirjoittajan nimeksi. Älä muuta olemassa olevan kirjoittajan nimeä — vanhat artikkelit eivät päivity.' }

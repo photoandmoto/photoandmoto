@@ -106,10 +106,18 @@ const categoriesCollection = defineCollection({
   }),
 });
 
+const authorsCollection = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: './src/content/authors' }),
+  schema: z.object({
+    name: z.string(),
+  }),
+});
+
 export const collections = {
   articles: articlesCollection,
   pikauutiset: pikauutisetCollection,
   galleries: galleriesCollection,
   categories: categoriesCollection,
+  authors: authorsCollection,
 };
 
