@@ -1126,8 +1126,10 @@ Production (`photoandmoto`) has this enabled and is unaffected.
 - **Gemini 2.5 shutdown (Oct 2026) — action needed.** Google is retiring the
   Gemini 2.5 models and already returns 404 "no longer available to new users"
   for `gemini-2.5-flash` on new keys. This repo still uses `gemini-2.5-flash`
-  in `functions/api/generate-article.js`, `functions/api/search.js` and
-  `scripts/translate-article.mjs` (and the architecture table above). Migrate
+  in `functions/api/generate-article.js`, `functions/api/search.js`,
+  `scripts/scrape-mxgp.py` (the scheduled MXGP scraper — it would fail quietly
+  and leave stale data) and `test_gemini.py` (and the architecture table
+  above). `scripts/translate-article.mjs` no longer exists. Migrate
   to a current model (e.g. `gemini-3.5-flash` or `gemini-3.5-flash-lite`),
   test on staging first, and re-check the `thinkingBudget: 0` / JSON-schema
   settings, since model families differ. Verify the shutdown date on Google's

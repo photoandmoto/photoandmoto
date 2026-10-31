@@ -596,7 +596,7 @@ built into the component.
 - **Database:** Cloudflare D1 (edge SQLite) — IAM, submissions, mystery photos + comments
 - **Image storage:** Cloudflare R2 — bucket `photoandmoto-uploads` exists; migration from repo planned (see `INFRASTRUCTURE.md`)
 - **Transactional email:** Resend — access requests, provisioning, submission notifications, rejection emails
-- **AI:** Gemini API (`gemini-2.5-flash`) — pikauutinen generation (`generate-article.js`: JSON mode on, `maxOutputTokens: 8192`, 50 req/IP/hour) + site search (`search.js`: no JSON mode, 1500 tokens)
+- **AI:** Gemini API (`gemini-2.5-flash`, **retiring Oct 2026 — see Backlog**) — pikauutinen generation (`generate-article.js`: JSON mode on, `maxOutputTokens: 8192`, 50 req/IP/hour) + site search (`search.js`: no JSON mode, 1500 tokens)
 - **Auth:** GitHub OAuth (Sveltia login); GitHub App + in-Worker JWT (publish pipeline); custom IAM (contributors/editors)
 - **CI/CD:** GitHub Actions + Cloudflare Pages auto-deploy
 - **Languages:** Finnish (`fi`), English (`en`)
@@ -714,6 +714,24 @@ handles `/` → `/fi`.
 
 Tracked work that's not blocking but worth picking up in future sessions.
 Listed in rough priority order.
+
+### Gemini 2.5 retirement — migrate off `gemini-2.5-flash`
+
+Google is retiring the Gemini 2.5 models in October 2026 (verify the date on
+Google's deprecations page); new keys already get 404 "no longer available to
+new users" for `gemini-2.5-flash`. **Not started.** Files that use it:
+
+- `functions/api/generate-article.js` — pikauutinen generation
+- `functions/api/search.js` — site search
+- `scripts/scrape-mxgp.py` — scheduled MXGP scraper (GitHub Actions secret
+  `GEMINI_API_KEY`); would fail quietly and leave the data stale
+- `test_gemini.py` — local test script
+
+Plan: pick a current model (e.g. `gemini-3.5-flash` / `-flash-lite`), check the
+`thinkingBudget` and JSON-schema settings per model family, test on staging
+(generate a pikauutinen, run a search, run the scraper manually), then promote.
+Sveltia's built-in Translate is not affected on Sveltia ≥ 0.172.3 (now 0.256.1).
+Details: `DEPLOYMENT.md` § Backlog.
 
 ### Phase 3 — Hyväksynnät (editorial review queue) ✅ built on staging
 
