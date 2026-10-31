@@ -85,6 +85,12 @@ a git-based CMS served as static files from `public/admin/`.
   login fails below). To upgrade: test the new version's `/admin/` locally
   first (open every collection, check fields render, check save works),
   *then* bump the pinned version number — never remove the pin.
+  **Bumped 0.170.7 → 0.256.1 on 2026-10-31** (it had sat ~85 releases behind
+  because nothing prompted a revisit). Tested locally first (all collections,
+  save, Translate), then `dev` → staging → `main`. **Check
+  `github.com/sveltia/sveltia-cms/releases` about monthly** and bump the same
+  way; the unpkg URL in `public/admin/index.html` is the only place the
+  version lives.
 - **FI required, EN optional:** new entries start FI-only (`initial_locales:
   default`). The editor enables English per entry from the ⋯ menu (top-right of
   the editor) when a translation is wanted. Required fields (`title`, `body`,
@@ -698,6 +704,40 @@ still uses the old key until the next build).
 For `OAUTH_GITHUB_CLIENT_SECRET`: regenerate in the GitHub OAuth App, update
 the Cloudflare secret, redeploy. Sveltia logins fail until the redeploy finishes.
 
+### Git and GitHub push setup (Windows) — read before touching auth
+
+Pushes from the dev machine work through **Git Credential Manager (GCM)**,
+signed in as the GitHub user **`photoandmoto`**. That account has write access;
+**`atvilkman-ai` does not** (it returns `403 Permission denied`).
+
+- Remote URL (keep the username in it):
+  `https://photoandmoto@github.com/photoandmoto/photoandmoto.git`
+- Global `credential.helper` must be `manager`.
+- **Do not run `gh auth setup-git`, and do not accept "authenticate Git with
+  your GitHub credentials" in `gh auth login`.** It installs `gh` as the
+  credential helper for `github.com` and `gist.github.com`, signed in as
+  `atvilkman-ai`, which overrides GCM and breaks every push. This happened on
+  2026-07-22 and again on 2026-10-31.
+- `gh` is logged in as `atvilkman-ai`, so `gh pr create` fails. Open PRs in the
+  browser, or merge with plain `git` (the usual flow).
+
+**Fix if pushes ask for a password or return 403:**
+
+```powershell
+git config --global --get-regexp credential
+git config --global --unset-all credential.https://github.com.helper
+git config --global --unset-all credential.https://gist.github.com.helper
+git remote set-url origin https://photoandmoto@github.com/photoandmoto/photoandmoto.git
+git push origin <branch>
+```
+
+The first push may show a bare password prompt; run it again and GCM opens a
+browser login — sign in as `photoandmoto` (use a private window if the browser
+is already signed in as `atvilkman-ai`).
+
+PowerShell 7 accepts `&&`; Windows PowerShell 5.1 does not, so run commands
+one at a time there.
+
 ### Pushing a hotfix to production
 
 When `dev` is dirty but you need to fix something live:
@@ -979,6 +1019,25 @@ Open the deployment → **Build log**. Common causes:
   storage, per-browser, so a fresh browser has none); the **Default Translation
   Service** dropdown is still *Google Gemini*; the key is valid and within quota
   in Google AI Studio.
+  - **Incident 2026-10-05:** Translate failed with only the generic toast
+    "There was an error while translating." Settings looked correct (service =
+    Google Gemini, key present). Replacing the Gemini API key with a new one
+    fixed it, so the old key had stopped working (cause never confirmed —
+    revoked, restricted, or out of quota).
+  - **Recurrence 2026-10-30:** same toast again. The pinned Sveltia was
+    v0.170.7, which predates v0.172.3 ("updated the Google Gemini model to 3.5
+    Flash-Lite"), and Google is retiring the Gemini 2.5 models (new keys
+    already get 404 "no longer available to new users"). Likely cause: the old
+    pinned Sveltia called a retired model. Bumped Sveltia to 0.256.1 on
+    2026-10-31; Translate verified working locally on that version.
+  - **Diagnosis tips:** the toast hides the real reason. Translation goes
+    browser → Gemini directly, **not through Cloudflare**, so Cloudflare
+    Real-time logs stay empty. The only place to see the actual error is
+    browser DevTools → Network → the failed request to
+    `generativelanguage.googleapis.com` (Response tab). Check in this order:
+    (1) fresh Gemini key pasted in Sveltia → Settings → Internationalization,
+    (2) hard refresh Ctrl+Shift+R (Sveltia is a PWA and caches), (3) is the
+    pinned Sveltia version recent?
 
 ### Gemini / AI pikauutinen call fails
 
@@ -1064,6 +1123,15 @@ Production (`photoandmoto`) has this enabled and is unaffected.
 
 ## Backlog and known issues
 
+- **Gemini 2.5 shutdown (Oct 2026) — action needed.** Google is retiring the
+  Gemini 2.5 models and already returns 404 "no longer available to new users"
+  for `gemini-2.5-flash` on new keys. This repo still uses `gemini-2.5-flash`
+  in `functions/api/generate-article.js`, `functions/api/search.js` and
+  `scripts/translate-article.mjs` (and the architecture table above). Migrate
+  to a current model (e.g. `gemini-3.5-flash` or `gemini-3.5-flash-lite`),
+  test on staging first, and re-check the `thinkingBudget: 0` / JSON-schema
+  settings, since model families differ. Verify the shutdown date on Google's
+  deprecations page before scheduling.
 - **D1 growth monitoring** — no automated alerting for table size yet.
 - **Original-image archive strategy** — the repo will eventually outgrow
   GitHub's recommended size; R2 / cold storage is a future decision. **Current
