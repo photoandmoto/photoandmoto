@@ -38,7 +38,7 @@ Talvella 1970 ajettiin Hyvinkään keskuskentällä, siis keskellä kaupunkia, j
 
 ### Niinpä Bultaco oli ampunut amorin nuolen Petäjän mieleen ja sydämeen.
 
-> "Näin kävi. Ensimmäisen oman trial Bultacon (Sherpa) tilasin Brandilta 10. tammikuuta 1972. Toimitus hieman viivästyi ja se tulikin minulle vasta elokuussa, mutta hyvää kannatti odottaa", haikailee Petäjä.
+> "Näin kävi. Ensimmäisen oman trial Bultaco Sherpan tilasin Brandilta 10. tammikuuta 1972. Toimitus hieman viivästyi ja se tulikin minulle vasta elokuussa, mutta hyvää kannatti odottaa", haikailee Petäjä.
 
 Tuohon Petäjän ensimmäiseen omaan Bultaco-tilaukseen liittyy myös hauska tarina.
 
@@ -50,7 +50,7 @@ Tuohon Petäjän ensimmäiseen omaan Bultaco-tilaukseen liittyy myös hauska tar
 
 ![Bultaco Sherpa T250 Erkki Petäjän ensimmäinen pyörä](/images/Bultaco%20Sherpa%20T250%201970%20Erkki%20Pet%C3%A4j%C3%A4%202.png "Bultaco Sherpa T250 Erkki Petäjä ensimmäinen pyörä")
 
-Kesällä 1973 Petäjä osallsitui ensimmäiseen trial-kisaansa, joka ajettiin Keimolassa. Päällimmäisenä kisasta on jäänyt mieleen kisapaikalle kulkeminen.
+Kesällä 1973 Petäjä osallistui ensimmäiseen trial-kisaansa, joka ajettiin Keimolassa. Päällimmäisenä kisasta on jäänyt mieleen kisapaikalle kulkeminen.
 
 > "Ei minulla siihen aikaan ollut mitään autoa, jolla olisin voinut kuskata pyörää kisoihin. Niinpä ainoa vaihtoehto oli laittaa bensaa tankkiin, reppu selkään ja ajamalla kisoihin".
 
