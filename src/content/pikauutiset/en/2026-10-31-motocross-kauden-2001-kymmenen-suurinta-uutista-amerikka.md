@@ -5,7 +5,7 @@ category: Historical
 author: Photo & Moto
 source: ai_generated
 photo: /images/pexels-michal-hudcovič-2753996.jpg
-draft: true
+draft: false
 ---
 
 #### AMERICA – TOP 5 NEWS
