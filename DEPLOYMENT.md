@@ -74,6 +74,12 @@ a git-based CMS served as static files from `public/admin/`.
   - **+ Uusi MXGP-juttu** / **+ Uusi historiallinen tarina** — Quick Add
     templates: pre-filled category, tags, and body skeleton
   - **Kategoriat** — article categories (data-driven; add new ones here)
+  - **Kirjoittajat** — article authors (data-driven; add/delete here). Added
+    2026-10-31, below a sidebar divider together with Kategoriat
+  - The two Quick Add templates share the Artikkelit folder, so their sidebar
+    counts equal the total article count (36) — this is expected, not a bug.
+    Sveltia has no documented option to hide the count; a `filter` would only
+    show category counts, which is equally misleading. Left as is by decision.
 - **Bilingual:** Sveltia uses `i18n: multiple_folders`. One entry has FI and EN
   locales; files are written to `src/content/articles/fi/<slug>.md` and
   `src/content/articles/en/<slug>.md` with the same slug.
@@ -674,6 +680,32 @@ one: Sveltia → **Kategoriat** → New. To retire one: first reassign every art
 using it, verify nothing references it, then delete the JSON file. The
 collection's `name` field is the value stored in articles — never change it on
 an in-use category.
+
+### Managing authors and bulk editing (Sveltia, added 2026-10-31)
+
+Authors are a Sveltia collection (`src/content/authors/*.json`, one
+`{ "name": "..." }` file each, registered in `src/content.config.ts`). The
+Artikkelit `author` field is a `relation` to it (`value_field: name`, default
+`Photo & Moto`); the **name string** is what is stored in the article
+frontmatter. Pikauutiset and the Quick Add templates keep a plain string author
+(server code and AI pikauutiset write names directly).
+
+- Add an author: Sveltia → **Kirjoittajat** → New. Delete one only after no
+  article uses it; the article keeps the name as text but the dropdown shows it
+  blank. Renaming an author does **not** update old articles.
+- Seeded from existing bylines: Photo & Moto, Tapio Vuori, Tavu, SML Tiedotus,
+  A.C Keller. One article with "Photo and Moto" was normalised to
+  "Photo & Moto".
+- **Table view / bulk edit** on Artikkelit: `table_columns` (title, date,
+  category, author, draft) and `bulk_edit` on the same fields. **A bulk-edit
+  Save is one commit straight to `main` = production**; toggling `draft`
+  hides/shows articles immediately.
+- **Gotcha — staging admin reads `main`:** `backend.branch` is `main`, so the
+  admin on staging (and local) lists content from `main`, not `dev`. New content
+  collections therefore show 0 entries until their files are on `main`.
+  `config.yml` itself is served from the deployed site, so config-only changes
+  (dividers, columns) can be tested on staging.
+- Sidebar divider: `- divider: true` entry in `collections:` (no label support).
 
 ### Inspecting / editing D1
 
