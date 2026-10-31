@@ -260,6 +260,7 @@ collections:
           [Mitä tämä jätti jälkeensä? Mitä siitä voi oppia tänään?]
       - { name: sources, label: 'Lähteet (valinnainen)', widget: text, required: false, i18n: true }
 
+  - divider: true
   - name: categories
     label: Kategoriat
     label_singular: Kategoria
