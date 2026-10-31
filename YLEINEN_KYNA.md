@@ -294,6 +294,9 @@ underlying record is already saved.
 
 ## AI / Gemini (pikauutiset)
 
+> **Retiring:** `gemini-2.5-flash` is being retired by Google (Oct 2026).
+> Migration is in `README.md` § Backlog (not started).
+
 - Model `gemini-2.5-flash`, `responseMimeType: 'application/json'` (JSON mode
   on — required for structured `{title, body}` output), `maxOutputTokens: 8192`,
   `temperature: 0.6`. `parseGeminiJson()` also strips any fence-wrapping as a
@@ -475,6 +478,10 @@ See "What Was Built" above. Production deploy pending.
 ### Infrastructure
 - Sveltia → R2 media library; R2 custom subdomain; Astro `<Image />` for R2.
   See `INFRASTRUCTURE.md`.
+
+### AI model
+- Migrate `generate-article.js` and `search.js` off `gemini-2.5-flash` (Google
+  retires Gemini 2.5, Oct 2026). Not started. See `README.md` § Backlog.
 
 ### Smaller items
 - **Full UI centering** — done for the simple gated pages (860px column);

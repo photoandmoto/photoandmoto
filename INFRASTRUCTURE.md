@@ -12,7 +12,7 @@
 | Editorial images (uploaded via Sveltia) | Cloudflare R2 | Bypass repo, $0 egress |
 | Contributor images (submitted via Avustajat) | GitHub `public/images/` (current) → R2 (planned) | Migration needed |
 | User accounts, sessions, access requests, submissions | Cloudflare D1 | Interactive/transactional data only |
-| AI generation + search | Gemini API (`gemini-2.5-flash`) | Pikauutinen drafts + site search; key in Cloudflare secrets |
+| AI generation + search | Gemini API (`gemini-2.5-flash` — retiring Oct 2026) | Pikauutinen drafts + site search; key in Cloudflare secrets |
 
 ---
 
@@ -74,6 +74,14 @@ Once R2 subdomain is live and confirmed working, the serving
 function becomes redundant. Remove it.
 - Only safe AFTER R2 subdomain confirmed working end-to-end
 
+**Migrate off `gemini-2.5-flash` (Google retires Gemini 2.5, Oct 2026)**
+Switch `functions/api/generate-article.js`, `functions/api/search.js`,
+`scripts/scrape-mxgp.py` and `test_gemini.py` to a current Gemini model.
+- Backlog, not started. New keys already get 404 on `gemini-2.5-flash`.
+- Test on staging first: generate a pikauutinen, run a site search, run the
+  MXGP scraper manually (its failure is silent — stale data)
+- Check `thinkingBudget` / JSON-schema settings per model family
+
 ### 🔴 High risk
 
 **Contributor article images → R2**
@@ -125,5 +133,5 @@ Current risk: contributor images in `public/images/` — monitor.
 
 ---
 
-*Last updated: June 2026*
+*Last updated: October 2026*
 *Owner: Arto T Vilkman*
