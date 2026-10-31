@@ -8,6 +8,8 @@ photo: /images/pexels-tom-fisk-12829311.jpg
 draft: false
 ---
 
+Belgialaiset, ranskalaiset ja brittiläiset kuljettajat juhlivat menestystä. KTM ja Yamaha vahvistavat asemiaan MM-sarjassa.
+
 1. **Everts palaa huipulle.** Kahden loukkaantumisten varjostaman vuoden jälkeen Belgian Stefan Everts voittaa 500-kuutioisten maailmanmestaruuden Yamahalla. Viides maailmanmestaruus kruunaa yhden motocross-historian näyttävimmistä paluista.
 2. **Mickaël Pichon** ajaa Suzukilla ylivoimaiseen maailmanmestaruuteen. Ranskalainen jättää haastajansa kauas taakseen ja vakiinnuttaa asemansa Euroopan 250-kuutioisten ykköskuljettajana.
 3. **James Dobb** voittaa 125-kuutioisten maailmanmestaruuden itävaltalaisella KTM:llä ennen Belgian Steve Ramonia. Mestaruus on merkittävä saavutus sekä brittiläiselle motocrossille että eurooppalaiselle pyörävalmistajalle.
