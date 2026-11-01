@@ -197,23 +197,19 @@ const galleryItems = featuredGalleries.map(g => ({
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    /* Outlined amber pill at rest (accessible dark amber, ~4.8:1 on white),
-       fills with bright brand orange + black text on hover — mirroring the
-       nav links' hover so "see all" reads as the same interactive family.
-       Black-on-#ff9900 passes AA; small #ff9900 text on white would not, which
-       is why the resting state stays #A85D00. */
-    color: #A85D00;
+    /* Filled brand-orange pill with near-black text (~8:1, passes AA). */
+    color: #141414;
+    background: var(--brand-primary);
     text-decoration: none;
     white-space: nowrap;
-    border: 1.5px solid #A85D00;
+    border: none;
     border-radius: 999px;
-    padding: 7px 16px;
-    transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+    padding: 8px 18px;
+    transition: background var(--transition-fast);
   }
   .section-all-link:hover {
-    background: var(--brand-primary);
-    border-color: var(--brand-primary);
-    color: #000;
+    background: var(--brand-primary-hover);
+    color: #141414;
     text-decoration: none;
   }
 
@@ -229,32 +225,30 @@ const galleryItems = featuredGalleries.map(g => ({
     min-height: 420px;
   }
 
-  /* Articles section */
-  .featured-grid-section {
-    background: white;
-    padding-top: var(--space-8);
-    padding-bottom: var(--space-6);
-  }
-
-  /* UpcomingRaces defaults to white. Featured (just above it) is now white
-     too, so Upcoming flips to shaded here to keep the alternating rhythm
-     going; its cards flip to white in the same override so they don't
-     disappear into the new shaded background. #upcomingRacesRoot gives
-     this override enough specificity to reliably win over the component's
-     own scoped rule, without touching the shared component or FI's page
-     (FI's own override targets the same id independently). */
-  :global(#upcomingRacesRoot) {
-    background: var(--bg-secondary);
-  }
-  :global(#upcomingRacesRoot .upcoming-card) {
-    background: white;
-  }
-
-  /* Gallery section */
-  .gallery-section {
+  /* Section rhythm: all sections are white with the same vertical padding.
+     Every section after the first opens with a 1px hairline the width of the
+     content container, so the space above the line (previous section's
+     padding-bottom) equals the space below it (the line's margin-bottom).
+     UpcomingRaces and MysteryHelpBlock carry the .section class too, so
+     they join the rhythm. ~ rather than + because the mystery block is
+     followed by its inline <script>. */
+  :global(main > .section) {
     background: white;
     padding: var(--space-6) 0;
   }
+  :global(main > .section:first-of-type) {
+    padding-top: var(--space-8);
+  }
+  :global(main > .section ~ .section) {
+    padding-top: 0;
+  }
+  :global(main > .section ~ .section > .container::before) {
+    content: "";
+    display: block;
+    border-top: 1px solid #E5E5E5;
+    margin-bottom: var(--space-6);
+  }
+
 
   /* Swap hero/stack sides: stacked 3 on the left, big card on the right.
      Scoped to .gallery-section and desktop only, so the Podcast section
@@ -270,21 +264,6 @@ const galleryItems = featuredGalleries.map(g => ({
     .gallery-section :global(.rhs__stack) {
       order: 1;
     }
-  }
-
-  /* MysteryHelpBlock's own .mhb rule is white, which no longer fits here —
-     Gallery (just above it) is now white too. #mhbRoot gives this
-     override enough specificity to win regardless of stylesheet load
-     order, without touching the shared component or FI's page (FI needs
-     no override here since its own rhythm already lands on white). */
-  :global(#mhbRoot) {
-    background: var(--bg-secondary);
-  }
-
-  /* ===== CTA section ===== */
-  .section.cta-section {
-    background: white;
-    padding: var(--space-4) 0;
   }
 
   .cta-section__heading {
@@ -353,9 +332,6 @@ const galleryItems = featuredGalleries.map(g => ({
     }
     .cta-grid {
       grid-template-columns: 1fr;
-    }
-    .cta-section {
-      padding: var(--space-8) 0;
     }
   }
 
