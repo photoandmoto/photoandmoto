@@ -431,8 +431,8 @@ Näkyvät välilehdet oikeuksien mukaan:
    - **Muu tieto** — vapaata tekstiä
 4. Klikkaa **Lähetä**
 
-Kuva ilmestyy heti Tunnista-välilehdelle ja landing-pagen "APUA TARVITAAN"
--blokkiin (jos kuvalle on luotu pikkukuva).
+Kuva ilmestyy heti Tunnista-välilehdelle ja landing-pagen "Tunnetko näitä
+kuvia?" -blokkiin (jos kuvalle on luotu pikkukuva).
 
 ### Kuvan tunnistaminen yhteisön avulla
 
