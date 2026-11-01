@@ -15,7 +15,8 @@ html {
   --sticky-nav-h: 48px;
 }
 
-@media (max-width: 768px) {
+/* Slim bar below the menu-button breakpoint (Header.astro, max-width 999px). */
+@media (max-width: 999px) {
   html { --sticky-nav-h: 44px; }
 }
 

@@ -567,17 +567,26 @@ and the ticker scroll away normally; only the black menu bar
   opacity animates, so the nav links never move. (Animating the width made all
   six links slide ~184px at once, which read as a jump.) The trade-off is an
   empty ~160px gap left of ETUSIVU at the top of the page.
-- **Where the wordmark shows:** at **≥ 1280px** and on **mobile (≤ 768px)**.
-  Between 769px and 1279px it is `display: none`: the desktop links (~850px)
-  plus search/language already fill the row there (see Backlog § Main menu
-  overflows). The bar still sticks in that range.
-- **Mobile (≤ 768px):** a slim 44px bar with the menu button, the wordmark
+- **Desktop menu vs menu button:** the desktop links show from **1000px**; below
+  that (≤ 999px) the bar switches to the menu button. The gap between links is
+  fluid, `clamp(8px, 7.5vw - 64px, 32px)`: 32px at ≥ 1280px (unchanged look),
+  shrinking linearly to 8px at 960px. Font size and link padding never change.
+  The breakpoint comes from measurement: the FI row (the wider language) needs
+  692px of links + 5 gaps + 216px (row gap, search, FI/EN, container padding),
+  i.e. 948px at the 8px minimum; 1000px leaves room for a 17px Windows
+  scrollbar plus ~20px spare. EN needs ~50px less. Re-measure if menu labels
+  change (see Backlog § Main menu overflow — fixed).
+- **Where the wordmark shows:** at **≥ 1280px** and on the **menu-button bar
+  (360–999px)**. At 1000–1279px it is `display: none` (FI needs 1252px with
+  its reserved space); below 360px it is left out because menu button +
+  wordmark + search + FI/EN don't fit. The bar still sticks in both ranges.
+- **Menu-button bar (≤ 999px):** a slim 44px bar with the menu button, the wordmark
   (16px; 14px below 375px), search, and FI/EN. The menu button is
   `flex: none` so the wordmark's reserved space can never squeeze it. The
   mobile menu panel (`#mobileNav`) lives **inside** the sticky bar
   (`position: absolute; top: 100%`, max-height `100vh − --sticky-nav-h`), so it
   always opens directly under the bar at any scroll position.
-- **Anchor links:** `--sticky-nav-h` (48px; 44px at ≤ 768px) is defined on
+- **Anchor links:** `--sticky-nav-h` (48px; 44px at ≤ 999px) is defined on
   `html` in `global.css`, and `html { scroll-padding-top: var(--sticky-nav-h) }`
   makes every `#anchor` jump stop below the bar. Use the variable for anything
   else that must clear the bar.
@@ -852,19 +861,20 @@ grows past ~3 GB. Followups:
 - One-shot cleanup endpoint to remove old `field_type='general'` rows in
   `comments` (legacy data from before per-field suggestions)
 
-### Main menu overflows between ~770px and ~1045px width
+### Main menu overflow — ✅ fixed (Nov 2026)
 
-Pre-existing (not caused by the sticky menu). Between the mobile breakpoint
-(769px) and ~1045px the desktop menu row is wider than the screen: the links
-alone are ~852px, plus search and FI/EN. Measured overflow: 20px at 1024px,
-144px at 900px, 244px at 800px, 275px at 769px. Search and the language switcher
-get pushed off the right edge. This is also why the sticky wordmark is hidden
-between 769px and 1279px.
+Was: between 769px and ~1045px (FI; EN from ~950px down) the desktop menu row
+was wider than the screen and pushed search and FI/EN off the right edge
+(20px at 1024px, 144px at 900px, 244px at 800px). At 320px the mobile bar also
+cut FI/EN by 12px.
 
-Fix options: tighten link padding/gaps in that range, move more items into
-MUUTA, or switch to the hamburger menu below ~1100px instead of 768px. Check at
-1024px, 900px and 800px after the fix, and re-test whether the wordmark range
-can be widened.
+Fix (`Header.astro`, `global.css`): fluid link gap
+`clamp(8px, 7.5vw - 64px, 32px)` (unchanged at ≥ 1280px), the menu-button
+breakpoint moved from 768px to **999px** (desktop menu from 1000px, chosen
+from the measured 948px FI minimum plus scrollbar and margin), and the sticky
+wordmark is left out below 360px. Verified every 10px from 320px to 1920px,
+FI and EN: no row overflow, search and FI/EN always fully on screen. See
+Design § Sticky main menu for the numbers.
 
 ### Generated `site-index.json` / `gallery-search.json` show as modified on every checkout
 

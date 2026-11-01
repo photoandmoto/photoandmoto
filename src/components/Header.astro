@@ -352,10 +352,10 @@ const mobileFlatItems = [
     transition: opacity 0.2s ease, visibility 0s linear 0s;
   }
 
-  /* Between the mobile breakpoint and 1280px the desktop links (~850px)
-     plus search/language already fill the row, so the wordmark (and its
-     reserved space) is left out there; the bar still sticks. */
-  @media (min-width: 769px) and (max-width: 1279px) {
+  /* Desktop menu below 1280px has no room for the wordmark's reserved
+     space (FI row needs 1252px with it), so it is left out there; the bar
+     still sticks. */
+  @media (min-width: 1000px) and (max-width: 1279px) {
     .nav-wordmark { display: none; }
   }
 
@@ -364,9 +364,14 @@ const mobileFlatItems = [
      than centred by the row's space-between. */
   .desktop-nav { margin-right: auto; }
 
+  /* Fluid gap: 32px at >= 1280px (unchanged look), shrinking linearly to
+     8px at 960px. Measured FI row (the wider language): 692px of links +
+     5 gaps + 216px (search, FI/EN, row gap, container padding) -> 948px at
+     the 8px minimum, which is why the desktop menu starts at 1000px (room
+     for a 17px scrollbar plus margin). */
   .main-nav ul {
     display: flex;
-    gap: var(--space-4);
+    gap: clamp(8px, 7.5vw - 64px, 32px);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -509,18 +514,14 @@ const mobileFlatItems = [
   /* ── Mobile nav panel ──────────────────────────────────────────── */
   .mobile-nav { display: none; }
 
-  /* ── Mobile breakpoint ─────────────────────────────────────────── */
-  @media (max-width: 768px) {
+  /* ── Menu-button breakpoint ────────────────────────────────────── */
+  /* Below 1000px the desktop links don't fit even at the 8px minimum gap
+     (see .main-nav ul), so the bar switches to the menu button. Keep in
+     sync with --sticky-nav-h in global.css. */
+  @media (max-width: 999px) {
     .desktop-nav { display: none; }
     .hamburger { display: flex; }
 
-    /* With .desktop-nav hidden, .header-right becomes the only child of
-       .nav-row-inner and its own justify-content: space-between has nothing
-       to space against, so it needs to span the full row width itself.
-       Inside it, space-between pushes the hamburger to the far left and the
-       .header-utility group (search + language, kept together as a single
-       flex item) to the far right -- mirroring desktop's right-aligned
-       search/language pair. */
     /* Slim sticky bar: hamburger, then the wordmark once the logo has
        scrolled away, with search + language pushed to the far right.
        .header-right dissolves so its children line up with the wordmark. */
@@ -535,13 +536,6 @@ const mobileFlatItems = [
     .hamburger { order: -1; flex: none; }
     .header-utility { margin-left: auto; gap: var(--space-1); }
     .nav-wordmark { font-size: 16px; }
-
-
-    .logo-text { font-size: 1.8rem; }
-
-    .header-logo-row {
-      padding: 28px 0 14px;
-    }
 
     .mobile-nav {
       position: absolute;
@@ -594,11 +588,26 @@ const mobileFlatItems = [
     .mobile-nav-link.active { background: var(--brand-primary); color: black; }
   }
 
+  /* ── Mobile logo row ───────────────────────────────────────────── */
+  @media (max-width: 768px) {
+    .logo-text { font-size: 1.8rem; }
+
+    .header-logo-row {
+      padding: 28px 0 14px;
+    }
+  }
+
   @media (max-width: 480px) {
     .logo-text { font-size: 1.4rem; }
   }
 
   @media (max-width: 374px) {
     .nav-wordmark { font-size: 14px; }
+  }
+
+  /* Below 360px menu button + wordmark + search + FI/EN no longer fit
+     (FI/EN was cut by 12px at 320px), so the wordmark is left out. */
+  @media (max-width: 359px) {
+    .nav-wordmark { display: none; }
   }
 </style>
