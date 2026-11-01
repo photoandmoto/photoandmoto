@@ -10,6 +10,13 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+  /* Anchor targets stop below the sticky nav bar (Header.astro). */
+  scroll-padding-top: var(--sticky-nav-h);
+  --sticky-nav-h: 48px;
+}
+
+@media (max-width: 768px) {
+  html { --sticky-nav-h: 44px; }
 }
 
 body {
@@ -19,6 +26,9 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   overflow-x: hidden;
+  /* clip (not hidden) so body is not a scroll container — a hidden value can
+     break the sticky nav bar. hidden stays as the fallback for old browsers. */
+  overflow-x: clip;
 }
 
 /* Typography base */

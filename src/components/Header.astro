@@ -80,9 +80,16 @@ const mobileFlatItems = [
     </div>
   </div>
 
-  <!-- BAND 2: scrolling nav row -->
-  <div class:list={['header-nav-row', { 'header-nav-row--flush': showTicker }]}>
+  <!-- BAND 2: nav row — sticks to the top of the viewport while the logo row
+       and ticker scroll away. -->
+  <div class:list={['header-nav-row', { 'header-nav-row--flush': showTicker }]} id="headerNavRow">
     <div class="container nav-row-inner">
+
+      <!-- Small wordmark, shown only once the big logo has scrolled out of
+           view (toggled by the IntersectionObserver below). visibility:hidden
+           while collapsed keeps it out of the tab order and a11y tree. -->
+      <a href={`/${lang}`} class="nav-wordmark" aria-label="Photo & Moto home"
+         data-no-newtab>Photo &amp; Moto</a>
 
       <!-- Desktop nav — exactly as before -->
       <nav class="main-nav desktop-nav">
@@ -162,6 +169,24 @@ const mobileFlatItems = [
       </div>
 
     </div>
+
+    <!-- Mobile nav panel — inside the sticky nav row so it always opens
+         directly below the bar, at any scroll position. -->
+    <nav class="mobile-nav" id="mobileNav" aria-hidden="true">
+      <ul>
+        {mobileFlatItems.map(item => (
+          <li>
+            <a
+              href={item.href}
+              data-no-newtab
+              class:list={['mobile-nav-link', { active: currentPath === item.href || (item.href !== `/${lang}` && currentPath.startsWith(item.href)) }]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
   </div>
 
   <!-- BAND 3: ticker strip — flush against the nav row above (see
@@ -172,23 +197,6 @@ const mobileFlatItems = [
       <TrendingTicker label={tickerLabel} items={tickerItems} intervalMs={3000} />
     </div>
   )}
-
-  <!-- Mobile nav panel — exactly as before -->
-  <nav class="mobile-nav" id="mobileNav" aria-hidden="true">
-    <ul>
-      {mobileFlatItems.map(item => (
-        <li>
-          <a
-            href={item.href}
-            data-no-newtab
-            class:list={['mobile-nav-link', { active: currentPath === item.href || (item.href !== `/${lang}` && currentPath.startsWith(item.href)) }]}
-          >
-            {item.label}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </nav>
 
 </header>
 
@@ -207,6 +215,15 @@ const mobileFlatItems = [
     document.addEventListener('click', () => {
       menu.classList.remove('nav-drop-open');
     });
+  }
+
+  // Sticky nav wordmark: shown once the big logo row is fully out of view.
+  const logoRow = document.querySelector('.header-logo-row');
+  const navRow = document.getElementById('headerNavRow');
+  if (logoRow && navRow && 'IntersectionObserver' in window) {
+    new IntersectionObserver(([entry]) => {
+      navRow.classList.toggle('is-stuck', !entry.isIntersecting);
+    }).observe(logoRow);
   }
 
   // Mobile hamburger
@@ -279,7 +296,13 @@ const mobileFlatItems = [
   }
 
   /* ── BAND 2: nav row ───────────────────────────────────────────── */
+  /* Sticky for the whole page: .site-header is display:contents, so this
+     row's containing block is <body>. z-index sits above page content but
+     below the photo viewers (1000+) and the cookie banner (9000+). */
   .header-nav-row {
+    position: sticky;
+    top: 0;
+    z-index: 500;
     background: #000;
     border-top: 1px solid rgba(255,255,255,0.08);
     border-bottom: 2px solid var(--brand-primary);
@@ -303,7 +326,44 @@ const mobileFlatItems = [
     gap: var(--space-3);
   }
 
+  /* ── Sticky wordmark ───────────────────────────────────────────── */
+  /* Always takes up its width, so the nav links never move; only fades in
+     once .is-stuck is set. visibility:hidden while faded out keeps it out
+     of the tab order and a11y tree. */
+  .nav-wordmark {
+    flex: none;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    font-family: var(--font-headline);
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--brand-primary);
+    text-decoration: none;
+    transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+  }
+
+  .is-stuck .nav-wordmark {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.2s ease, visibility 0s linear 0s;
+  }
+
+  /* Between the mobile breakpoint and 1280px the desktop links (~850px)
+     plus search/language already fill the row, so the wordmark (and its
+     reserved space) is left out there; the bar still sticks. */
+  @media (min-width: 769px) and (max-width: 1279px) {
+    .nav-wordmark { display: none; }
+  }
+
   /* ── Nav links (unchanged from original) ──────────────────────── */
+  /* Auto margin keeps the links packed left (after the wordmark) rather
+     than centred by the row's space-between. */
+  .desktop-nav { margin-right: auto; }
+
   .main-nav ul {
     display: flex;
     gap: var(--space-4);
@@ -461,10 +521,21 @@ const mobileFlatItems = [
        .header-utility group (search + language, kept together as a single
        flex item) to the far right -- mirroring desktop's right-aligned
        search/language pair. */
-    .header-right {
-      width: 100%;
-      justify-content: space-between;
+    /* Slim sticky bar: hamburger, then the wordmark once the logo has
+       scrolled away, with search + language pushed to the far right.
+       .header-right dissolves so its children line up with the wordmark. */
+    .nav-row-inner {
+      min-height: var(--sticky-nav-h);
+      gap: var(--space-1);
     }
+
+    .header-right { display: contents; }
+    /* flex: none so the reserved wordmark space can never squeeze the
+       menu button; row = 44 + wordmark + search/lang must fit 358px at 390. */
+    .hamburger { order: -1; flex: none; }
+    .header-utility { margin-left: auto; gap: var(--space-1); }
+    .nav-wordmark { font-size: 16px; }
+
 
     .logo-text { font-size: 1.8rem; }
 
@@ -473,6 +544,10 @@ const mobileFlatItems = [
     }
 
     .mobile-nav {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
       display: block;
       max-height: 0;
       overflow: hidden;
@@ -483,7 +558,7 @@ const mobileFlatItems = [
     }
 
     .mobile-nav.mobile-nav-open {
-      max-height: calc(100vh - 80px);
+      max-height: calc(100vh - var(--sticky-nav-h));
       overflow-y: auto;
       visibility: visible;
       transition: max-height 0.3s ease, visibility 0s linear 0s;
@@ -521,5 +596,9 @@ const mobileFlatItems = [
 
   @media (max-width: 480px) {
     .logo-text { font-size: 1.4rem; }
+  }
+
+  @media (max-width: 374px) {
+    .nav-wordmark { font-size: 14px; }
   }
 </style>
