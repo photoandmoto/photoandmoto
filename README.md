@@ -35,7 +35,7 @@ proxy process required. Revert to `false` before committing.
 
 Bilingual public site (`/fi/...` and `/en/...`):
 
-- **Etusivu / Home** — landing page; includes the community "APUA TARVITAAN" help block
+- **Etusivu / Home** — landing page; includes the community "Tunnetko näitä kuvia? / Do you recognize any of these photos?" help block
 - **Galleria / Gallery** — curated photo collections, PhotoSwipe lightbox
 - **Aikakone / Time Machine** — long-form articles
 - **Lyhyesti / In Brief** (`/fi/pikauutiset`, `/en/in-brief`) — short AI-generated news flashes, submitted by contributors; FI required, EN optional per entry
@@ -143,8 +143,10 @@ admin curates the results.
 - They suggest **per-field information** — year, people, location, plus free
   text — and comment on / upvote existing suggestions
 - Once a photo is fully identified, it leaves the public mystery list
-- The landing pages show an **"APUA TARVITAAN / HELP NEEDED" block** with up to
-  6 random unidentified photos; it hides itself when none exist
+- The landing pages show a **"Tunnetko näitä kuvia? / Do you recognize any of
+  these photos?" block** (`MysteryHelpBlock.astro`) with up to 6 random
+  unidentified photos; it hides itself when none exist (see Design § Landing
+  page layout)
 
 ### Admin side (`/fi/yllapito`)
 
@@ -534,7 +536,9 @@ shadows) live in `src/styles/brand.css`; shared component styles in
 
 ### Masthead and hero
 
-The header is a sticky black bar. `PHOTO & MOTO` (orange, weight 900) is the
+The header is three black bands: the logo row, the main menu bar, and the
+"NYT LUETUIMMAT / TRENDING NOW" ticker. Only the menu bar is sticky (see
+Sticky main menu below). `PHOTO & MOTO` (orange, weight 900) is the
 dominant element and grows to `2.6rem` on wide screens (≥ 1100px), held at
 `2.2rem` below that so it never crowds the desktop nav. The homepage hero band
 beneath it carries a single short tagline (`Vauhtia ja elämää linssin läpi` /
@@ -542,6 +546,66 @@ beneath it carries a single short tagline (`Vauhtia ja elämää linssin läpi` 
 not compete with it — the logo always wins the eye first. Both language
 homepages mirror this; the header is a shared component so masthead changes
 apply site-wide.
+
+### Sticky main menu
+
+All pages using `BaseLayout` share `Header.astro`. On scroll, the logo row
+and the ticker scroll away normally; only the black menu bar
+(`.header-nav-row`, `#headerNavRow`) sticks to the top.
+
+- **Why it sticks for the whole page:** `.site-header` is `display: contents`,
+  so the three bands are flow children of `<body>` and the menu bar's sticky
+  containing block is the full page, not the `<header>`. Keep it that way; a
+  real box on `<header>` would make the bar stop sticking after the header.
+- **Compact wordmark:** a small `PHOTO & MOTO` link (`.nav-wordmark`, #ff9900,
+  18px) at the left of the bar fades in once the big logo row has left the
+  viewport and fades out again at the top. It is toggled by an
+  **IntersectionObserver** on `.header-logo-row` that sets `.is-stuck` on the
+  bar. No scroll listeners. While faded out it is `visibility: hidden`, so
+  it is out of the tab order and the accessibility tree.
+- **Reserved space:** the wordmark always takes up its width and only its
+  opacity animates, so the nav links never move. (Animating the width made all
+  six links slide ~184px at once, which read as a jump.) The trade-off is an
+  empty ~160px gap left of ETUSIVU at the top of the page.
+- **Where the wordmark shows:** at **≥ 1280px** and on **mobile (≤ 768px)**.
+  Between 769px and 1279px it is `display: none`: the desktop links (~850px)
+  plus search/language already fill the row there (see Backlog § Main menu
+  overflows). The bar still sticks in that range.
+- **Mobile (≤ 768px):** a slim 44px bar with the menu button, the wordmark
+  (16px; 14px below 375px), search, and FI/EN. The menu button is
+  `flex: none` so the wordmark's reserved space can never squeeze it. The
+  mobile menu panel (`#mobileNav`) lives **inside** the sticky bar
+  (`position: absolute; top: 100%`, max-height `100vh − --sticky-nav-h`), so it
+  always opens directly under the bar at any scroll position.
+- **Anchor links:** `--sticky-nav-h` (48px; 44px at ≤ 768px) is defined on
+  `html` in `global.css`, and `html { scroll-padding-top: var(--sticky-nav-h) }`
+  makes every `#anchor` jump stop below the bar. Use the variable for anything
+  else that must clear the bar.
+- **`body { overflow-x: clip }`** (with `hidden` as the fallback for old
+  browsers): `overflow-x: hidden` can turn `<body>` into a scroll container,
+  and a sticky element then sticks to that container instead of the viewport,
+  i.e. not at all. `clip` still prevents sideways scrolling without creating
+  a scroll container. Don't change it back to `hidden`.
+- Sticky elements inside their own scroll box are unaffected. Example: the
+  `/fi/tilastot` table header sticks at `top: 0` inside `.st-tbl-scroll`
+  (max-height 500px). Don't offset it by `--sticky-nav-h`, which would leave
+  a gap inside the box.
+
+### z-index scale
+
+Keep new layers inside these bands so overlays stack predictably:
+
+| Layer | z-index | Where |
+|---|---|---|
+| Page content (local stacking, e.g. sticky table headers) | 1–10 | various |
+| MUUTA dropdown | 100 | `Header.astro` (inside the bar's stacking context) |
+| **Sticky main menu bar** | **500** | `Header.astro` `.header-nav-row` |
+| Photo viewers / modals (Tunnista kuva, ylläpito) | 1000–2000 | `.overlay` 1000, `.kt-modal` 1500, `.photo-viewer` 2000 |
+| Cookie banner / settings | 9000+ | `CookieConsent.astro` (9000, 9500) |
+| Gallery lightbox (PhotoSwipe default) | 100000 | PhotoSwipe `.pswp` |
+
+The menu bar sits above page content but below every viewer, modal and the
+cookie banner, so those all cover it when open.
 
 ### Accessibility conventions
 
@@ -561,15 +625,44 @@ UI so the Lighthouse Accessibility score (currently 100) doesn't regress:
   containers (e.g. the closed mobile nav) keep their descendants out of the
   tab order.
 
+### Landing page layout
+
+Applies to both `/fi` and `/en` (`src/pages/{fi,en}/index.astro`; the rules
+are duplicated in each page's `<style>`).
+
+- **All sections white** (`#FFFFFF`). No alternating shaded bands. Header and
+  footer stay black.
+- **Dividers:** every section after the first opens with a **1px `#E5E5E5`**
+  line **the width of the content container** (not full-bleed), drawn as
+  `main > .section ~ .section > .container::before`.
+- **Spacing:** each section has `--space-6` (**48px**) vertical padding; sections
+  after the first have no top padding, and the divider has a 48px
+  `margin-bottom`. That gives **48px above and 48px below every divider**. The
+  first section keeps 64px (`--space-8`) below the header.
+- `UpcomingRaces` and `MysteryHelpBlock` carry the `.section` class so they
+  join this rhythm. The selector uses `~`, not `+`, because `MysteryHelpBlock`
+  is followed by its inline `<script>`. When the mystery block is hidden (no
+  photos waiting), only one divider shows in its place.
+- **Calendar cards** (`UpcomingRaces.astro`): white with a 1px `#E5E5E5` border.
+- **MysteryHelpBlock** (`MysteryHelpBlock.astro`): no card, border or eyebrow
+  label. Header row like the other sections: left-aligned h2 (same style as
+  "Ota yhteyttä"), the CTA pill top-right; description and the italic
+  "no registration" line below. Thumbnails in a **full-width grid** (6 columns,
+  3 at ≤ 900px, 2 at ≤ 540px), each a link to the identify page with an
+  `aria-label` ("Auta tunnistamaan kuva N" / "Help identify photo N"). The
+  identify pages can't open a single photo, so every thumbnail goes to the
+  page top. The count ("N kuvaa odottaa tunnistamista") sits below the grid
+  as plain grey text (`#6B6B6B`).
+
 ### Section "see all" links
 
-The "Kaikki artikkelit / All galleries / Koko kalenteri" links (homepage
-section headers + the Tulevat kilpailut band) render as **outlined amber
-pills** that fill bright brand orange with black text on hover, mirroring the
-nav links' hover so they read as the same interactive family. The resting
-colour stays `#A85D00` (bright `#ff9900` fails AA as small text on white);
-black-on-orange on hover passes. The style lives on `.section-all-link` (both
-homepages) and `.upcoming-all` (`UpcomingRaces.astro`).
+The section CTAs (Kaikki artikkelit, Koko kalenteri, Kaikki galleriat, Kaikki
+jaksot, Auta tunnistamaan, and their EN versions) are **filled pills**: background
+`#ff9900` (`--brand-primary`), text `#141414`, no border, darkening on hover to
+**`--brand-primary-hover` `#e68a00`** (defined in `brand.css`). Near-black on
+orange is ~8.6:1, so it passes AA as small text. `#ff9900` remains the brand
+orange everywhere. The style lives on `.section-all-link` (both homepages),
+`.upcoming-all` (`UpcomingRaces.astro`) and `.mhb-cta` (`MysteryHelpBlock.astro`).
 
 ### Front-page gallery hero
 
@@ -758,6 +851,20 @@ grows past ~3 GB. Followups:
   before any large bulk-imports
 - One-shot cleanup endpoint to remove old `field_type='general'` rows in
   `comments` (legacy data from before per-field suggestions)
+
+### Main menu overflows between ~770px and ~1045px width
+
+Pre-existing (not caused by the sticky menu). Between the mobile breakpoint
+(769px) and ~1045px the desktop menu row is wider than the screen: the links
+alone are ~852px, plus search and FI/EN. Measured overflow: 20px at 1024px,
+144px at 900px, 244px at 800px, 275px at 769px. Search and the language switcher
+get pushed off the right edge. This is also why the sticky wordmark is hidden
+between 769px and 1279px.
+
+Fix options: tighten link padding/gaps in that range, move more items into
+MUUTA, or switch to the hamburger menu below ~1100px instead of 768px. Check at
+1024px, 900px and 800px after the fix, and re-test whether the wordmark range
+can be widened.
 
 ### Generated `site-index.json` / `gallery-search.json` show as modified on every checkout
 
