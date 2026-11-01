@@ -259,23 +259,19 @@ const galleryItems = featuredGalleries.map(g => ({
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    /* Outlined amber pill at rest (accessible dark amber, ~4.8:1 on white),
-       fills with bright brand orange + black text on hover — mirroring the
-       nav links' hover so "see all" reads as the same interactive family.
-       Black-on-#ff9900 passes AA; small #ff9900 text on white would not, which
-       is why the resting state stays #A85D00. */
-    color: #A85D00;
+    /* Filled brand-orange pill with near-black text (~8:1, passes AA). */
+    color: #141414;
+    background: var(--brand-primary);
     text-decoration: none;
     white-space: nowrap;
-    border: 1.5px solid #A85D00;
+    border: none;
     border-radius: 999px;
-    padding: 7px 16px;
-    transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+    padding: 8px 18px;
+    transition: background var(--transition-fast);
   }
   .section-all-link:hover {
-    background: var(--brand-primary);
-    border-color: var(--brand-primary);
-    color: #000;
+    background: var(--brand-primary-hover);
+    color: #141414;
     text-decoration: none;
   }
 
@@ -298,20 +294,7 @@ const galleryItems = featuredGalleries.map(g => ({
     padding-bottom: var(--space-6);
   }
 
-  /* UpcomingRaces defaults to white (correct for EN, where it still needs
-     to contrast against EN's shaded Featured section). On FI, Featured is
-     now white too, so Upcoming flips to shaded here to keep the
-     alternating rhythm going; its cards flip to white in the same
-     override so they don't disappear into the new shaded background.
-     #upcomingRacesRoot gives this override enough specificity to reliably
-     win over the component's own scoped rule, without touching the shared
-     component or EN's page. */
-  :global(#upcomingRacesRoot) {
-    background: var(--bg-secondary);
-  }
-  :global(#upcomingRacesRoot .upcoming-card) {
-    background: white;
-  }
+  /* UpcomingRaces sets its own cream band and white cards. */
 
   /* Scramble 2026 promo — temporary, removed once the archive is frozen. */
   .scramble-promo { background: white; padding: var(--space-4) 0; }
@@ -386,19 +369,17 @@ const galleryItems = featuredGalleries.map(g => ({
 
   /* Podcast section */
   .podcast-section {
-    background: var(--bg-secondary);
+    background: var(--bg-band);
     padding: var(--space-6) 0;
   }
 
-  /* MysteryHelpBlock's own .mhb rule is white, which is now correct here
-     too — Podcast (just above it) is shaded, so no override is needed;
-     removing the FI override that used to shade it keeps the alternation
-     going: Upcoming(shaded) -> Gallery(white) -> Podcast(shaded) ->
-     MysteryHelpBlock(white) -> CTA(shaded). */
+  /* MysteryHelpBlock's own .mhb rule is white, which is correct here:
+     Articles(white) -> Upcoming(cream) -> Gallery(white) -> Podcast(cream)
+     -> MysteryHelpBlock(white) -> CTA(cream). */
 
   /* ===== CTA section ("Ota yhteyttä") ===== */
   .section.cta-section {
-    background: var(--bg-secondary);
+    background: var(--bg-band);
     padding: var(--space-4) 0;
   }
 

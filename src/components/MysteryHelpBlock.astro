@@ -5,16 +5,21 @@
 // community help. Renders only when there are photos awaiting identification.
 //
 // Data source: GET /api/mystery/featured
-//   Returns { count: N, photos: [{ id, thumb_data }, ...] }
+//   Returns { count: N, photos: [{ id, thumb_data }, ...] }  (max 6 photos)
 //
 // Behavior:
 //   - count === 0   → block hides itself entirely (no visible DOM)
 //   - count > 0     → block renders with thumbnails, count, and CTA
 //
-// Click anywhere → language-appropriate identify page
+// Layout follows the other landing sections: h2 + CTA pill in a header row,
+// description below, then a full-width thumbnail grid. Each thumbnail links to
+// the language-appropriate identify page.
 //
 // Props:
 //   lang: "fi" | "en"  — controls UI text. Defaults to "fi".
+//
+// Background: white by default (FI rhythm). EN overrides it to cream via
+// #mhbRoot in its own page styles.
 //
 // IMPORTANT: <style is:global> is required because the thumbnail DOM is created
 // at runtime by the inline script. Astro's default style scoping wouldn't reach
@@ -24,56 +29,47 @@ const { lang = 'fi' } = Astro.props;
 
 const STRINGS = {
   fi: {
-    eyebrow: 'APUA TARVITAAN',
     headline: 'Tunnetko näitä kuvia?',
     subline: 'Vanhoja moottoriurheilukuvia odottaa tunnistamista.',
     trustline: 'Ei rekisteröitymistä. Kommentoi nimettömästi tai omalla nimelläsi.',
-    countSingular: 'kuva odottaa',
-    countPlural: 'kuvaa odottaa',
+    countSingular: 'kuva odottaa tunnistamista',
+    countPlural: 'kuvaa odottaa tunnistamista',
     cta: 'Auta tunnistamaan →',
-    languageNote: '',
+    thumbLabel: 'Auta tunnistamaan kuva {n}',
   },
   en: {
-    eyebrow: 'HELP NEEDED',
     headline: 'Do you recognize any of these photos?',
     subline: 'Old motorsport photos are waiting to be identified.',
     trustline: 'No registration. Comment anonymously or with your name.',
-    countSingular: 'photo waiting',
-    countPlural: 'photos waiting',
+    countSingular: 'photo waiting to be identified',
+    countPlural: 'photos waiting to be identified',
     cta: 'Help identify →',
-    languageNote: '',
+    thumbLabel: 'Help identify photo {n}',
   },
 };
 
 const t = STRINGS[lang] || STRINGS.fi;
+const href = lang === 'en' ? '/en/identify' : '/fi/tunnistamatta';
 ---
 
 <section class="mhb" id="mhbRoot" style="display:none;" data-lang={lang}>
   <div class="container">
-    <a href={lang === "en" ? "/en/identify" : "/fi/tunnistamatta"} class="mhb-card">
-      <div class="mhb-header">
-        <span class="mhb-eyebrow">{t.eyebrow}</span>
-        <h2 class="mhb-headline">{t.headline}</h2>
-        <p class="mhb-subline">
-          {t.subline}
-          {t.languageNote && <span class="mhb-langnote">{t.languageNote}</span>}
-        </p>
-        <p class="mhb-trustline">{t.trustline}</p>
-      </div>
+    <div class="mhb-header">
+      <h2 class="mhb-headline">{t.headline}</h2>
+      <a href={href} class="mhb-cta">{t.cta}</a>
+    </div>
+    <p class="mhb-subline">{t.subline}</p>
+    <p class="mhb-trustline">{t.trustline}</p>
 
-      <div class="mhb-thumbs" id="mhbThumbs">
-        {/* thumbs injected here by script */}
-      </div>
+    <div class="mhb-thumbs" id="mhbThumbs">
+      {/* thumbs injected here by script */}
+    </div>
 
-      <div class="mhb-footer">
-        <span class="mhb-count" id="mhbCount"></span>
-        <span class="mhb-cta">{t.cta}</span>
-      </div>
-    </a>
+    <p class="mhb-count" id="mhbCount"></p>
   </div>
 </section>
 
-<script is:inline define:vars={{ countSingular: t.countSingular, countPlural: t.countPlural }}>
+<script is:inline define:vars={{ countSingular: t.countSingular, countPlural: t.countPlural, href, thumbLabel: t.thumbLabel }}>
 // Deferred until the browser is idle. This block sits well below the fold, but
 // the fetch used to fire during page load and compete with the hero image and
 // fonts for bandwidth. Nothing above the fold depends on it, so it waits.
@@ -103,10 +99,11 @@ mhbStart(async function(){
     if (photos.length === 0) {
       thumbsEl.style.display = 'none';
     } else {
-      thumbsEl.innerHTML = photos.map(p =>
-        '<div class="mhb-thumb"><div class="mhb-thumb__inner">' +
+      thumbsEl.innerHTML = photos.map((p, i) =>
+        '<a class="mhb-thumb" href="' + href + '" aria-label="' +
+        thumbLabel.replace('{n}', String(i + 1)) + '">' +
         '<img src="' + p.thumb_data + '" alt="" loading="lazy" />' +
-        '</div></div>'
+        '</a>'
       ).join('');
     }
 
@@ -123,90 +120,82 @@ mhbStart(async function(){
 <style is:global>
 .mhb {
   background: #fff;
-  padding: 48px 0;
+  padding: var(--space-6) 0;
 }
-.mhb-card {
-  display: block;
-  background: transparent;
-  border: 2px solid #ffd89a;
-  border-radius: 18px;
-  padding: 32px 28px;
-  text-decoration: none;
-  color: inherit;
-  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-  cursor: pointer;
-}
-.mhb-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(255,153,0,.18);
-  border-color: #ff9900;
-}
+/* Same header row as the other landing sections (h2 left, CTA pill right). */
 .mhb-header {
-  text-align: center;
-  margin-bottom: 24px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
 }
-.mhb-eyebrow {
-  display: inline-block;
-  font-family: var(--font-headline, 'Bebas Neue', sans-serif);
-  font-size: .9rem;
-  font-weight: 800;
-  /* #9C5700 (~5:1 on the #f4f3f1 panel) instead of bright #ff9900 (~1.9:1). */
-  color: #9C5700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
+/* Matches .cta-section__heading ("Ota yhteyttä"). */
 .mhb-headline {
-  font-family: var(--font-headline, 'Bebas Neue', sans-serif);
-  font-size: 1.8rem;
+  font-family: var(--font-headline);
+  font-size: 1.75rem;
   font-weight: 900;
-  color: #222;
-  margin: 0 0 8px;
-  letter-spacing: -.3px;
-}
-.mhb-subline {
-  font-family: 'DM Sans', sans-serif;
-  font-size: .95rem;
-  color: #666;
+  color: var(--text-primary);
   margin: 0;
-  line-height: 1.5;
+}
+.mhb-cta {
+  font-family: var(--font-headline);
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #141414;
+  background: var(--brand-primary);
+  text-decoration: none;
+  white-space: nowrap;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 18px;
+  transition: background var(--transition-fast);
+}
+.mhb-cta:hover {
+  background: var(--brand-primary-hover);
+  color: #141414;
+  text-decoration: none;
+}
+/* Matches .section-subheading on the landing pages. */
+.mhb-subline {
+  font-family: var(--font-headline);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  line-height: 1.3;
+  margin: 0;
 }
 .mhb-trustline {
-  font-family: 'DM Sans', sans-serif;
-  font-size: .82rem;
-  /* #6B6B6B (~4.8:1 on #f4f3f1) instead of #999 (~2.6:1) for AA. */
+  font-family: var(--font-body);
+  font-size: .85rem;
+  /* #6B6B6B (~4.8:1 on cream/white) for AA. */
   color: #6B6B6B;
-  margin: 4px 0 0;
+  margin: 6px 0 var(--space-4);
   line-height: 1.4;
   font-style: italic;
 }
-.mhb-langnote {
-  display: inline-block;
-  font-size: .82rem;
-  color: #999;
-  font-style: italic;
-  margin-left: 6px;
-}
 .mhb-thumbs {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-2);
 }
 .mhb-thumb {
-  position: relative;
-  flex: 0 1 160px;
+  display: block;
   aspect-ratio: 1 / 1;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   overflow: hidden;
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,.08);
-  transition: transform .2s ease;
+  background: #eee;
+  transition: transform .2s ease, box-shadow .2s ease;
 }
-.mhb-thumb__inner {
-  position: absolute;
-  inset: 0;
+.mhb-thumb:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0,0,0,.12);
+}
+.mhb-thumb:focus-visible {
+  outline: 3px solid var(--brand-primary);
+  outline-offset: 2px;
 }
 .mhb-thumb img {
   width: 100%;
@@ -214,62 +203,25 @@ mhbStart(async function(){
   object-fit: cover;
   display: block;
 }
-.mhb-card:hover .mhb-thumb {
-  transform: scale(1.02);
-}
-.mhb-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255,153,0,.2);
-  flex-wrap: wrap;
-}
 .mhb-count {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-body);
   font-size: .9rem;
-  font-weight: 600;
-  /* #8A4E00 (~6:1 on #f4f3f1) instead of #a06400 (~4.4:1, just under AA). */
-  color: #8A4E00;
-}
-.mhb-cta {
-  font-family: 'DM Sans', sans-serif;
-  font-size: .95rem;
-  font-weight: 800;
-  /* #9C5700 (~5:1 on #f4f3f1) instead of bright #ff9900 (~1.9:1). */
-  color: #9C5700;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-  transition: color .2s ease;
-}
-.mhb-card:hover .mhb-cta {
-  color: #cc7a00;
+  color: #6B6B6B;
+  margin: var(--space-2) 0 0;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .mhb-thumbs {
-    gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
   }
-  .mhb-thumb {
-    flex-basis: calc((100% - 20px) / 3);
-  }
+}
+@media (max-width: 540px) {
   .mhb-headline {
     font-size: 1.4rem;
   }
-  .mhb-card {
-    padding: 24px 20px;
-  }
-}
-@media (max-width: 480px) {
-  .mhb-thumb {
-    flex-basis: calc((100% - 10px) / 2);
-  }
-  .mhb-footer {
-    flex-direction: column;
-    align-items: stretch;
-    text-align: center;
-    gap: 8px;
+  .mhb-thumbs {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
 }
 </style>
