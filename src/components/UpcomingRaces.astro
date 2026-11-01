@@ -57,7 +57,7 @@ const CAT_COLORS: Record<string, string> = {
 ---
 
 {upcoming.length > 0 && (
-  <section class="upcoming-section" id="upcomingRacesRoot">
+  <section class="section upcoming-section" id="upcomingRacesRoot">
     <div class="container">
       <div class="upcoming-header">
         <h2 class="upcoming-title">{sectionTitle}</h2>
@@ -87,11 +87,7 @@ const CAT_COLORS: Record<string, string> = {
 )}
 
 <style>
-  /* Cream band on both landing pages; cards are white so they stand out. */
-  .upcoming-section {
-    background: var(--bg-band);
-    padding: var(--space-6) 0;
-  }
+  /* Background and padding come from the landing pages' section rhythm. */
 
   .upcoming-header {
     display: flex;
@@ -142,6 +138,7 @@ const CAT_COLORS: Record<string, string> = {
     display: flex;
     gap: 12px;
     background: white;
+    border: 1px solid #E5E5E5;
     border-radius: var(--radius-md);
     padding: 12px;
     text-decoration: none;

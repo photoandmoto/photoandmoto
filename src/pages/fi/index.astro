@@ -287,17 +287,32 @@ const galleryItems = featuredGalleries.map(g => ({
     min-height: 420px;
   }
 
-  /* Articles section */
-  .featured-grid-section {
+  /* Section rhythm: all sections are white with the same vertical padding.
+     Every section after the first opens with a 1px hairline the width of the
+     content container, so the space above the line (previous section's
+     padding-bottom) equals the space below it (the line's margin-bottom).
+     UpcomingRaces and MysteryHelpBlock carry the .section class too, so
+     they join the rhythm. ~ rather than + because the mystery block is
+     followed by its inline <script>. */
+  :global(main > .section) {
     background: white;
+    padding: var(--space-6) 0;
+  }
+  :global(main > .section:first-of-type) {
     padding-top: var(--space-8);
-    padding-bottom: var(--space-6);
+  }
+  :global(main > .section ~ .section) {
+    padding-top: 0;
+  }
+  :global(main > .section ~ .section > .container::before) {
+    content: "";
+    display: block;
+    border-top: 1px solid #E5E5E5;
+    margin-bottom: var(--space-6);
   }
 
-  /* UpcomingRaces sets its own cream band and white cards. */
 
   /* Scramble 2026 promo — temporary, removed once the archive is frozen. */
-  .scramble-promo { background: white; padding: var(--space-4) 0; }
   /* The event's lime, matching the stat tiles on /fi/scramble-2026. Every text
      colour on this card had to change with the background: the orange used
      before sits at 2.45:1 against this green and would have been unreadable.
@@ -345,12 +360,6 @@ const galleryItems = featuredGalleries.map(g => ({
     white-space: nowrap;
   }
 
-  /* Gallery section */
-  .gallery-section {
-    background: white;
-    padding: var(--space-6) 0;
-  }
-
   /* Swap hero/stack sides: stacked 3 on the left, big card on the right.
      Scoped to .gallery-section and desktop only, so the Podcast section
      (which shares the same RotatingHeroSplit "sidebar" variant) and the
@@ -365,22 +374,6 @@ const galleryItems = featuredGalleries.map(g => ({
     .gallery-section :global(.rhs__stack) {
       order: 1;
     }
-  }
-
-  /* Podcast section */
-  .podcast-section {
-    background: var(--bg-band);
-    padding: var(--space-6) 0;
-  }
-
-  /* MysteryHelpBlock's own .mhb rule is white, which is correct here:
-     Articles(white) -> Upcoming(cream) -> Gallery(white) -> Podcast(cream)
-     -> MysteryHelpBlock(white) -> CTA(cream). */
-
-  /* ===== CTA section ("Ota yhteyttä") ===== */
-  .section.cta-section {
-    background: var(--bg-band);
-    padding: var(--space-4) 0;
   }
 
   .cta-section__heading {
@@ -449,9 +442,6 @@ const galleryItems = featuredGalleries.map(g => ({
     }
     .cta-grid {
       grid-template-columns: 1fr;
-    }
-    .cta-section {
-      padding: var(--space-8) 0;
     }
   }
 

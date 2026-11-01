@@ -225,20 +225,30 @@ const galleryItems = featuredGalleries.map(g => ({
     min-height: 420px;
   }
 
-  /* Articles section */
-  .featured-grid-section {
-    background: white;
-    padding-top: var(--space-8);
-    padding-bottom: var(--space-6);
-  }
-
-  /* UpcomingRaces sets its own cream band and white cards. */
-
-  /* Gallery section */
-  .gallery-section {
+  /* Section rhythm: all sections are white with the same vertical padding.
+     Every section after the first opens with a 1px hairline the width of the
+     content container, so the space above the line (previous section's
+     padding-bottom) equals the space below it (the line's margin-bottom).
+     UpcomingRaces and MysteryHelpBlock carry the .section class too, so
+     they join the rhythm. ~ rather than + because the mystery block is
+     followed by its inline <script>. */
+  :global(main > .section) {
     background: white;
     padding: var(--space-6) 0;
   }
+  :global(main > .section:first-of-type) {
+    padding-top: var(--space-8);
+  }
+  :global(main > .section ~ .section) {
+    padding-top: 0;
+  }
+  :global(main > .section ~ .section > .container::before) {
+    content: "";
+    display: block;
+    border-top: 1px solid #E5E5E5;
+    margin-bottom: var(--space-6);
+  }
+
 
   /* Swap hero/stack sides: stacked 3 on the left, big card on the right.
      Scoped to .gallery-section and desktop only, so the Podcast section
@@ -254,20 +264,6 @@ const galleryItems = featuredGalleries.map(g => ({
     .gallery-section :global(.rhs__stack) {
       order: 1;
     }
-  }
-
-  /* EN has no Podcast section, so the white/cream rhythm lands MysteryHelpBlock
-     on cream: Articles(white) -> Upcoming(cream) -> Gallery(white) ->
-     MysteryHelpBlock(cream) -> CTA(white). #mhbRoot outranks the component's
-     own white .mhb rule regardless of stylesheet order. */
-  :global(#mhbRoot) {
-    background: var(--bg-band);
-  }
-
-  /* ===== CTA section ===== */
-  .section.cta-section {
-    background: white;
-    padding: var(--space-4) 0;
   }
 
   .cta-section__heading {
@@ -336,9 +332,6 @@ const galleryItems = featuredGalleries.map(g => ({
     }
     .cta-grid {
       grid-template-columns: 1fr;
-    }
-    .cta-section {
-      padding: var(--space-8) 0;
     }
   }
 

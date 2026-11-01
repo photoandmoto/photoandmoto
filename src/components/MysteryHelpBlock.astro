@@ -18,8 +18,7 @@
 // Props:
 //   lang: "fi" | "en"  — controls UI text. Defaults to "fi".
 //
-// Background: white by default (FI rhythm). EN overrides it to cream via
-// #mhbRoot in its own page styles.
+// Background and padding come from the landing pages' section rhythm.
 //
 // IMPORTANT: <style is:global> is required because the thumbnail DOM is created
 // at runtime by the inline script. Astro's default style scoping wouldn't reach
@@ -52,7 +51,7 @@ const t = STRINGS[lang] || STRINGS.fi;
 const href = lang === 'en' ? '/en/identify' : '/fi/tunnistamatta';
 ---
 
-<section class="mhb" id="mhbRoot" style="display:none;" data-lang={lang}>
+<section class="section mhb" id="mhbRoot" style="display:none;" data-lang={lang}>
   <div class="container">
     <div class="mhb-header">
       <h2 class="mhb-headline">{t.headline}</h2>
@@ -118,10 +117,6 @@ mhbStart(async function(){
 </script>
 
 <style is:global>
-.mhb {
-  background: #fff;
-  padding: var(--space-6) 0;
-}
 /* Same header row as the other landing sections (h2 left, CTA pill right). */
 .mhb-header {
   display: flex;
