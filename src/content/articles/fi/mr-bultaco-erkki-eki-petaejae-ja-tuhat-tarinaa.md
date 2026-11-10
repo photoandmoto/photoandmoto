@@ -78,7 +78,7 @@ Kun kyseessä on pyörämerkki, jota ei ole valmistettu enää vuoden 1983 jälk
 
 > "Samalla reissulla oltiin syömässä erässä ravintolassa vaimoni ja Luhtasuon Pepen kanssa ja Pepe vinkkasi, että samassa ravintolassa on Bultaco suvun mies [Oriol Puig i Bulto](https://ca.wikipedia.org/wiki/Oriol_Puig_i_Bult%C3%B3), jonka setä oli yksi Bultacon omistajista. Kävin häneltä pyytämässä juuri ostamaani T-paitaan nimikirjoituksen. Ei taida olla kovin monella vastaavaa", miettii Petäjä.
 
-![Oriol Buig y Bulton signeeraama paita](/images/Bultaco%20forver%202.png "Oriol Buig y Bulton signeeraama paita")
+![Oriol Puig i Bulton signeeraama paita](/images/Bultaco%20forver%202.png "Oriol Puig i Bulton signeeraama paita")
 
 ### Matkan varrella on kokoelma laajentunut
 

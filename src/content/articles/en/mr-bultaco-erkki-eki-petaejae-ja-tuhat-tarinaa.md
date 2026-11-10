@@ -48,7 +48,7 @@ A funny story is also connected to Petäjä's first ever Bultaco order.
 
 > "When I went to pick up my Bultaco from Brandt, I transported it by train to Hyvinkää and pushed it home. At first, I didn't even have a place to store it, but Matti Tarkkonen said there was space in their garage, so my Bultaco was staying there for the first few nights."
 
-![Bultaco Sherpa T250 Erkki Petäjän ensimmäinen pyörä](/images/Bultaco%20Sherpa%20T250%201970%20Erkki%20Pet%C3%A4j%C3%A4%202.png "Bultaco Sherpa T250 Erkki Petäjä ensimmäinen pyörä")
+![Bultaco Sherpa T250, Erkki Petäjä's first bike.](/images/Bultaco%20Sherpa%20T250%201970%20Erkki%20Pet%C3%A4j%C3%A4%202.png "Bultaco Sherpa T250, Erkki Petäjä's first bike.")
 
 In the summer of 1973, Petäjä participated in his first trial competition, which was held in Keimola. The most prominent memory from the race is traveling to the venue.
 
@@ -78,7 +78,7 @@ When it is a motorcycle brand that hasn't been manufactured since 1983, hunting 
 
 > "On that same trip, we were eating at a restaurant with my wife and Pepe Luhtasuo, and Pepe tipped us off that in the same restaurant was [Oriol Puig i Bultó](https://ca.wikipedia.org/wiki/Oriol_Puig_i_Bult%C3%B3), a man from the Bultaco family whose uncle was one of the owners of Bultaco. I went and asked him for an autograph on a T-shirt I had just bought. Not many people probably have one like that," reflects Petäjä.
 
-![Oriol Buig y Bulton signeeraama paita](/images/Bultaco%20forver%202.png "Oriol Buig y Bulton signeeraama paita")
+![Shirt signed by Oriol Puig i Bultó.](/images/Bultaco%20forver%202.png "Shirt signed by Oriol Puig i Bultó.")
 
 ### Along the way, the collection has expanded
 
@@ -90,7 +90,7 @@ Petäjä's Bultaco fleet is the largest in Northern Europe. In France, two broth
 
 Among Petäjä's Bultacos, there are also true rarities, such as a Bultaco Sherpa 350cc featuring the factory engine of three-time trial world champion (1976–1978) Yrjö Vesterinen. Even Ykä Vesterinen himself admired that engine when he comes from England to spend his holidays in Tammisaari during the summers, and I'm in contact with him from time to time.
 
-![Bultaco Sherpa T350 runko 1978 moottori 1974](/images/Bultaco%20Sherpa%20T350%20runko%201978%20moottori%201974%202.png "Bultaco Sherpa T350 runko 1978 moottori 1974")
+![Bultaco Sherpa T350 frame 1978, engine 1974.](/images/Bultaco%20Sherpa%20T350%20runko%201978%20moottori%201974%202.png "Bultaco Sherpa T350 frame 1978, engine 1974.")
 
 > "That engine also came to the garage as a result of a multi-stage chain of events. You could definitely make a whole book out of these bikes and parts hunting," chuckles the always cheerful Petäjä.
 
