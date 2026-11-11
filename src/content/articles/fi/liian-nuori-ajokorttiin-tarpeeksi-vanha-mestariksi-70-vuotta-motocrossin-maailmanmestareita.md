@@ -60,7 +60,7 @@ Kaikkien mestareiden osalta keski-ikä ensimmäisen MM-tittelin kohdalla on pudo
 
 ### Missä iässä mestarit ovat siis parhaimmillaan?
 
-Tässä tulee yllättävä käänne. Teini-ikäiset voittajat keräävät lehtien otsikot, mutta he eivät voita valtaosaa mestaruuksista. Kun kaikki koskaan saavutetut maailmanmestaruudet asetetaan järjestykseen iän mukaan, tuottoisin ikäikkuna on yhä 23–28 vuotta. Noin puolet kaikista mestaruuksista on voitettu tuossa haarukassa.
+Tässä tulee yllättävä käänne. Erittäin nuoret voittajat keräävät lehtien otsikot, mutta he eivät voita valtaosaa mestaruuksista. Kun kaikki koskaan saavutetut maailmanmestaruudet asetetaan järjestykseen iän mukaan, tuottoisin ikäikkuna on yhä 23–28 vuotta. Noin puolet kaikista mestaruuksista on voitettu tuossa haarukassa.
 
 ![Huippu kuljettajat aloittavat voittamisen nuorempina.](/images/title_age_shift_fi.png "Huippu kuljettajat aloittavat voittamisen nuorempina.")
 
