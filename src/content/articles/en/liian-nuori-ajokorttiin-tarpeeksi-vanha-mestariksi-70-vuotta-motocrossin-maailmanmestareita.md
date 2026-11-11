@@ -26,7 +26,7 @@ Let's fast-forward forty years. In the early 1970s, world champions were typical
 
 This raises a question that we just couldn't get out of our heads: when is a motocross rider actually in their prime? We found out by going through every men's world champion since 1957 (79 riders, 174 championships). The answer turned out to be a much more interesting story than expected.
 
-### When Champions Were Mature Men
+### When champions were mature men
 
 In the 1960s and 70s, suspension was so primitive that the riders themselves acted as part of the shock absorbers. There were also significantly fewer titles up for grabs: the 500cc World Championship started in 1957, the 250cc in 1962, and the 125cc class didn't arrive until 1975. For most of that era, there simply wasn't a dedicated class for young riders to make their breakthrough.
 
@@ -36,7 +36,7 @@ The champions of that era prove this to be true. Belgium's Roger De Coster, whom
 
 > There was, of course, an exception: Joël Robert won his first 250cc crown at age 20 and followed it up with five more. However, the vast majority of champions from that era didn't take their titles until they were past the age of 25.
 
-### The 1980s: Youth Kicks the Door Down
+### The 1980s was the rise of the youth
 
 Then something changed. In 1980, 19-year-old Belgian Georges Jobé won the 250cc world championship as the sport's first-ever champion under twenty. Eric Geboers did the same feat, also at 19 years old. Then in 1991, 18-year-old Stefan Everts grabbed the 125cc title – the first of the ten world championships he would eventually accumulate.
 
@@ -44,7 +44,7 @@ Then something changed. In 1980, 19-year-old Belgian Georges Jobé won the 250cc
 
 > What changed? The most obvious factor was the 125cc class introduced in 1975, which offered young riders their own path to becoming a world champion. There are other possible reasons in the background, which we will return to at the end.
 
-### The Era of Prodigies
+### The era of young stars
 
 Fast-forward to today: teenage champions have become considerably more common. Remember Roczen, the 17-year-old mentioned at the beginning? He has plenty of company: Jeffrey Herlings at 17, Jorge Prado at 17. Antonio Cairoli won his first title at 19 and eventually racked up a staggering nine championships. Tim Gajser also took his at 19.
 
@@ -56,7 +56,7 @@ Rules play a part too. The MX2 class has an upper age limit that forces riders t
 
 Across all champions, the average age for the first world title has dropped from around 25 in the 1960s and 70s to around 21 today. That's a drop of about four years in a sport where a top career might last only a decade or so.
 
-### So at What Age Are Champions at Their Best?
+### So at what age are champions at their best?
 
 Here comes the surprising twist. Teenage winners grab the newspaper headlines, but they don't win the majority of championships. When all world championships ever won are ordered by age, the most productive age window is still 23 to 28 years old. About half of all championships have been won within that bracket.
 
@@ -66,7 +66,7 @@ Instead, the change is visible in where the peak phase is located within this ag
 
 > Our guess as to why: a young rider can be really fast, but a championship is decided over the course of a whole season, and building consistency usually takes a few extra years. Pure speed gets you a race win, but a championship requires much more.
 
-### Those Who Broke the Mold
+### Those who broke the mold
 
 Then there are the riders who don't care about these patterns at all – and that's exactly why we love this sport.
 
@@ -80,7 +80,7 @@ Romain Febvre rose to MXGP champion in 2015 and then had to wait ten years for h
 
 These examples are a fitting reminder that an athlete's peak age is a statistical trend, not a law of nature. The average only reveals what usually happens; it cannot tell you what an unrelenting and exceptionally talented athlete is capable of.
 
-### A Question with Many Answers
+### A question with many answers
 
 So top riders start winning younger. That part is clear. The bigger mystery is whether they are also able to stay winners longer.
 

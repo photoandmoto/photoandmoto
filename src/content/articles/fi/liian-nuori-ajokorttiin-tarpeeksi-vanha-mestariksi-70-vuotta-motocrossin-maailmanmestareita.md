@@ -36,7 +36,7 @@ Aikakauden mestarit osoittavat tämän todeksi. Belgialainen Roger De Coster, jo
 
 > Poikkeuskin toki löytyi: Joël Robert voitti ensimmäisen 250-kuutioisten kruununsa 20-vuotiaana ja takoi sen perään vielä viisi lisää. Valtaosa tuon ajan mestareista otti kuitenkin tittelinsä vasta 25 ikävuoden paremmalla puolella.
 
-### 1980-luku: nuoret potkaisevat oven sisään
+### **1980-luku oli nuorten esiinmarssi**
 
 Sitten jokin muuttui. Vuonna 1980 19-vuotias belgialainen Georges Jobé voitti 250-kuutioisten maailmanmestaruuden lajin historian ensimmäisenä alle kaksikymppisenä mestarina. Eric Geboers teki saman tempun niin ikään 19-vuotiaana. Vuonna 1991 taas 18-vuotias Stefan Everts nappasi 125-kuutioisten tittelin – ensimmäisen niistä kymmenestä maailmanmestaruudesta, jotka hän lopulta keräsi.
 
@@ -44,11 +44,13 @@ Sitten jokin muuttui. Vuonna 1980 19-vuotias belgialainen Georges Jobé voitti 2
 
 > Mikä muuttui? Ilmeisin tekijä oli vuonna 1975 mukaan tullut 125-kuutioisten luokka, joka tarjosi nuorille kuljettajille oman reitin maailmanmestariksi. Taustalla vaikuttaa muitakin mahdollisia syitä, joihin palaamme lopuksi.
 
-### Ihmelasten aikakausi
+### 
+
+### **Nuorten tähtien aikakausi**
 
 Kelataan tähän päivään: teinimestareista on tullut huomattavasti tavallisempia. Muistatko vielä Roczenin, alussa mainitun 17-vuotiaan? Hänellä riittää seuraa: Jeffrey Herlings 17-vuotiaana, Jorge Prado 17-vuotiaana. Antonio Cairoli voitti ensimmäisen tittelinsä 19-vuotiaana ja keräsi lopulta peräti yhdeksän mestaruutta. Myös Tim Gajser otti omansa 19-vuotiaana.
 
-![ Antonio Cairoli voitti ensimmäisen tittelinsä 19-vuotiaana yltäen lopulta yhdeksään mestaruuteen](/images/Cairoli.jpg " Antonio Cairoli voitti ensimmäisen tittelinsä 19-vuotiaana yltäen lopulta yhdeksään mestaruuteen")
+![Antonio Cairoli voitti ensimmäisen tittelinsä 19-vuotiaana yltäen lopulta yhdeksään mestaruuteen](/images/Cairoli.jpg "Antonio Cairoli voitti ensimmäisen tittelinsä 19-vuotiaana yltäen lopulta yhdeksään mestaruuteen")
 
 Monet nykypäivän mestareista ovat edenneet järjestelmällisten juniorisarjojen ja tehdastallien kehitysohjelmien kautta. He nousevat MM-tasolle nuorina, mutta heillä on takanaan jo vuosien kokemus kilpa-ajamisesta.
 
@@ -89,13 +91,9 @@ Paperilla nykytähdillä on pidemmät mestaruuskaudet kuin 1970-luvun sankareill
 Mistä tämä kehitys sitten johtuu? Tilastot osoittavat suuntauksen, eivät perimmäistä syytä. Mutta jos asiaa puitaisiin tuopin äärellä, omat parhaat arvauksemme olisivat seuraavat:
 
 - **Nuorille on luotu oma väylänsä.** Ensin 125-kuutioiset ja nykyisin MX2 ikärajoineen tarjoavat nuorille aidon tilaisuuden MM-titteliin. Se lienee suurin yksittäinen syy siihen, miksi ensimmäiset mestaruudet saavutetaan aiempaa varhaisemmin.
-
 - **Ajaminen aloitetaan nuorempana.** Nuorten sarjat ja tehdastallien akatemiaohjelmat ohjaavat kuljettajat ammattimaiselle uralle jo ennen koulujen päättymistä.
-
 - **Lajista on tullut täysipäivätyötä.** Tehdastallit vastaavat fyysisestä harjoittelusta, kalustosta, matkoista ja lääkäripalveluista vuoden ympäri. Ensimmäisinä vuosikymmeninä tällainen taustatuki oli paljon harvinaisempaa.
-
 - **Lääketiede on ottanut harppauksia.** Kehittynyt leikkaushoito ja kuntoutus saattavat osaltaan selittää sen, miksi kuljettajat kykenevät palaamaan huipulle pitkiltäkin tauoilta. Herlingsin uusi mestaruus vuonna 2026 edustaa juuri sellaista paluuta, jota tämä voisi selittää. Tätä tosin ei voi vedenpitävästi todistaa ilman loukkaantumistilastoja.
-
 - **Kalusto ja raha.** Nykypyörät ovat erilaisia, joskaan eivät ilmeisen helppoja hallita. Suuremmat sopimusrahat taas saattavat joko motivoida jatkamaan uraa pidempään tai toisaalta mahdollistaa eläköitymisen aiemmin. Todellisuudessa kukaan ei tarkalleen tiedä, kumpaan suuntaan vaakakuppi kääntyy.
 
 Nämä ovat teorioita, jotka itse nostaisimme pöydälle. Sinulla saattaa olla omasi.
